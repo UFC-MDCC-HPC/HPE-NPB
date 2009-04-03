@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.jsl" />
-    <Compile Include="NPB3_0_JAV\Timer.java" />
+    <Compile Include="src\NPB3_0_JAV\Timer.java" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualJSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
