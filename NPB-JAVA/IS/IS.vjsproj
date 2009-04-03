@@ -1,0 +1,59 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D842639A-2E8B-466D-B47F-4C630B6EF3BC}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>IS</RootNamespace>
+    <AssemblyName>IS</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IS.java" />
+    <Compile Include="ISThreads\ISBase.java" />
+    <Compile Include="ISThreads\RankThread.java" />
+    <Compile Include="Properties\AssemblyInfo.jsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BMInOut\BMInOut.vjsproj">
+      <Project>{303EB8C8-79DA-4821-85D2-C5A189B7D0D3}</Project>
+      <Name>BMInOut</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Random\Random.vjsproj">
+      <Project>{C75BC994-CDCF-4B55-8A53-ADA2DDED758A}</Project>
+      <Name>Random</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Timer\Timer.vjsproj">
+      <Project>{6252FC67-77E7-43B0-8062-0882A6D8B733}</Project>
+      <Name>Timer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualJSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
