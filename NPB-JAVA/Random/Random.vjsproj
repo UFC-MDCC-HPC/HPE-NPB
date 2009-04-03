@@ -9,6 +9,10 @@
     <RootNamespace>Random</RootNamespace>
     <AssemblyName>Random</AssemblyName>
     <WarningLevel>4</WarningLevel>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.jsl" />
-    <Compile Include="Random.java" />
+    <Compile Include="NPB3_0_JAV\Random.java" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualJSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,6 +9,10 @@
     <RootNamespace>LU</RootNamespace>
     <AssemblyName>LU</AssemblyName>
     <WarningLevel>4</WarningLevel>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,13 +33,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LU.java" />
-    <Compile Include="LUThreads\Adder.java" />
-    <Compile Include="LUThreads\LowerJac.java" />
-    <Compile Include="LUThreads\LUBase.java" />
-    <Compile Include="LUThreads\RHSCompute.java" />
-    <Compile Include="LUThreads\Scale.java" />
-    <Compile Include="LUThreads\UpperJac.java" />
+    <Compile Include="NPB3_0_JAV\LU.java" />
+    <Compile Include="NPB3_0_JAV\LUThreads\Adder.java" />
+    <Compile Include="NPB3_0_JAV\LUThreads\LowerJac.java" />
+    <Compile Include="NPB3_0_JAV\LUThreads\LUBase.java" />
+    <Compile Include="NPB3_0_JAV\LUThreads\RHSCompute.java" />
+    <Compile Include="NPB3_0_JAV\LUThreads\Scale.java" />
+    <Compile Include="NPB3_0_JAV\LUThreads\UpperJac.java" />
     <Compile Include="Properties\AssemblyInfo.jsl" />
   </ItemGroup>
   <ItemGroup>

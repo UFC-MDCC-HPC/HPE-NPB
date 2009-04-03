@@ -9,6 +9,10 @@
     <RootNamespace>IS</RootNamespace>
     <AssemblyName>IS</AssemblyName>
     <WarningLevel>4</WarningLevel>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,9 +33,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IS.java" />
-    <Compile Include="ISThreads\ISBase.java" />
-    <Compile Include="ISThreads\RankThread.java" />
+    <Compile Include="NPB3_0_JAV\IS.java" />
+    <Compile Include="NPB3_0_JAV\ISThreads\ISBase.java" />
+    <Compile Include="NPB3_0_JAV\ISThreads\RankThread.java" />
     <Compile Include="Properties\AssemblyInfo.jsl" />
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,10 @@
     <RootNamespace>MG</RootNamespace>
     <AssemblyName>MG</AssemblyName>
     <WarningLevel>4</WarningLevel>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,12 +33,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MG.java" />
-    <Compile Include="MGThreads\Interp.java" />
-    <Compile Include="MGThreads\MGBase.java" />
-    <Compile Include="MGThreads\Psinv.java" />
-    <Compile Include="MGThreads\Resid.java" />
-    <Compile Include="MGThreads\Rprj.java" />
+    <Compile Include="NPB3_0_JAV\MG.java" />
+    <Compile Include="NPB3_0_JAV\MGThreads\Interp.java" />
+    <Compile Include="NPB3_0_JAV\MGThreads\MGBase.java" />
+    <Compile Include="NPB3_0_JAV\MGThreads\Psinv.java" />
+    <Compile Include="NPB3_0_JAV\MGThreads\Resid.java" />
+    <Compile Include="NPB3_0_JAV\MGThreads\Rprj.java" />
     <Compile Include="Properties\AssemblyInfo.jsl" />
   </ItemGroup>
   <ItemGroup>

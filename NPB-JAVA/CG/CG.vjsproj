@@ -9,6 +9,10 @@
     <RootNamespace>CG</RootNamespace>
     <AssemblyName>CG</AssemblyName>
     <WarningLevel>4</WarningLevel>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,9 +33,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CG.java" />
-    <Compile Include="CGThreads\CGBase.java" />
-    <Compile Include="CGThreads\CGWorker.java" />
+    <Compile Include="NPB3_0_JAV\CG.java" />
+    <Compile Include="NPB3_0_JAV\CGThreads\CGBase.java" />
+    <Compile Include="NPB3_0_JAV\CGThreads\CGWorker.java" />
     <Compile Include="Properties\AssemblyInfo.jsl" />
   </ItemGroup>
   <ItemGroup>

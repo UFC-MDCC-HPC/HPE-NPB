@@ -10,6 +10,10 @@
     <AssemblyName>SP</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <StartupObject>NPB3_0_JAV.SP</StartupObject>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,15 +34,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SP.java" />
+    <Compile Include="NPB3_0_JAV\SP.java" />
     <Compile Include="Properties\AssemblyInfo.jsl" />
-    <Compile Include="SPThreads\RHSAdder.java" />
-    <Compile Include="SPThreads\RHSCompute.java" />
-    <Compile Include="SPThreads\SPBase.java" />
-    <Compile Include="SPThreads\TXInverse.java" />
-    <Compile Include="SPThreads\XSolver.java" />
-    <Compile Include="SPThreads\YSolver.java" />
-    <Compile Include="SPThreads\ZSolver.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\RHSAdder.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\RHSCompute.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\SPBase.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\TXInverse.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\XSolver.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\YSolver.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\ZSolver.java" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BMInOut\BMInOut.vjsproj">

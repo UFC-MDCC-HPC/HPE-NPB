@@ -9,6 +9,10 @@
     <RootNamespace>BT</RootNamespace>
     <AssemblyName>BT</AssemblyName>
     <WarningLevel>4</WarningLevel>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,13 +33,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BT.java" />
-    <Compile Include="BTThreads\BTBase.java" />
-    <Compile Include="BTThreads\RHSAdder.java" />
-    <Compile Include="BTThreads\RHSCompute.java" />
-    <Compile Include="BTThreads\XSolver.java" />
-    <Compile Include="BTThreads\YSolver.java" />
-    <Compile Include="BTThreads\ZSolver.java" />
+    <Compile Include="NPB3_0_JAV\BT.java" />
+    <Compile Include="NPB3_0_JAV\BTThreads\BTBase.java" />
+    <Compile Include="NPB3_0_JAV\BTThreads\RHSAdder.java" />
+    <Compile Include="NPB3_0_JAV\BTThreads\RHSCompute.java" />
+    <Compile Include="NPB3_0_JAV\BTThreads\XSolver.java" />
+    <Compile Include="NPB3_0_JAV\BTThreads\YSolver.java" />
+    <Compile Include="NPB3_0_JAV\BTThreads\ZSolver.java" />
     <Compile Include="Properties\AssemblyInfo.jsl" />
   </ItemGroup>
   <ItemGroup>

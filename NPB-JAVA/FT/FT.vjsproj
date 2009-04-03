@@ -9,6 +9,10 @@
     <RootNamespace>FT</RootNamespace>
     <AssemblyName>FT</AssemblyName>
     <WarningLevel>4</WarningLevel>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,10 +33,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FT.java" />
-    <Compile Include="FTThreads\EvolveThread.java" />
-    <Compile Include="FTThreads\FFTThread.java" />
-    <Compile Include="FTThreads\FTBase.java" />
+    <Compile Include="NPB3_0_JAV\FT.java" />
+    <Compile Include="NPB3_0_JAV\FTThreads\EvolveThread.java" />
+    <Compile Include="NPB3_0_JAV\FTThreads\FFTThread.java" />
+    <Compile Include="NPB3_0_JAV\FTThreads\FTBase.java" />
     <Compile Include="Properties\AssemblyInfo.jsl" />
   </ItemGroup>
   <ItemGroup>
