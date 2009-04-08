@@ -9,6 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SP</RootNamespace>
     <AssemblyName>SP</AssemblyName>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,9 +37,17 @@
   <ItemGroup>
     <Compile Include="SP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SPThreads\SPBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SPThreads\" />
+    <ProjectReference Include="..\BMInOut\BMInOut.csproj">
+      <Project>{1A1FAA2A-D1A2-4DFE-955A-3D88FD063315}</Project>
+      <Name>BMInOut</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Timer\Timer.csproj">
+      <Project>{344CE051-6255-4BBA-BFB3-5CF80032FF77}</Project>
+      <Name>Timer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
