@@ -286,23 +286,23 @@ namespace NPB3_0_JAV
         }
         public void printTimers()
         {
-            DecimalFormat fmt = new DecimalFormat("0.000");
+            //DecimalFormat fmt = new DecimalFormat("0.000");
             Console.WriteLine("  SECTION   Time (secs)");
-            Console.WriteLine("FT time =		      " + fmt.format(timer.readTimer(1)));
-            Console.WriteLine("WarmUp time =		      " + fmt.format(timer.readTimer(2)));
-            Console.WriteLine("ffXYZ body time =	      " + fmt.format(timer.readTimer(3)));
-            Console.WriteLine("Swarztrauber body time =      " + fmt.format(timer.readTimer(4)));
-            Console.WriteLine("Redistribution time =	      " + fmt.format(timer.readTimer(5)));
-            Console.WriteLine("Transposition time =	      " + fmt.format(timer.readTimer(6)));
-            Console.WriteLine("X time =		      " + fmt.format(timer.readTimer(7)));
-            Console.WriteLine("Y time =		      " + fmt.format(timer.readTimer(8)));
-            Console.WriteLine("Z time =		      " + fmt.format(timer.readTimer(9)));
-            Console.WriteLine("CalculateChecksum =	      " + fmt.format(timer.readTimer(10)));
-            Console.WriteLine("evolve =		      " + fmt.format(timer.readTimer(11)));
-            Console.WriteLine("compute_initial_conditions =  " + fmt.format(timer.readTimer(12)));
-            Console.WriteLine("twiddle =		      " + fmt.format(timer.readTimer(13)));
-            Console.WriteLine("verify =		      " + fmt.format(timer.readTimer(14)));
-            Console.WriteLine("fftXYZ =		      " + fmt.format(timer.readTimer(15)));
+            Console.WriteLine("FT time =		      " + timer.readTimer(1).ToString("N3"));
+            Console.WriteLine("WarmUp time =		      " + timer.readTimer(2).ToString("N3"));
+            Console.WriteLine("ffXYZ body time =	      " + timer.readTimer(3).ToString("N3"));
+            Console.WriteLine("Swarztrauber body time =      " + timer.readTimer(4).ToString("N3"));
+            Console.WriteLine("Redistribution time =	      " + timer.readTimer(5).ToString("N3"));
+            Console.WriteLine("Transposition time =	      " + timer.readTimer(6).ToString("N3"));
+            Console.WriteLine("X time =		      " + timer.readTimer(7).ToString("N3"));
+            Console.WriteLine("Y time =		      " + timer.readTimer(8).ToString("N3"));
+            Console.WriteLine("Z time =		      " + timer.readTimer(9).ToString("N3"));
+            Console.WriteLine("CalculateChecksum =	      " + timer.readTimer(10).ToString("N3"));
+            Console.WriteLine("evolve =		      " + timer.readTimer(11).ToString("N3"));
+            Console.WriteLine("compute_initial_conditions =  " + timer.readTimer(12).ToString("N3"));
+            Console.WriteLine("twiddle =		      " + timer.readTimer(13).ToString("N3"));
+            Console.WriteLine("verify =		      " + timer.readTimer(14).ToString("N3"));
+            Console.WriteLine("fftXYZ =		      " + timer.readTimer(15).ToString("N3"));
         }
 
         public double getMFLOPS(double total_time, int nx, int ny, int nz)
