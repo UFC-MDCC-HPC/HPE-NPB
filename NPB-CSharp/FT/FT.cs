@@ -58,9 +58,9 @@ namespace NPB3_0_JAV
         public BMResults results;
         public bool serial = true;
         bool done = false;
-        public FT(char clss, int np, bool ser)
+        public FT(char clss, int np, bool ser) : base(clss, np, ser)
         {
-            super(clss, np, ser);
+            //super(clss, np, ser);
             serial = ser;
         }
         static void Main(String[] argv)
