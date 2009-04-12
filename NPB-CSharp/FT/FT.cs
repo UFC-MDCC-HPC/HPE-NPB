@@ -46,7 +46,7 @@
 
 using System;
 using System.IO;
-using NPB3_0_JAV.SPThreads;
+using NPB3_0_JAV.FTThreads;
 using NPB3_0_JAV.BMInOut;
 
 namespace NPB3_0_JAV
