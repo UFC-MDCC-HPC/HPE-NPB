@@ -49,8 +49,7 @@ using System.IO;
 using NPB3_0_JAV.FTThreads;
 using NPB3_0_JAV.BMInOut;
 
-namespace NPB3_0_JAV
-{
+namespace NPB3_0_JAV {
 
     public class FT : FTBase
     {
@@ -139,7 +138,7 @@ namespace NPB3_0_JAV
             fftXYZ(1, xtr, exp2, exp1, exp3, ny, nx, nz);
             if (timeron) timer.stop(15);
 
-            double ap = (-4.0 * alpha * Math.pow(pi, 2));
+            double ap = (-4.0 * alpha * Math.Pow(pi, 2));
             int n12 = nx / 2;
             int n22 = ny / 2;
             int n32 = nz / 2;
@@ -161,10 +160,10 @@ namespace NPB3_0_JAV
                             int jj = j - ((j) / n22) * ny;
                             xnt[REAL + j * isize4 + k * jsize4 + i * ksize4] =
                                  xtr[REAL + j * isize3 + i * jsize3 + k * ksize3] *
-                                 Math.exp((ap * (jj * jj + ik2)) * (it + 1));
+                                 Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
                             xnt[IMAG + j * isize4 + k * jsize4 + i * ksize4] =
                                  xtr[IMAG + j * isize3 + i * jsize3 + k * ksize3] *
-                                 Math.exp((ap * (jj * jj + ik2)) * (it + 1));
+                                 Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
                         }
                     }
                 }
@@ -218,7 +217,7 @@ namespace NPB3_0_JAV
 
     for(int it=0;it<niter_default;it++){
       if(timeron) timer.start(11);
-      doEvolve(it); 
+      //doEvolve(it); comentado ate resolver threading
       if(timeron) timer.stop(11);	      
 
       if(timeron) timer.start(15);  
@@ -230,15 +229,15 @@ namespace NPB3_0_JAV
 */
       if(timeron) timer.start(3); 
       if(timeron) timer.start(7); 
-      doFFT();
+      //doFFT(); comentado ate resolver threading
       if(timeron) timer.stop(7);	    
 
       if(timeron) timer.start(8); 
-      doFFT();
+      //doFFT(); comentado ate resolver threading
       if(timeron) timer.stop(8);	    
 
       if(timeron) timer.start(9);
-      doFFT();
+      //doFFT(); comentado ate resolver threading
       if(timeron) timer.stop(9);
       if(timeron) timer.stop(3);		      
       if(timeron) timer.stop(15);
@@ -311,8 +310,8 @@ namespace NPB3_0_JAV
             int ntotal = nx * ny * nz;
             if (total_time > 0)
             {
-                mflops = 14.8157 + 7.19641 * Math.log(ntotal)
-                        + (5.23518 + 7.21113 * Math.log(ntotal)) * niter_default;
+                mflops = 14.8157 + 7.19641 * Math.Log(ntotal)
+                        + (5.23518 + 7.21113 * Math.Log(ntotal)) * niter_default;
                 mflops *= ntotal / (total_time * 1000000.0);
             }
             return mflops;
