@@ -49,12 +49,12 @@
 !-------------------------------------------------------------------------!
 */
 
-
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using NPB3_0_JAV.BTThreads;
+using NPB3_0_JAV.BMInOut;
 
-namespace BT
+namespace NPB3_0_JAV
 {
 
     public class BT : BTBase
@@ -71,9 +71,9 @@ namespace BT
         double tmp2;
         double tmp3;
 
-        public BT(char clss, int threads, boolean ser)
+        public BT(char clss, int threads, boolean ser) : base(clss, threads)
         {
-            super(clss, threads);
+            //super(clss, threads);
             serial = ser;
             fjac = new double[5 * 5 * (problem_size + 1)];
             njac = new double[5 * 5 * (problem_size + 1)];
@@ -87,7 +87,7 @@ namespace BT
             BMArgs.ParseCmdLineArgs(argv, BMName);
             char CLSS = BMArgs.CLASS;
             int np = BMArgs.num_threads;
-            boolean serial = BMArgs.serial;
+            bool serial = BMArgs.serial;
             try
             {
                 bt = new BT(CLSS, np, serial);
