@@ -62,7 +62,7 @@ namespace NPB3_0_JAV
 
         public int bid = -1;
         public BMResults results;
-        public boolean serial = true;
+        public bool serial = true;
         double[] fjac;
         double[] njac;
         double[] lhs;
@@ -71,7 +71,7 @@ namespace NPB3_0_JAV
         double tmp2;
         double tmp3;
 
-        public BT(char clss, int threads, boolean ser) : base(clss, threads)
+        public BT(char clss, int threads, bool ser) : base(clss, threads)
         {
             //super(clss, threads);
             serial = ser;
@@ -80,7 +80,7 @@ namespace NPB3_0_JAV
             lhs = new double[5 * 5 * 3 * (problem_size + 1)];
         }
 
-        public static void main(String[] argv)
+        public static void Main(String[] argv)
         {
             BT bt = null;
 
@@ -92,10 +92,10 @@ namespace NPB3_0_JAV
             {
                 bt = new BT(CLSS, np, serial);
             }
-            catch (OutOfMemoryError e)
+            catch (OutOfMemoryException e)
             {
                 BMArgs.outOfMemoryMessage();
-                System.exit(0);
+                Environment.Exit(0);
             }
             bt.runBenchMark();
         }
@@ -116,12 +116,12 @@ namespace NPB3_0_JAV
             initialize();
             exact_rhs();
 
-            if (!serial) setupThreads(this);
+            //if (!serial) setupThreads(this);
             //---------------------------------------------------------------------
             //      do one time step to touch all code, and reinitialize
             //---------------------------------------------------------------------
             if (serial) adi_serial();
-            else adi();
+            //else adi();
             initialize();
 
             timer.resetAllTimers();
@@ -134,7 +134,7 @@ namespace NPB3_0_JAV
                     Console.WriteLine("Time step " + step);
                 }
                 if (serial) adi_serial();
-                else adi();
+                //else adi();
             }
 
             timer.stop(t_total);
@@ -165,7 +165,7 @@ namespace NPB3_0_JAV
             {
                 double n3 = grid_points[0] * grid_points[1] * grid_points[2];
                 double navg = (grid_points[0] + grid_points[1] + grid_points[2]) / 3.0;
-                mflops = 3478.8 * n3 - 17655.7 * Math.pow(navg, 2) + 28023.7 * navg;
+                mflops = 3478.8 * n3 - 17655.7 * Math.Pow(navg, 2) + 28023.7 * navg;
                 mflops *= niter / (total_time * 1000000.0);
             }
             return mflops;
@@ -278,51 +278,52 @@ namespace NPB3_0_JAV
 
         public void printTimers(String[] t_names, double[] trecs, double tmax)
         {
-            DecimalFormat fmt = new DecimalFormat("0.000");
+            //DecimalFormat fmt = new DecimalFormat("0.000");
+            
             double t;
             Console.WriteLine("SECTION  Time           (secs)");
             for (int i = 1; i <= t_last; i++) trecs[i] = timer.readTimer(i);
             if (tmax == 0.0) tmax = 1.0;
             for (int i = 1; i <= t_last; i++)
             {
-                Console.WriteLine(t_names[i] + ":" + fmt.format(trecs[i]) + ":" +
-                                   "  (" + fmt.format(trecs[i] * 100 / tmax) + "%)");
+                Console.WriteLine(t_names[i] + ":" + String.Format("{0:0.000}", trecs[i]) + ":" +
+                                   "  (" + String.Format("{0:0.000}", trecs[i] * 100 / tmax) + "%)");
 
                 if (i == t_rhs)
                 {
                     t = trecs[t_rhsx] + trecs[t_rhsy] + trecs[t_rhsz];
                     Console.WriteLine("    --> total ");
                     Console.WriteLine("sub-rhs ");
-                    Console.WriteLine(fmt.format(t));
+                    Console.WriteLine(String.Format("{0:0.000}", t));
                     Console.WriteLine("  (");
-                    Console.WriteLine(fmt.format(t * 100 / tmax));
-                    Console.WriteLineln("%)");
+                    Console.WriteLine(String.Format("{0:0.000}",t * 100 / tmax));
+                    Console.WriteLine("%)");
                     t = trecs[t_rhs] - trecs[t_rhsx] + trecs[t_rhsy] + trecs[t_rhsz];
                     Console.WriteLine("    --> total ");
                     Console.WriteLine("rest-rhs ");
-                    Console.WriteLine(fmt.format(t));
+                    Console.WriteLine(String.Format("{0:0.000}",t));
                     Console.WriteLine("  (");
-                    Console.WriteLine(fmt.format(t * 100 / tmax));
-                    Console.WriteLineln("%)");
+                    Console.WriteLine(String.Format("{0:0.000}",t * 100 / tmax));
+                    Console.WriteLine("%)");
                 }
                 else if (i == t_zsolve)
                 {
                     t = trecs[t_zsolve] - trecs[t_rdis1] - trecs[t_rdis2];
                     Console.WriteLine("    --> total ");
                     Console.WriteLine("sub-zsol ");
-                    Console.WriteLine(fmt.format(t));
+                    Console.WriteLine(String.Format("{0:0.000}",t));
                     Console.WriteLine("  ");
-                    Console.WriteLineln(fmt.format(t * 100 / tmax));
-                    Console.WriteLineln();
+                    Console.WriteLine(String.Format("{0:0.000}",t * 100 / tmax));
+                    Console.WriteLine();
                 }
                 else if (i == t_rdis2)
                 {
                     t = trecs[t_rdis1] + trecs[t_rdis2];
                     Console.WriteLine("    --> total ");
                     Console.WriteLine("redist ");
-                    Console.WriteLine(fmt.format(t));
+                    Console.WriteLine(String.Format("{0:0.000}",t));
                     Console.WriteLine("  ");
-                    Console.WriteLineln(fmt.format(t * 100 / tmax));
+                    Console.WriteLine(String.Format("{0:0.000}",t * 100 / tmax));
                 }
             }
         }
@@ -331,67 +332,69 @@ namespace NPB3_0_JAV
         public int getInputPars()
         {
             int niter = 0;
-            File f2 = new File("inputbt.data");
-            if (f2.exists())
+            //File f2 = new File("inputbt.data");
+            if (File.Exists("inputbt.data"))
             {
+            	FileStream f2 = new FileStream("inputbt.data", System.IO.FileMode.Open);
                 try
                 {
-                    FileInputStream fis = new FileInputStream(f2);
-                    DataInputStream datafile = new DataInputStream(fis);
-                    Console.WriteLineln("Reading from input file inputbt.data");
-                    niter = datafile.readInt();
-                    dt = datafile.readDouble();
-                    grid_points[0] = datafile.readInt();
-                    grid_points[1] = datafile.readInt();
-                    grid_points[2] = datafile.readInt();
-                    fis.close();
+                    //FileInputStream fis = new FileInputStream(f2);
+                    StreamReader datafile = new StreamReader(f2);
+                    //StreamReader datafile = new StreamReader(fis);
+                    Console.WriteLine("Reading from input file inputbt.data");
+                    niter = int.Parse(datafile.ReadLine());
+                    dt = double.Parse(datafile.ReadLine());
+                    grid_points[0] = int.Parse(datafile.ReadLine());
+                    grid_points[1] = int.Parse(datafile.ReadLine());
+                    grid_points[2] = int.Parse(datafile.ReadLine());
+                    datafile.Close();
                 }
                 catch (Exception e)
                 {
-                    System.err.println("exception caught!");
+                    Console.Error.WriteLine("exception caught!");
                 }
             }
             else
             {
-                Console.WriteLineln("No input file inputbt.data, Using compiled defaults");
+                Console.WriteLine("No input file inputbt.data, Using compiled defaults");
                 niter = niter_default;
                 dt = dt_default;
                 grid_points[0] = problem_size;
                 grid_points[1] = problem_size;
                 grid_points[2] = problem_size;
             }
-            Console.WriteLineln("Size: " + grid_points[0]
+            Console.WriteLine("Size: " + grid_points[0]
                        + " X " + grid_points[1]
                        + " X " + grid_points[2]);
             if ((grid_points[0] > IMAX) ||
              (grid_points[1] > JMAX) ||
              (grid_points[2] > KMAX))
             {
-                Console.WriteLineln("Problem size too big for array");
-                System.exit(0);
+                Console.WriteLine("Problem size too big for array");
+                Environment.Exit(0);
             }
-            Console.WriteLineln("Iterations: " + niter + " dt: " + dt);
+            Console.WriteLine("Iterations: " + niter + " dt: " + dt);
             return niter;
         }
 
         public void setTimers(String[] t_names)
         {
-            File f1 = new File("timer.flag");
+            //File f1 = new File("timer.flag");
             timeron = false;
-            if (f1.exists())
+            if (File.Exists("timer.flag"))
             {
                 timeron = true;
-                t_names[t_total] = new String("total    ");
-                t_names[t_rhsx] = new String("rhsx     ");
-                t_names[t_rhsy] = new String("rhsy     ");
-                t_names[t_rhsz] = new String("rhsz     ");
-                t_names[t_rhs] = new String("rhs      ");
-                t_names[t_xsolve] = new String("xsolve   ");
-                t_names[t_ysolve] = new String("ysolve   ");
-                t_names[t_zsolve] = new String("zsolve   ");
-                t_names[t_rdis1] = new String("redist1  ");
-                t_names[t_rdis2] = new String("redist2  ");
-                t_names[t_add] = new String("add      ");
+                t_names[t_total] = "total    ";
+                t_names[t_rhsx] = "rhsx     ";
+                t_names[t_rhsy] = "rhsy     ";
+                t_names[t_rhsz] = "rhsz     ";
+                t_names[t_rhs] = "rhs      ";
+                t_names[t_xsolve] = "xsolve   ";
+                t_names[t_ysolve] = "ysolve   ";
+                t_names[t_zsolve] = "zsolve   ";
+                t_names[t_rdis1] = "redist1  ";
+                t_names[t_rdis2] = "redist2  ";
+                t_names[t_add] = "add      ";
             }
         }
 
@@ -400,7 +403,7 @@ namespace NPB3_0_JAV
             int i, j, k, d, m;
             double add;
 
-            for (m = 0; m < rms.length; m++) rms[m + rmsoffst] = 0.0;
+            for (m = 0; m < rms.Length; m++) rms[m + rmsoffst] = 0.0;
 
             for (k = 1; k <= grid_points[2] - 2; k++)
             {
@@ -408,7 +411,7 @@ namespace NPB3_0_JAV
                 {
                     for (i = 1; i <= grid_points[0] - 2; i++)
                     {
-                        for (m = 0; m < rms.length; m++)
+                        for (m = 0; m < rms.Length; m++)
                         {
                             add = rhs[m + i * isize2 + j * jsize2 + k * ksize2];
                             rms[m] += add * add;
@@ -417,13 +420,13 @@ namespace NPB3_0_JAV
                 }
             }
 
-            for (m = 0; m < rms.length; m++)
+            for (m = 0; m < rms.Length; m++)
             {
                 for (d = 0; d <= 2; d++)
                 {
                     rms[m] /= grid_points[d] - 2;
                 }
-                rms[m] = Math.sqrt(rms[m + rmsoffst]);
+                rms[m] = Math.Sqrt(rms[m + rmsoffst]);
             }
         }
 
@@ -433,7 +436,7 @@ namespace NPB3_0_JAV
             double[] u_exact = new double[5];
             double xi, eta, zeta, add;
 
-            for (m = 0; m < rms.length; m++) rms[m + rmsoffst] = 0.0;
+            for (m = 0; m < rms.Length; m++) rms[m + rmsoffst] = 0.0;
 
             for (k = 0; k <= grid_points[2] - 1; k++)
             {
@@ -445,7 +448,7 @@ namespace NPB3_0_JAV
                     {
                         xi = i * dnxm1;
                         exact_solution(xi, eta, zeta, u_exact, 0);
-                        for (m = 0; m < rms.length; m++)
+                        for (m = 0; m < rms.Length; m++)
                         {
                             add = u[m + i * isize2 + j * jsize2 + k * ksize2] - u_exact[m];
                             rms[m] += add * add;
@@ -454,13 +457,13 @@ namespace NPB3_0_JAV
                 }
             }
 
-            for (m = 0; m < rms.length; m++)
+            for (m = 0; m < rms.Length; m++)
             {
                 for (d = 0; d <= 2; d++)
                 {
                     rms[m] /= grid_points[d] - 2;
                 }
-                rms[m] = Math.sqrt(rms[m]);
+                rms[m] = Math.Sqrt(rms[m]);
             }
         }
 
@@ -468,8 +471,8 @@ namespace NPB3_0_JAV
         {
             double[] xcrref = new double[5], xceref = new double[5],
                    xcrdif = new double[5], xcedif = new double[5],
-                   xce = new double[5], xcr = new double[5],
-               dtref = 0;
+                   xce = new double[5], xcr = new double[5];
+            double dtref = 0;
             int m;
             int verified = -1;
             char clss = 'U';
@@ -480,9 +483,9 @@ namespace NPB3_0_JAV
             compute_rhs();
             rhs_norm(xcr, 0);
 
-            for (m = 0; m < xcr.length; m++) xcr[m] = xcr[m] / dt;
+            for (m = 0; m < xcr.Length; m++) xcr[m] = xcr[m] / dt;
 
-            for (m = 1; m < xcrref.length; m++)
+            for (m = 1; m < xcrref.Length; m++)
             {
                 xcrref[m] = 1.0;
                 xceref[m] = 1.0;
@@ -499,7 +502,7 @@ namespace NPB3_0_JAV
             {
 
                 clss = 'S';
-                dtref = .01;
+                dtref = 0.01;
 
                 //---------------------------------------------------------------------
                 //  Reference values of RMS-norms of residual.
@@ -647,23 +650,23 @@ namespace NPB3_0_JAV
             //---------------------------------------------------------------------
             //    Compute the difference of solution values and the known reference values.
             //---------------------------------------------------------------------
-            for (m = 0; m < xcr.length; m++)
+            for (m = 0; m < xcr.Length; m++)
             {
-                xcrdif[m] = Math.abs((xcr[m] - xcrref[m]) / xcrref[m]);
-                xcedif[m] = Math.abs((xce[m] - xceref[m]) / xceref[m]);
+                xcrdif[m] = Math.Abs((xcr[m] - xcrref[m]) / xcrref[m]);
+                xcedif[m] = Math.Abs((xce[m] - xceref[m]) / xceref[m]);
             }
             //---------------------------------------------------------------------
             //   tolerance level
             //---------------------------------------------------------------------
-            double epsilon = 1.0 * Math.pow(.1, 8);
+            double epsilon = 1.0 * Math.Pow(.1, 8);
             //---------------------------------------------------------------------
             //    Output the comparison of computed results to known cases.
             //---------------------------------------------------------------------
             if (clss != 'U')
             {
-                Console.WriteLineln("Verification being performed for class " + clss);
-                Console.WriteLineln("accuracy setting for epsilon = " + epsilon);
-                if (Math.abs(dt - dtref) <= epsilon)
+                Console.WriteLine("Verification being performed for class " + clss);
+                Console.WriteLine("accuracy setting for epsilon = " + epsilon);
+                if (Math.Abs(dt - dtref) <= epsilon)
                 {
                     verified = 1;
                 }
@@ -671,26 +674,26 @@ namespace NPB3_0_JAV
                 {
                     verified = 0;
                     clss = 'U';
-                    Console.WriteLineln("DT does not match the reference value of " + dtref);
+                    Console.WriteLine("DT does not match the reference value of " + dtref);
                 }
             }
             else
             {
-                Console.WriteLineln("Unknown class");
+                Console.WriteLine("Unknown class");
             }
 
-            if (clss != 'U') Console.WriteLineln("Comparison of RMS-norms of residual");
-            else Console.WriteLineln("RMS-norms of residual");
+            if (clss != 'U') Console.WriteLine("Comparison of RMS-norms of residual");
+            else Console.WriteLine("RMS-norms of residual");
             verified = BMResults.printComparisonStatus(clss, verified, epsilon,
                                                      xcr, xcrref, xcrdif);
 
             if (clss != 'U')
             {
-                Console.WriteLineln("Comparison of RMS-norms of solution error");
+                Console.WriteLine("Comparison of RMS-norms of solution error");
             }
             else
             {
-                Console.WriteLineln("RMS-norms of solution error");
+                Console.WriteLine("RMS-norms of solution error");
             }
             verified = BMResults.printComparisonStatus(clss, verified, epsilon,
                                                      xce, xceref, xcedif);
@@ -1172,9 +1175,9 @@ namespace NPB3_0_JAV
                         njac[3 + 4 * isize4 + i * jsize4] = 0.0;
 
                         njac[4 + 0 * isize4 + i * jsize4] = -(con43 * c3c4
-                             - c1345) * tmp3 * (Math.pow(u[1 + i * isize2 + j * jsize2 + k * ksize2], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[2 + i * isize2 + j * jsize2 + k * ksize2], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[3 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - c1345) * tmp3 * (Math.Pow(u[1 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[2 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[3 + i * isize2 + j * jsize2 + k * ksize2], 2))
                              - c1345 * tmp2 * u[4 + i * isize2 + j * jsize2 + k * ksize2];
 
                         njac[4 + 1 * isize4 + i * jsize4] = (con43 * c3c4
@@ -1892,11 +1895,11 @@ namespace NPB3_0_JAV
                 }
             }
             Console.WriteLine("lhs checksum is: ");
-            Console.WriteLineln(count1);
+            Console.WriteLine(count1);
             Console.WriteLine("fjac checksum is: ");
-            Console.WriteLineln(count3);
+            Console.WriteLine(count3);
             Console.WriteLine("njac checksum is: ");
-            Console.WriteLineln(count2);
+            Console.WriteLine(count2);
         }
 
         public void y_solve()
@@ -1992,10 +1995,10 @@ namespace NPB3_0_JAV
                         njac[3 + 4 * isize4 + j * jsize4] = 0.0;
 
                         njac[4 + 0 * isize4 + j * jsize4] = -(c3c4
-                             - c1345) * tmp3 * (Math.pow(u[1 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - c1345) * tmp3 * (Math.Pow(u[1 + i * isize2 + j * jsize2 + k * ksize2], 2))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.pow(u[2 + i * isize2 + j * jsize2 + k * ksize2], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[3 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - c1345) * tmp3 * (Math.Pow(u[2 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[3 + i * isize2 + j * jsize2 + k * ksize2], 2))
                              - c1345 * tmp2 * u[4 + i * isize2 + j * jsize2 + k * ksize2];
 
                         njac[4 + 1 * isize4 + j * jsize4] = (c3c4 - c1345) * tmp2 * u[1 + i * isize2 + j * jsize2 + k * ksize2];
@@ -2368,10 +2371,10 @@ namespace NPB3_0_JAV
                         njac[3 + 4 * isize4 + k * jsize4] = 0.0;
 
                         njac[4 + 0 * isize4 + k * jsize4] = -(c3c4
-                             - c1345) * tmp3 * (Math.pow(u[1 + i * isize2 + j * jsize2 + k * ksize2], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[2 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - c1345) * tmp3 * (Math.Pow(u[1 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[2 + i * isize2 + j * jsize2 + k * ksize2], 2))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.pow(u[3 + i * isize2 + j * jsize2 + k * ksize2], 2))
+                             - c1345) * tmp3 * (Math.Pow(u[3 + i * isize2 + j * jsize2 + k * ksize2], 2))
                              - c1345 * tmp2 * u[4 + i * isize2 + j * jsize2 + k * ksize2];
 
                         njac[4 + 1 * isize4 + k * jsize4] = (c3c4 - c1345) * tmp2 * u[1 + i * isize2 + j * jsize2 + k * ksize2];
@@ -2679,8 +2682,8 @@ namespace NPB3_0_JAV
 
         public double getTime() { return timer.readTimer(1); }
         public void finalize() /*throws Throwable */ {
-            Console.WriteLineln("BT: is about to be garbage collected");
-            super.finalize();
+            Console.WriteLine("BT: is about to be garbage collected");
+            //super.finalize();
         }
     }
 }
