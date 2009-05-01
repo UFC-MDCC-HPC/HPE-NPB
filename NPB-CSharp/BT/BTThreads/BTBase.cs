@@ -73,8 +73,8 @@ namespace NPB3_0_JAV.BTThreads
 
         //here 5 are the dimensions of the CFD vector
         //(density,x_impuls,y_impuls,z_impuls,energy)
-        protected static const int isize4 = 5, jsize4 = 5 * 5, ksize4 = 5 * 5 * 3;
-        protected static const int aa = 0, bb = 1, cc = 2, BLOCK_SIZE = 5;
+        protected const int isize4 = 5, jsize4 = 5 * 5, ksize4 = 5 * 5 * 3;
+        protected const int aa = 0, bb = 1, cc = 2, BLOCK_SIZE = 5;
 
         // constants
         protected static double tx1, tx2, tx3, dt,
@@ -114,8 +114,8 @@ namespace NPB3_0_JAV.BTThreads
                   0.3, 0.5, 0.4, 0.3, 0.2};
 
         //timer constants
-        public boolean timeron = false;
-        public static const int t_rhsx = 2, t_rhsy = 3, t_rhsz = 4,
+        public bool timeron = false;
+        public const int t_rhsx = 2, t_rhsy = 3, t_rhsz = 4,
                          t_xsolve = 6, t_ysolve = 7, t_zsolve = 8,
                          t_rdis1 = 9, t_rdis2 = 10, t_add = 11,
                          t_rhs = 5, t_last = 11, t_total = 1;
@@ -270,7 +270,7 @@ namespace NPB3_0_JAV.BTThreads
             if (start == 0) array[0][1] = interval[0] - 1;
             else array[0][1] = interval[0];
 
-            for (int i = 1; i < interval.length; i++)
+            for (int i = 1; i < interval.Length; i++)
             {
                 array[i][0] = array[i - 1][1] + 1;
                 array[i][1] = array[i - 1][1] + interval[i];
