@@ -8,7 +8,7 @@
 !								          !
 !	 N  A  S     P A R A L L E L	 B E N C H M A R K S  3.0         !
 !								          !
-!			J A V A 	V E R S I O N			  !
+!			C# 	V E R S I O N			  !
 !									  !
 !                                  LU                                     !
 !                                                                         !
@@ -47,6 +47,8 @@
 ! Translation to Java and MultiThreaded Code				  !
 !	   M. Frumkin							  !
 !	   M. Schultz							  !
+! Translation to C#				  !
+!      Elidiane Martins
 !-------------------------------------------------------------------------!
 */
 

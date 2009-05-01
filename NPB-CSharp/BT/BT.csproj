@@ -5,10 +5,12 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{75026821-2107-4985-90CD-0DBB52EAE9D0}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BT</RootNamespace>
     <AssemblyName>BT</AssemblyName>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,10 +36,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BT.cs" />
+    <Compile Include="BTThreads\BTBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BTThreads\" />
+    <ProjectReference Include="..\BMInOut\BMInOut.csproj">
+      <Project>{1A1FAA2A-D1A2-4DFE-955A-3D88FD063315}</Project>
+      <Name>BMInOut</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Random\Random.csproj">
+      <Project>{5D439402-4268-4D59-90E2-0B7A99BE5816}</Project>
+      <Name>Random</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Timer\Timer.csproj">
+      <Project>{344CE051-6255-4BBA-BFB3-5CF80032FF77}</Project>
+      <Name>Timer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

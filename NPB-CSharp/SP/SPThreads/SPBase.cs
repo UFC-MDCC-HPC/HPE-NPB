@@ -248,7 +248,7 @@ public class SPBase /* : Thread*/
 			rhsadder[ii].start();
 		}
 	}
-*/
+
 	public void set_interval(int problem_size, int[] interval)
 	{
 		interval[0] = problem_size / num_threads;
@@ -268,7 +268,7 @@ public class SPBase /* : Thread*/
 			prtn[i][0] = prtn[i - 1][1] + 1;
 			prtn[i][1] = prtn[i - 1][1] + interval[i];
 		}
-	}
+	} */
 
 	public double dmax1(double a, double b)
 	{
