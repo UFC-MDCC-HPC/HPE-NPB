@@ -58,16 +58,16 @@ public class SPBase /* : Thread*/
 	protected int niter_default = 0;
 	protected double dt_default = 0.0;
 
-	protected double[] u, rhs, forcing;
+	protected double[,,,] u, rhs, forcing;
 	protected int isize1, jsize1, ksize1;
 
-	protected double[] us, vs, ws, qs, rho_i, speed, square;
+	protected double[,,] us, vs, ws, qs, rho_i, speed, square;
 	protected int jsize2, ksize2;
 
-	protected double[] ue, buf;
+	protected double[,] ue, buf;
 	protected int jsize3;
 
-	protected double[] lhs, lhsp, lhsm;
+	protected double[,] lhs, lhsp, lhsm;
 	protected int jsize4;
 
 	protected double[] cv, rhon, rhos,
@@ -155,29 +155,29 @@ public class SPBase /* : Thread*/
 		isize1 = 5;
 		jsize1 = 5 * (IMAX + 1);
 		ksize1 = 5 * (IMAX + 1) * (JMAX + 1);
-		u = new double[5*(IMAX+1)*(JMAX+1)*KMAX];
-		rhs = new double[5*(IMAX+1)*(JMAX+1)*KMAX];
-		forcing = new double[5*(IMAX+1)*(JMAX+1)*KMAX];
+		u = new double[5,IMAX+1,JMAX+1,KMAX];
+		rhs = new double[5,IMAX+1,JMAX+1,KMAX];
+		forcing = new double[5,IMAX+1,JMAX+1,KMAX];
 
 		jsize2 = (IMAX + 1);
 		ksize2 = (IMAX + 1) * (JMAX + 1);
-		us = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		vs = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		ws = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		qs = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		rho_i = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		speed = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		square = new double[(IMAX+1)*(JMAX+1)*KMAX];
+		us = new double[IMAX+1,JMAX+1,KMAX];
+		vs = new double[IMAX+1,JMAX+1,KMAX];
+		ws = new double[IMAX+1,JMAX+1,KMAX];
+		qs = new double[IMAX+1,JMAX+1,KMAX];
+		rho_i = new double[IMAX+1,JMAX+1,KMAX];
+		speed = new double[IMAX+1,JMAX+1,KMAX];
+		square = new double[IMAX+1,JMAX+1,KMAX];
 
 		jsize3 = problem_size;
-		ue = new double[problem_size*5];
-		buf = new double[problem_size*5];
+		ue = new double[problem_size,5];
+		buf = new double[problem_size,5];
 
 		jsize4 = 5;
 
-		lhs = new double[5*(problem_size+1)];
-		lhsp = new double[5*(problem_size+1)];
-		lhsm = new double[5*(problem_size+1)];
+		lhs = new double[5,problem_size+1];
+		lhsp = new double[5,problem_size+1];
+		lhsm = new double[5,problem_size+1];
 
 		cv = new double[problem_size];
 		rhon = new double[problem_size];
@@ -311,9 +311,9 @@ public class SPBase /* : Thread*/
 		{
 			for (int n = 0; n <= 4; n++)
 			{
-				lhs[n + i * jsize4] = 0.0;
-				lhsp[n + i * jsize4] = 0.0;
-				lhsm[n + i * jsize4] = 0.0;
+				lhs[n,i] = 0.0;
+				lhsp[n,i] = 0.0;
+				lhsm[n,i] = 0.0;
 			}
 		}
 		//---------------------------------------------------------------------
@@ -322,9 +322,9 @@ public class SPBase /* : Thread*/
 		//---------------------------------------------------------------------
 		for (int i = 0; i <= size; i += size)
 		{
-			lhs[2 + i * jsize4] = 1.0;
-			lhsp[2 + i * jsize4] = 1.0;
-			lhsm[2 + i * jsize4] = 1.0;
+			lhs[2,i] = 1.0;
+			lhsp[2,i] = 1.0;
+			lhsm[2,i] = 1.0;
 		}
 	}
 
@@ -347,11 +347,11 @@ public class SPBase /* : Thread*/
 			{
 				for (i = 0; i < grid_points[0]; i++)
 				{
-					u[0 + i * isize1 + j * jsize1 + k * ksize1] = 1.0;
-					u[1 + i * isize1 + j * jsize1 + k * ksize1] = 0.0;
-					u[2 + i * isize1 + j * jsize1 + k * ksize1] = 0.0;
-					u[3 + i * isize1 + j * jsize1 + k * ksize1] = 0.0;
-					u[4 + i * isize1 + j * jsize1 + k * ksize1] = 1.0;
+					u[0,i,j,k] = 1.0;
+					u[1,i,j,k] = 0.0;
+					u[2,i,j,k] = 0.0;
+					u[3,i,j,k] = 0.0;
+					u[4,i,j,k] = 1.0;
 				}
 			}
 		}
@@ -398,7 +398,7 @@ public class SPBase /* : Thread*/
 						Pzeta = zeta * Pface[m + 2 * 5 + 1 * 15] +
 								(1.0 - zeta) * Pface[m + 2 * 5 + 0 * 15];
 
-						u[m + i * isize1 + j * jsize1 + k * ksize1] =
+						u[m,i,j,k] =
 						  Pxi + Peta + Pzeta -
 								  Pxi * Peta - Pxi * Pzeta - Peta * Pzeta +
 								  Pxi * Peta * Pzeta;
@@ -427,7 +427,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m,i,j,k] = temp[m];
 				}
 			}
 		}
@@ -447,7 +447,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m,i,j,k] = temp[m];
 				}
 			}
 		}
@@ -467,7 +467,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m,i,j,k] = temp[m];
 				}
 			}
 		}
@@ -487,7 +487,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m,i,j,k] = temp[m];
 				}
 			}
 		}
@@ -507,7 +507,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m,i,j,k] = temp[m];
 				}
 			}
 		}
@@ -527,7 +527,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m,i,j,k] = temp[m];
 				}
 			}
 		}
