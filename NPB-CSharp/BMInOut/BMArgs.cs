@@ -122,7 +122,7 @@ namespace NPB3_0_JAV.BMInOut {
         public static void Banner(String BMName,
                                   char clss, bool serial, int np)
         {
-            Console.WriteLine(" NAS Parallel Benchmarks Java version (NPB3_0_JAV)");
+            Console.WriteLine(" NAS Parallel Benchmarks C# version (NPB3_0_CS)");
             if (serial) Console.WriteLine(" Serial Version " + BMName + "." + clss);
             else Console.WriteLine(" Multithreaded Version " + BMName + "." + clss +
                                     " np=" + np);

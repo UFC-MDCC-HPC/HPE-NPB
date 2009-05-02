@@ -89,20 +89,20 @@ public class SPBase /* : Thread*/
 			c2dtty1, c2dttz1, comz1, comz4, comz5, comz6,
 			c3c4tx3, c3c4ty3, c3c4tz3, c2iv, con43, con16;
 
-	protected double[] ce ={
-                2.0,1.0,2.0,2.0,5.0,
-		0.0,0.0,2.0,2.0,4.0,
-		0.0,0.0,0.0,0.0,3.0,
-		4.0,0.0,0.0,0.0,2.0,
-		5.0,1.0,0.0,0.0,0.1,
-		3.0,2.0,2.0,2.0,0.4,
-		0.5,3.0,3.0,3.0,0.3,
-		0.02,0.01,0.04,0.03,0.05,
-		0.01,0.03,0.03,0.05,0.04,
-		0.03,0.02,0.05,0.04,0.03,
-		0.5,0.4,0.3,0.2,0.1,
-		0.4,0.3,0.5,0.1,0.3,
-		0.3,0.5,0.4,0.3,0.2};
+    protected double[,] ce ={{
+                2.0,1.0,2.0,2.0,5.0},
+		{0.0,0.0,2.0,2.0,4.0},
+		{0.0,0.0,0.0,0.0,3.0},
+		{4.0,0.0,0.0,0.0,2.0},
+		{5.0,1.0,0.0,0.0,0.1},
+		{3.0,2.0,2.0,2.0,0.4},
+		{0.5,3.0,3.0,3.0,0.3},
+		{0.02,0.01,0.04,0.03,0.05},
+		{0.01,0.03,0.03,0.05,0.04},
+		{0.03,0.02,0.05,0.04,0.03},
+		{0.5,0.4,0.3,0.2,0.1},
+		{0.4,0.3,0.5,0.1,0.3},
+		{0.3,0.5,0.4,0.3,0.2}};
 
 	public bool timeron = false;
 	public Timer timer = new Timer();
@@ -156,22 +156,22 @@ public class SPBase /* : Thread*/
 		jsize1 = 5 * (IMAX + 1);
 		ksize1 = 5 * (IMAX + 1) * (JMAX + 1);
         u = new double[KMAX,JMAX + 1,IMAX + 1,5];
-		rhs = new double[5,IMAX+1,JMAX+1,KMAX];
-		forcing = new double[5,IMAX+1,JMAX+1,KMAX];
+        rhs = new double[KMAX, JMAX + 1, IMAX + 1,5];
+        forcing = new double[KMAX, JMAX + 1, IMAX + 1, 5];
 
 		jsize2 = (IMAX + 1);
 		ksize2 = (IMAX + 1) * (JMAX + 1);
-		us = new double[IMAX+1,JMAX+1,KMAX];
-		vs = new double[IMAX+1,JMAX+1,KMAX];
-		ws = new double[IMAX+1,JMAX+1,KMAX];
-		qs = new double[IMAX+1,JMAX+1,KMAX];
-		rho_i = new double[IMAX+1,JMAX+1,KMAX];
-		speed = new double[IMAX+1,JMAX+1,KMAX];
-		square = new double[IMAX+1,JMAX+1,KMAX];
+        us = new double[KMAX, JMAX + 1, IMAX + 1];
+        vs = new double[KMAX, JMAX + 1, IMAX + 1];
+        ws = new double[KMAX, JMAX + 1, IMAX + 1];
+        qs = new double[KMAX, JMAX + 1, IMAX + 1];
+        rho_i = new double[KMAX, JMAX + 1, IMAX + 1];
+        speed = new double[KMAX, JMAX + 1, IMAX + 1];
+		square = new double[KMAX, JMAX + 1, IMAX + 1];
 
 		jsize3 = problem_size;
-		ue = new double[problem_size,5];
-		buf = new double[problem_size,5];
+		ue = new double[5,problem_size];
+		buf = new double[5,problem_size];
 
 		jsize4 = 5;
 
@@ -294,11 +294,11 @@ public class SPBase /* : Thread*/
 	{
 		for (int m = 0; m <= 4; m++)
 		{
-			dtemp[m + offset] = ce[m + 0 * 5] +
-			xi * (ce[m + 1 * 5] + xi * (ce[m + 4 * 5] + xi * (ce[m + 7 * 5] + xi * ce[m + 10 * 5]))) +
-			eta * (ce[m + 2 * 5] + eta * (ce[m + 5 * 5] + eta * (ce[m + 8 * 5] + eta * ce[m + 11 * 5]))) +
-			zeta * (ce[m + 3 * 5] + zeta * (ce[m + 6 * 5] + zeta * (ce[m + 9 * 5] +
-			zeta * ce[m + 12 * 5])));
+			dtemp[m + offset] = ce[0,m] +
+			xi * (ce[1,m] + xi * (ce[4,m] + xi * (ce[7,m] + xi * ce[10,m]))) +
+			eta * (ce[2,m] + eta * (ce[5,m] + eta * (ce[8,m] + eta * ce[11,m]))) +
+			zeta * (ce[3,m] + zeta * (ce[6,m] + zeta * (ce[9,m] +
+			zeta * ce[12,m])));
 		}
 	}
 
@@ -534,7 +534,7 @@ public class SPBase /* : Thread*/
 	}
 	public void set_constants(int ndid)
 	{
-		ce[0] = 2.0 * (1.0 + ((double)ndid) * 0.01);
+		ce[0,0] = 2.0 * (1.0 + ((double)ndid) * 0.01);
 		//    ce[0]=2.0;
 
 		c1 = 1.4;
