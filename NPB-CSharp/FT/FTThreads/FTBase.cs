@@ -158,7 +158,7 @@ public class FTBase /* : Thread*/
       doEvolve[ii].start();
     }
   }
-*/
+
   public void set_interval(int threads, int problem_size, int[] interval){
     interval[0]= problem_size/threads;
     for(int i=1;i<threads;i++) interval[i]=interval[0];
@@ -176,7 +176,7 @@ public class FTBase /* : Thread*/
       prt[i][1]=prt[i-1][1]+interval[i];
     }
   }
-  
+*/  
   public int max(int a, int b){if(a>b)return a; else return b;}
 
   public void CompExp (int n, double[] exponent){     
