@@ -59,16 +59,12 @@ public class SPBase /* : Thread*/
 	protected double dt_default = 0.0;
 
 	protected double[,,,] u, rhs, forcing;
-	protected int isize1, jsize1, ksize1;
 
 	protected double[,,] us, vs, ws, qs, rho_i, speed, square;
-	protected int jsize2, ksize2;
-
+	
 	protected double[,] ue, buf;
-	protected int jsize3;
 
 	protected double[,] lhs, lhsp, lhsm;
-	protected int jsize4;
 
 	protected double[] cv, rhon, rhos,
 					 rhoq, cuf, q;
@@ -152,15 +148,10 @@ public class SPBase /* : Thread*/
 				break;
 		}
 
-		isize1 = 5;
-		jsize1 = 5 * (IMAX + 1);
-		ksize1 = 5 * (IMAX + 1) * (JMAX + 1);
         u = new double[KMAX,JMAX + 1,IMAX + 1,5];
         rhs = new double[KMAX, JMAX + 1, IMAX + 1,5];
         forcing = new double[KMAX, JMAX + 1, IMAX + 1, 5];
 
-		jsize2 = (IMAX + 1);
-		ksize2 = (IMAX + 1) * (JMAX + 1);
         us = new double[KMAX, JMAX + 1, IMAX + 1];
         vs = new double[KMAX, JMAX + 1, IMAX + 1];
         ws = new double[KMAX, JMAX + 1, IMAX + 1];
@@ -169,11 +160,8 @@ public class SPBase /* : Thread*/
         speed = new double[KMAX, JMAX + 1, IMAX + 1];
 		square = new double[KMAX, JMAX + 1, IMAX + 1];
 
-		jsize3 = problem_size;
 		ue = new double[5,problem_size];
 		buf = new double[5,problem_size];
-
-		jsize4 = 5;
 
 		lhs = new double[5,problem_size+1];
 		lhsp = new double[5,problem_size+1];
@@ -189,86 +177,6 @@ public class SPBase /* : Thread*/
 
 	protected Thread master = null;
 	protected int num_threads;
-
-/*	protected RHSCompute[] rhscomputer;
-	protected TXInverse[] txinverse;
-	protected XSolver[] xsolver;
-	protected YSolver[] ysolver;
-	protected ZSolver[] zsolver;
-	protected RHSAdder[] rhsadder;
-
-	public void setupThreads(SP sp)
-	{
-		master = sp;
-		if (num_threads > problem_size - 2)
-			num_threads = problem_size - 2;
-
-		int[] interval1 = new int[num_threads];
-		int[] interval2 = new int[num_threads];
-		set_interval(problem_size, interval1);
-		set_interval(problem_size - 2, interval2);
-		int[,] partition1 = new int[interval1.length,2];
-		int[,] partition2 = new int[interval2.length,2];
-		set_partition(0, interval1, partition1);
-		set_partition(1, interval2, partition2);
-
-		rhscomputer = new RHSCompute[num_threads];
-		txinverse = new TXInverse[num_threads];
-		xsolver = new XSolver[num_threads];
-		ysolver = new YSolver[num_threads];
-		zsolver = new ZSolver[num_threads];
-		rhsadder = new RHSAdder[num_threads];
-
-		// create and start threads   
-		for (int ii = 0; ii < num_threads; ii++)
-		{
-			rhscomputer[ii] = new RHSCompute(sp, partition1[ii][0], partition1[ii][1],
-											  partition2[ii][0], partition2[ii][1]);
-			rhscomputer[ii].id = ii;
-			rhscomputer[ii].start();
-
-			xsolver[ii] = new XSolver(sp, partition2[ii][0], partition2[ii][1]);
-			xsolver[ii].id = ii;
-			xsolver[ii].start();
-
-			txinverse[ii] = new TXInverse(sp, partition2[ii][0], partition2[ii][1]);
-			txinverse[ii].id = ii;
-			txinverse[ii].start();
-
-			ysolver[ii] = new YSolver(sp, partition2[ii][0], partition2[ii][1]);
-			ysolver[ii].id = ii;
-			ysolver[ii].start();
-
-			zsolver[ii] = new ZSolver(sp, partition2[ii][0], partition2[ii][1]);
-			zsolver[ii].id = ii;
-			zsolver[ii].start();
-
-			rhsadder[ii] = new RHSAdder(sp, partition2[ii][0], partition2[ii][1]);
-			rhsadder[ii].id = ii;
-			rhsadder[ii].start();
-		}
-	}
-
-	public void set_interval(int problem_size, int[] interval)
-	{
-		interval[0] = problem_size / num_threads;
-		for (int i = 1; i < num_threads; i++) interval[i] = interval[0];
-		int remainder = problem_size % num_threads;
-		for (int i = 0; i < remainder; i++) interval[i]++;
-	}
-
-	public void set_partition(int start, int[] interval, int[][] prtn)
-	{
-		prtn[0][0] = start;
-		if (start == 0) prtn[0][1] = interval[0] - 1;
-		else prtn[0][1] = interval[0];
-
-		for (int i = 1; i < interval.Length; i++)
-		{
-			prtn[i][0] = prtn[i - 1][1] + 1;
-			prtn[i][1] = prtn[i - 1][1] + interval[i];
-		}
-	} */
 
 	public double dmax1(double a, double b)
 	{

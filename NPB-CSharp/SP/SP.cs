@@ -634,8 +634,7 @@ public class SP : SPBase
 									 xxcon4 * (cuf[ip1] - 2.0 * cuf[i] + cuf[im1]) +
 									 xxcon5 * (buf[4,ip1] - 2.0 * buf[4,i] + buf[4,im1]) +
 									 dx5tx1 * (ue[4,ip1] - 2.0 * ue[4,i] + ue[4,im1]);
-
-				}
+                }
 
 				//---------------------------------------------------------------------
 				//            Fourth-order dissipation                         
@@ -1393,20 +1392,23 @@ public class SP : SPBase
 		if (timeron) timer.stop(t_rhsz);
 
 
-		for (k = 1; k <= nz2; k++)
-		{
-			for (j = 1; j <= ny2; j++)
-			{
-				for (i = 1; i <= nx2; i++)
-				{
-					for (m = 0; m <= 4; m++)
-					{
-						rhs[k,j,i,m] =
-				   rhs[k,j,i,m] * dt;
-					}
-				}
-			}
-		}
+        for (m = 0; m <= 4; m++)
+        {
+            for (k = 1; k <= nz2; k++)
+            {
+
+                for (j = 1; j <= ny2; j++)
+                {
+                    for (i = 1; i <= nx2; i++)
+                    {
+                        rhs[k, j, i, m] = rhs[k, j, i, m] * dt;
+                        Console.WriteLine(i + "/" + j + "/" + k + " rhs: " + rhs[k, j, i, m] + " " + dt);
+
+                    }
+                }
+            }
+        }
+		
 	}
 
 
@@ -2654,26 +2656,6 @@ public class SP : SPBase
 		if (timeron) timer.start(t_tzetar);
 		tzetar();
 		if (timeron) timer.stop(t_tzetar);
-	}
-	public double checkSum(double[] arr)
-	{
-		double csum = 0.0;
-		for (int k = 0; k <= grid_points[2] - 1; k++)
-		{
-			for (int j = 0; j <= grid_points[1] - 1; j++)
-			{
-				for (int i = 0; i <= grid_points[0] - 1; i++)
-				{
-					for (int m = 0; m <= 4; m++)
-					{
-						int offset = m + i * isize1 + j * jsize1 + k * ksize1;
-						csum += (arr[offset] * arr[offset]) /
-							 (double)(grid_points[2] * grid_points[1] * grid_points[0] * 5);
-					}
-				}
-			}
-		}
-		return csum;
 	}
 
 	public double getTime() { return timer.readTimer(1); }
