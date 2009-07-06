@@ -85,7 +85,7 @@ namespace NPB3_0_JAV {
             ft.runBenchMark();
         }
 
-        public void run() { runBenchMark(); }
+        //public void run() { runBenchMark(); }
 
         public void runBenchMark()
         {
