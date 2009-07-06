@@ -121,7 +121,7 @@ public class FTBase /* : Thread*/
   }
 
   // thread variables
-  protected Thread master = null;
+  //protected Thread master = null;
   protected int num_threads;
 
 /*
