@@ -69,7 +69,8 @@ namespace NPB3_0_JAV {
             FT ft = null;
 
             BMArgs.ParseCmdLineArgs(argv, BMName);
-            char CLSS = BMArgs.CLASS;
+            //char CLSS = BMArgs.CLASS;
+            char CLSS = 'S';
             int np = BMArgs.num_threads;
             bool serial = BMArgs.serial;
 
@@ -83,9 +84,7 @@ namespace NPB3_0_JAV {
                 Environment.Exit(0);
             }
             ft.runBenchMark();
-        }
-
-        //public void run() { runBenchMark(); }
+        } //public void run() { runBenchMark(); }
 
         public void runBenchMark()
         {
@@ -160,12 +159,10 @@ namespace NPB3_0_JAV {
                         for (int j = 0; j < ny; j++)
                         {
                             int jj = j - ((j) / n22) * ny;
-                            xnt[REAL + j * isize4 + k * jsize4 + i * ksize4] =
-                                 xtr[REAL + j * isize3 + i * jsize3 + k * ksize3] *
-                                 Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
-                            xnt[IMAG + j * isize4 + k * jsize4 + i * ksize4] =
-                                 xtr[IMAG + j * isize3 + i * jsize3 + k * ksize3] *
-                                 Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
+                            //xnt[REAL + j * isize4 + k * jsize4 + i * ksize4] = xtr[REAL + j * isize3 + i * jsize3 + k * ksize3] * Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
+                            //xnt[IMAG + j * isize4 + k * jsize4 + i * ksize4] = xtr[IMAG + j * isize3 + i * jsize3 + k * ksize3] * Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
+                            xnt[i,k,j] = xtr[i,k,j] * Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
+                            xnt[i,k,j] = xtr[i,k,j] * Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
                         }
                     }
                 }
@@ -183,102 +180,46 @@ namespace NPB3_0_JAV {
 
         public void appft(){
 
-    if(timeron) timer.start(2);	    
-    initial_conditions(xtr,ny,nx,nz); 
-    CompExp( nx, exp1 );
-    CompExp( ny, exp2 );
-    CompExp( nz, exp3 );
-/*    
-    setupThreads(this);   
-    for(int m=0;m<num_threads;m++)
-      synchronized(doFFT[m]){ 
-        doFFT[m].setVariables(1,false,xtr,exp2,exp1,exp3);
-    }
-    doFFT();
-    doFFT();	    
-    doFFT();
-            */
-    if(timeron) timer.stop(2);  
-    		 
-    timer.start(1);
-    if(timeron) timer.start(12);
-    initial_conditions(xtr,ny,nx,nz);
-    if(timeron) timer.stop(12);
+            if(timeron) timer.start(2);	    
+            initial_conditions(xtr,ny,nx,nz);
+            CompExp( nx, exp1 );
+            CompExp( ny, exp2 );
+            CompExp( nz, exp3 );
 
-    if(timeron) timer.start(15);
-/*
-    for(int m=0;m<num_threads;m++)
-      synchronized(doFFT[m]){ 
-        doFFT[m].setVariables(1,false,xtr,exp2,exp1,exp3);
-    }
-    doFFT();
-    doFFT();
-    doFFT();
-*/
-    if(timeron) timer.stop(15);
+            if(timeron) timer.stop(2);  
+            		 
+            timer.start(1);
+            if(timeron) timer.start(12);
+            initial_conditions(xtr,ny,nx,nz);
+            if(timeron) timer.stop(12);
 
-    for(int it=0;it<niter_default;it++){
-      if(timeron) timer.start(11);
-      //doEvolve(it); comentado ate resolver threading
-      if(timeron) timer.stop(11);	      
+            if(timeron) timer.start(15);
 
-      if(timeron) timer.start(15);  
-/*    
-      for(int m=0;m<num_threads;m++)
-    	synchronized(doFFT[m]){ 
-          doFFT[m].setVariables(-1,true,xnt,exp2,exp3,exp1);
-      }
-*/
-      if(timeron) timer.start(3); 
-      if(timeron) timer.start(7); 
-      //doFFT(); comentado ate resolver threading
-      if(timeron) timer.stop(7);	    
+            if(timeron) timer.stop(15);
 
-      if(timeron) timer.start(8); 
-      //doFFT(); comentado ate resolver threading
-      if(timeron) timer.stop(8);	    
+            for(int it=0;it<niter_default;it++){
+              if(timeron) timer.start(11);
+              if(timeron) timer.stop(11);	      
 
-      if(timeron) timer.start(9);
-      //doFFT(); comentado ate resolver threading
-      if(timeron) timer.stop(9);
-      if(timeron) timer.stop(3);		      
-      if(timeron) timer.stop(15);
-      
-      if(timeron) timer.start(10);      
-      CalculateChecksum(checksum, REAL+it*isize2, it, xnt, ny, nz, nx);
-      if(timeron) timer.stop(10);	   
-    }
-  }
-        /*  
-          public synchronized void doFFT(){
-            int m;  
-            for(m=0;m<num_threads;m++)
-              synchronized(doFFT[m]){
-                doFFT[m].done=false;
-                doFFT[m].notify();
-              }
-              for(m=0;m<num_threads;m++)
-            while(!doFFT[m].done){
-              try{wait();}catch(InterruptedException e){}
-              notifyAll();
+              if(timeron) timer.start(15);  
+              if(timeron) timer.start(3); 
+              if(timeron) timer.start(7); 
+              if(timeron) timer.stop(7);	    
+
+              if(timeron) timer.start(8); 
+              if(timeron) timer.stop(8);	    
+
+              if(timeron) timer.start(9);
+              if(timeron) timer.stop(9);
+              if(timeron) timer.stop(3);		      
+              if(timeron) timer.stop(15);
+              
+              if(timeron) timer.start(10);      
+              CalculateChecksum(checksum, REAL+it*isize2, it, xnt, ny, nz, nx);
+              if(timeron) timer.stop(10);	   
             }
-          }
-  
-          public synchronized void doEvolve(int it){ 
-            int m;  
-            for(m=0;m<num_threads;m++)
-              synchronized(doEvolve[m]){
-                doEvolve[m].done=false;
-            doEvolve[m].kt=it;
-                doEvolve[m].notify();
-              }
-            for(m=0;m<num_threads;m++)
-              while(!doEvolve[m].done){
-                try{wait();}catch(InterruptedException e){}
-            notifyAll();
-              }
-          }
-        */
+        }
+
         public void setTimers()
         {
             //File f1 = new File("timer.flag");
@@ -319,33 +260,34 @@ namespace NPB3_0_JAV {
             return mflops;
         }
 
-        public void CalculateChecksum(double[] csum, int csmffst,
-                                      int iterN, double[] u, int d1,
-                      int d2, int d3)
-        {
-            int i, ii, ji, ki;
-            int isize3 = 2,
-                jsize3 = isize3 * (d1 + 1),
-                ksize3 = jsize3 * d2;
-            csum[REAL + csmffst] = 0.0;
-            csum[IMAG + csmffst] = 0.0;
+        public void CalculateChecksum(double[] csum, int csmffst, int iterN, double[,,] u, int d1, int d2, int d3) {
+                int i, ii, ji, ki;
+                int isize3 = 2,
+                    jsize3 = isize3 * (d1 + 1),
+                    ksize3 = jsize3 * d2;
+                csum[REAL + csmffst] = 0.0;
+                csum[IMAG + csmffst] = 0.0;
 
-            double csumr = 0.0, csumi = 0.0;
-            for (i = 1; i <= 1024; i++)
-            {
-                ii = (1 * i) % d3;
-                ji = (3 * i) % d1;
-                ki = (5 * i) % d2;
-                csumr += u[REAL + ji * isize3 + ki * jsize3 + ii * ksize3];
-                csumi += u[IMAG + ji * isize3 + ki * jsize3 + ii * ksize3];
-            }
-            csum[REAL + csmffst] = csumr / (d1 * d2 * d3);
-            csum[IMAG + csmffst] = csumi / (d1 * d2 * d3);
-            //  Console.WriteLine("==FT Checksum:"+iterN + " checksum = (" + 
-            //        	       csum[REAL+csmffst] + "," + csum[IMAG+csmffst] + ")" );	 
+                double csumr = 0.0, csumi = 0.0;
+                for (i = 1; i <= 1024; i++)
+                {
+                    ii = (1 * i) % d3;
+                    ji = (3 * i) % d1;
+                    ki = (5 * i) % d2;
+                    //csumr += u[REAL + ji * isize3 + ki * jsize3 + ii * ksize3];
+                    //csumi += u[IMAG + ji * isize3 + ki * jsize3 + ii * ksize3];
+                    //csumr += u[ii,ji,ki];//[ji,ki,ii];
+                    //csumi += u[ii,ji,ki]; //[ji,ki,ii]; 
+                    csumr += u[ki,ji,ii];//[ji,ki,ii];
+                    csumi += u[ki,ji,ii]; //[ji,ki,ii];
+                }
+                csum[REAL + csmffst] = csumr / (d1 * d2 * d3);
+                csum[IMAG + csmffst] = csumi / (d1 * d2 * d3);
+                //  Console.WriteLine("==FT Checksum:"+iterN + " checksum = (" + 
+                //        	       csum[REAL+csmffst] + "," + csum[IMAG+csmffst] + ")" );	 
         }
 
-        public void fftXYZ(int sign, double[] x, double[] exp1, double[] exp2,
+        public void fftXYZ(int sign, double[,,] x, double[] exp1, double[] exp2,
                    double[] exp3, int n1, int n2, int n3)
         {
             int i = 0, j = 0, k, log;
@@ -358,7 +300,9 @@ namespace NPB3_0_JAV {
 
             log = ilog2(n2);
             if (timeron) timer.start(7);
+            //for (k = 0; k < n3; k++) Swarztrauber(sign, log, n1, n2, x, k * ksize3, n1, exp2, scr);
             for (k = 0; k < n3; k++) Swarztrauber(sign, log, n1, n2, x, k * ksize3, n1, exp2, scr);
+
             if (timeron) timer.stop(7);
 
             log = ilog2(n1);
@@ -369,8 +313,10 @@ namespace NPB3_0_JAV {
                 {
                     for (i = 0; i < n1; i++)
                     {
-                        plane[REAL + j * isize1 + i * jsize1] = x[REAL + i * isize3 + j * jsize3 + k * ksize3];
-                        plane[IMAG + j * isize1 + i * jsize1] = x[IMAG + i * isize3 + j * jsize3 + k * ksize3];
+                        //plane[REAL + j * isize1 + i * jsize1] = x[REAL + i * isize3 + j * jsize3 + k * ksize3];
+                        //plane[IMAG + j * isize1 + i * jsize1] = x[IMAG + i * isize3 + j * jsize3 + k * ksize3];
+                        plane[REAL + j * isize1 + i * jsize1] = x[k,j,i];
+                        plane[IMAG + j * isize1 + i * jsize1] = x[k,j,i];
                     }
                 }
                 Swarztrauber(sign, log, n2, n1, plane, 0, n2, exp1, scr);
@@ -378,8 +324,11 @@ namespace NPB3_0_JAV {
                 {
                     for (i = 0; i < n1; i++)
                     {
-                        x[REAL + i * isize3 + j * jsize3 + k * ksize3] = plane[REAL + j * isize1 + i * jsize1];
-                        x[IMAG + i * isize3 + j * jsize3 + k * ksize3] = plane[IMAG + j * isize1 + i * jsize1];
+                        //x[REAL + i * isize3 + j * jsize3 + k * ksize3] = plane[REAL + j * isize1 + i * jsize1];
+                        //x[IMAG + i * isize3 + j * jsize3 + k * ksize3] = plane[IMAG + j * isize1 + i * jsize1];
+                        x[k,j,i] = plane[REAL + j * isize1 + i * jsize1];
+                        x[k,j,i] = plane[IMAG + j * isize1 + i * jsize1];
+
                     }
                 }
             }
@@ -394,8 +343,9 @@ namespace NPB3_0_JAV {
                 {
                     for (j = 0; j < n1; j++)
                     {
-                        plane[REAL + j * isize1 + i * jsize1] = x[REAL + j * isize3 + k * jsize3 + i * ksize3];
-                        plane[IMAG + j * isize1 + i * jsize1] = x[IMAG + j * isize3 + k * jsize3 + i * ksize3];
+                        //plane[REAL + j * isize1 + i * jsize1] = x[REAL + j * isize3 + k * jsize3 + i * ksize3]; //plane[IMAG + j * isize1 + i * jsize1] = x[IMAG + j * isize3 + k * jsize3 + i * ksize3];
+                        plane[REAL + j * isize1 + i * jsize1] = x[k,i,j]; //[REAL + j * isize3 + k * jsize3 + i * ksize3];
+                        plane[IMAG + j * isize1 + i * jsize1] = x[k,i,j]; //[IMAG + j * isize3 + k * jsize3 + i * ksize3];
                     }
                 }
                 Swarztrauber(sign, log, n1, n3, plane, 0, n1, exp3, scr);
@@ -403,8 +353,9 @@ namespace NPB3_0_JAV {
                 {
                     for (j = 0; j < n1; j++)
                     {
-                        x[REAL + j * isize3 + k * jsize3 + i * ksize3] = plane[REAL + j * isize1 + i * jsize1];
-                        x[IMAG + j * isize3 + k * jsize3 + i * ksize3] = plane[IMAG + j * isize1 + i * jsize1];
+                        //x[REAL + j * isize3 + k * jsize3 + i * ksize3] = plane[REAL + j * isize1 + i * jsize1]; //x[IMAG + j * isize3 + k * jsize3 + i * ksize3] = plane[IMAG + j * isize1 + i * jsize1];
+                        x[k,i,j] = plane[REAL + j * isize1 + i * jsize1];
+                        x[k,i,j] = plane[IMAG + j * isize1 + i * jsize1];
                     }
                 }
             }
