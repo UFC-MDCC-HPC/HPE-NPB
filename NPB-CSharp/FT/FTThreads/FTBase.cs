@@ -56,8 +56,8 @@ public class FTBase /* : Thread*/
   protected int isize4, jsize4, ksize4;
 
   protected double[] checksum; 
-  protected double[] xtr;  //isize3=2;jsize3=2*(ny+1);ksize3=2*(ny+1)*nx;
-  protected double[] xnt;  //isize4=2;jsize4=2*(ny+1);ksize4=2*(ny+1)*nz;
+  protected double[,,] xtr;  //isize3=2;jsize3=2*(ny+1);ksize3=2*(ny+1)*nx;
+  protected double[,,] xnt;  //isize4=2;jsize4=2*(ny+1);ksize4=2*(ny+1)*nz;
   protected double[] exp1,exp2,exp3; 
 
   public bool timeron=false;
@@ -113,70 +113,17 @@ public class FTBase /* : Thread*/
     //complex values
     checksum = new double[2*niter_default]; //isize2=2;
 
-    xtr = new double[2*(ny+1)*nx*nz]; 
-    xnt = new double[2*(ny+1)*nz*nx]; 
+    //xtr = new double[2*(ny+1)*nx*nz]; 
+    //xnt = new double[2*(ny+1)*nz*nx];
+    xtr = new double[2*(ny + 1),nx,nz];
+    xnt = new double[2*(ny + 1),nz,nx]; 
     exp1 = new double[2*nx];
     exp2 = new double[2*ny];
     exp3 = new double[2*nz];
   }
 
-  // thread variables
-  //protected Thread master = null;
   protected int num_threads;
 
-/*
-  protected FFTThread[] doFFT;
-  protected EvolveThread[] doEvolve;
-
-  public void setupThreads(FT ft){
-    master = ft;
-    if(num_threads>nz) num_threads=nz;
-    if(num_threads>nx) num_threads=nx;
-    
-    int[] interval1 = new int[num_threads];
-    int[] interval2 = new int[num_threads];
-    set_interval(num_threads,nz,interval1);
-    set_interval(num_threads,nx,interval2);
-
-    int[,] partition1 = new int[interval1.length,2];
-    int[,] partition2 = new int[interval2.length,2];
-    partition1 = new int[interval1.length,2];
-    partition2 = new int[interval2.length,2];
-    set_partition(0,interval1,partition1);
-    set_partition(0,interval2,partition2);
-    doFFT = new FFTThread[num_threads];    
-    doEvolve = new EvolveThread[num_threads];
-
-    for(int ii=0;ii<num_threads;ii++){
-      doFFT[ii] = new FFTThread(ft,partition1[ii][0],partition1[ii][1],
-				   partition2[ii][0],partition2[ii][1]);
-      doFFT[ii].id=ii;
-      doFFT[ii].start();
-
-      doEvolve[ii] = new EvolveThread(ft,partition2[ii][0],partition2[ii][1]);
-      doEvolve[ii].id=ii;
-      doEvolve[ii].start();
-    }
-  }
-
-  public void set_interval(int threads, int problem_size, int[] interval){
-    interval[0]= problem_size/threads;
-    for(int i=1;i<threads;i++) interval[i]=interval[0];
-    int remainder = problem_size%threads;
-    for(int i=0;i<remainder;i++) interval[i]++;
-  }
-  
-  public void set_partition(int start, int[] interval, int[][] prt){
-    prt[0][0]=start;
-    if(start==0) prt[0][1]=interval[0]-1;
-    else prt[0][1]=interval[0];
-    
-    for(int i=1;i<interval.Length;i++){
-      prt[i][0]=prt[i-1][1]+1;
-      prt[i][1]=prt[i-1][1]+interval[i];
-    }
-  }
-*/  
   public int max(int a, int b){if(a>b)return a; else return b;}
 
   public void CompExp (int n, double[] exponent){     
@@ -202,7 +149,7 @@ public class FTBase /* : Thread*/
     }
   }
   
-  public void initial_conditions(double[] u0, 
+  public void initial_conditions(double[,,] u0, 
                                  int d1, int d2, int d3){
     double[] tmp = new double[2*maxdim];
     double[] RanStarts = new double[maxdim];
@@ -231,8 +178,12 @@ public class FTBase /* : Thread*/
       for(int j=0;j<d1;j++){
         x0 = rng.vranlc(2*d2, x0, a, tmp,0);
         for(int i=0;i<d2;i++){
-          u0[REAL+j*isize3+i*jsize3+k*ksize3]=tmp[REAL+i*2];
-          u0[IMAG+j*isize3+i*jsize3+k*ksize3]=tmp[IMAG+i*2];
+            //u0[REAL+j*isize3+i*jsize3+k*ksize3]=tmp[REAL+i*2];  //u0[IMAG+j*isize3+i*jsize3+k*ksize3]=tmp[IMAG+i*2];
+            //u0[REAL, j, i, k] = tmp[REAL + i * 2]; //u0[IMAG, j, i, k] = tmp[IMAG + i * 2];
+          //u0[k, i, j] = tmp[REAL + i * 2];
+          //u0[k, i, j] = tmp[IMAG + i * 2];
+          u0[k, j, i] = tmp[REAL + i * 2];
+          u0[k, j, i] = tmp[IMAG + i * 2];
         }
       }
     }
