@@ -50,16 +50,16 @@ namespace NPB3_0_JAV.FTThreads
         protected int nx, ny, nz, maxdim, niter_default;
 
         //complex arrays
-        protected double[,,,] scr;
+        protected double[,,] scr;
         protected double[,,,] plane;
         protected int isize2;
         protected int isize3, jsize3, ksize3;
         protected int isize4, jsize4, ksize4;
 
-        protected double[] checksum;
+        protected double[,] checksum;
         protected double[,,,] xtr;  //isize3=2;jsize3=2*(ny+1);ksize3=2*(ny+1)*nx;
         protected double[,,,] xnt;  //isize4=2;jsize4=2*(ny+1);ksize4=2*(ny+1)*nz;
-        protected double[] exp1, exp2, exp3;
+        protected double[,] exp1, exp2, exp3;
 
         public bool timeron = false;
         public Timer timer = new Timer();
@@ -104,7 +104,7 @@ namespace NPB3_0_JAV.FTThreads
             maxdim = max(nx, max(ny, nx));
             if (serial)
             {
-                scr =   new double[1, maxdim, (maxdim + 1), 2];  // scr = new double[2 * (maxdim + 1) * maxdim];
+                scr =   new double[maxdim, (maxdim + 1), 2];  // scr = new double[2 * (maxdim + 1) * maxdim];
                 plane = new double[1, maxdim, (maxdim + 1), 2];  // plane = new double[2 * (maxdim + 1) * maxdim];
             }
             //isize2 = 2;
@@ -115,13 +115,13 @@ namespace NPB3_0_JAV.FTThreads
             //jsize4 = 2 * (ny + 1);
             //ksize4 = 2 * (ny + 1) * nz;
             //complex values
-            checksum = new double[niter_default*2]; //isize2=2; aqui  // checksum = new double[2 * niter_default];
+            checksum = new double[niter_default,2]; //isize2=2; aqui  // checksum = new double[2 * niter_default];
 
             xtr = new double[nz,nx,(ny + 1),2];       // xtr = new double[2 * (ny + 1) * nx * nz];
             xnt = new double[nx,nz,(ny + 1),2];       // xnt = new double[2 * (ny + 1) * nz * nx];
-            exp1 = new double[nx*2]; //aqui         // exp1 = new double[2 * nx];
-            exp2 = new double[ny*2];                // exp2 = new double[2 * ny];
-            exp3 = new double[nz*2];                // exp3 = new double[2 * nz];
+            exp1 = new double[nx,2]; //aqui         // exp1 = new double[2 * nx];
+            exp2 = new double[ny,2];                // exp2 = new double[2 * ny];
+            exp3 = new double[nz,2];                // exp3 = new double[2 * nz];
 
         }
 
@@ -129,66 +129,13 @@ namespace NPB3_0_JAV.FTThreads
         //protected Thread master = null;
         protected int num_threads;
 
-        /*
-          protected FFTThread[] doFFT;
-          protected EvolveThread[] doEvolve;
-
-          public void setupThreads(FT ft){
-            master = ft;
-            if(num_threads>nz) num_threads=nz;
-            if(num_threads>nx) num_threads=nx;
-    
-            int[] interval1 = new int[num_threads];
-            int[] interval2 = new int[num_threads];
-            set_interval(num_threads,nz,interval1);
-            set_interval(num_threads,nx,interval2);
-
-            int[,] partition1 = new int[interval1.length,2];
-            int[,] partition2 = new int[interval2.length,2];
-            partition1 = new int[interval1.length,2];
-            partition2 = new int[interval2.length,2];
-            set_partition(0,interval1,partition1);
-            set_partition(0,interval2,partition2);
-            doFFT = new FFTThread[num_threads];    
-            doEvolve = new EvolveThread[num_threads];
-
-            for(int ii=0;ii<num_threads;ii++){
-              doFFT[ii] = new FFTThread(ft,partition1[ii][0],partition1[ii][1],
-                           partition2[ii][0],partition2[ii][1]);
-              doFFT[ii].id=ii;
-              doFFT[ii].start();
-
-              doEvolve[ii] = new EvolveThread(ft,partition2[ii][0],partition2[ii][1]);
-              doEvolve[ii].id=ii;
-              doEvolve[ii].start();
-            }
-          }
-
-          public void set_interval(int threads, int problem_size, int[] interval){
-            interval[0]= problem_size/threads;
-            for(int i=1;i<threads;i++) interval[i]=interval[0];
-            int remainder = problem_size%threads;
-            for(int i=0;i<remainder;i++) interval[i]++;
-          }
-  
-          public void set_partition(int start, int[] interval, int[][] prt){
-            prt[0][0]=start;
-            if(start==0) prt[0][1]=interval[0]-1;
-            else prt[0][1]=interval[0];
-    
-            for(int i=1;i<interval.Length;i++){
-              prt[i][0]=prt[i-1][1]+1;
-              prt[i][1]=prt[i-1][1]+interval[i];
-            }
-          }
-        */
         public int max(int a, int b) { if (a > b)return a; else return b; }
 
-        public void CompExp(int n, double[] exponent)
+        public void CompExp(int n, double[,] exponent)
         {
-            int nu = n;
+        
             int m = ilog2(n);
-            exponent[0] = m;  // exponent[0] = m;
+            exponent[0,0] = m;  // exponent[0] = m;
 
             double eps = 1.0E-16;
             int ku = 1;
@@ -199,11 +146,11 @@ namespace NPB3_0_JAV.FTThreads
                 for (int i = 0; i <= ln - 1; i++)
                 {
                     double ti = i * t;
-                    int idx = (i + ku) * 2; // aqui int idx = (i + ku) * 2;
-                    exponent[idx+REAL] = Math.Cos(ti); // exponent[REAL + idx] = Math.Cos(ti);
-                    exponent[idx+IMAG] = Math.Sin(ti); // exponent[IMAG + idx] = Math.Sin(ti);
-                    if (Math.Abs(exponent[idx+REAL]) < eps) exponent[idx+REAL] = 0;  // if (Math.Abs(exponent[REAL + idx]) < eps) exponent[REAL + idx] = 0;
-                    if (Math.Abs(exponent[idx+IMAG]) < eps) exponent[idx+IMAG] = 0;  // if (Math.Abs(exponent[IMAG + idx]) < eps) exponent[IMAG + idx] = 0;
+                    int idx = i + ku; // aqui int idx = (i + ku) * 2;
+                    exponent[idx,REAL] = Math.Cos(ti); // exponent[REAL + idx] = Math.Cos(ti);
+                    exponent[idx,IMAG] = Math.Sin(ti); // exponent[IMAG + idx] = Math.Sin(ti);
+                    if (Math.Abs(exponent[idx,REAL]) < eps) exponent[idx,REAL] = 0;  // if (Math.Abs(exponent[REAL + idx]) < eps) exponent[REAL + idx] = 0;
+                    if (Math.Abs(exponent[idx,IMAG]) < eps) exponent[idx,IMAG] = 0;  // if (Math.Abs(exponent[IMAG + idx]) < eps) exponent[IMAG + idx] = 0;
                 }
                 ku = ku + ln;
                 ln = 2 * ln;
@@ -213,7 +160,7 @@ namespace NPB3_0_JAV.FTThreads
         public void initial_conditions(double[,,,] u0,
                                        int d1, int d2, int d3)
         {
-            double[] tmp = new double[2 * maxdim];
+            double[,] tmp = new double[maxdim,2];
             double[] RanStarts = new double[maxdim];
             //seed has to be init here since
             //is called 2 times 
@@ -241,11 +188,11 @@ namespace NPB3_0_JAV.FTThreads
                 double x0 = RanStarts[k];
                 for (int j = 0; j < d1; j++)
                 {
-                    x0 = rng.vranlc(2 * d2, x0, a, tmp, 0);
+                    x0 = rng.vranlc2(d2, x0, a, tmp, 0);
                     for (int i = 0; i < d2; i++)
                     {
-                        u0[k,i,j,REAL] = tmp[REAL + i * 2];  // u0[REAL + j * isize3 + i * jsize3 + k * ksize3] = tmp[REAL + i * 2];
-                        u0[k,i,j,IMAG] = tmp[IMAG + i * 2];  // u0[IMAG + j * isize3 + i * jsize3 + k * ksize3] = tmp[IMAG + i * 2];
+                        u0[k,i,j,REAL] = tmp[i,REAL];  // u0[REAL + j * isize3 + i * jsize3 + k * ksize3] = tmp[REAL + i * 2];
+                        u0[k,i,j,IMAG] = tmp[i,IMAG];  // u0[IMAG + j * isize3 + i * jsize3 + k * ksize3] = tmp[IMAG + i * 2];
                     }
                 }
             }
@@ -267,12 +214,11 @@ namespace NPB3_0_JAV.FTThreads
 
         protected static int fftblock_default = 4 * 4096, //Size of L1 cache on SGI O2K
                              fftblock;
-        public void Swarztrauber(int is0, int m, int len, int n, double[,,,] x, int xoffst, int xd1, double[] exponent, double[,,,] scr)
+        public void Swarztrauber(int is0, int m, int len, int n, double[,,,] x, int xoffst, int xd1, double[,] exponent, double[,,] scr)
         {
-            int i, j = 0, l, mx;
+            int i, j = 0, l;
             int k, n1, li, lj, lk, ku, i11, i12, i21, i22;
             int BlockStart, BlockEnd;
-            int isize1 = 2, jsize1 = 2 * (xd1 + 1);
 
             //complex values
             double[] u1 = new double[2];
@@ -305,27 +251,27 @@ namespace NPB3_0_JAV.FTThreads
                         i21 = i * lj;
                         i22 = i21 + lk;
 
-                        u1[REAL] = exponent[(ku+i)*2+REAL];  // exponent[REAL + (ku + i) * 2];
+                        u1[REAL] = exponent[ku+i,REAL];  // exponent[REAL + (ku + i) * 2];
                         if (is0 >= 1)
                         {
-                            u1[IMAG] = exponent[(ku+i)*2+IMAG];  //  exponent[IMAG + (ku + i) * 2];
+                            u1[IMAG] = exponent[ku+i,IMAG];  //  exponent[IMAG + (ku + i) * 2];
                         }
                         else
                         {
-                            u1[IMAG] = -exponent[(ku+i)*2+IMAG];  //  -exponent[IMAG + (ku + i) * 2];
+                            u1[IMAG] = -exponent[ku+i,IMAG];  //  -exponent[IMAG + (ku + i) * 2];
                         }
                         for (k = 0; k <= lk - 1; k++)
                         {
                             for (j = BlockStart; j <= BlockEnd; j++)
                             {
-                                x11[REAL] = x[xoffst,(i11+k),j,REAL];  //  x11[REAL] = x[REAL + j * 2 + (i11 + k) * jsize1 + xoffst];
-                                x11[IMAG] = x[xoffst,(i11+k),j,IMAG];  // x11[IMAG] = x[IMAG + j * 2 + (i11 + k) * jsize1 + xoffst];
-                                x21[REAL] = x[xoffst,(i12+k),j,REAL];  // x21[REAL] = x[REAL + j * 2 + (i12 + k) * jsize1 + xoffst];
-                                x21[IMAG] = x[xoffst,(i12+k),j,IMAG];  // x21[IMAG] = x[IMAG + j * 2 + (i12 + k) * jsize1 + xoffst];
-                                scr[0,(i21+k),j,REAL] = x11[REAL] + x21[REAL];  // scr[REAL + j * isize1 + (i21 + k) * jsize1] = x11[REAL] + x21[REAL];
-                                scr[0,(i21+k),j,IMAG] = x11[IMAG] + x21[IMAG];  //  scr[IMAG + j * isize1 + (i21 + k) * jsize1] = x11[IMAG] + x21[IMAG];
-                                scr[0,(i22+k),j,REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);  //  scr[REAL + j * 2 + (i22 + k) * jsize1] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
-                                scr[0,(i22+k),j,IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);  //  scr[IMAG + j * 2 + (i22 + k) * jsize1] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                                x11[REAL] = x[xoffst,i11+k,j,REAL];  //  x11[REAL] = x[REAL + j * 2 + (i11 + k) * jsize1 + xoffst];
+                                x11[IMAG] = x[xoffst,i11+k,j,IMAG];  // x11[IMAG] = x[IMAG + j * 2 + (i11 + k) * jsize1 + xoffst];
+                                x21[REAL] = x[xoffst,i12+k,j,REAL];  // x21[REAL] = x[REAL + j * 2 + (i12 + k) * jsize1 + xoffst];
+                                x21[IMAG] = x[xoffst,i12+k,j,IMAG];  // x21[IMAG] = x[IMAG + j * 2 + (i12 + k) * jsize1 + xoffst];
+                                scr[i21+k,j,REAL] = x11[REAL] + x21[REAL];  // scr[REAL + j * isize1 + (i21 + k) * jsize1] = x11[REAL] + x21[REAL];
+                                scr[i21+k,j,IMAG] = x11[IMAG] + x21[IMAG];  //  scr[IMAG + j * isize1 + (i21 + k) * jsize1] = x11[IMAG] + x21[IMAG];
+                                scr[i22+k,j,REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);  //  scr[REAL + j * 2 + (i22 + k) * jsize1] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
+                                scr[i22+k,j,IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);  //  scr[IMAG + j * 2 + (i22 + k) * jsize1] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                             }
                         }
                     }
@@ -335,8 +281,8 @@ namespace NPB3_0_JAV.FTThreads
                         {
                             for (j = BlockStart; j <= BlockEnd; j++)
                             {
-                                x[xoffst,k,j,REAL] = scr[0,k,j,REAL];  // x[REAL + j * 2 + k * jsize1 + xoffst] = scr[REAL + j * isize1 + k * jsize1];
-                                x[xoffst,k,j,IMAG] = scr[0,k,j,IMAG];  // x[IMAG + j * 2 + k * jsize1 + xoffst] = scr[IMAG + j * isize1 + k * jsize1];
+                                x[xoffst,k,j,REAL] = scr[k,j,REAL];  // x[REAL + j * 2 + k * jsize1 + xoffst] = scr[REAL + j * isize1 + k * jsize1];
+                                x[xoffst,k,j,IMAG] = scr[k,j,IMAG];  // x[IMAG + j * 2 + k * jsize1 + xoffst] = scr[IMAG + j * isize1 + k * jsize1];
                             }
                         }
                     }
@@ -355,30 +301,30 @@ namespace NPB3_0_JAV.FTThreads
                             i21 = i * lj;
                             i22 = i21 + lk;
 
-                            u1[REAL] = exponent[(ku+i)*2+REAL];  //  u1[REAL] = exponent[REAL + (ku + i) * 2];
+                            u1[REAL] = exponent[ku+i,REAL];  //  u1[REAL] = exponent[REAL + (ku + i) * 2];
                             if (is0 >= 1)
                             {
-                                u1[IMAG] = exponent[(ku+i)*2+IMAG];  //  u1[IMAG] = exponent[IMAG + (ku + i) * 2];
+                                u1[IMAG] = exponent[ku+i,IMAG];  //  u1[IMAG] = exponent[IMAG + (ku + i) * 2];
                             }
                             else
                             {
-                                u1[IMAG] = -exponent[(ku+i)*2+IMAG];  //  u1[IMAG] = -exponent[IMAG + (ku + i) * 2];
+                                u1[IMAG] = -exponent[ku+i,IMAG];  //  u1[IMAG] = -exponent[IMAG + (ku + i) * 2];
                             }
                             for (k = 0; k <= lk - 1; k++)
                             {
                                 for (j = BlockStart; j <= BlockEnd; j++)
                                 {
-                                    x11[REAL] = scr[0,(i11+k),j,REAL];  //  x11[REAL] = scr[REAL + j * isize1 + (i11 + k) * jsize1];
-                                    x11[IMAG] = scr[0,(i11+k),j,IMAG];  //  x11[IMAG] = scr[IMAG + j * isize1 + (i11 + k) * jsize1];
+                                    x11[REAL] = scr[i11+k,j,REAL];  //  x11[REAL] = scr[REAL + j * isize1 + (i11 + k) * jsize1];
+                                    x11[IMAG] = scr[i11+k,j,IMAG];  //  x11[IMAG] = scr[IMAG + j * isize1 + (i11 + k) * jsize1];
 
-                                    x21[REAL] = scr[0,(i12+k),j,REAL];  //  x21[REAL] = scr[REAL + j * isize1 + (i12 + k) * jsize1];
-                                    x21[IMAG] = scr[0,(i12+k),j,IMAG];  //  x21[IMAG] = scr[IMAG + j * isize1 + (i12 + k) * jsize1];
+                                    x21[REAL] = scr[i12+k,j,REAL];  //  x21[REAL] = scr[REAL + j * isize1 + (i12 + k) * jsize1];
+                                    x21[IMAG] = scr[i12+k,j,IMAG];  //  x21[IMAG] = scr[IMAG + j * isize1 + (i12 + k) * jsize1];
 
-                                    x[xoffst,(i21+k),j,REAL] = x11[REAL] + x21[REAL];  //  x[REAL + j * 2 + (i21 + k) * jsize1 + xoffst] = x11[REAL] + x21[REAL];
-                                    x[xoffst,(i21+k),j,IMAG] = x11[IMAG] + x21[IMAG];  //  x[IMAG + j * 2 + (i21 + k) * jsize1 + xoffst] = x11[IMAG] + x21[IMAG];
+                                    x[xoffst,i21+k,j,REAL] = x11[REAL] + x21[REAL];  //  x[REAL + j * 2 + (i21 + k) * jsize1 + xoffst] = x11[REAL] + x21[REAL];
+                                    x[xoffst,i21+k,j,IMAG] = x11[IMAG] + x21[IMAG];  //  x[IMAG + j * 2 + (i21 + k) * jsize1 + xoffst] = x11[IMAG] + x21[IMAG];
 
-                                    x[xoffst,(i22+k),j,REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);  //  x[REAL + j * 2 + (i22 + k) * jsize1 + xoffst] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
-                                    x[xoffst,(i22+k),j,IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);  //  x[IMAG + j * 2 + (i22 + k) * jsize1 + xoffst] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                                    x[xoffst,i22+k,j,REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);  //  x[REAL + j * 2 + (i22 + k) * jsize1 + xoffst] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
+                                    x[xoffst,i22+k,j,IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);  //  x[IMAG + j * 2 + (i22 + k) * jsize1 + xoffst] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                                 }
                             }
                         }

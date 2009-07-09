@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,8 +10,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FT</RootNamespace>
     <AssemblyName>FT</AssemblyName>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +19,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Commandlineparameters>CLASS=S</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,8 +48,6 @@
       <Project>{344CE051-6255-4BBA-BFB3-5CF80032FF77}</Project>
       <Name>Timer</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\BMInOut\BMInOut.csproj">
       <Project>{1A1FAA2A-D1A2-4DFE-955A-3D88FD063315}</Project>
       <Name>BMInOut</Name>
