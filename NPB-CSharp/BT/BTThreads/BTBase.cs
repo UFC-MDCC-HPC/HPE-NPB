@@ -60,15 +60,15 @@ namespace NPB3_0_JAV.BTThreads
         protected double dt_default = 0.0;
 
         //array declarations from header.h
-        protected double[] us, vs, ws,
+        protected double[,,] us, vs, ws,
                          qs, rho_i, square;
         protected int jsize1, ksize1;
 
-        protected double[] forcing, u, rhs,
-                         cv, cuf, q;
+        protected double[,,,] forcing, u, rhs;
+        protected double[] cv, cuf, q;
         protected int isize2, jsize2, ksize2;
 
-        protected double[] ue, buf;
+        protected double[,] ue, buf;
         protected int jsize3;
 
         //here 5 are the dimensions of the CFD vector
@@ -171,28 +171,28 @@ namespace NPB3_0_JAV.BTThreads
 
             jsize1 = IMAX / 2 * 2 + 1;
             ksize1 = (JMAX / 2 * 2 + 1) * (IMAX / 2 * 2 + 1);
-            us = new double[(IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
-            vs = new double[(IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
-            ws = new double[(IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
-            qs = new double[(IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
-            rho_i = new double[(IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
-            square = new double[(IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
+            us = new double[(IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
+            vs = new double[(IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
+            ws = new double[(IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
+            qs = new double[(IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
+            rho_i = new double[(IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
+            square = new double[(IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
 
             isize2 = 5;
             jsize2 = 5 * (IMAX / 2 * 2 + 1);
             ksize2 = 5 * (IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1);
 
-            forcing = new double[5 * (IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
-            u = new double[5 * (IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
-            rhs = new double[5 * (IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1) * KMAX];
+            forcing = new double[5, (IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
+            u = new double[5, (IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
+            rhs = new double[5, (IMAX / 2 * 2 + 1), (JMAX / 2 * 2 + 1), KMAX];
 
             cv = new double[problem_size + 2];
             cuf = new double[problem_size + 2];
             q = new double[problem_size + 2];
 
             jsize3 = (problem_size + 2);
-            ue = new double[(problem_size + 2) * 5];
-            buf = new double[(problem_size + 2) * 5];
+            ue = new double[(problem_size + 2), 5];
+            buf = new double[(problem_size + 2), 5];
         }
 
 
@@ -440,7 +440,7 @@ namespace NPB3_0_JAV.BTThreads
                     {
                         for (m = 0; m <= 4; m++)
                         {
-                            u[m + i * isize2 + j * jsize2 + k * ksize2] = 1.0;
+                            u[m, i, j, k] = 1.0;
                         }
                     }
                 }
@@ -486,7 +486,7 @@ namespace NPB3_0_JAV.BTThreads
                             Pzeta = zeta * Pface[m + 2 * 5 + 1 * 15] +
                               (1.0 - zeta) * Pface[m + 2 * 5 + 0 * 15];
 
-                            u[m + i * isize2 + j * jsize2 + k * ksize2] = Pxi + Peta + Pzeta -
+                            u[m, i, j, k] = Pxi + Peta + Pzeta -
                               Pxi * Peta - Pxi * Pzeta - Peta * Pzeta +
                               Pxi * Peta * Pzeta;
 
@@ -512,7 +512,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[m + i * isize2 + j * jsize2 + k * ksize2] = temp[m];
+                        u[m, i, j, k] = temp[m];
                     }
                 }
             }
@@ -532,7 +532,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[m + i * isize2 + j * jsize2 + k * ksize2] = temp[m];
+                        u[m, i, j, k] = temp[m];
                     }
                 }
             }
@@ -551,7 +551,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[m + i * isize2 + j * jsize2 + k * ksize2] = temp[m];
+                        u[m, i, j, k] = temp[m];
                     }
                 }
             }
@@ -570,7 +570,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[m + i * isize2 + j * jsize2 + k * ksize2] = temp[m];
+                        u[m, i, j, k] = temp[m];
                     }
                 }
             }
@@ -589,7 +589,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[m + i * isize2 + j * jsize2 + k * ksize2] = temp[m];
+                        u[m, i, j, k] = temp[m];
                     }
                 }
             }
@@ -608,13 +608,13 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[m + i * isize2 + j * jsize2 + k * ksize2] = temp[m];
+                        u[m, i, j, k] = temp[m];
                     }
                 }
             }
         }
 
-        public void lhsinit(double[] lhs, int size)
+        public void lhsinit(double[,,,] lhs, int size)
         {
             int i, m, n;
             //---------------------------------------------------------------------
@@ -626,9 +626,9 @@ namespace NPB3_0_JAV.BTThreads
                 {
                     for (n = 0; n <= 4; n++)
                     {
-                        lhs[m + n * isize4 + 0 * jsize4 + i * ksize4] = 0.0;
-                        lhs[m + n * isize4 + 1 * jsize4 + i * ksize4] = 0.0;
-                        lhs[m + n * isize4 + 2 * jsize4 + i * ksize4] = 0.0;
+                        lhs[m, n, 0, i] = 0.0;
+                        lhs[m, n, 1, i] = 0.0;
+                        lhs[m, n, 2, i] = 0.0;
                     }
                 }
             }
@@ -639,453 +639,452 @@ namespace NPB3_0_JAV.BTThreads
             {
                 for (m = 0; m <= 4; m++)
                 {
-                    lhs[m + m * isize4 + 1 * jsize4 + i * ksize4] = 1.0;
+                    lhs[m, m, 1, i] = 1.0;
                 }
             }
         }
 
-        public void matvec_sub(double[] ablock, int blkoffst,
-                               double[] avect, int avcoffst,
-                               double[] bvect, int bvcoffst)
+        public void matvec_sub(double[,,,] ablock, int blkoffst1, int blkoffst2,
+                               double[,,,] avect, int avcoffst1, int avcoffst2, int avcoffst3,
+                               double[,,,] bvect, int bvcoffst1, int bvcoffst2, int bvcoffst3)
         {
 
             for (int i = 0; i < 5; i++)
             {
-                bvect[i + bvcoffst] += -ablock[i + 0 * 5 + blkoffst] * avect[0 + avcoffst]
-                                     - ablock[i + 1 * 5 + blkoffst] * avect[1 + avcoffst]
-                                     - ablock[i + 2 * 5 + blkoffst] * avect[2 + avcoffst]
-                                     - ablock[i + 3 * 5 + blkoffst] * avect[3 + avcoffst]
-                                     - ablock[i + 4 * 5 + blkoffst] * avect[4 + avcoffst];
+                bvect[i, bvcoffst1, bvcoffst2, bvcoffst3] += -ablock[i, 0, blkoffst1, blkoffst2] * avect[0, avcoffst1, avcoffst2, avcoffst3]
+                                     - ablock[i, 1, blkoffst1, blkoffst2] * avect[1, avcoffst1, avcoffst2, avcoffst3]
+                                     - ablock[i, 2, blkoffst1, blkoffst2] * avect[2, avcoffst1, avcoffst2, avcoffst3]
+                                     - ablock[i, 3, blkoffst1, blkoffst2] * avect[3, avcoffst1, avcoffst2, avcoffst3]
+                                     - ablock[i, 4, blkoffst1, blkoffst2] * avect[4, avcoffst1, avcoffst2, avcoffst3];
             }
         }
 
-        public void matmul_sub(double[] ablock, int ablkoffst, double[] bblock,
-                               int bblkoffst, double[] cblock, int cblkoffst)
+        public void matmul_sub(double[,,,] ablock, int ablkoffst1, int ablkoffst2,
+		                       double[,,,] bblock, int bblkoffst1, int bblkoffst2,
+		                       double[,,,] cblock, int cblkoffst1, int cblkoffst2)
         {
             for (int j = 0; j < 5; j++)
             {
 
 
-                cblock[0 + j * 5 + cblkoffst] += -ablock[0 + 0 * 5 + ablkoffst] * bblock[0 + j * 5 + bblkoffst]
-                                          - ablock[0 + 1 * 5 + ablkoffst] * bblock[1 + j * 5 + bblkoffst]
-                                          - ablock[0 + 2 * 5 + ablkoffst] * bblock[2 + j * 5 + bblkoffst]
-                                          - ablock[0 + 3 * 5 + ablkoffst] * bblock[3 + j * 5 + bblkoffst]
-                                          - ablock[0 + 4 * 5 + ablkoffst] * bblock[4 + j * 5 + bblkoffst];
+                cblock[0, j, cblkoffst1, cblkoffst2] += -ablock[0, 0, ablkoffst1, ablkoffst2] * bblock[0, j, bblkoffst1, bblkoffst2]
+                                          - ablock[0, 1, ablkoffst1, ablkoffst2] * bblock[1, j, bblkoffst1, bblkoffst2]
+                                          - ablock[0, 2, ablkoffst1, ablkoffst2] * bblock[2, j, bblkoffst1, bblkoffst2]
+                                          - ablock[0, 3, ablkoffst1, ablkoffst2] * bblock[3, j, bblkoffst1, bblkoffst2]
+                                          - ablock[0, 4, ablkoffst1, ablkoffst2] * bblock[4, j, bblkoffst1, bblkoffst2];
+				
+				cblock[1, j, cblkoffst1, cblkoffst2] += -ablock[1, 0, ablkoffst1, ablkoffst2] * bblock[0, j, bblkoffst1, bblkoffst2]
+                                          - ablock[1, 1, ablkoffst1, ablkoffst2] * bblock[1, j, bblkoffst1, bblkoffst2]
+                                          - ablock[1, 2, ablkoffst1, ablkoffst2] * bblock[2, j, bblkoffst1, bblkoffst2]
+                                          - ablock[1, 3, ablkoffst1, ablkoffst2] * bblock[3, j, bblkoffst1, bblkoffst2]
+                                          - ablock[1, 4, ablkoffst1, ablkoffst2] * bblock[4, j, bblkoffst1, bblkoffst2];
 
-                cblock[1 + j * 5 + cblkoffst] += -ablock[1 + 0 * 5 + ablkoffst] * bblock[0 + j * 5 + bblkoffst]
-                                          - ablock[1 + 1 * 5 + ablkoffst] * bblock[1 + j * 5 + bblkoffst]
-                                          - ablock[1 + 2 * 5 + ablkoffst] * bblock[2 + j * 5 + bblkoffst]
-                                          - ablock[1 + 3 * 5 + ablkoffst] * bblock[3 + j * 5 + bblkoffst]
-                                          - ablock[1 + 4 * 5 + ablkoffst] * bblock[4 + j * 5 + bblkoffst];
+				cblock[2, j, cblkoffst1, cblkoffst2] += -ablock[2, 0, ablkoffst1, ablkoffst2] * bblock[0, j, bblkoffst1, bblkoffst2]
+                                          - ablock[2, 1, ablkoffst1, ablkoffst2] * bblock[1, j, bblkoffst1, bblkoffst2]
+                                          - ablock[2, 2, ablkoffst1, ablkoffst2] * bblock[2, j, bblkoffst1, bblkoffst2]
+                                          - ablock[2, 3, ablkoffst1, ablkoffst2] * bblock[3, j, bblkoffst1, bblkoffst2]
+                                          - ablock[2, 4, ablkoffst1, ablkoffst2] * bblock[4, j, bblkoffst1, bblkoffst2];
 
-                cblock[2 + j * 5 + cblkoffst] += -ablock[2 + 0 * 5 + ablkoffst] * bblock[0 + j * 5 + bblkoffst]
-                                          - ablock[2 + 1 * 5 + ablkoffst] * bblock[1 + j * 5 + bblkoffst]
-                                          - ablock[2 + 2 * 5 + ablkoffst] * bblock[2 + j * 5 + bblkoffst]
-                                          - ablock[2 + 3 * 5 + ablkoffst] * bblock[3 + j * 5 + bblkoffst]
-                                          - ablock[2 + 4 * 5 + ablkoffst] * bblock[4 + j * 5 + bblkoffst];
+				cblock[3, j, cblkoffst1, cblkoffst2] += -ablock[3, 0, ablkoffst1, ablkoffst2] * bblock[0, j, bblkoffst1, bblkoffst2]
+                                          - ablock[3, 1, ablkoffst1, ablkoffst2] * bblock[1, j, bblkoffst1, bblkoffst2]
+                                          - ablock[3, 2, ablkoffst1, ablkoffst2] * bblock[2, j, bblkoffst1, bblkoffst2]
+                                          - ablock[3, 3, ablkoffst1, ablkoffst2] * bblock[3, j, bblkoffst1, bblkoffst2]
+                                          - ablock[3, 4, ablkoffst1, ablkoffst2] * bblock[4, j, bblkoffst1, bblkoffst2];
 
-                cblock[3 + j * 5 + cblkoffst] += -ablock[3 + 0 * 5 + ablkoffst] * bblock[0 + j * 5 + bblkoffst]
-                                          - ablock[3 + 1 * 5 + ablkoffst] * bblock[1 + j * 5 + bblkoffst]
-                                          - ablock[3 + 2 * 5 + ablkoffst] * bblock[2 + j * 5 + bblkoffst]
-                                          - ablock[3 + 3 * 5 + ablkoffst] * bblock[3 + j * 5 + bblkoffst]
-                                          - ablock[3 + 4 * 5 + ablkoffst] * bblock[4 + j * 5 + bblkoffst];
-
-                cblock[4 + j * 5 + cblkoffst] += -ablock[4 + 0 * 5 + ablkoffst] * bblock[0 + j * 5 + bblkoffst]
-                                          - ablock[4 + 1 * 5 + ablkoffst] * bblock[1 + j * 5 + bblkoffst]
-                                          - ablock[4 + 2 * 5 + ablkoffst] * bblock[2 + j * 5 + bblkoffst]
-                                          - ablock[4 + 3 * 5 + ablkoffst] * bblock[3 + j * 5 + bblkoffst]
-                                          - ablock[4 + 4 * 5 + ablkoffst] * bblock[4 + j * 5 + bblkoffst];
+				cblock[4, j, cblkoffst1, cblkoffst2] += -ablock[4, 0, ablkoffst1, ablkoffst2] * bblock[0, j, bblkoffst1, bblkoffst2]
+                                          - ablock[4, 1, ablkoffst1, ablkoffst2] * bblock[1, j, bblkoffst1, bblkoffst2]
+                                          - ablock[4, 2, ablkoffst1, ablkoffst2] * bblock[2, j, bblkoffst1, bblkoffst2]
+                                          - ablock[4, 3, ablkoffst1, ablkoffst2] * bblock[3, j, bblkoffst1, bblkoffst2]
+                                          - ablock[4, 4, ablkoffst1, ablkoffst2] * bblock[4, j, bblkoffst1, bblkoffst2];
             }
         }
 
-        public void binvcrhs(double[] lhss, int lhsoffst,
-                             double[] c, int coffst, double[] r, int roffst)
+        public void binvcrhs(double[,,,] lhss, int lhsoffst1, int lhsoffst2,
+                             double[,,,] c, int coffst1, int coffst2,
+		                     double[,,,] r, int roffst1, int roffst2, int roffst3)
         {
             double pivot;
             double coeff;
 
-            pivot = 1.0 / lhss[0 + 0 * 5 + lhsoffst];
-            lhss[0 + 1 * 5 + lhsoffst] = lhss[0 + 1 * 5 + lhsoffst] * pivot;
-            lhss[0 + 2 * 5 + lhsoffst] = lhss[0 + 2 * 5 + lhsoffst] * pivot;
-            lhss[0 + 3 * 5 + lhsoffst] = lhss[0 + 3 * 5 + lhsoffst] * pivot;
-            lhss[0 + 4 * 5 + lhsoffst] = lhss[0 + 4 * 5 + lhsoffst] * pivot;
-            c[0 + 0 * 5 + coffst] = c[0 + 0 * 5 + coffst] * pivot;
-            c[0 + 1 * 5 + coffst] = c[0 + 1 * 5 + coffst] * pivot;
-            c[0 + 2 * 5 + coffst] = c[0 + 2 * 5 + coffst] * pivot;
-            c[0 + 3 * 5 + coffst] = c[0 + 3 * 5 + coffst] * pivot;
-            c[0 + 4 * 5 + coffst] = c[0 + 4 * 5 + coffst] * pivot;
-            r[0 + roffst] = r[0 + roffst] * pivot;
+            pivot = 1.0 / lhss[0, 0, lhsoffst1, lhsoffst2];
+            lhss[0, 1, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[0, 2, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[0, 3, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[0, 4, lhsoffst1, lhsoffst2] *= pivot;
+            c[0, 0, coffst1, coffst2] *= pivot;
+            c[0, 1, coffst1, coffst2] *= pivot;
+            c[0, 2, coffst1, coffst2] *= pivot;
+            c[0, 3, coffst1, coffst2] *= pivot;
+            c[0, 4, coffst1, coffst2] *= pivot;
+            r[0, roffst1, roffst2, roffst3] *= pivot;
 
-            coeff = lhss[1 + 0 * 5 + lhsoffst];
-            lhss[1 + 1 * 5 + lhsoffst] = lhss[1 + 1 * 5 + lhsoffst] - coeff * lhss[0 + 1 * 5 + lhsoffst];
-            lhss[1 + 2 * 5 + lhsoffst] = lhss[1 + 2 * 5 + lhsoffst] - coeff * lhss[0 + 2 * 5 + lhsoffst];
-            lhss[1 + 3 * 5 + lhsoffst] = lhss[1 + 3 * 5 + lhsoffst] - coeff * lhss[0 + 3 * 5 + lhsoffst];
-            lhss[1 + 4 * 5 + lhsoffst] = lhss[1 + 4 * 5 + lhsoffst] - coeff * lhss[0 + 4 * 5 + lhsoffst];
-            c[1 + 0 * 5 + coffst] = c[1 + 0 * 5 + coffst] - coeff * c[0 + 0 * 5 + coffst];
-            c[1 + 1 * 5 + coffst] = c[1 + 1 * 5 + coffst] - coeff * c[0 + 1 * 5 + coffst];
-            c[1 + 2 * 5 + coffst] = c[1 + 2 * 5 + coffst] - coeff * c[0 + 2 * 5 + coffst];
-            c[1 + 3 * 5 + coffst] = c[1 + 3 * 5 + coffst] - coeff * c[0 + 3 * 5 + coffst];
-            c[1 + 4 * 5 + coffst] = c[1 + 4 * 5 + coffst] - coeff * c[0 + 4 * 5 + coffst];
-            r[1 + roffst] = r[1 + roffst] - coeff * r[0 + roffst];
+            coeff = lhss[1, 0, lhsoffst1, lhsoffst2];
+            lhss[1, 1, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[1, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[1, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[1, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 4, lhsoffst1, lhsoffst2];
+            c[1, 0, coffst1, coffst2] -= coeff * c[0, 0, coffst1, coffst2];
+            c[1, 1, coffst1, coffst2] -= coeff * c[0, 1, coffst1, coffst2];
+            c[1, 2, coffst1, coffst2] -= coeff * c[0, 2, coffst1, coffst2];
+            c[1, 3, coffst1, coffst2] -= coeff * c[0, 3, coffst1, coffst2];
+            c[1, 4, coffst1, coffst2] -= coeff * c[0, 4, coffst1, coffst2];
+            r[1, roffst1, roffst2, roffst3] -= coeff * r[0, roffst1, roffst2, roffst3];
 
-            coeff = lhss[2 + 0 * 5 + lhsoffst];
-            lhss[2 + 1 * 5 + lhsoffst] = lhss[2 + 1 * 5 + lhsoffst] - coeff * lhss[0 + 1 * 5 + lhsoffst];
-            lhss[2 + 2 * 5 + lhsoffst] = lhss[2 + 2 * 5 + lhsoffst] - coeff * lhss[0 + 2 * 5 + lhsoffst];
-            lhss[2 + 3 * 5 + lhsoffst] = lhss[2 + 3 * 5 + lhsoffst] - coeff * lhss[0 + 3 * 5 + lhsoffst];
-            lhss[2 + 4 * 5 + lhsoffst] = lhss[2 + 4 * 5 + lhsoffst] - coeff * lhss[0 + 4 * 5 + lhsoffst];
-            c[2 + 0 * 5 + coffst] = c[2 + 0 * 5 + coffst] - coeff * c[0 + 0 * 5 + coffst];
-            c[2 + 1 * 5 + coffst] = c[2 + 1 * 5 + coffst] - coeff * c[0 + 1 * 5 + coffst];
-            c[2 + 2 * 5 + coffst] = c[2 + 2 * 5 + coffst] - coeff * c[0 + 2 * 5 + coffst];
-            c[2 + 3 * 5 + coffst] = c[2 + 3 * 5 + coffst] - coeff * c[0 + 3 * 5 + coffst];
-            c[2 + 4 * 5 + coffst] = c[2 + 4 * 5 + coffst] - coeff * c[0 + 4 * 5 + coffst];
-            r[2 + roffst] = r[2 + roffst] - coeff * r[0 + roffst];
+			coeff = lhss[2, 0, lhsoffst1, lhsoffst2];
+            lhss[2, 1, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[2, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[2, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[2, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 4, lhsoffst1, lhsoffst2];
+            c[2, 0, coffst1, coffst2] -= coeff * c[0, 0, coffst1, coffst2];
+            c[2, 1, coffst1, coffst2] -= coeff * c[0, 1, coffst1, coffst2];
+            c[2, 2, coffst1, coffst2] -= coeff * c[0, 2, coffst1, coffst2];
+            c[2, 3, coffst1, coffst2] -= coeff * c[0, 3, coffst1, coffst2];
+            c[2, 4, coffst1, coffst2] -= coeff * c[0, 4, coffst1, coffst2];
+            r[2, roffst1, roffst2, roffst3] -= coeff * r[0, roffst1, roffst2, roffst3];
+			coeff = lhss[3, 0, lhsoffst1, lhsoffst2];
+            lhss[3, 1, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[3, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[3, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[3, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 4, lhsoffst1, lhsoffst2];
+            c[3, 0, coffst1, coffst2] -= coeff * c[0, 0, coffst1, coffst2];
+            c[3, 1, coffst1, coffst2] -= coeff * c[0, 1, coffst1, coffst2];
+            c[3, 2, coffst1, coffst2] -= coeff * c[0, 2, coffst1, coffst2];
+            c[3, 3, coffst1, coffst2] -= coeff * c[0, 3, coffst1, coffst2];
+            c[3, 4, coffst1, coffst2] -= coeff * c[0, 4, coffst1, coffst2];
+            r[3, roffst1, roffst2, roffst3] -= coeff * r[0, roffst1, roffst2, roffst3];
 
-            coeff = lhss[3 + 0 * 5 + lhsoffst];
-            lhss[3 + 1 * 5 + lhsoffst] = lhss[3 + 1 * 5 + lhsoffst] - coeff * lhss[0 + 1 * 5 + lhsoffst];
-            lhss[3 + 2 * 5 + lhsoffst] = lhss[3 + 2 * 5 + lhsoffst] - coeff * lhss[0 + 2 * 5 + lhsoffst];
-            lhss[3 + 3 * 5 + lhsoffst] = lhss[3 + 3 * 5 + lhsoffst] - coeff * lhss[0 + 3 * 5 + lhsoffst];
-            lhss[3 + 4 * 5 + lhsoffst] = lhss[3 + 4 * 5 + lhsoffst] - coeff * lhss[0 + 4 * 5 + lhsoffst];
-            c[3 + 0 * 5 + coffst] = c[3 + 0 * 5 + coffst] - coeff * c[0 + 0 * 5 + coffst];
-            c[3 + 1 * 5 + coffst] = c[3 + 1 * 5 + coffst] - coeff * c[0 + 1 * 5 + coffst];
-            c[3 + 2 * 5 + coffst] = c[3 + 2 * 5 + coffst] - coeff * c[0 + 2 * 5 + coffst];
-            c[3 + 3 * 5 + coffst] = c[3 + 3 * 5 + coffst] - coeff * c[0 + 3 * 5 + coffst];
-            c[3 + 4 * 5 + coffst] = c[3 + 4 * 5 + coffst] - coeff * c[0 + 4 * 5 + coffst];
-            r[3 + roffst] = r[3 + roffst] - coeff * r[0 + roffst];
+            coeff = lhss[4, 0, lhsoffst1, lhsoffst2];
+            lhss[4, 1, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[4, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[4, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[4, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 4, lhsoffst1, lhsoffst2];
+            c[4, 0, coffst1, coffst2] -= coeff * c[0, 0, coffst1, coffst2];
+            c[4, 1, coffst1, coffst2] -= coeff * c[0, 1, coffst1, coffst2];
+            c[4, 2, coffst1, coffst2] -= coeff * c[0, 2, coffst1, coffst2];
+            c[4, 3, coffst1, coffst2] -= coeff * c[0, 3, coffst1, coffst2];
+            c[4, 4, coffst1, coffst2] -= coeff * c[0, 4, coffst1, coffst2];
+            r[4, roffst1, roffst2, roffst3] -= coeff * r[0, roffst1, roffst2, roffst3];
+			
+			
+            pivot = 1.0 / lhss[1, 1, lhsoffst1, lhsoffst2];
+            lhss[1, 2, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[1, 3, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[1, 4, lhsoffst1, lhsoffst2] *= pivot;
+            c[1, 0, coffst1, coffst2] *= pivot;
+            c[1, 1, coffst1, coffst2] *= pivot;
+            c[1, 2, coffst1, coffst2] *= pivot;
+            c[1, 3, coffst1, coffst2] *= pivot;
+            c[1, 4, coffst1, coffst2] *= pivot;
+            r[1, roffst1, roffst2, roffst3] *= pivot;
 
-            coeff = lhss[4 + 0 * 5 + lhsoffst];
-            lhss[4 + 1 * 5 + lhsoffst] = lhss[4 + 1 * 5 + lhsoffst] - coeff * lhss[0 + 1 * 5 + lhsoffst];
-            lhss[4 + 2 * 5 + lhsoffst] = lhss[4 + 2 * 5 + lhsoffst] - coeff * lhss[0 + 2 * 5 + lhsoffst];
-            lhss[4 + 3 * 5 + lhsoffst] = lhss[4 + 3 * 5 + lhsoffst] - coeff * lhss[0 + 3 * 5 + lhsoffst];
-            lhss[4 + 4 * 5 + lhsoffst] = lhss[4 + 4 * 5 + lhsoffst] - coeff * lhss[0 + 4 * 5 + lhsoffst];
-            c[4 + 0 * 5 + coffst] = c[4 + 0 * 5 + coffst] - coeff * c[0 + 0 * 5 + coffst];
-            c[4 + 1 * 5 + coffst] = c[4 + 1 * 5 + coffst] - coeff * c[0 + 1 * 5 + coffst];
-            c[4 + 2 * 5 + coffst] = c[4 + 2 * 5 + coffst] - coeff * c[0 + 2 * 5 + coffst];
-            c[4 + 3 * 5 + coffst] = c[4 + 3 * 5 + coffst] - coeff * c[0 + 3 * 5 + coffst];
-            c[4 + 4 * 5 + coffst] = c[4 + 4 * 5 + coffst] - coeff * c[0 + 4 * 5 + coffst];
-            r[4 + roffst] = r[4 + roffst] - coeff * r[0 + roffst];
+            coeff = lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[0, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[0, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[0, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 4, lhsoffst1, lhsoffst2];
+            c[0, 0, coffst1, coffst2] -= coeff * c[1, 0, coffst1, coffst2];
+            c[0, 1, coffst1, coffst2] -= coeff * c[1, 1, coffst1, coffst2];
+            c[0, 2, coffst1, coffst2] -= coeff * c[1, 2, coffst1, coffst2];
+            c[0, 3, coffst1, coffst2] -= coeff * c[1, 3, coffst1, coffst2];
+            c[0, 4, coffst1, coffst2] -= coeff * c[1, 4, coffst1, coffst2];
+            r[0, roffst1, roffst2, roffst3] -= coeff * r[1, roffst1, roffst2, roffst3];			
 
-            pivot = 1.0 / lhss[1 + 1 * 5 + lhsoffst];
-            lhss[1 + 2 * 5 + lhsoffst] = lhss[1 + 2 * 5 + lhsoffst] * pivot;
-            lhss[1 + 3 * 5 + lhsoffst] = lhss[1 + 3 * 5 + lhsoffst] * pivot;
-            lhss[1 + 4 * 5 + lhsoffst] = lhss[1 + 4 * 5 + lhsoffst] * pivot;
-            c[1 + 0 * 5 + coffst] = c[1 + 0 * 5 + coffst] * pivot;
-            c[1 + 1 * 5 + coffst] = c[1 + 1 * 5 + coffst] * pivot;
-            c[1 + 2 * 5 + coffst] = c[1 + 2 * 5 + coffst] * pivot;
-            c[1 + 3 * 5 + coffst] = c[1 + 3 * 5 + coffst] * pivot;
-            c[1 + 4 * 5 + coffst] = c[1 + 4 * 5 + coffst] * pivot;
-            r[1 + roffst] = r[1 + roffst] * pivot;
+            coeff = lhss[2, 1, lhsoffst1, lhsoffst2];
+            lhss[2, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[2, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[2, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 4, lhsoffst1, lhsoffst2];
+            c[2, 0, coffst1, coffst2] -= coeff * c[1, 0, coffst1, coffst2];
+            c[2, 1, coffst1, coffst2] -= coeff * c[1, 1, coffst1, coffst2];
+            c[2, 2, coffst1, coffst2] -= coeff * c[1, 2, coffst1, coffst2];
+            c[2, 3, coffst1, coffst2] -= coeff * c[1, 3, coffst1, coffst2];
+            c[2, 4, coffst1, coffst2] -= coeff * c[1, 4, coffst1, coffst2];
+			r[2, roffst1, roffst2, roffst3] -= coeff * r[1, roffst1, roffst2, roffst3];
 
-            coeff = lhss[0 + 1 * 5 + lhsoffst];
-            lhss[0 + 2 * 5 + lhsoffst] = lhss[0 + 2 * 5 + lhsoffst] - coeff * lhss[1 + 2 * 5 + lhsoffst];
-            lhss[0 + 3 * 5 + lhsoffst] = lhss[0 + 3 * 5 + lhsoffst] - coeff * lhss[1 + 3 * 5 + lhsoffst];
-            lhss[0 + 4 * 5 + lhsoffst] = lhss[0 + 4 * 5 + lhsoffst] - coeff * lhss[1 + 4 * 5 + lhsoffst];
-            c[0 + 0 * 5 + coffst] = c[0 + 0 * 5 + coffst] - coeff * c[1 + 0 * 5 + coffst];
-            c[0 + 1 * 5 + coffst] = c[0 + 1 * 5 + coffst] - coeff * c[1 + 1 * 5 + coffst];
-            c[0 + 2 * 5 + coffst] = c[0 + 2 * 5 + coffst] - coeff * c[1 + 2 * 5 + coffst];
-            c[0 + 3 * 5 + coffst] = c[0 + 3 * 5 + coffst] - coeff * c[1 + 3 * 5 + coffst];
-            c[0 + 4 * 5 + coffst] = c[0 + 4 * 5 + coffst] - coeff * c[1 + 4 * 5 + coffst];
-            r[0 + roffst] = r[0 + roffst] - coeff * r[1 + roffst];
+            coeff = lhss[3, 1, lhsoffst1, lhsoffst2];
+            lhss[3, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[3, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[3, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 4, lhsoffst1, lhsoffst2];
+            c[3, 0, coffst1, coffst2] -= coeff * c[1, 0, coffst1, coffst2];
+            c[3, 1, coffst1, coffst2] -= coeff * c[1, 1, coffst1, coffst2];
+            c[3, 2, coffst1, coffst2] -= coeff * c[1, 2, coffst1, coffst2];
+            c[3, 3, coffst1, coffst2] -= coeff * c[1, 3, coffst1, coffst2];
+            c[3, 4, coffst1, coffst2] -= coeff * c[1, 4, coffst1, coffst2];
+            r[3, roffst1, roffst2, roffst3] -= coeff * r[1, roffst1, roffst2, roffst3];			
+            coeff = lhss[4, 1, lhsoffst1, lhsoffst2];
+            lhss[4, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[4, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[4, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 4, lhsoffst1, lhsoffst2];
+            c[4, 0, coffst1, coffst2] -= coeff * c[1, 0, coffst1, coffst2];
+            c[4, 1, coffst1, coffst2] -= coeff * c[1, 1, coffst1, coffst2];
+            c[4, 2, coffst1, coffst2] -= coeff * c[1, 2, coffst1, coffst2];
+            c[4, 3, coffst1, coffst2] -= coeff * c[1, 3, coffst1, coffst2];
+			c[4, 4, coffst1, coffst2] -= coeff * c[1, 4, coffst1, coffst2];
+            r[4, roffst1, roffst2, roffst3] -= coeff * r[1, roffst1, roffst2, roffst3];
 
-            coeff = lhss[2 + 1 * 5 + lhsoffst];
-            lhss[2 + 2 * 5 + lhsoffst] = lhss[2 + 2 * 5 + lhsoffst] - coeff * lhss[1 + 2 * 5 + lhsoffst];
-            lhss[2 + 3 * 5 + lhsoffst] = lhss[2 + 3 * 5 + lhsoffst] - coeff * lhss[1 + 3 * 5 + lhsoffst];
-            lhss[2 + 4 * 5 + lhsoffst] = lhss[2 + 4 * 5 + lhsoffst] - coeff * lhss[1 + 4 * 5 + lhsoffst];
-            c[2 + 0 * 5 + coffst] = c[2 + 0 * 5 + coffst] - coeff * c[1 + 0 * 5 + coffst];
-            c[2 + 1 * 5 + coffst] = c[2 + 1 * 5 + coffst] - coeff * c[1 + 1 * 5 + coffst];
-            c[2 + 2 * 5 + coffst] = c[2 + 2 * 5 + coffst] - coeff * c[1 + 2 * 5 + coffst];
-            c[2 + 3 * 5 + coffst] = c[2 + 3 * 5 + coffst] - coeff * c[1 + 3 * 5 + coffst];
-            c[2 + 4 * 5 + coffst] = c[2 + 4 * 5 + coffst] - coeff * c[1 + 4 * 5 + coffst];
-            r[2 + roffst] = r[2 + roffst] - coeff * r[1 + roffst];
-
-            coeff = lhss[3 + 1 * 5 + lhsoffst];
-            lhss[3 + 2 * 5 + lhsoffst] = lhss[3 + 2 * 5 + lhsoffst] - coeff * lhss[1 + 2 * 5 + lhsoffst];
-            lhss[3 + 3 * 5 + lhsoffst] = lhss[3 + 3 * 5 + lhsoffst] - coeff * lhss[1 + 3 * 5 + lhsoffst];
-            lhss[3 + 4 * 5 + lhsoffst] = lhss[3 + 4 * 5 + lhsoffst] - coeff * lhss[1 + 4 * 5 + lhsoffst];
-            c[3 + 0 * 5 + coffst] = c[3 + 0 * 5 + coffst] - coeff * c[1 + 0 * 5 + coffst];
-            c[3 + 1 * 5 + coffst] = c[3 + 1 * 5 + coffst] - coeff * c[1 + 1 * 5 + coffst];
-            c[3 + 2 * 5 + coffst] = c[3 + 2 * 5 + coffst] - coeff * c[1 + 2 * 5 + coffst];
-            c[3 + 3 * 5 + coffst] = c[3 + 3 * 5 + coffst] - coeff * c[1 + 3 * 5 + coffst];
-            c[3 + 4 * 5 + coffst] = c[3 + 4 * 5 + coffst] - coeff * c[1 + 4 * 5 + coffst];
-            r[3 + roffst] = r[3 + roffst] - coeff * r[1 + roffst];
-
-            coeff = lhss[4 + 1 * 5 + lhsoffst];
-            lhss[4 + 2 * 5 + lhsoffst] = lhss[4 + 2 * 5 + lhsoffst] - coeff * lhss[1 + 2 * 5 + lhsoffst];
-            lhss[4 + 3 * 5 + lhsoffst] = lhss[4 + 3 * 5 + lhsoffst] - coeff * lhss[1 + 3 * 5 + lhsoffst];
-            lhss[4 + 4 * 5 + lhsoffst] = lhss[4 + 4 * 5 + lhsoffst] - coeff * lhss[1 + 4 * 5 + lhsoffst];
-            c[4 + 0 * 5 + coffst] = c[4 + 0 * 5 + coffst] - coeff * c[1 + 0 * 5 + coffst];
-            c[4 + 1 * 5 + coffst] = c[4 + 1 * 5 + coffst] - coeff * c[1 + 1 * 5 + coffst];
-            c[4 + 2 * 5 + coffst] = c[4 + 2 * 5 + coffst] - coeff * c[1 + 2 * 5 + coffst];
-            c[4 + 3 * 5 + coffst] = c[4 + 3 * 5 + coffst] - coeff * c[1 + 3 * 5 + coffst];
-            c[4 + 4 * 5 + coffst] = c[4 + 4 * 5 + coffst] - coeff * c[1 + 4 * 5 + coffst];
-            r[4 + roffst] = r[4 + roffst] - coeff * r[1 + roffst];
-
-            pivot = 1.0 / lhss[2 + 2 * 5 + lhsoffst];
-            lhss[2 + 3 * 5 + lhsoffst] = lhss[2 + 3 * 5 + lhsoffst] * pivot;
-            lhss[2 + 4 * 5 + lhsoffst] = lhss[2 + 4 * 5 + lhsoffst] * pivot;
-            c[2 + 0 * 5 + coffst] = c[2 + 0 * 5 + coffst] * pivot;
-            c[2 + 1 * 5 + coffst] = c[2 + 1 * 5 + coffst] * pivot;
-            c[2 + 2 * 5 + coffst] = c[2 + 2 * 5 + coffst] * pivot;
-            c[2 + 3 * 5 + coffst] = c[2 + 3 * 5 + coffst] * pivot;
-            c[2 + 4 * 5 + coffst] = c[2 + 4 * 5 + coffst] * pivot;
-            r[2 + roffst] = r[2 + roffst] * pivot;
-
-            coeff = lhss[0 + 2 * 5 + lhsoffst];
-            lhss[0 + 3 * 5 + lhsoffst] = lhss[0 + 3 * 5 + lhsoffst] - coeff * lhss[2 + 3 * 5 + lhsoffst];
-            lhss[0 + 4 * 5 + lhsoffst] = lhss[0 + 4 * 5 + lhsoffst] - coeff * lhss[2 + 4 * 5 + lhsoffst];
-            c[0 + 0 * 5 + coffst] = c[0 + 0 * 5 + coffst] - coeff * c[2 + 0 * 5 + coffst];
-            c[0 + 1 * 5 + coffst] = c[0 + 1 * 5 + coffst] - coeff * c[2 + 1 * 5 + coffst];
-            c[0 + 2 * 5 + coffst] = c[0 + 2 * 5 + coffst] - coeff * c[2 + 2 * 5 + coffst];
-            c[0 + 3 * 5 + coffst] = c[0 + 3 * 5 + coffst] - coeff * c[2 + 3 * 5 + coffst];
-            c[0 + 4 * 5 + coffst] = c[0 + 4 * 5 + coffst] - coeff * c[2 + 4 * 5 + coffst];
-            r[0 + roffst] = r[0 + roffst] - coeff * r[2 + roffst];
-
-            coeff = lhss[1 + 2 * 5 + lhsoffst];
-            lhss[1 + 3 * 5 + lhsoffst] = lhss[1 + 3 * 5 + lhsoffst] - coeff * lhss[2 + 3 * 5 + lhsoffst];
-            lhss[1 + 4 * 5 + lhsoffst] = lhss[1 + 4 * 5 + lhsoffst] - coeff * lhss[2 + 4 * 5 + lhsoffst];
-            c[1 + 0 * 5 + coffst] = c[1 + 0 * 5 + coffst] - coeff * c[2 + 0 * 5 + coffst];
-            c[1 + 1 * 5 + coffst] = c[1 + 1 * 5 + coffst] - coeff * c[2 + 1 * 5 + coffst];
-            c[1 + 2 * 5 + coffst] = c[1 + 2 * 5 + coffst] - coeff * c[2 + 2 * 5 + coffst];
-            c[1 + 3 * 5 + coffst] = c[1 + 3 * 5 + coffst] - coeff * c[2 + 3 * 5 + coffst];
-            c[1 + 4 * 5 + coffst] = c[1 + 4 * 5 + coffst] - coeff * c[2 + 4 * 5 + coffst];
-            r[1 + roffst] = r[1 + roffst] - coeff * r[2 + roffst];
-
-            coeff = lhss[3 + 2 * 5 + lhsoffst];
-            lhss[3 + 3 * 5 + lhsoffst] = lhss[3 + 3 * 5 + lhsoffst] - coeff * lhss[2 + 3 * 5 + lhsoffst];
-            lhss[3 + 4 * 5 + lhsoffst] = lhss[3 + 4 * 5 + lhsoffst] - coeff * lhss[2 + 4 * 5 + lhsoffst];
-            c[3 + 0 * 5 + coffst] = c[3 + 0 * 5 + coffst] - coeff * c[2 + 0 * 5 + coffst];
-            c[3 + 1 * 5 + coffst] = c[3 + 1 * 5 + coffst] - coeff * c[2 + 1 * 5 + coffst];
-            c[3 + 2 * 5 + coffst] = c[3 + 2 * 5 + coffst] - coeff * c[2 + 2 * 5 + coffst];
-            c[3 + 3 * 5 + coffst] = c[3 + 3 * 5 + coffst] - coeff * c[2 + 3 * 5 + coffst];
-            c[3 + 4 * 5 + coffst] = c[3 + 4 * 5 + coffst] - coeff * c[2 + 4 * 5 + coffst];
-            r[3 + roffst] = r[3 + roffst] - coeff * r[2 + roffst];
-
-            coeff = lhss[4 + 2 * 5 + lhsoffst];
-            lhss[4 + 3 * 5 + lhsoffst] = lhss[4 + 3 * 5 + lhsoffst] - coeff * lhss[2 + 3 * 5 + lhsoffst];
-            lhss[4 + 4 * 5 + lhsoffst] = lhss[4 + 4 * 5 + lhsoffst] - coeff * lhss[2 + 4 * 5 + lhsoffst];
-            c[4 + 0 * 5 + coffst] = c[4 + 0 * 5 + coffst] - coeff * c[2 + 0 * 5 + coffst];
-            c[4 + 1 * 5 + coffst] = c[4 + 1 * 5 + coffst] - coeff * c[2 + 1 * 5 + coffst];
-            c[4 + 2 * 5 + coffst] = c[4 + 2 * 5 + coffst] - coeff * c[2 + 2 * 5 + coffst];
-            c[4 + 3 * 5 + coffst] = c[4 + 3 * 5 + coffst] - coeff * c[2 + 3 * 5 + coffst];
-            c[4 + 4 * 5 + coffst] = c[4 + 4 * 5 + coffst] - coeff * c[2 + 4 * 5 + coffst];
-            r[4 + roffst] = r[4 + roffst] - coeff * r[2 + roffst];
+            pivot = 1.0 / lhss[2, 2, lhsoffst1, lhsoffst2];
+            lhss[2, 3, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[2, 4, lhsoffst1, lhsoffst2] *= pivot;
+            c[2, 0, coffst1, coffst2] *= pivot;
+            c[2, 1, coffst1, coffst2] *= pivot;
+            c[2, 2, coffst1, coffst2] *= pivot;
+            c[2, 3, coffst1, coffst2] *= pivot;
+            c[2, 4, coffst1, coffst2] *= pivot;
+            r[2, roffst1, roffst2, roffst3] *= pivot;
+            coeff = lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[0, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[0, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 4, lhsoffst1, lhsoffst2];
+            c[0, 0, coffst1, coffst2] -= coeff * c[2, 0, coffst1, coffst2];
+            c[0, 1, coffst1, coffst2] -= coeff * c[2, 1, coffst1, coffst2];
+            c[0, 2, coffst1, coffst2] -= coeff * c[2, 2, coffst1, coffst2];
+            c[0, 3, coffst1, coffst2] -= coeff * c[2, 3, coffst1, coffst2];
+            c[0, 4, coffst1, coffst2] -= coeff * c[2, 4, coffst1, coffst2];
+            r[0, roffst1, roffst2, roffst3] -= coeff * r[2, roffst1, roffst2, roffst3];
+            coeff = lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[1, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[1, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 4, lhsoffst1, lhsoffst2];
+            c[1, 0, coffst1, coffst2] -= coeff * c[2, 0, coffst1, coffst2];
+            c[1, 1, coffst1, coffst2] -= coeff * c[2, 1, coffst1, coffst2];
+            c[1, 2, coffst1, coffst2] -= coeff * c[2, 2, coffst1, coffst2];
+            c[1, 3, coffst1, coffst2] -= coeff * c[2, 3, coffst1, coffst2];
+            c[1, 4, coffst1, coffst2] -= coeff * c[2, 4, coffst1, coffst2];
+            r[1, roffst1, roffst2, roffst3] -= coeff * r[2, roffst1, roffst2, roffst3];
+            coeff = lhss[3, 2, lhsoffst1, lhsoffst2];
+            lhss[3, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[3, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 4, lhsoffst1, lhsoffst2];
+            c[3, 0, coffst1, coffst2] -= coeff * c[2, 0, coffst1, coffst2];
+            c[3, 1, coffst1, coffst2] -= coeff * c[2, 1, coffst1, coffst2];
+            c[3, 2, coffst1, coffst2] -= coeff * c[2, 2, coffst1, coffst2];
+            c[3, 3, coffst1, coffst2] -= coeff * c[2, 3, coffst1, coffst2];
+            c[3, 4, coffst1, coffst2] -= coeff * c[2, 4, coffst1, coffst2];
+            r[3, roffst1, roffst2, roffst3] -= coeff * r[2, roffst1, roffst2, roffst3];
+            coeff = lhss[4, 2, lhsoffst1, lhsoffst2];
+            lhss[4, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[4, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 4, lhsoffst1, lhsoffst2];
+            c[4, 0, coffst1, coffst2] -= coeff * c[2, 0, coffst1, coffst2];
+            c[4, 1, coffst1, coffst2] -= coeff * c[2, 1, coffst1, coffst2];
+            c[4, 2, coffst1, coffst2] -= coeff * c[2, 2, coffst1, coffst2];
+            c[4, 3, coffst1, coffst2] -= coeff * c[2, 3, coffst1, coffst2];
+            c[4, 4, coffst1, coffst2] -= coeff * c[2, 4, coffst1, coffst2];
+            r[4, roffst1, roffst2, roffst3] -= coeff * r[2, roffst1, roffst2, roffst3];
 
 
-            pivot = 1.0 / lhss[3 + 3 * 5 + lhsoffst];
-            lhss[3 + 4 * 5 + lhsoffst] = lhss[3 + 4 * 5 + lhsoffst] * pivot;
-            c[3 + 0 * 5 + coffst] = c[3 + 0 * 5 + coffst] * pivot;
-            c[3 + 1 * 5 + coffst] = c[3 + 1 * 5 + coffst] * pivot;
-            c[3 + 2 * 5 + coffst] = c[3 + 2 * 5 + coffst] * pivot;
-            c[3 + 3 * 5 + coffst] = c[3 + 3 * 5 + coffst] * pivot;
-            c[3 + 4 * 5 + coffst] = c[3 + 4 * 5 + coffst] * pivot;
-            r[3 + roffst] = r[3 + roffst] * pivot;
+            pivot = 1.0 / lhss[3, 3, lhsoffst1, lhsoffst2];
+            lhss[3, 4, lhsoffst1, lhsoffst2] *= pivot;
+            c[3, 0, coffst1, coffst2] *= pivot;
+            c[3, 1, coffst1, coffst2] *= pivot;
+            c[3, 2, coffst1, coffst2] *= pivot;
+            c[3, 3, coffst1, coffst2] *= pivot;
+            c[3, 4, coffst1, coffst2] *= pivot;
+            r[3, roffst1, roffst2, roffst3] *= pivot;
 
-            coeff = lhss[0 + 3 * 5 + lhsoffst];
-            lhss[0 + 4 * 5 + lhsoffst] = lhss[0 + 4 * 5 + lhsoffst] - coeff * lhss[3 + 4 * 5 + lhsoffst];
-            c[0 + 0 * 5 + coffst] = c[0 + 0 * 5 + coffst] - coeff * c[3 + 0 * 5 + coffst];
-            c[0 + 1 * 5 + coffst] = c[0 + 1 * 5 + coffst] - coeff * c[3 + 1 * 5 + coffst];
-            c[0 + 2 * 5 + coffst] = c[0 + 2 * 5 + coffst] - coeff * c[3 + 2 * 5 + coffst];
-            c[0 + 3 * 5 + coffst] = c[0 + 3 * 5 + coffst] - coeff * c[3 + 3 * 5 + coffst];
-            c[0 + 4 * 5 + coffst] = c[0 + 4 * 5 + coffst] - coeff * c[3 + 4 * 5 + coffst];
-            r[0 + roffst] = r[0 + roffst] - coeff * r[3 + roffst];
+            coeff = lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[0, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[3, 4, lhsoffst1, lhsoffst2];
+            c[0, 0, coffst1, coffst2] -= coeff * c[3, 0, coffst1, coffst2];
+            c[0, 1, coffst1, coffst2] -= coeff * c[3, 1, coffst1, coffst2];
+            c[0, 2, coffst1, coffst2] -= coeff * c[3, 2, coffst1, coffst2];
+            c[0, 3, coffst1, coffst2] -= coeff * c[3, 3, coffst1, coffst2];
+            c[0, 4, coffst1, coffst2] -= coeff * c[3, 4, coffst1, coffst2];
+            r[0, roffst1, roffst2, roffst3] -= coeff * r[3, roffst1, roffst2, roffst3];
 
-            coeff = lhss[1 + 3 * 5 + lhsoffst];
-            lhss[1 + 4 * 5 + lhsoffst] = lhss[1 + 4 * 5 + lhsoffst] - coeff * lhss[3 + 4 * 5 + lhsoffst];
-            c[1 + 0 * 5 + coffst] = c[1 + 0 * 5 + coffst] - coeff * c[3 + 0 * 5 + coffst];
-            c[1 + 1 * 5 + coffst] = c[1 + 1 * 5 + coffst] - coeff * c[3 + 1 * 5 + coffst];
-            c[1 + 2 * 5 + coffst] = c[1 + 2 * 5 + coffst] - coeff * c[3 + 2 * 5 + coffst];
-            c[1 + 3 * 5 + coffst] = c[1 + 3 * 5 + coffst] - coeff * c[3 + 3 * 5 + coffst];
-            c[1 + 4 * 5 + coffst] = c[1 + 4 * 5 + coffst] - coeff * c[3 + 4 * 5 + coffst];
-            r[1 + roffst] = r[1 + roffst] - coeff * r[3 + roffst];
+            coeff = lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[1, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[3, 4, lhsoffst1, lhsoffst2];
+            c[1, 0, coffst1, coffst2] -= coeff * c[3, 0, coffst1, coffst2];
+            c[1, 1, coffst1, coffst2] -= coeff * c[3, 1, coffst1, coffst2];
+            c[1, 2, coffst1, coffst2] -= coeff * c[3, 2, coffst1, coffst2];
+            c[1, 3, coffst1, coffst2] -= coeff * c[3, 3, coffst1, coffst2];
+            c[1, 4, coffst1, coffst2] -= coeff * c[3, 4, coffst1, coffst2];
+            r[1, roffst1, roffst2, roffst3] -= coeff * r[3, roffst1, roffst2, roffst3];
 
-            coeff = lhss[2 + 3 * 5 + lhsoffst];
-            lhss[2 + 4 * 5 + lhsoffst] = lhss[2 + 4 * 5 + lhsoffst] - coeff * lhss[3 + 4 * 5 + lhsoffst];
-            c[2 + 0 * 5 + coffst] = c[2 + 0 * 5 + coffst] - coeff * c[3 + 0 * 5 + coffst];
-            c[2 + 1 * 5 + coffst] = c[2 + 1 * 5 + coffst] - coeff * c[3 + 1 * 5 + coffst];
-            c[2 + 2 * 5 + coffst] = c[2 + 2 * 5 + coffst] - coeff * c[3 + 2 * 5 + coffst];
-            c[2 + 3 * 5 + coffst] = c[2 + 3 * 5 + coffst] - coeff * c[3 + 3 * 5 + coffst];
-            c[2 + 4 * 5 + coffst] = c[2 + 4 * 5 + coffst] - coeff * c[3 + 4 * 5 + coffst];
-            r[2 + roffst] = r[2 + roffst] - coeff * r[3 + roffst];
+            coeff = lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[2, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[3, 4, lhsoffst1, lhsoffst2];
+            c[2, 0, coffst1, coffst2] -= coeff * c[3, 0, coffst1, coffst2];
+            c[2, 1, coffst1, coffst2] -= coeff * c[3, 1, coffst1, coffst2];
+            c[2, 2, coffst1, coffst2] -= coeff * c[3, 2, coffst1, coffst2];
+            c[2, 3, coffst1, coffst2] -= coeff * c[3, 3, coffst1, coffst2];
+            c[2, 4, coffst1, coffst2] -= coeff * c[3, 4, coffst1, coffst2];
+            r[2, roffst1, roffst2, roffst3] -= coeff * r[3, roffst1, roffst2, roffst3];
+            coeff = lhss[4, 3, lhsoffst1, lhsoffst2];
+			lhss[4, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[3, 4, lhsoffst1, lhsoffst2];
+            c[4, 0, coffst1, coffst2] -= coeff * c[3, 0, coffst1, coffst2];
+            c[4, 1, coffst1, coffst2] -= coeff * c[3, 1, coffst1, coffst2];
+            c[4, 2, coffst1, coffst2] -= coeff * c[3, 2, coffst1, coffst2];
+            c[4, 3, coffst1, coffst2] -= coeff * c[3, 3, coffst1, coffst2];
+            c[4, 4, coffst1, coffst2] -= coeff * c[3, 4, coffst1, coffst2];
+            r[4, roffst1, roffst2, roffst3] -= coeff * r[3, roffst1, roffst2, roffst3];
 
-            coeff = lhss[4 + 3 * 5 + lhsoffst];
-            lhss[4 + 4 * 5 + lhsoffst] = lhss[4 + 4 * 5 + lhsoffst] - coeff * lhss[3 + 4 * 5 + lhsoffst];
-            c[4 + 0 * 5 + coffst] = c[4 + 0 * 5 + coffst] - coeff * c[3 + 0 * 5 + coffst];
-            c[4 + 1 * 5 + coffst] = c[4 + 1 * 5 + coffst] - coeff * c[3 + 1 * 5 + coffst];
-            c[4 + 2 * 5 + coffst] = c[4 + 2 * 5 + coffst] - coeff * c[3 + 2 * 5 + coffst];
-            c[4 + 3 * 5 + coffst] = c[4 + 3 * 5 + coffst] - coeff * c[3 + 3 * 5 + coffst];
-            c[4 + 4 * 5 + coffst] = c[4 + 4 * 5 + coffst] - coeff * c[3 + 4 * 5 + coffst];
-            r[4 + roffst] = r[4 + roffst] - coeff * r[3 + roffst];
+            pivot = 1.0 / lhss[4, 4, lhsoffst1, lhsoffst2];
+            c[4, 0, coffst1, coffst2] *= pivot;
+            c[4, 1, coffst1, coffst2] *= pivot;
+            c[4, 2, coffst1, coffst2] *= pivot;
+            c[4, 3, coffst1, coffst2] *= pivot;
+            c[4, 4, coffst1, coffst2] *= pivot;
+			r[4, roffst1, roffst2, roffst3] *= pivot;
 
-            pivot = 1.0 / lhss[4 + 4 * 5 + lhsoffst];
-            c[4 + 0 * 5 + coffst] = c[4 + 0 * 5 + coffst] * pivot;
-            c[4 + 1 * 5 + coffst] = c[4 + 1 * 5 + coffst] * pivot;
-            c[4 + 2 * 5 + coffst] = c[4 + 2 * 5 + coffst] * pivot;
-            c[4 + 3 * 5 + coffst] = c[4 + 3 * 5 + coffst] * pivot;
-            c[4 + 4 * 5 + coffst] = c[4 + 4 * 5 + coffst] * pivot;
-            r[4 + roffst] = r[4 + roffst] * pivot;
+            coeff = lhss[0, 4, lhsoffst1, lhsoffst2];
+            c[0, 0, coffst1, coffst2] -= coeff * c[4, 0, coffst1, coffst2];
+            c[0, 1, coffst1, coffst2] -= coeff * c[4, 1, coffst1, coffst2];
+            c[0, 2, coffst1, coffst2] -= coeff * c[4, 2, coffst1, coffst2];
+            c[0, 3, coffst1, coffst2] -= coeff * c[4, 3, coffst1, coffst2];
+            c[0, 4, coffst1, coffst2] -= coeff * c[4, 4, coffst1, coffst2];
+			r[0, roffst1, roffst2, roffst3] -= coeff * r[4, roffst1, roffst2, roffst3];
 
-            coeff = lhss[0 + 4 * 5 + lhsoffst];
-            c[0 + 0 * 5 + coffst] = c[0 + 0 * 5 + coffst] - coeff * c[4 + 0 * 5 + coffst];
-            c[0 + 1 * 5 + coffst] = c[0 + 1 * 5 + coffst] - coeff * c[4 + 1 * 5 + coffst];
-            c[0 + 2 * 5 + coffst] = c[0 + 2 * 5 + coffst] - coeff * c[4 + 2 * 5 + coffst];
-            c[0 + 3 * 5 + coffst] = c[0 + 3 * 5 + coffst] - coeff * c[4 + 3 * 5 + coffst];
-            c[0 + 4 * 5 + coffst] = c[0 + 4 * 5 + coffst] - coeff * c[4 + 4 * 5 + coffst];
-            r[0 + roffst] = r[0 + roffst] - coeff * r[4 + roffst];
+            coeff = lhss[1, 4, lhsoffst1, lhsoffst2];
+            c[1, 0, coffst1, coffst2] -= coeff * c[4, 0, coffst1, coffst2];
+            c[1, 1, coffst1, coffst2] -= coeff * c[4, 1, coffst1, coffst2];
+            c[1, 2, coffst1, coffst2] -= coeff * c[4, 2, coffst1, coffst2];
+            c[1, 3, coffst1, coffst2] -= coeff * c[4, 3, coffst1, coffst2];
+            c[1, 4, coffst1, coffst2] -= coeff * c[4, 4, coffst1, coffst2];
+            r[1, roffst1, roffst2, roffst3] -= coeff * r[4, roffst1, roffst2, roffst3];
 
-            coeff = lhss[1 + 4 * 5 + lhsoffst];
-            c[1 + 0 * 5 + coffst] = c[1 + 0 * 5 + coffst] - coeff * c[4 + 0 * 5 + coffst];
-            c[1 + 1 * 5 + coffst] = c[1 + 1 * 5 + coffst] - coeff * c[4 + 1 * 5 + coffst];
-            c[1 + 2 * 5 + coffst] = c[1 + 2 * 5 + coffst] - coeff * c[4 + 2 * 5 + coffst];
-            c[1 + 3 * 5 + coffst] = c[1 + 3 * 5 + coffst] - coeff * c[4 + 3 * 5 + coffst];
-            c[1 + 4 * 5 + coffst] = c[1 + 4 * 5 + coffst] - coeff * c[4 + 4 * 5 + coffst];
-            r[1 + roffst] = r[1 + roffst] - coeff * r[4 + roffst];
+            coeff = lhss[2, 4, lhsoffst1, lhsoffst2];
+            c[2, 0, coffst1, coffst2] -= coeff * c[4, 0, coffst1, coffst2];
+            c[2, 1, coffst1, coffst2] -= coeff * c[4, 1, coffst1, coffst2];
+            c[2, 2, coffst1, coffst2] -= coeff * c[4, 2, coffst1, coffst2];
+            c[2, 3, coffst1, coffst2] -= coeff * c[4, 3, coffst1, coffst2];
+            c[2, 4, coffst1, coffst2] -= coeff * c[4, 4, coffst1, coffst2];
+            r[2, roffst1, roffst2, roffst3] -= coeff * r[4, roffst1, roffst2, roffst3];
 
-            coeff = lhss[2 + 4 * 5 + lhsoffst];
-            c[2 + 0 * 5 + coffst] = c[2 + 0 * 5 + coffst] - coeff * c[4 + 0 * 5 + coffst];
-            c[2 + 1 * 5 + coffst] = c[2 + 1 * 5 + coffst] - coeff * c[4 + 1 * 5 + coffst];
-            c[2 + 2 * 5 + coffst] = c[2 + 2 * 5 + coffst] - coeff * c[4 + 2 * 5 + coffst];
-            c[2 + 3 * 5 + coffst] = c[2 + 3 * 5 + coffst] - coeff * c[4 + 3 * 5 + coffst];
-            c[2 + 4 * 5 + coffst] = c[2 + 4 * 5 + coffst] - coeff * c[4 + 4 * 5 + coffst];
-            r[2 + roffst] = r[2 + roffst] - coeff * r[4 + roffst];
-
-            coeff = lhss[3 + 4 * 5 + lhsoffst];
-            c[3 + 0 * 5 + coffst] = c[3 + 0 * 5 + coffst] - coeff * c[4 + 0 * 5 + coffst];
-            c[3 + 1 * 5 + coffst] = c[3 + 1 * 5 + coffst] - coeff * c[4 + 1 * 5 + coffst];
-            c[3 + 2 * 5 + coffst] = c[3 + 2 * 5 + coffst] - coeff * c[4 + 2 * 5 + coffst];
-            c[3 + 3 * 5 + coffst] = c[3 + 3 * 5 + coffst] - coeff * c[4 + 3 * 5 + coffst];
-            c[3 + 4 * 5 + coffst] = c[3 + 4 * 5 + coffst] - coeff * c[4 + 4 * 5 + coffst];
-            r[3 + roffst] = r[3 + roffst] - coeff * r[4 + roffst];
+            coeff = lhss[3, 4, lhsoffst1, lhsoffst2];
+            c[3, 0, coffst1, coffst2] -= coeff * c[4, 0, coffst1, coffst2];
+            c[3, 1, coffst1, coffst2] -= coeff * c[4, 1, coffst1, coffst2];
+            c[3, 2, coffst1, coffst2] -= coeff * c[4, 2, coffst1, coffst2];
+            c[3, 3, coffst1, coffst2] -= coeff * c[4, 3, coffst1, coffst2];
+            c[3, 4, coffst1, coffst2] -= coeff * c[4, 4, coffst1, coffst2];
+            r[3, roffst1, roffst2, roffst3] -= coeff * r[4, roffst1, roffst2, roffst3];
         }
 
-        public void binvrhs(double[] lhss, int lhsoffst, double[] r, int roffst)
+        public void binvrhs(double[,,,] lhss, int lhsoffst1, int lhsoffst2, double[,,,] r, int roffst1, int roffst2, int roffst3)
         {
             double pivot;
             double coeff;
 
-            pivot = 1 / lhss[0 + 0 * 5 + lhsoffst];
-            lhss[0 + 1 * 5 + lhsoffst] *= pivot;
-            lhss[0 + 2 * 5 + lhsoffst] *= pivot;
-            lhss[0 + 3 * 5 + lhsoffst] *= pivot;
-            lhss[0 + 4 * 5 + lhsoffst] *= pivot;
-            r[0 + roffst] *= pivot;
+            pivot = 1 / lhss[0, 0, lhsoffst1, lhsoffst2];
+            lhss[0, 1, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[0, 2, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[0, 3, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[0, 4, lhsoffst1, lhsoffst2] *= pivot;
+            r[0, roffst1, roffst2, roffst3] *= pivot;
 
-            coeff = lhss[1 + 0 + lhsoffst];
-            lhss[1 + 1 * 5 + lhsoffst] -= coeff * lhss[0 + 1 * 5 + lhsoffst];
-            lhss[1 + 2 * 5 + lhsoffst] -= coeff * lhss[0 + 2 * 5 + lhsoffst];
-            lhss[1 + 3 * 5 + lhsoffst] -= coeff * lhss[0 + 3 * 5 + lhsoffst];
-            lhss[1 + 4 * 5 + lhsoffst] -= coeff * lhss[0 + 4 * 5 + lhsoffst];
-            r[1 + roffst] -= coeff * r[0 + roffst];
+            coeff = lhss[1, 0, lhsoffst1, lhsoffst2];
+            lhss[1, 1, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[1, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[1, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[1, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 4, lhsoffst1, lhsoffst2];
+            r[1, roffst1, roffst2, roffst3] -= coeff * r[0, roffst1, roffst2, roffst3];
 
-            coeff = lhss[2 + 0 * 5 + lhsoffst];
-            lhss[2 + 1 * 5 + lhsoffst] -= coeff * lhss[0 + 1 * 5 + lhsoffst];
-            lhss[2 + 2 * 5 + lhsoffst] -= coeff * lhss[0 + 2 * 5 + lhsoffst];
-            lhss[2 + 3 * 5 + lhsoffst] -= coeff * lhss[0 + 3 * 5 + lhsoffst];
-            lhss[2 + 4 * 5 + lhsoffst] -= coeff * lhss[0 + 4 * 5 + lhsoffst];
-            r[2 + roffst] -= coeff * r[0 + roffst];
+            coeff = lhss[2, 0, lhsoffst1, lhsoffst2];
+            lhss[2, 1, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[2, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[2, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[2, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 4, lhsoffst1, lhsoffst2];
+            r[2, roffst1, roffst2, roffst3] -= coeff * r[0, roffst1, roffst2, roffst3];
 
-            coeff = lhss[3 + 0 * 5 + lhsoffst];
-            lhss[3 + 1 * 5 + lhsoffst] -= coeff * lhss[0 + 1 * 5 + lhsoffst];
-            lhss[3 + 2 * 5 + lhsoffst] -= coeff * lhss[0 + 2 * 5 + lhsoffst];
-            lhss[3 + 3 * 5 + lhsoffst] -= coeff * lhss[0 + 3 * 5 + lhsoffst];
-            lhss[3 + 4 * 5 + lhsoffst] -= coeff * lhss[0 + 4 * 5 + lhsoffst];
-            r[3 + roffst] -= coeff * r[0 + roffst];
+            coeff = lhss[3, 0, lhsoffst1, lhsoffst2];
+            lhss[3, 1, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[3, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[3, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[3, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 4, lhsoffst1, lhsoffst2];
+            r[3, roffst1, roffst2, roffst3] -= coeff * r[0, roffst1, roffst2, roffst3];
 
-            coeff = lhss[4 + 0 * 5 + lhsoffst];
-            lhss[4 + 1 * 5 + lhsoffst] -= coeff * lhss[0 + 1 * 5 + lhsoffst];
-            lhss[4 + 2 * 5 + lhsoffst] -= coeff * lhss[0 + 2 * 5 + lhsoffst];
-            lhss[4 + 3 * 5 + lhsoffst] -= coeff * lhss[0 + 3 * 5 + lhsoffst];
-            lhss[4 + 4 * 5 + lhsoffst] -= coeff * lhss[0 + 4 * 5 + lhsoffst];
-            r[4 + roffst] -= coeff * r[0 + roffst];
+            coeff = lhss[4, 0, lhsoffst1, lhsoffst2];
+            lhss[4, 1, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[4, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[4, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[4, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[0, 4, lhsoffst1, lhsoffst2];
+            r[4, roffst1, roffst2, roffst3] -= coeff * r[0, roffst1, roffst2, roffst3];
+			
 
-            pivot = 1 / lhss[1 + 1 * 5 + lhsoffst];
-            lhss[1 + 2 * 5 + lhsoffst] *= pivot;
-            lhss[1 + 3 * 5 + lhsoffst] *= pivot;
-            lhss[1 + 4 * 5 + lhsoffst] *= pivot;
-            r[1 + roffst] *= pivot;
+            pivot = 1 / lhss[1, 1, lhsoffst1, lhsoffst2];
+            lhss[1, 2, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[1, 3, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[1, 4, lhsoffst1, lhsoffst2] *= pivot;
+            r[1, roffst1, roffst2, roffst3] *= pivot;
 
-            coeff = lhss[0 + 1 * 5 + lhsoffst];
-            lhss[0 + 2 * 5 + lhsoffst] -= coeff * lhss[1 + 2 * 5 + lhsoffst];
-            lhss[0 + 3 * 5 + lhsoffst] -= coeff * lhss[1 + 3 * 5 + lhsoffst];
-            lhss[0 + 4 * 5 + lhsoffst] -= coeff * lhss[1 + 4 * 5 + lhsoffst];
-            r[0 + roffst] -= coeff * r[1 + roffst];
+            coeff = lhss[0, 1, lhsoffst1, lhsoffst2];
+            lhss[0, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[0, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[0, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 4, lhsoffst1, lhsoffst2];
+            r[0, roffst1, roffst2, roffst3] -= coeff * r[1, roffst1, roffst2, roffst3];
 
-            coeff = lhss[2 + 1 * 5 + lhsoffst];
-            lhss[2 + 2 * 5 + lhsoffst] -= coeff * lhss[1 + 2 * 5 + lhsoffst];
-            lhss[2 + 3 * 5 + lhsoffst] -= coeff * lhss[1 + 3 * 5 + lhsoffst];
-            lhss[2 + 4 * 5 + lhsoffst] -= coeff * lhss[1 + 4 * 5 + lhsoffst];
-            r[2 + roffst] -= coeff * r[1 + roffst];
+            coeff = lhss[2, 1, lhsoffst1, lhsoffst2];
+            lhss[2, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[2, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[2, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 4, lhsoffst1, lhsoffst2];
+            r[2, roffst1, roffst2, roffst3] -= coeff * r[1, roffst1, roffst2, roffst3];
 
-            coeff = lhss[3 + 1 * 5 + lhsoffst];
-            lhss[3 + 2 * 5 + lhsoffst] -= coeff * lhss[1 + 2 * 5 + lhsoffst];
-            lhss[3 + 3 * 5 + lhsoffst] -= coeff * lhss[1 + 3 * 5 + lhsoffst];
-            lhss[3 + 4 * 5 + lhsoffst] -= coeff * lhss[1 + 4 * 5 + lhsoffst];
-            r[3 + roffst] -= coeff * r[1 + roffst];
+            coeff = lhss[3, 1, lhsoffst1, lhsoffst2];
+            lhss[3, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[3, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[3, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 4, lhsoffst1, lhsoffst2];
+            r[3, roffst1, roffst2, roffst3] -= coeff * r[1, roffst1, roffst2, roffst3];
 
-            coeff = lhss[4 + 1 * 5 + lhsoffst];
-            lhss[4 + 2 * 5 + lhsoffst] -= coeff * lhss[1 + 2 * 5 + lhsoffst];
-            lhss[4 + 3 * 5 + lhsoffst] -= coeff * lhss[1 + 3 * 5 + lhsoffst];
-            lhss[4 + 4 * 5 + lhsoffst] -= coeff * lhss[1 + 4 * 5 + lhsoffst];
-            r[4 + roffst] -= coeff * r[1 + roffst];
+            coeff = lhss[4, 1, lhsoffst1, lhsoffst2];
+            lhss[4, 2, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[4, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[4, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[1, 4, lhsoffst1, lhsoffst2];
+            r[4, roffst1, roffst2, roffst3] -= coeff * r[1, roffst1, roffst2, roffst3];
+			
 
-            pivot = 1 / lhss[2 + 2 * 5 + lhsoffst];
-            lhss[2 + 3 * 5 + lhsoffst] *= pivot;
-            lhss[2 + 4 * 5 + lhsoffst] *= pivot;
-            r[2 + roffst] *= pivot;
+            pivot = 1 / lhss[2, 2, lhsoffst1, lhsoffst2];
+            lhss[2, 3, lhsoffst1, lhsoffst2] *= pivot;
+            lhss[2, 4, lhsoffst1, lhsoffst2] *= pivot;
+            r[2, roffst1, roffst2, roffst3] *= pivot;
 
-            coeff = lhss[0 + 2 * 5 + lhsoffst];
-            lhss[0 + 3 * 5 + lhsoffst] -= coeff * lhss[2 + 3 * 5 + lhsoffst];
-            lhss[0 + 4 * 5 + lhsoffst] -= coeff * lhss[2 + 4 * 5 + lhsoffst];
-            r[0 + roffst] -= coeff * r[2 + roffst];
+            coeff = lhss[0, 2, lhsoffst1, lhsoffst2];
+            lhss[0, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[0, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 4, lhsoffst1, lhsoffst2];
+            r[0, roffst1, roffst2, roffst3] -= coeff * r[2, roffst1, roffst2, roffst3];
 
-            coeff = lhss[1 + 2 * 5 + lhsoffst];
-            lhss[1 + 3 * 5 + lhsoffst] -= coeff * lhss[2 + 3 * 5 + lhsoffst];
-            lhss[1 + 4 * 5 + lhsoffst] -= coeff * lhss[2 + 4 * 5 + lhsoffst];
-            r[1 + roffst] -= coeff * r[2 + roffst];
+            coeff = lhss[1, 2, lhsoffst1, lhsoffst2];
+            lhss[1, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[1, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 4, lhsoffst1, lhsoffst2];
+            r[1, roffst1, roffst2, roffst3] -= coeff * r[2, roffst1, roffst2, roffst3];
 
-            coeff = lhss[3 + 2 * 5 + lhsoffst];
-            lhss[3 + 3 * 5 + lhsoffst] -= coeff * lhss[2 + 3 * 5 + lhsoffst];
-            lhss[3 + 4 * 5 + lhsoffst] -= coeff * lhss[2 + 4 * 5 + lhsoffst];
-            r[3 + roffst] -= coeff * r[2 + roffst];
+            coeff = lhss[3, 2, lhsoffst1, lhsoffst2];
+            lhss[3, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[3, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 4, lhsoffst1, lhsoffst2];
+            r[3, roffst1, roffst2, roffst3] -= coeff * r[2, roffst1, roffst2, roffst3];
 
-            coeff = lhss[4 + 2 * 5 + lhsoffst];
-            lhss[4 + 3 * 5 + lhsoffst] -= coeff * lhss[2 + 3 * 5 + lhsoffst];
-            lhss[4 + 4 * 5 + lhsoffst] -= coeff * lhss[2 + 4 * 5 + lhsoffst];
-            r[4 + roffst] -= coeff * r[2 + roffst];
+            coeff = lhss[4, 2, lhsoffst1, lhsoffst2];
+            lhss[4, 3, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[4, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[2, 4, lhsoffst1, lhsoffst2];
+            r[4, roffst1, roffst2, roffst3] -= coeff * r[2, roffst1, roffst2, roffst3];
+			
 
-            pivot = 1 / lhss[3 + 3 * 5 + lhsoffst];
-            lhss[3 + 4 * 5 + lhsoffst] *= pivot;
-            r[3 + roffst] *= pivot;
+            pivot = 1 / lhss[3, 3, lhsoffst1, lhsoffst2];
+            lhss[3, 4, lhsoffst1, lhsoffst2] *= pivot;
+            r[3, roffst1, roffst2, roffst3] *= pivot;
 
-            coeff = lhss[0 + 3 * 5 + lhsoffst];
-            lhss[0 + 4 * 5 + lhsoffst] -= coeff * lhss[3 + 4 * 5 + lhsoffst];
-            r[0 + roffst] -= coeff * r[3 + roffst];
+            coeff = lhss[0, 3, lhsoffst1, lhsoffst2];
+            lhss[0, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[3, 4, lhsoffst1, lhsoffst2];
+            r[0, roffst1, roffst2, roffst3] -= coeff * r[3, roffst1, roffst2, roffst3];
 
-            coeff = lhss[1 + 3 * 5 + lhsoffst];
-            lhss[1 + 4 * 5 + lhsoffst] -= coeff * lhss[3 + 4 * 5 + lhsoffst];
-            r[1 + roffst] -= coeff * r[3 + roffst];
+            coeff = lhss[1, 3, lhsoffst1, lhsoffst2];
+            lhss[1, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[3, 4, lhsoffst1, lhsoffst2];
+            r[1, roffst1, roffst2, roffst3] -= coeff * r[3, roffst1, roffst2, roffst3];
 
-            coeff = lhss[2 + 3 * 5 + lhsoffst];
-            lhss[2 + 4 * 5 + lhsoffst] -= coeff * lhss[3 + 4 * 5 + lhsoffst];
-            r[2 + roffst] -= coeff * r[3 + roffst];
+            coeff = lhss[2, 3, lhsoffst1, lhsoffst2];
+            lhss[2, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[3, 4, lhsoffst1, lhsoffst2];
+            r[2, roffst1, roffst2, roffst3] -= coeff * r[3, roffst1, roffst2, roffst3];
 
-            coeff = lhss[4 + 3 * 5 + lhsoffst];
-            lhss[4 + 4 * 5 + lhsoffst] -= coeff * lhss[3 + 4 * 5 + lhsoffst];
-            r[4 + roffst] -= coeff * r[3 + roffst];
+            coeff = lhss[4, 3, lhsoffst1, lhsoffst2];
+            lhss[4, 4, lhsoffst1, lhsoffst2] -= coeff * lhss[3, 4, lhsoffst1, lhsoffst2];
+            r[4, roffst1, roffst2, roffst3] -= coeff * r[3, roffst1, roffst2, roffst3];
 
 
-            pivot = 1 / lhss[4 + 4 * 5 + lhsoffst];
-            r[4 + roffst] *= pivot;
+            pivot = 1 / lhss[4, 4, lhsoffst1, lhsoffst2];
+            r[4, roffst1, roffst2, roffst3] *= pivot;
 
-            coeff = lhss[0 + 4 * 5 + lhsoffst];
-            r[0 + roffst] -= coeff * r[4 + roffst];
+            coeff = lhss[0, 4, lhsoffst1, lhsoffst2];
+            r[0, roffst1, roffst2, roffst3] -= coeff * r[4, roffst1, roffst2, roffst3];
 
-            coeff = lhss[1 + 4 * 5 + lhsoffst];
-            r[1 + roffst] -= coeff * r[4 + roffst];
+            coeff = lhss[1, 4, lhsoffst1, lhsoffst2];
+            r[1, roffst1, roffst2, roffst3] -= coeff * r[4, roffst1, roffst2, roffst3];
 
-            coeff = lhss[2 + 4 * 5 + lhsoffst];
-            r[2 + roffst] -= coeff * r[4 + roffst];
+            coeff = lhss[2, 4, lhsoffst1, lhsoffst2];
+            r[2, roffst1, roffst2, roffst3] -= coeff * r[4, roffst1, roffst2, roffst3];
 
-            coeff = lhss[3 + 4 * 5 + lhsoffst];
-            r[3 + roffst] -= coeff * r[4 + roffst];
+            coeff = lhss[3, 4, lhsoffst1, lhsoffst2];
+            r[3, roffst1, roffst2, roffst3] -= coeff * r[4, roffst1, roffst2, roffst3];
         }
     }
 }
