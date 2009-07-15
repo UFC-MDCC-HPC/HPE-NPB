@@ -98,13 +98,13 @@ public class LUBase /* : Thread*/{
 //   and l2norm are similarly padded
 //---------------------------------------------------------------------
 
-  protected double[] u, rsd, frct;
+  protected double[,,,] u, rsd, frct;
   protected int isize1, jsize1, ksize1; 
 
-  protected double[] flux; 
+  protected double[,] flux; 
   protected int isize2;
 
-  protected double[] qs, rho_i;
+  protected double[,,] qs, rho_i;
   protected int jsize3, ksize3;
 //---------------------------------------------------------------------
 //   output control parameters
@@ -118,25 +118,25 @@ public class LUBase /* : Thread*/{
   protected double dt, omega, frc, ttotal;
   protected double[] tolrsd = new double[5],rsdnm = new double[5], errnm = new double[5];
 
-  protected double[]   a, b, c, d;
+  protected double[,,,]   a, b, c, d;
   protected int isize4, jsize4, ksize4;
 //---------------------------------------------------------------------
 //   coefficients of the exact solution
 //---------------------------------------------------------------------
-  protected static double[] ce ={ 
-                 2.0, 1.0, 2.0, 2.0, 5.0,
-    		 0.0, 0.0, 2.0, 2.0, 4.0,
-    		 0.0, 0.0, 0.0, 0.0, 3.0,
-    		 4.0, 0.0, 0.0, 0.0, 2.0,
-    		 5.0, 1.0, 0.0, 0.0, .1 ,
-    		 3.0, 2.0, 2.0, 2.0, .4 ,
-    		 .5 , 3.0, 3.0, 3.0, .3 ,
-    		 .02, .01, .04, .03, .05,
-    		 .01, .03, .03, .05, .04,
-    		 .03, .02, .05, .04, .03,
-    		 .5 , .4 , .3 , .2 , .1 ,
-    		 .4 , .3 , .5 , .1 , .3 ,
-    		 .3 , .5 , .4 , .3 , .2
+  protected static double[,] ce ={{ 
+                 2.0, 1.0, 2.0, 2.0, 5.0},
+			{0.0, 0.0, 2.0, 2.0, 4.0},
+			{0.0, 0.0, 0.0, 0.0, 3.0},
+			{4.0, 0.0, 0.0, 0.0, 2.0},
+			{5.0, 1.0, 0.0, 0.0, .1 },
+			{3.0, 2.0, 2.0, 2.0, .4 },
+			{.5 , 3.0, 3.0, 3.0, .3 },
+			{.02, .01, .04, .03, .05},
+			{.01, .03, .03, .05, .04},
+			{.03, .02, .05, .04, .03},
+			{.5 , .4 , .3 , .2 , .1} ,
+			{.4 , .3 , .5 , .1 , .3} ,
+			{.3 , .5 , .4 , .3 , .2}
   	       };
 //---------------------------------------------------------------------
 //   timers
@@ -180,25 +180,25 @@ public class LUBase /* : Thread*/{
       break;
     }
 
-    u = new double[5*(isiz1/2*2+1)*(isiz2/2*2+1)*isiz3];
-    rsd = new double[5*(isiz1/2*2+1)*(isiz2/2*2+1)*isiz3];
-    frct = new double[5*(isiz1/2*2+1)*(isiz2/2*2+1)*isiz3];
+    u = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
+    rsd = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
+    frct = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
     isize1=5;
     jsize1=5*(isiz1/2*2+1);
     ksize1=5*(isiz1/2*2+1)*(isiz2/2*2+1);
     
-    flux= new double[5*isiz1];
+    flux= new double[isiz1,5];
     isize2=5;
 
-    qs = new double[(isiz1/2*2+1)*(isiz2/2*2+1)*isiz3];
-    rho_i = new double[(isiz1/2*2+1)*(isiz2/2*2+1)*isiz3];
+    qs = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1)];
+    rho_i = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1)];
     jsize3 = (isiz1/2*2+1);
     ksize3 = (isiz1/2*2+1)*(isiz2/2*2+1);
 
-    a = new double[5*5*(isiz1/2*2+1)*(isiz2)]; 
-    b = new double[5*5*(isiz1/2*2+1)*(isiz2)];
-    c = new double[5*5*(isiz1/2*2+1)*(isiz2)]; 
-    d = new double[5*5*(isiz1/2*2+1)*(isiz2)];
+    a = new double[(isiz2),(isiz1/2*2+1),5,5]; 
+    b = new double[(isiz2),(isiz1/2*2+1),5,5];
+    c = new double[(isiz2),(isiz1/2*2+1),5,5]; 
+    d = new double[(isiz2),(isiz1/2*2+1),5,5];
 
     isize4=5;
     jsize4=5*5;
@@ -295,19 +295,19 @@ public class LUBase /* : Thread*/{
     double zeta = (k-1) / ( nz  - 1 );
 
     for(int m=0;m<=4;m++){
-      u0[m] =  ce[m+0*5]
-              + (ce[m+1*5]
-              + (ce[m+4*5]
-              + (ce[m+7*5]
-              +  ce[m+10*5] * xi) * xi) * xi) * xi
-              + (ce[m+2*5]
-              + (ce[m+5*5]
-              + (ce[m+8*5]
-              +  ce[m+11*5] * eta) * eta) * eta) * eta
-              + (ce[m+3*5]
-              + (ce[m+6*5]
-              + (ce[m+9*5]
-              +  ce[m+12*5] * zeta) * zeta) * zeta) * zeta;
+      u0[m] =  ce[0,m]
+              + (ce[1,m]
+              + (ce[4,m]
+              + (ce[7,m]
+              +  ce[10,m] * xi) * xi) * xi) * xi
+              + (ce[2,m]
+              + (ce[5,m]
+              + (ce[8,m]
+              +  ce[11,m] * eta) * eta) * eta) * eta
+              + (ce[3,m]
+              + (ce[6,m]
+              + (ce[9,m]
+              +  ce[12,m] * zeta) * zeta) * zeta) * zeta;
       }
   }
   protected double max(double a, double b){
