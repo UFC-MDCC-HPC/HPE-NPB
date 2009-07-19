@@ -244,10 +244,10 @@ namespace NPB3_0_JAV{
 
 						tv[j,i,m] =  v[k,j,i,m]
 						- omega * (  ldz[j, i, 0, m] * v[k-1, j, i, 0]
-						           + ldz[j, i, 0, m] * v[k-1, j, i, 0]
-						           + ldz[j, i, 0, m] * v[k-1, j, i, 0]
-						           + ldz[j, i, 0, m] * v[k-1, j, i, 0]
-						           + ldz[j, i, 0, m] * v[k-1, j, i, 0]  );
+						           + ldz[j, i, 1, m] * v[k-1, j, i, 1]
+						           + ldz[j, i, 2, m] * v[k-1, j, i, 2]
+						           + ldz[j, i, 3, m] * v[k-1, j, i, 3]
+						           + ldz[j, i, 4, m] * v[k-1, j, i, 4]  );
 					}
 				}
 			}
@@ -289,14 +289,14 @@ namespace NPB3_0_JAV{
 					tmat[2, 1] =  tmat[2, 1]
 					- tmp * tmat[2, 0];
 					tmat[3, 1] =  tmat[3, 1]
-					- tmp * tmat[0, 3];
+					- tmp * tmat[3, 0];
 					tmat[4, 1] =  tmat[4, 1]
-					- tmp * tmat[0, 4];
+					- tmp * tmat[4, 0];
 					tv[j, i, 1] = tv[j, i, 1]
 					- tv[j, i, 0] * tmp;
 
 					tmp = tmp1 * tmat[0, 2];
-					tmat[1, 2] =  tmat[0, 2]
+					tmat[1, 2] =  tmat[1, 2]
 					- tmp * tmat[1, 0];
 					tmat[2, 2] =  tmat[2, 2]
 					- tmp * tmat[2, 0];
@@ -436,11 +436,11 @@ namespace NPB3_0_JAV{
 				for(i=iend-1;i>=ist-1;i--){
 					for(m=0;m<=4;m++){
 						tv[j, i, m] = 
-							omega * (  udz[j, i, 0, m] * v[k-1, j, i, 0]
-							         + udz[j, i, 1, m] * v[k-1, j, i, 1]
-							         + udz[j, i, 2, m] * v[k-1, j, i, 2]
-							         + udz[j, i, 3, m] * v[k-1, j, i, 3]
-							         + udz[j, i, 4, m] * v[k-1, j, i, 4] );
+							omega * (  udz[j, i, 0, m] * v[k+1, j, i, 0]
+							         + udz[j, i, 1, m] * v[k+1, j, i, 1]
+							         + udz[j, i, 2, m] * v[k+1, j, i, 2]
+							         + udz[j, i, 3, m] * v[k+1, j, i, 3]
+							         + udz[j, i, 4, m] * v[k+1, j, i, 4] );
 					}
 				}
 			}
@@ -503,7 +503,7 @@ namespace NPB3_0_JAV{
 					tmat[1, 3] =  tmat[1, 3]
 					- tmp * tmat[1, 0];
 					tmat[2, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 0];
+					- tmp * tmat[2, 0];
 					tmat[3, 3] =  tmat[3, 3]
 					- tmp * tmat[3, 0];
 					tmat[4, 3] =  tmat[4, 3]
@@ -527,7 +527,7 @@ namespace NPB3_0_JAV{
 					tmp = tmp1 * tmat[1, 2];
 					tmat[2, 2] =  tmat[2, 2]
 					- tmp * tmat[2, 1];
-					tmat[3, 2] =  tmat[3, 25]
+					tmat[3, 2] =  tmat[3, 2]
 					- tmp * tmat[3, 1];
 					tmat[4, 2] =  tmat[4, 2]
 					- tmp * tmat[4, 1];
@@ -587,7 +587,7 @@ namespace NPB3_0_JAV{
 					tv[j, i, 3] = tv[j, i, 3]
 					- tmat[4, 3] * tv[j, i, 4];
 					tv[j, i, 3] = tv[j, i, 3]
-					/ tmat[4, 3];
+					/ tmat[3, 3];
 
 					tv[j, i, 2] = tv[j, i, 2]
 					- tmat[3, 2] * tv[j, i, 3]
@@ -610,15 +610,15 @@ namespace NPB3_0_JAV{
 					tv[j, i, 0] = tv[j, i, 0]
 					/ tmat[0, 0];
 
-					v[k, i, j, 0] = v[k, i, j, 0] 
+					v[k,j , i, 0] = v[k,j , i, 0] 
 					- tv[j, i, 0];
-					v[k, i, j, 1] = v[k, i, j, 1] 
+					v[k, j, i, 1] = v[k, j, i, 1] 
 					- tv[j, i, 1];
-					v[k, i, j, 2] = v[k, i, j, 2] 
+					v[k, j, i, 2] = v[k, j, i, 2] 
 					- tv[j, i, 2];
-					v[k, i, j, 3] = v[k, i, j, 3] 
+					v[k, j, i, 3] = v[k, j, i, 3] 
 					- tv[j, i, 3];
-					v[k, i, j, 4] = v[k, i, j, 4] 
+					v[k, j, i, 4] = v[k, j, i, 4] 
 					- tv[j, i, 4];	    
 				}
 			}
@@ -746,7 +746,7 @@ namespace NPB3_0_JAV{
             for(i=ist-1;i<=nx-1;i++){
                tmp = 1.0 / rsd[k, j, i, 0];
 
-               u21i = tmp * rsd[k, j, i, 0];
+               u21i = tmp * rsd[k, j, i, 1];
                u31i = tmp * rsd[k, j, i, 2];
                u41i = tmp * rsd[k, j, i, 3];
                u51i = tmp * rsd[k, j, i, 4];
@@ -796,6 +796,9 @@ namespace NPB3_0_JAV{
                                    - 2.0 * rsd[k, j, i, 4]
                                    +           rsd[k, j, i+1, 4] );
             }
+					
+					
+					
 
 //---------------------------------------------------------------------
 //   Fourth-order dissipation
@@ -1787,8 +1790,8 @@ namespace NPB3_0_JAV{
       int i, j, k;
       int ibeg, ifin, ifin1;
       int jbeg, jfin, jfin1;
-      double[,]  phi1 = new double[(isiz2+2),(isiz3+2)], 
-              phi2 = new double[(isiz2+2),(isiz3+2)];
+      double[,]  phi1 = new double[(isiz3+2),(isiz2+2)]; 
+      double[,]  phi2 = new double[(isiz3+2),(isiz2+2)];
       double  frc1, frc2, frc3;
       int isize5 = (isiz2+2);
 
@@ -2389,7 +2392,7 @@ namespace NPB3_0_JAV{
                  - dssp * ( - 4.0 * u[1, j, i, m]
                             + 6.0 * u[2, j, i, m]
                             - 4.0 * u[3, j, i, m]
-                            +       u[3, j, i, m] );
+                            +       u[4, j, i, m] );
             }
 
             for(k=3;k<=nz - 4;k++){
@@ -2552,7 +2555,7 @@ namespace NPB3_0_JAV{
   public double ssor(){
       int i, j, k, m, n;
       int istep;
-      double[]  delunm = new double[5]; double[,,] tv = new double[isiz2,(isiz1/2*2+1),5];
+      double[]  delunm = new double[5]; double[,,] tv = new double[isiz2,isiz1,5];
       double tmp = 1.0 / ( omega * ( 2.0 - omega ) );
 //---------------------------------------------------------------------
 //   begin pseudo-time stepping iterations
@@ -2745,7 +2748,7 @@ namespace NPB3_0_JAV{
     int i, j, k, m, n;
     int istep;
     double  tmp;
-    double[]  delunm = new double[5]; double[,,] tv = new double[isiz2,(isiz1/2*2+1),5];
+    double[]  delunm = new double[5]; double[,,] tv = new double[isiz2,isiz1,5];
  
 //---------------------------------------------------------------------
 //   begin pseudo-time stepping iterations
