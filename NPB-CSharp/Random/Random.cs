@@ -47,6 +47,8 @@ namespace NPB3_0_JAV {
 
 public class Random{
 
+  protected static int REAL = 0, IMAG = 1;
+
   //default seed
   public double tran = 314159265.0;   //First 9 digits of PI
   //Random Number Multiplier
@@ -129,6 +131,19 @@ public class Random{
     }
     return (double) Lx;
   }
+  public double vranlc2(double n, double x, double a, double[,] y,int offset){ 
+    long Lx = (long)x;
+    long La = (long)a;
+
+    for(int i=0;i<n;i++){
+      Lx   = (Lx*La) & (i246m1);
+      y[i+offset,REAL] = (double)(d2m46* Lx);
+      Lx   = (Lx*La) & (i246m1);
+      y[i+offset,IMAG] = (double)(d2m46* Lx);				
+    }
+    return (double) Lx;
+  }
+
   public double seed;
   public double ipow46(double a, int exponent ){
       int n, n2;
