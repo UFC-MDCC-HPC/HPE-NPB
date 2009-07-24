@@ -1375,7 +1375,12 @@ namespace NPB3_0_JAV
             i = cell_coord[0, 0] /* - 1 */;
             j = cell_coord[0, 1] /* - 1 */;
 
+
             predecessor[0] = mod(i - 1 + p, p) + p * j;
+            // if (predecessor[0] == 8)
+            {
+                Console.WriteLine(node + ": PREDECESSOR[0] : " + i + "," + j + "," + p + " ; " + predecessor[0]);
+            }
             predecessor[1] = i + p * mod(j - 1 + p, p);
             predecessor[2] = mod(i + 1, p) + p * mod(j - 1 + p, p);
 
