@@ -45,7 +45,7 @@ namespace NPB3_0_JAV.FTThreads
     public class FTBase /* : Thread*/
     {
         public static String BMName = "FT";
-        public char CLASS = 'S';
+        public char CLASS = 'U';
 
         protected int nx, ny, nz, maxdim, niter_default;
 
@@ -70,7 +70,7 @@ namespace NPB3_0_JAV.FTThreads
 
         public FTBase() { }
 
-        public FTBase(char clss, int np, bool serial)
+        public FTBase(char clss, int np)
         {
             CLASS = clss;
             num_threads = np;
@@ -102,18 +102,9 @@ namespace NPB3_0_JAV.FTThreads
                     break;
             }
             maxdim = max(nx, max(ny, nx));
-            if (serial)
-            {
-                scr =   new double[maxdim, (maxdim + 1), 2];  // scr = new double[2 * (maxdim + 1) * maxdim];
-                plane = new double[1, maxdim, (maxdim + 1), 2];  // plane = new double[2 * (maxdim + 1) * maxdim];
-            }
-            //isize2 = 2;
-            //isize3 = 2;
-            //jsize3 = 2 * (ny + 1);
-            //ksize3 = 2 * (ny + 1) * nx;
-            //isize4 = 2;
-            //jsize4 = 2 * (ny + 1);
-            //ksize4 = 2 * (ny + 1) * nz;
+            scr =   new double[maxdim, (maxdim + 1), 2];  // scr = new double[2 * (maxdim + 1) * maxdim];
+            plane = new double[1, maxdim, (maxdim + 1), 2];  // plane = new double[2 * (maxdim + 1) * maxdim];
+
             //complex values
             checksum = new double[niter_default,2]; //isize2=2; aqui  // checksum = new double[2 * niter_default];
 

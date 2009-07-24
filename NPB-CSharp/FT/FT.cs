@@ -58,27 +58,23 @@ namespace NPB3_0_JAV
     {
         public int bid = -1;
         public BMResults results;
-        public bool serial = true;
         bool done = false;
-        public FT(char clss, int np, bool ser)
-            : base(clss, np, ser)
+        public FT(char clss, int np)
+            : base(clss, np)
         {
-            //super(clss, np, ser);
-            serial = ser;
         }
         static void Main(String[] argv)
         {
             FT ft = null;
 
             BMArgs.ParseCmdLineArgs(argv, BMName);
-            //char CLSS = BMArgs.CLASS;
-            char CLSS = 'S';
+            char CLSS = BMArgs.CLASS;
+            //char CLSS = 'S';
             int np = BMArgs.num_threads;
-            bool serial = BMArgs.serial;
-
+ 
             try
             {
-                ft = new FT(CLSS, np, serial);
+                ft = new FT(CLSS, np);
             }
             catch (OutOfMemoryException e)
             {
@@ -92,7 +88,7 @@ namespace NPB3_0_JAV
 
         public void runBenchMark()
         {
-            BMArgs.Banner(BMName, CLASS, serial, num_threads);
+            BMArgs.Banner(BMName, CLASS, true, num_threads);
             Console.WriteLine(" Size = " + nx + " X " + ny + " X " + nz
                                + " niter = " + niter_default);
             setTimers();
@@ -116,7 +112,7 @@ namespace NPB3_0_JAV
                           getMFLOPS(time, nx, ny, nz),
                           "floating point",
                           verified,
-                          serial,
+                          true,
                           num_threads,
                           bid);
             results.print();
@@ -174,7 +170,7 @@ namespace NPB3_0_JAV
                 if (timeron) timer.stop(15);
 
                 if (timeron) timer.start(10);
-                CalculateChecksum(checksum /*, REAL + it * isize2*/, it, xnt, ny, nz, nx);  //M
+                CalculateChecksum(checksum, it, xnt, ny, nz, nx);  //M
                 if (timeron) timer.stop(10);
             }
         }
@@ -244,13 +240,12 @@ namespace NPB3_0_JAV
         public void fftXYZ(int sign, double[,,,] x, double[,] exp1, double[,] exp2, double[,] exp3, int n1, int n2, int n3)
         {
             int i = 0, j = 0, k, log;
-           
- 
+            
             if (timeron) timer.start(3);
 
             log = ilog2(n2);
             if (timeron) timer.start(7);
-            for (k = 0; k < n3; k++) Swarztrauber(sign, log, n1, n2, x, k , n1, exp2, scr);  // aqui Swarztrauber(sign, log, n1, n2, x, k * ksize3, n1, exp2, scr);
+            for (k = 0; k < n3; k++) Swarztrauber(sign, log, n1, n2, x, k, n1, exp2, scr);  // aqui Swarztrauber(sign, log, n1, n2, x, k * ksize3, n1, exp2, scr);
             if (timeron) timer.stop(7);
 
             log = ilog2(n1);
