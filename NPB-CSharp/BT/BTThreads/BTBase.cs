@@ -98,20 +98,20 @@ namespace NPB3_0_JAV.BTThreads
                comz1, comz4, comz5, comz6, c3c4tx3, c3c4ty3,
                c3c4tz3, c2iv, con43, con16;
 
-        protected static double[] ce = {
-                  2.0, 1.0, 2.0, 2.0, 5.0,
-                  0.0, 0.0, 2.0, 2.0, 4.0,
-                  0.0, 0.0, 0.0, 0.0, 3.0,
-                  4.0, 0.0, 0.0, 0.0, 2.0,
-                  5.0, 1.0, 0.0, 0.0, 0.1,
-                  3.0, 2.0, 2.0, 2.0, 0.4,
-                  0.5, 3.0, 3.0, 3.0, 0.3,
-                  0.02, 0.01, 0.04, 0.03, 0.05,
-                  0.01, 0.03, 0.03, 0.05, 0.04,
-                  0.03, 0.02, 0.05, 0.04, 0.03,
-                  0.5, 0.4, 0.3, 0.2, 0.1,
-                  0.4, 0.3, 0.5, 0.1, 0.3,
-                  0.3, 0.5, 0.4, 0.3, 0.2};
+        protected static double[,] ce = {
+               	{2.0, 1.0, 2.0, 2.0, 5.0},
+               	{0.0, 0.0, 2.0, 2.0, 4.0},
+               	{0.0, 0.0, 0.0, 0.0, 3.0},
+               	{4.0, 0.0, 0.0, 0.0, 2.0},
+               	{5.0, 1.0, 0.0, 0.0, 0.1},
+               	{3.0, 2.0, 2.0, 2.0, 0.4},
+               	{0.5, 3.0, 3.0, 3.0, 0.3},
+               	{0.02, 0.01, 0.04, 0.03, 0.05},
+               	{0.01, 0.03, 0.03, 0.05, 0.04},
+               	{0.03, 0.02, 0.05, 0.04, 0.03},
+               	{0.5, 0.4, 0.3, 0.2, 0.1},
+               	{0.4, 0.3, 0.5, 0.1, 0.3},
+               	{0.3, 0.5, 0.4, 0.3, 0.2}};
 
         //timer constants
         public bool timeron = false;
@@ -254,7 +254,6 @@ namespace NPB3_0_JAV.BTThreads
                 rhsadder[ii].start();
             }
         }
-        */
 
         public void set_interval(int problem_size, int[] interval)
         {
@@ -276,7 +275,8 @@ namespace NPB3_0_JAV.BTThreads
                 array[i][1] = array[i - 1][1] + interval[i];
             }
         }
-
+		*/
+		
         public double dmax1(double a, double b)
         {
             if (a < b) return b; else return a;
@@ -408,13 +408,13 @@ namespace NPB3_0_JAV.BTThreads
         {
             for (int m = 0; m < 5; m++)
             {
-                dtemp[m + dtmpoffst] = ce[m + 0 * 5]
-                                     + xi * (ce[m + 1 * 5] + xi * (ce[m + 4 * 5]
-                                     + xi * (ce[m + 7 * 5] + xi * ce[m + 10 * 5])))
-                                     + eta * (ce[m + 2 * 5] + eta * (ce[m + 5 * 5]
-                                     + eta * (ce[m + 8 * 5] + eta * ce[m + 11 * 5])))
-                                     + zeta * (ce[m + 3 * 5] + zeta * (ce[m + 6 * 5]
-                                     + zeta * (ce[m + 9 * 5] + zeta * ce[m + 12 * 5])));
+                dtemp[m + dtmpoffst] = ce[0,m]
+                                     + xi * (ce[1,m] + xi * (ce[4,m]
+                                     + xi * (ce[7,m] + xi * ce[10,m])))
+                                     + eta * (ce[2,m] + eta * (ce[5,m]
+                                     + eta * (ce[8,m] + eta * ce[11,m])))
+                                     + zeta * (ce[3,m] + zeta * (ce[6,m]
+                                     + zeta * (ce[9,m] + zeta * ce[12,m])));
             }
         }
         public void initialize()
