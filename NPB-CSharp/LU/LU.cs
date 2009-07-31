@@ -64,11 +64,8 @@ namespace NPB3_0_JAV{
 	public class LU : LUBase{
 		public int bid = -1;
 		public BMResults results;
-		bool serial = false;
-  
-		public LU(char clss, int np, bool ser) : base(clss, np){
-			// super(clss, np);
-			serial = ser;
+        
+		public LU(char clss, int np) : base(clss, np){
 		}
 		
 		public static void Main(String[] argv){
@@ -77,10 +74,9 @@ namespace NPB3_0_JAV{
 			BMArgs.ParseCmdLineArgs(argv, BMName);
 			char CLSS = BMArgs.CLASS;
 			int np = BMArgs.num_threads;
-			bool serial = BMArgs.serial;
 			
 			try{ 
-				lu = new LU(CLSS, np, serial);
+				lu = new LU(CLSS, np);
 			} catch(OutOfMemoryException e){
 				BMArgs.outOfMemoryMessage();
 				Environment.Exit(0);
@@ -91,7 +87,7 @@ namespace NPB3_0_JAV{
 		public void run() {runBenchMark();}
   
 		public void runBenchMark(){
-			BMArgs.Banner(BMName, CLASS, serial, num_threads);
+			BMArgs.Banner(BMName, CLASS, true, num_threads);
     
 			int numTimers = t_last + 1;
 			String[] t_names = new String[numTimers];
@@ -135,8 +131,7 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
     
 			double tm;
-			if(serial) tm = sssor();
-			else tm = ssor();
+			tm = sssor();
 
 //---------------------------------------------------------------------
 //   compute the solution error
@@ -165,7 +160,7 @@ namespace NPB3_0_JAV{
 			                        getMFLOPS(itmax, tm),
 			                        "floating point",
 			                        verified,
-			                        serial,
+			                        true,
 			                        num_threads,
 			                        bid);
 			results.print();				
@@ -502,7 +497,7 @@ namespace NPB3_0_JAV{
 					tmp = tmp1 * tmat[0, 3];
 					tmat[1, 3] =  tmat[1, 3]
 					- tmp * tmat[1, 0];
-					tmat[2, 3] =  tmat[3, 3]
+					tmat[2, 3] =  tmat[2, 3]
 					- tmp * tmat[2, 0];
 					tmat[3, 3] =  tmat[3, 3]
 					- tmp * tmat[3, 0];
@@ -712,7 +707,7 @@ namespace NPB3_0_JAV{
                        + (ce[6,m]
                        + (ce[9,m]
                        +  ce[12,m] * zeta) * zeta) * zeta) * zeta;
-               }
+              }
             }
          }
       }
@@ -918,7 +913,7 @@ namespace NPB3_0_JAV{
                 + ty3 * c3 * c4 * ( flux[j+1, 4] - flux[j, 4] )
                     + dy5 * ty1 * (            rsd[k, j-1, i, 4]
                                    - 2.0 * rsd[k, j, i, 4]
-                                   +           rsd[k, j-1, i, 4] );
+                                   +           rsd[k, j+1, i, 4] );
             }
 
 //---------------------------------------------------------------------
@@ -2438,7 +2433,7 @@ namespace NPB3_0_JAV{
       tz1 = 1.0 / ( dzeta * dzeta );
       tz2 = 1.0 / ( 2.0 * dzeta );
       tz3 = 1.0 / dzeta;
-
+      
 //---------------------------------------------------------------------
 //   diffusion coefficients
 //---------------------------------------------------------------------
@@ -2480,7 +2475,7 @@ namespace NPB3_0_JAV{
 	    for(m=0;m<=4;m++){
                u[0, j, i, m] = temp1[m];
                u[nz-1, j, i, m] = temp2[m];
-	    }
+           }
          }
       }
 
@@ -2507,7 +2502,7 @@ namespace NPB3_0_JAV{
 	    for(m=0;m<=4;m++){
                u[k, j, 0, m] = temp1[m];
                u[k, j, nx-1, m] = temp2[m];
-	    }
+           }
          }
       }
   }
@@ -2552,197 +2547,6 @@ namespace NPB3_0_JAV{
        }
     }
   }
-  public double ssor(){
-      int i, j, k, m, n;
-      int istep;
-      double[]  delunm = new double[5]; double[,,] tv = new double[isiz2,isiz1,5];
-      double tmp = 1.0 / ( omega * ( 2.0 - omega ) );
-//---------------------------------------------------------------------
-//   begin pseudo-time stepping iterations
-//---------------------------------------------------------------------
-
-//---------------------------------------------------------------------
-//   initialize a,b,c,d to zero (guarantees that page tables have been
-//   formed, if applicable on given architecture, before timestepping).
-//---------------------------------------------------------------------
-      for(j=0;j<=isiz2-1;j++){
-         for(i=0;i<=isiz1-1;i++){
-            for(n=0;n<=4;n++){
-               for(m=0;m<=4;m++){
-                  a[j, i, n ,m] = 0.0;
-                  b[j, i, n ,m] = 0.0;
-                  c[j, i, n ,m] = 0.0;
-                  d[j, i, n ,m] = 0.0;
-               }
-            }
-         }
-      }
-
-//---------------------------------------------------------------------
-//   compute the steady-state residuals
-//---------------------------------------------------------------------
-
-     //  doRHSiteration();
-     //  doRHSiteration();
-     //  doRHSiteration();
-     //  doRHSiteration();
-//---------------------------------------------------------------------
-//   compute the L2 norms of newton iteration residuals
-//---------------------------------------------------------------------
-       l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-                   ist, iend, jst, jend,
-                   rsd, rsdnm ); 
-           
-       timer.resetAllTimers();
-       timer.start(1);
-//---------------------------------------------------------------------
-//   the timestep loop   itmax
-//---------------------------------------------------------------------
-      for(istep=1;istep<=itmax;istep++){         
-        if(istep % 20 == 0 || istep == itmax || istep == 1) {
-          Console.WriteLine(" Time step " + istep);
-        }
-//---------------------------------------------------------------------
-//   perform SSOR iteration
-//---------------------------------------------------------------------
-				
-		/*		synchronized(this){
-	   for(m=0;m<num_threads;m++)
-	     synchronized(scaler[m]){
-               scaler[m].done=false;
-               scaler[m].notify();
-             }
-	   for(m=0;m<num_threads;m++)
-	       while(!scaler[m].done){
-	         try{wait();}catch(InterruptedException e){}
-		 notifyAll();
-	       } 
-             }*/
-//---------------------------------------------------------------------
-//   form the lower triangular part of the jacobian matrix
-//---------------------------------------------------------------------
-           if (timeron) timer.start(t_jacld);
-
-         /*    synchronized(this){
-          for(m=0;m<num_threads;m++)
-	     synchronized(lowerjac[m]){
-               lowerjac[m].done=false;
-               lowerjac[m].notify();
-	       notifyAll();
-             }
-	     while(!lowerjac[num_threads-1].done){
-	       try{wait();}catch(InterruptedException e){}
-	       notifyAll();
-	     }
-           }*/
-	   if (timeron) timer.stop(t_jacld);
-//---------------------------------------------------------------------
-//   form the strictly upper triangular part of the jacobian matrix
-//---------------------------------------------------------------------
-  	  /* if (timeron)  timer.start(t_jacu);
-           synchronized(this){
-           for(m=0;m<num_threads;m++)
-	     synchronized(upperjac[m]){
-               upperjac[m].done=false;
-               upperjac[m].notify();
- 	       notifyAll();
-            }
-	     while(!upperjac[num_threads-1].done){
-	       try{wait();}catch(InterruptedException e){}
-	       notifyAll();
-	     }
-           }*/
-  	   if (timeron)  timer.stop(t_jacu);
-//---------------------------------------------------------------------
-//   perform the upper triangular solution
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-//   update the variables
-//---------------------------------------------------------------------
-	 if (timeron)  timer.start(t_add);
-       /*  synchronized(this){
-	   for(m=0;m<num_threads;m++)
-	     synchronized(adder[m]){
-               adder[m].done=false;
-               adder[m].notify();
-             }
-	   for(m=0;m<num_threads;m++)
-	     while(!adder[m].done){
-	       try{wait();}catch(InterruptedException e){}
-	       notifyAll();
-	     }
-         }*/
-	 if (timeron) timer.stop(t_add);
-//---------------------------------------------------------------------
-//   compute the max-norms of newton iteration corrections
-//---------------------------------------------------------------------
-         if ( istep % inorm  == 0 ){
-	   if (timeron) timer.start(t_l2norm);
-           l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-                         ist, iend, jst, jend,
-                         rsd, delunm );
-	   if (timeron) timer.stop(t_l2norm);
-         }
-//---------------------------------------------------------------------
-//   compute the steady-state residuals
-//---------------------------------------------------------------------
-
-      if (timeron) timer.start(t_rhs);  
-   //   doRHSiteration();
-
-      if (timeron) timer.start(t_rhsx);
-     // doRHSiteration();
-      if (timeron) timer.stop(t_rhsx);
-    
-      if (timeron) timer.start(t_rhsy);
-    //  doRHSiteration();
-      if (timeron) timer.stop(t_rhsy);
-   
-      if (timeron) timer.start(t_rhsz);
-    //  doRHSiteration();
-      if (timeron) timer.stop(t_rhsz);
-      if (timeron) timer.stop(t_rhs);
-//---------------------------------------------------------------------
-//   compute the max-norms of newton iteration residuals
-//---------------------------------------------------------------------
-         if ( istep % inorm == 0 || istep == itmax ){
-	    if (timeron)timer.start(t_l2norm);
-	    l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-                         ist, iend, jst, jend,
-                         rsd, rsdnm );
-	    if (timeron)  timer.stop(t_l2norm);
-         }
-
-//---------------------------------------------------------------------
-//   check the newton-iteration residuals against the tolerance levels
-//---------------------------------------------------------------------
-         if ( ( rsdnm[0] < tolrsd[0] ) &&
-              ( rsdnm[1] < tolrsd[1] ) &&
-              ( rsdnm[2] < tolrsd[2] ) &&
-              ( rsdnm[3] < tolrsd[3] ) &&
-              ( rsdnm[4] < tolrsd[4] ) ) {
-            timer.stop(1);
-            return timer.readTimer(1);
-         }
-      }
-      
-      timer.stop(1);
-      return  timer.readTimer(1);
-  }
-  
- /* synchronized void doRHSiteration(){
-    int m;
-    for(m=0;m<num_threads;m++)
-	synchronized(rhscomputer[m]){
-          rhscomputer[m].done=false;
-          rhscomputer[m].notify();
-        }
-    for(m=0;m<num_threads;m++)
-	while(!rhscomputer[m].done){
-	  try{wait();}catch(InterruptedException e){}
-	  notifyAll();
-	}
-  }*/
   
   public double sssor(){
     int i, j, k, m, n;
