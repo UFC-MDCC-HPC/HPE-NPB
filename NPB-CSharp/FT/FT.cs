@@ -228,8 +228,10 @@ namespace NPB3_0_JAV
                 ii = (1 * i) % d3;
                 ji = (3 * i) % d1;
                 ki = (5 * i) % d2;
-                csumr += u[ii,ki,ji,REAL];  //  csumr += u[REAL + ji * isize3 + ki * jsize3 + ii * ksize3];
-                csumi += u[ii,ki,ji,IMAG];  //  csumi += u[IMAG + ji * isize3 + ki * jsize3 + ii * ksize3];
+                //csumr += u[ii,ki,ji,REAL];  //  csumr += u[REAL + ji * isize3 + ki * jsize3 + ii * ksize3];
+                //csumi += u[ii,ki,ji,IMAG];  //  csumi += u[IMAG + ji * isize3 + ki * jsize3 + ii * ksize3];
+                csumr += u[ki, ii, ji, REAL];  //  csumr += u[REAL + ji * isize3 + ki * jsize3 + ii * ksize3];
+                csumi += u[ki, ii, ji, IMAG];  //  csumi += u[IMAG + ji * isize3 + ki * jsize3 + ii * ksize3];
             }
             csum[iterN,REAL] = csumr / (d1 * d2 * d3);  //  csum[REAL + csmffst] = csumr / (d1 * d2 * d3);
             csum[iterN,IMAG] = csumi / (d1 * d2 * d3);  //  csum[IMAG + csmffst] = csumi / (d1 * d2 * d3);
