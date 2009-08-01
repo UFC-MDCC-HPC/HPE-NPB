@@ -108,8 +108,8 @@ namespace NPB3_0_JAV.FTThreads
             //complex values
             checksum = new double[niter_default,2]; //isize2=2; aqui  // checksum = new double[2 * niter_default];
 
-            xtr = new double[nx,nz,(ny + 1),2];       // xtr = new double[2 * (ny + 1) * nx * nz];
-            xnt = new double[nx,nz,(ny + 1),2];       // xnt = new double[2 * (ny + 1) * nz * nx];
+            xtr = new double[nz,nx,(ny + 1),2];       // xtr = new double[2 * (ny + 1) * nx * nz];
+            xnt = new double[nz,nx,(ny + 1),2];       // xnt = new double[2 * (ny + 1) * nz * nx];
             exp1 = new double[nx,2]; //aqui         // exp1 = new double[2 * nx];
             exp2 = new double[ny,2];                // exp2 = new double[2 * ny];
             exp3 = new double[nz,2];                // exp3 = new double[2 * nz];
