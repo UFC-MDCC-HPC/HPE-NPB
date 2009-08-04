@@ -226,8 +226,8 @@ namespace NPB3_0_JAV {
                 ii = (1 * i) % d3;
                 ji = (3 * i) % d1;
                 ki = (5 * i) % d2;
-                csumr += u[ii, ki, ji, REAL]; // csumr += u[ii, ki, ji, REAL];
-                csumi += u[ii, ki, ji, IMAG]; // csumi += u[ii, ki, ji, IMAG];
+                csumr += u[ki, ii, ji, REAL]; // csumr += u[ii, ki, ji, REAL];
+                csumi += u[ki, ii, ji, IMAG]; // csumi += u[ii, ki, ji, IMAG];
             }
             csum[csmffst, REAL] = csumr / (d1 * d2 * d3);
             csum[csmffst, IMAG] = csumi / (d1 * d2 * d3);
