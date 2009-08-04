@@ -69,8 +69,7 @@ namespace NPB3_0_JAV {
             FT ft = null;
 
             BMArgs.ParseCmdLineArgs(argv, BMName);
-            //char CLSS = BMArgs.CLASS;
-            char CLSS = 'W';
+            char CLSS = BMArgs.CLASS;
             int np = BMArgs.num_threads;
             bool serial = BMArgs.serial;
 
