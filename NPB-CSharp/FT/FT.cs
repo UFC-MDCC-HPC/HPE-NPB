@@ -51,30 +51,32 @@ using System.IO;
 using NPB3_0_JAV.FTThreads;
 using NPB3_0_JAV.BMInOut;
 
-namespace NPB3_0_JAV
-{
+namespace NPB3_0_JAV {
 
     public class FT : FTBase
     {
         public int bid = -1;
         public BMResults results;
+        public bool serial = true;
         bool done = false;
-        public FT(char clss, int np)
-            : base(clss, np)
+        public FT(char clss, int np, bool ser) : base(clss, np, ser)
         {
+            //super(clss, np, ser);
+            serial = ser;
         }
         static void Main(String[] argv)
         {
             FT ft = null;
 
             BMArgs.ParseCmdLineArgs(argv, BMName);
-            char CLSS = BMArgs.CLASS;
-            //char CLSS = 'S';
+            //char CLSS = BMArgs.CLASS;
+            char CLSS = 'W';
             int np = BMArgs.num_threads;
- 
+            bool serial = BMArgs.serial;
+
             try
             {
-                ft = new FT(CLSS, np);
+                ft = new FT(CLSS, np, serial);
             }
             catch (OutOfMemoryException e)
             {
@@ -83,21 +85,18 @@ namespace NPB3_0_JAV
             }
             ft.runBenchMark();
         }
-
-        //public void run() { runBenchMark(); }
-
         public void runBenchMark()
         {
-            BMArgs.Banner(BMName, CLASS, true, num_threads);
+            BMArgs.Banner(BMName, CLASS, serial, num_threads);
             Console.WriteLine(" Size = " + nx + " X " + ny + " X " + nz
                                + " niter = " + niter_default);
             setTimers();
             timer.resetAllTimers();
 
-            appft_serial();
+            if (serial) appft_serial();
 
             if (timeron) timer.start(14);
-            int verified = verify(4, nx, ny, nz, niter_default, checksum); //M
+            int verified = verify(4, nx, ny, nz, niter_default, checksum);
             if (timeron) timer.stop(14);
             timer.stop(1);
 
@@ -112,7 +111,7 @@ namespace NPB3_0_JAV
                           getMFLOPS(time, nx, ny, nz),
                           "floating point",
                           verified,
-                          true,
+                          serial,
                           num_threads,
                           bid);
             results.print();
@@ -120,14 +119,13 @@ namespace NPB3_0_JAV
             done = true;
         }
 
-        public void appft_serial()
-        {
+        public void appft_serial() {
             if (timeron) timer.start(2);
-            initial_conditions(xtr, ny, nx, nz); //M
-            CompExp(nx, exp1); //M
-            CompExp(ny, exp2); //M
-            CompExp(nz, exp3); //M
-            fftXYZ(1, xtr, exp2, exp1, exp3, ny, nx, nz); //M
+            initial_conditions(xtr, ny, nx, nz);
+            CompExp(nx, exp1);
+            CompExp(ny, exp2);
+            CompExp(nz, exp3);
+            fftXYZ(1, xtr, exp2, exp1, exp3, ny, nx, nz);
             if (timeron) timer.stop(2);
 
             timer.start(1);
@@ -135,7 +133,7 @@ namespace NPB3_0_JAV
             initial_conditions(xtr, ny, nx, nz);
             if (timeron) timer.stop(12);
             if (timeron) timer.start(15);
-            fftXYZ(1, xtr, exp2, exp1, exp3, ny, nx, nz); //M
+            fftXYZ(1, xtr, exp2, exp1, exp3, ny, nx, nz);
             if (timeron) timer.stop(15);
 
             double ap = (-4.0 * alpha * Math.Pow(pi, 2));
@@ -155,26 +153,26 @@ namespace NPB3_0_JAV
                     {
                         int kk = k - ((k) / n32) * nz;
                         int ik2 = ii2 + kk * kk;
-                        for (int j = 0; j < ny; j++)
-                        {
+                        for (int j = 0; j < ny; j++){
                             int jj = j - ((j) / n22) * ny;
-                            xnt[i,k,j,REAL] = xtr[i,k,j,REAL] * Math.Exp((ap * (jj * jj + ik2)) * (it + 1));  //  xnt[REAL + j * isize4 + k * jsize4 + i * ksize4] = xtr[REAL + j * isize3 + i * jsize3 + k * ksize3] * Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
-                            xnt[i,k,j,IMAG] = xtr[i,k,j,IMAG] * Math.Exp((ap * (jj * jj + ik2)) * (it + 1));  //  xnt[IMAG + j * isize4 + k * jsize4 + i * ksize4] = xtr[IMAG + j * isize3 + i * jsize3 + k * ksize3] * Math.Exp((ap * (jj * jj + ik2)) * (it + 1));
+                            //xnt[REAL+j*isize4+k*jsize4+i*ksize4] = xtr[REAL+j*isize3+i*jsize3+k*ksize3] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
+                            //xnt[IMAG+j*isize4+k*jsize4+i*ksize4] = xtr[IMAG+j*isize3+i*jsize3+k*ksize3] * Math.Exp((ap*(jj*jj+ik2))*(it + 1));
+                            xnt[k,i,j,REAL] = xtr[k,i,j,REAL] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
+                            xnt[k,i,j,IMAG] = xtr[k,i,j,IMAG] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
                         }
                     }
                 }
                 if (timeron) timer.stop(11);
 
                 if (timeron) timer.start(15);
-                fftXYZ(-1, xnt, exp2, exp3, exp1, ny, nz, nx);  //M
+                fftXYZ(-1, xnt, exp2, exp3, exp1, ny, nz, nx);
                 if (timeron) timer.stop(15);
 
                 if (timeron) timer.start(10);
-                CalculateChecksum(checksum, it, xnt, ny, nz, nx);  //M
+                CalculateChecksum(checksum,REAL+it,it,xnt,ny,nz,nx);  // CalculateChecksum(checksum,REAL+it*isize2,it,xnt,ny,nz,nx);
                 if (timeron) timer.stop(10);
             }
         }
-
         public void setTimers()
         {
             //File f1 = new File("timer.flag");
@@ -208,19 +206,20 @@ namespace NPB3_0_JAV
             int ntotal = nx * ny * nz;
             if (total_time > 0)
             {
-                mflops = 14.8157 + 7.19641 * Math.Log(ntotal)
-                        + (5.23518 + 7.21113 * Math.Log(ntotal)) * niter_default;
+                mflops = 14.8157 + 7.19641 * Math.Log(ntotal) + (5.23518 + 7.21113 * Math.Log(ntotal)) * niter_default;
                 mflops *= ntotal / (total_time * 1000000.0);
             }
             return mflops;
         }
 
-        public void CalculateChecksum(double[,] csum, int iterN, double[,,,] u, int d1,int d2, int d3)
+        public void CalculateChecksum(double[,] csum, int csmffst, int iterN, double[,,,] u, int d1, int d2, int d3)
         {
             int i, ii, ji, ki;
-            
-            csum[iterN,REAL] = 0.0;  //  csum[REAL + csmffst] = 0.0;
-            csum[iterN,IMAG] = 0.0;  //  csum[IMAG + csmffst] = 0.0;
+            int isize3 = 2,
+                jsize3 = isize3 * (d1 + 1),
+                ksize3 = jsize3 * d2;
+            csum[csmffst,REAL] = 0.0;
+            csum[csmffst,IMAG] = 0.0;
 
             double csumr = 0.0, csumi = 0.0;
             for (i = 1; i <= 1024; i++)
@@ -228,26 +227,26 @@ namespace NPB3_0_JAV
                 ii = (1 * i) % d3;
                 ji = (3 * i) % d1;
                 ki = (5 * i) % d2;
-                //csumr += u[ii,ki,ji,REAL];  //  csumr += u[REAL + ji * isize3 + ki * jsize3 + ii * ksize3];
-                //csumi += u[ii,ki,ji,IMAG];  //  csumi += u[IMAG + ji * isize3 + ki * jsize3 + ii * ksize3];
-                csumr += u[ki, ii, ji, REAL];  //  csumr += u[REAL + ji * isize3 + ki * jsize3 + ii * ksize3];
-                csumi += u[ki, ii, ji, IMAG];  //  csumi += u[IMAG + ji * isize3 + ki * jsize3 + ii * ksize3];
+                csumr += u[ii, ki, ji, REAL]; // csumr += u[ii, ki, ji, REAL];
+                csumi += u[ii, ki, ji, IMAG]; // csumi += u[ii, ki, ji, IMAG];
             }
-            csum[iterN,REAL] = csumr / (d1 * d2 * d3);  //  csum[REAL + csmffst] = csumr / (d1 * d2 * d3);
-            csum[iterN,IMAG] = csumi / (d1 * d2 * d3);  //  csum[IMAG + csmffst] = csumi / (d1 * d2 * d3);
-            //  Console.WriteLine("==FT Checksum:"+iterN + " checksum = (" + 
-            //        	       csum[REAL+csmffst] + "," + csum[IMAG+csmffst] + ")" );	 
+            csum[csmffst, REAL] = csumr / (d1 * d2 * d3);
+            csum[csmffst, IMAG] = csumi / (d1 * d2 * d3);
         }
 
         public void fftXYZ(int sign, double[,,,] x, double[,] exp1, double[,] exp2, double[,] exp3, int n1, int n2, int n3)
         {
             int i = 0, j = 0, k, log;
-            
+            int isize3 = 2, jsize3, ksize3;
+            jsize3 = isize3 * (n1 + 1);
+            ksize3 = jsize3 * n2;
+
+
             if (timeron) timer.start(3);
 
             log = ilog2(n2);
             if (timeron) timer.start(7);
-            for (k = 0; k < n3; k++) Swarztrauber(sign, log, n1, n2, x, k, n1, exp2, scr);  // aqui Swarztrauber(sign, log, n1, n2, x, k * ksize3, n1, exp2, scr);
+            for (k = 0; k < n3; k++) Swarztrauber(sign, log, n1, n2, x, k, n1, exp2, scr);
             if (timeron) timer.stop(7);
 
             log = ilog2(n1);
@@ -258,8 +257,8 @@ namespace NPB3_0_JAV
                 {
                     for (i = 0; i < n1; i++)
                     {
-                        plane[0,i,j,REAL] = x[k,j,i,REAL];  //  plane[REAL + j * isize1 + i * jsize1] = x[REAL + i * isize3 + j * jsize3 + k * ksize3];
-                        plane[0,i,j,IMAG] = x[k,j,i,IMAG];  //  plane[IMAG + j * isize1 + i * jsize1] = x[IMAG + i * isize3 + j * jsize3 + k * ksize3];
+                        plane[0, i, j, REAL] = x[k, j, i, REAL];
+                        plane[0, i, j, IMAG] = x[k, j, i, IMAG];
                     }
                 }
                 Swarztrauber(sign, log, n2, n1, plane, 0, n2, exp1, scr);
@@ -267,8 +266,8 @@ namespace NPB3_0_JAV
                 {
                     for (i = 0; i < n1; i++)
                     {
-                        x[k,j,i,REAL] = plane[0,i,j,REAL];  //  x[REAL + i * isize3 + j * jsize3 + k * ksize3] = plane[REAL + j * isize1 + i * jsize1];
-                        x[k,j,i,IMAG] = plane[0,i,j,IMAG];  //  x[IMAG + i * isize3 + j * jsize3 + k * ksize3] = plane[IMAG + j * isize1 + i * jsize1];
+                        x[k,j,i,REAL] = plane[0,i,j,REAL];
+                        x[k,j,i,IMAG] = plane[0,i,j,IMAG];
                     }
                 }
             }
@@ -282,8 +281,8 @@ namespace NPB3_0_JAV
                 {
                     for (j = 0; j < n1; j++)
                     {
-                        plane[0,i,j,REAL] = x[i,k,j,REAL];  //  plane[REAL + j * isize1 + i * jsize1] = x[REAL + j * isize3 + k * jsize3 + i * ksize3];
-                        plane[0,i,j,IMAG] = x[i,k,j,IMAG];  //  plane[IMAG + j * isize1 + i * jsize1] = x[IMAG + j * isize3 + k * jsize3 + i * ksize3];
+                        plane[0,i,j,REAL] = x[i,k,j,REAL];
+                        plane[0,i,j,IMAG] = x[i,k,j,IMAG];
                     }
                 }
                 Swarztrauber(sign, log, n1, n3, plane, 0, n1, exp3, scr);
@@ -291,11 +290,12 @@ namespace NPB3_0_JAV
                 {
                     for (j = 0; j < n1; j++)
                     {
-                        x[i,k,j,REAL] = plane[0,i,j,REAL];  //  x[REAL + j * isize3 + k * jsize3 + i * ksize3] = plane[REAL + j * isize1 + i * jsize1];
-                        x[i,k,j,IMAG] = plane[0,i,j,IMAG];  //  x[IMAG + j * isize3 + k * jsize3 + i * ksize3] = plane[IMAG + j * isize1 + i * jsize1];
+                        x[i,k,j,REAL] = plane[0,i,j,REAL];
+                        x[i,k,j,IMAG] = plane[0,i,j,IMAG];
                     }
                 }
             }
+
             if (timeron) timer.stop(9);
             if (timeron) timer.stop(3);
         }
@@ -303,9 +303,9 @@ namespace NPB3_0_JAV
         public int verify(int ires, int n1, int n2, int n3, int nt, double[,] cksum)
         {
             int verified = -1;
-             double[,] cexpd = new double[20,2];
-            if ((n1 == 64) && (n2 == 64) && (n3 == 64) && (nt == 6))
-            {
+            bool[] temp = new bool[niter_default];
+            double[,] cexpd = new double[21,2];
+            if ((n1 == 64) && (n2 == 64) && (n3 == 64) && (nt == 6)) {
                 //
                 // Class S reference values.
                 //
@@ -324,9 +324,7 @@ namespace NPB3_0_JAV
                 cexpd[5,IMAG] = 493.2597244941;
 
             }
-            else if ((n1 == 128) && (n2 == 128) &&
-                          (n3 == 32) && (nt == 6))
-            {
+            else if ((n1 == 128) && (n2 == 128) && (n3 == 32) && (nt == 6)) {
                 //
                 // Class W reference values.
                 //
@@ -345,9 +343,7 @@ namespace NPB3_0_JAV
                 cexpd[5,IMAG] = 523.9212247086;
                 //
             }
-            else if ((n1 == 256) && (n2 == 256) &&
-                     (n3 == 128) && (nt == 6))
-            {
+            else if ((n1 == 256) && (n2 == 256) && (n3 == 128) && (nt == 6)){
                 //
                 // Class A reference values.
                 //
@@ -366,9 +362,7 @@ namespace NPB3_0_JAV
                 cexpd[5,IMAG] = 510.7917842803;
                 //
             }
-            else if ((n1 == 512) && (n2 == 256) &&
-                    (n3 == 256) && (nt == 20))
-            {
+            else if ((n1 == 512) && (n2 == 256) && (n3 == 256) && (nt == 20)){
                 //
                 // Class B reference values.
                 //
@@ -448,7 +442,7 @@ namespace NPB3_0_JAV
                 cexpd[3,IMAG] = 512.1090289018;
                 cexpd[4,IMAG] = 512.1143685824;
                 cexpd[5,IMAG] = 512.1496764568;
-                cexpd[6,IMAG] = 512.1870921893;
+                cexpd[6,IMAG]= 512.1870921893;
                 cexpd[7,IMAG] = 512.2193250322;
                 cexpd[8,IMAG] = 512.2454735794;
                 cexpd[9,IMAG] = 512.2663649603;
@@ -475,8 +469,8 @@ namespace NPB3_0_JAV
             {
                 for (int it = 0; it < nt; it++)
                 {
-                    double csumr = (cksum[it,REAL] - cexpd[it,REAL]) / cexpd[it,REAL];  //  double csumr = (cksum[REAL + it * 2] - cexpd[REAL + it * 2]) / cexpd[REAL + it * 2];
-                    double csumi = (cksum[it,IMAG] - cexpd[it,IMAG]) / cexpd[it,IMAG];  //  double csumi = (cksum[IMAG + it * 2] - cexpd[IMAG + it * 2]) / cexpd[IMAG + it * 2];
+                    double csumr = (cksum[it,REAL] - cexpd[it,REAL]) / cexpd[it,REAL];
+                    double csumi = (cksum[it,IMAG] - cexpd[it,IMAG]) / cexpd[it,IMAG];
                     if (Math.Abs(csumr) <= epsilon
                      || Math.Abs(csumi) <= epsilon
                    )
@@ -485,9 +479,6 @@ namespace NPB3_0_JAV
                     }
                     else
                     {
-						Console.WriteLine("epsilon:" + epsilon);
-						Console.WriteLine("calculado:" + cksum[it,REAL]);
-						Console.WriteLine("esperado :" + cexpd[it,REAL]);
                         verified = 0;
                     }
                 }
@@ -498,8 +489,7 @@ namespace NPB3_0_JAV
 
         public double getTime() { return timer.readTimer(1); }
         public bool isDone() { return done; }
-        public void finalize()
-        { // throws Throwable{
+        public void finalize() { // throws Throwable{
             Console.WriteLine("FT: is about to be garbage collected");
             //super.finalize();
         }
