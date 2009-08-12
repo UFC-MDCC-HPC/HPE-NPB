@@ -156,8 +156,8 @@ namespace NPB3_0_JAV {
                             int jj = j - ((j) / n22) * ny;
                             //xnt[REAL+j*isize4+k*jsize4+i*ksize4] = xtr[REAL+j*isize3+i*jsize3+k*ksize3] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
                             //xnt[IMAG+j*isize4+k*jsize4+i*ksize4] = xtr[IMAG+j*isize3+i*jsize3+k*ksize3] * Math.Exp((ap*(jj*jj+ik2))*(it + 1));
-                            xnt[k,i,j,REAL] = xtr[k,i,j,REAL] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
-                            xnt[k,i,j,IMAG] = xtr[k,i,j,IMAG] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
+                            xnt[i,k,j,REAL] = xtr[k,i,j,REAL] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
+                            xnt[i,k,j,IMAG] = xtr[k,i,j,IMAG] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
                         }
                     }
                 }
@@ -226,8 +226,8 @@ namespace NPB3_0_JAV {
                 ii = (1 * i) % d3;
                 ji = (3 * i) % d1;
                 ki = (5 * i) % d2;
-                csumr += u[ki, ii, ji, REAL]; // csumr += u[ii, ki, ji, REAL];
-                csumi += u[ki, ii, ji, IMAG]; // csumi += u[ii, ki, ji, IMAG];
+                csumr += u[ii, ki, ji, REAL]; // csumr += u[ii, ki, ji, REAL];
+                csumi += u[ii, ki, ji, IMAG]; // csumi += u[ii, ki, ji, IMAG];
             }
             csum[csmffst, REAL] = csumr / (d1 * d2 * d3);
             csum[csmffst, IMAG] = csumi / (d1 * d2 * d3);
