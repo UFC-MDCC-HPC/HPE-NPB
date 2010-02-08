@@ -112,7 +112,7 @@ public class FTBase /* : Thread*/
     checksum = new double[niter_default,2]; //isize2=2;
 
     xtr = new double[nz,nx,(ny+1),2]; 
-    xnt = new double[nz,nx,(ny+1),2]; 
+    xnt = new double[nx,nz,(ny+1),2]; 
     exp1 = new double[nx,2];
     exp2 = new double[ny,2];
     exp3 = new double[nz,2];
