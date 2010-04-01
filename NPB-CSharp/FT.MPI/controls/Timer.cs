@@ -87,6 +87,5 @@ public class Timer{
   {
       return (long)(DateTime.UtcNow - Jan1st1970).TotalMilliseconds;
   }
-
-}
+ }
 }

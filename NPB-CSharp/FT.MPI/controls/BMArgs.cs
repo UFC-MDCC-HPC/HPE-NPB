@@ -128,5 +128,4 @@ namespace NPB3_0_JAV.BMInOut {
                                     " np=" + np);
         }
     }
-
 }

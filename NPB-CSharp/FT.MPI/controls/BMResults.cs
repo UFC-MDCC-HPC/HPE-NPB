@@ -405,5 +405,4 @@ namespace NPB3_0_JAV.BMInOut {
             return verified;
         }
     }
-
 }
