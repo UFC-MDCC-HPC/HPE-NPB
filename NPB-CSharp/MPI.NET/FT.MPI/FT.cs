@@ -37,7 +37,7 @@ namespace NPB {
 
         }
 
-        //**** codigos para debugar************************************************************
+        //**** codigos para debugar************************************************************/
         public void debugImprimeFile1(double[] vetor, int nodo) {
             if (me == nodo) {
                 string strPath = "C:/Documents and Settings/Administrador/Desktop/Logs/CSharpTwiddle" + clss + np + ".txt";
@@ -81,7 +81,7 @@ namespace NPB {
             }
         }
 
-        //*******************************************************************************************
+        //*******************************************************************************************/
 
         public void startBigArrays() {
             //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)

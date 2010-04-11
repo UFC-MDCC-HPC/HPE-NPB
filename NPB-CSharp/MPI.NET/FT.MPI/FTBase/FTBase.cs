@@ -4,7 +4,7 @@ using NPB;
 namespace NPB.Ftb {
     public class FTBase {
 
-      //******************************************** Attributes *******************************************************
+      //******************************************** Attributes *******************************************************/
         public const int sizeArrayAdd = 1;
         //npbparams.h
             protected int nx, ny, nz, maxdim, niter_default, ntdivnp, np_min;
@@ -99,7 +99,7 @@ namespace NPB.Ftb {
             public static String BMName = "FT";
         //endSupport
 
-      //***************************************************************************************************************
+      //***************************************************************************************************************/
 
         public FTBase(char c){
             this.clss = c;
