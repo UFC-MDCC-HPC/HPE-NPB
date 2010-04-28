@@ -21,7 +21,7 @@
 		</csc>
 	</target>
 	<target name="all" description="Compilar" depends='LIB'>
-		<csc target="exe" output="${all}/FT.exe" debug="true">
+		<csc target="exe" output="${all}/Debug/FT.exe" debug="true">
 			<arg value="-unsafe" />
 			<sources>
 				<include name="FT.cs" />
