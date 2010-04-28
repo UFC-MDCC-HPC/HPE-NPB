@@ -804,12 +804,9 @@ namespace NPB {
             return lg;
         }
         
-        public void fft(int dir, double[,,,] x1, double[,,,] x2) {  // fft(1, u1, u0); first call, in main routine
+        public void fft(int dir, double[,,,] x1, double[,,,] x2) {
             //double complex x1(ntdivnp), x2(ntdivnp)
-
-            //double[] scratch = new double[2*(fftblockpad_default*maxdim*2)]; //double complex scratch(fftblockpad_default*maxdim*2)
-            double[,,,] scratch = new double[2,maxdim,fftblockpad_default,2]; //double complex scratch(fftblockpad_default*maxdim*2)
-
+            //double complex scratch(fftblockpad_default*maxdim*2) !scratch equal y in cfftsX
             //c---------------------------------------------------------------------
             //c note: args x1, x2 must be different arrays
             //c note: args for cfftsx are (direction, layout, xin, xout, scratch)
@@ -821,57 +818,57 @@ namespace NPB {
 
             if (dir == 1) {
                 if (layout_type == layout_0D) {
-                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, scratch, 1);  //x1==u1
-                    cffts2(1, dims[1,2], dims[2,2], dims[3,2], x1, x1, scratch, 1);
-                    cffts3(1, dims[1,3], dims[2,3], dims[3,3], x1, x2, scratch, 10);
+                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));  
+                    cffts2(1, dims[1,2], dims[2,2], dims[3,2], x1, x1, (new double[2, dims[2,2], fftblockpad,2]));
+                    cffts3(1, dims[1,3], dims[2,3], dims[3,3], x1, x2, (new double[2, dims[3,3], fftblockpad,2]));
                 } else if (layout_type == layout_1D) { 
-                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, scratch, 1);
-                    cffts2(1, dims[1,2], dims[2,2], dims[3,2], x1, x1, scratch, 1);
+                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
+                    cffts2(1, dims[1,2], dims[2,2], dims[3,2], x1, x1, (new double[2, dims[2,2], fftblockpad,2]));
                     if (timers_enabled) timer_start(T_transpose);
                     transpose_xy_z(2, 3, x1, x2);
                     if (timers_enabled) timer_stop(T_transpose);
-                    cffts1(1, dims[1,3], dims[2,3], dims[3,3], x2, x2, scratch,0);
+                    cffts1(1, dims[1,3], dims[2,3], dims[3,3], x2, x2, (new double[2, dims[1,3], fftblockpad,2]));
                 }
                 else if (layout_type == layout_2D) {
-                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, scratch, 1);
+                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
                     if (timers_enabled) timer_start(T_transpose);
                     transpose_x_y(1, 2, x1, x2);
                     if (timers_enabled) timer_stop(T_transpose);
-                    cffts1(1, dims[1,2], dims[2,2], dims[3,2], x2, x2, scratch, 0);
+                    cffts1(1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[1,2], fftblockpad,2]));
                     if (timers_enabled) timer_start(T_transpose);
                     transpose_x_z(2, 3, x2, x1);
                     if (timers_enabled) timer_stop(T_transpose);
-                    cffts1(1, dims[1,3], dims[2,3], dims[3,3], x1, x2, scratch, 10);
+                    cffts1(1, dims[1,3], dims[2,3], dims[3,3], x1, x2, (new double[2, dims[1,3], fftblockpad,2]));
                 }
             }
             else {
                 if (layout_type == layout_0D) {
-                    cffts3(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, scratch, 1);
-                    cffts2(-1, dims[1,2], dims[2,2], dims[3,2], x1, x1, scratch, 1);
-                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x1, x2, scratch, 10);
+                    cffts3(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, (new double[2, dims[3,3], fftblockpad,2]));
+                    cffts2(-1, dims[1,2], dims[2,2], dims[3,2], x1, x1, (new double[2, dims[2,2], fftblockpad,2]));
+                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x1, x2, (new double[2, dims[1,1], fftblockpad,2]));
                 } else if (layout_type == layout_1D) {
-                    cffts1(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, scratch,1);
+                    cffts1(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, (new double[2, dims[1,3], fftblockpad,2]));
                     if (timers_enabled) timer_start(T_transpose);
                     transpose_x_yz(3, 2, x1, x2);
                     if (timers_enabled) timer_stop(T_transpose);
-                    cffts2(-1, dims[1,2], dims[2,2], dims[3,2], x2, x2, scratch,0);
-                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x2, x2, scratch,0);
+                    cffts2(-1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[2,2], fftblockpad,2]));
+                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x2, x2, (new double[2, dims[1,1], fftblockpad,2]));
                 }
                 else if (layout_type == layout_2D) {
-                    cffts1(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, scratch,1);
+                    cffts1(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, (new double[2, dims[1,3], fftblockpad,2]));
                     if (timers_enabled) timer_start(T_transpose);
                     transpose_x_z(3, 2, x1, x2);
                     if (timers_enabled) timer_stop(T_transpose);
-                    cffts1(-1, dims[1,2], dims[2,2], dims[3,2], x2, x2, scratch,0);
+                    cffts1(-1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[1,2], fftblockpad,2]));
                     if (timers_enabled) timer_start(T_transpose);
                     transpose_x_y(2, 1, x2, x1);
                     if (timers_enabled) timer_stop(T_transpose);
-                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x1, x2, scratch,10);
+                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x1, x2, (new double[2, dims[1,1], fftblockpad,2]));
                 }
             }
         }
 
-        public void cffts1(int iis, int d1, int d2, int d3, double[,,,] x, double[,,,] xout, double[,,,] y, int store) { //x=u1 xout=u1 y=temp
+        public void cffts1(int iis, int d1, int d2, int d3, double[,,,] x, double[,,,] xout, double[,,,] y) {
             int logd1;
             //Fortran
               //double complex x(d1,d2,d3);
@@ -888,14 +885,13 @@ namespace NPB {
                 for (jj = 0; jj <= (d2-fftblock); jj = jj + fftblock) {
                     if (timers_enabled) timer_start(T_fftcopy);
                     for (j = 0; j < fftblock; j++) {
-                        for (i = 0; i < d1; i++) {// y(j,i,1) = x(i,j+jj,k)
-                            io = ((k*d2+(j+jj))*d1+i)*2; //[k,j+jj,i]
-                            y[0,i,j,REAL] = Point.getValue(x,io+REAL); //x[i,j+jj,k,REAL]; // y[1,i,j,real] = x[k,j+jj,i,real]
-                            y[0,i,j,IMAG] = Point.getValue(x,io+IMAG);//x[i,j+jj,k,IMAG];
+                        for (i = 0; i < d1; i++) {//y(j,i,1) = x(i,j+jj,k)
+                            io = ((k*d2+(j+jj))*d1+i)*2; 
+                            y[0,i,j,REAL] = Point.getValue(x,io+REAL); //y[1,i,j,real] = x[k,j+jj,i,real]
+                            y[0,i,j,IMAG] = Point.getValue(x,io+IMAG);
                         }
                     }
                     if (timers_enabled) timer_stop(T_fftcopy);
-
                     if (timers_enabled) timer_start(T_fftlow);
                     cfftz(iis, logd1, d1, y, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
                     if (timers_enabled) timer_stop(T_fftlow);
@@ -904,7 +900,7 @@ namespace NPB {
 
                     for (j = 0; j < fftblock; j++) {
                         for (i = 0; i < d1; i++) {
-                            iin = ((i*fftblockpad+j)*2);
+                            iin   = ((0*d1+i)*fftblockpad+j)*2;
                             io  = (((k*d2+(j+jj))*d1+i)*2);
                             Point.setAddress(y,iin+REAL,xout,io+REAL);
                             Point.setAddress(y,iin+IMAG,xout,io+IMAG);
@@ -915,20 +911,17 @@ namespace NPB {
             }
         }
 
-        public void cffts2(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y, int store) {
+        public void cffts2(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
             int logd2;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
             //         double complex y(fftblockpad, d2, 2);
-
-            //C#:  x   (d3,d2,d1);
-            //     xout(d3,d2,d1);
-            //     y   (d2, fftblockpad, 2);
+            //C#:  x   [d3,d2,d1];
+            //     xout[d3,d2,d1];
+            //     y   [2, d2, fftblockpad];
 
             int i, j, k, ii, io, iin;
-
             logd2 = ilog2Get(d2);
-
             for (k = 0; k < d3; k++) {
                 for (ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
                     if (timers_enabled) timer_start(T_fftcopy);
@@ -948,7 +941,7 @@ namespace NPB {
                     if (timers_enabled) timer_start(T_fftcopy);
                     for (j = 0; j < d2; j++) {
                         for (i = 0; i < fftblock; i++) {
-                            iin = (j * fftblockpad + i) * 2;
+                            iin = ((0*d2+j)*fftblockpad+i)*2;
                             io = ((k * d2 + j) * d1 + (i + ii)) * 2;
                             Point.setAddress(y,iin+REAL,xout,io+REAL);
                             Point.setAddress(y,iin+IMAG,xout,io+IMAG);
@@ -957,18 +950,16 @@ namespace NPB {
                     if (timers_enabled) timer_stop(T_fftcopy);
                 }
             }
-
         }
 
-        public void cffts3(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y, int store) {
+        public void cffts3(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
             int logd3;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
             //         double complex y(fftblockpad, d3, 2); 
-
-            //C#:  x    (d3,d2,d1);
-            //     xout (d3,d2,d1);
-            //     y    (d3, fftblockpad, 2); 
+            //C#:  x    [d3,d2,d1];
+            //     xout [d3,d2,d1];
+            //     y    [2, d3, fftblockpad]; 
 
             int i, j, k, ii, iin, io;
 
@@ -993,7 +984,7 @@ namespace NPB {
                     if (timers_enabled) timer_start(T_fftcopy);
                     for (k = 0; k < d3; k++) {
                         for (i = 0; i < fftblock; i++) {
-                            iin = (k*fftblockpad+i)*2;
+                            iin = ((0*d3+k)*fftblockpad+i)*2;
                             io  = (((k*d2+j)*d1+(i+ii))*2);
                             Point.setAddress(y,iin+REAL,xout,io+REAL);
                             Point.setAddress(y,iin+IMAG,xout,io+IMAG);
@@ -1002,10 +993,9 @@ namespace NPB {
                     if (timers_enabled) timer_stop(T_fftcopy);
                 }
             }
-
         }
         
-        public void cfftz(int iis, int m, int n, double[,,,] x, double[,,,] y) { // //y=temp:  x=y, y=y(1,1,2));
+        public void cfftz(int iis, int m, int n, double[,,,] x, double[,,,] y) {
             //c---------------------------------------------------------------------
             //c   Computes NY N-point complex-to-complex FFTs of X using an algorithm due
             //c   to Swarztrauber.  X is both the input and the output array, while Y is a 
@@ -1014,12 +1004,8 @@ namespace NPB {
             //c   set to 0 and M set to MX, where MX is the maximum value of M for any 
             //c   subsequent call.
             //c---------------------------------------------------------------------
-
-            //      implicit none
-            //      include 'global.h'
             //Fortran: dimension x(fftblockpad,n), y(fftblockpad,n);
             int i,j,l,mx;
-            //double complex x, y;
             //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
             //c---------------------------------------------------------------------
             //c   Check if input parameters are invalid.
@@ -1028,34 +1014,23 @@ namespace NPB {
             if ((iis != 1 && iis != -1) || m < 1 || m > mx) {
                 Console.WriteLine("CFFTZ: Either U has not been initialized, or else one of the input parameters iis invalid " + iis + " " + m + " " + mx);
             }
-
             //c---------------------------------------------------------------------
             //c   Perform one variant of the Stockham FFT.
             //c---------------------------------------------------------------------
             for (l = 1; l <= m; l = l + 2) {
                 fftz2(iis, l, m, n, fftblock, fftblockpad, u, x, y, 0, 1);
-
-                //if (l == 3) debugImprimeFileGeral(y, me, "C-Y-AposSegundaChamadaDaFuncaoL3");
-                //if (l == 3) debugImprimeFileGeral(x, me, "C-X-AposSegundaChamadaDaFuncaoL3");
-
                 if (l == m) goto Desvio160;
                 fftz2(iis, l + 1, m, n, fftblock, fftblockpad, u, y, x, 1, 0);
-                //debugImprimeFileGeral(y, me, "C-Y-L1-Dados");
             }
-
             goto Desvio180;
-
             //c---------------------------------------------------------------------
             //c   Copy Y to X.
             //c---------------------------------------------------------------------
             Desvio160: { 
-                int iin, io;
                 for (j = 0; j < n; j++) {
-                    for (i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //x[n,fftblockpad], y[n,fftblockpad];
-                        iin = (j*fftblockpad+i)*2; //y[j,i]
-                        io  = (j*fftblockpad+i)*2; //x(j,i)
-                        Point.setAddress(y, iin + REAL, x, io + REAL);
-                        Point.setAddress(y, iin + IMAG, x, io + IMAG);
+                    for (i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
+                        x[0, j, i, REAL] = y[1,j, i, REAL];
+                        x[0, j, i, IMAG] = y[1,j, i, IMAG];
                     }
                 }
             }
