@@ -1,5 +1,6 @@
 using System;
 using NPB;
+using NPB3_0_JAV;
 
 namespace NPB.Ftb {
     public class FTBase {
@@ -86,6 +87,8 @@ namespace NPB.Ftb {
             protected int npDebug=0, root=0;
             public static String BMName = "FT";
         //endSupport
+
+        public Timer timer = new Timer();
 
       //***************************************************************************************************************/
 
@@ -191,5 +194,59 @@ namespace NPB.Ftb {
             np_min = np;
             ntdivnp = ((nx*ny)/np_min)*nz;
         }
+
+        public static int[] readInputFtData(string path)
+        {
+            String s, temp = "";
+            int[] vet = new int[4];
+            System.IO.StreamReader file = new System.IO.StreamReader(path);
+
+            s = file.ReadLine(); s = s.Trim(' ');
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == ' ')
+                {
+                    break;
+                }
+                temp = temp + s[i];
+            }
+            vet[0] = int.Parse(temp); temp = "";
+
+            s = file.ReadLine(); s = s.Trim(' ');
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == ' ')
+                {
+                    break;
+                }
+                temp = temp + s[i];
+            }
+            vet[1] = int.Parse(temp); temp = "";
+
+            s = file.ReadLine(); s = s.Trim(' ');
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[0] == ' ')
+                {
+                    break;
+                }
+                temp = temp + s[0];
+                s = s.Substring(1);
+            }
+            vet[2] = int.Parse(temp); temp = "";
+
+            s = s.Trim(' ');
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == ' ')
+                {
+                    break;
+                }
+                temp = temp + s[i];
+            }
+            vet[3] = int.Parse(temp);
+            return vet;
+        }
+
     }
 }

@@ -2,6 +2,8 @@
 using System.IO;
 using NPB.Ftb;
 using NPB.Ftc;
+using NPB3_0_JAV;
+using NPB3_0_JAV.BMInOut;
 
 namespace NPB {
     public class FT:FTBase {
@@ -54,7 +56,7 @@ namespace NPB {
 
         public void runBenchMark() {
             for (i = 1; i <= T_max; i++) {
-                timer_clear(i);
+                timer.resetTimer(i);
             }
             setup();
             startBigArrays();
@@ -66,41 +68,41 @@ namespace NPB {
             //c Start over from the beginning. Note that all operations must
             //c be timed, in contrast to other benchmarks. 
             //c---------------------------------------------------------------------
-            for (i = 1; i <= T_max; i++) timer_clear(i);
+            for (i = 1; i <= T_max; i++) timer.resetTimer(i);
             worldcomm.Barrier(); 
 
-            timer_start(T_total);
-            if (timers_enabled) timer_start(T_setup);
+            timer.start(T_total);
+            if (timers_enabled) timer.start(T_setup);
 
             compute_indexmap(twiddle, dims[1,3], dims[2,3], dims[3,3]);
             compute_initial_conditions(u1, dims[1,1], dims[2,1], dims[3,1]);
             fft_init(dims[1,1]);
 
             if (timers_enabled) synchup();
-            if (timers_enabled) timer_stop(T_setup);
+            if (timers_enabled) timer.stop(T_setup);
 
-            if (timers_enabled) timer_start(T_fft);
+            if (timers_enabled) timer.start(T_fft);
             fft(1, u1, u0);
-            if (timers_enabled) timer_stop(T_fft);
+            if (timers_enabled) timer.stop(T_fft);
 
             
             for (iter = 1; iter <= niter; iter++) {
-                if (timers_enabled) timer_start(T_evolve);
+                if (timers_enabled) timer.start(T_evolve);
                 evolve(u0, u1, twiddle, dims[1,1], dims[2,1], dims[3,1]);
-                if (timers_enabled) timer_stop(T_evolve);
-                if (timers_enabled) timer_start(T_fft);
+                if (timers_enabled) timer.stop(T_evolve);
+                if (timers_enabled) timer.start(T_fft);
                 fft(-1, u1, u2);
-                if (timers_enabled) timer_stop(T_fft);
+                if (timers_enabled) timer.stop(T_fft);
                 if (timers_enabled) synchup();
-                if (timers_enabled) timer_start(T_checksum);
+                if (timers_enabled) timer.start(T_checksum);
                 checksum(iter, u2, dims[1,1], dims[2,1], dims[3,1]);
-                if (timers_enabled) timer_stop(T_checksum);
+                if (timers_enabled) timer.stop(T_checksum);
             }
 
             verify(nx, ny, nz, niter, ref verified, clss);
-            timer_stop(T_total);
+            timer.stop(T_total);
             if (np != np_min) verified = false;
-            total_time = timer_readGet(T_total); //total_time = timer_read(t_total);
+            total_time = timer.readTimer(T_total); //total_time = timer_read(t_total);
 
             if (total_time != 0) {
                 mflops = 0.000001*ntotal_f * (14.8157+7.19641*Math.Log(ntotal_f) +  (5.23518+7.21113*Math.Log(ntotal_f))*niter)/total_time;
@@ -128,7 +130,7 @@ namespace NPB {
                 Console.WriteLine(" NAS Parallel Benchmarks "+ npbversion +" -- FT Benchmark ");
                 try {
                     Console.Write("Trying Read from input file inputft.data: ");
-                    int[] vetTemp = BMArgs.readInputFtData("inputft.data");
+                    int[] vetTemp = FTBase.readInputFtData("inputft.data");
                     niter = vetTemp[0]; layout_type = vetTemp[1]; np1 = vetTemp[2]; np2 = vetTemp[3];
                 }
                 catch (System.IO.FileNotFoundException e) {
@@ -401,30 +403,11 @@ namespace NPB {
         }
 
         public void synchup(){
-            timer_start(T_synch);
+            timer.start(T_synch);
             worldcomm.Barrier();
-            timer_stop(T_synch);
+            timer.stop(T_synch);
         }
 
-        public static void timer_clear(int n) {
-            elapsed[n] = 0.0;
-        }
-
-        public static void timer_start(int n) {
-            start[n] = MPI.Unsafe.MPI_Wtime();
-        }
-
-        public static void timer_stop(int n) {
-            double t, now;
-            now = MPI.Unsafe.MPI_Wtime();
-            t = now - start[n];
-            elapsed[n] = elapsed[n] + t;
-        }
-
-        public static double timer_readGet(int n) { //Note: timer_read: There is a variable static with this name, so this
-                                                    // function name renamed to timer_readGet.
-            return elapsed[n];
-        }
 
         public void compute_indexmap(double[] twiddle, int d1, int d2, int d3) {
             int i, j, k, ii, ii2, jj, ij2, kk;
@@ -824,20 +807,20 @@ namespace NPB {
                 } else if (layout_type == layout_1D) { 
                     cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
                     cffts2(1, dims[1,2], dims[2,2], dims[3,2], x1, x1, (new double[2, dims[2,2], fftblockpad,2]));
-                    if (timers_enabled) timer_start(T_transpose);
+                    if (timers_enabled) timer.start(T_transpose);
                     transpose_xy_z(2, 3, x1, x2);
-                    if (timers_enabled) timer_stop(T_transpose);
+                    if (timers_enabled) timer.stop(T_transpose);
                     cffts1(1, dims[1,3], dims[2,3], dims[3,3], x2, x2, (new double[2, dims[1,3], fftblockpad,2]));
                 }
                 else if (layout_type == layout_2D) {
                     cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
-                    if (timers_enabled) timer_start(T_transpose);
+                    if (timers_enabled) timer.start(T_transpose);
                     transpose_x_y(1, 2, x1, x2);
-                    if (timers_enabled) timer_stop(T_transpose);
+                    if (timers_enabled) timer.stop(T_transpose);
                     cffts1(1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[1,2], fftblockpad,2]));
-                    if (timers_enabled) timer_start(T_transpose);
+                    if (timers_enabled) timer.start(T_transpose);
                     transpose_x_z(2, 3, x2, x1);
-                    if (timers_enabled) timer_stop(T_transpose);
+                    if (timers_enabled) timer.stop(T_transpose);
                     cffts1(1, dims[1,3], dims[2,3], dims[3,3], x1, x2, (new double[2, dims[1,3], fftblockpad,2]));
                 }
             }
@@ -848,21 +831,21 @@ namespace NPB {
                     cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x1, x2, (new double[2, dims[1,1], fftblockpad,2]));
                 } else if (layout_type == layout_1D) {
                     cffts1(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, (new double[2, dims[1,3], fftblockpad,2]));
-                    if (timers_enabled) timer_start(T_transpose);
+                    if (timers_enabled) timer.start(T_transpose);
                     transpose_x_yz(3, 2, x1, x2);
-                    if (timers_enabled) timer_stop(T_transpose);
+                    if (timers_enabled) timer.stop(T_transpose);
                     cffts2(-1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[2,2], fftblockpad,2]));
                     cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x2, x2, (new double[2, dims[1,1], fftblockpad,2]));
                 }
                 else if (layout_type == layout_2D) {
                     cffts1(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, (new double[2, dims[1,3], fftblockpad,2]));
-                    if (timers_enabled) timer_start(T_transpose);
+                    if (timers_enabled) timer.start(T_transpose);
                     transpose_x_z(3, 2, x1, x2);
-                    if (timers_enabled) timer_stop(T_transpose);
+                    if (timers_enabled) timer.stop(T_transpose);
                     cffts1(-1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[1,2], fftblockpad,2]));
-                    if (timers_enabled) timer_start(T_transpose);
+                    if (timers_enabled) timer.start(T_transpose);
                     transpose_x_y(2, 1, x2, x1);
-                    if (timers_enabled) timer_stop(T_transpose);
+                    if (timers_enabled) timer.stop(T_transpose);
                     cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x1, x2, (new double[2, dims[1,1], fftblockpad,2]));
                 }
             }
@@ -883,7 +866,7 @@ namespace NPB {
             logd1 = ilog2Get(d1);
             for (k = 0; k < d3; k++) {
                 for (jj = 0; jj <= (d2-fftblock); jj = jj + fftblock) {
-                    if (timers_enabled) timer_start(T_fftcopy);
+                    if (timers_enabled) timer.start(T_fftcopy);
                     for (j = 0; j < fftblock; j++) {
                         for (i = 0; i < d1; i++) {//y(j,i,1) = x(i,j+jj,k)
                             io = ((k*d2+(j+jj))*d1+i)*2; 
@@ -891,12 +874,12 @@ namespace NPB {
                             y[0,i,j,IMAG] = Point.getValue(x,io+IMAG);
                         }
                     }
-                    if (timers_enabled) timer_stop(T_fftcopy);
-                    if (timers_enabled) timer_start(T_fftlow);
+                    if (timers_enabled) timer.stop(T_fftcopy);
+                    if (timers_enabled) timer.start(T_fftlow);
                     cfftz(iis, logd1, d1, y, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
-                    if (timers_enabled) timer_stop(T_fftlow);
+                    if (timers_enabled) timer.stop(T_fftlow);
 
-                    if (timers_enabled) timer_start(T_fftcopy);
+                    if (timers_enabled) timer.start(T_fftcopy);
 
                     for (j = 0; j < fftblock; j++) {
                         for (i = 0; i < d1; i++) {
@@ -906,7 +889,7 @@ namespace NPB {
                             Point.setAddress(y,iin+IMAG,xout,io+IMAG);
                         }
                     }
-                    if (timers_enabled) timer_stop(T_fftcopy);
+                    if (timers_enabled) timer.stop(T_fftcopy);
                 }
             }
         }
@@ -924,7 +907,7 @@ namespace NPB {
             logd2 = ilog2Get(d2);
             for (k = 0; k < d3; k++) {
                 for (ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
-                    if (timers_enabled) timer_start(T_fftcopy);
+                    if (timers_enabled) timer.start(T_fftcopy);
                     for (j = 0; j < d2; j++) {
                         for (i = 0; i < fftblock; i++) {
                             iin = ((k*d2+j)*d1+(i+ii))*2;
@@ -932,13 +915,13 @@ namespace NPB {
                             y[0,j,i,IMAG] = Point.getValue(x,iin+IMAG);
                         }
                     }
-                    if (timers_enabled) timer_stop(T_fftcopy);
+                    if (timers_enabled) timer.stop(T_fftcopy);
 
-                    if (timers_enabled) timer_start(T_fftlow);
+                    if (timers_enabled) timer.start(T_fftlow);
                     cfftz (iis, logd2, d2, y, y); //y(1, 1, 2));
-                    if (timers_enabled) timer_stop(T_fftlow);
+                    if (timers_enabled) timer.stop(T_fftlow);
 
-                    if (timers_enabled) timer_start(T_fftcopy);
+                    if (timers_enabled) timer.start(T_fftcopy);
                     for (j = 0; j < d2; j++) {
                         for (i = 0; i < fftblock; i++) {
                             iin = ((0*d2+j)*fftblockpad+i)*2;
@@ -947,7 +930,7 @@ namespace NPB {
                             Point.setAddress(y,iin+IMAG,xout,io+IMAG);
                         }
                     }
-                    if (timers_enabled) timer_stop(T_fftcopy);
+                    if (timers_enabled) timer.stop(T_fftcopy);
                 }
             }
         }
@@ -967,7 +950,7 @@ namespace NPB {
 
             for (j = 0; j < d2; j++) {
                 for (ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
-                    if (timers_enabled) timer_start(T_fftcopy);
+                    if (timers_enabled) timer.start(T_fftcopy);
                     for (k = 0; k < d3; k++) {
                         for (i = 0; i < fftblock; i++) {
                             iin = ((k*d2+j)*d1+(i+ii))*2;
@@ -975,13 +958,13 @@ namespace NPB {
                             y[0,k,i,IMAG] = Point.getValue(x,iin+IMAG);
                         }
                     }
-                    if (timers_enabled) timer_stop(T_fftcopy);
+                    if (timers_enabled) timer.stop(T_fftcopy);
 
-                    if (timers_enabled) timer_start(T_fftlow);
+                    if (timers_enabled) timer.start(T_fftlow);
                     cfftz (iis, logd3, d3, y, y); //y(1, 1, 2));
-                    if (timers_enabled) timer_stop(T_fftlow);
+                    if (timers_enabled) timer.stop(T_fftlow);
 
-                    if (timers_enabled) timer_start(T_fftcopy);
+                    if (timers_enabled) timer.start(T_fftcopy);
                     for (k = 0; k < d3; k++) {
                         for (i = 0; i < fftblock; i++) {
                             iin = ((0*d3+k)*fftblockpad+i)*2;
@@ -990,7 +973,7 @@ namespace NPB {
                             Point.setAddress(y,iin+IMAG,xout,io+IMAG);
                         }
                     }
-                    if (timers_enabled) timer_stop(T_fftcopy);
+                    if (timers_enabled) timer.stop(T_fftcopy);
                 }
             }
         }
@@ -1118,8 +1101,8 @@ namespace NPB {
             //integer d1, d2, d3
             //double complex uxin(d1, d2, d3)  ===> [d3, d2, d1]       
             //double complex uxout(d2, d3, d1) ===> [d1, d3, d2]
-            if (timers_enabled) timer_start(T_transxyloc);
-            if (timers_enabled) timer_start(T_transxzloc);
+            if (timers_enabled) timer.start(T_transxyloc);
+            if (timers_enabled) timer.start(T_transxzloc);
             int i, j, k, ii, io;
             for (k = 0; k < d3; k++) { //k=1 <= d3        
                 for (i = 0; i < d1; i++) { //i=1 <= d1 
@@ -1133,7 +1116,7 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer_stop(T_transxyloc);
+            if (timers_enabled) timer.stop(T_transxyloc);
         }
 
         public void transpose_x_y_global(int d1, int d2, int d3, double[, , ,] uxin, double[, , ,] uxout) {
@@ -1146,13 +1129,13 @@ namespace NPB {
             /* ---------------------------------------------------------------------
                do transpose among all processes with same 1-coord (me1)
                --------------------------------------------------------------------- */
-            if (timers_enabled) timer_start(T_transxyglo);
+            if (timers_enabled) timer.start(T_transxyglo);
             double[] src       = new double[d1*d2*d3*2];
             double[] dst       = new double[d1*d2*d3*2]; 
             Point.setVetor(uxin, src);
             commslice2.AlltoallFlattened<double>(src, d1*d2*d3*2/np1, ref dst);
             Point.setVetor(dst, uxout);
-            if (timers_enabled) timer_stop(T_transxyglo);
+            if (timers_enabled) timer.stop(T_transxyglo);
         }
 
         public void transpose_x_y_finish(int d1, int d2, int d3, double[, , ,] uxin, double[, , ,] uxout) {
@@ -1165,7 +1148,7 @@ namespace NPB {
 
             int i, j, k, p, ioff;
 
-            if (timers_enabled) timer_start(T_transxyfin);
+            if (timers_enabled) timer.start(T_transxyfin);
             int io=0, ii=0;
             for (p = 0; p <= (np1-1); p++) {
                 ioff = p*d1/np1;
@@ -1180,7 +1163,7 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer_stop(T_transxyfin);
+            if (timers_enabled) timer.stop(T_transxyfin);
         }
 
         public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
@@ -1202,7 +1185,7 @@ namespace NPB {
             double[,,] z = new double[transblockpad, transblock, 2];
             int i, j, ii, jj, iin, io;
 
-            if (timers_enabled) timer_start(T_transxzloc);
+            if (timers_enabled) timer.start(T_transxzloc);
 
             //  c---------------------------------------------------------------------
             //  c If possible, block the transpose for cache memory systems. 
@@ -1262,7 +1245,7 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer_stop(T_transxzloc);
+            if (timers_enabled) timer.stop(T_transxzloc);
 
         }
 
@@ -1272,12 +1255,12 @@ namespace NPB {
             double[] src = new double[ntdivnp*2];
             double[] dst = new double[ntdivnp*2];
             if (timers_enabled) synchup();
-            if (timers_enabled) timer_start(T_transxzglo);
+            if (timers_enabled) timer.start(T_transxzglo);
             Point.setVetor(uxin, src);
             commslice1.AlltoallFlattened<double>(src, ntdivnp * 2 / np, ref dst);
             Point.setVetor(dst, uxout);
             // call mpi_alltoall(xin, ntdivnp/np, dc_type, xout, ntdivnp/np, dc_type, commslice1, ierr);
-            if (timers_enabled) timer_stop(T_transxzglo);
+            if (timers_enabled) timer.stop(T_transxzglo);
 
         }
 
@@ -1290,7 +1273,7 @@ namespace NPB {
               //uxout [n1/np2, n2*np2    ]
 
             int i, j, p, ioff, ii, io;
-            if (timers_enabled) timer_start(T_transxzfin);
+            if (timers_enabled) timer.start(T_transxzfin);
             for (p = 0; p <= np2 - 1; p++) {
                 ioff = p*n2;
                 for (j = 0; j < n1 / np2; j++) {
@@ -1302,7 +1285,7 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer_stop(T_transxzfin);
+            if (timers_enabled) timer.stop(T_transxzfin);
 
         }
 
@@ -1325,8 +1308,8 @@ namespace NPB {
             double[,,] buf = new double[maxdim, transblockpad, 2];
             int block1, block3;
             int i, j, k, kk, ii, i1, k1;
-            if (timers_enabled) timer_start(T_transxzloc);
-            if (timers_enabled) timer_start(T_transxzloc);
+            if (timers_enabled) timer.start(T_transxzloc);
+            if (timers_enabled) timer.start(T_transxzloc);
             if (d1 < 32) goto G100;
             block3 = d3;
             if (block3 == 1)  goto G100;
@@ -1380,7 +1363,7 @@ namespace NPB {
             // all done
             //---------------------------------------------------------------------
             G200: //continue;
-            if (timers_enabled) timer_stop(T_transxzloc);
+            if (timers_enabled) timer.stop(T_transxzloc);
         }
 
         public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
@@ -1394,14 +1377,14 @@ namespace NPB {
             //---------------------------------------------------------------------
             // do transpose among all  processes with same 1-coord (me1)
             //---------------------------------------------------------------------
-            if (timers_enabled) timer_start(T_transxzglo);
+            if (timers_enabled) timer.start(T_transxzglo);
             double[] src = new double[ntdivnp * 2];
             double[] dst = new double[ntdivnp * 2];
             Point.setVetor(xin, src);
             commslice1.AlltoallFlattened<double>(src, d1*d2*d3*2/np2, ref dst);
             Point.setVetor(dst, xout);
             //call mpi_alltoall(xin, d1*d2*d3/np2, dc_type,xout, d1*d2*d3/np2, dc_type,commslice1, ierr);
-            if (timers_enabled) timer_stop(T_transxzglo);
+            if (timers_enabled) timer.stop(T_transxzglo);
         }
 
         public void transpose_x_z_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
@@ -1413,7 +1396,7 @@ namespace NPB {
                 //xout [d3,d2,d1]
             int i, j, k, p, ioff, iin, io;
 
-            if (timers_enabled) timer_start(T_transxzfin);
+            if (timers_enabled) timer.start(T_transxzfin);
             for (p = 0; p <= np2 - 1; p++) {
                 ioff = p*d1/np2;
                 for (k = 0; k < d3; k++) {
@@ -1427,7 +1410,7 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer_stop(T_transxzfin);
+            if (timers_enabled) timer.stop(T_transxzfin);
         }
 
         public void transpose_x_yz(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
@@ -1865,8 +1848,8 @@ namespace NPB {
 
             if (me != 0) return;
             for (i = 1; i <= T_max; i++) {
-                if (timer_readGet(i) != 0.0) {
-                    Console.WriteLine(" timer "+ i + tstrings[i-1] + timer_readGet(i));
+                if (timer.readTimer(i) != 0.0) {
+                    Console.WriteLine(" timer "+ i + tstrings[i-1] + timer.readTimer(i));
                 }
             }
         }
