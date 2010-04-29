@@ -365,9 +365,6 @@ public class SP : SPBase
 			grid_points[1] = problem_size;
 			grid_points[2] = problem_size;
 		}
-		Console.WriteLine("Size: " + grid_points[0]
-							 + " X " + grid_points[1]
-				 + " X " + grid_points[2]);
 		if ((grid_points[0] > IMAX) ||
 		 (grid_points[1] > JMAX) ||
 		 (grid_points[2] > KMAX))
@@ -498,6 +495,11 @@ public class SP : SPBase
 				}
 			}
 		}
+
+        foreach (double x in rms) {
+
+        }
+
 		for (m = 0; m <= 4; m++)
 		{
 			for (d = 0; d <= 2; d++)
@@ -1402,7 +1404,6 @@ public class SP : SPBase
                     for (i = 1; i <= nx2; i++)
                     {
                         rhs[k, j, i, m] = rhs[k, j, i, m] * dt;
-                        Console.WriteLine(i + "/" + j + "/" + k + " rhs: " + rhs[k, j, i, m] + " " + dt);
 
                     }
                 }
@@ -2661,7 +2662,7 @@ public class SP : SPBase
 	public double getTime() { return timer.readTimer(1); }
 	public void finalize() // throws Throwable
 	{
-	    Console.WriteLine("LU: is about to be garbage collected");
+	    Console.WriteLine("SP: is about to be garbage collected");
 		//base.finalize();
 	}
 }
