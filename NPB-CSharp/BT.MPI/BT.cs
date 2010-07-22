@@ -1784,13 +1784,13 @@ namespace NPB {
             for(k=0; k<=KMAX-1; k++){
                 for(j=0; j<=JMAX-1; j++){
                     for(m=1; m<=BLOCK_SIZE; m++){
-                        for(n=1; n<=BLOCK_SIZE; n++){
-                            lhsc[c,k+1,j+1,istart,n,m] = out_buffer_x[ptr+n]; //lhsc[m,n,istart-1,j,k,c] = out_buffer[ptr+n];
+                        for(n=0; n<BLOCK_SIZE; n++){
+                            lhsc[c,k+1,j+1,istart,n+1,m] = out_buffer_x[ptr+n]; //lhsc[m,n,istart-1,j,k,c] = out_buffer[ptr+n];
                         }
                         ptr = ptr+BLOCK_SIZE;
                     }
-                    for(n=1; n<=BLOCK_SIZE; n++){
-                        rhs[c,k+1,j+1,istart,n] = out_buffer_x[ptr+n]; //rhs[n,istart-1,j,k,c] = out_buffer[ptr+n];
+                    for(n=0; n<BLOCK_SIZE; n++){
+                        rhs[c,k+1,j+1,istart,n+1] = out_buffer_x[ptr+n]; //rhs[n,istart-1,j,k,c] = out_buffer[ptr+n];
                     }
                     ptr = ptr+BLOCK_SIZE;
                 }
@@ -1809,7 +1809,7 @@ namespace NPB {
             jp = cell_coord[2,c] - 1;
             kp = cell_coord[3,c] - 1;
             buffer_size=MAX_CELL_DIM*MAX_CELL_DIM*(BLOCK_SIZE*BLOCK_SIZE + BLOCK_SIZE);
-            double[] in_buffer_x = new double[buffer_size+1];
+            double[] in_buffer_x = new double[buffer_size];
             //---------------------------------------------------------------------
             //     pack up buffer
             //---------------------------------------------------------------------
@@ -1817,13 +1817,13 @@ namespace NPB {
             for(k=0; k<=KMAX-1; k++){
                for(j=0; j<=JMAX-1; j++){
                   for(m=1; m<=BLOCK_SIZE; m++){
-                     for(n=1; n<=BLOCK_SIZE; n++){
-                        in_buffer_x[ptr+n] = lhsc[c,k+1,j+1,isize+1,n,m];  //in_buffer[ptr+n] = lhsc[m,n,isize,j,k,c];
+                     for(n=0; n<BLOCK_SIZE; n++){
+                        in_buffer_x[ptr+n] = lhsc[c,k+1,j+1,isize+1,n+1,m];  //in_buffer[ptr+n] = lhsc[m,n,isize,j,k,c];
                      }
                      ptr = ptr+BLOCK_SIZE;
                   }
-                  for(n=1; n<=BLOCK_SIZE; n++){
-                     in_buffer_x[ptr+n] = rhs[c,k+1,j+1,isize+1,n];  //in_buffer[ptr+n] = rhs[n,isize,j,k,c];
+                  for(n=0; n<BLOCK_SIZE; n++){
+                     in_buffer_x[ptr+n] = rhs[c,k+1,j+1,isize+1,n+1];  //in_buffer[ptr+n] = rhs[n,isize,j,k,c];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -1851,13 +1851,13 @@ namespace NPB {
             kp = cell_coord[3,c]-1;
             buffer_size=MAX_CELL_DIM*MAX_CELL_DIM*BLOCK_SIZE;
 
-            double[] in_buffer_x = new double[buffer_size + 1];
+            double[] in_buffer_x = new double[buffer_size];
 
             ptr = 0;
             for(k=0; k<=KMAX-1; k++){
                for(j=0; j<=JMAX-1; j++){
-                  for(n=1; n<=BLOCK_SIZE; n++){
-                     in_buffer_x[ptr+n] = rhs[c,k+1,j+1,istart+1,n]; //in_buffer[ptr+n] = rhs[n,istart,j,k,c];
+                  for(n=0; n<BLOCK_SIZE; n++){
+                     in_buffer_x[ptr+n] = rhs[c,k+1,j+1,istart+1,n+1]; //in_buffer[ptr+n] = rhs[n,istart,j,k,c];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -1876,8 +1876,8 @@ namespace NPB {
             ptr = 0;
             for(k=0; k<=KMAX-1; k++){
                for(j=0; j<=JMAX-1; j++){
-                  for(n=1; n<=BLOCK_SIZE; n++){
-                     backsub_info[c,k,j,n] = out_buffer_x[ptr+n];  //backsub_info[n,j,k,c] = out_buffer[ptr+n];
+                  for(n=0; n<BLOCK_SIZE; n++){
+                     backsub_info[c,k,j,n+1] = out_buffer_x[ptr+n];  //backsub_info[n,j,k,c] = out_buffer[ptr+n];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -1895,7 +1895,7 @@ namespace NPB {
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[1], EAST+jp+kp*NCELLS, comm_solve, recv_id, error];
 
             MPI.Request[] recv_id = new MPI.Request[1];
-            double[] out_buffer_x = new double[buffer_size + 1];
+            double[] out_buffer_x = new double[buffer_size];
             recv_id[0] = comm_solve.ImmediateReceive<double>(successor[1], EAST+jp+kp*ncells, out_buffer_x);
             recv_id[0].Wait();
 
@@ -1913,7 +1913,7 @@ namespace NPB {
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[1], WEST+jp+kp*NCELLS,  comm_solve, recv_id, error];
 
             MPI.Request[] recv_id = new MPI.Request[1];
-            double[] out_buffer_x = new double[buffer_size+1];
+            double[] out_buffer_x = new double[buffer_size];
             recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[1], WEST + jp + kp * ncells, out_buffer_x);
             recv_id[0].Wait();
 
@@ -2893,13 +2893,13 @@ namespace NPB {
             for(k=0; k<=KMAX-1; k++){
                for(i=0; i<=IMAX-1; i++){
                   for(m=1; m<=BLOCK_SIZE; m++){
-                     for(n=1; n<=BLOCK_SIZE; n++){
-                        lhsc[c,k+1,jstart,i+1,n,m] = out_buffer_x[ptr+n]; //lhsc[m,n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
+                     for(n=0; n<BLOCK_SIZE; n++){
+                        lhsc[c,k+1,jstart,i+1,n+1,m] = out_buffer_x[ptr+n]; //lhsc[m,n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
                      }
                      ptr = ptr+BLOCK_SIZE;
                   }
-                  for(n=1; n<=BLOCK_SIZE; n++){
-                     rhs[c,k+1,jstart,i+1,n] = out_buffer_x[ptr+n];  // rhs[n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
+                  for(n=0; n<BLOCK_SIZE; n++){
+                     rhs[c,k+1,jstart,i+1,n+1] = out_buffer_x[ptr+n];  // rhs[n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -2918,7 +2918,7 @@ namespace NPB {
             ip = cell_coord[1,c] - 1;
             kp = cell_coord[3,c] - 1;
             buffer_size=MAX_CELL_DIM*MAX_CELL_DIM*(BLOCK_SIZE*BLOCK_SIZE + BLOCK_SIZE);
-            double[] in_buffer_x = new double[buffer_size + 1];
+            double[] in_buffer_x = new double[buffer_size];
 
             //---------------------------------------------------------------------
             //     pack up buffer
@@ -2927,13 +2927,13 @@ namespace NPB {
             for(k=0; k<=KMAX-1; k++){
                for(i=0; i<=IMAX-1; i++){
                   for(m=1; m<=BLOCK_SIZE; m++){
-                     for(n=1; n<=BLOCK_SIZE; n++){
-                        in_buffer_x[ptr+n] = lhsc[c,k+1,jsize+1,i+1,n,m];  //in_buffer[ptr+n] = lhsc[m,n,i,jsize,k,c]
+                     for(n=0; n<BLOCK_SIZE; n++){
+                        in_buffer_x[ptr+n] = lhsc[c,k+1,jsize+1,i+1,n+1,m];  //in_buffer[ptr+n] = lhsc[m,n,i,jsize,k,c]
                      }
                      ptr = ptr+BLOCK_SIZE;
                   }
-                  for(n=1; n<=BLOCK_SIZE; n++){
-                     in_buffer_x[ptr+n] = rhs[c,k+1,jsize+1,i+1,n];       //in_buffer[ptr+n] = rhs[n,i,jsize,k,c] 
+                  for(n=0; n<BLOCK_SIZE; n++){
+                     in_buffer_x[ptr+n] = rhs[c,k+1,jsize+1,i+1,n+1];       //in_buffer[ptr+n] = rhs[n,i,jsize,k,c] 
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -2962,13 +2962,13 @@ namespace NPB {
             kp = cell_coord[3,c]-1;
             buffer_size=MAX_CELL_DIM*MAX_CELL_DIM*BLOCK_SIZE;
 
-            double[] in_buffer_x = new double[buffer_size + 1];
+            double[] in_buffer_x = new double[buffer_size];
 
             ptr = 0;
             for(k=0; k<=KMAX-1; k++){
                for(i=0; i<=IMAX-1; i++){
-                  for(n=1; n<=BLOCK_SIZE; n++){
-                     in_buffer_x[ptr+n] = rhs[c,k+1,jstart+1,i+1,n];  //in_buffer[ptr+n] = rhs[n,i,jstart,k,c];
+                  for(n=0; n<BLOCK_SIZE; n++){
+                     in_buffer_x[ptr+n] = rhs[c,k+1,jstart+1,i+1,n+1];  //in_buffer[ptr+n] = rhs[n,i,jstart,k,c];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -2989,8 +2989,8 @@ namespace NPB {
             ptr = 0;
             for(k=0; k<=KMAX-1; k++){
                for(i=0; i<=IMAX-1; i++){
-                  for(n=1; n<=BLOCK_SIZE; n++){
-                     backsub_info[c,k,i,n] = out_buffer_x[ptr+n];  //backsub_info[n,i,k,c] = out_buffer[ptr+n];
+                  for(n=0; n<BLOCK_SIZE; n++){
+                     backsub_info[c,k,i,n+1] = out_buffer_x[ptr+n];  //backsub_info[n,i,k,c] = out_buffer[ptr+n];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -3008,7 +3008,7 @@ namespace NPB {
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[2], NORTH+ip+kp*NCELLS, comm_solve, recv_id, error];
 
             MPI.Request[] recv_id = new MPI.Request[1];
-            double[] out_buffer_x = new double[buffer_size + 1];
+            double[] out_buffer_x = new double[buffer_size];
             recv_id[0] = comm_solve.ImmediateReceive<double>(successor[2], NORTH+ip+kp*ncells, out_buffer_x);
             recv_id[0].Wait();
 
@@ -3026,7 +3026,7 @@ namespace NPB {
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[2], SOUTH+ip+kp*NCELLS,  comm_solve, recv_id, error];
 
             MPI.Request[] recv_id = new MPI.Request[1];
-            double[] out_buffer_x = new double[buffer_size + 1];
+            double[] out_buffer_x = new double[buffer_size];
             recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[2], SOUTH+ip+kp*ncells, out_buffer_x);
             recv_id[0].Wait();
 
@@ -3440,13 +3440,13 @@ namespace NPB {
             for(j=0; j<=JMAX-1; j++){
                for(i=0; i<=IMAX-1; i++){
                   for(m=1; m<=BLOCK_SIZE; m++){
-                     for(n=1; n<=BLOCK_SIZE; n++){  //lhsc[m,n,i,j,kstart-1,c] = out_buffer[ptr+n];
-                        lhsc[c,kstart,j+1,i+1,n,m] = out_buffer_x[ptr+n];
+                     for(n=0; n<BLOCK_SIZE; n++){  //lhsc[m,n,i,j,kstart-1,c] = out_buffer[ptr+n];
+                        lhsc[c,kstart,j+1,i+1,n+1,m] = out_buffer_x[ptr+n];
                      }
                      ptr = ptr+BLOCK_SIZE;
                   }
-                  for(n=1; n<=BLOCK_SIZE; n++){ //rhs[n,i,j,kstart-1,c] = out_buffer[ptr+n];
-                     rhs[c,kstart,j+1,i+1,n] = out_buffer_x[ptr+n];
+                  for(n=0; n<BLOCK_SIZE; n++){ //rhs[n,i,j,kstart-1,c] = out_buffer[ptr+n];
+                     rhs[c,kstart,j+1,i+1,n+1] = out_buffer_x[ptr+n];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -3465,7 +3465,7 @@ namespace NPB {
             ip = cell_coord[1,c] - 1;
             jp = cell_coord[2,c] - 1;
             buffer_size=MAX_CELL_DIM*MAX_CELL_DIM*(BLOCK_SIZE*BLOCK_SIZE + BLOCK_SIZE);
-            double[] in_buffer_x = new double[buffer_size + 1];
+            double[] in_buffer_x = new double[buffer_size];
 
             //c---------------------------------------------------------------------
             //c     pack up buffer
@@ -3474,13 +3474,13 @@ namespace NPB {
             for(j=0; j<=JMAX-1; j++){
                for(i=0; i<=IMAX-1; i++){
                   for(m=1; m<=BLOCK_SIZE; m++){
-                     for(n=1; n<=BLOCK_SIZE; n++){  //in_buffer[ptr+n] = lhsc[m,n,i,j,ksize,c]
-                        in_buffer_x[ptr+n] = lhsc[c,ksize+1,j+1,i+1,n,m];
+                     for(n=0; n<BLOCK_SIZE; n++){  //in_buffer[ptr+n] = lhsc[m,n,i,j,ksize,c]
+                        in_buffer_x[ptr+n] = lhsc[c,ksize+1,j+1,i+1,n+1,m];
                      }
                      ptr = ptr+BLOCK_SIZE;
                   }
-                  for(n=1; n<=BLOCK_SIZE; n++){  //in_buffer[ptr+n] = rhs[n,i,j,ksize,c];
-                     in_buffer_x[ptr+n] = rhs[c,ksize+1,j+1,i+1,n];
+                  for(n=0; n<BLOCK_SIZE; n++){  //in_buffer[ptr+n] = rhs[n,i,j,ksize,c];
+                     in_buffer_x[ptr+n] = rhs[c,ksize+1,j+1,i+1,n+1];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -3510,13 +3510,13 @@ namespace NPB {
             jp = cell_coord[2,c]-1;
             buffer_size=MAX_CELL_DIM*MAX_CELL_DIM*BLOCK_SIZE;
 
-            double[] in_buffer_x = new double[buffer_size + 1];
+            double[] in_buffer_x = new double[buffer_size];
 
             ptr = 0;
             for(j=0; j<=JMAX-1; j++){
                for(i=0; i<=IMAX-1; i++){
-                  for(n=1; n<=BLOCK_SIZE; n++){  //in_buffer[ptr+n] = rhs[n,i,j,kstart,c];
-                     in_buffer_x[ptr+n] = rhs[c,kstart+1,j+1,i+1,n];
+                  for(n=0; n<BLOCK_SIZE; n++){  //in_buffer[ptr+n] = rhs[n,i,j,kstart,c];
+                     in_buffer_x[ptr+n] = rhs[c,kstart+1,j+1,i+1,n+1];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -3536,8 +3536,8 @@ namespace NPB {
             ptr = 0;
             for(j=0; j<=JMAX-1; j++){
                for(i=0; i<=IMAX-1; i++){
-                  for(n=1; n<=BLOCK_SIZE; n++){  //backsub_info[n,i,j,c] = out_buffer[ptr+n];
-                     backsub_info[c,j,i,n] = out_buffer_x[ptr+n];
+                  for(n=0; n<BLOCK_SIZE; n++){  //backsub_info[n,i,j,c] = out_buffer[ptr+n];
+                     backsub_info[c,j,i,n+1] = out_buffer_x[ptr+n];
                   }
                   ptr = ptr+BLOCK_SIZE;
                }
@@ -3555,7 +3555,7 @@ namespace NPB {
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[3], TOP+ip+jp*NCELLS, comm_solve, recv_id, error];
 
             MPI.Request[] recv_id = new MPI.Request[1];
-            double[] out_buffer_x = new double[buffer_size + 1];
+            double[] out_buffer_x = new double[buffer_size];
             recv_id[0] = comm_solve.ImmediateReceive<double>(successor[3], TOP+ip+jp*ncells, out_buffer_x);
             recv_id[0].Wait();
 
@@ -3573,7 +3573,7 @@ namespace NPB {
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[3], BOTTOM+ip+jp*NCELLS, comm_solve, recv_id, error];
 
             MPI.Request[] recv_id = new MPI.Request[1];
-            double[] out_buffer_x = new double[buffer_size + 1];
+            double[] out_buffer_x = new double[buffer_size];
             recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[3], BOTTOM+ip+jp*ncells, out_buffer_x);
             recv_id[0].Wait();
 
