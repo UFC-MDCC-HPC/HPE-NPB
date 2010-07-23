@@ -3003,7 +3003,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //     post mpi receives
             //---------------------------------------------------------------------
-            int ip,kp,buffer_size;
+            int ip,kp;
             ip = cell_coord[1,c] - 1;
             kp = cell_coord[3,c] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[2], NORTH+ip+kp*NCELLS, comm_solve, recv_id, error];
@@ -3555,7 +3555,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //     post mpi receives 
             //---------------------------------------------------------------------
-            int ip,jp,buffer_size;
+            int ip,jp;
             ip = cell_coord[1,c] - 1;
             jp = cell_coord[2,c] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[3], BOTTOM+ip+jp*NCELLS, comm_solve, recv_id, error];
