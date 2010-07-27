@@ -67,13 +67,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SP.MPI", "SP.MPI\SP.MPI.csp
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FT.MPI", "MPI.NET\FT.MPI\FT.MPI.csproj", "{3FD34379-FBEC-4FA0-81BD-7322C4F63564}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FT.MPI", "FT.MPI\FT.MPI.csproj", "{3FD34379-FBEC-4FA0-81BD-7322C4F63564}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timer.MPI", "Timer.MPI\Timer.MPI.csproj", "{3AF2FB6E-544E-43D9-A5DF-61DF53E3A506}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BT.MPI", "BT.MPI\BT.MPI.csproj", "{1525F7D1-E613-4227-9041-09D9FE489B02}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
@@ -168,6 +174,12 @@ Global
 		{3AF2FB6E-544E-43D9-A5DF-61DF53E3A506}.MPI|Any CPU.Build.0 = Release|Any CPU
 		{3AF2FB6E-544E-43D9-A5DF-61DF53E3A506}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AF2FB6E-544E-43D9-A5DF-61DF53E3A506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1525F7D1-E613-4227-9041-09D9FE489B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1525F7D1-E613-4227-9041-09D9FE489B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1525F7D1-E613-4227-9041-09D9FE489B02}.MPI|Any CPU.ActiveCfg = MPI|Any CPU
+		{1525F7D1-E613-4227-9041-09D9FE489B02}.MPI|Any CPU.Build.0 = MPI|Any CPU
+		{1525F7D1-E613-4227-9041-09D9FE489B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1525F7D1-E613-4227-9041-09D9FE489B02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
