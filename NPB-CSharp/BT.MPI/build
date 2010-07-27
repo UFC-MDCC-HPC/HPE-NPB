@@ -6,18 +6,27 @@
 	<property name="LIB" value="lib" />
 	<property name="unsafe" value="-unsafe" />
 	<target name="LIB" description="Libraries">
+		<csc target="library" output="bin/Debug/Timer.dll" debug="true">
+			<sources>    
+				<include name="../Timer.MPI/Timer.cs" />  
+			</sources>
+			<references> 
+				<include name='/usr/local/lib/MPI.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="bin/Debug/BMInOut.dll" debug="true">
+			<sources>    
+				<include name="../BMInOut/BMArgs.cs" />  
+			</sources>
+		</csc>
 		<csc target="library" output="bin/Debug/BTBase.dll" debug="true">
 			<sources>    
 				<include name="BTBase/BTBase.cs" />  
 			</sources>
 			<references> 
 				<include name='/usr/local/lib/MPI.dll' />         
+				<include name='bin/Debug/Timer.dll' />         
 			</references>
-		</csc>
-		<csc target="library" output="bin/Debug/Point.dll" debug="true">
-			<sources>    
-				<include name="BTControls/Point.cs" />  
-			</sources>
 		</csc>
 	</target>
 	<target name="all" description="Compilar" depends='LIB'>
@@ -26,8 +35,8 @@
 			<sources>
 				<include name="BT.cs" />
 				<include name="BTBase/BTBase.cs" />  
-				<include name="BTControls/Point.cs" />  
-				<include name="BTControls/BMArgs.cs" />  
+				<include name="../Timer.MPI/Timer.cs" />  
+				<include name="../BMInOut/BMArgs.cs" />  
 			</sources>
 			<references> 
 				<include name='/usr/local/lib/MPI.dll' />         
