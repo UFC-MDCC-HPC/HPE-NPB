@@ -85,6 +85,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BT.MPI", "BT.MPI\BT.MPI.csp
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LU.MPI", "LU.MPI\LU.MPI.csproj", "{0DD58B14-E8B6-4DA0-B5E3-9599C3DDD2EF}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -180,6 +186,12 @@ Global
 		{1525F7D1-E613-4227-9041-09D9FE489B02}.MPI|Any CPU.Build.0 = MPI|Any CPU
 		{1525F7D1-E613-4227-9041-09D9FE489B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1525F7D1-E613-4227-9041-09D9FE489B02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DD58B14-E8B6-4DA0-B5E3-9599C3DDD2EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DD58B14-E8B6-4DA0-B5E3-9599C3DDD2EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DD58B14-E8B6-4DA0-B5E3-9599C3DDD2EF}.MPI|Any CPU.ActiveCfg = MPI|Any CPU
+		{0DD58B14-E8B6-4DA0-B5E3-9599C3DDD2EF}.MPI|Any CPU.Build.0 = MPI|Any CPU
+		{0DD58B14-E8B6-4DA0-B5E3-9599C3DDD2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DD58B14-E8B6-4DA0-B5E3-9599C3DDD2EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
