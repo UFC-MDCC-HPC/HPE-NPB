@@ -5,22 +5,56 @@ using NPB3_0_JAV;
 namespace NPB.Lub {
     public class LUBase {
       //******************************************** Attributes *******************************************************/
-            public const int le = 1;
         //npbparams.h
-            protected static int maxcells, problem_size, niter_default;
+            protected static int nnodes_compiled, isiz01, isiz02, isiz03, isiz1, isiz2, isiz3, itmax_default, inorm_default;
             protected static double dt_default;
-            protected static int wr_default;
-            protected static int iotype;
             protected static bool convertdouble = false;
-            protected static string compiletime;
-            protected static string npbversion = "3.3";
+            protected static string compiletime, npbversion="3.3";
         //end npbparans.h
 
+        //applu.incl
+            protected static int ipr_default=1;
+            protected static double omega_default=1.2d;
+            protected static double tolrsd1_def=1.0E-08, tolrsd2_def=1.0E-08, tolrsd3_def=1.0E-08, tolrsd4_def=1.0E-08, tolrsd5_def=1.0E-08;
+            protected static double c1=1.40d, c2=0.40d, c3=1.00E-01, c4=1.00d, c5=1.40d;
+            //-- grid -------------------------------------------------------------
+            protected static int nx, ny, nz, nx0, ny0, nz0, ipt, ist, iend, jpt, jst, jend, ii1, ii2, ji1, ji2, ki1, ki2;
+            protected static double dxi, deta, dzeta, tx1, tx2, tx3, ty1, ty2, ty3, tz1, tz2, tz3;
+            //---------------------------------------------------------------------
+            //   dissipation ------------------------------------------------------            
+            protected static double dx1, dx2, dx3, dx4, dx5, dy1, dy2, dy3, dy4, dy5, dz1, dz2, dz3, dz4, dz5, dssp;
+            //---------------------------------------------------------------------
+            protected static double[,,,] u, rsd, frct, flux;        //       u[5, -1:isiz1+2, -1:isiz2+2, isiz3],
+                                                                    //     rsd[5, -1:isiz1+2, -1:isiz2+2, isiz3],
+                                                                    //    frct[5, -1:isiz1+2, -1:isiz2+2, isiz3],
+                                                                    //    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
+            protected static int ipr, inorm;
+            protected static int itmax, invert;
+            protected static double dt, omega, frc, ttotal;
+            protected static double[] tolrsd = new double[5+1];     //tolrsd[5]
+            protected static double[] rsdnm  = new double[5+1];     //rsdnm[5]
+            protected static double[] errnm  = new double[5+1];     //errnm[5];
+            protected static double[, , ,] a, b, c, d;              //a[5,5,isiz1,isiz2], b[5,5,isiz1,isiz2], c[5,5,isiz1,isiz2], d[5,5,isiz1,isiz2];
+            protected static double[,] ce = new double[5+1,13+1];   //ce[5,13]
+            protected static int id, ndim, num, xdim, ydim, row, col;
+            protected static int north, south, east, west;
+            protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;
+            protected static int npmax;
+
+            protected static bool[] icommn, icomms, icomme, icommw; //Fortran: icommn[npmax+1],icomms[npmax+1], icomme[npmax+1],icommw[npmax+1]
+            protected static double[,] buf, buf1;                   //Fortran: buf[5,2*isiz2*isiz3], buf1[5,2*isiz2*isiz3]
+            protected static double maxtime;
+        //end applu.incl
+
+        //lu.f
+            protected static bool verified;
+            protected static double mflops;
+        //end lu.f
+
         //mpinpb.h
+            protected static int node, no_nodes, dp_type;
             protected MPI.Environment mpi = null;
             protected MPI.Intracommunicator worldcomm, comm_setup, comm_solve, comm_rhs = null;
-            protected static int node, no_nodes, total_nodes, dp_type;
-            protected static bool active;
         //end mpinpb.h
 
         //Suporte
@@ -37,35 +71,113 @@ namespace NPB.Lub {
             DateTime nowTime = DateTime.Now;
             compiletime = nowTime.Day + "/" + nowTime.Month + "/" + nowTime.Year;
             this.clss = c;
-
-            
-            
-            
+            switch (c) {
+                case 'S':
+                    isiz01 = isiz02 = isiz03 =12;
+                    isiz3  = isiz03;
+                    itmax_default = inorm_default=50;
+                    dt_default = 0.5d;
+                    break;
+                case 'W':
+                    isiz01 = isiz02 = isiz03 = 33;
+                    isiz3  = isiz03;
+                    itmax_default = inorm_default = 300;
+                    dt_default = 1.5E-3; // dt_default = .0015;
+                    break;
+                case 'A':
+                    isiz01 = isiz02 = isiz03 = 64;
+                    isiz3  = isiz03;
+                    itmax_default = inorm_default = 250;
+                    dt_default = 2.0d;
+                    break;
+                case 'B':
+                    isiz01 = isiz02 = isiz03 = 102;
+                    isiz3  = isiz03;
+                    itmax_default = inorm_default = 250;
+                    dt_default = 2.0d;
+                    break;
+                case 'C':
+                    isiz01 = isiz02 = isiz03 = 162;
+                    isiz3  = isiz03;
+                    itmax_default = inorm_default = 250;
+                    dt_default = 2.0d;
+                    break;
+                case 'D':
+                    isiz01 = isiz02 = isiz03 = 408;
+                    isiz3  = isiz03;
+                    itmax_default = inorm_default = 300;
+                    dt_default = 1.0d;
+                    break;
+                case 'E':
+                    isiz01 = isiz02 = isiz03 = 1020;
+                    isiz3  = isiz03;
+                    itmax_default = inorm_default = 300;
+                    dt_default = 0.5d;
+                    break;
+            }            
             mpi_start();
             initVars();
         }
 
         private void mpi_start() {
+            string[] args = System.Environment.GetCommandLineArgs();
+            mpi = new MPI.Environment(ref args);
+            worldcomm = MPI.Communicator.world;//call MPI_INIT(IERROR)
+            num = worldcomm.Size + npDebug;//call MPI_COMM_SIZE(MPI_COMM_WORLD, num, IERROR)
+            id = worldcomm.Rank;//call MPI_COMM_RANK(MPI_COMM_WORLD, id, IERROR)            
+            ndim   = nodedim(num);
+            //if (!convertdouble) {
+            //dp_type = MPI_DOUBLE_PRECISION
+            //} else {
+            //dp_type = MPI_REAL
+            //}
         }
 
         private void initVars(){
+            npmax = isiz01 + isiz02;
+            nnodes_compiled = num;
+            int ydiv = ilog2(num) / 2;
+            int xdiv = ydiv;
+            if (xdiv + ydiv != ilog2(num)) xdiv += 1;
+            xdiv = ipow2(xdiv); ydiv = ipow2(ydiv);
+            isiz1 = isiz01 / xdiv; if (isiz1 * xdiv < isiz01) isiz1++;
+            isiz2 = isiz01 / ydiv; if (isiz2 * ydiv < isiz01) isiz2++;
+
+            icommn = new bool[npmax+1+1];//icommn[npmax+1]
+            icomms = new bool[npmax+1+1];//icomms[npmax+1]
+            icomme = new bool[npmax+1+1];//icomme[npmax+1]
+            icommw = new bool[npmax+1+1];//icommw[npmax+1]
+
+            buf  = new double[5+1,(2*isiz2*isiz3)+1];//buf[5,2*isiz2*isiz3]
+            buf1 = new double[5+1,(2*isiz2*isiz3)+1];//buf1[5,2*isiz2*isiz3]
+
+            a = new double[5+1,5+1,isiz1+1,isiz2+1];//a[5,5,isiz1,isiz2];
+            b = new double[5+1,5+1,isiz1+1,isiz2+1];//b[5,5,isiz1,isiz2];
+            c = new double[5+1,5+1,isiz1+1,isiz2+1];//c[5,5,isiz1,isiz2];
+            d = new double[5+1,5+1,isiz1+1,isiz2+1];//d[5,5,isiz1,isiz2];
+
+            u    = new double[5+1, isiz1+4, isiz2+4, isiz3+1];//       u[5, -1:isiz1+2, -1:isiz2+2, isiz3];
+            rsd  = new double[5+1, isiz1+4, isiz2+4, isiz3+1];//     rsd[5, -1:isiz1+2, -1:isiz2+2, isiz3];
+            frct = new double[5+1, isiz1+4, isiz2+4, isiz3+1];//    frct[5, -1:isiz1+2, -1:isiz2+2, isiz3];
+            flux = new double[5+1, isiz1+2, isiz2+2, isiz3+1];//    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
         }
 
         public static string[] readInputLuData(string path) {
             String s, temp = "";
-            string[] vet = new string[9];
-            int[] conf = {1,1,3,2,2}; // conf numbers: first line have 1 elements, second line 1 elements, third line 3 elements... 
+            string[] vet = new string[13];
+            int[] conf = {0,0,2,0,0,1,0,0,1,0,0,1,0,0,5,0,0,3}; // conf numbers: first line have 1 elements, second line 1 elements, third line 3 elements... 
             int count = 0;
             System.IO.StreamReader file = new System.IO.StreamReader(path);
             for (int k = 0; k < conf.Length; k++) {
                 s = file.ReadLine(); s = s.Trim(' ');
                 for (int j = 0; j < conf[k]; j++) {
                     for (int i = 0; i <= s.Length; i++) {
-                        if (s[0] == ' ') {
+                        if (s.Length==0) {
                             break;
-                        }
+                        } else { if (s[0] == ' ') break; }
                         temp = temp + s[0];
                         s = s.Substring(1);
+                        i--;
                     }
                     vet[count++] = temp; temp = "";
                     s = s.Trim(' ');
@@ -83,5 +195,24 @@ namespace NPB.Lub {
             }
             return vet;
         }
+        public static int nodedim(double n) { return (int)(Math.Log(n) / Math.Log(2.0d) + 0.00001); }
+        public static int ilog2(int i) {
+            int log2;
+            int exp2 = 1;
+            if (i <= 0) return (-1);
+            for (log2 = 0; log2 < 20; log2++) {
+                if (exp2 == i) return (log2);
+                exp2 *= 2;
+            }
+            return (-1);
+        }
+        public static int ipow2(int i) {
+            int pow2 = 1;
+            if (i < 0) return (-1);
+            if (i == 0) return (1);
+            while (i-->0) pow2 *= 2;
+            return (pow2);
+        }
+
     }
 }
