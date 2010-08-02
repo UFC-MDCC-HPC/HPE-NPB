@@ -45,7 +45,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
             //c   set up processor grid
             //c---------------------------------------------------------------------
-            //call proc_grid[];
+            proc_grid();
             //c---------------------------------------------------------------------
             //c   determine the neighbors
             //c---------------------------------------------------------------------
@@ -211,6 +211,20 @@ namespace NPB {
             worldcomm.Broadcast<int>(ref nx0, root);          //call MPI_BCAST[nx0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<int>(ref ny0, root);          //call MPI_BCAST[ny0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<int>(ref nz0, root);          //call MPI_BCAST[nz0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
+        }
+
+        public void proc_grid() {
+            //c---------------------------------------------------------------------
+            //c
+            //c   set up a two-d grid for processors: column-major ordering of unknowns
+            //c   NOTE: assumes a power-of-two number of processors
+            //c
+            //c---------------------------------------------------------------------
+            xdim   = (int) Math.Pow(2,(ndim/2));//xdim   = 2**(ndim/2);
+            if (mod(ndim,2)==1) xdim = xdim + xdim;
+            ydim   = num/xdim;
+            row    = (int) mod(id,xdim) + 1;
+            col    = id/xdim + 1;
         }
     }
 }
