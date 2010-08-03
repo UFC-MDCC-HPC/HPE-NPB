@@ -49,11 +49,11 @@ namespace NPB {
             //c---------------------------------------------------------------------
             //c   determine the neighbors
             //c---------------------------------------------------------------------
-            //call neighbors[];
+            neighbors();
             //c---------------------------------------------------------------------
             //c   set up sub-domain sizes
             //c---------------------------------------------------------------------
-            //call subdomain[];
+            subdomain();
             //c---------------------------------------------------------------------
             //c   set up coefficients
             //c---------------------------------------------------------------------
@@ -226,6 +226,101 @@ namespace NPB {
             row    = (int) mod(id,xdim) + 1;
             col    = id/xdim + 1;
         }
+
+        public void neighbors() {
+            //  c---------------------------------------------------------------------
+            //  c     figure out the neighbors and their wrap numbers for each processor
+            //  c---------------------------------------------------------------------
+            south = -1;
+            east  = -1;
+            north = -1;
+            west  = -1;
+            if (row>1) {
+                    north = id -1;
+            } else {
+                    north = -1;
+            }
+            if (row < xdim) {
+                south = id + 1;
+            } else {
+                south = -1;
+            }
+
+            if (col > 1) {
+                west = id - xdim;
+            } else {
+                west = -1;
+            }
+            if (col < ydim) {
+                east = id + xdim;
+            } else {
+                east = -1;
+            }
+        }
+
+        public void subdomain() {
+            int mm;
+            //  c---------------------------------------------------------------------
+            //  c
+            //  c   set up the sub-domain sizes
+            //  c
+            //  c---------------------------------------------------------------------
+            //  c---------------------------------------------------------------------
+            //  c   x dimension
+            //  c---------------------------------------------------------------------
+            mm   = (int) mod(nx0,xdim);
+            if (row<=mm) {
+              nx = nx0/xdim + 1;
+              ipt = (row-1)*nx;
+            } else {
+              nx = nx0/xdim;
+              ipt = (row-1)*nx + mm;
+            }
+            //  c---------------------------------------------------------------------
+            //  c   y dimension
+            //  c---------------------------------------------------------------------
+            mm   = (int) mod(ny0,ydim);
+            if (col<=mm) {
+              ny = ny0/ydim + 1;
+              jpt = (col-1)*ny;
+            } else {
+              ny = ny0/ydim;
+              jpt = (col-1)*ny + mm;
+            }
+            //  c---------------------------------------------------------------------
+            //  c   z dimension
+            //  c---------------------------------------------------------------------
+            nz = nz0;
+            //  c---------------------------------------------------------------------
+            //  c   check the sub-domain size
+            //  c---------------------------------------------------------------------
+            if ( ( nx < 4 ) || ( ny < 4 ) || ( nz < 4 ) ) {
+                Console.WriteLine("SUBDOMAIN SIZE IS TOO SMALL - ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS, "+
+                    "SO THAT NX, NY AND NZ ARE GREATER THAN OR EQUAL TO 4 THEY ARE CURRENTLY: "+nx+"x"+ny+"x"+nz);
+                worldcomm.Abort(0);//CALL MPI_ABORT[ MPI_COMM_WORLD,ERRORCODE,IERROR ]
+                mpi.Dispose();
+                Environment.Exit(0);            
+            }
+            if ( ( nx > isiz1 ) || ( ny > isiz2 ) || ( nz > isiz3 ) ) {
+                Console.WriteLine("SUBDOMAIN SIZE IS TOO LARGE - ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS" +
+                    "SO THAT NX, NY AND NZ ARE LESS THAN OR EQUAL TO ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY. THEY ARE CURRENTLY"+
+                    " "+nx+"x"+ny+"x"+nz);
+                worldcomm.Abort(0);//CALL MPI_ABORT[ MPI_COMM_WORLD,ERRORCODE, IERROR ]
+                mpi.Dispose();
+                Environment.Exit(0);
+            }
+            //  c---------------------------------------------------------------------
+            //  c   set up the start and end in i and j extents for all processors
+            //  c---------------------------------------------------------------------
+            ist = 1;
+            iend = nx;
+            if (north==-1) ist = 2;
+            if (south==-1) iend = nx - 1;
+            jst = 1;
+            jend = ny;
+            if (west==-1) jst = 2;
+            if (east==-1) jend = ny - 1;
+        }    
     }
 }
 
