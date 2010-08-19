@@ -176,36 +176,34 @@ namespace NPB {
             //c   perform one SSOR iteration to touch all data and program pages 
             //c---------------------------------------------------------------------
             ssor(1);
-            //c---------------------------------------------------------------------
-            //c   reset the boundary and initial values
-            //c---------------------------------------------------------------------
-            //call setbv[];
-            //call setiv[];
+            //---------------------------------------------------------------------
+            //   reset the boundary and initial values
+            //---------------------------------------------------------------------
+            setbv();
+            setiv();
             //c---------------------------------------------------------------------
             //c   perform the SSOR iterations
             //c---------------------------------------------------------------------
-            //call ssor[itmax];
+            ssor(itmax);
             //c---------------------------------------------------------------------
             //c   compute the solution error
             //c---------------------------------------------------------------------
-            //call error[];
+            error();
             //c---------------------------------------------------------------------
             //c   compute the surface integral
             //c---------------------------------------------------------------------
-            //call pintgr[];
+            pintgr();
             //c---------------------------------------------------------------------
             //c   verification test
             //c---------------------------------------------------------------------
-            //IF [id==0] {
-                //call verify [ rsdnm, errnm, frc, class, verified ];
-                //mflops = float[itmax]*[1984.77*float[ nx0 ] *float[ ny0 ] *float[ nz0 ] -10923.3*[float[ nx0+ny0+nz0 ]/3.]**2+27770.9* float[ nx0+ny0+nz0 ]/3.-144010.] / [maxtime*1000000.];
+            if (id==0) {
+                verify(rsdnm, errnm, frc, clss, ref verified);
+                mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+
+                    27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
                 //call print_results['LU', class, nx0, ny0, nz0, itmax, nnodes_compiled, num, maxtime, mflops, '          floating point', verified, npbversion, compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]'];
-            //}
-            //call mpi_finalize[ierr];
-            //end;
-
-            worldcomm.Barrier();
-            mpi.Dispose();
+            }            
+            //worldcomm.Barrier();
+            mpi.Dispose();//call mpi_finalize[ierr];
         }
 
         public static double mod(double a, double b) { return (a % b); }
@@ -2605,7 +2603,821 @@ namespace NPB {
             exchange_1(v,k,iex);
         }
             // end buts.f
-
         //end ssor.f
+        //error.f
+        public void error() {
+            //c---------------------------------------------------------------------
+            //c
+            //c   compute the solution error
+            //c
+            //c---------------------------------------------------------------------
+            int i, j, k, m, iglob, jglob;
+            double tmp;
+            double[] u000ijk = new double[5 + 1]; //u000ijk[5]
+            double[] dummy = new double[5 + 1]; //dummy[5]
+            //int IERROR
+            for(m = 1; m<= 5; m++){
+               errnm[m] = 0.0d;
+               dummy[m] = 0.0d;
+            }
+            for(k = 2; k<= nz-1; k++){
+               for(j = jst; j<= jend; j++){
+                  jglob = jpt + j;
+                  for(i = ist; i<= iend; i++){
+                     iglob = ipt + i;
+                     exact(iglob, jglob, k, u000ijk);
+                     for(m = 1; m<= 5; m++){
+                        tmp = (u000ijk[m] - u[k,j+1,i+1,m]); //tmp = (u000ijk[m] - u[m,i,j,k]);
+                        dummy[m] = dummy[m] + pow2(tmp);
+                     }
+                  }
+               }
+            }
+            //---------------------------------------------------------------------
+            //   compute the global sum of individual contributions to dot product.
+            //---------------------------------------------------------------------
+            //call MPI_ALLREDUCE[ dummy,errnm,5,dp_type,MPI_SUM,MPI_COMM_WORLD,IERROR ];
+            worldcomm.Allreduce<double>(dummy, MPI.Operation<double>.Add, ref errnm);
+
+            for(m = 1; m<= 5; m++){
+                errnm[m] = Math.Sqrt(errnm[m]/((nx0-2)*(ny0-2)*(nz0-2)));   //sqrt (errnm[m]/((nx0-2)*(ny0-2)*(nz0-2)));
+            }
+        }
+            //exact.f
+        public void exact(int i, int j, int k, double[] u000ijk) {
+            //---------------------------------------------------------------------
+            //   compute the exact solution at [i,j,k]
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
+            //int i, j, k
+            //double u000ijk[*]
+            //---------------------------------------------------------------------
+            //  local variables
+            //---------------------------------------------------------------------
+            int m;
+            double xi, eta, zeta;
+            xi = ((double)(i - 1)) / (nx0 - 1); //(dble(i-1))/(nx0-1);
+            eta = ((double)(j - 1)) / (ny0 - 1);
+            zeta = ((double)(k - 1)) / (nz - 1);
+
+            for(m = 1; m<=5; m++){
+               u000ijk[m] =  ce[m,1]
+                   + ce[m,2] * xi
+                   + ce[m,3] * eta
+                   + ce[m,4] * zeta
+                   + ce[m,5] * xi * xi
+                   + ce[m,6] * eta * eta
+                   + ce[m,7] * zeta * zeta
+                   + ce[m,8] * xi * xi * xi
+                   + ce[m,9] * eta * eta * eta
+                   + ce[m,10] * zeta * zeta * zeta
+                   + ce[m,11] * xi * xi * xi * xi
+                   + ce[m,12] * eta * eta * eta * eta
+                   + ce[m,13] * zeta * zeta * zeta * zeta;
+            }
+        }
+            //end exact.f
+        //end error.f
+        //pintgr.f
+        public void pintgr() {
+            //c---------------------------------------------------------------------
+            //c  local variables
+            //c---------------------------------------------------------------------
+            int i, j, k, ibeg, ifin, ifin1, jbeg, jfin, jfin1, iglob, iglob1, iglob2, jglob, jglob1, jglob2, ind1, ind2;
+            double[,] phi1 = new double[isiz3+2, isiz2+2]; //phi1[0:isiz2+1,0:isiz3+1]
+            double[,] phi2 = new double[isiz3+2, isiz2+2]; //phi2[0:isiz2+1,0:isiz3+1]
+            double frc1, frc2, frc3, dummy;
+            //int IERROR
+            //c---------------------------------------------------------------------
+            //c   set up the sub-domains for intation in each processor
+            //c---------------------------------------------------------------------
+            ibeg = nx + 1;
+            ifin = 0;
+            iglob1 = ipt + 1;
+            iglob2 = ipt + nx;
+            if (iglob1>=ii1 && iglob2<ii2+nx) ibeg = 1;
+            if (iglob1>ii1-nx && iglob2<=ii2) ifin = nx;
+            if (ii1>=iglob1 && ii1<=iglob2) ibeg = ii1 - ipt;
+            if (ii2>=iglob1 && ii2<=iglob2) ifin = ii2 - ipt;
+            jbeg = ny + 1;
+            jfin = 0;
+            jglob1 = jpt + 1;
+            jglob2 = jpt + ny;
+            if (jglob1>=ji1 && jglob2<ji2+ny) jbeg = 1;
+            if (jglob1>ji1-ny && jglob2<=ji2) jfin = ny;
+            if (ji1>=jglob1 && ji1<=jglob2) jbeg = ji1 - jpt;
+            if (ji2>=jglob1 && ji2<=jglob2) jfin = ji2 - jpt;
+            ifin1 = ifin;
+            jfin1 = jfin;
+            if (ipt+ifin1 == ii2) ifin1 = ifin - 1;
+            if (jpt+jfin1 == ji2) jfin1 = jfin - 1;
+            //---------------------------------------------------------------------
+            //   initialize
+            //---------------------------------------------------------------------
+            for(i = 0; i<=isiz2+1; i++){
+              for(k = 0; k<=isiz3+1; k++){
+                  phi1[k,i] = 0.0;//phi1[i,k] = 0.0; //Obs: change index
+                  phi2[k,i] = 0.0;//phi2[i,k] = 0.0; //Obs: change index
+              }
+            }
+            for(j = jbeg; j<=jfin; j++){
+               jglob = jpt + j;
+               for(i = ibeg; i<=ifin; i++){
+                  iglob = ipt + i;
+                  k = ki1;  
+                  phi1[j,i] = c2*( u[k,j+1,i+1,5]   //phi1[i,j] = c2*( u[5,i,j,k]
+                      -0.50d*(pow2(u[k,j+1,i+1,2])
+                            + pow2(u[k,j+1,i+1,3])
+                            + pow2(u[k,j+1,i+1,4]) )
+                                 / u[k,j+1,i+1,1] );
+                  k = ki2;
+                  phi2[j,i] = c2*( u[k,j+1,i+1,5]
+                      -0.50d*(pow2(u[k,j+1,i+1,2])
+                            + pow2(u[k,j+1,i+1,3])
+                            + pow2(u[k,j+1,i+1,4]) )
+                                 / u[k,j+1,i+1,1] );
+               }
+            }
+            //---------------------------------------------------------------------
+            //  communicate in i and j directions
+            //---------------------------------------------------------------------
+            exchange_4(phi1,phi2,ibeg,ifin1,jbeg,jfin1); // Obs: phi1 e phi2 will change order index
+
+            frc1 = 0.0d;
+
+            for(j = jbeg; j<=jfin1; j++){
+               for(i = ibeg; i<= ifin1; i++){
+                  frc1 = frc1 + ( phi1[j   , i  ]    //frc1=frc1+(phi1[i   , j  ]
+                                + phi1[j   , i+1]             //+ phi1[i+1 , j  ]  
+                                + phi1[j+1 , i  ]             //+ phi1[i   , j+1]  
+                                + phi1[j+1 , i+1]             //+ phi1[i+1 , j+1]  
+                                + phi2[j   , i  ]             //+ phi2[i   , j  ]  
+                                + phi2[j   , i+1]             //+ phi2[i+1 , j  ]  
+                                + phi2[j+1 , i  ]             //+ phi2[i   , j+1]  
+                                + phi2[j+1 , i+1] );          //+ phi2[i+1 , j+1] );
+               }
+            }
+            //---------------------------------------------------------------------
+            //  compute the global sum of individual contributions to frc1
+            //---------------------------------------------------------------------
+            dummy = frc1;            
+            //call MPI_ALLREDUCE[ dummy,frc1,1,dp_type,MPI_SUM,MPI_COMM_WORLD,IERROR ];
+            frc1 = worldcomm.Allreduce<double>(dummy, MPI.Operation<double>.Add);
+            frc1 = dxi * deta * frc1;
+            //---------------------------------------------------------------------
+            //   initialize
+            //---------------------------------------------------------------------
+            for(i = 0; i<=isiz2+1; i++){
+              for(k = 0; k<=isiz3+1; k++){
+                phi1[k,i] = 0.0;  //phi1[i,k] = 0.0;
+                phi2[k,i] = 0.0;  //phi2[i,k] = 0.0;
+              }
+            }
+            jglob = jpt + jbeg;
+            ind1 = 0;
+            if (jglob==ji1) {
+              ind1 = 1;
+              for(k = ki1; k<= ki2; k++){
+                 for(i = ibeg; i<= ifin; i++){
+                    iglob = ipt + i;
+                    phi1[k,i] = c2 * (u[k,jbeg+1,i+1,5]  //phi1[i,k] = c2 * (u[5,i,jbeg,k]
+                        - 0.50d*(pow2(u[k,jbeg+1,i+1,2])
+                               + pow2(u[k,jbeg+1,i+1,3])
+                               + pow2(u[k,jbeg+1,i+1,4]) )
+                                    / u[k,jbeg+1,i+1,1] );
+                 }
+              }
+            }
+            jglob = jpt + jfin;
+            ind2 = 0;
+            if (jglob==ji2) {
+              ind2 = 1;
+              for(k = ki1; k<= ki2; k++){
+                 for(i = ibeg; i<= ifin; i++){
+                    iglob = ipt + i;
+                    phi2[k,i] = c2*( u[k,jfin+1,i+1,5]        //phi2[i,k] = c2*( u[5,i,jfin,k] 
+                        -0.50d*(pow2(u[k,jfin+1,i+1,2])
+                              + pow2(u[k,jfin+1,i+1,3])
+                              + pow2(u[k,jfin+1,i+1,4]) )
+                                   / u[k,jfin+1,i+1,1] );
+                 }
+              }
+            }
+            //---------------------------------------------------------------------
+            //  communicate in i direction
+            //---------------------------------------------------------------------
+            if (ind1==1) {
+              exchange_5(phi1,ibeg,ifin1);
+            }
+            if (ind2==1) {
+                exchange_5(phi2,ibeg,ifin1);
+            }
+            frc2 = 0.0d;
+            for(k = ki1; k<= ki2-1; k++){
+               for(i = ibeg; i<= ifin1; i++){
+                  frc2 = frc2 + ( phi1[k   , i  ]    //frc2=frc2+(phi1[i   , k  ]    
+                                + phi1[k   , i+1]             //+ phi1[i+1 , k  ]    
+                                + phi1[k+1 , i  ]             //+ phi1[i   , k+1]    
+                                + phi1[k+1 , i+1]             //+ phi1[i+1 , k+1]    
+                                + phi2[k   , i  ]             //+ phi2[i   , k  ]    
+                                + phi2[k   , i+1]             //+ phi2[i+1 , k  ]    
+                                + phi2[k+1 , i  ]             //+ phi2[i   , k+1]    
+                                + phi2[k+1 , i+1] );          //+ phi2[i+1 , k+1] ); 
+               }
+            }
+            //---------------------------------------------------------------------
+            //  compute the global sum of individual contributions to frc2
+            //---------------------------------------------------------------------
+            dummy = frc2;
+            //call MPI_ALLREDUCE[ dummy,frc2,1,dp_type,MPI_SUM,MPI_COMM_WORLD,IERROR ];
+            frc2 = worldcomm.Allreduce<double>(dummy, MPI.Operation<double>.Add);
+            frc2 = dxi * dzeta * frc2;
+            //---------------------------------------------------------------------
+            //   initialize
+            //---------------------------------------------------------------------
+            for(i = 0; i<=isiz2+1; i++){
+              for(k = 0; k<=isiz3+1; k++){
+                phi1[k,i] = 0.0;//phi1[i,k] = 0.0;
+                phi2[k,i] = 0.0;//phi2[i,k] = 0.0;
+              }
+            }
+            iglob = ipt + ibeg;
+            ind1 = 0;
+            if (iglob==ii1) {
+              ind1 = 1;
+              for(k = ki1; k<= ki2; k++){
+                 for(j = jbeg; j<= jfin; j++){
+                    jglob = jpt + j;
+                    phi1[k,j] = c2*( u[k,j+1,ibeg+1,5]    //phi1[j,k] = c2*( u[5,ibeg,j,k]
+                        -0.50d*(pow2(u[k,j+1,ibeg+1,2])
+                              + pow2(u[k,j+1,ibeg+1,3])
+                              + pow2(u[k,j+1,ibeg+1,4]) )
+                                   / u[k,j+1,ibeg+1,1] );
+                 }
+              }
+            }
+            iglob = ipt + ifin;
+            ind2 = 0;
+            if (iglob==ii2) {
+              ind2 = 1;
+              for(k = ki1; k<= ki2; k++){
+                 for(j = jbeg; j<= jfin; j++){
+                    jglob = jpt + j;
+                    phi2[k,j] = c2*( u[k,j+1,ifin+1,5]            //phi2[j,k] = c2*( u[5,ifin,j,k]
+                        -0.50d*(pow2(u[k,j+1,ifin+1,2])
+                              + pow2(u[k,j+1,ifin+1,3])
+                              + pow2(u[k,j+1,ifin+1,4]) )
+                                   / u[k,j+1,ifin+1,1] );
+                 }
+              }
+            }
+            //---------------------------------------------------------------------
+            //  communicate in j direction
+            //---------------------------------------------------------------------
+            if (ind1==1) {
+              exchange_6(phi1,jbeg,jfin1);
+            }
+            if (ind2==1) {
+                exchange_6(phi2,jbeg,jfin1);
+            }
+            frc3 = 0.0d;
+            for(k = ki1; k<= ki2-1; k++){
+               for(j = jbeg; j<= jfin1; j++){
+                  frc3 = frc3 + ( phi1[k   , j  ]    //frc3 = frc3 + ( phi1[j   , k  ]    
+                                + phi1[k   , j+1]                  //+ phi1[j+1 , k  ]    
+                                + phi1[k+1 , j  ]                  //+ phi1[j   , k+1]    
+                                + phi1[k+1 , j+1]                  //+ phi1[j+1 , k+1]    
+                                + phi2[k   , j  ]                  //+ phi2[j   , k  ]    
+                                + phi2[k   , j+1]                  //+ phi2[j+1 , k  ]    
+                                + phi2[k+1 , j  ]                  //+ phi2[j   , k+1]    
+                                + phi2[k+1 , j+1] );               //+ phi2[j+1 , k+1] ); 
+               }
+            }
+            //---------------------------------------------------------------------
+            //  compute the global sum of individual contributions to frc3
+            //---------------------------------------------------------------------
+            dummy = frc3;
+            //call MPI_ALLREDUCE[ dummy,frc3,1,dp_type,MPI_SUM,MPI_COMM_WORLD,IERROR ];
+            frc3 = worldcomm.Allreduce<double>(dummy, MPI.Operation<double>.Add);
+            frc3 = deta * dzeta * frc3;
+            frc = 0.25d * ( frc1 + frc2 + frc3 );
+            //      //c      if [id==0] write [*,1001] frc   //  //1001 format [//5x,'surface integral = ',1pe12.5//]
+            //return
+        }
+            //exchange_4.f
+        public void exchange_4(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
+            //  c---------------------------------------------------------------------
+            //  c   compute the right hand side based on exact solution
+            //  c---------------------------------------------------------------------
+            //  c---------------------------------------------------------------------
+            //  c  input parameters
+            //  c---------------------------------------------------------------------
+            //Fortran: double  g[0:isiz2+1,0:isiz3+1],h[0:isiz2+1,0:isiz3+1]
+            //C#     : double  g[0:isiz3+1,0:isiz2+1],h[0:isiz3+1,0:isiz2+1]
+            //int ibeg, ifin1
+            //int jbeg, jfin1
+            //c---------------------------------------------------------------------
+            //c  local variables
+            //c---------------------------------------------------------------------
+            int i, j, ny2;
+            //MPI.Request[] msgid1 = new MPI.Request[1];  //int msgid1;
+            //MPI.Request[] msgid3 = new MPI.Request[1];  //int msgid3;
+            //double[] dum = new double[1025];//dum[1024]
+            //int STATUS[MPI_STATUS_SIZE]
+            //int IERROR
+            ny2 = ny + 2;
+            //---------------------------------------------------------------------
+            //   communicate in the east and west directions
+            //---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   receive from east
+            //---------------------------------------------------------------------
+            if (jfin1==ny) {
+                MPI.Request[] msgid3 = new MPI.Request[1];  //int msgid3;
+                double[] dum = new double[2*nx];
+                //call MPI_IRECV[ dum,2*nx,dp_type,MPI_ANY_SOURCE,from_e,MPI_COMM_WORLD,msgid3,IERROR ];
+                msgid3[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_e, dum);
+                msgid3[0].Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ];
+              for(i = 1; i<=nx; i++){
+                g[ny+1,i] = dum[i-1];     //g[i,ny+1] = dum[i];
+                h[ny+1,i] = dum[i+nx-1];  //h[i,ny+1] = dum[i+nx];
+              }
+            }
+            //---------------------------------------------------------------------
+            //   send west
+            //---------------------------------------------------------------------
+            if (jbeg==1) {
+              double[] dum = new double[2*nx];
+              for(i = 1; i<=nx; i++){
+                dum[i-1]    = g[1,i];    //dum[i] = g[i,1];
+                dum[i+nx-1] = h[1,i]; //dum[i+nx] = h[i,1];
+              }
+              //call MPI_SEND[ dum,2*nx,dp_type,west,from_e,MPI_COMM_WORLD,IERROR ];
+              worldcomm.Send<double>(dum, west, from_e);
+            }
+            //---------------------------------------------------------------------
+            //   communicate in the south and north directions
+            //---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   receive from south
+            //---------------------------------------------------------------------
+            if (ifin1==nx) {
+                MPI.Request[] msgid1 = new MPI.Request[1];  //int msgid1;
+                double[] dum = new double[2*ny2];
+                //call MPI_IRECV[ dum, 2*ny2, dp_type,MPI_ANY_SOURCE,from_s,MPI_COMM_WORLD,msgid1,IERROR ];
+                msgid1[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_s, dum);
+                msgid1[0].Wait(); //call MPI_WAIT[ msgid1, STATUS, IERROR ];
+
+                for(j = 0; j<=ny+1; j++){
+                    g[j,nx+1] = dum[j];      //g[nx+1,j] = dum[j+1];
+                    h[j,nx+1] = dum[j+ny2];  //h[nx+1,j] = dum[j+ny2+1];
+                }
+            }
+            //---------------------------------------------------------------------
+            //   send north
+            //---------------------------------------------------------------------
+            if (ibeg==1) {
+              double[] dum = new double[2*ny2];
+              for(j = 0; j<=ny+1; j++){
+                dum[j]     = g[j,1];     //dum[j+1] = g[1,j];
+                dum[j+ny2] = h[j,1];     //dum[j+ny2+1] = h[1,j];
+              }
+              //call MPI_SEND[ dum, 2*ny2, dp_type,north,from_s,MPI_COMM_WORLD,IERROR ];
+              worldcomm.Send<double>(dum, north, from_s);
+            }
+        }
+            //end exchange_4.f
+            // exchange_5.f
+        public void exchange_5(double[,] g, int ibeg, int ifin1) {
+            //c---------------------------------------------------------------------
+            //c   compute the right hand side based on exact solution
+            //c---------------------------------------------------------------------
+            //c---------------------------------------------------------------------
+            //c  input parameters
+            //c---------------------------------------------------------------------
+            //double  g[0:isiz2+1,0:isiz3+1];
+            //int ibeg, ifin1;
+            //c---------------------------------------------------------------------
+            //c  local variables
+            //c---------------------------------------------------------------------
+            int k;
+            //double[] dum = new double[1025]; //dum[1024]
+            //int msgid1
+            //int STATUS[MPI_STATUS_SIZE]
+            //int IERROR
+            //---------------------------------------------------------------------
+            //   communicate in the south and north directions
+            //---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   receive from south
+            //---------------------------------------------------------------------
+            if (ifin1==nx) {
+                MPI.Request[] msgid1 = new MPI.Request[1];
+                double[] dum = new double[nz];
+                //call MPI_IRECV[ dum, nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, msgid1, IERROR ];
+                msgid1[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_s, dum);
+                msgid1[0].Wait();    //call MPI_WAIT[ msgid1, STATUS, IERROR ]
+                for(k = 1; k<=nz; k++){
+                    g[k,nx+1] = dum[k-1];  //g[nx+1,k] = dum[k];
+                }
+            }
+            //---------------------------------------------------------------------
+            //   send north
+            //---------------------------------------------------------------------
+            if (ibeg==1) {
+                double[] dum = new double[nz];
+                for(k = 1; k<=nz; k++){
+                    dum[k-1] = g[k,1];  //dum[k] = g[1,k];
+                }
+                //call MPI_SEND[ dum, nz, dp_type, north, from_s, MPI_COMM_WORLD, IERROR ];
+                worldcomm.Send<double>(dum, north, from_s);
+            }
+        }
+            //end exchange_5.f
+            // exchange_6.f
+        public void exchange_6(double[,] g, int jbeg, int jfin1) {
+            //c---------------------------------------------------------------------
+            //c   compute the right hand side based on exact solution
+            //c---------------------------------------------------------------------
+            //c---------------------------------------------------------------------
+            //c  input parameters
+            //c---------------------------------------------------------------------
+            //double  g[0:isiz2+1,0:isiz3+1]
+            //int jbeg, jfin1
+            //c---------------------------------------------------------------------
+            //c  local parameters
+            //c---------------------------------------------------------------------
+            int k;
+            //double[] dum = new double[1025]; //dum[1024]
+            //int msgid3
+            //int STATUS[MPI_STATUS_SIZE]
+            //int IERROR
+            //c---------------------------------------------------------------------
+            //c   communicate in the east and west directions
+            //c---------------------------------------------------------------------
+            //c---------------------------------------------------------------------
+            //c   receive from east
+            //c---------------------------------------------------------------------
+            if (jfin1==ny) {
+                double[] dum = new double[nz];
+                MPI.Request[] msgid3 = new MPI.Request[1];  
+              //call MPI_IRECV[ dum, nz,dp_type,MPI_ANY_SOURCE,from_e,MPI_COMM_WORLD,msgid3,IERROR ];
+                msgid3[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_e, dum);
+                msgid3[0].Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ]
+
+              for(k = 1; k<=nz; k++){
+                g[k,ny+1] = dum[k-1];  //g[ny+1,k] = dum[k];
+              }
+            }
+            //---------------------------------------------------------------------
+            //   send west
+            //---------------------------------------------------------------------
+            if (jbeg==1) {
+                double[] dum = new double[nz];
+                for(k = 1; k<=nz; k++){
+                   dum[k-1] = g[k,1];  //dum[k] = g[1,k];
+                }
+                //call MPI_SEND[ dum, nz, dp_type, west, from_e, MPI_COMM_WORLD, IERROR ];
+                worldcomm.Send<double>(dum, west, from_e);
+            }
+        }
+            // end exchange_6.f
+        //end pintgr.f
+        // verify.f
+        public void verify(double[] xcr, double[] xce, double xci, char clss, ref bool verified) {
+            //    c---------------------------------------------------------------------
+            //    c  verification routine                         
+            //    c---------------------------------------------------------------------
+            //double xcr[5], xce[5], xci
+            //double xcrref[5],xceref[5],xciref, xcrdif[5],xcedif[5],xcidif, epsilon, dtref
+            //int m
+            //char class
+            //bool verified
+            //    c---------------------------------------------------------------------
+            //    c   tolerance level
+            //    c---------------------------------------------------------------------
+            //epsilon = 1.0d-08
+
+            //class = 'U'
+            //verified = true
+
+            //for(m = 1,5
+            //   xcrref[m] = 1.0
+            //   xceref[m] = 1.0
+            //}
+            //xciref = 1.0
+
+            //if [ [nx0  == 12     ] && [ny0  == 12     ] && [nz0  == 12     ] && [itmax   == 50    ]]  {
+
+            //   class = 'S'
+            //   dtref = 5.0d-1
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of residual, for the [12X12X12] grid,
+            //    c   after 50 time steps, with  DT = 5.0d-01
+            //    c---------------------------------------------------------------------
+            // xcrref[1] = 1.6196343210976702d-02
+            // xcrref[2] = 2.1976745164821318d-03
+            // xcrref[3] = 1.5179927653399185d-03
+            // xcrref[4] = 1.5029584435994323d-03
+            // xcrref[5] = 3.4264073155896461d-02
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of solution error, for the [12X12X12] grid,
+            //    c   after 50 time steps, with  DT = 5.0d-01
+            //    c---------------------------------------------------------------------
+            // xceref[1] = 6.4223319957960924d-04
+            // xceref[2] = 8.4144342047347926d-05
+            // xceref[3] = 5.8588269616485186d-05
+            // xceref[4] = 5.8474222595157350d-05
+            // xceref[5] = 1.3103347914111294d-03
+            //    c---------------------------------------------------------------------
+            //    c   Reference value of surface integral, for the [12X12X12] grid,
+            //    c   after 50 time steps, with DT = 5.0d-01
+            //    c---------------------------------------------------------------------
+            // xciref = 7.8418928865937083d+00
+
+            //} else if [ [nx0 == 33] && [ny0 == 33] && [nz0 == 33] && [itmax . eq. 300] ] {
+
+            //   class = 'W'   !SPEC95fp size
+            //   dtref = 1.5d-3
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of residual, for the [33x33x33] grid,
+            //    c   after 300 time steps, with  DT = 1.5d-3
+            //    c---------------------------------------------------------------------
+            //   xcrref[1] =   0.1236511638192d+02
+            //   xcrref[2] =   0.1317228477799d+01
+            //   xcrref[3] =   0.2550120713095d+01
+            //   xcrref[4] =   0.2326187750252d+01
+            //   xcrref[5] =   0.2826799444189d+02
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of solution error, for the [33X33X33] grid,
+            //    c---------------------------------------------------------------------
+            //   xceref[1] =   0.4867877144216d+00
+            //   xceref[2] =   0.5064652880982d-01
+            //   xceref[3] =   0.9281818101960d-01
+            //   xceref[4] =   0.8570126542733d-01
+            //   xceref[5] =   0.1084277417792d+01
+            //        c---------------------------------------------------------------------
+            //        c   Reference value of surface integral, for the [33X33X33] grid,
+            //        c   after 300 time steps, with  DT = 1.5d-3
+            //        c---------------------------------------------------------------------
+            //   xciref    =   0.1161399311023d+02
+
+            //} else if [ [nx0 == 64] && [ny0 == 64] && [nz0 == 64] && [itmax . eq. 250] ] {
+
+            //   class = 'A'
+            //   dtref = 2.0d+0
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of residual, for the [64X64X64] grid,
+            //    c   after 250 time steps, with  DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xcrref[1] = 7.7902107606689367d+02
+            // xcrref[2] = 6.3402765259692870d+01
+            // xcrref[3] = 1.9499249727292479d+02
+            // xcrref[4] = 1.7845301160418537d+02
+            // xcrref[5] = 1.8384760349464247d+03
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of solution error, for the [64X64X64] grid,
+            //    c   after 250 time steps, with  DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xceref[1] = 2.9964085685471943d+01
+            // xceref[2] = 2.8194576365003349d+00
+            // xceref[3] = 7.3473412698774742d+00
+            // xceref[4] = 6.7139225687777051d+00
+            // xceref[5] = 7.0715315688392578d+01
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference value of surface integral, for the [64X64X64] grid,
+            //    c   after 250 time steps, with DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xciref = 2.6030925604886277d+01
+
+
+            //} else if [ [nx0 == 102] && [ny0 == 102] && [nz0 == 102] && [itmax . eq. 250] ] {
+
+            //   class = 'B'
+            //   dtref = 2.0d+0
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of residual, for the [102X102X102] grid,
+            //    c   after 250 time steps, with  DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xcrref[1] = 3.5532672969982736d+03
+            // xcrref[2] = 2.6214750795310692d+02
+            // xcrref[3] = 8.8333721850952190d+02
+            // xcrref[4] = 7.7812774739425265d+02
+            // xcrref[5] = 7.3087969592545314d+03
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of solution error, for the [102X102X102] 
+            //    c   grid, after 250 time steps, with  DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xceref[1] = 1.1401176380212709d+02
+            // xceref[2] = 8.1098963655421574d+00
+            // xceref[3] = 2.8480597317698308d+01
+            // xceref[4] = 2.5905394567832939d+01
+            // xceref[5] = 2.6054907504857413d+02
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference value of surface integral, for the [102X102X102] grid,
+            //    c   after 250 time steps, with DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xciref = 4.7887162703308227d+01
+
+            //} else if [ [nx0 == 162] && [ny0 == 162] && [nz0 == 162] && [itmax . eq. 250] ] {
+
+            //   class = 'C'
+            //   dtref = 2.0d+0
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of residual, for the [162X162X162] grid,
+            //    c   after 250 time steps, with  DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xcrref[1] = 1.03766980323537846d+04
+            // xcrref[2] = 8.92212458801008552d+02
+            // xcrref[3] = 2.56238814582660871d+03
+            // xcrref[4] = 2.19194343857831427d+03
+            // xcrref[5] = 1.78078057261061185d+04
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of solution error, for the [162X162X162] 
+            //    c   grid, after 250 time steps, with  DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xceref[1] = 2.15986399716949279d+02
+            // xceref[2] = 1.55789559239863600d+01
+            // xceref[3] = 5.41318863077207766d+01
+            // xceref[4] = 4.82262643154045421d+01
+            // xceref[5] = 4.55902910043250358d+02
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference value of surface integral, for the [162X162X162] grid,
+            //    c   after 250 time steps, with DT = 2.0d+00
+            //    c---------------------------------------------------------------------
+            // xciref = 6.66404553572181300d+01
+
+            //} else if [ [nx0 == 408] && [ny0 == 408] && [nz0 == 408] && [itmax . eq. 300] ] {
+
+            //   class = 'D'
+            //   dtref = 1.0d+0
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of residual, for the [408X408X408] grid,
+            //    c   after 300 time steps, with  DT = 1.0d+00
+            //    c---------------------------------------------------------------------
+            // xcrref[1] = 0.4868417937025d+05
+            // xcrref[2] = 0.4696371050071d+04
+            // xcrref[3] = 0.1218114549776d+05 
+            // xcrref[4] = 0.1033801493461d+05
+            // xcrref[5] = 0.7142398413817d+05
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of solution error, for the [408X408X408] 
+            //    c   grid, after 300 time steps, with  DT = 1.0d+00
+            //    c---------------------------------------------------------------------
+            // xceref[1] = 0.3752393004482d+03
+            // xceref[2] = 0.3084128893659d+02
+            // xceref[3] = 0.9434276905469d+02
+            // xceref[4] = 0.8230686681928d+02
+            // xceref[5] = 0.7002620636210d+03
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference value of surface integral, for the [408X408X408] grid,
+            //    c   after 300 time steps, with DT = 1.0d+00
+            //    c---------------------------------------------------------------------
+            // xciref =    0.8334101392503d+02
+
+            //} else if [ [nx0 == 1020] && [ny0 == 1020] && [nz0 == 1020] && [itmax . eq. 300] ] {
+
+            //   class = 'E'
+            //   dtref = 0.5d+0
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of residual, for the [1020X1020X1020] grid,
+            //    c   after 300 time steps, with  DT = 0.5d+00
+            //    c---------------------------------------------------------------------
+            // xcrref[1] = 0.2099641687874d+06
+            // xcrref[2] = 0.2130403143165d+05
+            // xcrref[3] = 0.5319228789371d+05 
+            // xcrref[4] = 0.4509761639833d+05
+            // xcrref[5] = 0.2932360006590d+06
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference values of RMS-norms of solution error, for the [1020X1020X1020] 
+            //    c   grid, after 300 time steps, with  DT = 0.5d+00
+            //    c---------------------------------------------------------------------
+            // xceref[1] = 0.4800572578333d+03
+            // xceref[2] = 0.4221993400184d+02
+            // xceref[3] = 0.1210851906824d+03
+            // xceref[4] = 0.1047888986770d+03
+            // xceref[5] = 0.8363028257389d+03
+
+            //    c---------------------------------------------------------------------
+            //    c   Reference value of surface integral, for the [1020X1020X1020] grid,
+            //    c   after 300 time steps, with DT = 0.5d+00
+            //    c---------------------------------------------------------------------
+            // xciref =    0.9512163272273d+02
+
+            //} else {
+            //   verified = false
+            //}
+            //c---------------------------------------------------------------------
+            //c    verification test for residuals if gridsize is one of 
+            //c    the defined grid sizes above [class != 'U']
+            //c---------------------------------------------------------------------
+            //c---------------------------------------------------------------------
+            //c    Compute the difference of solution values and the known reference values.
+            //c---------------------------------------------------------------------
+            //for(m = 1, 5
+            //   xcrdif[m] = dabs[[xcr[m]-xcrref[m]]/xcrref[m]] 
+            //   xcedif[m] = dabs[[xce[m]-xceref[m]]/xceref[m]]
+            //}
+            //xcidif = dabs[[xci - xciref]/xciref]
+            //    c---------------------------------------------------------------------
+            //    c    Output the comparison of computed results to known cases.
+            //    c---------------------------------------------------------------------
+            //if [class != 'U'] {
+            //   write[*, 1990] class
+            //            1990      format[/, ' Verification being performed for class ', a]
+            //   write [*,2000] epsilon
+            //        2000      format[' Accuracy setting for epsilon = ', E20.13]
+            //   verified = [dabs[dt-dtref] <= epsilon]
+            //   if [!verified] {  
+            //      class = 'U'
+            //      write [*,1000] dtref
+            //            1000         format[' DT does not match the reference value of ', E15.8]
+            //   }
+            //} else { 
+            //   write[*, 1995]
+            //    1995      format[' Unknown class']
+            //}
+
+
+            //if [class != 'U'] {
+            //   write [*,2001] 
+            //} else {
+            //   write [*, 2005]
+            //}
+            // 2001   format[' Comparison of RMS-norms of residual']
+            // 2005   format[' RMS-norms of residual']
+            //for(m = 1, 5
+            //   if [class == 'U'] {
+            //      write[*, 2015] m, xcr[m]
+            //   } else if [xcrdif[m] <= epsilon] {
+            //      write [*,2011] m,xcr[m],xcrref[m],xcrdif[m]
+            //   } else { 
+            //      verified = false
+            //      write [*,2010] m,xcr[m],xcrref[m],xcrdif[m]
+            //   }
+            //}
+            //if [class != 'U'] {
+            //   write [*,2002]
+            //} else {
+            //   write [*,2006]
+            //}
+            // 2002   format[' Comparison of RMS-norms of solution error']
+            // 2006   format[' RMS-norms of solution error']        
+            //for(m = 1, 5
+            //   if [class == 'U'] {
+            //      write[*, 2015] m, xce[m]
+            //   } else if [xcedif[m] <= epsilon] {
+            //      write [*,2011] m,xce[m],xceref[m],xcedif[m]
+            //   } else {
+            //      verified = false
+            //      write [*,2010] m,xce[m],xceref[m],xcedif[m]
+            //   }
+            //}        
+            // 2010   format[' FAILURE: ', i2, 2x, E20.13, E20.13, E20.13]
+            // 2011   format['          ', i2, 2x, E20.13, E20.13, E20.13]
+            // 2015   format['          ', i2, 2x, E20.13]
+            //if [class != 'U'] {
+            //   write [*,2025]
+            //} else {
+            //   write [*,2026]
+            //}
+            // 2025   format[' Comparison of surface integral']
+            // 2026   format[' Surface integral']
+            //if [class == 'U'] {
+            //   write[*, 2030] xci
+            //} else if [xcidif <= epsilon] {
+            //   write[*, 2032] xci, xciref, xcidif
+            //} else {
+            //   verified = false
+            //   write[*, 2031] xci, xciref, xcidif
+            //}
+            //     2030   format['          ', 4x, E20.13]
+            //     2031   format[' FAILURE: ', 4x, E20.13, E20.13, E20.13]
+            //     2032   format['          ', 4x, E20.13, E20.13, E20.13]
+            //if [class == 'U'] {
+            //   write[*, 2022]
+            //   write[*, 2023]
+            //    2022      format[' No reference values provided']
+            //    2023      format[' No verification performed']
+            //} else if [verified] {
+            //   write[*, 2020]
+            //    2020      format[' Verification Successful']
+            //} else {
+            //   write[*, 2021]
+            //    2021      format[' Verification failed']
+            //}
+
+        }
+        // end verify.f
     }
 }
