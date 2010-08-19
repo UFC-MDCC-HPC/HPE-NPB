@@ -14,10 +14,6 @@ namespace NPB {
             LU lu = null;
             LUBase.debug = false;
 
-            //double pp = Math.Pow(2,((double)3)/2);
-            //double ppp = Math.Pow(2,1.5);
-            //int pare=0;
-
             try {
                 string param = argv[0];
             }
@@ -44,165 +40,69 @@ namespace NPB {
             lu.runBenchMark();
         }
 
-        public void imprimir1(int nd, double[] vetor, int i1, string nome) {
-            if (node == nd) {
-                int linha = 0;
-                string strPath = "C:/Documents and Settings/Administrador/Desktop/Logs/" + nome + "-" + clss + "-Size-" + no_nodes + "-Prt-" + node + ".txt";
-                System.IO.File.Delete(strPath);
-                System.IO.TextWriter arquivo = System.IO.File.AppendText(strPath);
-                int p1;
-                for (p1 = i1; p1 < vetor.GetLength(0); p1++)
-                    arquivo.WriteLine((linha++) + " [" + p1 + "]=" + vetor[p1]);
-                arquivo.Close();
-            }
-        }
-
-        public void imprimir2(int nd, double[,] vetor, int i1, int i2, string nome) {
-            if (node == nd) {
-                int linha = 0;
-                string strPath = "C:/Documents and Settings/Administrador/Desktop/Logs/" + nome + "-" + clss + "-Size-" + no_nodes + "-Prt-" + node + ".txt";
-                System.IO.File.Delete(strPath);
-                System.IO.TextWriter arquivo = System.IO.File.AppendText(strPath);
-                int p1, p2;
-                for (p1 = i1; p1 < vetor.GetLength(0); p1++)
-                    for (p2 = i2; p2 < vetor.GetLength(1); p2++)
-                        arquivo.WriteLine((linha++) + " [" + p1 + "," + p2 + "]=" + vetor[p1, p2]);
-
-                arquivo.Close();
-            }
-        }
-
-        public void imprimir2Inverso(int nd, double[,] vetor, int i1, int i2, string nome) {
-            if (node == nd) {
-                int p1, p2, size0 = vetor.GetLength(0), size1 = vetor.GetLength(1);
-                double[,] tmp2 = new double[size1, size0];
-                for (int i = 0; i < size0; i++)
-                    for (int j = 0; j < size1; j++)
-                        tmp2[j, i] = vetor[i, j]; //tmp[i*size1+j];
-
-                int linha = 0;
-                string strPath = "C:/Documents and Settings/Administrador/Desktop/Logs/" + nome + "-" + clss + "-Size-" + no_nodes + "-Prt-" + node + ".txt";
-                System.IO.File.Delete(strPath);
-                System.IO.TextWriter arquivo = System.IO.File.AppendText(strPath);
-                for (p1 = i2; p1 < tmp2.GetLength(0); p1++)
-                    for (p2 = i1; p2 < tmp2.GetLength(1); p2++)
-                        arquivo.WriteLine((linha++) + " [" + p1 + "," + p2 + "]=" + tmp2[p1, p2]);
-
-                arquivo.Close();
-            }
-        }
-
-        public void imprimir3(int nd, double[, ,] vetor, int i1, int i2, int i3, string nome) {
-            if (node == nd) {
-                int linha = 0;
-                string strPath = "C:/Documents and Settings/Administrador/Desktop/Logs/" + nome + "-" + clss + "-Size-" + no_nodes + "-Prt-" + node + ".txt";
-                System.IO.File.Delete(strPath);
-                System.IO.TextWriter arquivo = System.IO.File.AppendText(strPath);
-                int p1, p2, p3;
-                for (p1 = i1; p1 < vetor.GetLength(0); p1++)
-                    for (p2 = i2; p2 < vetor.GetLength(1); p2++)
-                        for (p3 = i3; p3 < vetor.GetLength(2); p3++)
-                            arquivo.WriteLine((linha++) + " [" + p1 + "," + p2 + "," + p3 + "]=" + vetor[p1, p2, p3]);
-
-                arquivo.Close();
-            }
-        }
-
-        public void imprimir4(int nd, double[, , ,] vetor, int i1, int i2, int i3, int i4, string nome) {
-            if (id == nd) {
-                int linha = 0;
-                string strPath = "C:/Documents and Settings/Administrador/Desktop/Logs/" + nome + "-" + clss + "-Size-" + no_nodes + "-Prt-" + node + ".txt";
-                System.IO.File.Delete(strPath);
-                System.IO.TextWriter arquivo = System.IO.File.AppendText(strPath);
-                int p1, p2, p3, p4;
-                for (p1 = i1; p1 < vetor.GetLength(0); p1++)
-                    for (p2 = i2; p2 < vetor.GetLength(1); p2++)
-                        for (p3 = i3; p3 < vetor.GetLength(2); p3++)
-                            for (p4 = i4; p4 < vetor.GetLength(3); p4++)
-                                arquivo.WriteLine((linha++) + " [" + p1 + "," + p2 + "," + p3 + "," + p4 + "]=" + vetor[p1, p2, p3, p4]);
-
-                arquivo.Close();
-            }
-        }
-
-        public void imprimir(string s) {
-            if(s=="u") imprimir4(root, u, 1, 0, 0, 1, "U");
-            if(s=="rsd") imprimir4(root, rsd, 1, 0, 0, 1, "RSD");//rsd  = new double[isiz3+1, isiz2+4, isiz1+4, 5+1];//     rsd[5, -1:isiz1+2, -1:isiz2+2, isiz3];
-            if(s=="frct") imprimir4(root, frct, 1, 0, 0, 1, "FRCT");
-            if(s=="flux") imprimir4(root, flux, 1, 0, 0, 1, "FLUX");
-            if(s=="a") imprimir4(root, a, 1, 1, 1, 1, "a");
-            if(s=="b") imprimir4(root, b, 1, 1, 1, 1, "b");
-            if(s=="c") imprimir4(root, c, 1, 1, 1, 1, "c");
-            if(s=="d") imprimir4(root, d, 1, 1, 1, 1, "d");
-            mpi.Dispose();
-            Environment.Exit(0);
-        }
-
         public void runBenchMark() {
             read_input();
-            //c---------------------------------------------------------------------
-            //c   set up processor grid
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set up processor grid
+            //---------------------------------------------------------------------
             proc_grid();
-            //c---------------------------------------------------------------------
-            //c   determine the neighbors
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   determine the neighbors
+            //---------------------------------------------------------------------
             neighbors();
-            //c---------------------------------------------------------------------
-            //c   set up sub-domain sizes
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set up sub-domain sizes
+            //---------------------------------------------------------------------
             subdomain();
-            //c---------------------------------------------------------------------
-            //c   set up coefficients
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set up coefficients
+            //---------------------------------------------------------------------
             setcoeff();
-            //c---------------------------------------------------------------------
-            //c   set the masks required for comm
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set the masks required for comm
+            //---------------------------------------------------------------------
             sethyper();
-            //c---------------------------------------------------------------------
-            //c   set the boundary values for dependent variables
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set the boundary values for dependent variables
+            //---------------------------------------------------------------------
             setbv();
-            //c---------------------------------------------------------------------
-            //c   set the initial values for dependent variables
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set the initial values for dependent variables
+            //---------------------------------------------------------------------
             setiv();
-            //c---------------------------------------------------------------------
-            //c   compute the forcing term based on prescribed exact solution
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the forcing term based on prescribed exact solution
+            //---------------------------------------------------------------------
             erhs();
-            //c---------------------------------------------------------------------
-            //c   perform one SSOR iteration to touch all data and program pages 
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   perform one SSOR iteration to touch all data and program pages 
+            //---------------------------------------------------------------------
             ssor(1);
             //---------------------------------------------------------------------
             //   reset the boundary and initial values
             //---------------------------------------------------------------------
             setbv();
             setiv();
-            //c---------------------------------------------------------------------
-            //c   perform the SSOR iterations
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   perform the SSOR iterations
+            //---------------------------------------------------------------------
             ssor(itmax);
-            //c---------------------------------------------------------------------
-            //c   compute the solution error
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the solution error
+            //---------------------------------------------------------------------
             error();
-            //c---------------------------------------------------------------------
-            //c   compute the surface integral
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the surface integral
+            //---------------------------------------------------------------------
             pintgr();
-            //c---------------------------------------------------------------------
-            //c   verification test
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   verification test
+            //---------------------------------------------------------------------
             if (id==0) {
                 verify(rsdnm, errnm, frc, clss, ref verified);
-                mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+
-                    27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
-                //call print_results['LU', class, nx0, ny0, nz0, itmax, nnodes_compiled, num, maxtime, mflops, '          floating point', verified, npbversion, compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]'];
-            }            
-            //worldcomm.Barrier();
+                mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
+                print_results("LU",clss,nx0,ny0,nz0,itmax,nnodes_compiled,num,maxtime,mflops,"          floating point",verified,npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
+            }
             mpi.Dispose();//call mpi_finalize[ierr];
         }
 
@@ -216,17 +116,17 @@ namespace NPB {
 
         public void read_input() {
             int fstatus=0, nnodes;
-            //  c---------------------------------------------------------------------
-            //  c    only root reads the input file
-            //  c    if input file does not exist, it uses defaults
-            //  c       ipr = 1 for detailed progress output
-            //  c       inorm = how often the norm is printed [once every inorm iterations]
-            //  c       itmax = number of pseufor(time steps
-            //  c       dt = time step
-            //  c       omega 1 over-relaxation factor for SSOR
-            //  c       tolrsd = steady state residual tolerance levels
-            //  c       nx, ny, nz = number of grid points in x, y, z directions
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //    only root reads the input file
+            //    if input file does not exist, it uses defaults
+            //       ipr = 1 for detailed progress output
+            //       inorm = how often the norm is printed [once every inorm iterations]
+            //       itmax = number of pseufor(time steps
+            //       dt = time step
+            //       omega 1 over-relaxation factor for SSOR
+            //       tolrsd = steady state residual tolerance levels
+            //       nx, ny, nz = number of grid points in x, y, z directions
+            //---------------------------------------------------------------------
             if (id == root) {
                 string[] vetTemp = new string[13];
                 try {
@@ -269,9 +169,9 @@ namespace NPB {
                    nz0 = isiz03;
                }
                nnodes = num;//   call MPI_COMM_SIZE[MPI_COMM_WORLD, nnodes, ierror];
-               //c---------------------------------------------------------------------
-               //c   check problem size
-               //c---------------------------------------------------------------------
+               //---------------------------------------------------------------------
+               //   check problem size
+               //---------------------------------------------------------------------
                if (nnodes != nnodes_compiled) {
                    Console.WriteLine("Warning: program is running on"+nnodes+" processors, but was compiled for "+nnodes_compiled);
                }
@@ -309,12 +209,12 @@ namespace NPB {
         }
 
         public void proc_grid() {
-            //c---------------------------------------------------------------------
-            //c
-            //c   set up a two-d grid for processors: column-major ordering of unknowns
-            //c   NOTE: assumes a power-of-two number of processors
-            //c
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //
+            //   set up a two-d grid for processors: column-major ordering of unknowns
+            //   NOTE: assumes a power-of-two number of processors
+            //
+            //---------------------------------------------------------------------
             xdim   = (int) Math.Pow(2,(ndim/2));//xdim   = 2**(ndim/2);
             if (mod(ndim,2)==1) xdim = xdim + xdim;
             ydim   = num/xdim;
@@ -323,9 +223,9 @@ namespace NPB {
         }
 
         public void neighbors() {
-            //  c---------------------------------------------------------------------
-            //  c     figure out the neighbors and their wrap numbers for each processor
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //     figure out the neighbors and their wrap numbers for each processor
+            //---------------------------------------------------------------------
             south = -1;
             east  = -1;
             north = -1;
@@ -355,14 +255,11 @@ namespace NPB {
 
         public void subdomain() {
             int mm;
-            //  c---------------------------------------------------------------------
-            //  c
-            //  c   set up the sub-domain sizes
-            //  c
-            //  c---------------------------------------------------------------------
-            //  c---------------------------------------------------------------------
-            //  c   x dimension
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set up the sub-domain sizes
+            //---------------------------------------------------------------------
+            //   x dimension
+            //---------------------------------------------------------------------
             mm   = (int) mod(nx0,xdim);
             if (row<=mm) {
               nx = nx0/xdim + 1;
@@ -371,9 +268,9 @@ namespace NPB {
               nx = nx0/xdim;
               ipt = (row-1)*nx + mm;
             }
-            //  c---------------------------------------------------------------------
-            //  c   y dimension
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   y dimension
+            //---------------------------------------------------------------------
             mm   = (int) mod(ny0,ydim);
             if (col<=mm) {
               ny = ny0/ydim + 1;
@@ -382,13 +279,13 @@ namespace NPB {
               ny = ny0/ydim;
               jpt = (col-1)*ny + mm;
             }
-            //  c---------------------------------------------------------------------
-            //  c   z dimension
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   z dimension
+            //---------------------------------------------------------------------
             nz = nz0;
-            //  c---------------------------------------------------------------------
-            //  c   check the sub-domain size
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   check the sub-domain size
+            //---------------------------------------------------------------------
             if ( ( nx < 4 ) || ( ny < 4 ) || ( nz < 4 ) ) {
                 Console.WriteLine("SUBDOMAIN SIZE IS TOO SMALL - ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS, "+
                     "SO THAT NX, NY AND NZ ARE GREATER THAN OR EQUAL TO 4 THEY ARE CURRENTLY: "+nx+"x"+ny+"x"+nz);
@@ -404,9 +301,9 @@ namespace NPB {
                 mpi.Dispose();
                 Environment.Exit(0);
             }
-            //  c---------------------------------------------------------------------
-            //  c   set up the start and end in i and j extents for all processors
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set up the start and end in i and j extents for all processors
+            //---------------------------------------------------------------------
             ist = 1;
             iend = nx;
             if (north==-1) ist = 2;
@@ -444,9 +341,9 @@ namespace NPB {
             ki1 = 3;
             ki2 = nz0 - 1;
 
-            //  c---------------------------------------------------------------------
-            //  c   diffusion coefficients
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   diffusion coefficients
+            //---------------------------------------------------------------------
             dx1 = 0.75d;
             dx2 = dx1;
             dx3 = dx1;
@@ -464,13 +361,13 @@ namespace NPB {
             dz3 = dz1;
             dz4 = dz1;
             dz5 = dz1;
-            //  c---------------------------------------------------------------------
-            //  c   fourth difference dissipation
-            //  c---------------------------------------------------------------------      
+            //---------------------------------------------------------------------
+            //   fourth difference dissipation
+            //---------------------------------------------------------------------      
             dssp = (max(max(dx1,dy1),dz1))/4.0d; //dssp=(max(dx1, dy1, dz1))/4.0d
-            //  c---------------------------------------------------------------------
-            //  c   coefficients of the exact solution to the first pde
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   coefficients of the exact solution to the first pde
+            //---------------------------------------------------------------------
             ce[1,1] = 2.0d;
             ce[1,2] = 0.0d;
             ce[1,3] = 0.0d;
@@ -484,9 +381,9 @@ namespace NPB {
             ce[1,11] = 5.0E-01;
             ce[1,12] = 4.0E-01;
             ce[1,13] = 3.0E-01;
-            //  c---------------------------------------------------------------------
-            //  c   coefficients of the exact solution to the second pde
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   coefficients of the exact solution to the second pde
+            //---------------------------------------------------------------------
             ce[2,1] = 1.0d;
             ce[2,2] = 0.0d;
             ce[2,3] = 0.0d;
@@ -500,9 +397,9 @@ namespace NPB {
             ce[2,11] = 4.0E-01;
             ce[2,12] = 3.0E-01;
             ce[2,13] = 5.0E-01;
-            //  c---------------------------------------------------------------------
-            //  c   coefficients of the exact solution to the third pde
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   coefficients of the exact solution to the third pde
+            //---------------------------------------------------------------------
             ce[3,1] = 2.0d;
             ce[3,2] = 2.0d;
             ce[3,3] = 0.0d;
@@ -516,9 +413,9 @@ namespace NPB {
             ce[3,11] = 3.0E-01;
             ce[3,12] = 5.0E-01;
             ce[3,13] = 4.0E-01;
-            //  c---------------------------------------------------------------------
-            //  c   coefficients of the exact solution to the fourth pde
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   coefficients of the exact solution to the fourth pde
+            //---------------------------------------------------------------------
             ce[4,1] = 2.0d;
             ce[4,2] = 2.0d;
             ce[4,3] = 0.0d;
@@ -532,9 +429,9 @@ namespace NPB {
             ce[4,11] = 2.0E-01;
             ce[4,12] = 1.0E-01;
             ce[4,13] = 3.0E-01;
-            //  c---------------------------------------------------------------------
-            //  c   coefficients of the exact solution to the fifth pde
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   coefficients of the exact solution to the fifth pde
+            //---------------------------------------------------------------------
             ce[5,1] = 5.0d;
             ce[5,2] = 4.0d;
             ce[5,3] = 3.0d;
@@ -615,13 +512,13 @@ namespace NPB {
         }
 
         public void setbv() {
-            //  c---------------------------------------------------------------------
-            //  c   set the boundary values of dependent variables
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set the boundary values of dependent variables
+            //---------------------------------------------------------------------
             int i, j, k, iglob, jglob;
-            //  c---------------------------------------------------------------------
-            //  c   set the dependent variable values along the top and bottom faces
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set the dependent variable values along the top and bottom faces
+            //---------------------------------------------------------------------
             for(j = 1; j<= ny; j++){
                jglob = jpt + j;
                for(i = 1; i<= nx; i++){
@@ -886,9 +783,9 @@ namespace NPB {
                      frct[k,j+1,i+1,4] = frct[k,j+1,i+1,4]+tx3*c3*c4*(flux[k,j,i+1,4]-flux[k,j,i,4])+dx4*tx1*(rsd[k,j+1,i,4]-2.0d*rsd[k,j+1,i+1,4]+rsd[k,j+1,i+2,4]);
                      frct[k,j+1,i+1,5] = frct[k,j+1,i+1,5]+tx3*c3*c4*(flux[k,j,i+1,5]-flux[k,j,i,5])+dx5*tx1*(rsd[k,j+1,i,5]-2.0d*rsd[k,j+1,i+1,5]+rsd[k,j+1,i+2,5]);
                   }
-                  //c---------------------------------------------------------------------
-                  //c   Fourth-order dissipation
-                  //c---------------------------------------------------------------------
+                  //---------------------------------------------------------------------
+                  //   Fourth-order dissipation
+                  //---------------------------------------------------------------------
                   if (north==-1) {
                    for(m = 1; m<= 5; m++){
                      frct[k,j+1,3,m] = frct[k,j+1,3,m]-dsspm*(+5.0d*rsd[k,j+1,3,m]-4.0d*rsd[k,j+1,4,m]+rsd[k,j+1,5,m]);
@@ -978,9 +875,9 @@ namespace NPB {
                      frct[k,j+1,i+1,5] = frct[k,j+1,i+1,5]+ty3*c3*c4*(flux[k,j+1,i,5]-flux[k,j,i,5])+dy5*ty1*(rsd[k,j,i+1,5]-2.0d*rsd[k,j+1,i+1,5]+rsd[k,j+2,i+1,5]);
                   }
                }
-            //      c---------------------------------------------------------------------
-            //      c   fourth-order dissipation
-            //      c---------------------------------------------------------------------
+               //---------------------------------------------------------------------
+               //   fourth-order dissipation
+               //---------------------------------------------------------------------
                if (west==-1) {
                   for(i = ist; i<= iend; i++){
                    for(m = 1; m<= 5; m++){
@@ -1005,9 +902,9 @@ namespace NPB {
                   }
                }
             }
-            //  c---------------------------------------------------------------------
-            //  c   zeta-direction flux differences
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   zeta-direction flux differences
+            //---------------------------------------------------------------------
             for(k = 1; k<= nz; k++){
                for(j = jst; j<= jend; j++){
                   for(i = ist; i<= iend; i++){
@@ -1063,9 +960,9 @@ namespace NPB {
                   }
                }
             }
-            //  c---------------------------------------------------------------------
-            //  c   fourth-order dissipation
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   fourth-order dissipation
+            //---------------------------------------------------------------------
             for(j = jst; j<= jend; j++){
                for(i = ist; i<= iend; i++){
                   for(m = 1; m<= 5; m++){
@@ -1094,12 +991,12 @@ namespace NPB {
         }
            //Exchange_3.f
         public void exchange_3(double[, , ,] g, int iex) {
-            //c---------------------------------------------------------------------
-            //c   compute the right hand side based on exact solution
-            //c---------------------------------------------------------------------
-            //c---------------------------------------------------------------------
-            //c  input parameters
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the right hand side based on exact solution
+            //---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
             //double  g[5,-1:isiz1+2,-1:isiz2+2,isiz3];
             //int iex;
             int i, j, k;
@@ -1174,9 +1071,9 @@ namespace NPB {
                     //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
                     mid[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_s, buf1);
                 }
-                //  c---------------------------------------------------------------------
-                //  c   send north
-                //  c---------------------------------------------------------------------
+                //---------------------------------------------------------------------
+                //   send north
+                //---------------------------------------------------------------------
                 if (north!=-1) {
                     for(k = 1; k<=nz; k++){
                         for(j = 1; j<=ny; j++){
@@ -1198,9 +1095,9 @@ namespace NPB {
                     //call MPI_SEND[ buf, 10*ny*nz, dp_type, north, from_s, MPI_COMM_WORLD, IERROR ];
                     worldcomm.Send<double>(buf, north, from_s);
                 }
-                //  c---------------------------------------------------------------------
-                //  c   receive from south
-                //  c---------------------------------------------------------------------
+                //---------------------------------------------------------------------
+                //   receive from south
+                //---------------------------------------------------------------------
                 if (south!=-1) {
                     //call MPI_WAIT[ mid, STATUS, IERROR ];
                     mid[0].Wait();
@@ -1341,10 +1238,10 @@ namespace NPB {
 
         //ssor.f
         public void ssor(int niter) {
-            //c---------------------------------------------------------------------
-            //c   to perform pseudo-time stepping SSOR iterations
-            //c   for five nonlinear pde's.
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   to perform pseudo-time stepping SSOR iterations
+            //   for five nonlinear pde's.
+            //---------------------------------------------------------------------
             //int  niter;
             int i, j, k, m;
             int istep;
@@ -1419,13 +1316,13 @@ namespace NPB {
                     blts(isiz1, isiz2, isiz3,nx, ny, nz, k,omega,rsd,a, b, c, d,ist, iend, jst, jend, nx0, ny0, ipt, jpt);
                 }
                 for(k=nz-1; k>= 2; k--){ //for(k = nz - 1, 2, -1;
-                  //c---------------------------------------------------------------------
-                  //c   form the strictly upper triangular part of the jacobian matrix
-                  //c---------------------------------------------------------------------
+                  //---------------------------------------------------------------------
+                  //   form the strictly upper triangular part of the jacobian matrix
+                  //---------------------------------------------------------------------
                   jacu(k);
-                  //c---------------------------------------------------------------------
-                  //c   perform the upper triangular solution
-                  //c---------------------------------------------------------------------
+                  //---------------------------------------------------------------------
+                  //   perform the upper triangular solution
+                  //---------------------------------------------------------------------
                   buts(isiz1, isiz2, isiz3, nx, ny, nz, k, omega, rsd, tv, d, a, b, c, ist, iend, jst, jend, nx0, ny0, ipt, jpt);
                 }
                 //---------------------------------------------------------------------
@@ -1445,11 +1342,6 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 if (mod(istep, inorm) == 0) {
                    l2norm(isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, delunm);
-                    //c            if [ ipr == 1 && id == 0 ] {
-                    //c                write [*,1006] [ delunm[m], m = 1, 5 ]
-                    //c            } else if [ ipr == 2 && id == 0 ] {
-                    //c                write [*,'[i5,f15.6]'] istep,delunm[5]
-                    //c            }
                 }
                 //---------------------------------------------------------------------
                 //   compute the steady-state residuals
@@ -1460,17 +1352,11 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 if ((mod(istep,inorm)== 0) || (istep==itmax)) {
                     l2norm(isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, rsdnm);
-                    //c            if [ ipr == 1&&id==0 ] {
-                    //c                write [*,1007] [ rsdnm[m], m = 1, 5 ]
-                    //c            }
                 }
                 //---------------------------------------------------------------------
                 //   check the newton-iteration residuals against the tolerance levels
                 //---------------------------------------------------------------------
                 if ((rsdnm[1]<tolrsd[1]) && (rsdnm[2]<tolrsd[2]) && (rsdnm[3]<tolrsd[3]) && (rsdnm[4]<tolrsd[4]) && (rsdnm[5]<tolrsd[5])) {
-                    //c            if [ipr == 1 && id==0] {
-                    //c               write [*,1004] istep
-                    //c            }
                     return;//   return;
                 }
             }
@@ -1478,7 +1364,6 @@ namespace NPB {
             wtime = timer.readTimer(1); //wtime = timer_read[1];
             //call MPI_ALLREDUCE[wtime, maxtime, 1, MPI_DOUBLE_PRECISION, MPI_MAX, MPI_COMM_WORLD, IERROR ];
             maxtime = worldcomm.Allreduce<double>(wtime, MPI.Operation<double>.Max);
-            //return;
         }
             //rhs.f
         public void rhs() {
@@ -1800,10 +1685,10 @@ namespace NPB {
             //int jst, jend;
             //double  v[5,-1:ldx+2,-1:ldy+2,*], sum[5];
 
-            //teste debug
-            if ((isiz1 + 2) != (ldx + 2) || (isiz2 + 2) != (ldy + 2)) {
-                throw new ArgumentException("Look this code: vetor v");
-            }
+            //debug
+            //if ((isiz1 + 2) != (ldx + 2) || (isiz2 + 2) != (ldy + 2)) {
+                //throw new ArgumentException("Look this code: vetor v");
+            //}
 
             int i, j, k, m;
             double[] dummy = new double[5+1];//dummy[5];
@@ -1999,33 +1884,29 @@ namespace NPB {
             //end jacld.f
             // blts.f
         public void blts(int ldmx, int ldmy, int ldmz, int nx, int ny, int nz, int k, double omega, double[, , ,] v, double[, , ,] ldz, double[, , ,] ldy, double[, , ,] ldx, double[, , ,] d, int ist, int iend, int jst, int jend, int nx0, int ny0, int ipt, int jpt) {
-            //c---------------------------------------------------------------------
-            //c
-            //c   compute the regular-sparse, block lower triangular solution:
-            //c
-            //c                     v <-- [ L-inv ] * v
-            //c
-            //c---------------------------------------------------------------------
-            //c---------------------------------------------------------------------
-            //c  input parameters
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the regular-sparse, block lower triangular solution:
+            //                     v <-- [ L-inv ] * v
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
             //int ldmx, ldmy, ldmz,nx, ny, nz,k;
             //double  omega;
             //double  v[ 5, -1:ldmx+2, -1:ldmy+2, *],ldz[ 5, 5, ldmx, ldmy],ldy[ 5, 5, ldmx, ldmy],ldx[ 5, 5, ldmx, ldmy],d[ 5, 5, ldmx, ldmy];
             //int ist, iend,jst, jend,nx0, ny0,ipt, jpt;
-            //c---------------------------------------------------------------------
-            //c  local variables
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //  local variables
+            //---------------------------------------------------------------------
             int i, j, m, iex;
             double  tmp, tmp1;
             double[,] tmat = new double[5+1,5+1]; //tmat[5,5]  Obs: nao invertida a ordem
             //---------------------------------------------------------------------
             //   receive data from north and west
             //---------------------------------------------------------------------
-            //Check Debug
-            if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
-                throw new ArgumentException("Look this code: vetor v");
-            }//end Check Debug
+            //Debug
+            //if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
+            //    throw new ArgumentException("Look this code: vetor v");
+            //}//end Debug
 
             iex = 0;
             exchange_1(v,k,iex);
@@ -2369,9 +2250,9 @@ namespace NPB {
                     a[j,i,3,5] = dt*tx2*(-c2*(u[k,j+1,i+2,3]*u[k,j+1,i+2,2])*tmp2)-dt*tx1*(c34-c1345)*tmp2* u[k,j+1,i+2,3];
                     a[j,i,4,5] = dt*tx2*(-c2*(u[k,j+1,i+2,4]*u[k,j+1,i+2,2] ) * tmp2 )- dt * tx1* (  c34 - c1345 ) * tmp2 * u[k,j+1,i+2,4];
                     a[j,i,5,5] = dt*tx2*(c1*( u[k,j+1,i+2,2] * tmp1 ))- dt * tx1 * c1345 * tmp1- dt * tx1 * dx5;
-                    // c---------------------------------------------------------------------
-                    // c   form the second block sub-diagonal
-                    // c---------------------------------------------------------------------
+                    //---------------------------------------------------------------------
+                    //   form the second block sub-diagonal
+                    //---------------------------------------------------------------------
                     tmp1 = 1.0d / u[k,j+2,i+1,1]; //tmp1 = 1.0d / u[1,i,j+1,k];
                     tmp2 = tmp1 * tmp1;
                     tmp3 = tmp1 * tmp2;
@@ -2405,9 +2286,9 @@ namespace NPB {
                     b[j,i,3,5] =  dt * ty2* ( c1 * ( u[k,j+2,i+1,5] * tmp1 )- 0.50d * c2 * ((u[k,j+2,i+1,2]*u[k,j+2,i+1,2]+ 3.0d * u[k,j+2,i+1,3]*u[k,j+2,i+1,3]+ u[k,j+2,i+1,4]*u[k,j+2,i+1,4] ) * tmp2 ))- dt * ty1* ( r43*c34 - c1345 ) * tmp2 * u[k,j+2,i+1,3];
                     b[j,i,4,5] =  dt * ty2* ( - c2*( u[k,j+2,i+1,3]*u[k,j+2,i+1,4] ) * tmp2 )- dt * ty1 * ( c34 - c1345 ) * tmp2 * u[k,j+2,i+1,4];
                     b[j,i,5,5] =  dt * ty2* ( c1 * ( u[k,j+2,i+1,3] * tmp1 ) )- dt * ty1 * c1345 * tmp1- dt * ty1 * dy5;
-                    // c---------------------------------------------------------------------
-                    // c   form the third block sub-diagonal
-                    // c---------------------------------------------------------------------
+                    //---------------------------------------------------------------------
+                    //   form the third block sub-diagonal
+                    //---------------------------------------------------------------------
                     tmp1 = 1.0d / u[k+1,j+1,i+1,1];   //tmp1 = 1.0d / u[1,i,j,k+1];
                     tmp2 = tmp1 * tmp1;
                     tmp3 = tmp1 * tmp2;
@@ -2447,23 +2328,19 @@ namespace NPB {
             // end jacu.f
             // buts.f
         public void buts(int ldmx, int ldmy, int ldmz, int nx, int ny, int nz, int k, double omega,double[, , ,] v,double[, ,] tv,double[, , ,] d,double[, , ,] udx,double[, , ,] udy,double[, , ,] udz, int ist, int iend, int jst, int jend, int nx0, int ny0, int ipt, int jpt) {
-            //c---------------------------------------------------------------------
-            //c
-            //c   compute the regular-sparse, block upper triangular solution:
-            //c
-            //c                     v <-- [ U-inv ] * v
-            //c
-            //c---------------------------------------------------------------------
-            //c---------------------------------------------------------------------
-            //c  input parameters
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the regular-sparse, block upper triangular solution:
+            //                     v <-- [ U-inv ] * v
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
             //int ldmx, ldmy, ldmz, nx, ny, nz, k; double  omega;
             //double  v[ 5, -1:ldmx+2, -1:ldmy+2, *], tv[5, ldmx, ldmy], 
             //        d[ 5, 5, ldmx, ldmy], udx[ 5, 5, ldmx, ldmy], udy[ 5, 5, ldmx, ldmy], udz[ 5, 5, ldmx, ldmy ];
             //int ist, iend,jst, jend,nx0, ny0,ipt, jpt;
-            //c---------------------------------------------------------------------
-            //c  local variables
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //  local variables
+            //---------------------------------------------------------------------
             int i, j, m, iex;
             double tmp, tmp1;
             double[,] tmat = new double[5 + 1, 5 + 1];//tmat[5,5]
@@ -2472,10 +2349,10 @@ namespace NPB {
             //---------------------------------------------------------------------
             iex = 1;
             exchange_1(v,k,iex);
-            //Debug teste
-            if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
-                throw new ArgumentException("Look this code: vetor v");
-            } // end debug teste
+            //Debug 
+            //if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
+                //    throw new ArgumentException("Look this code: vetor v");
+            //} end debug 
             
             for(j = jend; j>= jst; j--){ //for(j = jend, jst, -1;
                for(i = iend; i>= ist; i--){ //for(i = iend, ist, -1;
@@ -2577,9 +2454,9 @@ namespace NPB {
                   tmp = tmp1 * tmat[5, 4];
                   tmat[5, 5] = tmat[5, 5] - tmp * tmat[4, 5];
                   tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 4] * tmp;
-                  //c---------------------------------------------------------------------
-                  //c   back substitution
-                  //c---------------------------------------------------------------------
+                  //---------------------------------------------------------------------
+                  //   back substitution
+                  //---------------------------------------------------------------------
                   tv[j, i, 5] = tv[j, i, 5]/ tmat[ 5, 5 ];
                   tv[j, i, 4] = tv[j, i, 4]- tmat[ 4, 5 ] * tv[j, i, 5];
                   tv[j, i, 4] = tv[j, i, 4]/ tmat[ 4, 4 ];
@@ -2606,11 +2483,9 @@ namespace NPB {
         //end ssor.f
         //error.f
         public void error() {
-            //c---------------------------------------------------------------------
-            //c
-            //c   compute the solution error
-            //c
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the solution error
+            //---------------------------------------------------------------------
             int i, j, k, m, iglob, jglob;
             double tmp;
             double[] u000ijk = new double[5 + 1]; //u000ijk[5]
@@ -2681,17 +2556,17 @@ namespace NPB {
         //end error.f
         //pintgr.f
         public void pintgr() {
-            //c---------------------------------------------------------------------
-            //c  local variables
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //  local variables
+            //---------------------------------------------------------------------
             int i, j, k, ibeg, ifin, ifin1, jbeg, jfin, jfin1, iglob, iglob1, iglob2, jglob, jglob1, jglob2, ind1, ind2;
             double[,] phi1 = new double[isiz3+2, isiz2+2]; //phi1[0:isiz2+1,0:isiz3+1]
             double[,] phi2 = new double[isiz3+2, isiz2+2]; //phi2[0:isiz2+1,0:isiz3+1]
             double frc1, frc2, frc3, dummy;
             //int IERROR
-            //c---------------------------------------------------------------------
-            //c   set up the sub-domains for intation in each processor
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   set up the sub-domains for intation in each processor
+            //---------------------------------------------------------------------
             ibeg = nx + 1;
             ifin = 0;
             iglob1 = ipt + 1;
@@ -2902,24 +2777,21 @@ namespace NPB {
             frc3 = worldcomm.Allreduce<double>(dummy, MPI.Operation<double>.Add);
             frc3 = deta * dzeta * frc3;
             frc = 0.25d * ( frc1 + frc2 + frc3 );
-            //      //c      if [id==0] write [*,1001] frc   //  //1001 format [//5x,'surface integral = ',1pe12.5//]
-            //return
         }
             //exchange_4.f
         public void exchange_4(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
-            //  c---------------------------------------------------------------------
-            //  c   compute the right hand side based on exact solution
-            //  c---------------------------------------------------------------------
-            //  c---------------------------------------------------------------------
-            //  c  input parameters
-            //  c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the right hand side based on exact solution
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
             //Fortran: double  g[0:isiz2+1,0:isiz3+1],h[0:isiz2+1,0:isiz3+1]
             //C#     : double  g[0:isiz3+1,0:isiz2+1],h[0:isiz3+1,0:isiz2+1]
             //int ibeg, ifin1
             //int jbeg, jfin1
-            //c---------------------------------------------------------------------
-            //c  local variables
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //  local variables
+            //---------------------------------------------------------------------
             int i, j, ny2;
             //MPI.Request[] msgid1 = new MPI.Request[1];  //int msgid1;
             //MPI.Request[] msgid3 = new MPI.Request[1];  //int msgid3;
@@ -2990,17 +2862,16 @@ namespace NPB {
             //end exchange_4.f
             // exchange_5.f
         public void exchange_5(double[,] g, int ibeg, int ifin1) {
-            //c---------------------------------------------------------------------
-            //c   compute the right hand side based on exact solution
-            //c---------------------------------------------------------------------
-            //c---------------------------------------------------------------------
-            //c  input parameters
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the right hand side based on exact solution
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
             //double  g[0:isiz2+1,0:isiz3+1];
             //int ibeg, ifin1;
-            //c---------------------------------------------------------------------
-            //c  local variables
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //  local variables
+            //---------------------------------------------------------------------
             int k;
             //double[] dum = new double[1025]; //dum[1024]
             //int msgid1
@@ -3037,28 +2908,26 @@ namespace NPB {
             //end exchange_5.f
             // exchange_6.f
         public void exchange_6(double[,] g, int jbeg, int jfin1) {
-            //c---------------------------------------------------------------------
-            //c   compute the right hand side based on exact solution
-            //c---------------------------------------------------------------------
-            //c---------------------------------------------------------------------
-            //c  input parameters
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   compute the right hand side based on exact solution
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
             //double  g[0:isiz2+1,0:isiz3+1]
             //int jbeg, jfin1
-            //c---------------------------------------------------------------------
-            //c  local parameters
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //  local parameters
+            //---------------------------------------------------------------------
             int k;
             //double[] dum = new double[1025]; //dum[1024]
             //int msgid3
             //int STATUS[MPI_STATUS_SIZE]
             //int IERROR
-            //c---------------------------------------------------------------------
-            //c   communicate in the east and west directions
-            //c---------------------------------------------------------------------
-            //c---------------------------------------------------------------------
-            //c   receive from east
-            //c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   communicate in the east and west directions
+            //---------------------------------------------------------------------
+            //   receive from east
+            //---------------------------------------------------------------------
             if (jfin1==ny) {
                 double[] dum = new double[nz];
                 MPI.Request[] msgid3 = new MPI.Request[1];  
@@ -3086,338 +2955,332 @@ namespace NPB {
         //end pintgr.f
         // verify.f
         public void verify(double[] xcr, double[] xce, double xci, char clss, ref bool verified) {
-            //    c---------------------------------------------------------------------
-            //    c  verification routine                         
-            //    c---------------------------------------------------------------------
-            //double xcr[5], xce[5], xci
-            //double xcrref[5],xceref[5],xciref, xcrdif[5],xcedif[5],xcidif, epsilon, dtref
-            //int m
-            //char class
-            //bool verified
-            //    c---------------------------------------------------------------------
-            //    c   tolerance level
-            //    c---------------------------------------------------------------------
-            //epsilon = 1.0d-08
+            //---------------------------------------------------------------------
+            //  verification routine                         
+            //---------------------------------------------------------------------
+            ////double xcr[5], xce[5], xci
+            double[] xcrref = new double[5+1];//xcrref[5];
+            double[] xceref = new double[5+1];//xceref[5];
+            double[] xcrdif = new double[5+1];//xcrdif[5];
+            double[] xcedif = new double[5+1];//xcedif[5];
+            double xcidif, epsilon, dtref=0.0,xciref;
+            int m;
+            //---------------------------------------------------------------------
+            //   tolerance level
+            //---------------------------------------------------------------------
+            epsilon = 1.0E-08;
 
-            //class = 'U'
-            //verified = true
+            clss = 'U';
+            verified = true;
 
-            //for(m = 1,5
-            //   xcrref[m] = 1.0
-            //   xceref[m] = 1.0
-            //}
-            //xciref = 1.0
+            for(m = 1; m<=5; m++){
+               xcrref[m] = 1.0;
+               xceref[m] = 1.0;
+            }
+            xciref = 1.0;
 
-            //if [ [nx0  == 12     ] && [ny0  == 12     ] && [nz0  == 12     ] && [itmax   == 50    ]]  {
-
-            //   class = 'S'
-            //   dtref = 5.0d-1
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of residual, for the [12X12X12] grid,
-            //    c   after 50 time steps, with  DT = 5.0d-01
-            //    c---------------------------------------------------------------------
-            // xcrref[1] = 1.6196343210976702d-02
-            // xcrref[2] = 2.1976745164821318d-03
-            // xcrref[3] = 1.5179927653399185d-03
-            // xcrref[4] = 1.5029584435994323d-03
-            // xcrref[5] = 3.4264073155896461d-02
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of solution error, for the [12X12X12] grid,
-            //    c   after 50 time steps, with  DT = 5.0d-01
-            //    c---------------------------------------------------------------------
-            // xceref[1] = 6.4223319957960924d-04
-            // xceref[2] = 8.4144342047347926d-05
-            // xceref[3] = 5.8588269616485186d-05
-            // xceref[4] = 5.8474222595157350d-05
-            // xceref[5] = 1.3103347914111294d-03
-            //    c---------------------------------------------------------------------
-            //    c   Reference value of surface integral, for the [12X12X12] grid,
-            //    c   after 50 time steps, with DT = 5.0d-01
-            //    c---------------------------------------------------------------------
-            // xciref = 7.8418928865937083d+00
-
-            //} else if [ [nx0 == 33] && [ny0 == 33] && [nz0 == 33] && [itmax . eq. 300] ] {
-
-            //   class = 'W'   !SPEC95fp size
-            //   dtref = 1.5d-3
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of residual, for the [33x33x33] grid,
-            //    c   after 300 time steps, with  DT = 1.5d-3
-            //    c---------------------------------------------------------------------
-            //   xcrref[1] =   0.1236511638192d+02
-            //   xcrref[2] =   0.1317228477799d+01
-            //   xcrref[3] =   0.2550120713095d+01
-            //   xcrref[4] =   0.2326187750252d+01
-            //   xcrref[5] =   0.2826799444189d+02
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of solution error, for the [33X33X33] grid,
-            //    c---------------------------------------------------------------------
-            //   xceref[1] =   0.4867877144216d+00
-            //   xceref[2] =   0.5064652880982d-01
-            //   xceref[3] =   0.9281818101960d-01
-            //   xceref[4] =   0.8570126542733d-01
-            //   xceref[5] =   0.1084277417792d+01
-            //        c---------------------------------------------------------------------
-            //        c   Reference value of surface integral, for the [33X33X33] grid,
-            //        c   after 300 time steps, with  DT = 1.5d-3
-            //        c---------------------------------------------------------------------
-            //   xciref    =   0.1161399311023d+02
-
-            //} else if [ [nx0 == 64] && [ny0 == 64] && [nz0 == 64] && [itmax . eq. 250] ] {
-
-            //   class = 'A'
-            //   dtref = 2.0d+0
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of residual, for the [64X64X64] grid,
-            //    c   after 250 time steps, with  DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xcrref[1] = 7.7902107606689367d+02
-            // xcrref[2] = 6.3402765259692870d+01
-            // xcrref[3] = 1.9499249727292479d+02
-            // xcrref[4] = 1.7845301160418537d+02
-            // xcrref[5] = 1.8384760349464247d+03
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of solution error, for the [64X64X64] grid,
-            //    c   after 250 time steps, with  DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xceref[1] = 2.9964085685471943d+01
-            // xceref[2] = 2.8194576365003349d+00
-            // xceref[3] = 7.3473412698774742d+00
-            // xceref[4] = 6.7139225687777051d+00
-            // xceref[5] = 7.0715315688392578d+01
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference value of surface integral, for the [64X64X64] grid,
-            //    c   after 250 time steps, with DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xciref = 2.6030925604886277d+01
-
-
-            //} else if [ [nx0 == 102] && [ny0 == 102] && [nz0 == 102] && [itmax . eq. 250] ] {
-
-            //   class = 'B'
-            //   dtref = 2.0d+0
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of residual, for the [102X102X102] grid,
-            //    c   after 250 time steps, with  DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xcrref[1] = 3.5532672969982736d+03
-            // xcrref[2] = 2.6214750795310692d+02
-            // xcrref[3] = 8.8333721850952190d+02
-            // xcrref[4] = 7.7812774739425265d+02
-            // xcrref[5] = 7.3087969592545314d+03
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of solution error, for the [102X102X102] 
-            //    c   grid, after 250 time steps, with  DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xceref[1] = 1.1401176380212709d+02
-            // xceref[2] = 8.1098963655421574d+00
-            // xceref[3] = 2.8480597317698308d+01
-            // xceref[4] = 2.5905394567832939d+01
-            // xceref[5] = 2.6054907504857413d+02
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference value of surface integral, for the [102X102X102] grid,
-            //    c   after 250 time steps, with DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xciref = 4.7887162703308227d+01
-
-            //} else if [ [nx0 == 162] && [ny0 == 162] && [nz0 == 162] && [itmax . eq. 250] ] {
-
-            //   class = 'C'
-            //   dtref = 2.0d+0
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of residual, for the [162X162X162] grid,
-            //    c   after 250 time steps, with  DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xcrref[1] = 1.03766980323537846d+04
-            // xcrref[2] = 8.92212458801008552d+02
-            // xcrref[3] = 2.56238814582660871d+03
-            // xcrref[4] = 2.19194343857831427d+03
-            // xcrref[5] = 1.78078057261061185d+04
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of solution error, for the [162X162X162] 
-            //    c   grid, after 250 time steps, with  DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xceref[1] = 2.15986399716949279d+02
-            // xceref[2] = 1.55789559239863600d+01
-            // xceref[3] = 5.41318863077207766d+01
-            // xceref[4] = 4.82262643154045421d+01
-            // xceref[5] = 4.55902910043250358d+02
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference value of surface integral, for the [162X162X162] grid,
-            //    c   after 250 time steps, with DT = 2.0d+00
-            //    c---------------------------------------------------------------------
-            // xciref = 6.66404553572181300d+01
-
-            //} else if [ [nx0 == 408] && [ny0 == 408] && [nz0 == 408] && [itmax . eq. 300] ] {
-
-            //   class = 'D'
-            //   dtref = 1.0d+0
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of residual, for the [408X408X408] grid,
-            //    c   after 300 time steps, with  DT = 1.0d+00
-            //    c---------------------------------------------------------------------
-            // xcrref[1] = 0.4868417937025d+05
-            // xcrref[2] = 0.4696371050071d+04
-            // xcrref[3] = 0.1218114549776d+05 
-            // xcrref[4] = 0.1033801493461d+05
-            // xcrref[5] = 0.7142398413817d+05
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of solution error, for the [408X408X408] 
-            //    c   grid, after 300 time steps, with  DT = 1.0d+00
-            //    c---------------------------------------------------------------------
-            // xceref[1] = 0.3752393004482d+03
-            // xceref[2] = 0.3084128893659d+02
-            // xceref[3] = 0.9434276905469d+02
-            // xceref[4] = 0.8230686681928d+02
-            // xceref[5] = 0.7002620636210d+03
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference value of surface integral, for the [408X408X408] grid,
-            //    c   after 300 time steps, with DT = 1.0d+00
-            //    c---------------------------------------------------------------------
-            // xciref =    0.8334101392503d+02
-
-            //} else if [ [nx0 == 1020] && [ny0 == 1020] && [nz0 == 1020] && [itmax . eq. 300] ] {
-
-            //   class = 'E'
-            //   dtref = 0.5d+0
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of residual, for the [1020X1020X1020] grid,
-            //    c   after 300 time steps, with  DT = 0.5d+00
-            //    c---------------------------------------------------------------------
-            // xcrref[1] = 0.2099641687874d+06
-            // xcrref[2] = 0.2130403143165d+05
-            // xcrref[3] = 0.5319228789371d+05 
-            // xcrref[4] = 0.4509761639833d+05
-            // xcrref[5] = 0.2932360006590d+06
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference values of RMS-norms of solution error, for the [1020X1020X1020] 
-            //    c   grid, after 300 time steps, with  DT = 0.5d+00
-            //    c---------------------------------------------------------------------
-            // xceref[1] = 0.4800572578333d+03
-            // xceref[2] = 0.4221993400184d+02
-            // xceref[3] = 0.1210851906824d+03
-            // xceref[4] = 0.1047888986770d+03
-            // xceref[5] = 0.8363028257389d+03
-
-            //    c---------------------------------------------------------------------
-            //    c   Reference value of surface integral, for the [1020X1020X1020] grid,
-            //    c   after 300 time steps, with DT = 0.5d+00
-            //    c---------------------------------------------------------------------
-            // xciref =    0.9512163272273d+02
-
-            //} else {
-            //   verified = false
-            //}
-            //c---------------------------------------------------------------------
-            //c    verification test for residuals if gridsize is one of 
-            //c    the defined grid sizes above [class != 'U']
-            //c---------------------------------------------------------------------
-            //c---------------------------------------------------------------------
-            //c    Compute the difference of solution values and the known reference values.
-            //c---------------------------------------------------------------------
-            //for(m = 1, 5
-            //   xcrdif[m] = dabs[[xcr[m]-xcrref[m]]/xcrref[m]] 
-            //   xcedif[m] = dabs[[xce[m]-xceref[m]]/xceref[m]]
-            //}
-            //xcidif = dabs[[xci - xciref]/xciref]
-            //    c---------------------------------------------------------------------
-            //    c    Output the comparison of computed results to known cases.
-            //    c---------------------------------------------------------------------
-            //if [class != 'U'] {
-            //   write[*, 1990] class
-            //            1990      format[/, ' Verification being performed for class ', a]
-            //   write [*,2000] epsilon
-            //        2000      format[' Accuracy setting for epsilon = ', E20.13]
-            //   verified = [dabs[dt-dtref] <= epsilon]
-            //   if [!verified] {  
-            //      class = 'U'
-            //      write [*,1000] dtref
-            //            1000         format[' DT does not match the reference value of ', E15.8]
-            //   }
-            //} else { 
-            //   write[*, 1995]
-            //    1995      format[' Unknown class']
-            //}
-
-
-            //if [class != 'U'] {
-            //   write [*,2001] 
-            //} else {
-            //   write [*, 2005]
-            //}
-            // 2001   format[' Comparison of RMS-norms of residual']
-            // 2005   format[' RMS-norms of residual']
-            //for(m = 1, 5
-            //   if [class == 'U'] {
-            //      write[*, 2015] m, xcr[m]
-            //   } else if [xcrdif[m] <= epsilon] {
-            //      write [*,2011] m,xcr[m],xcrref[m],xcrdif[m]
-            //   } else { 
-            //      verified = false
-            //      write [*,2010] m,xcr[m],xcrref[m],xcrdif[m]
-            //   }
-            //}
-            //if [class != 'U'] {
-            //   write [*,2002]
-            //} else {
-            //   write [*,2006]
-            //}
-            // 2002   format[' Comparison of RMS-norms of solution error']
-            // 2006   format[' RMS-norms of solution error']        
-            //for(m = 1, 5
-            //   if [class == 'U'] {
-            //      write[*, 2015] m, xce[m]
-            //   } else if [xcedif[m] <= epsilon] {
-            //      write [*,2011] m,xce[m],xceref[m],xcedif[m]
-            //   } else {
-            //      verified = false
-            //      write [*,2010] m,xce[m],xceref[m],xcedif[m]
-            //   }
-            //}        
-            // 2010   format[' FAILURE: ', i2, 2x, E20.13, E20.13, E20.13]
-            // 2011   format['          ', i2, 2x, E20.13, E20.13, E20.13]
-            // 2015   format['          ', i2, 2x, E20.13]
-            //if [class != 'U'] {
-            //   write [*,2025]
-            //} else {
-            //   write [*,2026]
-            //}
-            // 2025   format[' Comparison of surface integral']
-            // 2026   format[' Surface integral']
-            //if [class == 'U'] {
-            //   write[*, 2030] xci
-            //} else if [xcidif <= epsilon] {
-            //   write[*, 2032] xci, xciref, xcidif
-            //} else {
-            //   verified = false
-            //   write[*, 2031] xci, xciref, xcidif
-            //}
-            //     2030   format['          ', 4x, E20.13]
-            //     2031   format[' FAILURE: ', 4x, E20.13, E20.13, E20.13]
-            //     2032   format['          ', 4x, E20.13, E20.13, E20.13]
-            //if [class == 'U'] {
-            //   write[*, 2022]
-            //   write[*, 2023]
-            //    2022      format[' No reference values provided']
-            //    2023      format[' No verification performed']
-            //} else if [verified] {
-            //   write[*, 2020]
-            //    2020      format[' Verification Successful']
-            //} else {
-            //   write[*, 2021]
-            //    2021      format[' Verification failed']
-            //}
-
+            if ((nx0 == 12) && (ny0 == 12) && (nz0 == 12) && (itmax == 50))  {
+                clss = 'S';
+                dtref = 5.0E-1;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of residual, for the [12X12X12] grid,
+                //   after 50 time steps, with  DT = 5.0d-01
+                //---------------------------------------------------------------------
+                xcrref[1] = 1.6196343210976702E-02;
+                xcrref[2] = 2.1976745164821318E-03;
+                xcrref[3] = 1.5179927653399185E-03;
+                xcrref[4] = 1.5029584435994323E-03;
+                xcrref[5] = 3.4264073155896461E-02;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of solution error, for the [12X12X12] grid,
+                //   after 50 time steps, with  DT = 5.0d-01
+                //---------------------------------------------------------------------
+                xceref[1] = 6.4223319957960924E-04;
+                xceref[2] = 8.4144342047347926E-05;
+                xceref[3] = 5.8588269616485186E-05;
+                xceref[4] = 5.8474222595157350E-05;
+                xceref[5] = 1.3103347914111294E-03;
+                //---------------------------------------------------------------------
+                //   Reference value of surface integral, for the [12X12X12] grid,
+                //   after 50 time steps, with DT = 5.0d-01
+                //---------------------------------------------------------------------
+                xciref = 7.8418928865937083E+00;
+            } else if ((nx0 == 33) && (ny0 == 33) && (nz0 == 33) && (itmax == 300)) {
+                clss = 'W';   //!SPEC95fp size;
+                dtref = 1.5E-3;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of residual, for the [33x33x33] grid,
+                //   after 300 time steps, with  DT = 1.5d-3
+                //---------------------------------------------------------------------
+                xcrref[1] =   0.1236511638192E+02;
+                xcrref[2] =   0.1317228477799E+01;
+                xcrref[3] =   0.2550120713095E+01;
+                xcrref[4] =   0.2326187750252E+01;
+                xcrref[5] =   0.2826799444189E+02;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of solution error, for the [33X33X33] grid,
+                //---------------------------------------------------------------------
+                xceref[1] =   0.4867877144216E+00;
+                xceref[2] =   0.5064652880982E-01;
+                xceref[3] =   0.9281818101960E-01;
+                xceref[4] =   0.8570126542733E-01;
+                xceref[5] =   0.1084277417792E+01;
+                //---------------------------------------------------------------------
+                //   Reference value of surface integral, for the [33X33X33] grid,
+                //   after 300 time steps, with  DT = 1.5d-3
+                //---------------------------------------------------------------------
+                xciref    =   0.1161399311023E+02;
+            } else if ((nx0 == 64) && (ny0 == 64) && (nz0 == 64) && (itmax == 250)) {
+                clss = 'A';
+                dtref = 2.0E+0;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of residual, for the [64X64X64] grid,
+                //   after 250 time steps, with  DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xcrref[1] = 7.7902107606689367E+02;
+                xcrref[2] = 6.3402765259692870E+01;
+                xcrref[3] = 1.9499249727292479E+02;
+                xcrref[4] = 1.7845301160418537E+02;
+                xcrref[5] = 1.8384760349464247E+03;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of solution error, for the [64X64X64] grid,
+                //   after 250 time steps, with  DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xceref[1] = 2.9964085685471943E+01;
+                xceref[2] = 2.8194576365003349E+00;
+                xceref[3] = 7.3473412698774742E+00;
+                xceref[4] = 6.7139225687777051E+00;
+                xceref[5] = 7.0715315688392578E+01;
+                //---------------------------------------------------------------------
+                //   Reference value of surface integral, for the [64X64X64] grid,
+                //   after 250 time steps, with DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xciref = 2.6030925604886277E+01;
+            } else if ((nx0 == 102) && (ny0 == 102) && (nz0 == 102) && (itmax == 250)) {
+                clss = 'B';
+                dtref = 2.0E+0;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of residual, for the [102X102X102] grid,
+                //   after 250 time steps, with  DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xcrref[1] = 3.5532672969982736E+03;
+                xcrref[2] = 2.6214750795310692E+02;
+                xcrref[3] = 8.8333721850952190E+02;
+                xcrref[4] = 7.7812774739425265E+02;
+                xcrref[5] = 7.3087969592545314E+03;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of solution error, for the [102X102X102] 
+                //   grid, after 250 time steps, with  DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xceref[1] = 1.1401176380212709E+02;
+                xceref[2] = 8.1098963655421574E+00;
+                xceref[3] = 2.8480597317698308E+01;
+                xceref[4] = 2.5905394567832939E+01;
+                xceref[5] = 2.6054907504857413E+02;
+                //---------------------------------------------------------------------
+                //   Reference value of surface integral, for the [102X102X102] grid,
+                //   after 250 time steps, with DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xciref = 4.7887162703308227E+01;
+            } else if ((nx0 == 162) && (ny0 == 162) && (nz0 == 162) && (itmax == 250)) {
+                clss = 'C';
+                dtref = 2.0E+0;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of residual, for the [162X162X162] grid,
+                //   after 250 time steps, with  DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xcrref[1] = 1.03766980323537846E+04;
+                xcrref[2] = 8.92212458801008552E+02;
+                xcrref[3] = 2.56238814582660871E+03;
+                xcrref[4] = 2.19194343857831427E+03;
+                xcrref[5] = 1.78078057261061185E+04;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of solution error, for the [162X162X162] 
+                //   grid, after 250 time steps, with  DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xceref[1] = 2.15986399716949279E+02;
+                xceref[2] = 1.55789559239863600E+01;
+                xceref[3] = 5.41318863077207766E+01;
+                xceref[4] = 4.82262643154045421E+01;
+                xceref[5] = 4.55902910043250358E+02;
+                //---------------------------------------------------------------------
+                //   Reference value of surface integral, for the [162X162X162] grid,
+                //   after 250 time steps, with DT = 2.0d+00
+                //---------------------------------------------------------------------
+                xciref = 6.66404553572181300E+01;
+            } else if ((nx0 == 408) && (ny0 == 408) && (nz0 == 408) && (itmax == 300)) {
+                clss = 'D';
+                dtref = 1.0E+0;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of residual, for the [408X408X408] grid,
+                //   after 300 time steps, with  DT = 1.0d+00
+                //---------------------------------------------------------------------
+                xcrref[1] = 0.4868417937025E+05;
+                xcrref[2] = 0.4696371050071E+04;
+                xcrref[3] = 0.1218114549776E+05;
+                xcrref[4] = 0.1033801493461E+05;
+                xcrref[5] = 0.7142398413817E+05;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of solution error, for the [408X408X408] 
+                //   grid, after 300 time steps, with  DT = 1.0d+00
+                //---------------------------------------------------------------------
+                xceref[1] = 0.3752393004482E+03;
+                xceref[2] = 0.3084128893659E+02;
+                xceref[3] = 0.9434276905469E+02;
+                xceref[4] = 0.8230686681928E+02;
+                xceref[5] = 0.7002620636210E+03;
+                //---------------------------------------------------------------------
+                //   Reference value of surface integral, for the [408X408X408] grid,
+                //   after 300 time steps, with DT = 1.0d+00
+                //---------------------------------------------------------------------
+                xciref =    0.8334101392503E+02;
+            } else if ((nx0 == 1020) && (ny0 == 1020) && (nz0 == 1020) && (itmax == 300)) {
+                clss = 'E';
+                dtref = 0.5E+0;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of residual, for the [1020X1020X1020] grid,
+                //   after 300 time steps, with  DT = 0.5d+00
+                //---------------------------------------------------------------------
+                xcrref[1] = 0.2099641687874E+06;
+                xcrref[2] = 0.2130403143165E+05;
+                xcrref[3] = 0.5319228789371E+05;
+                xcrref[4] = 0.4509761639833E+05;
+                xcrref[5] = 0.2932360006590E+06;
+                //---------------------------------------------------------------------
+                //   Reference values of RMS-norms of solution error, for the [1020X1020X1020] 
+                //   grid, after 300 time steps, with  DT = 0.5d+00
+                //---------------------------------------------------------------------
+                xceref[1] = 0.4800572578333E+03;
+                xceref[2] = 0.4221993400184E+02;
+                xceref[3] = 0.1210851906824E+03;
+                xceref[4] = 0.1047888986770E+03;
+                xceref[5] = 0.8363028257389E+03;
+                //---------------------------------------------------------------------
+                //   Reference value of surface integral, for the [1020X1020X1020] grid,
+                //   after 300 time steps, with DT = 0.5d+00
+                //---------------------------------------------------------------------
+                xciref =    0.9512163272273E+02;
+            } else {
+                verified = false;
+            }
+            //---------------------------------------------------------------------
+            //    verification test for residuals if gridsize is one of 
+            //    the defined grid sizes above [class != 'U']
+            //---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //    Compute the difference of solution values and the known reference values.
+            //---------------------------------------------------------------------
+            for(m = 1; m<= 5; m++){
+               xcrdif[m] = Math.Abs((xcr[m]-xcrref[m])/xcrref[m]); //xcrdif[m] = dabs((xcr[m]-xcrref[m])/xcrref[m]);
+               xcedif[m] = Math.Abs((xce[m]-xceref[m])/xceref[m]); //xcedif[m] = dabs((xce[m]-xceref[m])/xceref[m]);
+            }
+            xcidif = Math.Abs((xci - xciref)/xciref); //xcidif = dabs((xci - xciref)/xciref);
+            //---------------------------------------------------------------------
+            //    Output the comparison of computed results to known cases.
+            //---------------------------------------------------------------------
+            if (clss != 'U') {
+                Console.WriteLine(" Verification being performed for class " + clss);//   write[*, 1990] class //1990 format[/, ' Verification being performed for class ', a]
+                Console.WriteLine(" Accuracy setting for epsilon = " + epsilon); //   write [*,2000] epsilon //        2000      format[' Accuracy setting for epsilon = ', E20.13]
+                verified = (Math.Abs(dt-dtref) <= epsilon); //verified = (dabs(dt-dtref) <= epsilon);
+                if (!verified) {
+                    clss = 'U';
+                    Console.WriteLine(" DT does not match the reference value of " + dtref); //write [*,1000] dtref //1000         format[' DT does not match the reference value of ', E15.8]
+                }
+            } else {
+                Console.WriteLine(" Unknown class"); //   write[*, 1995]  //    1995      format[' Unknown class']
+            }
+            if (clss != 'U') {
+                Console.WriteLine(" Comparison of RMS-norms of residual");//   write [*,2001] // 2001   format[' Comparison of RMS-norms of residual']
+            } else {
+                Console.WriteLine(" RMS-norms of residual");//   write [*, 2005]// 2005   format[' RMS-norms of residual']
+            }            
+            for(m = 1; m<= 5; m++){
+               if (clss == 'U') {
+                   Console.WriteLine("          " + m + " " + xcr[m]);//write[*, 2015] m, xcr[m];
+               } else if (xcrdif[m] <= epsilon) {
+                   Console.WriteLine("          " + m + " " + xcr[m] + " " + xcrref[m] + " " + xcrdif[m]);
+                    //      write [*,2011] m,xcr[m],xcrref[m],xcrdif[m];
+               } else {
+                   Console.WriteLine(" FAILURE: "+m+" "+xcr[m]+" "+xcrref[m]+" "+xcrdif[m]);//write [*,2010] m,xcr[m],xcrref[m],xcrdif[m];
+                    verified = false;
+               }
+            }
+            if (clss != 'U') {
+                Console.WriteLine(" Comparison of RMS-norms of solution error");//write [*,2002];// 2002   format[' Comparison of RMS-norms of solution error'];
+            } else {
+                Console.WriteLine(" RMS-norms of solution error");//write [*,2006];// 2006   format[' RMS-norms of solution error'];
+            }            
+            for(m = 1; m<= 5; m++){
+               if (clss == 'U') {
+                   Console.WriteLine("          " + m + " " + xce[m]);//write[*, 2015] m, xce[m];
+               } else if (xcedif[m] <= epsilon) {
+                   Console.WriteLine("          "+m+" "+xce[m]+" "+xceref[m]+" "+xcedif[m]);//write [*,2011] m,xce[m],xceref[m],xcedif[m];
+               } else {
+                    verified = false;
+                    Console.WriteLine(" FAILURE: "+m+" "+xce[m]+" "+xceref[m]+" "+xcedif[m]);//write [*,2010] m,xce[m],xceref[m],xcedif[m];
+               }
+            }
+            if (clss != 'U') {
+                Console.WriteLine(" Comparison of surface integral");//write [*,2025];// 2025   format[' Comparison of surface integral'];
+            } else {
+                Console.WriteLine(" Surface integral");//   write [*,2026];// 2026   format[' Surface integral'];
+            }            
+            if (clss == 'U') {
+                Console.WriteLine("          "+xci);//   write[*, 2030] xci;
+            } else if (xcidif <= epsilon) {
+                Console.WriteLine("          " + xci + " " + xciref + " " + xcidif);//   write[*, 2032] xci, xciref, xcidif;
+            } else {
+                verified = false;
+                Console.WriteLine(" FAILURE: " + xci + " " + xciref + " " + xcidif);//write[*, 2031] xci, xciref, xcidif;
+            }
+            if (clss == 'U') {
+                Console.WriteLine("' No reference values provided");//   write[*, 2022]//    2022      format[' No reference values provided']
+                Console.WriteLine(" No verification performed");//   write[*, 2023]//    2023      format[' No verification performed']
+            } else if (verified) {
+                Console.WriteLine(" Verification Successful");//   write[*, 2020]//2020      format[' Verification Successful']
+            } else {
+                Console.WriteLine(" Verification failed");//   write[*, 2021]//    2021      format[' Verification failed']
+            }
         }
         // end verify.f
+        public void print_results(string name, char Class, int n1, int n2, int n3, int niter, int nprocs_compiled, int nprocs_total,double t, double mops, string optype, bool verified, string npbversion) {
+
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine(" " + name + " Benchmark Completed.");
+            Console.WriteLine(" Class           = " + Class);
+            /* If this is not a grid-based problem (EP, FT, CG), then
+               we only print n1, which contains some measure of the
+               problem size. In that case, n2 and n3 are both zero.
+               Otherwise, we print the grid size n1xn2xn3 */
+            if ((n2 == 0) && (n3 == 0)) {
+                Console.WriteLine(" Size            = " + n1);
+            }
+            else {
+                Console.WriteLine(" Size            = " + n1 + " x " + n2 + " x " + n3);
+            }
+            Console.WriteLine(" Iterations      = " + niter);
+            Console.WriteLine(" Time in seconds = " + t);
+            Console.WriteLine(" Total processes = " + nprocs_total);
+            Console.WriteLine(" Compiled procs  = " + nprocs_compiled);
+            Console.WriteLine(" Mop/s total     = " + mops);
+            Console.WriteLine(" Mop/s/process   = " + mops / nprocs_total);
+            Console.WriteLine(" Operation type  = " + optype);
+            if (verified) {
+                Console.WriteLine(" Verification    = SUCCESSFUL");
+            }
+            else {
+                Console.WriteLine(" Verification    = UNSUCCESSFUL");
+            }
+            Console.WriteLine(" Version         = " + npbversion);
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine(" Please send the results of this run to:");
+            Console.WriteLine(" NPB Development Team ");
+            Console.WriteLine(" Internet: npb@nas.nasa.gov");
+            Console.WriteLine(" If email is not available, send this to:");
+            Console.WriteLine(" MS T27A-1");
+            Console.WriteLine(" NASA Ames Research Center");
+            Console.WriteLine(" Moffett Field, CA  94035-1000");
+            Console.WriteLine(" Fax: 650-604-3957");
+        }
     }
 }
