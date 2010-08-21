@@ -6,18 +6,27 @@
 	<property name="LIB" value="lib" />
 	<property name="unsafe" value="-unsafe" />
 	<target name="LIB" description="Libraries">
+		<csc target="library" output="bin/Debug/Timer.dll" debug="true">
+			<sources>    
+				<include name="../Timer.MPI/Timer.cs" />  
+			</sources>
+			<references> 
+				<include name='/usr/local/lib/MPI.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="bin/Debug/BMInOut.dll" debug="true">
+			<sources>    
+				<include name="../BMInOut/BMArgs.cs" />  
+			</sources>
+		</csc>
 		<csc target="library" output="bin/Debug/FTBase.dll" debug="true">
 			<sources>    
 				<include name="FTBase/FTBase.cs" />  
 			</sources>
 			<references> 
 				<include name='/usr/local/lib/MPI.dll' />         
+				<include name='bin/Debug/Timer.dll' />         
 			</references>
-		</csc>
-		<csc target="library" output="bin/Debug/Point.dll" debug="true">
-			<sources>    
-				<include name="FTControls/Point.cs" />  
-			</sources>
 		</csc>
 	</target>
 	<target name="all" description="Compilar" depends='LIB'>
@@ -27,7 +36,8 @@
 				<include name="FT.cs" />
 				<include name="FTBase/FTBase.cs" />  
 				<include name="FTControls/Point.cs" />  
-				<include name="FTControls/BMArgs.cs" />  
+				<include name="../Timer.MPI/Timer.cs" />  
+				<include name="../BMInOut/BMArgs.cs" />  
 			</sources>
 			<references> 
 				<include name='/usr/local/lib/MPI.dll' />         
