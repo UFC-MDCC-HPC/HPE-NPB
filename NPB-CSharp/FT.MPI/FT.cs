@@ -206,10 +206,10 @@ namespace NPB {
                     int[] vetTemp = FTBase.readInputFtData("inputft.data");
                     niter = vetTemp[0]; layout_type = vetTemp[1]; np1 = vetTemp[2]; np2 = vetTemp[3];
                 }
-                catch (System.IO.FileNotFoundException e) {
+                catch /*(System.IO.FileNotFoundException e)*/ {
                     Console.WriteLine("inputft.data not found");
                     fstatus = 1;
-                    Console.WriteLine(e.ToString());
+                    //Console.WriteLine(e.ToString());
                 }
 
                 if (fstatus == 0) {
