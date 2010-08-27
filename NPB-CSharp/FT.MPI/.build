@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="NPB-CSharp" default="all" basedir=".">
+	<description>Builder</description>
+	<property name="debug" value="true" overwrite="true" />
+	<property name="all" value="bin" />
+	<property name="LIB" value="lib" />
+	<!--
+	<property name="optimize" value="-optimize" />
+	<property name="unsafe" value="-unsafe" />
+	-->
+	<target name="LIB" description="Libraries">
+		<csc target="library" output="bin/Debug/Timer.dll" debug="true">
+			<sources>    
+				<include name="../Timer.MPI/Timer.cs" />  
+			</sources>
+			<references> 
+				<include name='/usr/lib/MPI.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="bin/Debug/BMInOut.dll" debug="true">
+			<sources>    
+				<include name="../BMInOut/BMArgs.cs" />  
+			</sources>
+		</csc>
+		<csc target="library" output="bin/Debug/FTBase.dll" debug="true">
+			<sources>    
+				<include name="FTBase/FTBase.cs" />  
+			</sources>
+			<references> 
+				<include name='/usr/lib/MPI.dll' />         
+				<include name='bin/Debug/Timer.dll' />         
+			</references>
+		</csc>
+	</target>
+	<target name="all" description="Compilar" depends='LIB'>
+		<csc target="exe" output="${all}/Debug/FT.exe" debug="true">
+			<arg value="-optimize" />
+			<arg value="-unsafe" />
+			<sources>
+				<include name="FT.cs" />
+				<include name="FTBase/FTBase.cs" />  
+				<include name="FTControls/Point.cs" />  
+				<include name="../Timer.MPI/Timer.cs" />  
+				<include name="../BMInOut/BMArgs.cs" />  
+			</sources>
+			<references> 
+				<include name='/usr/lib/MPI.dll' />         
+			</references>
+		</csc>
+	</target>
+</project>
