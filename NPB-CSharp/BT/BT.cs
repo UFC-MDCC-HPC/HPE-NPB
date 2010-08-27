@@ -98,7 +98,6 @@ namespace NPB3_0_JAV
                 Environment.Exit(0);
             }
             bt.runBenchMark();
-            Console.ReadKey(true);
         }
 
         public void run() { runBenchMark(); }
