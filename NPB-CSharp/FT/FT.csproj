@@ -37,7 +37,7 @@
   <ItemGroup>
     <Compile Include="FT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FTBase\FTBase.cs" />
+    <Compile Include="FTThreads\FTBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BMInOut\BMInOut.csproj">
