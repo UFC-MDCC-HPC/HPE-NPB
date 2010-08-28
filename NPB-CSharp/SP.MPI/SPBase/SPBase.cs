@@ -41,7 +41,8 @@
 !-------------------------------------------------------------------------!
 */
 using System;
-using System.Threading;
+//using System.Threading;
+using NPB;
 using NPB3_0_JAV;
 using MPI;
 
@@ -215,7 +216,7 @@ public class SPBase /* : Thread*/
 
 	}
 
-	protected Thread master = null;
+	//protected Thread master = null;
 
     private void setup_mpi()
     {
