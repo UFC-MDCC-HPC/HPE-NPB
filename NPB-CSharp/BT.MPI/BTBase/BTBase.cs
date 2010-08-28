@@ -2,7 +2,7 @@ using System;
 using NPB;
 using NPB3_0_JAV;
 
-namespace NPB.Btb {
+namespace NPB {
     public class BTBase {
       //******************************************** Attributes *******************************************************/
             public const int le = 1;
