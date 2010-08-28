@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<project name="NPB-CSharp" default="all" basedir=".">
+	<description>Builder</description>
+	<property name="debug" value="true" overwrite="true" />
+	<property name="all" value="bin" />
+	<property name="LIB" value="lib" />
+	<property name="mpi" value="/usr/local/lib/MPI.dll" />
+	<target name="LIB" description="Libraries">
+		<csc target="library" output="${all}/Timer.MPI.dll" debug="true">
+			<sources>    
+				<include name="Timer.MPI/Timer.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/Timer.dll" debug="true">
+			<sources>    
+				<include name="Timer/Timer.cs" />  
+			</sources>
+		</csc>
+		<csc target="library" output="${all}/Random.dll" debug="true">
+			<sources>    
+				<include name="Random/Random.cs" />  
+			</sources>
+		</csc>
+		<csc target="library" output="${all}/BMResults.dll" debug="true">
+			<sources>    
+				<include name="BMInOut/BMResults.cs" />  
+			</sources>
+		</csc>
+		<csc target="library" output="${all}/BMInOut.dll" debug="true">
+			<sources>    
+				<include name="BMInOut/BMArgs.cs" />  
+			</sources>
+		</csc>
+		<csc target="library" output="${all}/BTBase.MPI.dll" debug="true">
+			<sources>    
+				<include name="BT.MPI/BTBase/BTBase.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+				<include name='${all}/Timer.MPI.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/LUBase.MPI.dll" debug="true">
+			<sources>    
+				<include name="LU.MPI/LUBase/LUBase.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+				<include name='${all}/Timer.MPI.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/BTBase.dll" debug="true">
+			<sources>    
+				<include name="BT/BTThreads/BTBase.cs" />  
+			</sources>
+			<references> 
+				<include name='${all}/Timer.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/FTBase.dll" debug="true">
+			<sources>    
+				<include name="FT/FTThreads/FTBase.cs" />  
+			</sources>
+			<references> 
+				<include name='${all}/Timer.dll' />         
+				<include name='${all}/Random.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/LUBase.dll" debug="true">
+			<sources>    
+				<include name="LU/LUThreads/LUBase.cs" />  
+			</sources>
+			<references> 
+				<include name='${all}/Timer.dll' />         
+			</references>
+		</csc>
+	</target>
+	<target name="all" description="Compilar" depends='LIB'>
+		<csc target="exe" output="${all}/BT.MPI.exe" debug="true">
+			<arg value="-unsafe"/>
+			<arg value="-optimize"/>
+			<sources>
+				<include name="BT.MPI/BT.cs" />
+				<include name="BT.MPI/BTBase/BTBase.cs" />  
+				<include name="Timer.MPI/Timer.cs" />  
+				<include name="BMInOut/BMArgs.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+			</references>
+		</csc>
+		<csc target="exe" output="${all}/LU.MPI.exe" debug="true">
+			<arg value="-unsafe"/>
+			<arg value="-optimize"/>
+			<sources>
+				<include name="LU.MPI/LU.cs" />
+				<include name="LU.MPI/LUBase/LUBase.cs" />  
+				<include name="Timer.MPI/Timer.cs" />  
+				<include name="BMInOut/BMArgs.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+			</references>
+		</csc>
+		<csc target="exe" output="${all}/BT.exe" debug="true">
+			<arg value="-unsafe"/>
+			<arg value="-optimize"/>
+			<sources>
+				<include name="BT/BT.cs" />
+				<include name="BT/BTThreads/BTBase.cs" />  
+				<include name="Timer/Timer.cs" />  
+				<include name="BMInOut/BMArgs.cs" />  
+				<include name="BMInOut/BMResults.cs" />  
+			</sources>
+		</csc>
+		<csc target="exe" output="${all}/FT.exe" debug="true">
+			<arg value="-unsafe"/>
+			<arg value="-optimize"/>
+			<sources>
+				<include name="FT/FT.cs" />
+				<include name="FT/FTThreads/FTBase.cs" />  
+				<include name="Timer/Timer.cs" />  
+				<include name="BMInOut/BMArgs.cs" />  
+				<include name="BMInOut/BMResults.cs" />  
+				<include name="Random/Random.cs" />  
+			</sources>
+		</csc>
+		<csc target="exe" output="${all}/LU.exe" debug="true">
+			<arg value="-unsafe"/>
+			<arg value="-optimize"/>
+			<sources>
+				<include name="LU/LU.cs" />
+				<include name="LU/LUThreads/LUBase.cs" />  
+				<include name="Timer/Timer.cs" />  
+				<include name="BMInOut/BMArgs.cs" />  
+				<include name="BMInOut/BMResults.cs" />  
+			</sources>
+		</csc>
+	</target>
+</project>
