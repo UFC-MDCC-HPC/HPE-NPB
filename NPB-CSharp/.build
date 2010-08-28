@@ -4,7 +4,7 @@
 	<property name="debug" value="true" overwrite="true" />
 	<property name="all" value="bin" />
 	<property name="LIB" value="lib" />
-	<property name="mpi" value="/usr/lib/MPI.dll" />
+	<property name="mpi" value="/usr/local/lib/MPI.dll" />
 	<target name="LIB" description="Libraries">
 		<csc target="library" output="${all}/Timer.MPI.dll" debug="true">
 			<sources>    
@@ -37,6 +37,15 @@
 		<csc target="library" output="${all}/BTBase.MPI.dll" debug="true">
 			<sources>    
 				<include name="BT.MPI/BTBase/BTBase.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+				<include name='${all}/Timer.MPI.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/FTBase.MPI.dll" debug="true">
+			<sources>    
+				<include name="FT.MPI/FTBase/FTBase.cs" />  
 			</sources>
 			<references> 
 				<include name="${mpi}" />         
