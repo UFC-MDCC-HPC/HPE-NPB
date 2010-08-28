@@ -28,7 +28,7 @@
 		</csc>
 		<csc target="library" output="bin/Debug/FTBase.dll" debug="true">
 			<sources>    
-				<include name="FTBase/FTBase.cs" />  
+				<include name="FTThreads/FTBase.cs" />  
 			</sources>
 			<references> 
 				<include name='bin/Debug/Timer.dll' />         
@@ -41,7 +41,7 @@
 		<csc target="exe" output="${all}/Debug/FT.exe" debug="true">
 			<sources>
 				<include name="FT.cs" />
-				<include name="FTBase/FTBase.cs" />  
+				<include name="FTThreads/FTBase.cs" />  
 				<include name="../Timer/Timer.cs" />  
 				<include name="../Random/Random.cs" />  
 				<include name="../BMInOut/BMArgs.cs" />  
