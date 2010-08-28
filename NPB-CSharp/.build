@@ -139,5 +139,19 @@
 				<include name="BMInOut/BMResults.cs" />  
 			</sources>
 		</csc>
+		<csc target="exe" output="${all}/FT.MPI.exe" debug="true">
+			<arg value="-unsafe"/>
+			<arg value="-optimize"/>
+			<sources>
+				<include name="FT.MPI/FT.cs" />
+				<include name="FT.MPI/FTBase/FTBase.cs" />  
+				<include name="Timer.MPI/Timer.cs" />  
+				<include name="BMInOut/BMArgs.cs" />  
+				<include name="FT.MPI/FTControls/Point.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+			</references>
+		</csc>
 	</target>
 </project>
