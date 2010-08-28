@@ -2,7 +2,7 @@ using System;
 using NPB;
 using NPB3_0_JAV;
 
-namespace NPB.Lub {
+namespace NPB {
     public class LUBase {
       //******************************************** Attributes *******************************************************/
         //npbparams.h

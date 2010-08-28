@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using NPB.Lub;
 using NPB3_0_JAV;
 using NPB3_0_JAV.BMInOut;
 
