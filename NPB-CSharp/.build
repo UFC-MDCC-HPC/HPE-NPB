@@ -4,7 +4,7 @@
 	<property name="debug" value="true" overwrite="true" />
 	<property name="all" value="bin" />
 	<property name="LIB" value="lib" />
-	<property name="mpi" value="/usr/local/lib/MPI.dll" />
+	<property name="mpi" value="/usr/lib/MPI.dll" />
 	<target name="LIB" description="Libraries">
 		<csc target="library" output="${all}/Timer.MPI.dll" debug="true">
 			<sources>    
