@@ -2,7 +2,7 @@ using System;
 using NPB;
 using NPB3_0_JAV;
 
-namespace NPB.Ftb {
+namespace NPB {
     public class FTBase {
 
       //******************************************** Attributes *******************************************************/

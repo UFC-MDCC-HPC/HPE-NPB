@@ -73,7 +73,6 @@
  */
 using System;
 using System.IO;
-using NPB.Ftb;
 using NPB.Ftc;
 using NPB3_0_JAV;
 using NPB3_0_JAV.BMInOut;
