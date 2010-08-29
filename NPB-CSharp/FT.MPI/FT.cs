@@ -182,7 +182,7 @@ namespace NPB {
                 mflops = 0.0;
             }
             if (me == 0) {
-                MPIIO.print_results("FT", clss, nx, ny, nz, niter, np_min, np,total_time, mflops, "floating point", verified, npbversion);
+                IO.print_results("FT", clss, nx, ny, nz, niter, np_min, np,total_time, mflops, "floating point", verified, npbversion);
             }
             if (timers_enabled) print_timers();
             mpi.Dispose();
@@ -203,7 +203,7 @@ namespace NPB {
                 try {
                     Console.Write("Trying Read from input file inputft.data: ");
                     int[] conf = {1,1,2};
-                    string[] vetTemp = MPIIO.readFileData("inputft.data",conf);
+                    string[] vetTemp = IO.readFileData("inputft.data",conf);
                     niter = int.Parse(vetTemp[0]); 
                     layout_type = int.Parse(vetTemp[1]); 
                     np1 = int.Parse(vetTemp[2]); 
