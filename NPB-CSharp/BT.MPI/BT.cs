@@ -50,7 +50,7 @@ namespace NPB {
                 try {
                     Console.Write("Trying Read from input file inputbt.data: ");
                     int[] conf = { 1,1,3,2,2};
-                    vetTemp = MPIIO.readFileData("inputbt.data",conf);
+                    vetTemp = IO.readFileData("inputbt.data",conf);
                     niter          = int.Parse(vetTemp[0]); 
                     dt             = double.Parse(vetTemp[1]);
                     grid_points[1] = int.Parse(vetTemp[2]); 
@@ -180,7 +180,7 @@ namespace NPB {
                     Console.WriteLine(" BTIO -- statistics:"+" "+"   I/O timing in seconds   : "+t+"   I/O timing percentage   : "+
                         tpc+"   Total data written [MB] : "+mbytes+"   I/O data rate  [MB/sec] : "+mbytes*tiominv);
                 }
-                MPIIO.print_results("BT", clss, grid_points[1], grid_points[2], grid_points[3], niter, maxcells*maxcells, total_nodes, tmax, mflops, 
+                IO.print_results("BT", clss, grid_points[1], grid_points[2], grid_points[3], niter, maxcells*maxcells, total_nodes, tmax, mflops, 
                     "          floating point", verified, npbversion);
             }
             GoToEnd: {
