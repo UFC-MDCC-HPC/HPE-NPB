@@ -157,40 +157,6 @@ namespace NPB {
             frct = new double[isiz3+1, isiz2+4, isiz1+4, 5+1];//    frct[5, -1:isiz1+2, -1:isiz2+2, isiz3];
             flux = new double[isiz3+1, isiz2+2, isiz1+2, 5+1];//    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
         }
-
-        public static string[] readInputLuData(string path) {
-            String s, temp = "";
-            string[] vet = new string[13];
-            int[] conf = {0,0,2,0,0,1,0,0,1,0,0,1,0,0,5,0,0,3}; // conf numbers: first line have 1 elements, second line 1 elements, third line 3 elements... 
-            int count = 0;
-            System.IO.StreamReader file = new System.IO.StreamReader(path);
-            for (int k = 0; k < conf.Length; k++) {
-                s = file.ReadLine(); s = s.Trim(' ');
-                for (int j = 0; j < conf[k]; j++) {
-                    for (int i = 0; i <= s.Length; i++) {
-                        if (s.Length==0) {
-                            break;
-                        } else { if (s[0] == ' ') break; }
-                        temp = temp + s[0];
-                        s = s.Substring(1);
-                        i--;
-                    }
-                    vet[count++] = temp; temp = "";
-                    s = s.Trim(' ');
-                }
-            }
-            for (int i = 0; i < vet.Length; i++) {
-                string tTemp = "";
-                for (int j = 0; j < vet[i].Length; j++) {
-                    if (vet[i][j] == '.') {
-                        tTemp = tTemp + ',';
-                    }
-                    else tTemp = tTemp + vet[i][j];
-                }
-                vet[i] = tTemp;
-            }
-            return vet;
-        }
         public static int nodedim(double n) { return (int)(Math.Log(n) / Math.Log(2.0d) + 0.00001); }
         public static int ilog2(int i) {
             int log2;
@@ -209,6 +175,5 @@ namespace NPB {
             while (i-->0) pow2 *= 2;
             return (pow2);
         }
-
     }
 }
