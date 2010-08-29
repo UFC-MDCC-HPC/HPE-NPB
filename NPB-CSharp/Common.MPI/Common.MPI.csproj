@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Timer.MPI.cs" />
-    <Compile Include="MPIIO.cs" />
+    <Compile Include="IO.cs" />
     <Compile Include="Base.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
