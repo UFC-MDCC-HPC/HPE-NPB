@@ -100,7 +100,7 @@ namespace NPB {
             if (id==0) {
                 verify(rsdnm, errnm, frc, clss, ref verified);
                 mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
-                MPIResults.print_results("LU",clss,nx0,ny0,nz0,itmax,nnodes_compiled,num,maxtime,mflops,"          floating point",verified,npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
+                MPIIO.print_results("LU",clss,nx0,ny0,nz0,itmax,nnodes_compiled,num,maxtime,mflops,"          floating point",verified,npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
             }
             mpi.Dispose();//call mpi_finalize[ierr];
         }
