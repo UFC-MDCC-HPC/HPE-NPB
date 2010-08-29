@@ -480,7 +480,6 @@ namespace NPB {
             timer.stop(T_synch);
         }
 
-
         public void compute_indexmap(double[] twiddle, int d1, int d2, int d3) {
             int i, j, k, ii, ii2, jj, ij2, kk;
             double ap; 
