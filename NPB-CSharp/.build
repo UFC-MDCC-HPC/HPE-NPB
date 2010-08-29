@@ -6,13 +6,18 @@
 	<property name="LIB" value="lib" />
 	<property name="mpi" value="/usr/local/lib/MPI.dll" />
 	<target name="LIB" description="Libraries">
-		<csc target="library" output="${all}/Common.MPI.dll" debug="true">
+		<csc target="library" output="${all}/Timer.MPI.dll" debug="true">
 			<sources>    
 				<include name="Common.MPI/Timer.MPI.cs" />  
 			</sources>
 			<references> 
 				<include name="${mpi}" />         
 			</references>
+		</csc>
+		<csc target="library" output="${all}/MPIResults.dll" debug="true">
+			<sources>    
+				<include name="Common.MPI/MPIResults.cs" />  
+			</sources>
 		</csc>
 		<csc target="library" output="${all}/Timer.dll" debug="true">
 			<sources>    
@@ -40,7 +45,7 @@
 			</sources>
 			<references> 
 				<include name="${mpi}" />         
-				<include name='${all}/Common.MPI.dll' />         
+				<include name='${all}/Timer.MPI.dll' />         
 			</references>
 		</csc>
 		<csc target="library" output="${all}/FTBase.MPI.dll" debug="true">
@@ -49,7 +54,7 @@
 			</sources>
 			<references> 
 				<include name="${mpi}" />         
-				<include name='${all}/Common.MPI.dll' />         
+				<include name='${all}/Timer.MPI.dll' />         
 			</references>
 		</csc>
 		<csc target="library" output="${all}/LUBase.MPI.dll" debug="true">
@@ -58,7 +63,7 @@
 			</sources>
 			<references> 
 				<include name="${mpi}" />         
-				<include name='${all}/Common.MPI.dll' />         
+				<include name='${all}/Timer.MPI.dll' />         
 			</references>
 		</csc>
 		<csc target="library" output="${all}/BTBase.dll" debug="true">
@@ -95,6 +100,7 @@
 				<include name="BT.MPI/BT.cs" />
 				<include name="BT.MPI/BTBase/BTBase.cs" />  
 				<include name="Common.MPI/Timer.MPI.cs" />  
+				<include name="Common.MPI/MPIResults.cs" />  
 				<include name="BMInOut/BMArgs.cs" />  
 			</sources>
 			<references> 
@@ -108,6 +114,7 @@
 				<include name="LU.MPI/LU.cs" />
 				<include name="LU.MPI/LUBase/LUBase.cs" />  
 				<include name="Common.MPI/Timer.MPI.cs" />  
+				<include name="Common.MPI/MPIResults.cs" />  
 				<include name="BMInOut/BMArgs.cs" />  
 			</sources>
 			<references> 
@@ -155,6 +162,7 @@
 				<include name="FT.MPI/FT.cs" />
 				<include name="FT.MPI/FTBase/FTBase.cs" />  
 				<include name="Common.MPI/Timer.MPI.cs" />  
+				<include name="Common.MPI/MPIResults.cs" />  
 				<include name="BMInOut/BMArgs.cs" />  
 				<include name="FT.MPI/FTControls/Point.cs" />  
 			</sources>
