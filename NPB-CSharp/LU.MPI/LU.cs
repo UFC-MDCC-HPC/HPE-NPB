@@ -22,8 +22,8 @@ namespace NPB {
             }
             char paramClass;
             if (!LUBase.debug) {
-                BMArgs.ParseCmdLineArgs(argv, BMName);
-                paramClass = BMArgs.CLASS;
+                IO.parseCmdLineArgs(argv);
+                paramClass = IO.CLASS;
             }
             else {
                 paramClass = 'K';  //DEBUG: CHANGE TO [K=(S and 4 PROCESSORS)] OR [S=(S and 1 PROCESSOR)]
