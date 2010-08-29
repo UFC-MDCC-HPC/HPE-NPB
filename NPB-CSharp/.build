@@ -39,6 +39,39 @@
 				<include name="BMInOut/BMArgs.cs" />  
 			</sources>
 		</csc>
+		<csc target="library" output="${all}/BTBase.dll" debug="true">
+			<sources>    
+				<include name="BT/BTThreads/BTBase.cs" />  
+			</sources>
+			<references> 
+				<include name='${all}/Timer.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/FTBase.dll" debug="true">
+			<sources>    
+				<include name="FT/FTThreads/FTBase.cs" />  
+			</sources>
+			<references> 
+				<include name='${all}/Timer.dll' />         
+				<include name='${all}/Random.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/LUBase.dll" debug="true">
+			<sources>    
+				<include name="LU/LUThreads/LUBase.cs" />  
+			</sources>
+			<references> 
+				<include name='${all}/Timer.dll' />         
+			</references>
+		</csc>
+		<csc target="library" output="${all}/SPBase.dll" debug="true">
+			<sources>    
+				<include name="SP/SPThreads/SPBase.cs" />  
+			</sources>
+			<references> 
+				<include name='${all}/Timer.dll' />         
+			</references>
+		</csc>
 		<csc target="library" output="${all}/BTBase.MPI.dll" debug="true">
 			<sources>    
 				<include name="BT.MPI/BTBase/BTBase.cs" />  
@@ -66,29 +99,13 @@
 				<include name='${all}/Timer.MPI.dll' />         
 			</references>
 		</csc>
-		<csc target="library" output="${all}/BTBase.dll" debug="true">
+		<csc target="library" output="${all}/SPBase.MPI.dll" debug="true">
 			<sources>    
-				<include name="BT/BTThreads/BTBase.cs" />  
+				<include name="SP.MPI/SPBase/SPBase.cs" />  
 			</sources>
 			<references> 
-				<include name='${all}/Timer.dll' />         
-			</references>
-		</csc>
-		<csc target="library" output="${all}/FTBase.dll" debug="true">
-			<sources>    
-				<include name="FT/FTThreads/FTBase.cs" />  
-			</sources>
-			<references> 
-				<include name='${all}/Timer.dll' />         
-				<include name='${all}/Random.dll' />         
-			</references>
-		</csc>
-		<csc target="library" output="${all}/LUBase.dll" debug="true">
-			<sources>    
-				<include name="LU/LUThreads/LUBase.cs" />  
-			</sources>
-			<references> 
-				<include name='${all}/Timer.dll' />         
+				<include name="${mpi}" />         
+				<include name='${all}/Timer.MPI.dll' />         
 			</references>
 		</csc>
 	</target>
@@ -107,6 +124,21 @@
 				<include name="${mpi}" />         
 			</references>
 		</csc>
+		<csc target="exe" output="${all}/FT.MPI.exe" debug="true">
+			<arg value="-unsafe"/>
+			<arg value="-optimize"/>
+			<sources>
+				<include name="FT.MPI/FT.cs" />
+				<include name="FT.MPI/FTBase/FTBase.cs" />  
+				<include name="Common.MPI/Timer.MPI.cs" />  
+				<include name="Common.MPI/MPIResults.cs" />  
+				<include name="BMInOut/BMArgs.cs" />  
+				<include name="FT.MPI/FTControls/Point.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+			</references>
+		</csc>
 		<csc target="exe" output="${all}/LU.MPI.exe" debug="true">
 			<arg value="-unsafe"/>
 			<arg value="-optimize"/>
@@ -115,6 +147,21 @@
 				<include name="LU.MPI/LUBase/LUBase.cs" />  
 				<include name="Common.MPI/Timer.MPI.cs" />  
 				<include name="Common.MPI/MPIResults.cs" />  
+				<include name="BMInOut/BMArgs.cs" />  
+			</sources>
+			<references> 
+				<include name="${mpi}" />         
+			</references>
+		</csc>
+		<csc target="exe" output="${all}/SP.MPI.exe" debug="true">
+			<arg value="-unsafe"/>
+			<arg value="-optimize"/>
+			<sources>
+				<include name="SP.MPI/SP.cs" />
+				<include name="SP.MPI/SPBase/SPBase.cs" />  
+				<include name="Common.MPI/Timer.MPI.cs" />  
+				<include name="Common.MPI/MPIResults.cs" />  
+				<include name="BMInOut/BMResults.cs" />  
 				<include name="BMInOut/BMArgs.cs" />  
 			</sources>
 			<references> 
@@ -155,20 +202,16 @@
 				<include name="BMInOut/BMResults.cs" />  
 			</sources>
 		</csc>
-		<csc target="exe" output="${all}/FT.MPI.exe" debug="true">
+		<csc target="exe" output="${all}/SP.exe" debug="true">
 			<arg value="-unsafe"/>
 			<arg value="-optimize"/>
 			<sources>
-				<include name="FT.MPI/FT.cs" />
-				<include name="FT.MPI/FTBase/FTBase.cs" />  
-				<include name="Common.MPI/Timer.MPI.cs" />  
-				<include name="Common.MPI/MPIResults.cs" />  
+				<include name="SP/SP.cs" />
+				<include name="SP/SPThreads/SPBase.cs" />  
+				<include name="Timer/Timer.cs" />  
 				<include name="BMInOut/BMArgs.cs" />  
-				<include name="FT.MPI/FTControls/Point.cs" />  
+				<include name="BMInOut/BMResults.cs" />  
 			</sources>
-			<references> 
-				<include name="${mpi}" />         
-			</references>
 		</csc>
 	</target>
 </project>
