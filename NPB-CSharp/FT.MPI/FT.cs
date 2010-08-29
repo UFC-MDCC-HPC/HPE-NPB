@@ -74,8 +74,6 @@
 using System;
 using System.IO;
 using NPB.Ftc;
-using NPB3_0_JAV;
-using NPB3_0_JAV.BMInOut;
 
 namespace NPB {
     public class FT:FTBase {
