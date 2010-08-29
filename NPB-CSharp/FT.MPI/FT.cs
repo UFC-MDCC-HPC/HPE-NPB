@@ -182,7 +182,7 @@ namespace NPB {
                 mflops = 0.0;
             }
             if (me == 0) {
-                MPIResults.print_results("FT", clss, nx, ny, nz, niter, np_min, np,total_time, mflops, "floating point", verified, npbversion);
+                MPIIO.print_results("FT", clss, nx, ny, nz, niter, np_min, np,total_time, mflops, "floating point", verified, npbversion);
             }
             if (timers_enabled) print_timers();
             mpi.Dispose();
