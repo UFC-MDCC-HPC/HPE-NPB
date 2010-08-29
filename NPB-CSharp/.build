@@ -128,7 +128,6 @@
 				<include name="BT.MPI/BTBase/BTBase.cs" />  
 				<include name="Common.MPI/Timer.MPI.cs" />  
 				<include name="Common.MPI/IO.cs" />  
-				<include name="BMInOut/BMArgs.cs" />  
 			</sources>
 			<references> 
 				<include name="${mpi}" />         
@@ -143,7 +142,6 @@
 				<include name="FT.MPI/FTBase/FTBase.cs" />  
 				<include name="Common.MPI/Timer.MPI.cs" />  
 				<include name="Common.MPI/IO.cs" />  
-				<include name="BMInOut/BMArgs.cs" />  
 				<include name="FT.MPI/FTControls/Point.cs" />  
 			</sources>
 			<references> 
@@ -159,7 +157,6 @@
 				<include name="LU.MPI/LUBase/LUBase.cs" />  
 				<include name="Common.MPI/Timer.MPI.cs" />  
 				<include name="Common.MPI/IO.cs" />  
-				<include name="BMInOut/BMArgs.cs" />  
 			</sources>
 			<references> 
 				<include name="${mpi}" />         
