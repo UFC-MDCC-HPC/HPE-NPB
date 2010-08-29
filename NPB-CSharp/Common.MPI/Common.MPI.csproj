@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Timer.MPI.cs" />
     <Compile Include="MPIIO.cs" />
+    <Compile Include="Base.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
