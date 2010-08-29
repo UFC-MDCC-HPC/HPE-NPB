@@ -474,10 +474,6 @@ namespace NPB {
             if (fftblock != fftblock_default) fftblockpad = fftblock + 3;
         }
 
-        public static double mod(double a, double b) {
-            return (a % b);
-        }
-
         public void synchup(){
             timer.start(T_synch);
             worldcomm.Barrier();
@@ -810,10 +806,6 @@ namespace NPB {
             //     c     a continuous sequence.
             //     c---------------------------------------------------------------------
             goto150:  x = xv[n1-1];
-        }
-
-        public double min(int n1, int n2) {
-            return n1<n2?n1:n2;
         }
 
         public void fft_init(int n) {
