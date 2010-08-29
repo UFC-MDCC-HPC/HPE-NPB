@@ -253,38 +253,5 @@ namespace NPB {
             lhsa = new double[MAX_CELL_DIM+2, 5+le, 5+le]; //[5, 5, -1:MAX_CELL_DIM]; 
             lhsb = new double[MAX_CELL_DIM+2, 5+le, 5+le]; //[5, 5, -1:MAX_CELL_DIM];            
         }
-
-        public static string[] readInputBtData(string path) {
-            String s, temp = "";
-            string[] vet = new string[9];
-            int[] conf = {1,1,3,2,2}; // conf numbers: first line have 1 elements, second line 1 elements, third line 3 elements... 
-            int count = 0;
-            System.IO.StreamReader file = new System.IO.StreamReader(path);
-            for (int k = 0; k < conf.Length; k++) {
-                s = file.ReadLine(); s = s.Trim(' ');
-                for (int j = 0; j < conf[k]; j++) {
-                    for (int i = 0; i <= s.Length; i++) {
-                        if (s[0] == ' ') {
-                            break;
-                        }
-                        temp = temp + s[0];
-                        s = s.Substring(1);
-                    }
-                    vet[count++] = temp; temp = "";
-                    s = s.Trim(' ');
-                }
-            }
-            for (int i = 0; i < vet.Length; i++) {
-                string tTemp = "";
-                for (int j = 0; j < vet[i].Length; j++) {
-                    if (vet[i][j] == '.') {
-                        tTemp = tTemp + ',';
-                    }
-                    else tTemp = tTemp + vet[i][j];
-                }
-                vet[i] = tTemp;
-            }
-            return vet;
-        }
     }
 }
