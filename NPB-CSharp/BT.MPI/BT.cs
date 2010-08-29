@@ -180,7 +180,7 @@ namespace NPB {
                     Console.WriteLine(" BTIO -- statistics:"+" "+"   I/O timing in seconds   : "+t+"   I/O timing percentage   : "+
                         tpc+"   Total data written [MB] : "+mbytes+"   I/O data rate  [MB/sec] : "+mbytes*tiominv);
                 }
-                IO.print_results("BT", clss, grid_points[1], grid_points[2], grid_points[3], niter, maxcells*maxcells, total_nodes, tmax, mflops, 
+                IO.print_results(BMName, clss, grid_points[1], grid_points[2], grid_points[3], niter, maxcells * maxcells, total_nodes, tmax, mflops, 
                     "          floating point", verified, npbversion);
             }
             GoToEnd: {
