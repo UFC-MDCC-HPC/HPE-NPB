@@ -2,7 +2,7 @@ using System;
 using NPB;
 
 namespace NPB {
-    public class FTBase {
+    public class FTBase:Base {
 
       //******************************************** Attributes *******************************************************/
         public const int sizeArrayAdd = 1;
