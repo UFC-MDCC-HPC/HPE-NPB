@@ -1,6 +1,5 @@
 using System;
 using NPB;
-using NPB3_0_JAV;
 
 namespace NPB {
     public class LUBase {
