@@ -49,7 +49,8 @@ namespace NPB {
                 Console.WriteLine(" NAS Parallel Benchmarks "+npbversion+" -- BT Benchmark ");
                 try {
                     Console.Write("Trying Read from input file inputbt.data: ");
-                    vetTemp = BTBase.readInputBtData("inputbt.data");
+                    int[] conf = { 1,1,3,2,2};
+                    vetTemp = MPIIO.readFileData("inputbt.data",conf);
                     niter          = int.Parse(vetTemp[0]); 
                     dt             = double.Parse(vetTemp[1]);
                     grid_points[1] = int.Parse(vetTemp[2]); 
