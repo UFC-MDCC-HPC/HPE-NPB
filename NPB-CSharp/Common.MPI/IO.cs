@@ -94,10 +94,11 @@ namespace NPB {
             return vet;
         }
         public static void parseCmdLineArgs(string[] argv) {
-            string arg = "";
+            string arg = "", s = "";
             for (int i = 0; i < argv.Length; i++) { arg = arg + argv[i]; }
+            for (int i = 0; i < arg.Length - 1; i++) { s = s + arg[i]; }
             int size = arg.Length;
-            if (size == 7) {
+            if (size == 7 && (s == "class=" || s == "CLASS=")) {
                 CLASS = Char.ToUpper(arg[6]);
                 if (CLASS != 'A' && CLASS != 'B' && CLASS != 'C' && CLASS != 'S' && CLASS != 'W') {
                     Console.WriteLine("classes allowed are A,B,C,W and S.");
