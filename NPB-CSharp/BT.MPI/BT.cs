@@ -217,7 +217,7 @@ namespace NPB {
                         tpc+"   Total data written [MB] : "+mbytes+"   I/O data rate  [MB/sec] : "+mbytes*tiominv);
                 }
                 IO.print_results(BMName, clss, grid_points[1], grid_points[2], grid_points[3], niter, maxcells * maxcells, total_nodes, tmax, mflops, 
-                    "          floating point", verified, npbversion);
+                    "floating point", verified, npbversion);
             }
             GoToEnd: {
                 worldcomm.Barrier(); 
