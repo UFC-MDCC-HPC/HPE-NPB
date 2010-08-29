@@ -130,7 +130,8 @@ namespace NPB {
                 string[] vetTemp = new string[13];
                 try {
                     Console.Write("Trying Reading from input file inputlu.data: ");
-                    vetTemp = LUBase.readInputLuData("inputlu.data");//open [unit=3,file='inputlu.data',status='old', access='sequential',form='formatted', iostat=fstatus];
+                    int[] conf = {0,0,2,0,0,1,0,0,1,0,0,1,0,0,5,0,0,3};
+                    vetTemp = MPIIO.readFileData("inputlu.data",conf);//open [unit=3,file='inputlu.data',status='old', access='sequential',form='formatted', iostat=fstatus];
                 }
                 catch (System.IO.FileNotFoundException) {
                     Console.WriteLine("inputlu.data not found");
