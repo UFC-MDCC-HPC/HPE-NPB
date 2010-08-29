@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NPB.Ftc {
+namespace NPB {
     class Point {
 
         public static unsafe void setAddress(double[,,,] s, int i, double[, , ,] d,  int j) {
