@@ -43,7 +43,6 @@
 using System;
 //using System.Threading;
 using NPB;
-using NPB3_0_JAV;
 using MPI;
 
 namespace NPB3_0_JAV.SPThreads {
