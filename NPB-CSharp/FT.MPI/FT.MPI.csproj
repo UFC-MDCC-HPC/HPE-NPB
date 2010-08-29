@@ -56,10 +56,6 @@
     <Compile Include="FTBase\FTBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BMInOut\BMInOut.csproj">
-      <Project>{1A1FAA2A-D1A2-4DFE-955A-3D88FD063315}</Project>
-      <Name>BMInOut</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common.MPI\Common.MPI.csproj">
       <Project>{EE117C49-BD6C-4535-964C-04CD5009B4AB}</Project>
       <Name>Common.MPI</Name>
