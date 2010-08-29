@@ -73,7 +73,6 @@
  */
 using System;
 using System.IO;
-using NPB.Ftc;
 
 namespace NPB {
     public class FT:FTBase {
