@@ -100,7 +100,7 @@ namespace NPB {
             if (id==0) {
                 verify(rsdnm, errnm, frc, clss, ref verified);
                 mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
-                MPIIO.print_results("LU",clss,nx0,ny0,nz0,itmax,nnodes_compiled,num,maxtime,mflops,"          floating point",verified,npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
+                IO.print_results("LU",clss,nx0,ny0,nz0,itmax,nnodes_compiled,num,maxtime,mflops,"          floating point",verified,npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
             }
             mpi.Dispose();//call mpi_finalize[ierr];
         }
@@ -123,7 +123,7 @@ namespace NPB {
                 try {
                     Console.Write("Trying Reading from input file inputlu.data: ");
                     int[] conf = {0,0,2,0,0,1,0,0,1,0,0,1,0,0,5,0,0,3};
-                    vetTemp = MPIIO.readFileData("inputlu.data",conf);//open [unit=3,file='inputlu.data',status='old', access='sequential',form='formatted', iostat=fstatus];
+                    vetTemp = IO.readFileData("inputlu.data",conf);//open [unit=3,file='inputlu.data',status='old', access='sequential',form='formatted', iostat=fstatus];
                 }
                 catch (System.IO.FileNotFoundException) {
                     Console.WriteLine("inputlu.data not found");
