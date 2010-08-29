@@ -92,5 +92,21 @@ namespace NPB {
             }
             return vet;
         }
+        public static void parseCmdLineArgs(string[] argv) {
+            string arg = "";
+            for (int i = 0; i < argv.Length; i++) { arg = arg + argv[i]; }
+            int size = arg.Length;
+            if (size == 7) {
+                CLASS = Char.ToUpper(arg[6]);
+                if (CLASS != 'A' && CLASS != 'B' && CLASS != 'C' && CLASS != 'S' && CLASS != 'W') {
+                    Console.WriteLine("classes allowed are A,B,C,W and S.");
+                    Environment.Exit(0);
+                }
+            }
+            else {
+                Console.WriteLine("Argument allowed are CLASS=S or CLASS=W or CLASS=A or CLASS=B or CLASS=C");
+                Environment.Exit(0);
+            }
+        }
     }
 }
