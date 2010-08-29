@@ -202,8 +202,12 @@ namespace NPB {
                 Console.WriteLine(" NAS Parallel Benchmarks "+ npbversion +" -- FT Benchmark ");
                 try {
                     Console.Write("Trying Read from input file inputft.data: ");
-                    int[] vetTemp = FTBase.readInputFtData("inputft.data");
-                    niter = vetTemp[0]; layout_type = vetTemp[1]; np1 = vetTemp[2]; np2 = vetTemp[3];
+                    int[] conf = {1,1,2};
+                    string[] vetTemp = MPIIO.readFileData("inputft.data",conf);
+                    niter = int.Parse(vetTemp[0]); 
+                    layout_type = int.Parse(vetTemp[1]); 
+                    np1 = int.Parse(vetTemp[2]); 
+                    np2 = int.Parse(vetTemp[3]);
                 }
                 catch /*(System.IO.FileNotFoundException e)*/ {
                     Console.WriteLine("inputft.data not found");
