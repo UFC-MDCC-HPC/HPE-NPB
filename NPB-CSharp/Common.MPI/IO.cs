@@ -4,6 +4,7 @@ using System.Text;
 namespace NPB {
     [Serializable()]
     public class IO{
+        public static char CLASS = 'U';
         public static void print_results(string name, 
                                          char Class, 
                                          int n1, 
