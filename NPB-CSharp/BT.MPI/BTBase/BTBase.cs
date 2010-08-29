@@ -2,7 +2,7 @@ using System;
 using NPB;
 
 namespace NPB {
-    public class BTBase {
+    public class BTBase:Base {
       //******************************************** Attributes *******************************************************/
             public const int le = 1;
         //npbparams.h
