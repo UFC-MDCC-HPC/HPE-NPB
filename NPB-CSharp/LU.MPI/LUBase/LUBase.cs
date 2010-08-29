@@ -2,7 +2,7 @@ using System;
 using NPB;
 
 namespace NPB {
-    public class LUBase {
+    public class LUBase:Base {
       //******************************************** Attributes *******************************************************/
         //npbparams.h
             protected static int nnodes_compiled, isiz01, isiz02, isiz03, isiz1, isiz2, isiz3, itmax_default, inorm_default;
