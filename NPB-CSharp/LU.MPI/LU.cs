@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-using NPB3_0_JAV;
-using NPB3_0_JAV.BMInOut;
 
 namespace NPB {
     public class LU:LUBase {
