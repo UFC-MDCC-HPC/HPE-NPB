@@ -104,14 +104,23 @@ namespace NPB {
         }
 
         public void startBigArrays() {
-            //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)
-            u1 = new double[dims[3, 1], dims[2, 1], dims[1, 1], 2];
-            u0 = new double[dims[2, 1], dims[3, 1], dims[1, 1], 2];
-            u2 = new double[dims[2, 1], dims[3, 1], dims[1, 1], 2];
-            u = new double[nx, 2];
-            sums = new double[niter_default+2, 2];
-            // twiddle(ntdivnp)
-            twiddle = new double[ntdivnp];
+            try {
+                //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)
+                u1 = new double[dims[3, 1], dims[2, 1], dims[1, 1], 2];
+                u0 = new double[dims[2, 1], dims[3, 1], dims[1, 1], 2];
+                u2 = new double[dims[2, 1], dims[3, 1], dims[1, 1], 2];
+                u = new double[nx, 2];
+                sums = new double[niter_default+2, 2];
+                // twiddle(ntdivnp)
+                twiddle = new double[ntdivnp];
+            } catch {
+                Console.WriteLine("");
+                Console.WriteLine(" OutOfMemoryException: Memory error! Use more processes to solve this problem.");
+                Console.WriteLine("");
+                worldcomm.Abort(0);
+                mpi.Dispose();
+                Environment.Exit(0);
+            }
         }
 
         public void runBenchMark() {
