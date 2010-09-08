@@ -115,7 +115,7 @@ namespace NPB {
                 twiddle = new double[ntdivnp];
             } catch {
                 Console.WriteLine("");
-                Console.WriteLine(" OutOfMemoryException: Memory error! Use more processes to solve this problem.");
+                Console.WriteLine(" OutOfMemoryException: Memory error!");
                 Console.WriteLine("");
                 worldcomm.Abort(0);
                 mpi.Dispose();
