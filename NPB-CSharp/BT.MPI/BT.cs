@@ -733,6 +733,7 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 //     zero the whole left hand side for starters
                 //---------------------------------------------------------------------
+                /*removed
                 for(k = 0; k<= cell_size[3,c]-1; k++){
                     for(j = 0; j<= cell_size[2,c]-1; j++){
                         for(i = 0; i<= cell_size[1,c]-1; i++){
@@ -744,6 +745,7 @@ namespace NPB {
                         }
                     }
                 }
+                */
             }
         }
 
@@ -4251,9 +4253,11 @@ namespace NPB {
             double xi, eta, zeta, add;
             double[] u_exact   = new double[6];
             double[] rms_work  = new double[6];
+            /*removed
             for(m = 1; m<= 5; m++){
                rms_work[m] = 0.0; //0.0d;
             }
+            */
             for(c = 1; c<= ncells; c++){
                kk = 0;
                for(k = cell_low[3,c]; k<= cell_high[3,c]; k++){
@@ -4289,10 +4293,11 @@ namespace NPB {
             int c, i, j, k, d, m;
             double[] rms_work = new double[6];
             double add;
-
+            /*removed
             for(m = 1; m<= 5; m++){
                 rms_work[m] = 0.0; //0.0d;
             }
+            */
             for(c = 1; c<= ncells; c++){
                for(k = start[3,c]; k<= cell_size[3,c]-end[3,c]-1; k++){
                   for(j = start[2,c]; j<= cell_size[2,c]-end[2,c]-1; j++){
