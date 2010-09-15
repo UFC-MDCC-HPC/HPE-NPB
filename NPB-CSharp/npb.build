@@ -1,0 +1,120 @@
+<?xml version='1.0'?>
+<project basedir='.' default='all' name='npb'>
+  <property name='src' value='.'/>
+  <property name='build' value='bin'/>
+  <property name='nant.settings.currentframework' value='mono-2.0'/>
+  <property name="mpi" value="/usr/local/lib/MPI.dll" />
+  <target depends='BT,FT,LU,SP,BT.MPI,FT.MPI,LU.MPI,SP.MPI' name='all'/>
+  <target depends='' name='BT'>
+    <csc debug='true' define='' optimize='true' output='${build}//BT.exe' target='exe' warninglevel='4'>
+      <sources>
+			<include name="${src}//BT/BT.cs" />
+			<include name="${src}//BT/BTThreads/BTBase.cs" />
+			<include name="${src}//Timer/Timer.cs" />
+			<include name="${src}//BMInOut/BMArgs.cs" />
+			<include name="${src}//BMInOut/BMResults.cs" />
+      </sources>
+    </csc>
+  </target>
+  <target depends='' name='FT'>
+    <csc debug='true' define='' optimize='true' output='${build}//FT.exe' target='exe' warninglevel='4'>
+      <sources>
+			<include name="${src}//FT/FTThreads/FTBase.cs" />
+			<include name="${src}//Timer/Timer.cs" />
+			<include name="${src}//BMInOut/BMArgs.cs" />
+			<include name="${src}//BMInOut/BMResults.cs" />
+			<include name="${src}//Random/Random.cs" />
+			<include name="${src}//FT/FT.cs" />			
+      </sources>
+    </csc>
+  </target>
+  <target depends='' name='LU'>
+    <csc debug='true' define='' optimize='true' output='${build}//LU.exe' target='exe' warninglevel='4'>
+      <sources>
+			<include name="${src}//LU/LU.cs" />
+			<include name="${src}//LU/LUThreads/LUBase.cs" />
+			<include name="${src}//Timer/Timer.cs" />
+			<include name="${src}//BMInOut/BMArgs.cs" />
+			<include name="${src}//BMInOut/BMResults.cs" />
+      </sources>
+    </csc>
+  </target>
+  <target depends='' name='SP'>
+    <csc debug='true' define='' optimize='true' output='${build}//SP.exe' target='exe' warninglevel='4'>
+      <sources>
+			<include name="${src}//SP/SP.cs" />
+			<include name="${src}//SP/SPThreads/SPBase.cs" />
+			<include name="${src}//Timer/Timer.cs" />
+			<include name="${src}//BMInOut/BMArgs.cs" />
+			<include name="${src}//BMInOut/BMResults.cs" />
+      </sources>
+    </csc>
+  </target>
+  <target depends='' name='BT.MPI'>
+    <csc debug='true' define='' optimize='true' output='${build}//BT.MPI.exe' target='exe' warninglevel='4'>
+		<arg value="-unsafe"/>
+		<arg value="-optimize"/>
+		<sources>
+			<include name="${src}//Common.MPI/Base.cs" />
+			<include name="${src}//BT.MPI/BT.cs" />
+			<include name="${src}//BT.MPI/BTBase/BTBase.cs" />
+			<include name="${src}//Common.MPI/Timer.MPI.cs" />
+			<include name="${src}//Common.MPI/IO.cs" />
+		</sources>
+		<references>
+			<include name="${mpi}" />
+		</references>
+    </csc>
+  </target>
+  <target depends='' name='FT.MPI'>
+    <csc debug='true' define='' optimize='true' output='${build}//FT.MPI.exe' target='exe' warninglevel='4'>
+		<arg value="-unsafe"/>
+		<arg value="-optimize"/>
+		<sources>
+			<include name="${src}//Common.MPI/Base.cs" />
+			<include name="${src}//FT.MPI/FT.cs" />
+			<include name="${src}//FT.MPI/FTBase/FTBase.cs" />
+			<include name="${src}//Common.MPI/Timer.MPI.cs" />
+			<include name="${src}//Common.MPI/IO.cs" />
+			<include name="${src}//FT.MPI/FTControls/Point.cs" />  
+		</sources>
+		<references>
+			<include name="${mpi}" />
+		</references>
+    </csc>
+  </target>
+  <target depends='' name='LU.MPI'>
+    <csc debug='true' define='' optimize='true' output='${build}//LU.MPI.exe' target='exe' warninglevel='4'>
+		<arg value="-unsafe"/>
+		<arg value="-optimize"/>
+		<sources>
+			<include name="${src}//Common.MPI/Base.cs" />
+			<include name="${src}//LU.MPI/LU.cs" />
+			<include name="${src}//LU.MPI/LUBase/LUBase.cs" />
+			<include name="${src}//Common.MPI/Timer.MPI.cs" />
+			<include name="${src}//Common.MPI/IO.cs" />
+		</sources>
+		<references>
+			<include name="${mpi}" />
+		</references>
+    </csc>
+  </target>
+  <target depends='' name='SP.MPI'>
+    <csc debug='true' define='' optimize='true' output='${build}//SP.MPI.exe' target='exe' warninglevel='4'>
+		<arg value="-unsafe"/>
+		<arg value="-optimize"/>
+		<sources>
+			<include name="${src}//Common.MPI/Base.cs" />
+			<include name="${src}//SP.MPI/SP.cs" />
+			<include name="${src}//SP.MPI/SPBase/SPBase.cs" />
+			<include name="${src}//Common.MPI/Timer.MPI.cs" />
+			<include name="${src}//Common.MPI/IO.cs" />
+			<include name="${src}//BMInOut/BMResults.cs" />
+			<include name="${src}//BMInOut/BMArgs.cs" />
+		</sources>
+		<references>
+			<include name="${mpi}" />
+		</references>
+    </csc>
+  </target>
+</project>
