@@ -1,5 +1,5 @@
 Here are the instructions for compile using command line nant.
-	Linux:
+  Linux:
 	1. Install MPICH2 or other MPI implementation. Run daemon.
 	2. Install Mono.
 	3. Download MPI.NET in http://osl.iu.edu/research/mpi.net/software/
@@ -9,10 +9,7 @@ Here are the instructions for compile using command line nant.
 	6. Go to command line where is the npb.build file. Type nant.
 	7. All binary benchmark file are in "bin" folder.
 
-	Run
-		mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
-
-	Windows:
+  Windows:
 	1. Install Microsoft HPC Pack 2008 SDK or better.
 	2. Install Mono.
 	3. Download MPI.NET in http://osl.iu.edu/research/mpi.net/software/
@@ -23,5 +20,9 @@ Here are the instructions for compile using command line nant.
 	6. Go to command line where is the npb.build file. Type nant.
 	7. All binary benchmark file are in "bin" folder.
 	
-	Run
-		mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
+Run
+  MPI
+	mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
+  Serial
+	mono <benchmark> CLASS=<S or W or A or B or C>
+	
