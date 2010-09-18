@@ -1,4 +1,4 @@
-﻿Here are the instructions for compile using command line nant.
+Here are the instructions for compile using command line nant.
 1. Install MPICH2 or other MPI implementation.
 2. Install Mono.
 3. Download MPI.NET in http://osl.iu.edu/research/mpi.net/software/
