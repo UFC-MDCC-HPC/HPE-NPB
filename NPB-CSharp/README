@@ -22,7 +22,7 @@ Here are the instructions for compile with command line nant.
 	
 Run
   MPI
-	mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
+	mpiexec -n <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
   Serial
 	mono <benchmark> CLASS=<S or W or A or B or C>
 	
