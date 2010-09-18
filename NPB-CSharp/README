@@ -6,7 +6,7 @@ Here are the instructions for compile using command line nant.
 4. Change the tag below in npb.build, indicate the MPI.dll:
    <property name="mpi" value="type your folder/MPI.dll" />
 6. Go to command line where is the npb.build file. Type nant.
-7. All binary file are in bin folder.
+7. All binary benchmark file are in bin folder.
 
 Run
 	mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
