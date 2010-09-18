@@ -1,27 +1,27 @@
 Here are the instructions for compile using command line nant.
-Linux:
-1. Install MPICH2 or other MPI implementation. Run daemon.
-2. Install Mono.
-3. Download MPI.NET in http://osl.iu.edu/research/mpi.net/software/
-4. Install MPI.NET.
-4. Change the tag below in npb.build, indicate the MPI.dll:
-   <property name="mpi" value="type your folder/MPI.dll" />
-6. Go to command line where is the npb.build file. Type nant.
-7. All binary benchmark file are in "bin" folder.
+	Linux:
+	1. Install MPICH2 or other MPI implementation. Run daemon.
+	2. Install Mono.
+	3. Download MPI.NET in http://osl.iu.edu/research/mpi.net/software/
+	4. Install MPI.NET.
+	4. Change the tag below in npb.build, indicate the MPI.dll:
+	   <property name="mpi" value="type your folder/MPI.dll" />
+	6. Go to command line where is the npb.build file. Type nant.
+	7. All binary benchmark file are in "bin" folder.
 
-Run
-	mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
+	Run
+		mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
 
-Windows:
-1. Install Microsoft HPC Pack 2008 SDK or better.
-2. Install Mono.
-3. Download MPI.NET in http://osl.iu.edu/research/mpi.net/software/
-4. Install MPI.NET.
-5. Find MPI.dll. Type "gacutil -i MPI.dll" to registry in GAC.
-4. Change the tag below in npb.build, indicate the MPI.dll:
-   <property name="mpi" value="type your folder/MPI.dll" />
-6. Go to command line where is the npb.build file. Type nant.
-7. All binary benchmark file are in "bin" folder.
-
-Run
-	mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
+	Windows:
+	1. Install Microsoft HPC Pack 2008 SDK or better.
+	2. Install Mono.
+	3. Download MPI.NET in http://osl.iu.edu/research/mpi.net/software/
+	4. Install MPI.NET.
+	5. Find MPI.dll. Type "gacutil -i MPI.dll" to registry in GAC.
+	4. Change the tag below in npb.build, indicate the MPI.dll:
+	   <property name="mpi" value="type your folder/MPI.dll" />
+	6. Go to command line where is the npb.build file. Type nant.
+	7. All binary benchmark file are in "bin" folder.
+	
+	Run
+		mpirun -np <number of process> mono <benchmark> CLASS=<S or W or A or B or C>
