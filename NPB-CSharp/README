@@ -1,4 +1,4 @@
-Here are the instructions for compile using command line nant.
+Here are the instructions for compile with command line nant.
   Linux:
 	1. Install MPICH2 or other MPI implementation. Run daemon.
 	2. Install Mono.
