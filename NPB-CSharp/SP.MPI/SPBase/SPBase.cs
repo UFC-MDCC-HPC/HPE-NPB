@@ -93,7 +93,7 @@ public class SPBase /* : Thread*/
     protected const int EAST = 2000, WEST = 3000, NORTH = 4000, SOUTH = 5000, BOTTOM = 6000, TOP = 7000;
 
     protected int[,] cell_coord, cell_low, cell_high, cell_size, slice, start, end;
-    protected int[] predecessor, grid_size, successor;
+    protected int[] predecessor, successor;
 
 
     protected static int west_size, east_size, bottom_size, top_size,
@@ -171,47 +171,42 @@ public class SPBase /* : Thread*/
         IMAXP = IMAX / 2 * 2 + 1;
         JMAXP = JMAX / 2 * 2 + 1;
         BUF_SIZE = MAX_CELL_DIM*MAX_CELL_DIM*(maxcells-1)*60*2+1;
-        u = new double[maxcells, 5, KMAX + 1 + 3, JMAXP + 1 + 3, IMAXP + 1 + 3];   /* x:-2 y:-2 z:-2 */
+        u = new double[maxcells, 5, KMAX + 1 + 3, JMAXP + 1 + 3, IMAXP + 1 + 3];   /* x:-2 y:-2 z:-2 */  // copy_faces (def), compute_rhs (use), tzetar (use), add (use), error_norm (use)
 
-        rhs = new double[maxcells, 5, KMAX + 2, JMAXP + 2, IMAXP + 2];                     /* x:0  y:0  z:0 */
-        forcing = new double[maxcells, 5, KMAX + 2, JMAXP + 2, IMAXP + 2];                 /* x:0  y:0  z:0 */
-        lhs = new double[maxcells, 15, KMAX + 2, JMAXP + 2, IMAXP + 2];                    /* x:0  y:0  z:0 */
+        rhs = new double[maxcells, 5, KMAX + 2, JMAXP + 2, IMAXP + 2];     /* x:0  y:0  z:0 */  // compute_rhs (def), txinvr (def), tzetar (def), x_solve (def), y_solve (def), z_solve (def), ninvr (def), pinvr (def)
+        forcing = new double[maxcells, 5, KMAX + 2, JMAXP + 2, IMAXP + 2]; /* x:0  y:0  z:0 */  // exact_rhs (def), compute_rhs (use)
+        lhs = new double[maxcells, 15, KMAX + 2, JMAXP + 2, IMAXP + 2];    /* x:0  y:0  z:0 */  // x_solve (def), y_solve (def), z_solve (def), lhsx (def), lhsy (def), lhsz (def)
 
-        us = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];               /* x:-1  y:-1  z:-1 */
-        vs = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];               /* x:-1  y:-1  z:-1 */
-        ws = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];               /* x:-1  y:-1  z:-1 */
-        qs = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];               /* x:-1  y:-1  z:-1 */
-        ainv = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];               /* x:-1  y:-1  z:-1 */
-        rho_i = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];            /* x:-1  y:-1  z:-1 */
-        speed = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];            /* x:-1  y:-1  z:-1 */
-        square = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];           /* x:-1  y:-1  z:-1 */
+        // definidos em compute_rhs e usados esporadicamente em txinvr e lhs?
+        us = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];       /* x:-1  y:-1  z:-1 */  // compute_rhs (def), txinvr (use), tzetar (use), lhsx (use)
+        vs = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];       /* x:-1  y:-1  z:-1 */  // compute_rhs (def), txinvr (use), tzetar (use), lhsy (use)
+        ws = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];       /* x:-1  y:-1  z:-1 */  // compute_rhs (def), txinvr (use), tzetar (use), lhsz (use)
+        qs = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];       /* x:-1  y:-1  z:-1 */  // compute_rhs (def), txinvr (use), tzetar (use)
+        ainv = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];     /* x:-1  y:-1  z:-1 */  // compute_rhs (def), txinvr (use), tzetar (use)
+        rho_i = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];    /* x:-1  y:-1  z:-1 */  // compute_rhs (def), txinvr (use), lhsx (use), lhsy (use), lhsz (use)
+        speed = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];    /* x:-1  y:-1  z:-1 */  // compute_rhs (def), txinvr (use), tzetar (use), lhsx (use), lhsy (use), lhsz (use)
+        square = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];   /* x:-1  y:-1  z:-1 */  // compute_rhs
 
-		ue = new double[MAX_CELL_DIM + 4, 5];   /* -2 */
-		buf = new double[MAX_CELL_DIM + 4, 5];  /* -2 */
+		ue = new double[MAX_CELL_DIM + 4, 5];   /* -2 */  // exact_rhs (local)
+        buf = new double[MAX_CELL_DIM + 4, 5];  /* -2 */  // exact_rhs (local)
 
-		cv = new double[MAX_CELL_DIM + 4];     /* -2 */
-		rhon = new double[MAX_CELL_DIM + 4];   /* -2 */
-		rhos = new double[MAX_CELL_DIM + 4];   /* -2 */
-		rhoq = new double[MAX_CELL_DIM + 4];   /* -2 */
-		cuf = new double[MAX_CELL_DIM + 4];    /* -2 */
-		q = new double[MAX_CELL_DIM + 4];      /* -2 */
+		cv = new double[MAX_CELL_DIM + 4];     /* -2 */   // lhsx, lhsy, lhsz (def/use)
+		rhon = new double[MAX_CELL_DIM + 4];   /* -2 */   // lhsx (local)
+		rhos = new double[MAX_CELL_DIM + 4];   /* -2 */   // lhsz (local)
+		rhoq = new double[MAX_CELL_DIM + 4];   /* -2 */   // lhsy (local)
+		cuf = new double[MAX_CELL_DIM + 4];    /* -2 */   // exact_rhs (local)
+		q = new double[MAX_CELL_DIM + 4];      /* -2 */   // exact_rhs (local)
 
-        cell_coord = new int[maxcells,3];
-        cell_high = new int[maxcells,3];
-        cell_low = new int[maxcells,3];
-        cell_size = new int[maxcells,3];
-        slice = new int[maxcells,3];
-        start = new int[maxcells,3];
-        end = new int[maxcells,3];
+        cell_coord = new int[maxcells,3]; // copy_faces (use), make_set (def), compute_buffer_size (use)
+        cell_high = new int[maxcells,3];  // make_set (def), error_norm (use), initialize (use)
+        cell_low = new int[maxcells, 3];  // make_set (def), error_norm (use), exact_rhs (use), initialize (use)
+        cell_size = new int[maxcells,3];  // copy_faces (use), runBenchmark (use), make_set (def), compute_rhs (use), txinvr (use), tzetar (use), compute_buffer_size (use), x_solve (use), y_solve (use), z_solve (use), getInputPars (use), add (use), rhs_norm (use), lhsx, lhsy, lhsz , exact_rhs, pinvr, ninvr, lhsinit, initialize
+        slice = new int[maxcells,3];    // initialize, make_set (def), x_solve, y_solve, z_solve
+        start = new int[maxcells,3];    // compute_rhs, txinvr, tzetar, x_solve, y_solve, z_solve, lhsx, lhsy, lhsz, exactrhs, ninvr, pinvr, rhs_norm, lhsinit (def)
+        end = new int[maxcells, 3];      // compute_rhs, txinvr, tzetar, x_solve, y_solve, z_solve, lhsx, lhsy, lhsz, exactrhs, ninvr, pinvr, rhs_norm, lhsinit (def)
 
-        in_buffer = new double[BUF_SIZE];
-
-
-        out_buffer = new double[BUF_SIZE];
-
-        predecessor = new int[3];
-        grid_size = new int[3];
-        successor = new int[3];
+        predecessor = new int[3]; // make_set (def), copy_faces (use), x_solve (use), y_solve (use), z_solve (use)
+        successor = new int[3];   // make_set (def), copy_faces (use), x_solve (use), y_solve (use), z_solve (use)
 
 	}
 
@@ -219,7 +214,7 @@ public class SPBase /* : Thread*/
 
     private void setup_mpi()
     {
-        int error, nc, color;
+        int nc, color;
 
         string[] args = System.Environment.GetCommandLineArgs();
         mpi = new MPI.Environment(ref args);
@@ -372,7 +367,6 @@ public class SPBase /* : Thread*/
 		//---------------------------------------------------------------------
         for (c = 0; c < ncells; c++)
         {
-
             for (k = 1; k <= IMAX + 2; k++)
             {
                 for (j = 1; j <= IMAX + 2; j++)

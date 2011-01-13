@@ -189,7 +189,6 @@ namespace NPB3_0_JAV
 
         }
 
-
         private void compute_buffer_size(int dim)
         {
             int c, face_size;
@@ -244,7 +243,6 @@ namespace NPB3_0_JAV
             start_recv_top = start_recv_bottom + bottom_size;
         }
 
-        // OK PARALLEL
         public double getMFLOPS(double total_time, int niter)
         {
             double mflops = 0.0d;
@@ -258,7 +256,6 @@ namespace NPB3_0_JAV
             return mflops;
         }
 
-        // OK PARALLEL.
         public void adi()
         {
             Console.WriteLine("1------------"); Console.Out.Flush();
@@ -275,7 +272,6 @@ namespace NPB3_0_JAV
             add();
         }
 
-        // OK PARALLEL
         public int getInputPars()
         {
             int niter = 0;
@@ -327,8 +323,6 @@ namespace NPB3_0_JAV
             return niter;
         }
 
-
-        // OK PARALLEL.
         public void add()
         {
             int c, i, j, k, m;
@@ -353,7 +347,6 @@ namespace NPB3_0_JAV
             }
         }
 
-        // OK PARALLEL
         public void error_norm(double[] rms)
         {
             int c, i, j, k, ii, jj, kk, m, d;
@@ -386,7 +379,6 @@ namespace NPB3_0_JAV
                             for (m = 0; m < 5; m++)
                             {
                                 add = u[c, m, kk, jj, ii] - u_exact[m];
-                    //            Console.WriteLine("add = " + add);
                                 rms_work[m] += add * add;
                             }
                             ii++;
@@ -409,7 +401,6 @@ namespace NPB3_0_JAV
             }
         }
 
-        // OK PARALLEL
         public void rhs_norm(double[] rms)
         {
             int c, i, j, k, d, m, ksize, jsize, isize;
@@ -457,7 +448,6 @@ namespace NPB3_0_JAV
             }
         }
 
-        // OK PARALLEL
         public void exact_rhs()
         {
             double[] dtemp = new double[5];
@@ -560,16 +550,6 @@ namespace NPB3_0_JAV
                                              xxcon4 * (cuf[ip1] - 2.0d * cuf[i] + cuf[im1]) +
                                              xxcon5 * (buf[ip1, 4] - 2.0d * buf[i, 4] + buf[im1, 4]) +
                                              dx5tx1 * (ue[ip1, 4] - 2.0d * ue[i, 4] + ue[im1, 4]);
-                            if (node == 0)
-                            {
-                                Console.WriteLine(i + "|" + j + "|" + k + "." +  tx2 + " " + dx1tx1 + " " + "forcing x:"
-                                      + b + " " +  forcing[c, 0, k, j, i] + " " + ue[ip1, 1] + " " + ue[im1, 1] + " " + ue[i, 0] + " " + ue[ip1, 0] + " " + ue[im1, 0]
-                                  //    + forcing[c, 1, k, j, i] + " " 
-                                  //    + forcing[c, 2, k, j, i] + " " 
-                                  //    + forcing[c, 3, k, j, i] + " "
-                                  //    + forcing[c, 4, k, j, i] + " "
-                                  );
-                            }
                         }
 
                         //---------------------------------------------------------------------
@@ -861,8 +841,6 @@ namespace NPB3_0_JAV
             } // cell loop
         }
 
-
-        // OK PARALLEL.
         public void ninvr(int c)
         {
             int i, j, k;
@@ -898,7 +876,6 @@ namespace NPB3_0_JAV
             }
         }
 
-        // OK PARALLEL.
         public void pinvr(int c)
         {
             int i, j, k;
@@ -934,13 +911,11 @@ namespace NPB3_0_JAV
             }
         }
 
-        // OK PARALLEL.
         public void copy_faces()
         {
-            int i, j, k, c, m, p0, p1, p2, p3, p4, p5, error, ksize, jsize, isize;
+            int i, j, k, c, m, p0, p1, p2, p3, p4, p5, ksize, jsize, isize;
             Request[] requests;
             int[] b_size /*, ss, sr*/;
-            int[,] statuses;
 
             double[][] out_buffer = new double[6][];
             double[][] in_buffer = new double[6][];
@@ -956,20 +931,6 @@ namespace NPB3_0_JAV
                 compute_rhs();
                 return;
             }
-
-         /* ss[0] = start_send_east;
-            ss[1] = start_send_west;
-            ss[2] = start_send_north;
-            ss[3] = start_send_south;
-            ss[4] = start_send_top;
-            ss[5] = start_send_bottom;
-
-            sr[0] = start_recv_east;
-            sr[1] = start_recv_west;
-            sr[2] = start_recv_north;
-            sr[3] = start_recv_south;
-            sr[4] = start_recv_top;
-            sr[5] = start_recv_bottom; */
 
             b_size[0] = east_size;
             b_size[1] = west_size;
@@ -1120,17 +1081,17 @@ namespace NPB3_0_JAV
                 RequestList requestList = new RequestList();
 
                 requests[0] = comm_rhs.ImmediateReceive<double>(successor[0], WEST, in_buffer[0]);
-                requests[1] = comm_rhs.ImmediateReceive<double>(predecessor[0], EAST, in_buffer[1]); ;
-                requests[2] = comm_rhs.ImmediateReceive<double>(successor[1], SOUTH, in_buffer[2]); ;
-                requests[3] = comm_rhs.ImmediateReceive<double>(predecessor[1], NORTH, in_buffer[3]); ;
-                requests[4] = comm_rhs.ImmediateReceive<double>(successor[2], BOTTOM, in_buffer[4]); ;
-                requests[5] = comm_rhs.ImmediateReceive<double>(predecessor[2], TOP, in_buffer[5]); ;
+                requests[1] = comm_rhs.ImmediateReceive<double>(predecessor[0], EAST, in_buffer[1]);
+                requests[2] = comm_rhs.ImmediateReceive<double>(successor[1], SOUTH, in_buffer[2]);
+                requests[3] = comm_rhs.ImmediateReceive<double>(predecessor[1], NORTH, in_buffer[3]);
+                requests[4] = comm_rhs.ImmediateReceive<double>(successor[2], BOTTOM, in_buffer[4]);
+                requests[5] = comm_rhs.ImmediateReceive<double>(predecessor[2], TOP, in_buffer[5]);
                 requests[6] = comm_rhs.ImmediateSend<double>(out_buffer[0], successor[0], EAST);
-                requests[7] = comm_rhs.ImmediateSend<double>(out_buffer[1], predecessor[0], WEST); ;
-                requests[8] = comm_rhs.ImmediateSend<double>(out_buffer[2], successor[1], NORTH); ;
-                requests[9] = comm_rhs.ImmediateSend<double>(out_buffer[3], predecessor[1], SOUTH); ;
-                requests[10] = comm_rhs.ImmediateSend<double>(out_buffer[4], successor[2], TOP); ;
-                requests[11] = comm_rhs.ImmediateSend<double>(out_buffer[5], predecessor[2], BOTTOM); ;
+                requests[7] = comm_rhs.ImmediateSend<double>(out_buffer[1], predecessor[0], WEST);
+                requests[8] = comm_rhs.ImmediateSend<double>(out_buffer[2], successor[1], NORTH);
+                requests[9] = comm_rhs.ImmediateSend<double>(out_buffer[3], predecessor[1], SOUTH);
+                requests[10] = comm_rhs.ImmediateSend<double>(out_buffer[4], successor[2], TOP);
+                requests[11] = comm_rhs.ImmediateSend<double>(out_buffer[5], predecessor[2], BOTTOM);
 
                 foreach (Request request in requests)
                 {
@@ -1139,49 +1100,6 @@ namespace NPB3_0_JAV
 
                 requestList.WaitAll();
 
-                /*
-
-                       mpi_irecv(in_buffer(sr(0)), b_size(0), 
-                     >                dp_type, successor(1), WEST,  
-                     >                comm_rhs, requests(0), error)
-                       mpi_irecv(in_buffer(sr(1)), b_size(1), 
-                     >                dp_type, predecessor(1), EAST,  
-                     >                comm_rhs, requests(1), error)
-                       mpi_irecv(in_buffer(sr(2)), b_size(2), 
-                     >                dp_type, successor(2), SOUTH, 
-                     >                comm_rhs, requests(2), error)
-                       mpi_irecv(in_buffer(sr(3)), b_size(3), 
-                     >                dp_type, predecessor(2), NORTH, 
-                     >                comm_rhs, requests(3), error)
-                       mpi_irecv(in_buffer(sr(4)), b_size(4), 
-                     >                dp_type, successor(3), BOTTOM,
-                     >                comm_rhs, requests(4), error)
-                       mpi_irecv(in_buffer(sr(5)), b_size(5), 
-                     >                dp_type, predecessor(3), TOP,   
-                     >                comm_rhs, requests(5), error)
-
-                       mpi_isend(out_buffer(ss(0)), b_size(0), 
-                     >                dp_type, successor(1),   EAST, 
-                     >                comm_rhs, requests(6), error)
-                       mpi_isend(out_buffer(ss(1)), b_size(1), 
-                     >                dp_type, predecessor(1), WEST, 
-                     >                comm_rhs, requests(7), error)
-                       mpi_isend(out_buffer(ss(2)), b_size(2), 
-                     >                dp_type,successor(2),   NORTH, 
-                     >                comm_rhs, requests(8), error)
-                       mpi_isend(out_buffer(ss(3)), b_size(3), 
-                     >                dp_type,predecessor(2), SOUTH, 
-                     >                comm_rhs, requests(9), error)
-                       mpi_isend(out_buffer(ss(4)), b_size(4), 
-                     >                dp_type,successor(3),   TOP, 
-                     >                comm_rhs,   requests(10), error)
-                       mpi_isend(out_buffer(ss(5)), b_size(5), 
-                     >                dp_type,predecessor(3), BOTTOM, 
-                     >                comm_rhs,requests(11), error)
-
-
-                       mpi_waitall(12, requests, statuses, error)
-                 */
             }
 
             //---------------------------------------------------------------------
@@ -1308,9 +1226,6 @@ namespace NPB3_0_JAV
             compute_rhs();
         }
 
-
-        // OK PARALLEL. REVISAR !!!!!
-
         //---------------------------------------------------------------------
         // This function allocates space for a set of cells and fills the set     
         // such that communication between cells on different nodes is only
@@ -1318,7 +1233,7 @@ namespace NPB3_0_JAV
         //---------------------------------------------------------------------
         public void make_set()
         {
-            int p, i, j, c, dir, size, excess, ierr, ierrcode = 0;
+            int p, i, j, c, dir, size, excess, ierrcode = 0;
 
             //---------------------------------------------------------------------
             //     compute square root; add small number to allow for roundoff
@@ -1352,9 +1267,8 @@ namespace NPB3_0_JAV
                 cell_coord[c, 2] = c ;
             }
 
-
             //---------------------------------------------------------------------
-            //      slice(dir,n) contains the sequence number of the cell that is in
+            //      slice(n,dir) contains the sequence number of the cell that is in
             //      coordinate plane n in the dir direction
             //---------------------------------------------------------------------
             for (dir = 0; dir < 3; dir++)
@@ -1375,12 +1289,7 @@ namespace NPB3_0_JAV
             i = cell_coord[0, 0] /* - 1 */;
             j = cell_coord[0, 1] /* - 1 */;
 
-
             predecessor[0] = mod(i - 1 + p, p) + p * j;
-            // if (predecessor[0] == 8)
-            {
-                Console.WriteLine(node + ": PREDECESSOR[0] : " + i + "," + j + "," + p + " ; " + predecessor[0]);
-            }
             predecessor[1] = i + p * mod(j - 1 + p, p);
             predecessor[2] = mod(i + 1, p) + p * mod(j - 1 + p, p);
 
@@ -1398,10 +1307,7 @@ namespace NPB3_0_JAV
                 //---------------------------------------------------------------------
                 size = grid_points[dir] / p;
                 excess = mod(grid_points[dir], p);
-                if (node == 0)
-                {
-                    Console.WriteLine("Excess = " + excess);
-                }
+
                 for (c = 0; c < ncells; c++)
                 {
                     if (cell_coord[c, dir] < excess)
@@ -1447,7 +1353,6 @@ namespace NPB3_0_JAV
                 ksize = cell_size[c, 2] + 2;
                 jsize = cell_size[c, 1] + 2;
                 isize = cell_size[c, 0] + 2;
-
 
                 //---------------------------------------------------------------------
                 //      compute the reciprocal of density, and the kinetic energy, 
@@ -1496,10 +1401,6 @@ namespace NPB3_0_JAV
                             for (i = 2; i < isize; i++)
                             {
                                 rhs[c, m, k, j, i] = forcing[c, m, k, j, i];
-//                                if (node == 0)
-//                                {
-//                                    Console.WriteLine(i + "|" + j + "|" + k + "rhs <- forcing:" +  rhs[c, m, k, j, i]);
-//                                }
                             }
                         }
                     }
@@ -1970,11 +1871,10 @@ namespace NPB3_0_JAV
             }
         }
 
-        // OK PARALLLEL
         public void txinvr()
         {
             int c, i, j, k, isize, jsize, ksize;
-            double t1, t2, t3, ac, ru1, uu, vv, ww,
+            double t1, t2, t3, ac, ru1, xvel, yvel, zvel,
                    r1, r2, r3, r4, r5, ac2inv;
 
 
@@ -1990,11 +1890,10 @@ namespace NPB3_0_JAV
                     {
                         for (i = start[c, 0]; i < isize - end[c, 0]; i++)
                         {
-
                             ru1 = rho_i[c, k, j, i];
-                            uu = us[c, k, j, i];
-                            vv = vs[c, k, j, i];
-                            ww = ws[c, k, j, i];
+                            xvel = us[c, k, j, i];
+                            yvel = vs[c, k, j, i];
+                            zvel = ws[c, k, j, i];
                             ac = speed[c, k, j, i];
                             ac2inv = ainv[c, k, j, i] * ainv[c, k, j, i];
 
@@ -2004,40 +1903,28 @@ namespace NPB3_0_JAV
                             r4 = rhs[c, 3, k, j, i];
                             r5 = rhs[c, 4, k, j, i];
 
-                            t1 = c2 * ac2inv * (qs[c, k, j, i] * r1 - uu * r2 -
-                                vv * r3 - ww * r4 + r5);
-                            t2 = bt * ru1 * (uu * r1 - r2);
+                            t1 = c2 * ac2inv * (qs[c, k, j, i] * r1 - xvel * r2 -
+                                yvel * r3 - zvel * r4 + r5);
+                            t2 = bt * ru1 * (xvel * r1 - r2);
                             t3 = (bt * ru1 * ac) * t1;
 
                             rhs[c, 0, k, j, i] = r1 - t1;
-                            rhs[c, 1, k, j, i] = -ru1 * (ww * r1 - r4);
-                            rhs[c, 2, k, j, i] = ru1 * (vv * r1 - r3);
+                            rhs[c, 1, k, j, i] = -ru1 * (zvel * r1 - r4);
+                            rhs[c, 2, k, j, i] = ru1 * (yvel * r1 - r3);
                             rhs[c, 3, k, j, i] = -t2 + t3;
                             rhs[c, 4, k, j, i] = t2 + t3;
-
-/*                             if (node == 0)
-                            {
-
-                                Console.WriteLine(ac2inv + ".rhs: " + rhs[c, 0, k, j, i] + " " +
-                                                          rhs[c, 1, k, j, i] + " " +
-                                                          rhs[c, 2, k, j, i] + " " +
-                                                          rhs[c, 3, k, j, i] + " " +
-                                                          rhs[c, 4, k, j, i]);
-                            }
-*/
                         }
                     }
                 }
             }
         }
 
-        // OK PARALLEL
         public void tzetar(int c)
         {
             int i, j, k;
             int ksize, jsize, isize;
             double t1, t2, t3, ac, xvel, yvel, zvel,
-                    r1, r2, r3, r4, r5, btuz, acinv, ac2u, uzik1;
+                   r1, r2, r3, r4, r5, btuz, acinv, ac2u, uzik1;
 
             ksize = cell_size[c, 2] + 2;
             jsize = cell_size[c, 1] + 2;
@@ -2324,14 +2211,13 @@ namespace NPB3_0_JAV
 
         public void x_solve()
         {
-            int c, i, j, k, /* jp, kp, */ n, iend, jsize, ksize, i1, i2, m, buffer_size, p, istart, stage, error;
-            double r1, r2, d, e, sm1, sm2, ru1, fac1, fac2;
+            int c, i, j, k, n, iend, jsize, ksize, i1, i2, m, buffer_size, p, istart, stage;
+            double r1, r2, d, e, sm1, sm2, fac1, fac2;
             double[] s = new double[5];
             Request[] requests = new Request[2] { null, null};
             RequestList requestList = new RequestList();
             double[] in_buffer_x;
             double[] out_buffer_x;
-
 
             //---------------------------------------------------------------------
             //---------------------------------------------------------------------
@@ -2340,8 +2226,6 @@ namespace NPB3_0_JAV
 
             for (stage = 0; stage < ncells; stage++)
             {
-                // Console.WriteLine("(1) X-SOLVE - Estágio " + stage + " / " + ncells);
-
                 c = slice[stage, 0];
 
                 istart = 2;
@@ -2354,12 +2238,10 @@ namespace NPB3_0_JAV
                               (ksize - start[c, 2] - end[c, 2]);
 
                 in_buffer_x = new double[22*buffer_size];
-                out_buffer_x = new double[22 * buffer_size];
-
-
+                out_buffer_x = new double[22*buffer_size];
+                
                 if (stage != 0)
                 {
-
                     //---------------------------------------------------------------------
                     //            if this is not the first processor in this row of cells, 
                     //            receive data from predecessor containing the right hand
@@ -2371,12 +2253,7 @@ namespace NPB3_0_JAV
 
                     requests[0] = comm_solve.ImmediateReceive<double>(predecessor[0], DEFAULT_TAG, in_buffer_x);
               
-
                     requestList.Add(requests[0]);
-
-                   
-
-                    // mpi_irecv(in_buffer, 22*buffer_size, dp_type, predecessor(1), DEFAULT_TAG,  comm_solve, requests(1), error)
 
                     //---------------------------------------------------------------------
                     //            communication has already been started. 
@@ -2390,21 +2267,7 @@ namespace NPB3_0_JAV
                     //            from the previous stage. They always come in pairs. 
                     //---------------------------------------------------------------------
 
-//                    Console.WriteLine(node + ": X-SOLVE - WAIT ALL - BEGIN " + stage);
                     requestList.WaitAll();
-//                    Console.WriteLine(node + ": X-SOLVE - WAIT ALL - END" + stage);
-
-/*                    if (node == 1)
-                    {
-                        Console.WriteLine("pred :" + predecessor[0] + " . ");
-                        foreach (double dd in in_buffer_x)
-                        {
-                            Console.WriteLine(dd);
-                        }
-                    } */
-
-
-                    // mpi_waitall(2, requests, statuses, error)
 
                     //---------------------------------------------------------------------
                     //            unpack the buffer                                 
@@ -2530,18 +2393,6 @@ namespace NPB3_0_JAV
                                            lhs[c, n + 1, k, j, i2] * lhs[c, n + 4, k, j, i];
                             lhs[c, n + 3, k, j, i2] = lhs[c, n + 3, k, j, i2] -
                                            lhs[c, n + 1, k, j, i2] * lhs[c, n + 5, k, j, i];
-                            if (node == 0)
-                            {
-                                Console.WriteLine(lhs[c, n + 2, k, j, i1] + " " + 
-                                                  lhs[c, n + 4, k, j, i] + " " +
-                                                  lhs[c, n + 5, k, j, i] + " " +
-                                                  lhs[c, n + 2, k, j, i] + " " +
-                                                  lhs[c, n + 3, k, j, i1] + " " +
-                                                  lhs[c, n + 4, k, j, i1] + " " +
-                                                  lhs[c, n + 1, k, j, i2] + " " +
-                                                  lhs[c, n + 2, k, j, i2] + " " +
-                                                  lhs[c, n + 3, k, j, i2]);
-                            }
                             for (m = 0; m <= 2; m++)
                             {
                                 rhs[c, m, k, j, i2] = rhs[c, m, k, j, i2] -
@@ -2712,30 +2563,9 @@ namespace NPB3_0_JAV
                     if (requests[1] != null)
                         requestList.Remove(requests[1]);
 
-//                    Console.WriteLine(node + ": X-SOLVE - ISEND - BEGIN " + stage);
-                    requests[1] = comm_solve.ImmediateSend<double>(out_buffer_x, successor[0], DEFAULT_TAG);
-//                    Console.WriteLine(node + ": X-SOLVE - ISEND - END " + stage);
-                    
-                   /* if (node == 1)
-                    {
-                        Console.WriteLine("successor :" + successor[0] + " . ");
-                        foreach (double dd in out_buffer_x)
-                        {
-                            Console.WriteLine(dd);
-                        }
-                    } */
-
+                    requests[1] = comm_solve.ImmediateSend<double>(out_buffer_x, successor[0], DEFAULT_TAG);                    
 
                     requestList.Add(requests[1]);
-
-                    //---------------------------------------------------------------------
-                    // send data to next phase
-                    // can't receive data yet because buffer size will be wrong 
-                    //---------------------------------------------------------------------
-                    //             mpi_isend(out_buffer, 22*buffer_size, 
-                    //     >                     dp_type, successor(1), 
-                    //     >                     DEFAULT_TAG, comm_solve, 
-                    //     >                     requests(2), error)
 
                 }
 
@@ -2748,8 +2578,6 @@ namespace NPB3_0_JAV
 
             for (stage = ncells - 1; stage >= 0; stage--)
             {
-//                Console.WriteLine("(2) X-SOLVE - Estágio " + stage);
-
                 c = slice[stage, 0];
 
                 istart = 2;
@@ -2757,8 +2585,6 @@ namespace NPB3_0_JAV
 
                 jsize = cell_size[c, 1] + 2;
                 ksize = cell_size[c, 2] + 2;
-                // jp = cell_coord[c, 1] - 1;
-                // kp= cell_coord[c, 2] - 1;
 
                 buffer_size = (jsize - start[c, 1] - end[c, 1]) * (ksize - start[c, 2] - end[c, 2]);
 
@@ -2767,7 +2593,6 @@ namespace NPB3_0_JAV
 
                 if (stage != ncells - 1)
                 {
-
                     //---------------------------------------------------------------------
                     //            if this is not the starting cell in this row of cells, 
                     //            wait for a message to be received, containing the 
@@ -2780,12 +2605,6 @@ namespace NPB3_0_JAV
                     requests[0] = comm_solve.ImmediateReceive<double>(successor[0], DEFAULT_TAG, in_buffer_x);
 
                     requestList.Add(requests[0]);
-
-                    //             mpi_irecv(in_buffer, 10*buffer_size, 
-                    //    >                      dp_type, successor(1), 
-                    //   >                      DEFAULT_TAG, comm_solve, 
-                    //  >                      requests(1), error)
-
 
                     //---------------------------------------------------------------------
                     //            communication has already been started
@@ -2968,11 +2787,6 @@ namespace NPB3_0_JAV
 
                     requestList.Add(requests[1]);
 
-                    //             mpi_isend(out_buffer, 10*buffer_size, 
-                    //     >                     dp_type, predecessor(1), 
-                    //     >                     DEFAULT_TAG, comm_solve, 
-                    //     >                     requests(2), error)
-
                 }
 
                 //if (timeron) timer.stop(t_xsolve);
@@ -2991,7 +2805,7 @@ namespace NPB3_0_JAV
 
         public void y_solve()
         {
-            int i, j, k, stage, /*ip, kp,*/ n, isize, jend, ksize, j1, j2, buffer_size, c, m, p, jstart, error; /* requests(2), statuses(MPI_STATUS_SIZE, 2);*/
+            int i, j, k, stage, n, isize, jend, ksize, j1, j2, buffer_size, c, m, p, jstart; /* requests(2), statuses(MPI_STATUS_SIZE, 2);*/
             double r1, r2, d, e, sm1, sm2, fac1, fac2;
             double[] s = new double[5];
             Request[] requests = new Request[2] { null, null };
@@ -3631,15 +3445,14 @@ namespace NPB3_0_JAV
 
         public void z_solve()
         {
-            int i, j, k, stage, /*ip, jp,*/ n, isize, jsize, kend, k1, k2, buffer_size, c, m, p, kstart, error;
+            int i, j, k, stage, n, isize, jsize, kend, k1, k2, buffer_size, c, m, p, kstart;
             double r1, r2, d, e, sm1, sm2, fac1, fac2;
             double[] s = new double[5];
             double[] rtmp = new double[5 * (KMAX + 1)];
             RequestList requestList = new RequestList();
             Request[] requests = new Request[2] { null, null };
             double[] in_buffer_z;
-            double[] out_buffer_z;
-            
+            double[] out_buffer_z;            
 
             //---------------------------------------------------------------------
             // now do a sweep on a layer-by-layer basis, i.e. sweeping through cells
@@ -3659,8 +3472,6 @@ namespace NPB3_0_JAV
 
                 isize = cell_size[c, 0] + 2;
                 jsize = cell_size[c, 1] + 2;
-                // ip = cell_coord[c, 0] - 1;
-                // jp = cell_coord[c, 1] - 1;
 
                 buffer_size = (isize - start[c, 0] - end[c, 0]) *
                              (jsize - start[c, 1] - end[c, 1]);
@@ -3670,8 +3481,6 @@ namespace NPB3_0_JAV
 
                 if (stage != 0)
                 {
-
-
                     //---------------------------------------------------------------------
                     //            if this is not the first processor in this row of cells, 
                     //            receive data from predecessor containing the right hand
@@ -3685,12 +3494,6 @@ namespace NPB3_0_JAV
 
                     requestList.Add(requests[0]);
 
-                    //             mpi_irecv(in_buffer, 22*buffer_size, 
-                    //     >                      dp_type, predecessor(3), 
-                    //     >                      DEFAULT_TAG, comm_solve, 
-                    //     >                      requests(1), error)
-
-
                     //---------------------------------------------------------------------
                     //            communication has already been started. 
                     //            compute the left hand side while waiting for the msg
@@ -3702,8 +3505,6 @@ namespace NPB3_0_JAV
                     //---------------------------------------------------------------------
 
                     requestList.WaitAll();
-
-                    //             mpi_waitall(2, requests, statuses, error);
 
                     //---------------------------------------------------------------------
                     //            unpack the buffer                                 
@@ -3995,11 +3796,6 @@ namespace NPB3_0_JAV
 
                     requestList.Add(requests[1]);
 
-                    //             mpi_isend(out_buffer, 22*buffer_size, 
-                    //     >                     dp_type, successor(3), 
-                    //     >                     DEFAULT_TAG, comm_solve, 
-                    //     >                     requests(2), error)
-
                 }
             }
 
@@ -4044,12 +3840,6 @@ namespace NPB3_0_JAV
 
                     requestList.Add(requests[0]);
 
-                    //             mpi_irecv(in_buffer, 10*buffer_size, 
-                    //     >                      dp_type, successor(3), 
-                    //     >                      DEFAULT_TAG, comm_solve, 
-                    //     >                      requests(1), error)
-
-
                     //---------------------------------------------------------------------
                     //            communication has already been started
                     //            while waiting, do the  block-diagonal inversion for the 
@@ -4063,8 +3853,6 @@ namespace NPB3_0_JAV
                     //---------------------------------------------------------------------
 
                     requestList.WaitAll();
-
-                    //            mpi_waitall(2, requests, statuses, error)
 
                     //---------------------------------------------------------------------
                     //            unpack the buffer for the first three factors         
@@ -4237,11 +4025,6 @@ namespace NPB3_0_JAV
 
                     requestList.Add(requests[1]);
 
-                    //             mpi_isend(out_buffer, 10*buffer_size, 
-                    //    >                     dp_type, predecessor(3), 
-                    //    >                     DEFAULT_TAG, comm_solve, 
-                    //   >                     requests(2), error)
-
                 }
 
                 // if (timeron) timer.stop(t_zsolve);
@@ -4288,8 +4071,6 @@ namespace NPB3_0_JAV
                                        dx5 + c1c5 * ru1,
                                        dxmax + ru1,
                                        dx1);
-                        //if (node==1)
-                        //Console.WriteLine(ru1+" "+cv[i]+" "+rhon[i]);
                     }
 
                     for (i = start[c, 0]; i < isize - end[c, 0]; i++)
@@ -4660,7 +4441,8 @@ namespace NPB3_0_JAV
         }
 
         public double getTime() { return timer.readTimer(1); }
-        public void finalize() // throws Throwable
+
+        public void finalize() 
         {
             Console.WriteLine("LU: is about to be garbage collected");
             //base.finalize();

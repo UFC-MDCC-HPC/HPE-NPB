@@ -545,7 +545,6 @@ public class SP : SPBase
 		}
 	}
 
-
 	public void exact_rhs()
 	{
 		double[] dtemp = new double[5];
@@ -905,7 +904,6 @@ public class SP : SPBase
 			}
 		}
 	}
-
 
 	public void ninvr()
 	{
@@ -1411,8 +1409,7 @@ public class SP : SPBase
         }
 		
 	}
-
-
+    
 	public void txinvr()
 	{
 		int i, j, k;
@@ -2660,7 +2657,8 @@ public class SP : SPBase
 	}
 
 	public double getTime() { return timer.readTimer(1); }
-	public void finalize() // throws Throwable
+
+	public void finalize() 
 	{
 	    Console.WriteLine("SP: is about to be garbage collected");
 		//base.finalize();
