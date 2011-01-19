@@ -168,9 +168,10 @@ public class SPBase /* : Thread*/
 
         MAX_CELL_DIM = (problem_size/maxcells)+1;                
 		IMAX = JMAX = KMAX = grid_points[0] = grid_points[1] = grid_points[2] = MAX_CELL_DIM;
-        IMAXP = IMAX / 2 * 2 + 1;
-        JMAXP = JMAX / 2 * 2 + 1;
+        IMAXP = IMAX/2 * 2 + 1;
+        JMAXP = JMAX/2 * 2 + 1;
         BUF_SIZE = MAX_CELL_DIM*MAX_CELL_DIM*(maxcells-1)*60*2+1;
+
         u = new double[maxcells, 5, KMAX + 1 + 3, JMAXP + 1 + 3, IMAXP + 1 + 3];   /* x:-2 y:-2 z:-2 */  // copy_faces (def), compute_rhs (use), tzetar (use), add (use), error_norm (use)
 
         rhs = new double[maxcells, 5, KMAX + 2, JMAXP + 2, IMAXP + 2];     /* x:0  y:0  z:0 */  // compute_rhs (def), txinvr (def), tzetar (def), x_solve (def), y_solve (def), z_solve (def), ninvr (def), pinvr (def)
@@ -207,7 +208,6 @@ public class SPBase /* : Thread*/
 
         predecessor = new int[3]; // make_set (def), copy_faces (use), x_solve (use), y_solve (use), z_solve (use)
         successor = new int[3];   // make_set (def), copy_faces (use), x_solve (use), y_solve (use), z_solve (use)
-
 	}
 
 	//protected Thread master = null;
@@ -223,7 +223,6 @@ public class SPBase /* : Thread*/
 
         total_nodes = worldcomm.Size;
         node = worldcomm.Rank;
-
 
         //---------------------------------------------------------------------
         //     compute square root; add small number to allow for roundoff
@@ -274,8 +273,7 @@ public class SPBase /* : Thread*/
 	{
 		return dmax1(dmax1(a, b), dmax1(c, d));
 	}
-
-
+    
 	public void exact_solution(double xi, double eta, double zeta, double[] dtemp, int offset)
 	{
 		for (int m = 0; m < 5; m++)
@@ -429,7 +427,6 @@ public class SPBase /* : Thread*/
                               Pxi + Peta + Pzeta -
                                       Pxi * Peta - Pxi * Pzeta - Peta * Pzeta +
                                       Pxi * Peta * Pzeta;
-//                            if (node==0) Console.WriteLine(u[c,m,kk,jj,ii]); 
                         }
                         ii++;
                     }

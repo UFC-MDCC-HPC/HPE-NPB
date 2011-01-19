@@ -280,37 +280,27 @@ public class SPBase /* : Thread*/
 					for (ix = 0; ix <= 1; ix++)
 					{
 						Pxi = ix;
-						exact_solution(Pxi, eta, zeta,
-											Pface, 0 + 0 * 5 + ix * 15);
+						exact_solution(Pxi, eta, zeta, Pface, 0 + 0 * 5 + ix * 15);
 					}
 					for (iy = 0; iy <= 1; iy++)
 					{
 						Peta = iy;
-						exact_solution(xi, Peta, zeta,
-											Pface, 0 + 1 * 5 + iy * 15);
+						exact_solution(xi, Peta, zeta, Pface, 0 + 1 * 5 + iy * 15);
 					}
 
 					for (iz = 0; iz <= 1; iz++)
 					{
 						Pzeta = iz;
-						exact_solution(xi, eta, Pzeta,
-										   Pface, 0 + 2 * 5 + iz * 15);
+						exact_solution(xi, eta, Pzeta, Pface, 0 + 2 * 5 + iz * 15);
 					}
 
 					for (m = 0; m <= 4; m++)
 					{
-						Pxi = xi * Pface[m + 0 * 5 + 1 * 15] +
-								(1.0 - xi) * Pface[m + 0 * 5 + 0 * 15];
-						Peta = eta * Pface[m + 1 * 5 + 1 * 15] +
-								(1.0 - eta) * Pface[m + 1 * 5 + 0 * 15];
-						Pzeta = zeta * Pface[m + 2 * 5 + 1 * 15] +
-								(1.0 - zeta) * Pface[m + 2 * 5 + 0 * 15];
+						Pxi = xi * Pface[m + 0 * 5 + 1 * 15] + (1.0 - xi) * Pface[m + 0 * 5 + 0 * 15];
+						Peta = eta * Pface[m + 1 * 5 + 1 * 15] + (1.0 - eta) * Pface[m + 1 * 5 + 0 * 15];
+						Pzeta = zeta * Pface[m + 2 * 5 + 1 * 15] + (1.0 - zeta) * Pface[m + 2 * 5 + 0 * 15];
 
-						u[k,j,i,m] =
-						  Pxi + Peta + Pzeta -
-								  Pxi * Peta - Pxi * Pzeta - Peta * Pzeta +
-								  Pxi * Peta * Pzeta;
-
+						u[k,j,i,m] = Pxi + Peta + Pzeta - Pxi * Peta - Pxi * Pzeta - Peta * Pzeta + Pxi * Peta * Pzeta;
 					}
 				}
 			}

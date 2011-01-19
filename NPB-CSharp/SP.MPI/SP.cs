@@ -91,8 +91,6 @@ namespace NPB3_0_JAV
 
         public void runBenchMark()
         {
-
-
             if (!active)
             {
                 Console.WriteLine("not active !");
@@ -258,17 +256,11 @@ namespace NPB3_0_JAV
 
         public void adi()
         {
-            Console.WriteLine("1------------"); Console.Out.Flush();
             copy_faces();
-            Console.WriteLine("2------------"); Console.Out.Flush();
             txinvr();
-            Console.WriteLine("3------------"); Console.Out.Flush();
             x_solve();
-            Console.WriteLine("4------------"); Console.Out.Flush();
             y_solve();
-            Console.WriteLine("5------------"); Console.Out.Flush();
             z_solve();
-            Console.WriteLine("6------------"); Console.Out.Flush();
             add();
         }
 
@@ -338,8 +330,6 @@ namespace NPB3_0_JAV
                             for (i = start[c, 0]; i < 2 + cell_size[c, 0] - end[c, 0]; i++)
                             {
                                 u[c, m, k, j, i] += rhs[c, m, k, j, i];
-                                if (node == 0) 
-                                    Console.WriteLine(u[c, m, k, j, i]);
                             }
                         }
                     }
@@ -915,16 +905,13 @@ namespace NPB3_0_JAV
         {
             int i, j, k, c, m, p0, p1, p2, p3, p4, p5, ksize, jsize, isize;
             Request[] requests;
-            int[] b_size /*, ss, sr*/;
+            int[] b_size;
 
             double[][] out_buffer = new double[6][];
             double[][] in_buffer = new double[6][];
 
             requests = new Request[12];
             b_size = new int[6];
-         /* ss = new int[6];
-            sr = new int[6]; */
-            // statuses = new int[MPI_STATUS_SIZE, 12];
 
             if (no_nodes == 1)
             {
@@ -978,8 +965,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = isize - 2; i < isize; i++)
                                 {
-                                    out_buffer[0][p0] = u[c, m, k, j, i];
-                                    p0++;    
+                                    out_buffer[0][p0++] = u[c, m, k, j, i];
                                 }
                             }
                         }
@@ -996,8 +982,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i <= 3; i++)
                                 {
-                                    out_buffer[1][p1] = u[c, m, k, j, i];
-                                    p1++;
+                                    out_buffer[1][p1++] = u[c, m, k, j, i];
                                 }
                             }
                         }
@@ -1014,8 +999,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i < isize; i++)
                                 {
-                                    out_buffer[2][p2] = u[c, m, k, j, i];
-                                    p2++;
+                                    out_buffer[2][p2++] = u[c, m, k, j, i];
                                 }
                             }
                         }
@@ -1032,8 +1016,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i < isize; i++)
                                 {
-                                    out_buffer[3][p3] = u[c, m, k, j, i];
-                                    p3++;
+                                    out_buffer[3][p3++] = u[c, m, k, j, i];
                                 }
                             }
                         }
@@ -1050,8 +1033,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i < isize; i++)
                                 {
-                                    out_buffer[4][p4] = u[c, m, k, j, i];
-                                    p4++;
+                                    out_buffer[4][p4++] = u[c, m, k, j, i];
                                 }
                             }
                         }
@@ -1068,8 +1050,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i < isize; i++)
                                 {
-                                    out_buffer[5][p5] = u[c, m, k, j, i];
-                                    p5++;
+                                    out_buffer[5][p5++] = u[c, m, k, j, i];
                                 }
                             }
                         }
@@ -1077,30 +1058,27 @@ namespace NPB3_0_JAV
                 }
             }
 
-            {                
-                RequestList requestList = new RequestList();
+            RequestList requestList = new RequestList();
 
-                requests[0] = comm_rhs.ImmediateReceive<double>(successor[0], WEST, in_buffer[0]);
-                requests[1] = comm_rhs.ImmediateReceive<double>(predecessor[0], EAST, in_buffer[1]);
-                requests[2] = comm_rhs.ImmediateReceive<double>(successor[1], SOUTH, in_buffer[2]);
-                requests[3] = comm_rhs.ImmediateReceive<double>(predecessor[1], NORTH, in_buffer[3]);
-                requests[4] = comm_rhs.ImmediateReceive<double>(successor[2], BOTTOM, in_buffer[4]);
-                requests[5] = comm_rhs.ImmediateReceive<double>(predecessor[2], TOP, in_buffer[5]);
-                requests[6] = comm_rhs.ImmediateSend<double>(out_buffer[0], successor[0], EAST);
-                requests[7] = comm_rhs.ImmediateSend<double>(out_buffer[1], predecessor[0], WEST);
-                requests[8] = comm_rhs.ImmediateSend<double>(out_buffer[2], successor[1], NORTH);
-                requests[9] = comm_rhs.ImmediateSend<double>(out_buffer[3], predecessor[1], SOUTH);
-                requests[10] = comm_rhs.ImmediateSend<double>(out_buffer[4], successor[2], TOP);
-                requests[11] = comm_rhs.ImmediateSend<double>(out_buffer[5], predecessor[2], BOTTOM);
+            requests[0] = comm_rhs.ImmediateReceive<double>(successor[0], WEST, in_buffer[0]);
+            requests[1] = comm_rhs.ImmediateReceive<double>(predecessor[0], EAST, in_buffer[1]);
+            requests[2] = comm_rhs.ImmediateReceive<double>(successor[1], SOUTH, in_buffer[2]);
+            requests[3] = comm_rhs.ImmediateReceive<double>(predecessor[1], NORTH, in_buffer[3]);
+            requests[4] = comm_rhs.ImmediateReceive<double>(successor[2], BOTTOM, in_buffer[4]);
+            requests[5] = comm_rhs.ImmediateReceive<double>(predecessor[2], TOP, in_buffer[5]);
+            requests[6] = comm_rhs.ImmediateSend<double>(out_buffer[0], successor[0], EAST);
+            requests[7] = comm_rhs.ImmediateSend<double>(out_buffer[1], predecessor[0], WEST);
+            requests[8] = comm_rhs.ImmediateSend<double>(out_buffer[2], successor[1], NORTH);
+            requests[9] = comm_rhs.ImmediateSend<double>(out_buffer[3], predecessor[1], SOUTH);
+            requests[10] = comm_rhs.ImmediateSend<double>(out_buffer[4], successor[2], TOP);
+            requests[11] = comm_rhs.ImmediateSend<double>(out_buffer[5], predecessor[2], BOTTOM);
 
-                foreach (Request request in requests)
-                {
-                    requestList.Add(request);
-                }
-
-                requestList.WaitAll();
-
+            foreach (Request request in requests)
+            {
+                requestList.Add(request);
             }
+
+            requestList.WaitAll();
 
             //---------------------------------------------------------------------
             // unpack the data that has just been received;             
@@ -1114,9 +1092,9 @@ namespace NPB3_0_JAV
 
             for (c = 0; c < ncells; c++)
             {
-                ksize = cell_size[c, 2] + 2;
-                jsize = cell_size[c, 1] + 2;
                 isize = cell_size[c, 0] + 2;
+                jsize = cell_size[c, 1] + 2;
+                ksize = cell_size[c, 2] + 2;
 
                 for (m = 0; m < 5; m++)
                 {
@@ -1128,10 +1106,9 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 0; i <= 1; i++)
                                 {
-                                    u[c, m, k, j, i] = in_buffer[1][p0];
-                                    p0++;
+                                    u[c, m, k, j, i] = in_buffer[1][p0++];
                                 }
-                            }//8801-8218
+                            }
                         }
                     }
 
@@ -1143,8 +1120,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = isize; i <= isize + 1; i++)
                                 {
-                                    u[c, m, k, j, i] = in_buffer[0][p1];
-                                    p1++;
+                                    u[c, m, k, j, i] = in_buffer[0][p1++];
                                 }
                             }
                         }
@@ -1158,8 +1134,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i < isize; i++)
                                 {
-                                    u[c, m, k, j, i] = in_buffer[3][p2];
-                                    p2++;
+                                    u[c, m, k, j, i] = in_buffer[3][p2++];
                                 }
                             }
                         }
@@ -1173,8 +1148,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i < isize; i++)
                                 {
-                                    u[c, m, k, j, i] = in_buffer[2][p3];
-                                    p3++;
+                                    u[c, m, k, j, i] = in_buffer[2][p3++];
                                 }
                             }
                         }
@@ -1188,8 +1162,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i < isize; i++)
                                 {
-                                    u[c, m, k, j, i] = in_buffer[5][p4];
-                                    p4++;
+                                    u[c, m, k, j, i] = in_buffer[5][p4++];
                                 }
                             }
                         }
@@ -1203,8 +1176,7 @@ namespace NPB3_0_JAV
                             {
                                 for (i = 2; i < isize; i++)
                                 {
-                                    u[c, m, k, j, i] = in_buffer[4][p5];
-                                    p5++;
+                                    u[c, m, k, j, i] = in_buffer[4][p5++];
                                 }
                             }
                         }
@@ -1286,8 +1258,8 @@ namespace NPB3_0_JAV
             //      added to those arguments to the mod functions that might
             //      otherwise return wrong values when using the modulo function
             //---------------------------------------------------------------------
-            i = cell_coord[0, 0] /* - 1 */;
-            j = cell_coord[0, 1] /* - 1 */;
+            i = cell_coord[0, 0];
+            j = cell_coord[0, 1];
 
             predecessor[0] = mod(i - 1 + p, p) + p * j;
             predecessor[1] = i + p * mod(j - 1 + p, p);
@@ -1876,8 +1848,7 @@ namespace NPB3_0_JAV
             int c, i, j, k, isize, jsize, ksize;
             double t1, t2, t3, ac, ru1, xvel, yvel, zvel,
                    r1, r2, r3, r4, r5, ac2inv;
-
-
+            
             for (c = 0; c < ncells; c++)
             {
                 ksize = cell_size[c, 2] + 2;
@@ -1902,7 +1873,7 @@ namespace NPB3_0_JAV
                             r3 = rhs[c, 2, k, j, i];
                             r4 = rhs[c, 3, k, j, i];
                             r5 = rhs[c, 4, k, j, i];
-
+                                
                             t1 = c2 * ac2inv * (qs[c, k, j, i] * r1 - xvel * r2 -
                                 yvel * r3 - zvel * r4 + r5);
                             t2 = bt * ru1 * (xvel * r1 - r2);
@@ -1920,7 +1891,7 @@ namespace NPB3_0_JAV
         }
 
         public void tzetar(int c)
-        {
+        {   
             int i, j, k;
             int ksize, jsize, isize;
             double t1, t2, t3, ac, xvel, yvel, zvel,
@@ -2375,10 +2346,6 @@ namespace NPB3_0_JAV
                             for (m = 0; m <= 2; m++)
                             {
                                 rhs[c, m, k, j, i] = fac1 * rhs[c, m, k, j, i];
-                                if (node==0)
-                                    Console.WriteLine(i + "-" + j + "-" + k + " João : " +
-                                                      rhs[c, m, k, j, i]
-                                                      );
                             }
                             lhs[c, n + 3, k, j, i1] = lhs[c, n + 3, k, j, i1] -
                                            lhs[c, n + 2, k, j, i1] * lhs[c, n + 4, k, j, i];
@@ -3175,11 +3142,6 @@ namespace NPB3_0_JAV
 
                     requestList.Add(requests[1]);
 
-                    //             mpi_isend(out_buffer, 22*buffer_size, 
-                    //     >                     dp_type, successor(2), 
-                    //     >                     DEFAULT_TAG, comm_solve, 
-                    //     >                     requests(2), error)
-
                 }
             }
 
@@ -3199,8 +3161,6 @@ namespace NPB3_0_JAV
 
                 isize = cell_size[c, 0] + 2;
                 ksize = cell_size[c, 2] + 2;
-              //  ip = cell_coord[c, 0] - 1;
-              //  kp = cell_coord[c, 2] - 1;
 
                 buffer_size = (isize - start[c, 0] - end[c, 0]) *
                              (ksize - start[c, 2] - end[c, 2]);
@@ -3353,10 +3313,6 @@ namespace NPB3_0_JAV
                                 rhs[c, m, k, j, i] = rhs[c, m, k, j, i] -
                                          lhs[c, n + 4, k, j, i] * rhs[c, m, k, j1, i] -
                                          lhs[c, n + 5, k, j, i] * rhs[c, m, k, j2, i];
-//                                if (node == 0)
-//                                {
-//                                  Console.WriteLine(i + " " + j + " " + k + " y BACK 1 : " + rhs[c, m, k, j, i]);
-//                                }
                             }
                         }
                     }
@@ -3379,10 +3335,6 @@ namespace NPB3_0_JAV
                                 rhs[c, m, k, j, i] = rhs[c, m, k, j, i] -
                                          lhs[c, n + 4, k, j, i] * rhs[c, m, k, j1, i] -
                                          lhs[c, n + 5, k, j, i] * rhs[c, m, k, j2, i];
- //                               if (node == 0)
- //                               {
- //                                   Console.WriteLine(i + " " + j + " " + k + " y BACK 2 : " + rhs[c, m, k, j, i]);
- //                               }
                             }
                         }
                     }
@@ -3419,12 +3371,6 @@ namespace NPB3_0_JAV
                     requests[1] = comm_solve.ImmediateSend<double>(out_buffer_y, predecessor[1], DEFAULT_TAG);
 
                     requestList.Add(requests[1]);
-
-                    //            mpi_isend(out_buffer, 10*buffer_size, 
-                    //    >                     dp_type, predecessor(2), 
-                    //    >                     DEFAULT_TAG, comm_solve, 
-                    //    >                     requests(2), error)
-
                 }
 
                 // if (timeron) timer.stop(t_ysolve);
@@ -3815,9 +3761,6 @@ namespace NPB3_0_JAV
 
                 isize = cell_size[c, 0] + 2;
                 jsize = cell_size[c, 1] + 2;
-                // ip = cell_coord[c, 0] - 1;
-                // jp = cell_coord[c, 1] - 1;
-
                 buffer_size = (isize - start[c, 0] - end[c, 0]) *
                              (jsize - start[c, 1] - end[c, 1]);
 
@@ -4067,10 +4010,7 @@ namespace NPB3_0_JAV
                     {
                         ru1 = c3c4 * rho_i[c, k, j, i];
                         cv[i] = us[c, k, j, i];
-                        rhon[i] = dmax1(dx2 + con43 * ru1,
-                                       dx5 + c1c5 * ru1,
-                                       dxmax + ru1,
-                                       dx1);
+                        rhon[i] = dmax1(dx2 + con43 * ru1, dx5 + c1c5 * ru1, dxmax + ru1, dx1);
                     }
 
                     for (i = start[c, 0]; i < isize - end[c, 0]; i++)

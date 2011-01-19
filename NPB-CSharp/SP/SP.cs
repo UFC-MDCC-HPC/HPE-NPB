@@ -2417,18 +2417,15 @@ public class SP : SPBase
 				for (k = 1; k <= nz2; k++)
 				{
 					lhsp[0,k] = lhs[0,k];
-					lhsp[1,k] = lhs[1,k] -
-									  dttz2 * speed[k-1,j,i];
+					lhsp[1,k] = lhs[1,k] - dttz2 * speed[k-1,j,i];
 					lhsp[2,k] = lhs[2,k];
-					lhsp[3,k] = lhs[3,k] +
-									  dttz2 * speed[k+1,j,i];
+					lhsp[3,k] = lhs[3,k] + dttz2 * speed[k+1,j,i];
 					lhsp[4,k] = lhs[4,k];
+
 					lhsm[0,k] = lhs[0,k];
-					lhsm[1,k] = lhs[1,k] +
-									  dttz2 * speed[k-1,j,i];
+					lhsm[1,k] = lhs[1,k] + dttz2 * speed[k-1,j,i];
 					lhsm[2,k] = lhs[2,k];
-					lhsm[3,k] = lhs[3,k] -
-									  dttz2 * speed[k+1,j,i];
+					lhsm[3,k] = lhs[3,k] - dttz2 * speed[k+1,j,i];
 					lhsm[4,k] = lhs[4,k];
 				}
 

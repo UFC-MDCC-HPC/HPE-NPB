@@ -1987,8 +1987,6 @@ namespace NPB
             }
         }
 
-
-
         /* x_solve **********************************************************************************************/
 
         public void x_solve()
@@ -3167,8 +3165,6 @@ namespace NPB
         }
 
 
-
-
         public void z_solve()
         {
             //---------------------------------------------------------------------
@@ -3762,8 +3758,7 @@ namespace NPB
             }
         }
 
-
-
+        
         public void binvcrhs(ref double[, ,] lhs, ref double[, , , , ,] c, ref double[, , , ,] r, int l1, int c1, int c2, int c3, int c4, int r1, int r2, int r3, int r4)
         {
             double pivot, coeff; //dimension lhs[5,5]; //double c[5,5], r[5];
@@ -4362,7 +4357,7 @@ namespace NPB
                         {
                             for (m = 1; m <= 5; m++)
                             {  //u[m,i,j,k,c] = u[m,i,j,k,c] + rhs[m,i,j,k,c];
-                                u[c, k + 2, j + 2, i + 2, m] = u[c, k + 2, j + 2, i + 2, m] + rhs[c, k + 1, j + 1, i + 1, m];
+                                u[c, k + 2, j + 2, i + 2, m] += rhs[c, k + 1, j + 1, i + 1, m];
                             }
                         }
                     }
