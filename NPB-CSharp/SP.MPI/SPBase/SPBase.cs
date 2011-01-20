@@ -172,11 +172,11 @@ public class SPBase /* : Thread*/
         JMAXP = JMAX/2 * 2 + 1;
         BUF_SIZE = MAX_CELL_DIM*MAX_CELL_DIM*(maxcells-1)*60*2+1;
 
-        u = new double[maxcells, 5, KMAX + 1 + 3, JMAXP + 1 + 3, IMAXP + 1 + 3];   /* x:-2 y:-2 z:-2 */  // copy_faces (def), compute_rhs (use), tzetar (use), add (use), error_norm (use)
+        u = new double[maxcells, KMAX + 1 + 3, JMAXP + 1 + 3, IMAXP + 1 + 3, 5];   /* x:-2 y:-2 z:-2 */  // copy_faces (def), compute_rhs (use), tzetar (use), add (use), error_norm (use)
 
-        rhs = new double[maxcells, 5, KMAX + 2, JMAXP + 2, IMAXP + 2];     /* x:0  y:0  z:0 */  // compute_rhs (def), txinvr (def), tzetar (def), x_solve (def), y_solve (def), z_solve (def), ninvr (def), pinvr (def)
-        forcing = new double[maxcells, 5, KMAX + 2, JMAXP + 2, IMAXP + 2]; /* x:0  y:0  z:0 */  // exact_rhs (def), compute_rhs (use)
-        lhs = new double[maxcells, 15, KMAX + 2, JMAXP + 2, IMAXP + 2];    /* x:0  y:0  z:0 */  // x_solve (def), y_solve (def), z_solve (def), lhsx (def), lhsy (def), lhsz (def)
+        rhs = new double[maxcells, KMAX + 2, JMAXP + 2, IMAXP + 2, 5];     /* x:0  y:0  z:0 */  // compute_rhs (def), txinvr (def), tzetar (def), x_solve (def), y_solve (def), z_solve (def), ninvr (def), pinvr (def)
+        forcing = new double[maxcells, KMAX + 2, JMAXP + 2, IMAXP + 2, 5]; /* x:0  y:0  z:0 */  // exact_rhs (def), compute_rhs (use)
+        lhs = new double[maxcells, KMAX + 2, JMAXP + 2, IMAXP + 2, 15];    /* x:0  y:0  z:0 */  // x_solve (def), y_solve (def), z_solve (def), lhsx (def), lhsy (def), lhsz (def)
 
         // definidos em compute_rhs e usados esporadicamente em txinvr e lhs?
         us = new double[maxcells, KMAX + 3, JMAX + 3, IMAX + 3];       /* x:-1  y:-1  z:-1 */  // compute_rhs (def), txinvr (use), tzetar (use), lhsx (use)
@@ -324,7 +324,7 @@ public class SPBase /* : Thread*/
                     {
                         for (int i = 2; i < 2 + cell_size[c, 0]; i++)
                         {
-                            lhs[c, n, k, j, i] = 0.0d;
+                            lhs[c, k, j, i, n] = 0.0d;
                         }
                     }
                 }
@@ -342,7 +342,7 @@ public class SPBase /* : Thread*/
                     {
                         for (int i = 2; i < 2 + cell_size[c, 0]; i++)
                         {
-                            lhs[c, 5 * n + 2, k, j, i] = 1.0d;
+                            lhs[c, k, j, i, 5 * n + 2] = 1.0d;
                         }
                     }
                 }
@@ -371,11 +371,11 @@ public class SPBase /* : Thread*/
                 {
                     for (i = 1; i <= IMAX + 2; i++)
                     {
-                        u[c, 0, k, j, i] = 1.0d;
-                        u[c, 1, k, j, i] = 0.0d;
-                        u[c, 2, k, j, i] = 0.0d;
-                        u[c, 3, k, j, i] = 0.0d;
-                        u[c, 4, k, j, i] = 1.0d;
+                        u[c, k, j, i, 0] = 1.0d;
+                        u[c, k, j, i, 1] = 0.0d;
+                        u[c, k, j, i, 2] = 0.0d;
+                        u[c, k, j, i, 3] = 0.0d;
+                        u[c, k, j, i, 4] = 1.0d;
                     }
                 }
             }
@@ -423,7 +423,7 @@ public class SPBase /* : Thread*/
                             Pzeta = zeta * Pface[m + 2 * 5 + 1 * 15] +
                                     (1.0d - zeta) * Pface[m + 2 * 5 + 0 * 15];
 
-                            u[c, m, kk, jj, ii] =
+                            u[c, kk, jj, ii, m] =
                               Pxi + Peta + Pzeta -
                                       Pxi * Peta - Pxi * Pzeta - Peta * Pzeta +
                                       Pxi * Peta * Pzeta;
@@ -459,7 +459,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m < 5 ; m++)
 				{
-                    u[c, m, kk, jj, ii] = temp[m];
+                    u[c, kk, jj, ii, m] = temp[m];
                 }
                 jj++;
 			}
@@ -484,7 +484,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-                    u[c, m, kk, jj, ii] = temp[m];
+                    u[c, kk, jj, ii, m] = temp[m];
                 }
                 jj++;
 			}
@@ -509,7 +509,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-                    u[c, m, kk, jj, ii] = temp[m];
+                    u[c, kk, jj, ii, m] = temp[m];
                 }
                 ii++;
 			}
@@ -534,7 +534,7 @@ public class SPBase /* : Thread*/
                 exact_solution(xi, eta, zeta, temp, 0);
                 for (m = 0; m <= 4; m++)
                 {
-                    u[c, m, kk, jj, ii] = temp[m];
+                    u[c, kk, jj, ii, m] = temp[m];
                 }
                 ii++;
             }
@@ -559,7 +559,7 @@ public class SPBase /* : Thread*/
                 exact_solution(xi, eta, zeta, temp, 0);
                 for (m = 0; m <= 4; m++)
                 {
-                    u[c, m, kk, jj, ii] = temp[m];
+                    u[c, kk, jj, ii, m] = temp[m];
                 }
                 ii++;
             }
@@ -584,7 +584,7 @@ public class SPBase /* : Thread*/
                 exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[c,m,kk,jj,ii] = temp[m];
+					u[c, kk, jj, ii, m] = temp[m];
                 }
                 ii++;
 			}

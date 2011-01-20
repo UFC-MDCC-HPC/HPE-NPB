@@ -1280,8 +1280,7 @@ namespace NPB
                             {
                                 for (m = 1; m <= 5; m++)
                                 {
-                                    out_buffer[0][p0] = u[c, k + 2, j + 2, i + 2, m];//u[m,i,j,k,c]; //out_buffer[ss[0] + p0] 
-                                    p0 = p0 + 1;
+                                    out_buffer[0][p0++] = u[c, k + 2, j + 2, i + 2, m];//u[m,i,j,k,c]; //out_buffer[ss[0] + p0] 
                                 }
                             }
                         }
