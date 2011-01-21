@@ -350,14 +350,14 @@ namespace NPB
                     if (cell_coord[c,dir] <= excess)
                     {
                         cell_size[dir, c] = size + 1;
-                        cell_low[dir, c] = (cell_coord[c,dir] - 1) * (size + 1);
-                        cell_high[dir, c] = cell_low[dir, c] + size;
+                        cell_low[c,dir] = (cell_coord[c,dir] - 1) * (size + 1);
+                        cell_high[dir, c] = cell_low[c,dir] + size;
                     }
                     else
                     {
                         cell_size[dir, c] = size;
-                        cell_low[dir, c] = excess * (size + 1) + (cell_coord[c,dir] - excess - 1) * size;
-                        cell_high[dir, c] = cell_low[dir, c] + size - 1;
+                        cell_low[c,dir] = excess * (size + 1) + (cell_coord[c,dir] - excess - 1) * size;
+                        cell_high[dir, c] = cell_low[c,dir] + size - 1;
                     }
                     if (cell_size[dir, c] <= 2)
                     {
@@ -605,15 +605,15 @@ namespace NPB
             for (c = 1; c <= ncells; c++)
             {
                 kk = 0;
-                for (k = cell_low[3, c]; k <= cell_high[3, c]; k++)
+                for (k = cell_low[c,3]; k <= cell_high[3, c]; k++)
                 {
                     zeta = k * dnzm1;
                     jj = 0;
-                    for (j = cell_low[2, c]; j <= cell_high[2, c]; j++)
+                    for (j = cell_low[c,2]; j <= cell_high[2, c]; j++)
                     {
                         eta = j * dnym1;
                         ii = 0;
-                        for (i = cell_low[1, c]; i <= cell_high[1, c]; i++)
+                        for (i = cell_low[c,1]; i <= cell_high[1, c]; i++)
                         {
                             xi = i * dnxm1;
                             for (ix = 1; ix <= 2; ix++)
@@ -652,11 +652,11 @@ namespace NPB
             ii = 0;
             xi = 0.0d;
             kk = 0;
-            for (k = cell_low[3, c]; k <= cell_high[3, c]; k++)
+            for (k = cell_low[c,3]; k <= cell_high[3, c]; k++)
             {
                 zeta = k * dnzm1;
                 jj = 0;
-                for (j = cell_low[2, c]; j <= cell_high[2, c]; j++)
+                for (j = cell_low[c,2]; j <= cell_high[2, c]; j++)
                 {
                     eta = j * dnym1;
                     exact_solution1(xi, eta, zeta, ref temp);
@@ -675,11 +675,11 @@ namespace NPB
             ii = cell_size[1, c] - 1;
             xi = 1.0d;
             kk = 0;
-            for (k = cell_low[3, c]; k <= cell_high[3, c]; k++)
+            for (k = cell_low[c,3]; k <= cell_high[3, c]; k++)
             {
                 zeta = k * dnzm1;
                 jj = 0;
-                for (j = cell_low[2, c]; j <= cell_high[2, c]; j++)
+                for (j = cell_low[c,2]; j <= cell_high[2, c]; j++)
                 {
                     eta = j * dnym1;
                     exact_solution1(xi, eta, zeta, ref temp);
@@ -698,11 +698,11 @@ namespace NPB
             jj = 0;
             eta = 0.0d;
             kk = 0;
-            for (k = cell_low[3, c]; k <= cell_high[3, c]; k++)
+            for (k = cell_low[c,3]; k <= cell_high[3, c]; k++)
             {
                 zeta = k * dnzm1;
                 ii = 0;
-                for (i = cell_low[1, c]; i <= cell_high[1, c]; i++)
+                for (i = cell_low[c,1]; i <= cell_high[1, c]; i++)
                 {
                     xi = i * dnxm1;
                     exact_solution1(xi, eta, zeta, ref temp);
@@ -721,11 +721,11 @@ namespace NPB
             jj = cell_size[2, c] - 1;
             eta = 1.0d;
             kk = 0;
-            for (k = cell_low[3, c]; k <= cell_high[3, c]; k++)
+            for (k = cell_low[c,3]; k <= cell_high[3, c]; k++)
             {
                 zeta = k * dnzm1;
                 ii = 0;
-                for (i = cell_low[1, c]; i <= cell_high[1, c]; i++)
+                for (i = cell_low[c,1]; i <= cell_high[1, c]; i++)
                 {
                     xi = i * dnxm1;
                     exact_solution1(xi, eta, zeta, ref temp);
@@ -744,11 +744,11 @@ namespace NPB
             kk = 0;
             zeta = 0.0d;
             jj = 0;
-            for (j = cell_low[2, c]; j <= cell_high[2, c]; j++)
+            for (j = cell_low[c,2]; j <= cell_high[2, c]; j++)
             {
                 eta = j * dnym1;
                 ii = 0;
-                for (i = cell_low[1, c]; i <= cell_high[1, c]; i++)
+                for (i = cell_low[c,1]; i <= cell_high[1, c]; i++)
                 {
                     xi = i * dnxm1;
                     exact_solution1(xi, eta, zeta, ref temp);
@@ -767,11 +767,11 @@ namespace NPB
             kk = cell_size[3, c] - 1;
             zeta = 1.0d;
             jj = 0;
-            for (j = cell_low[2, c]; j <= cell_high[2, c]; j++)
+            for (j = cell_low[c,2]; j <= cell_high[2, c]; j++)
             {
                 eta = j * dnym1;
                 ii = 0;
-                for (i = cell_low[1, c]; i <= cell_high[1, c]; i++)
+                for (i = cell_low[c,1]; i <= cell_high[1, c]; i++)
                 {
                     xi = i * dnxm1;
                     exact_solution1(xi, eta, zeta, ref temp);
@@ -920,13 +920,13 @@ namespace NPB
                 //---------------------------------------------------------------------
                 for (k = start[3, c]; k <= cell_size[3, c] - end[3, c] - 1; k++)
                 {
-                    zeta = (k + cell_low[3, c]) * dnzm1;  //zeta = dble[k+cell_low[3,c]] * dnzm1;
+                    zeta = (k + cell_low[c,3]) * dnzm1; 
                     for (j = start[2, c]; j <= cell_size[2, c] - end[2, c] - 1; j++)
                     {
-                        eta = (j + cell_low[2, c]) * dnym1;
+                        eta = (j + cell_low[c,2]) * dnym1;
                         for (i = -2 * (1 - start[1, c]); i <= cell_size[1, c] + 1 - 2 * end[1, c]; i++)
                         {
-                            xi = (i + cell_low[1, c]) * dnxm1;
+                            xi = (i + cell_low[c,1]) * dnxm1;
                             exact_solution1(xi, eta, zeta, ref dtemp);
                             for (m = 1; m <= 5; m++)
                             {
@@ -988,13 +988,13 @@ namespace NPB
                 //---------------------------------------------------------------------
                 for (k = start[3, c]; k <= cell_size[3, c] - end[3, c] - 1; k++)
                 {
-                    zeta = (k + cell_low[3, c]) * dnzm1;
+                    zeta = (k + cell_low[c,3]) * dnzm1;
                     for (i = start[1, c]; i <= cell_size[1, c] - end[1, c] - 1; i++)
                     {
-                        xi = (i + cell_low[1, c]) * dnxm1;
+                        xi = (i + cell_low[c,1]) * dnxm1;
                         for (j = -2 * (1 - start[2, c]); j <= cell_size[2, c] + 1 - 2 * end[2, c]; j++)
                         {
-                            eta = (j + cell_low[2, c]) * dnym1;
+                            eta = (j + cell_low[c,2]) * dnym1;
                             exact_solution1(xi, eta, zeta, ref dtemp);
                             for (m = 1; m <= 5; m++)
                             {
@@ -1056,13 +1056,13 @@ namespace NPB
                 //---------------------------------------------------------------------
                 for (j = start[2, c]; j <= cell_size[2, c] - end[2, c] - 1; j++)
                 {
-                    eta = (j + cell_low[2, c]) * dnym1;
+                    eta = (j + cell_low[c,2]) * dnym1;
                     for (i = start[1, c]; i <= cell_size[1, c] - end[1, c] - 1; i++)
                     {
-                        xi = (i + cell_low[1, c]) * dnxm1;
+                        xi = (i + cell_low[c,1]) * dnxm1;
                         for (k = -2 * (1 - start[3, c]); k <= cell_size[3, c] + 1 - 2 * end[3, c]; k++)
                         {
-                            zeta = (k + cell_low[3, c]) * dnzm1;
+                            zeta = (k + cell_low[c,3]) * dnzm1;
                             exact_solution1(xi, eta, zeta, ref dtemp);
                             for (m = 1; m <= 5; m++)
                             {
@@ -4770,15 +4770,15 @@ namespace NPB
             for (c = 1; c <= ncells; c++)
             {
                 kk = 0;
-                for (k = cell_low[3, c]; k <= cell_high[3, c]; k++)
+                for (k = cell_low[c,3]; k <= cell_high[3, c]; k++)
                 {
                     zeta = k * dnzm1;
                     jj = 0;
-                    for (j = cell_low[2, c]; j <= cell_high[2, c]; j++)
+                    for (j = cell_low[c,2]; j <= cell_high[2, c]; j++)
                     {
                         eta = j * dnym1;
                         ii = 0;
-                        for (i = cell_low[1, c]; i <= cell_high[1, c]; i++)
+                        for (i = cell_low[c,1]; i <= cell_high[1, c]; i++)
                         {
                             xi = i * dnxm1;
                             exact_solution1(xi, eta, zeta, ref u_exact);
