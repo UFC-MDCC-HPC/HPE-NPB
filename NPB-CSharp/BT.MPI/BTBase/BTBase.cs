@@ -27,33 +27,31 @@ namespace NPB {
                                  dz5tz1, dnxm1, dnym1, dnzm1, c1c2, c1c5, c3c4, c1345, conz1, c1, c2, c3, c4, c5, c4dssp, c5dssp, 
                                  dtdssp, dttx1, bt, dttx2, dtty1, dtty2, dttz1, dttz2, c2dttx1, c2dtty1, c2dttz1, comz1, comz4, 
                                  comz5, comz6, c3c4tx3, c3c4ty3, c3c4tz3, c2iv, con43, con16;
-            protected static double[,] ce = new double[5+le, 13+le];
             protected int EAST = 2000, WEST = 3000, NORTH = 4000, SOUTH = 5000, BOTTOM = 6000, TOP = 7000;
+            protected static double[,] ce = new double[5+le, 13+le];            
             protected static int[,] cell_coord;
             protected static int[,] cell_low;
             protected static int[,] cell_high;
-            protected static int[,] cell_size;
-            protected static int[] predecessor;
+            protected static int[,] cell_size;            
             protected static int[,] slice;
-            protected static int[] grid_size;
-            protected static int[] successor;
             protected static int[,] start;
             protected static int[,] end;
+            protected static double[,] tmp_block=new double[5, 5];
+            protected static double[,] b_inverse=new double[5, 5];        
+            protected static double[,] ue, buf; //
+            protected static int[] predecessor;
+            protected static int[] grid_size;
+            protected static int[] successor;
             protected int IMAX, JMAX, KMAX, MAX_CELL_DIM, BUF_SIZE;
             protected static double[, , ,] us, vs, ws, qs, rho_i, square, backsub_info;
             protected static double[, , , ,] forcing, u, rhs;
             protected static double[, , , , ,] lhsc;
             //protected static double[] in_buffer, out_buffer;
             protected static double[] sum;
-
             protected static double[] cv, rhon, rhos, rhoq, cuf, q;
-            protected static double[,] ue, buf; //
-
             protected static int west_size, east_size, bottom_size, top_size, north_size, south_size, start_send_west, start_send_east,
                               start_send_south, start_send_north, start_send_bottom, start_send_top, start_recv_west, start_recv_east,
                               start_recv_south, start_recv_north, start_recv_bottom, start_recv_top;
-            protected static double[,] tmp_block = new double[5, 5];
-            protected static double[,] b_inverse = new double[5, 5];
             protected static double[] tmp_vec = new double[5];
             protected static double[] xce_sub = new double[5];
             protected static int collbuf_nodes, collbuf_size, iosize, eltext, combined_btype, fp, idump, record_length, idump_sub, rd_interval;
