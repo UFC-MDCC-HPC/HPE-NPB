@@ -283,9 +283,9 @@ namespace NPB
             //     determine the location of the cell at the bottom of the 3D 
             //     array of cells
             //---------------------------------------------------------------------
-            cell_coord[1, 1] = (int)mod(node, p);
-            cell_coord[2, 1] = node / p;
-            cell_coord[3, 1] = 0;
+            cell_coord[1,1] = (int)mod(node, p);
+            cell_coord[1,2] = node / p;
+            cell_coord[1,3] = 0;
             //---------------------------------------------------------------------
             //     set the cell_coords for cells in the rest of the z-layers; 
             //     this comes down to a simple linear numbering in the z-direct-
@@ -293,9 +293,9 @@ namespace NPB
             //---------------------------------------------------------------------
             for (c = 2; c <= p; c++)
             {
-                cell_coord[1, c] = (int)mod(cell_coord[1, c - 1] + 1, p);
-                cell_coord[2, c] = (int)mod(cell_coord[2, c - 1] - 1 + p, p);
-                cell_coord[3, c] = c - 1;
+                cell_coord[c,1] = (int)mod(cell_coord[c-1,1] + 1, p);
+                cell_coord[c,2] = (int)mod(cell_coord[c-1,2] - 1 + p, p);
+                cell_coord[c,3] = c - 1;
             }
             //---------------------------------------------------------------------
             //     offset all the coordinates by 1 to adjust for Fortran arrays
@@ -304,7 +304,7 @@ namespace NPB
             {
                 for (c = 1; c <= p; c++)
                 {
-                    cell_coord[dir, c] = cell_coord[dir, c] + 1;
+                    cell_coord[c,dir] = cell_coord[c,dir] + 1;
                 }
             }
             //---------------------------------------------------------------------
@@ -315,7 +315,7 @@ namespace NPB
             {
                 for (c = 1; c <= p; c++)
                 {
-                    slice[dir, cell_coord[dir, c]] = c;
+                    slice[dir, cell_coord[c,dir]] = c;
                 }
             }
             //---------------------------------------------------------------------
@@ -325,8 +325,8 @@ namespace NPB
             //     added to those arguments to the mod functions that might
             //     otherwise return wrong values when using the modulo function
             //---------------------------------------------------------------------
-            i = cell_coord[1, 1] - 1;
-            j = cell_coord[2, 1] - 1;
+            i = cell_coord[1,1] - 1;
+            j = cell_coord[1,2] - 1;
 
             predecessor[1] = ((int)mod(i - 1 + p, p)) + p * j;
             predecessor[2] = i + p * ((int)mod(j - 1 + p, p));
@@ -347,16 +347,16 @@ namespace NPB
                 excess = (int)mod(grid_points[dir], p);
                 for (c = 1; c <= ncells; c++)
                 {
-                    if (cell_coord[dir, c] <= excess)
+                    if (cell_coord[c,dir] <= excess)
                     {
                         cell_size[dir, c] = size + 1;
-                        cell_low[dir, c] = (cell_coord[dir, c] - 1) * (size + 1);
+                        cell_low[dir, c] = (cell_coord[c,dir] - 1) * (size + 1);
                         cell_high[dir, c] = cell_low[dir, c] + size;
                     }
                     else
                     {
                         cell_size[dir, c] = size;
-                        cell_low[dir, c] = excess * (size + 1) + (cell_coord[dir, c] - excess - 1) * size;
+                        cell_low[dir, c] = excess * (size + 1) + (cell_coord[c,dir] - excess - 1) * size;
                         cell_high[dir, c] = cell_low[dir, c] + size - 1;
                     }
                     if (cell_size[dir, c] <= 2)
@@ -798,7 +798,7 @@ namespace NPB
                 //---------------------------------------------------------------------
                 for (d = 1; d <= 3; d++)
                 {
-                    if (cell_coord[d, c] == 1)
+                    if (cell_coord[c,d] == 1)
                     {
                         start[d, c] = 1;
                     }
@@ -806,7 +806,7 @@ namespace NPB
                     {
                         start[d, c] = 0;
                     }
-                    if (cell_coord[d, c] == ncells)
+                    if (cell_coord[c,d] == ncells)
                     {
                         end[d, c] = 1;
                     }
@@ -1153,8 +1153,8 @@ namespace NPB
             for (c = 1; c <= ncells; c++)
             {
                 face_size = cell_size[2, c] * cell_size[3, c] * dim * 2;
-                if (cell_coord[1, c] != 1) west_size = west_size + face_size;
-                if (cell_coord[1, c] != ncells) east_size = east_size + face_size;
+                if (cell_coord[c,1] != 1) west_size = west_size + face_size;
+                if (cell_coord[c,1] != ncells) east_size = east_size + face_size;
             }
 
             north_size = 0;
@@ -1162,8 +1162,8 @@ namespace NPB
             for (c = 1; c <= ncells; c++)
             {
                 face_size = cell_size[1, c] * cell_size[3, c] * dim * 2;
-                if (cell_coord[2, c] != 1) south_size = south_size + face_size;
-                if (cell_coord[2, c] != ncells) north_size = north_size + face_size;
+                if (cell_coord[c,2] != 1) south_size = south_size + face_size;
+                if (cell_coord[c,2] != ncells) north_size = north_size + face_size;
             }
 
             top_size = 0;
@@ -1171,8 +1171,8 @@ namespace NPB
             for (c = 1; c <= ncells; c++)
             {
                 face_size = cell_size[1, c] * cell_size[2, c] * dim * 2;
-                if (cell_coord[3, c] != 1) bottom_size = bottom_size + face_size;
-                if (cell_coord[3, c] != ncells) top_size = top_size + face_size;
+                if (cell_coord[c,3] != 1) bottom_size = bottom_size + face_size;
+                if (cell_coord[c,3] != ncells) top_size = top_size + face_size;
             }
 
             start_send_west = 1;
@@ -1269,7 +1269,7 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     fill the buffer to be sent to eastern neighbors [i-dir]
                 //---------------------------------------------------------------------
-                if (cell_coord[1, c] != ncells)
+                if (cell_coord[c,1] != ncells)
                 {
                     for (k = 0; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1288,7 +1288,7 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     fill the buffer to be sent to western neighbors 
                 //---------------------------------------------------------------------
-                if (cell_coord[1, c] != 1)
+                if (cell_coord[c,1] != 1)
                 {
                     for (k = 0; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1308,7 +1308,7 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     fill the buffer to be sent to northern neighbors [j_dir]
                 //---------------------------------------------------------------------
-                if (cell_coord[2, c] != ncells)
+                if (cell_coord[c,2] != ncells)
                 {
                     for (k = 0; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1328,7 +1328,7 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     fill the buffer to be sent to southern neighbors 
                 //---------------------------------------------------------------------
-                if (cell_coord[2, c] != 1)
+                if (cell_coord[c,2] != 1)
                 {
                     for (k = 0; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1348,7 +1348,7 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     fill the buffer to be sent to top neighbors [k-dir]
                 //---------------------------------------------------------------------
-                if (cell_coord[3, c] != ncells)
+                if (cell_coord[c,3] != ncells)
                 {
                     for (k = cell_size[3, c] - 2; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1368,7 +1368,7 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     fill the buffer to be sent to bottom neighbors
                 //---------------------------------------------------------------------
-                if (cell_coord[3, c] != 1)
+                if (cell_coord[c,3] != 1)
                 {
                     for (k = 0; k <= 1; k++)
                     {
@@ -1424,7 +1424,7 @@ namespace NPB
 
             for (c = 1; c <= ncells; c++)
             {
-                if (cell_coord[1, c] != 1)
+                if (cell_coord[c,1] != 1)
                 {
                     for (k = 0; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1442,7 +1442,7 @@ namespace NPB
                     }
                 }
 
-                if (cell_coord[1, c] != ncells)
+                if (cell_coord[c,1] != ncells)
                 {
                     for (k = 0; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1460,7 +1460,7 @@ namespace NPB
                     }
                 }
 
-                if (cell_coord[2, c] != 1)
+                if (cell_coord[c,2] != 1)
                 {
                     for (k = 0; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1478,7 +1478,7 @@ namespace NPB
                     }
                 }
 
-                if (cell_coord[2, c] != ncells)
+                if (cell_coord[c,2] != ncells)
                 {
                     for (k = 0; k <= cell_size[3, c] - 1; k++)
                     {
@@ -1496,7 +1496,7 @@ namespace NPB
                     }
                 }
 
-                if (cell_coord[3, c] != 1)
+                if (cell_coord[c,3] != 1)
                 {
                     for (k = -2; k <= -1; k++)
                     {
@@ -1514,7 +1514,7 @@ namespace NPB
                     }
                 }
 
-                if (cell_coord[3, c] != ncells)
+                if (cell_coord[c,3] != ncells)
                 {
                     for (k = cell_size[3, c]; k <= cell_size[3, c] + 1; k++)
                     {
@@ -2136,8 +2136,8 @@ namespace NPB
             int buffer_size;
 
             isize = cell_size[1, c] - 1;
-            jp = cell_coord[2, c] - 1;
-            kp = cell_coord[3, c] - 1;
+            jp = cell_coord[c,2] - 1;
+            kp = cell_coord[c,3] - 1;
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
             double[] in_buffer_x = new double[buffer_size];
             //---------------------------------------------------------------------
@@ -2181,8 +2181,8 @@ namespace NPB
             //     Send element 0 to previous processor
             //---------------------------------------------------------------------
             istart = 0;
-            jp = cell_coord[2, c] - 1;
-            kp = cell_coord[3, c] - 1;
+            jp = cell_coord[c,2] - 1;
+            kp = cell_coord[c,3] - 1;
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;
 
             double[] in_buffer_x = new double[buffer_size];
@@ -2229,8 +2229,8 @@ namespace NPB
             //     post mpi receives
             //---------------------------------------------------------------------
             int jp, kp;
-            jp = cell_coord[2, c] - 1;
-            kp = cell_coord[3, c] - 1;
+            jp = cell_coord[c,2] - 1;
+            kp = cell_coord[c,3] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[1], EAST+jp+kp*NCELLS, comm_solve, recv_id, error];
 
             recv_id[0] = comm_solve.ImmediateReceive<double>(successor[1], EAST + jp + kp * ncells, out_buffer_x);
@@ -2242,8 +2242,8 @@ namespace NPB
             //     post mpi receives 
             //---------------------------------------------------------------------
             int jp, kp;
-            jp = cell_coord[2, c] - 1;
-            kp = cell_coord[3, c] - 1;
+            jp = cell_coord[c,2] - 1;
+            kp = cell_coord[c,3] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[1], WEST+jp+kp*NCELLS,  comm_solve, recv_id, error];
 
             recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[1], WEST + jp + kp * ncells, out_buffer_x);
@@ -2716,8 +2716,8 @@ namespace NPB
             int buffer_size;
 
             jsize = cell_size[2, c] - 1;
-            ip = cell_coord[1, c] - 1;
-            kp = cell_coord[3, c] - 1;
+            ip = cell_coord[c,1] - 1;
+            kp = cell_coord[c,3] - 1;
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
             double[] in_buffer_x = new double[buffer_size];
 
@@ -2763,8 +2763,8 @@ namespace NPB
             //     Send element 0 to previous processor
             //---------------------------------------------------------------------
             jstart = 0;
-            ip = cell_coord[1, c] - 1;
-            kp = cell_coord[3, c] - 1;
+            ip = cell_coord[c,1] - 1;
+            kp = cell_coord[c,3] - 1;
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;
 
             double[] in_buffer_x = new double[buffer_size];
@@ -2813,8 +2813,8 @@ namespace NPB
             //     post mpi receives
             //---------------------------------------------------------------------
             int ip, kp;
-            ip = cell_coord[1, c] - 1;
-            kp = cell_coord[3, c] - 1;
+            ip = cell_coord[c,1] - 1;
+            kp = cell_coord[c,3] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[2], NORTH+ip+kp*NCELLS, comm_solve, recv_id, error];
 
             recv_id[0] = comm_solve.ImmediateReceive<double>(successor[2], NORTH + ip + kp * ncells, out_buffer_x);
@@ -2826,8 +2826,8 @@ namespace NPB
             //     post mpi receives 
             //---------------------------------------------------------------------
             int ip, kp;
-            ip = cell_coord[1, c] - 1;
-            kp = cell_coord[3, c] - 1;
+            ip = cell_coord[c,1] - 1;
+            kp = cell_coord[c,3] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[2], SOUTH+ip+kp*NCELLS,  comm_solve, recv_id, error];
 
             recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[2], SOUTH + ip + kp * ncells, out_buffer_x);
@@ -3310,8 +3310,8 @@ namespace NPB
             int buffer_size;
 
             ksize = cell_size[3, c] - 1;
-            ip = cell_coord[1, c] - 1;
-            jp = cell_coord[2, c] - 1;
+            ip = cell_coord[c,1] - 1;
+            jp = cell_coord[c,2] - 1;
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
             double[] in_buffer_x = new double[buffer_size];
 
@@ -3357,8 +3357,8 @@ namespace NPB
             //     Send element 0 to previous processor
             //---------------------------------------------------------------------
             kstart = 0;
-            ip = cell_coord[1, c] - 1;
-            jp = cell_coord[2, c] - 1;
+            ip = cell_coord[c,1] - 1;
+            jp = cell_coord[c,2] - 1;
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;
 
             double[] in_buffer_x = new double[buffer_size];
@@ -3406,8 +3406,8 @@ namespace NPB
             //     post mpi receives
             //---------------------------------------------------------------------
             int ip, jp;
-            ip = cell_coord[1, c] - 1;
-            jp = cell_coord[2, c] - 1;
+            ip = cell_coord[c,1] - 1;
+            jp = cell_coord[c,2] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[3], TOP+ip+jp*NCELLS, comm_solve, recv_id, error];
 
             recv_id[0] = comm_solve.ImmediateReceive<double>(successor[3], TOP + ip + jp * ncells, out_buffer_x);
@@ -3419,8 +3419,8 @@ namespace NPB
             //     post mpi receives 
             //---------------------------------------------------------------------
             int ip, jp;
-            ip = cell_coord[1, c] - 1;
-            jp = cell_coord[2, c] - 1;
+            ip = cell_coord[c,1] - 1;
+            jp = cell_coord[c,2] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[3], BOTTOM+ip+jp*NCELLS, comm_solve, recv_id, error];
 
             recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[3], BOTTOM + ip + jp * ncells, out_buffer_x);
