@@ -38,7 +38,7 @@ namespace NPB {
             protected static int[,] end;       // invertido para c#
             //protected static double[,] tmp_block=new double[5, 5]; // invertido para c#
             //protected static double[,] b_inverse=new double[5, 5]; // invertido para c#   
-            protected static double[,] ue, buf; // invertido para c#  ue
+            protected static double[,] ue, buf; // invertido para c#  ue buf
             protected static int[] predecessor;
             protected static int[] grid_size;
             protected static int[] successor;
@@ -244,7 +244,7 @@ namespace NPB {
             cuf          = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
             q            = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
             ue           = new double[5+le,MAX_CELL_DIM+4];//[-2:MAX_CELL_DIM+1,5]; // invertido para c#
-            buf          = new double[MAX_CELL_DIM+4,5+le];//[-2:MAX_CELL_DIM+1,5];
+            buf          = new double[5+le,MAX_CELL_DIM+4];//[-2:MAX_CELL_DIM+1,5]; // invertido para c#
 
             fjac = new double[MAX_CELL_DIM+4, 5+le, 5+le]; //[5, 5, -2:MAX_CELL_DIM+1];
             njac = new double[MAX_CELL_DIM+4, 5+le, 5+le]; //[5, 5, -2:MAX_CELL_DIM+1];

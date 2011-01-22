@@ -935,21 +935,21 @@ namespace NPB
                             dtpp = 1.0d / dtemp[1];
                             for (m = 2; m <= 5; m++)
                             {
-                                buf[2 + i, m] = dtpp * dtemp[m];
+                                buf[m,2+i] = dtpp * dtemp[m];
                             }
-                            cuf[2 + i] = buf[2 + i, 2] * buf[2 + i, 2];
-                            buf[2 + i, 1] = cuf[2 + i] + buf[2 + i, 3] * buf[2 + i, 3] + buf[2 + i, 4] * buf[2 + i, 4];
-                            q[2 + i] = 0.5d * (buf[2 + i, 2] * ue[2,2 + i] + buf[2 + i, 3] * ue[3,2 + i] + buf[2 + i, 4] * ue[4,2 + i]);
+                            cuf[2 + i] = buf[2,2 + i] * buf[2,2 + i];
+                            buf[1,2 + i] = cuf[2 + i] + buf[3,2 + i] * buf[3,2 + i] + buf[4,2 + i] * buf[4,2 + i];
+                            q[2 + i] = 0.5d * (buf[2,2 + i] * ue[2,2 + i] + buf[3,2 + i] * ue[3,2 + i] + buf[4,2 + i] * ue[4,2 + i]);
                         }
                         for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             im1 = i - 1;
                             ip1 = i + 1;
                             forcing[c, k, j, i, 1] = forcing[c, k, j, i, 1] - tx2 * (ue[2,2 + ip1] - ue[2,2 + im1]) + dx1tx1 * (ue[1,2 + ip1] - 2.0d * ue[1,2 + i] + ue[1,2 + im1]);
-                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - tx2 * ((ue[2,2 + ip1] * buf[2 + ip1, 2] + c2 * (ue[5,2 + ip1] - q[2 + ip1])) - (ue[2,2 + im1] * buf[2 + im1, 2] + c2 * (ue[5,2 + im1] - q[2 + im1]))) + xxcon1 * (buf[2 + ip1, 2] - 2.0d * buf[2 + i, 2] + buf[2 + im1, 2]) + dx2tx1 * (ue[2,2 + ip1] - 2.0d * ue[2,2 + i] + ue[2,2 + im1]);
-                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - tx2 * (ue[3,2 + ip1] * buf[2 + ip1, 2] - ue[3,2 + im1] * buf[2 + im1, 2]) + xxcon2 * (buf[2 + ip1, 3] - 2.0d * buf[2 + i, 3] + buf[2 + im1, 3]) + dx3tx1 * (ue[3,2 + ip1] - 2.0d * ue[3,2 + i] + ue[3,2 + im1]);
-                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - tx2 * (ue[4,2 + ip1] * buf[2 + ip1, 2] - ue[4,2 + im1] * buf[2 + im1, 2]) + xxcon2 * (buf[2 + ip1, 4] - 2.0d * buf[2 + i, 4] + buf[2 + im1, 4]) + dx4tx1 * (ue[4,2 + ip1] - 2.0d * ue[4,2 + i] + ue[4,2 + im1]);
-                            forcing[c, k, j, i, 5] = forcing[c, k, j, i, 5] - tx2 * (buf[2 + ip1, 2] * (c1 * ue[5,2 + ip1] - c2 * q[2 + ip1]) - buf[2 + im1, 2] * (c1 * ue[5,2 + im1] - c2 * q[2 + im1])) + 0.5d * xxcon3 * (buf[2 + ip1, 1] - 2.0d * buf[2 + i, 1] + buf[2 + im1, 1]) + xxcon4 * (cuf[2 + ip1] - 2.0d * cuf[2 + i] + cuf[2 + im1]) + xxcon5 * (buf[2 + ip1, 5] - 2.0d * buf[2 + i, 5] + buf[2 + im1, 5]) + dx5tx1 * (ue[5,2 + ip1] - 2.0d * ue[5,2 + i] + ue[5,2 + im1]);
+                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - tx2 * ((ue[2,2 + ip1] * buf[2,2 + ip1] + c2 * (ue[5,2 + ip1] - q[2 + ip1])) - (ue[2,2 + im1] * buf[2,2 + im1] + c2 * (ue[5,2 + im1] - q[2 + im1]))) + xxcon1 * (buf[2,2 + ip1] - 2.0d * buf[2,2 + i] + buf[2,2 + im1]) + dx2tx1 * (ue[2,2 + ip1] - 2.0d * ue[2,2 + i] + ue[2,2 + im1]);
+                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - tx2 * (ue[3,2 + ip1] * buf[2,2 + ip1] - ue[3,2 + im1] * buf[2,2 + im1]) + xxcon2 * (buf[3,2 + ip1] - 2.0d * buf[3,2 + i] + buf[3,2 + im1]) + dx3tx1 * (ue[3,2 + ip1] - 2.0d * ue[3,2 + i] + ue[3,2 + im1]);
+                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - tx2 * (ue[4,2 + ip1] * buf[2,2 + ip1] - ue[4,2 + im1] * buf[2,2 + im1]) + xxcon2 * (buf[4,2 + ip1] - 2.0d * buf[4,2 + i] + buf[4,2 + im1]) + dx4tx1 * (ue[4,2 + ip1] - 2.0d * ue[4,2 + i] + ue[4,2 + im1]);
+                            forcing[c, k, j, i, 5] = forcing[c, k, j, i, 5] - tx2 * (buf[2,2 + ip1] * (c1 * ue[5,2 + ip1] - c2 * q[2 + ip1]) - buf[2,2 + im1] * (c1 * ue[5,2 + im1] - c2 * q[2 + im1])) + 0.5d * xxcon3 * (buf[1,2 + ip1] - 2.0d * buf[1,2 + i] + buf[1,2 + im1]) + xxcon4 * (cuf[2 + ip1] - 2.0d * cuf[2 + i] + cuf[2 + im1]) + xxcon5 * (buf[5,2 + ip1] - 2.0d * buf[5,2 + i] + buf[5,2 + im1]) + dx5tx1 * (ue[5,2 + ip1] - 2.0d * ue[5,2 + i] + ue[5,2 + im1]);
                         }
                         //---------------------------------------------------------------------
                         //      Fourth-order dissipation                         
@@ -1003,21 +1003,21 @@ namespace NPB
                             dtpp = 1.0d / dtemp[1];
                             for (m = 2; m <= 5; m++)
                             {
-                                buf[2 + j, m] = dtpp * dtemp[m];
+                                buf[m,2 + j] = dtpp * dtemp[m];
                             }
-                            cuf[2 + j] = buf[2 + j, 3] * buf[2 + j, 3];
-                            buf[2 + j, 1] = cuf[2 + j] + buf[2 + j, 2] * buf[2 + j, 2] + buf[2 + j, 4] * buf[2 + j, 4];
-                            q[2 + j] = 0.5d * (buf[2 + j, 2] * ue[2,2 + j] + buf[2 + j, 3] * ue[3,2 + j] + buf[2 + j, 4] * ue[4,2 + j]);
+                            cuf[2 + j] = buf[3,2 + j] * buf[3,2 + j];
+                            buf[1,2 + j] = cuf[2 + j] + buf[2,2 + j] * buf[2,2 + j] + buf[4,2 + j] * buf[4,2 + j];
+                            q[2 + j] = 0.5d * (buf[2,2 + j] * ue[2,2 + j] + buf[3,2 + j] * ue[3,2 + j] + buf[4,2 + j] * ue[4,2 + j]);
                         }
                         for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                         {
                             jm1 = j - 1;
                             jp1 = j + 1;
                             forcing[c, k, j, i, 1] = forcing[c, k, j, i, 1] - ty2 * (ue[3,2 + jp1] - ue[3,2 + jm1]) + dy1ty1 * (ue[1,2 + jp1] - 2.0d * ue[1,2 + j] + ue[1,2 + jm1]);
-                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - ty2 * (ue[2,2 + jp1] * buf[2 + jp1, 3] - ue[2,2 + jm1] * buf[2 + jm1, 3]) + yycon2 * (buf[2 + jp1, 2] - 2.0d * buf[2 + j, 2] + buf[2 + jm1, 2]) + dy2ty1 * (ue[2,2 + jp1] - 2.0 * ue[2,2 + j] + ue[2,2 + jm1]);
-                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - ty2 * ((ue[3,2 + jp1] * buf[2 + jp1, 3] + c2 * (ue[5,2 + jp1] - q[2 + jp1])) - (ue[3,2 + jm1] * buf[2 + jm1, 3] + c2 * (ue[5,2 + jm1] - q[2 + jm1]))) + yycon1 * (buf[2 + jp1, 3] - 2.0d * buf[2 + j, 3] + buf[2 + jm1, 3]) + dy3ty1 * (ue[3,2 + jp1] - 2.0d * ue[3,2 + j] + ue[3,2 + jm1]);
-                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - ty2 * (ue[4,2 + jp1] * buf[2 + jp1, 3] - ue[4,2 + jm1] * buf[2 + jm1, 3]) + yycon2 * (buf[2 + jp1, 4] - 2.0d * buf[2 + j, 4] + buf[2 + jm1, 4]) + dy4ty1 * (ue[4,2 + jp1] - 2.0d * ue[4,2 + j] + ue[4,2 + jm1]);
-                            forcing[c, k, j, i, 5] = forcing[c, k, j, i, 5] - ty2 * (buf[2 + jp1, 3] * (c1 * ue[5,2 + jp1] - c2 * q[2 + jp1]) - buf[2 + jm1, 3] * (c1 * ue[5,2 + jm1] - c2 * q[2 + jm1])) + 0.5d * yycon3 * (buf[2 + jp1, 1] - 2.0d * buf[2 + j, 1] + buf[2 + jm1, 1]) + yycon4 * (cuf[2 + jp1] - 2.0d * cuf[2 + j] + cuf[2 + jm1]) + yycon5 * (buf[2 + jp1, 5] - 2.0d * buf[2 + j, 5] + buf[2 + jm1, 5]) + dy5ty1 * (ue[5,2 + jp1] - 2.0d * ue[5,2 + j] + ue[5,2 + jm1]);
+                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - ty2 * (ue[2,2 + jp1] * buf[3,2 + jp1] - ue[2,2 + jm1] * buf[3,2 + jm1]) + yycon2 * (buf[2,2 + jp1] - 2.0d * buf[2,2 + j] + buf[2,2 + jm1]) + dy2ty1 * (ue[2,2 + jp1] - 2.0 * ue[2,2 + j] + ue[2,2 + jm1]);
+                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - ty2 * ((ue[3,2 + jp1] * buf[3,2 + jp1] + c2 * (ue[5,2 + jp1] - q[2 + jp1])) - (ue[3,2 + jm1] * buf[3,2 + jm1] + c2 * (ue[5,2 + jm1] - q[2 + jm1]))) + yycon1 * (buf[3,2 + jp1] - 2.0d * buf[3,2 + j] + buf[3,2 + jm1]) + dy3ty1 * (ue[3,2 + jp1] - 2.0d * ue[3,2 + j] + ue[3,2 + jm1]);
+                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - ty2 * (ue[4,2 + jp1] * buf[3,2 + jp1] - ue[4,2 + jm1] * buf[3,2 + jm1]) + yycon2 * (buf[4,2 + jp1] - 2.0d * buf[4,2 + j] + buf[4,2 + jm1]) + dy4ty1 * (ue[4,2 + jp1] - 2.0d * ue[4,2 + j] + ue[4,2 + jm1]);
+                            forcing[c, k, j, i, 5] = forcing[c, k, j, i, 5] - ty2 * (buf[3,2 + jp1] * (c1 * ue[5,2 + jp1] - c2 * q[2 + jp1]) - buf[3,2 + jm1] * (c1 * ue[5,2 + jm1] - c2 * q[2 + jm1])) + 0.5d * yycon3 * (buf[1,2 + jp1] - 2.0d * buf[1,2 + j] + buf[1,2 + jm1]) + yycon4 * (cuf[2 + jp1] - 2.0d * cuf[2 + j] + cuf[2 + jm1]) + yycon5 * (buf[5,2 + jp1] - 2.0d * buf[5,2 + j] + buf[5,2 + jm1]) + dy5ty1 * (ue[5,2 + jp1] - 2.0d * ue[5,2 + j] + ue[5,2 + jm1]);
                         }
                         //---------------------------------------------------------------------
                         //     Fourth-order dissipation                      
@@ -1071,21 +1071,21 @@ namespace NPB
                             dtpp = 1.0d / dtemp[1];
                             for (m = 2; m <= 5; m++)
                             {
-                                buf[2 + k, m] = dtpp * dtemp[m];
+                                buf[m,2 + k] = dtpp * dtemp[m];
                             }
-                            cuf[2 + k] = buf[2 + k, 4] * buf[2 + k, 4];
-                            buf[2 + k, 1] = cuf[2 + k] + buf[2 + k, 2] * buf[2 + k, 2] + buf[2 + k, 3] * buf[2 + k, 3];
-                            q[2 + k] = 0.5d * (buf[2 + k, 2] * ue[2,2 + k] + buf[2 + k, 3] * ue[3,2 + k] + buf[2 + k, 4] * ue[4,2 + k]);
+                            cuf[2 + k] = buf[4,2 + k] * buf[4,2 + k];
+                            buf[1,2 + k] = cuf[2 + k] + buf[2,2 + k] * buf[2,2 + k] + buf[3,2 + k] * buf[3,2 + k];
+                            q[2 + k] = 0.5d * (buf[2,2 + k] * ue[2,2 + k] + buf[3,2 + k] * ue[3,2 + k] + buf[4,2 + k] * ue[4,2 + k]);
                         }
                         for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                         {
                             km1 = k - 1;
                             kp1 = k + 1;
                             forcing[c, k, j, i, 1] = forcing[c, k, j, i, 1] - tz2 * (ue[4,2 + kp1] - ue[4,2 + km1]) + dz1tz1 * (ue[1,2 + kp1] - 2.0d * ue[1,2 + k] + ue[1,2 + km1]);
-                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - tz2 * (ue[2,2 + kp1] * buf[2 + kp1, 4] - ue[2,2 + km1] * buf[2 + km1, 4]) + zzcon2 * (buf[2 + kp1, 2] - 2.0d * buf[2 + k, 2] + buf[2 + km1, 2]) + dz2tz1 * (ue[2,2 + kp1] - 2.0d * ue[2,2 + k] + ue[2,2 + km1]);
-                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - tz2 * (ue[3,2 + kp1] * buf[2 + kp1, 4] - ue[3,2 + km1] * buf[2 + km1, 4]) + zzcon2 * (buf[2 + kp1, 3] - 2.0d * buf[2 + k, 3] + buf[2 + km1, 3]) + dz3tz1 * (ue[3,2 + kp1] - 2.0d * ue[3,2 + k] + ue[3,2 + km1]);
-                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - tz2 * ((ue[4,2 + kp1] * buf[2 + kp1, 4] + c2 * (ue[5,2 + kp1] - q[2 + kp1])) - (ue[4,2 + km1] * buf[2 + km1, 4] + c2 * (ue[5,2 + km1] - q[2 + km1]))) + zzcon1 * (buf[2 + kp1, 4] - 2.0d * buf[2 + k, 4] + buf[2 + km1, 4]) + dz4tz1 * (ue[4,2 + kp1] - 2.0d * ue[4,2 + k] + ue[4,2 + km1]);
-                            forcing[c, k, j, i, 5] = forcing[c, k, j, i, 5] - tz2 * (buf[2 + kp1, 4] * (c1 * ue[5,2 + kp1] - c2 * q[2 + kp1]) - buf[2 + km1, 4] * (c1 * ue[5,2 + km1] - c2 * q[2 + km1])) + 0.5d * zzcon3 * (buf[2 + kp1, 1] - 2.0d * buf[2 + k, 1] + buf[2 + km1, 1]) + zzcon4 * (cuf[2 + kp1] - 2.0d * cuf[2 + k] + cuf[2 + km1]) + zzcon5 * (buf[2 + kp1, 5] - 2.0d * buf[2 + k, 5] + buf[2 + km1, 5]) + dz5tz1 * (ue[5,2 + kp1] - 2.0d * ue[5,2 + k] + ue[5,2 + km1]);
+                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - tz2 * (ue[2,2 + kp1] * buf[4,2 + kp1] - ue[2,2 + km1] * buf[4,2 + km1]) + zzcon2 * (buf[2,2 + kp1] - 2.0d * buf[2,2 + k] + buf[2,2 + km1]) + dz2tz1 * (ue[2,2 + kp1] - 2.0d * ue[2,2 + k] + ue[2,2 + km1]);
+                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - tz2 * (ue[3,2 + kp1] * buf[4,2 + kp1] - ue[3,2 + km1] * buf[4,2 + km1]) + zzcon2 * (buf[3,2 + kp1] - 2.0d * buf[3,2 + k] + buf[3,2 + km1]) + dz3tz1 * (ue[3,2 + kp1] - 2.0d * ue[3,2 + k] + ue[3,2 + km1]);
+                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - tz2 * ((ue[4,2 + kp1] * buf[4,2 + kp1] + c2 * (ue[5,2 + kp1] - q[2 + kp1])) - (ue[4,2 + km1] * buf[4,2 + km1] + c2 * (ue[5,2 + km1] - q[2 + km1]))) + zzcon1 * (buf[4,2 + kp1] - 2.0d * buf[4,2 + k] + buf[4,2 + km1]) + dz4tz1 * (ue[4,2 + kp1] - 2.0d * ue[4,2 + k] + ue[4,2 + km1]);
+                            forcing[c, k, j, i, 5] = forcing[c, k, j, i, 5] - tz2 * (buf[4,2 + kp1] * (c1 * ue[5,2 + kp1] - c2 * q[2 + kp1]) - buf[4,2 + km1] * (c1 * ue[5,2 + km1] - c2 * q[2 + km1])) + 0.5d * zzcon3 * (buf[1,2 + kp1] - 2.0d * buf[1,2 + k] + buf[1,2 + km1]) + zzcon4 * (cuf[2 + kp1] - 2.0d * cuf[2 + k] + cuf[2 + km1]) + zzcon5 * (buf[5,2 + kp1] - 2.0d * buf[5,2 + k] + buf[5,2 + km1]) + dz5tz1 * (ue[5,2 + kp1] - 2.0d * ue[5,2 + k] + ue[5,2 + km1]);
                         }
                         //---------------------------------------------------------------------
                         //     Fourth-order dissipation                        
