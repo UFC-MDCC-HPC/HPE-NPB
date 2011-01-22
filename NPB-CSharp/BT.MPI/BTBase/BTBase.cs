@@ -205,9 +205,9 @@ namespace NPB {
         }
 
         private void initVars(){
-            predecessor  = new int[3+le];    
-            grid_size    = new int[3+le];
-            successor    = new int[3+le];
+            predecessor  = new int[3]; // retorno indice zero 0    
+            successor    = new int[3]; // retorno indice zero 0   
+            grid_size    = new int[3+le];             
             MAX_CELL_DIM = (problem_size/maxcells)+1;
             IMAX         = MAX_CELL_DIM;
             JMAX         = MAX_CELL_DIM;

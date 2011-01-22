@@ -328,12 +328,12 @@ namespace NPB
             i = cell_coord[1,1] - 1;
             j = cell_coord[1,2] - 1;
 
-            predecessor[1] = ((int)mod(i - 1 + p, p)) + p * j;
-            predecessor[2] = i + p * ((int)mod(j - 1 + p, p));
-            predecessor[3] = ((int)mod(i + 1, p)) + p * ((int)mod(j - 1 + p, p));
-            successor[1] = ((int)mod(i + 1, p)) + p * j;
-            successor[2] = i + p * ((int)mod(j + 1, p));
-            successor[3] = ((int)mod(i - 1 + p, p)) + p * ((int)mod(j + 1, p));
+            predecessor[0] = ((int)mod(i - 1 + p, p)) + p * j;
+            predecessor[1] = i + p * ((int)mod(j - 1 + p, p));
+            predecessor[2] = ((int)mod(i + 1, p)) + p * ((int)mod(j - 1 + p, p));
+            successor[0] = ((int)mod(i + 1, p)) + p * j;
+            successor[1] = i + p * ((int)mod(j + 1, p));
+            successor[2] = ((int)mod(i - 1 + p, p)) + p * ((int)mod(j + 1, p));
 
             //---------------------------------------------------------------------
             //     now compute the sizes of the cells                                    
@@ -1392,19 +1392,19 @@ namespace NPB
             {
                 MPI.RequestList requestList = new MPI.RequestList();
 
-                requests[0] = comm_rhs.ImmediateReceive<double>(successor[1], WEST, in_buffer[0]);//call mpi_irecv[in_buffer[sr[0]], b_size[0], dp_type, successor[1], WEST,  comm_rhs, requests[0], error];
-                requests[1] = comm_rhs.ImmediateReceive<double>(predecessor[1], EAST, in_buffer[1]);//call mpi_irecv[in_buffer[sr[1]], b_size[1], dp_type, predecessor[1], EAST, comm_rhs, requests[1], error];
-                requests[2] = comm_rhs.ImmediateReceive<double>(successor[2], SOUTH, in_buffer[2]);//call mpi_irecv[in_buffer[sr[2]], b_size[2], dp_type, successor[2], SOUTH, comm_rhs, requests[2], error];
-                requests[3] = comm_rhs.ImmediateReceive<double>(predecessor[2], NORTH, in_buffer[3]);//call mpi_irecv[in_buffer[sr[3]], b_size[3], dp_type, predecessor[2], NORTH, comm_rhs, requests[3], error];
-                requests[4] = comm_rhs.ImmediateReceive<double>(successor[3], BOTTOM, in_buffer[4]);//call mpi_irecv[in_buffer[sr[4]], b_size[4], dp_type, successor[3], BOTTOM,  comm_rhs, requests[4], error];
-                requests[5] = comm_rhs.ImmediateReceive<double>(predecessor[3], TOP, in_buffer[5]);//call mpi_irecv[in_buffer[sr[5]], b_size[5], dp_type, predecessor[3], TOP, comm_rhs, requests[5], error];
+                requests[0] = comm_rhs.ImmediateReceive<double>(successor[0], WEST, in_buffer[0]);//call mpi_irecv[in_buffer[sr[0]], b_size[0], dp_type, successor[1], WEST,  comm_rhs, requests[0], error];
+                requests[1] = comm_rhs.ImmediateReceive<double>(predecessor[0], EAST, in_buffer[1]);//call mpi_irecv[in_buffer[sr[1]], b_size[1], dp_type, predecessor[1], EAST, comm_rhs, requests[1], error];
+                requests[2] = comm_rhs.ImmediateReceive<double>(successor[1], SOUTH, in_buffer[2]);//call mpi_irecv[in_buffer[sr[2]], b_size[2], dp_type, successor[2], SOUTH, comm_rhs, requests[2], error];
+                requests[3] = comm_rhs.ImmediateReceive<double>(predecessor[1], NORTH, in_buffer[3]);//call mpi_irecv[in_buffer[sr[3]], b_size[3], dp_type, predecessor[2], NORTH, comm_rhs, requests[3], error];
+                requests[4] = comm_rhs.ImmediateReceive<double>(successor[2], BOTTOM, in_buffer[4]);//call mpi_irecv[in_buffer[sr[4]], b_size[4], dp_type, successor[3], BOTTOM,  comm_rhs, requests[4], error];
+                requests[5] = comm_rhs.ImmediateReceive<double>(predecessor[2], TOP, in_buffer[5]);//call mpi_irecv[in_buffer[sr[5]], b_size[5], dp_type, predecessor[3], TOP, comm_rhs, requests[5], error];
 
-                requests[6] = comm_rhs.ImmediateSend<double>(out_buffer[0], successor[1], EAST);//call mpi_isend[out_buffer[ss[0]], b_size[0], dp_type, successor[1],   EAST, comm_rhs, requests[6], error];
-                requests[7] = comm_rhs.ImmediateSend<double>(out_buffer[1], predecessor[1], WEST);//call mpi_isend[out_buffer[ss[1]], b_size[1], dp_type, predecessor[1], WEST, comm_rhs, requests[7], error];
-                requests[8] = comm_rhs.ImmediateSend<double>(out_buffer[2], successor[2], NORTH);//call mpi_isend[out_buffer[ss[2]], b_size[2], dp_type,successor[2],   NORTH, comm_rhs, requests[8], error];
-                requests[9] = comm_rhs.ImmediateSend<double>(out_buffer[3], predecessor[2], SOUTH);//call mpi_isend[out_buffer[ss[3]], b_size[3], dp_type,predecessor[2], SOUTH, comm_rhs, requests[9], error];
-                requests[10] = comm_rhs.ImmediateSend<double>(out_buffer[4], successor[3], TOP);//call mpi_isend[out_buffer[ss[4]], b_size[4], dp_type,successor[3],   TOP,   comm_rhs,   requests[10], error];
-                requests[11] = comm_rhs.ImmediateSend<double>(out_buffer[5], predecessor[3], BOTTOM);//call mpi_isend[out_buffer[ss[5]], b_size[5], dp_type,predecessor[3], BOTTOM, comm_rhs,requests[11], error];
+                requests[6] = comm_rhs.ImmediateSend<double>(out_buffer[0], successor[0], EAST);//call mpi_isend[out_buffer[ss[0]], b_size[0], dp_type, successor[1],   EAST, comm_rhs, requests[6], error];
+                requests[7] = comm_rhs.ImmediateSend<double>(out_buffer[1], predecessor[0], WEST);//call mpi_isend[out_buffer[ss[1]], b_size[1], dp_type, predecessor[1], WEST, comm_rhs, requests[7], error];
+                requests[8] = comm_rhs.ImmediateSend<double>(out_buffer[2], successor[1], NORTH);//call mpi_isend[out_buffer[ss[2]], b_size[2], dp_type,successor[2],   NORTH, comm_rhs, requests[8], error];
+                requests[9] = comm_rhs.ImmediateSend<double>(out_buffer[3], predecessor[1], SOUTH);//call mpi_isend[out_buffer[ss[3]], b_size[3], dp_type,predecessor[2], SOUTH, comm_rhs, requests[9], error];
+                requests[10] = comm_rhs.ImmediateSend<double>(out_buffer[4], successor[2], TOP);//call mpi_isend[out_buffer[ss[4]], b_size[4], dp_type,successor[3],   TOP,   comm_rhs,   requests[10], error];
+                requests[11] = comm_rhs.ImmediateSend<double>(out_buffer[5], predecessor[2], BOTTOM);//call mpi_isend[out_buffer[ss[5]], b_size[5], dp_type,predecessor[3], BOTTOM, comm_rhs,requests[11], error];
 
                 foreach (MPI.Request request in requests)
                 {
@@ -2167,7 +2167,7 @@ namespace NPB
             //     send buffer 
             //---------------------------------------------------------------------
             //call mpi_isend[in_buffer, buffer_size,dp_type, successor[1],WEST+jp+kp*NCELLS, comm_solve, send_id,error];
-            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[1], WEST + jp + kp * ncells);
+            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[0], WEST + jp + kp * ncells);
         }
 
         public void x_send_backsub_info(MPI.Request[] send_id, int c)
@@ -2200,7 +2200,7 @@ namespace NPB
                 }
             }
             //call mpi_isend[in_buffer, buffer_size,dp_type, predecessor[1], EAST+jp+kp*NCELLS, comm_solve, send_id,error];
-            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[1], EAST + jp + kp * ncells);
+            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[0], EAST + jp + kp * ncells);
         }
 
         public void x_unpack_backsub_info(double[] out_buffer_x, int c)
@@ -2233,7 +2233,7 @@ namespace NPB
             kp = cell_coord[c,3] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[1], EAST+jp+kp*NCELLS, comm_solve, recv_id, error];
 
-            recv_id[0] = comm_solve.ImmediateReceive<double>(successor[1], EAST + jp + kp * ncells, out_buffer_x);
+            recv_id[0] = comm_solve.ImmediateReceive<double>(successor[0], EAST + jp + kp * ncells, out_buffer_x);
         }
 
         public void x_receive_solve_info(double[] out_buffer_x, MPI.Request[] recv_id, int c)
@@ -2246,7 +2246,7 @@ namespace NPB
             kp = cell_coord[c,3] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[1], WEST+jp+kp*NCELLS,  comm_solve, recv_id, error];
 
-            recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[1], WEST + jp + kp * ncells, out_buffer_x);
+            recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[0], WEST + jp + kp * ncells, out_buffer_x);
         }
 
         public void x_backsubstitute(int first, int last, int c)
@@ -2749,7 +2749,7 @@ namespace NPB
             //---------------------------------------------------------------------
             //call mpi_isend[in_buffer, buffer_size, dp_type, successor[2], SOUTH+ip+kp*NCELLS, comm_solve, send_id,error];
 
-            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[2], SOUTH + ip + kp * ncells);
+            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[1], SOUTH + ip + kp * ncells);
         }
 
         public void y_send_backsub_info(MPI.Request[] send_id, int c)
@@ -2783,7 +2783,7 @@ namespace NPB
             }
             //call mpi_isend[in_buffer, buffer_size, dp_type, predecessor[2], NORTH+ip+kp*NCELLS, comm_solve, send_id,error];
 
-            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[2], NORTH + ip + kp * ncells);
+            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[1], NORTH + ip + kp * ncells);
         }
 
         public void y_unpack_backsub_info(double[] out_buffer_x, int c)
@@ -2817,7 +2817,7 @@ namespace NPB
             kp = cell_coord[c,3] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[2], NORTH+ip+kp*NCELLS, comm_solve, recv_id, error];
 
-            recv_id[0] = comm_solve.ImmediateReceive<double>(successor[2], NORTH + ip + kp * ncells, out_buffer_x);
+            recv_id[0] = comm_solve.ImmediateReceive<double>(successor[1], NORTH + ip + kp * ncells, out_buffer_x);
         }
 
         public void y_receive_solve_info(double[] out_buffer_x, MPI.Request[] recv_id, int c)
@@ -2830,7 +2830,7 @@ namespace NPB
             kp = cell_coord[c,3] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[2], SOUTH+ip+kp*NCELLS,  comm_solve, recv_id, error];
 
-            recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[2], SOUTH + ip + kp * ncells, out_buffer_x);
+            recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[1], SOUTH + ip + kp * ncells, out_buffer_x);
         }
 
         public void y_backsubstitute(int first, int last, int c)
@@ -3343,7 +3343,7 @@ namespace NPB
             //     send buffer 
             //---------------------------------------------------------------------
             //call mpi_isend[in_buffer, buffer_size, dp_type, successor[3], BOTTOM+ip+jp*NCELLS, comm_solve, send_id,error];
-            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[3], BOTTOM + ip + jp * ncells);
+            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[2], BOTTOM + ip + jp * ncells);
         }
 
         public void z_send_backsub_info(MPI.Request[] send_id, int c)
@@ -3377,7 +3377,7 @@ namespace NPB
             }
             //call mpi_isend[in_buffer, buffer_size, dp_type, predecessor[3], TOP+ip+jp*NCELLS, comm_solve, send_id,error];
 
-            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[3], TOP + ip + jp * ncells);
+            send_id[0] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[2], TOP + ip + jp * ncells);
         }
 
         public void z_unpack_backsub_info(double[] out_buffer_x, int c)
@@ -3410,7 +3410,7 @@ namespace NPB
             jp = cell_coord[c,2] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[3], TOP+ip+jp*NCELLS, comm_solve, recv_id, error];
 
-            recv_id[0] = comm_solve.ImmediateReceive<double>(successor[3], TOP + ip + jp * ncells, out_buffer_x);
+            recv_id[0] = comm_solve.ImmediateReceive<double>(successor[2], TOP + ip + jp * ncells, out_buffer_x);
         }
 
         public void z_receive_solve_info(double[] out_buffer_x, MPI.Request[] recv_id, int c)
@@ -3423,7 +3423,7 @@ namespace NPB
             jp = cell_coord[c,2] - 1;
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[3], BOTTOM+ip+jp*NCELLS, comm_solve, recv_id, error];
 
-            recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[3], BOTTOM + ip + jp * ncells, out_buffer_x);
+            recv_id[0] = comm_solve.ImmediateReceive<double>(predecessor[2], BOTTOM + ip + jp * ncells, out_buffer_x);
         }
 
         public void z_backsubstitute(int first, int last, int c)
