@@ -1114,7 +1114,7 @@ namespace NPB
                                 k = cell_size[c,3] - 3;
                                 forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m,2 + k - 2] - 4.0d * ue[m,2 + k - 1] + 6.0d * ue[m,2 + k] - 4.0d * ue[m,2 + k + 1]);
                                 k = cell_size[c,3] - 2;
-                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m,2 + k - 2] - 4.0d * ue[m,2 + k - 1] + 5.0d * ue[m,2 + k]); //cnz
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m,2 + k - 2] - 4.0d * ue[m,2 + k - 1] + 5.0d * ue[m,2 + k]);
                             }
                         }
                     }
