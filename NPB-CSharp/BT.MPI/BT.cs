@@ -808,11 +808,11 @@ namespace NPB
                     }
                     if (cell_coord[c,d] == ncells)
                     {
-                        end[d, c] = 1;
+                        end[c,d] = 1;
                     }
                     else
                     {
-                        end[d, c] = 0;
+                        end[c,d] = 0;
                     }
                 }
                 //---------------------------------------------------------------------
@@ -918,13 +918,13 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     xi-direction flux differences                      
                 //---------------------------------------------------------------------
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
                     zeta = (k + cell_low[c,3]) * dnzm1; 
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
                         eta = (j + cell_low[c,2]) * dnym1;
-                        for (i = -2 * (1 - start[c,1]); i <= cell_size[c,1] + 1 - 2 * end[1, c]; i++)
+                        for (i = -2 * (1 - start[c,1]); i <= cell_size[c,1] + 1 - 2 * end[c,1]; i++)
                         {
                             xi = (i + cell_low[c,1]) * dnxm1;
                             exact_solution1(xi, eta, zeta, ref dtemp);
@@ -941,7 +941,7 @@ namespace NPB
                             buf[2 + i, 1] = cuf[2 + i] + buf[2 + i, 3] * buf[2 + i, 3] + buf[2 + i, 4] * buf[2 + i, 4];
                             q[2 + i] = 0.5d * (buf[2 + i, 2] * ue[2 + i, 2] + buf[2 + i, 3] * ue[2 + i, 3] + buf[2 + i, 4] * ue[2 + i, 4]);
                         }
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             im1 = i - 1;
                             ip1 = i + 1;
@@ -964,14 +964,14 @@ namespace NPB
                                 forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (-4.0d * ue[2 + i - 1, m] + 6.0d * ue[2 + i, m] - 4.0d * ue[2 + i + 1, m] + ue[2 + i + 2, m]);
                             }
                         }
-                        for (i = start[c,1] * 3; i <= cell_size[c,1] - 3 * end[1, c] - 1; i++)
+                        for (i = start[c,1] * 3; i <= cell_size[c,1] - 3 * end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
                                 forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[2 + i - 2, m] - 4.0d * ue[2 + i - 1, m] + 6.0d * ue[2 + i, m] - 4.0d * ue[2 + i + 1, m] + ue[2 + i + 2, m]);
                             }
                         }
-                        if (end[1, c] > 0)
+                        if (end[c,1] > 0)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -986,13 +986,13 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     eta-direction flux differences             
                 //---------------------------------------------------------------------
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
                     zeta = (k + cell_low[c,3]) * dnzm1;
-                    for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                    for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                     {
                         xi = (i + cell_low[c,1]) * dnxm1;
-                        for (j = -2 * (1 - start[c,2]); j <= cell_size[c,2] + 1 - 2 * end[2, c]; j++)
+                        for (j = -2 * (1 - start[c,2]); j <= cell_size[c,2] + 1 - 2 * end[c,2]; j++)
                         {
                             eta = (j + cell_low[c,2]) * dnym1;
                             exact_solution1(xi, eta, zeta, ref dtemp);
@@ -1009,7 +1009,7 @@ namespace NPB
                             buf[2 + j, 1] = cuf[2 + j] + buf[2 + j, 2] * buf[2 + j, 2] + buf[2 + j, 4] * buf[2 + j, 4];
                             q[2 + j] = 0.5d * (buf[2 + j, 2] * ue[2 + j, 2] + buf[2 + j, 3] * ue[2 + j, 3] + buf[2 + j, 4] * ue[2 + j, 4]);
                         }
-                        for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                        for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                         {
                             jm1 = j - 1;
                             jp1 = j + 1;
@@ -1032,14 +1032,14 @@ namespace NPB
                                 forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (-4.0d * ue[2 + j - 1, m] + 6.0d * ue[2 + j, m] - 4.0d * ue[2 + j + 1, m] + ue[2 + j + 2, m]);
                             }
                         }
-                        for (j = start[c,2] * 3; j <= cell_size[c,2] - 3 * end[2, c] - 1; j++)
+                        for (j = start[c,2] * 3; j <= cell_size[c,2] - 3 * end[c,2] - 1; j++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
                                 forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[2 + j - 2, m] - 4.0d * ue[2 + j - 1, m] + 6.0d * ue[2 + j, m] - 4.0d * ue[2 + j + 1, m] + ue[2 + j + 2, m]);
                             }
                         }
-                        if (end[2, c] > 0)
+                        if (end[c,2] > 0)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1054,13 +1054,13 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     zeta-direction flux differences                      
                 //---------------------------------------------------------------------
-                for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                 {
                     eta = (j + cell_low[c,2]) * dnym1;
-                    for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                    for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                     {
                         xi = (i + cell_low[c,1]) * dnxm1;
-                        for (k = -2 * (1 - start[c,3]); k <= cell_size[c,3] + 1 - 2 * end[3, c]; k++)
+                        for (k = -2 * (1 - start[c,3]); k <= cell_size[c,3] + 1 - 2 * end[c,3]; k++)
                         {
                             zeta = (k + cell_low[c,3]) * dnzm1;
                             exact_solution1(xi, eta, zeta, ref dtemp);
@@ -1077,7 +1077,7 @@ namespace NPB
                             buf[2 + k, 1] = cuf[2 + k] + buf[2 + k, 2] * buf[2 + k, 2] + buf[2 + k, 3] * buf[2 + k, 3];
                             q[2 + k] = 0.5d * (buf[2 + k, 2] * ue[2 + k, 2] + buf[2 + k, 3] * ue[2 + k, 3] + buf[2 + k, 4] * ue[2 + k, 4]);
                         }
-                        for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                        for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                         {
                             km1 = k - 1;
                             kp1 = k + 1;
@@ -1100,14 +1100,14 @@ namespace NPB
                                 forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (-4.0d * ue[2 + k - 1, m] + 6.0d * ue[2 + k, m] - 4.0d * ue[2 + k + 1, m] + ue[2 + k + 2, m]);
                             }
                         }
-                        for (k = start[c,3] * 3; k <= cell_size[c,3] - 3 * end[3, c] - 1; k++)
+                        for (k = start[c,3] * 3; k <= cell_size[c,3] - 3 * end[c,3] - 1; k++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
                                 forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[2 + k - 2, m] - 4.0d * ue[2 + k - 1, m] + 6.0d * ue[2 + k, m] - 4.0d * ue[2 + k + 1, m] + ue[2 + k + 2, m]);
                             }
                         }
-                        if (end[3, c] > 0)
+                        if (end[c,3] > 0)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1122,11 +1122,11 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     now change the sign of the forcing function, 
                 //---------------------------------------------------------------------
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1595,11 +1595,11 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     compute xi-direction fluxes 
                 //---------------------------------------------------------------------
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {  //us(+0, +1, +1, +1);
                             uijk = us[c, k + 1, j + 1, i + 1];   //uijk = us[i,j,k,c]; 
                             up1 = us[c, k + 1, j + 1, i + 2]; //up1  = us[i+1,j,k,c];
@@ -1655,9 +1655,9 @@ namespace NPB
                 //---------------------------------------------------------------------
                 if (start[c,1] > 0)
                 {
-                    for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                    for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                     {
-                        for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                        for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                         {
                             i = 1;
                             for (m = 1; m <= 5; m++)
@@ -1675,11 +1675,11 @@ namespace NPB
                     }
                 }
 
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = 3 * start[c,1]; i <= cell_size[c,1] - 3 * end[1, c] - 1; i++)
+                        for (i = 3 * start[c,1]; i <= cell_size[c,1] - 3 * end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1691,11 +1691,11 @@ namespace NPB
                         }
                     }
                 }
-                if (end[1, c] > 0)
+                if (end[c,1] > 0)
                 {
-                    for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                    for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                     {
-                        for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                        for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                         {
                             i = cell_size[c,1] - 3;
                             for (m = 1; m <= 5; m++)
@@ -1714,11 +1714,11 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     compute eta-direction fluxes 
                 //---------------------------------------------------------------------
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             vijk = vs[c, k + 1, j + 1, i + 1];   //vijk = vs[i,j,k,c];
                             vp1 = vs[c, k + 1, j + 1 + 1, i + 1]; //vp1  = vs[i,j+1,k,c];
@@ -1777,10 +1777,10 @@ namespace NPB
                 //---------------------------------------------------------------------
                 if (start[c,2] > 0)
                 {
-                    for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                    for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                     {
                         j = 1;
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             { //rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(5.0d*u[m,i,j,k,c]-4.0d*u[m,i,j+1,k,c]+u[m,i,j+2,k,c]);
@@ -1788,7 +1788,7 @@ namespace NPB
                             }
                         }
                         j = 2;
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1798,11 +1798,11 @@ namespace NPB
                         }
                     }
                 }
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = 3 * start[c,2]; j <= cell_size[c,2] - 3 * end[2, c] - 1; j++)
+                    for (j = 3 * start[c,2]; j <= cell_size[c,2] - 3 * end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1812,12 +1812,12 @@ namespace NPB
                         }
                     }
                 }
-                if (end[2, c] > 0)
+                if (end[c,2] > 0)
                 {
-                    for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                    for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                     {
                         j = cell_size[c,2] - 3;
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {//rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(u[m,i,j-2,k,c]-4.0d*u[m,i,j-1,k,c]+6.0d*u[m,i,j,k,c]-4.0d*u[m,i,j+1,k,c]);
@@ -1826,7 +1826,7 @@ namespace NPB
                             }
                         }
                         j = cell_size[c,2] - 2;
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {//rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - dssp*(u[m,i,j-2,k,c]-4.0*u[m,i,j-1,k,c]+5.0*u[m,i,j,k,c] );
@@ -1839,11 +1839,11 @@ namespace NPB
                 //---------------------------------------------------------------------
                 //     compute zeta-direction fluxes 
                 //---------------------------------------------------------------------
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             wijk = ws[c, k + 1, j + 1, i + 1]; //wijk = ws[i,j,k,c];
                             wp1 = ws[c, k + 1 + 1, j + 1, i + 1]; //wp1  = ws[i,j,k+1,c];
@@ -1902,9 +1902,9 @@ namespace NPB
                 if (start[c,3] > 0)
                 {
                     k = 1;
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             { //rhs[m,i,j,k,c] = rhs[m,i,j,k,c]-dssp*(5.0d*u[m,i,j,k,c]-4.0d*u[m,i,j,k+1,c] + u[m,i,j,k+2,c]);
@@ -1914,9 +1914,9 @@ namespace NPB
                         }
                     }
                     k = 2;
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {//rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(-4.0d*u[m,i,j,k-1,c]+6.0d*u[m,i,j,k,c]-4.0d*u[m,i,j,k+1,c]+u[m,i,j,k+2,c]);
@@ -1926,11 +1926,11 @@ namespace NPB
                         }
                     }
                 }
-                for (k = 3 * start[c,3]; k <= cell_size[c,3] - 3 * end[3, c] - 1; k++)
+                for (k = 3 * start[c,3]; k <= cell_size[c,3] - 3 * end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1942,12 +1942,12 @@ namespace NPB
                     }
                 }
 
-                if (end[3, c] > 0)
+                if (end[c,3] > 0)
                 {
                     k = cell_size[c,3] - 3;
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1957,9 +1957,9 @@ namespace NPB
                         }
                     }
                     k = cell_size[c,3] - 2;
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -1969,11 +1969,11 @@ namespace NPB
                         }
                     }
                 }
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {
@@ -2262,8 +2262,8 @@ namespace NPB
 
             istart = 0;
             isize = cell_size[c,1] - 1;
-            jsize = cell_size[c,2] - end[2, c] - 1;
-            ksize = cell_size[c,3] - end[3, c] - 1;
+            jsize = cell_size[c,2] - end[c,2] - 1;
+            ksize = cell_size[c,3] - end[c,3] - 1;
             if (last == 0)
             {
                 for (k = start[c,3]; k <= ksize; k++)
@@ -2316,8 +2316,8 @@ namespace NPB
 
             istart = 0;
             isize = cell_size[c,1] - 1;
-            jsize = cell_size[c,2] - end[2, c] - 1;
-            ksize = cell_size[c,3] - end[3, c] - 1;
+            jsize = cell_size[c,2] - end[c,2] - 1;
+            ksize = cell_size[c,3] - end[c,3] - 1;
 
             lhsabinit(ref lhsa, ref lhsb, isize);
             for (k = start[c,3]; k <= ksize; k++)
@@ -2330,7 +2330,7 @@ namespace NPB
                     //---------------------------------------------------------------------
                     //     determine a [labeled f] and n jacobians for cell c
                     //---------------------------------------------------------------------
-                    for (i = start[c,1] - 1; i <= cell_size[c,1] - end[1, c]; i++)
+                    for (i = start[c,1] - 1; i <= cell_size[c,1] - end[c,1]; i++)
                     {
                         tmp1 = rho_i[c, k + 1, j + 1, i + 1];  //rho_i[i,j,k,c];
                         tmp2 = tmp1 * tmp1;
@@ -2404,7 +2404,7 @@ namespace NPB
                     //---------------------------------------------------------------------
                     //     now jacobians set, so form left hand side in x direction
                     //---------------------------------------------------------------------
-                    for (i = start[c,1]; i <= isize - end[1, c]; i++)
+                    for (i = start[c,1]; i <= isize - end[c,1]; i++)
                     {
 
                         tmp1 = dt * tx1;
@@ -2844,9 +2844,9 @@ namespace NPB
             int i, k;
             int m, n, j, jsize, isize, ksize, jstart;
             jstart = 0;
-            isize = cell_size[c,1] - end[1, c] - 1;
+            isize = cell_size[c,1] - end[c,1] - 1;
             jsize = cell_size[c,2] - 1;
-            ksize = cell_size[c,3] - end[3, c] - 1;
+            ksize = cell_size[c,3] - end[c,3] - 1;
             if (last == 0)
             {
                 for (k = start[c,3]; k <= ksize; k++)
@@ -2899,9 +2899,9 @@ namespace NPB
             double[,] utmp = new double[JMAX + 4, 7];   //double utmp[6,-2:JMAX+1];
 
             jstart = 0;
-            isize = cell_size[c,1] - end[1, c] - 1;
+            isize = cell_size[c,1] - end[c,1] - 1;
             jsize = cell_size[c,2] - 1;
-            ksize = cell_size[c,3] - end[3, c] - 1;
+            ksize = cell_size[c,3] - end[c,3] - 1;
 
             lhsabinit(ref lhsa, ref lhsb, jsize);
 
@@ -2916,7 +2916,7 @@ namespace NPB
                     //     Compute the indices for storing the tri-diagonal matrix;
                     //     determine a [labeled f] and n jacobians for cell c
                     //---------------------------------------------------------------------
-                    for (j = start[c,2] - 1; j <= cell_size[c,2] - end[2, c]; j++)
+                    for (j = start[c,2] - 1; j <= cell_size[c,2] - end[c,2]; j++)
                     {
                         utmp[2 + j, 1] = 1.0d / u[c, k + 2, j + 2, i + 2, 1];  //u[1,i,j,k,c]
                         utmp[2 + j, 2] = u[c, k + 2, j + 2, i + 2, 2];         //u[2,i,j,k,c]; 
@@ -2926,7 +2926,7 @@ namespace NPB
                         utmp[2 + j, 6] = qs[c, k + 1, j + 1, i + 1];           //qs[i,j,k,c]; 
                     }
 
-                    for (j = start[c,2] - 1; j <= cell_size[c,2] - end[2, c]; j++)
+                    for (j = start[c,2] - 1; j <= cell_size[c,2] - end[c,2]; j++)
                     {
                         tmp1 = utmp[2 + j, 1];
                         tmp2 = tmp1 * tmp1;
@@ -2997,7 +2997,7 @@ namespace NPB
                     //---------------------------------------------------------------------
                     //     now joacobians set, so form left hand side in y direction
                     //---------------------------------------------------------------------
-                    for (j = start[c,2]; j <= jsize - end[2, c]; j++)
+                    for (j = start[c,2]; j <= jsize - end[c,2]; j++)
                     {
                         tmp1 = dt * ty1;
                         tmp2 = dt * ty2;//lhsa[1,1,j]=-tmp2*fjac[1,1,j-1]-tmp1*njac[1,1,j-1]-tmp1*dy1;
@@ -3438,8 +3438,8 @@ namespace NPB
             int m, n, j, jsize, isize, ksize, kstart;
 
             kstart = 0;
-            isize = cell_size[c,1] - end[1, c] - 1;
-            jsize = cell_size[c,2] - end[2, c] - 1;
+            isize = cell_size[c,1] - end[c,1] - 1;
+            jsize = cell_size[c,2] - end[c,2] - 1;
             ksize = cell_size[c,3] - 1;
             if (last == 0)
             {
@@ -3492,8 +3492,8 @@ namespace NPB
             int i, j, k, isize, ksize, jsize, kstart;
             double[,] utmp = new double[KMAX + 4, 7];   //double utmp[6,-2:KMAX+1];
             kstart = 0;
-            isize = cell_size[c,1] - end[1, c] - 1;
-            jsize = cell_size[c,2] - end[2, c] - 1;
+            isize = cell_size[c,1] - end[c,1] - 1;
+            jsize = cell_size[c,2] - end[c,2] - 1;
             ksize = cell_size[c,3] - 1;
 
             lhsabinit(ref lhsa, ref lhsb, ksize); //call lhsabinit[lhsa, lhsb, ksize];
@@ -3509,7 +3509,7 @@ namespace NPB
                     //     Compute the indices for storing the block-diagonal matrix;
                     //     determine c [labeled f] and s jacobians for cell c
                     //---------------------------------------------------------------------
-                    for (k = start[c,3] - 1; k <= cell_size[c,3] - end[3, c]; k++)
+                    for (k = start[c,3] - 1; k <= cell_size[c,3] - end[c,3]; k++)
                     {
                         utmp[2 + k, 1] = 1.0d / u[c, k + 2, j + 2, i + 2, 1];  //utmp[1,k] = 1.0d0 / u[1,i,j,k,c]
                         utmp[2 + k, 2] = u[c, k + 2, j + 2, i + 2, 2];  //utmp[2,k] =         u[2,i,j,k,c]
@@ -3518,7 +3518,7 @@ namespace NPB
                         utmp[2 + k, 5] = u[c, k + 2, j + 2, i + 2, 5];  //utmp[5,k] =         u[5,i,j,k,c]
                         utmp[2 + k, 6] = qs[c, k + 1, j + 1, i + 1];  //utmp[6,k] =          qs[i,j,k,c]
                     }
-                    for (k = start[c,3] - 1; k <= cell_size[c,3] - end[3, c]; k++)
+                    for (k = start[c,3] - 1; k <= cell_size[c,3] - end[c,3]; k++)
                     {
 
                         tmp1 = utmp[2 + k, 1];
@@ -3590,7 +3590,7 @@ namespace NPB
                     //---------------------------------------------------------------------
                     //     now joacobians set, so form left hand side in z direction
                     //---------------------------------------------------------------------
-                    for (k = start[c,3]; k <= ksize - end[3, c]; k++)
+                    for (k = start[c,3]; k <= ksize - end[c,3]; k++)
                     {
                         tmp1 = dt * tz1;
                         tmp2 = dt * tz2;
@@ -4347,11 +4347,11 @@ namespace NPB
             int c, i, j, k, m;
             for (c = 1; c <= ncells; c++)
             {
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {  //u[m,i,j,k,c] = u[m,i,j,k,c] + rhs[m,i,j,k,c];
@@ -4817,11 +4817,11 @@ namespace NPB
             */
             for (c = 1; c <= ncells; c++)
             {
-                for (k = start[c,3]; k <= cell_size[c,3] - end[3, c] - 1; k++)
+                for (k = start[c,3]; k <= cell_size[c,3] - end[c,3] - 1; k++)
                 {
-                    for (j = start[c,2]; j <= cell_size[c,2] - end[2, c] - 1; j++)
+                    for (j = start[c,2]; j <= cell_size[c,2] - end[c,2] - 1; j++)
                     {
-                        for (i = start[c,1]; i <= cell_size[c,1] - end[1, c] - 1; i++)
+                        for (i = start[c,1]; i <= cell_size[c,1] - end[c,1] - 1; i++)
                         {
                             for (m = 1; m <= 5; m++)
                             {

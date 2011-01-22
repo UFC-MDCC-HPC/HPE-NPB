@@ -35,7 +35,7 @@ namespace NPB {
             protected static int[,] cell_size; // invertido para c#            
             protected static int[,] slice;     // invertido para c#     
             protected static int[,] start;     // invertido para c#  
-            protected static int[,] end;
+            protected static int[,] end;       // invertido para c#
             protected static double[,] tmp_block=new double[5, 5];
             protected static double[,] b_inverse=new double[5, 5];        
             protected static double[,] ue, buf; //
@@ -214,7 +214,7 @@ namespace NPB {
             grid_size    = new int[3+le];
             successor    = new int[3+le];
             start        = new int[maxcells+le,3+le];// invertido para c#  
-            end          = new int[3+le,maxcells+le];
+            end          = new int[maxcells+le,3+le];// invertido para c#  
             MAX_CELL_DIM = (problem_size/maxcells)+1;
             IMAX         = MAX_CELL_DIM;
             JMAX         = MAX_CELL_DIM;
