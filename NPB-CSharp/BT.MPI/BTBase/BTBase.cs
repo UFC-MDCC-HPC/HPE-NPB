@@ -40,7 +40,7 @@ namespace NPB {
             //protected static double[,] b_inverse=new double[5, 5]; // invertido para c#   
             protected static double[,] ue, buf; // invertido para c#  ue buf
             protected static int[] predecessor;
-            protected static int[] grid_size;
+            //protected static int[] grid_size;
             protected static int[] successor;
             protected int IMAX, JMAX, KMAX, MAX_CELL_DIM, BUF_SIZE;
             protected static double[, , ,] us, vs, ws, qs, rho_i, square, backsub_info;
@@ -207,7 +207,7 @@ namespace NPB {
         private void initVars(){
             predecessor  = new int[3]; // retorno indice zero 0    
             successor    = new int[3]; // retorno indice zero 0   
-            grid_size    = new int[3+le];             
+            //grid_size    = new int[3]; // retorno indice zero 0              
             MAX_CELL_DIM = (problem_size/maxcells)+1;
             IMAX         = MAX_CELL_DIM;
             JMAX         = MAX_CELL_DIM;
