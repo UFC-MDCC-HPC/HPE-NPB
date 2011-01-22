@@ -47,7 +47,7 @@ namespace NPB {
             protected static double[, , , ,] forcing, u, rhs;
             protected static double[, , , , ,] lhsc;
             //protected static double[] in_buffer, out_buffer;
-            protected static double[] sum;
+            //protected static double[] sum;
             protected static double[] cv, rhon, rhos, rhoq, cuf, q;
             protected static int west_size, east_size, bottom_size, top_size, north_size, south_size, start_send_west, start_send_east,
                               start_send_south, start_send_north, start_send_bottom, start_send_top, start_recv_west, start_recv_east,
@@ -213,7 +213,7 @@ namespace NPB {
             JMAX         = MAX_CELL_DIM;
             KMAX         = MAX_CELL_DIM;
             BUF_SIZE     = MAX_CELL_DIM*MAX_CELL_DIM*(maxcells-1)*60+1;
-            sum          = new double[niter_default];
+            //sum          = new double[niter_default];
 
             ce           = new double[13+le, 5+le];  //invertido para c#
             cell_coord   = new int[maxcells+le,3+le];// invertido para c#
