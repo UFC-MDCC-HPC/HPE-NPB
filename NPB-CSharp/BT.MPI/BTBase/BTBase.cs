@@ -205,23 +205,28 @@ namespace NPB {
         }
 
         private void initVars(){
-            ce           = new double[13+le, 5+le];  //invertido para c#
-            cell_coord   = new int[maxcells+le,3+le];// invertido para c#
-            cell_low     = new int[maxcells+le,3+le];// invertido para c#
-            cell_high    = new int[maxcells+le,3+le];// invertido para c#
-            cell_size    = new int[maxcells+le,3+le];// invertido para c#
-            predecessor  = new int[3+le];
-            slice        = new int[maxcells+le,3+le];// invertido para c#     
+            predecessor  = new int[3+le];    
             grid_size    = new int[3+le];
             successor    = new int[3+le];
-            start        = new int[maxcells+le,3+le];// invertido para c#  
-            end          = new int[maxcells+le,3+le];// invertido para c#  
             MAX_CELL_DIM = (problem_size/maxcells)+1;
             IMAX         = MAX_CELL_DIM;
             JMAX         = MAX_CELL_DIM;
             KMAX         = MAX_CELL_DIM;
             BUF_SIZE     = MAX_CELL_DIM*MAX_CELL_DIM*(maxcells-1)*60+1;
             sum          = new double[niter_default];
+
+            ce           = new double[13+le, 5+le];  //invertido para c#
+            cell_coord   = new int[maxcells+le,3+le];// invertido para c#
+            cell_low     = new int[maxcells+le,3+le];// invertido para c#
+            cell_high    = new int[maxcells+le,3+le];// invertido para c#
+            cell_size    = new int[maxcells+le,3+le];// invertido para c#            
+            slice        = new int[maxcells+le,3+le];// invertido para c# 
+            start        = new int[maxcells+le,3+le];// invertido para c#  
+            end          = new int[maxcells+le,3+le];// invertido para c# 
+            ue           = new double[5+le, MAX_CELL_DIM+4];     //[-2:MAX_CELL_DIM+1,5]; // invertido para c#
+            buf          = new double[5+le, MAX_CELL_DIM+4];    //[-2:MAX_CELL_DIM+1,5]; // invertido para c#
+ 
+
 
             us           = new double[maxcells+le,KMAX+2,JMAX+2,IMAX+2];            //us     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
             vs           = new double[maxcells+le,KMAX+2,JMAX+2,IMAX+2];            //vs     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
@@ -244,8 +249,6 @@ namespace NPB {
             rhoq         = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
             cuf          = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
             q            = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
-            ue           = new double[5+le,MAX_CELL_DIM+4];//[-2:MAX_CELL_DIM+1,5]; // invertido para c#
-            buf          = new double[5+le,MAX_CELL_DIM+4];//[-2:MAX_CELL_DIM+1,5]; // invertido para c#
 
             fjac = new double[MAX_CELL_DIM+4, 5+le, 5+le]; //[5, 5, -2:MAX_CELL_DIM+1];
             njac = new double[MAX_CELL_DIM+4, 5+le, 5+le]; //[5, 5, -2:MAX_CELL_DIM+1];
