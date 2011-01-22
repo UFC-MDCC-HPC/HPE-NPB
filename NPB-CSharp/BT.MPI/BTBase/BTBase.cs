@@ -29,11 +29,11 @@ namespace NPB {
                                  comz5, comz6, c3c4tx3, c3c4ty3, c3c4tz3, c2iv, con43, con16;
             protected int EAST = 2000, WEST = 3000, NORTH = 4000, SOUTH = 5000, BOTTOM = 6000, TOP = 7000;
             protected static double[,] ce = new double[13+le, 5+le];//invertido para c#
-            protected static int[,] cell_coord;//invertido invertido para c#
-            protected static int[,] cell_low; //invertido invertido para c#
-            protected static int[,] cell_high; //invertido invertido para c#
-            protected static int[,] cell_size; //invertido invertido para c#            
-            protected static int[,] slice;
+            protected static int[,] cell_coord;// invertido para c#
+            protected static int[,] cell_low;  // invertido para c#
+            protected static int[,] cell_high; // invertido para c#
+            protected static int[,] cell_size; // invertido para c#            
+            protected static int[,] slice;     // invertido para c#     
             protected static int[,] start;
             protected static int[,] end;
             protected static double[,] tmp_block=new double[5, 5];
@@ -205,12 +205,12 @@ namespace NPB {
         }
 
         private void initVars(){
-            cell_coord   = new int[maxcells+le,3+le];//invertido invertido para c#
-            cell_low     = new int[maxcells+le,3+le];//invertido invertido para c#
-            cell_high    = new int[maxcells+le,3+le];//invertido invertido para c#
-            cell_size    = new int[maxcells+le,3+le];//invertido invertido para c#
+            cell_coord   = new int[maxcells+le,3+le];// invertido para c#
+            cell_low     = new int[maxcells+le,3+le];// invertido para c#
+            cell_high    = new int[maxcells+le,3+le];// invertido para c#
+            cell_size    = new int[maxcells+le,3+le];// invertido para c#
             predecessor  = new int[3+le];
-            slice        = new int[3+le,maxcells+le];
+            slice        = new int[maxcells+le,3+le];// invertido para c#     
             grid_size    = new int[3+le];
             successor    = new int[3+le];
             start        = new int[3+le,maxcells+le];

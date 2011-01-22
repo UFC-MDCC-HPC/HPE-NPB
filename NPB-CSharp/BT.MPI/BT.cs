@@ -315,7 +315,7 @@ namespace NPB
             {
                 for (c = 1; c <= p; c++)
                 {
-                    slice[dir, cell_coord[c,dir]] = c;
+                    slice[cell_coord[c,dir],dir] = c;
                 }
             }
             //---------------------------------------------------------------------
@@ -671,7 +671,7 @@ namespace NPB
             //---------------------------------------------------------------------
             //     east face                                                      
             //---------------------------------------------------------------------
-            c = slice[1, ncells];
+            c = slice[ncells,1];
             ii = cell_size[c,1] - 1;
             xi = 1.0d;
             kk = 0;
@@ -694,7 +694,7 @@ namespace NPB
             //---------------------------------------------------------------------
             //     south face                                                 
             //---------------------------------------------------------------------
-            c = slice[2, 1];
+            c = slice[1,2];
             jj = 0;
             eta = 0.0d;
             kk = 0;
@@ -717,7 +717,7 @@ namespace NPB
             //---------------------------------------------------------------------
             //     north face                                    
             //---------------------------------------------------------------------
-            c = slice[2, ncells];
+            c = slice[ncells,2];
             jj = cell_size[c,2] - 1;
             eta = 1.0d;
             kk = 0;
@@ -740,7 +740,7 @@ namespace NPB
             //---------------------------------------------------------------------
             //     bottom face                                       
             //---------------------------------------------------------------------
-            c = slice[3, 1];
+            c = slice[1,3];
             kk = 0;
             zeta = 0.0d;
             jj = 0;
@@ -763,7 +763,7 @@ namespace NPB
             //---------------------------------------------------------------------
             //     top face     
             //---------------------------------------------------------------------
-            c = slice[3, ncells];
+            c = slice[ncells,3];
             kk = cell_size[c,3] - 1;
             zeta = 1.0d;
             jj = 0;
@@ -2012,7 +2012,7 @@ namespace NPB
             //---------------------------------------------------------------------
             for (stage = 1; stage <= ncells; stage++)
             {
-                c = slice[1, stage];
+                c = slice[stage,1];
                 isize = cell_size[c,1] - 1;
                 jsize = cell_size[c,2] - 1;
                 ksize = cell_size[c,3] - 1;
@@ -2071,7 +2071,7 @@ namespace NPB
             //---------------------------------------------------------------------
             for (stage = ncells; stage >= 1; stage--)
             {  //for(stage = ncells, 1, -1;
-                c = slice[1, stage];
+                c = slice[stage,1];
                 first = 0;
                 last = 0;
                 if (stage == 1) first = 1;
@@ -2591,7 +2591,7 @@ namespace NPB
             //---------------------------------------------------------------------
             for (stage = 1; stage <= ncells; stage++)
             {
-                c = slice[2, stage];
+                c = slice[stage,2];
                 isize = cell_size[c,1] - 1;
                 jsize = cell_size[c,2] - 1;
                 ksize = cell_size[c,3] - 1;
@@ -2650,7 +2650,7 @@ namespace NPB
             //---------------------------------------------------------------------
             for (stage = ncells; stage >= 1; stage--)
             {  //for(stage = ncells, 1, -1
-                c = slice[2, stage];
+                c = slice[stage,2];
                 first = 0;
                 last = 0;
                 if (stage == 1) first = 1;
@@ -3185,7 +3185,7 @@ namespace NPB
             //---------------------------------------------------------------------
             for (stage = 1; stage <= ncells; stage++)
             {
-                c = slice[3, stage];
+                c = slice[stage,3];
                 isize = cell_size[c,1] - 1;
                 jsize = cell_size[c,2] - 1;
                 ksize = cell_size[c,3] - 1;
@@ -3244,7 +3244,7 @@ namespace NPB
             //---------------------------------------------------------------------
             for (stage = ncells; stage >= 1; stage--)
             {  //for(stage = ncells, 1, -1;
-                c = slice[3, stage];
+                c = slice[stage,3];
                 first = 0;
                 last = 0;
                 if (stage == 1) first = 1;
