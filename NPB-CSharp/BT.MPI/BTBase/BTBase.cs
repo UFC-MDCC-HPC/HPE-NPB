@@ -28,7 +28,7 @@ namespace NPB {
                                  dtdssp, dttx1, bt, dttx2, dtty1, dtty2, dttz1, dttz2, c2dttx1, c2dtty1, c2dttz1, comz1, comz4, 
                                  comz5, comz6, c3c4tx3, c3c4ty3, c3c4tz3, c2iv, con43, con16;
             protected int EAST = 2000, WEST = 3000, NORTH = 4000, SOUTH = 5000, BOTTOM = 6000, TOP = 7000;
-            protected static double[,] ce = new double[13+le, 5+le];//invertido para c#
+            protected static double[,] ce;// = new double[13+le, 5+le];//invertido para c#
             protected static int[,] cell_coord;// invertido para c#
             protected static int[,] cell_low;  // invertido para c#
             protected static int[,] cell_high; // invertido para c#
@@ -205,6 +205,7 @@ namespace NPB {
         }
 
         private void initVars(){
+            ce           = new double[13+le, 5+le];  //invertido para c#
             cell_coord   = new int[maxcells+le,3+le];// invertido para c#
             cell_low     = new int[maxcells+le,3+le];// invertido para c#
             cell_high    = new int[maxcells+le,3+le];// invertido para c#
