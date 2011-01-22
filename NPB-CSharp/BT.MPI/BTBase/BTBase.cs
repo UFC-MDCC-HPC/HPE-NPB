@@ -31,8 +31,8 @@ namespace NPB {
             protected static double[,] ce = new double[13+le, 5+le];//invertido para c#
             protected static int[,] cell_coord;//invertido invertido para c#
             protected static int[,] cell_low; //invertido invertido para c#
-            protected static int[,] cell_high;
-            protected static int[,] cell_size;            
+            protected static int[,] cell_high; //invertido invertido para c#
+            protected static int[,] cell_size; //invertido invertido para c#            
             protected static int[,] slice;
             protected static int[,] start;
             protected static int[,] end;
@@ -207,8 +207,8 @@ namespace NPB {
         private void initVars(){
             cell_coord   = new int[maxcells+le,3+le];//invertido invertido para c#
             cell_low     = new int[maxcells+le,3+le];//invertido invertido para c#
-            cell_high    = new int[3+le,maxcells+le];
-            cell_size    = new int[3+le,maxcells+le];
+            cell_high    = new int[maxcells+le,3+le];//invertido invertido para c#
+            cell_size    = new int[maxcells+le,3+le];//invertido invertido para c#
             predecessor  = new int[3+le];
             slice        = new int[3+le,maxcells+le];
             grid_size    = new int[3+le];
