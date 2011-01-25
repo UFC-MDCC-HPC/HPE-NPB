@@ -316,13 +316,13 @@ public class SPBase /* : Thread*/
             // zap the whole left hand side for starters
             //---------------------------------------------------------------------
 
-            for (int n = 0; n < 15; n++)
+            for (int k = 2; k < 2 + cell_size[c, 2]; k++)
             {
-                for (int k = 2; k < 2 + cell_size[c, 2]; k++)
+                for (int j = 2; j < 2 + cell_size[c, 1]; j++)
                 {
-                    for (int j = 2; j < 2 + cell_size[c, 1]; j++)
+                    for (int i = 2; i < 2 + cell_size[c, 0]; i++)
                     {
-                        for (int i = 2; i < 2 + cell_size[c, 0]; i++)
+                        for (int n = 0; n < 15; n++)
                         {
                             lhs[c, k, j, i, n] = 0.0d;
                         }
