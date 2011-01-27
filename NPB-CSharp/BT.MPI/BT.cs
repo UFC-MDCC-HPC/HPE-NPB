@@ -42,7 +42,8 @@ using System.IO;
 namespace NPB {
     public class BT: BTBase {
 
-        public BT(char c) : base(c) {
+        public BT(char c)
+            : base(c) {
         }
 
         static void Main(String[] argv) {
@@ -4282,7 +4283,7 @@ namespace NPB {
                 rms_work[m] = 0.0; //0.0d;
             }
             for(c = 0; c < ncells; c++) {
-                
+
                 ksize = cell_size[c, 2] + 2;
                 jsize = cell_size[c, 1] + 2;
                 isize = cell_size[c, 0] + 2;
