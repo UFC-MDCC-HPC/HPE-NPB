@@ -39,10 +39,8 @@
 using System;
 using System.IO;
 
-namespace NPB
-{
-    public class BT : BTBase
-    {
+namespace NPB{
+    public class BT : BTBase{
 
         public BT(char c) : base(c) { }
 
@@ -165,7 +163,7 @@ namespace NPB
                 if ((cell_size[c,0] > IMAX) || (cell_size[c,1] > JMAX) || (cell_size[c,2] > KMAX)){
                     Console.WriteLine(node + " " + (c+1) + " ");
                     Console.Write(" " + (cell_size[c,i-1]) + " "); Console.Write(" " + (cell_size[c,i-1]) + " "); Console.Write(" " + (cell_size[c,i-1]) + " ");
-                    i = 3 + 1;
+                    i = 4;
                     Console.WriteLine(" Problem size too big for compiled array sizes");
                     goto GoToEnd;
                 }
@@ -364,77 +362,7 @@ namespace NPB
             }
         }
 
-        public void set_constants()
-        {
-            ce[0,0] = 2.0d;
-            ce[1,0] = 0.0d;
-            ce[2,0] = 0.0d;
-            ce[3,0] = 4.0d;
-            ce[4,0] = 5.0d;
-            ce[5,0] = 3.0d;
-            ce[6,0] = 0.5d;
-            ce[7,0] = 0.02d;
-            ce[8,0] = 0.01d;
-            ce[9,0] = 0.03d;
-            ce[10,0] = 0.5d;
-            ce[11,0] = 0.4d;
-            ce[12,0] = 0.3d;
-
-            ce[0,1] = 1.0d;
-            ce[1,1] = 0.0d;
-            ce[2,1] = 0.0d;
-            ce[3,1] = 0.0d;
-            ce[4,1] = 1.0d;
-            ce[5,1] = 2.0d;
-            ce[6,1] = 3.0d;
-            ce[7,1] = 0.01d;
-            ce[8,1] = 0.03d;
-            ce[9,1] = 0.02d;
-            ce[10,1] = 0.4d;
-            ce[11,1] = 0.3d;
-            ce[12,1] = 0.5d;
-
-            ce[0,2] = 2.0d;
-            ce[1,2] = 2.0d;
-            ce[2,2] = 0.0d;
-            ce[3,2] = 0.0d;
-            ce[4,2] = 0.0d;
-            ce[5,2] = 2.0d;
-            ce[6,2] = 3.0d;
-            ce[7,2] = 0.04d;
-            ce[8,2] = 0.03d;
-            ce[9,2] = 0.05d;
-            ce[10,2] = 0.3d;
-            ce[11,2] = 0.5d;
-            ce[12,2] = 0.4d;
-
-            ce[0,3] = 2.0d;
-            ce[1,3] = 2.0d;
-            ce[2,3] = 0.0d;
-            ce[3,3] = 0.0d;
-            ce[4,3] = 0.0d;
-            ce[5,3] = 2.0d;
-            ce[6,3] = 3.0d;
-            ce[7,3] = 0.03d;
-            ce[8,3] = 0.05d;
-            ce[9,3] = 0.04d;
-            ce[10,3] = 0.2d;
-            ce[11,3] = 0.1d;
-            ce[12,3] = 0.3d;
-
-            ce[0,4] = 5.0d;
-            ce[1,4] = 4.0d;
-            ce[2,4] = 3.0d;
-            ce[3,4] = 2.0d;
-            ce[4,4] = 0.1d;
-            ce[5,4] = 0.4d;
-            ce[6,4] = 0.3d;
-            ce[7,4] = 0.05d;
-            ce[8,4] = 0.04d;
-            ce[9,4] = 0.03d;
-            ce[10,4] = 0.1d;
-            ce[11,4] = 0.3d;
-            ce[12,4] = 0.2d;
+        public void set_constants(){
 
             c1 = 1.4d;
             c2 = 0.4d;
@@ -578,9 +506,9 @@ namespace NPB
                     for (jj = 1; jj <= JMAX+2; jj++){
                         for (ii = 1; ii <= IMAX+2; ii++){//for (m = 0; m < 5; m++){u[c+1, kk, jj, ii, m+1] = 1.0; //u[m, ii, jj, kk, c] = 1.0;
                                 u[c+1, kk, jj, ii, 1]=1.0;
-                                u[c+1, kk, jj, ii, 2]=1.0;//diferente sp
-                                u[c+1, kk, jj, ii, 3]=1.0;//diferente sp
-                                u[c+1, kk, jj, ii, 4]=1.0;//diferente sp
+                                u[c+1, kk, jj, ii, 2]=1.0;//diferente sp, validou com 0
+                                u[c+1, kk, jj, ii, 3]=1.0;//diferente sp, validou com 0
+                                u[c+1, kk, jj, ii, 4]=1.0;//diferente sp, validou com 0
                                 u[c+1, kk, jj, ii, 5]=1.0; //}
                         }
                     }
@@ -620,7 +548,7 @@ namespace NPB
                     }
                     kk++;
                 }
-            }//feito
+            }//ok
             //---------------------------------------------------------------------
             //     now store the exact values on the boundaries        
             //---------------------------------------------------------------------
@@ -628,121 +556,121 @@ namespace NPB
             //     west face                                                  
             //---------------------------------------------------------------------
             c = slice[0, 0];
-            ii = 0;
+            ii = 2;
             xi = 0.0d;
-            kk = 0;
+            kk = 2;
             for (k = cell_low[c,2]; k <= cell_high[c,2]; k++){
                 zeta = k * dnzm1;
-                jj = 0;
+                jj = 2;
                 for (j = cell_low[c,1]; j <= cell_high[c,1]; j++){
                     eta = j * dnym1;
                     exact_solution(xi, eta, zeta, temp,0);
                     for (m = 0; m < 5; m++){
-                        u[c+1, kk + 2, jj + 2, ii + 2, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
+                        u[c+1, kk, jj, ii, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
                     }
-                    jj = jj + 1;
+                    jj++;
                 }
-                kk = kk + 1;
-            }
+                kk++;
+            }//ok
             //---------------------------------------------------------------------
             //     east face                                                      
             //---------------------------------------------------------------------
             c = slice[ncells-1,0];
-            ii = cell_size[c,0] - 1;
+            ii = cell_size[c,0] + 1;//
             xi = 1.0d;
-            kk = 0;
+            kk = 2;//
             for (k = cell_low[c,2]; k <= cell_high[c,2]; k++){
                 zeta = k * dnzm1;
-                jj = 0;
+                jj = 2;//
                 for (j = cell_low[c,1]; j <= cell_high[c,1]; j++){
                     eta = j * dnym1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m < 5; m++){                                    //temporario cnz m-1
-                        u[c+1, kk + 2, jj + 2, ii + 2, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
+                        u[c+1, kk, jj, ii, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
                     }
-                    jj = jj + 1;
+                    jj++;
                 }
-                kk = kk + 1;
-            }
+                kk++;
+            }//ok
             //---------------------------------------------------------------------
             //     south face                                                 
             //---------------------------------------------------------------------
             c = slice[0,1];
-            jj = 0;
+            jj = 2;
             eta = 0.0d;
-            kk = 0;
+            kk = 2;
             for (k = cell_low[c,2]; k <= cell_high[c,2]; k++){
                 zeta = k * dnzm1;
-                ii = 0;
+                ii = 2;
                 for (i = cell_low[c,0]; i <= cell_high[c,0]; i++){
                     xi = i * dnxm1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m < 5; m++){                                    //temporario cnz m-1
-                        u[c+1, kk + 2, jj + 2, ii + 2, m+1] = temp[m];  //u[m,ii,jj,kk,c] = temp[m];
+                        u[c+1, kk, jj, ii, m+1] = temp[m];  //u[m,ii,jj,kk,c] = temp[m];
                     }
-                    ii = ii + 1;
+                    ii++;
                 }
-                kk = kk + 1;
-            }
+                kk++;
+            }//ok
             //---------------------------------------------------------------------
             //     north face                                    
             //---------------------------------------------------------------------
             c = slice[ncells-1,1];
-            jj = cell_size[c,1] - 1;
+            jj = cell_size[c,1] + 1;
             eta = 1.0d;
-            kk = 0;
+            kk = 2;
             for (k = cell_low[c,2]; k <= cell_high[c,2]; k++){
                 zeta = k * dnzm1;
-                ii = 0;
+                ii = 2;
                 for (i = cell_low[c,0]; i <= cell_high[c,0]; i++){
                     xi = i * dnxm1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m < 5; m++){                                     //temporario cnz m-1
-                        u[c+1, kk + 2, jj + 2, ii + 2, m+1] = temp[m];  // u[m,ii,jj,kk,c] = temp[m];
+                        u[c+1, kk, jj, ii, m+1] = temp[m];  // u[m,ii,jj,kk,c] = temp[m];
                     }
-                    ii = ii + 1;
+                    ii++;
                 }
-                kk = kk + 1;
-            }
+                kk++;
+            }//ok
             //---------------------------------------------------------------------
             //     bottom face                                       
             //---------------------------------------------------------------------
             c = slice[0,2];
-            kk = 0;
+            kk = 2;
             zeta = 0.0d;
-            jj = 0;
+            jj = 2;
             for (j = cell_low[c,1]; j <= cell_high[c,1]; j++){
                 eta = j * dnym1;
-                ii = 0;
+                ii = 2;
                 for (i = cell_low[c,0]; i <= cell_high[c,0]; i++){
                     xi = i * dnxm1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m < 5; m++){                                     //temporario cnz m-1
-                        u[c+1, kk + 2, jj + 2, ii + 2, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
+                        u[c+1, kk, jj, ii, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
                     }
-                    ii = ii + 1;
+                    ii++;
                 }
-                jj = jj + 1;
-            }
+                jj++;
+            }//ok
             //---------------------------------------------------------------------
             //     top face     
             //---------------------------------------------------------------------
             c = slice[ncells-1,2];
-            kk = cell_size[c,2] - 1;
+            kk = cell_size[c,2] + 1;
             zeta = 1.0d;
-            jj = 0;
+            jj = 2;
             for (j = cell_low[c,1]; j <= cell_high[c,1]; j++){
                 eta = j * dnym1;
-                ii = 0;
+                ii = 2;
                 for (i = cell_low[c,0]; i <= cell_high[c,0]; i++){
                     xi = i * dnxm1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m < 5; m++){                                     //temporario cnz m-1
-                        u[c+1, kk + 2, jj + 2, ii + 2, m+1] = temp[m];  //u[m,ii,jj,kk,c] = temp[m];
+                        u[c+1, kk, jj, ii, m+1] = temp[m];  //u[m,ii,jj,kk,c] = temp[m];
                     }
-                    ii = ii + 1;
+                    ii++;
                 }
-                jj = jj + 1;
+                jj++;
             }
         }//Pface PfaceTemp temp
 
@@ -787,8 +715,7 @@ namespace NPB
             }
         }
 
-        public void lhsabinit(ref double[, ,] lhsa, ref double[, ,] lhsb, int size)
-        {
+        public void lhsabinit(double[, ,] lhsa, double[, ,] lhsb, int size){
             //lhsa[5, 5, -1:size], 
             //lhsb[5, 5, -1:size];
             int i, m, n;
@@ -796,16 +723,13 @@ namespace NPB
             //---------------------------------------------------------------------
             //     next, set all diagonal values to 1. This is overkill, but convenient
             //---------------------------------------------------------------------
-            for (i = 0; i <= size; i++)
-            {
-                for (m = 1; m <= 5; m++)
-                {
-                    for (n = 1; n <= 5; n++)
-                    {
-                        lhsa[i + 1, n, m] = 0.0d; //lhsa[m,n,i] = 0.0d;
-                        lhsb[i + 1, n, m] = 0.0d; //lhsb[m,n,i] = 0.0d;
+            for (i = 0; i <= size; i++){
+                for (m = 0; m < 5; m++){
+                    for (n = 0; n < 5; n++){
+                        lhsa[i+1, n+1, m+1] = 0.0d; //lhsa[m,n,i] = 0.0d;
+                        lhsb[i+1, n+1, m+1] = 0.0d; //lhsb[m,n,i] = 0.0d;
                     }
-                    lhsb[i + 1, m, m] = 1.0d; //lhsb[m,m,i] = 1.0d;
+                    lhsb[i+1, m+1, m+1] = 1.0d; //lhsb[m,m,i] = 1.0d;
                 }
             }
         }
@@ -1032,8 +956,7 @@ namespace NPB
             }
         }
 
-        public void compute_buffer_size(int dim)
-        {
+        public void compute_buffer_size(int dim){
             int c, face_size;
             if (ncells == 1) return;
             //---------------------------------------------------------------------
@@ -1080,8 +1003,7 @@ namespace NPB
             start_recv_top = start_recv_bottom + bottom_size;
         }
 
-        public void adi()
-        {
+        public void adi(){
             copy_faces();
             x_solve();
             y_solve();
@@ -2067,7 +1989,7 @@ namespace NPB
             jsize = cell_size[c,1] - end[c,1] - 1;
             ksize = cell_size[c,2] - end[c,2] - 1;
 
-            lhsabinit(ref lhsa, ref lhsb, isize);
+            lhsabinit(lhsa, lhsb, isize);
             for (k = start[c,2]-2; k <= ksize; k++)
             {
                 for (j = start[c,1]-2; j <= jsize; j++)
@@ -2639,7 +2561,7 @@ namespace NPB
             jsize = cell_size[c,1] - 1;
             ksize = cell_size[c,2] - end[c,2] - 1;
 
-            lhsabinit(ref lhsa, ref lhsb, jsize);
+            lhsabinit(lhsa, lhsb, jsize);
 
             for (k = start[c,2]-2; k <= ksize; k++)
             {
@@ -3220,7 +3142,7 @@ namespace NPB
             jsize = cell_size[c,1] - end[c,1] - 1;
             ksize = cell_size[c,2] - 1;
 
-            lhsabinit(ref lhsa, ref lhsb, ksize); //call lhsabinit[lhsa, lhsb, ksize];
+            lhsabinit(lhsa, lhsb, ksize); //call lhsabinit[lhsa, lhsb, ksize];
 
             for (j = start[c,1]-2; j <= jsize; j++)
             {

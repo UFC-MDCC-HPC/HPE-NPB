@@ -28,7 +28,20 @@ namespace NPB {
                                  dtdssp, dttx1, bt, dttx2, dtty1, dtty2, dttz1, dttz2, c2dttx1, c2dtty1, c2dttz1, comz1, comz4, 
                                  comz5, comz6, c3c4tx3, c3c4ty3, c3c4tz3, c2iv, con43, con16;
             protected int EAST = 2000, WEST = 3000, NORTH = 4000, SOUTH = 5000, BOTTOM = 6000, TOP = 7000;
-            protected static double[,] ce;// = new double[13+le, 5+le];//invertido para c#
+            protected static double[,] ce = // = new double[13, 5];//invertido para c#
+                             {{2.0d,1.0d,2.0d,2.0d,5.0d},//{{2.0d,1.0d,2.0d,2.0d,5.0d},
+		                     {0.0d,0.0d,2.0d,2.0d,4.0d},//{0.0d,0.0d,2.0d,2.0d,4.0d},
+		                     {0.0d,0.0d,0.0d,0.0d,3.0d},//{0.0d,0.0d,0.0d,0.0d,3.0d},
+		                     {4.0d,0.0d,0.0d,0.0d,2.0d},//{4.0d,0.0d,0.0d,0.0d,2.0d},
+		                     {5.0d,1.0d,0.0d,0.0d,0.1d},//{5.0d,1.0d,0.0d,0.0d,0.1d},
+		                     {3.0d,2.0d,2.0d,2.0d,0.4d},//{3.0d,2.0d,2.0d,2.0d,0.4d},
+		                     {0.5d,3.0d,3.0d,3.0d,0.3d},//{0.5d,3.0d,3.0d,3.0d,0.3d},
+		                     {0.02d,0.01d,0.04d,0.03d,0.05d},//{0.02d,0.01d,0.04d,0.03d,0.05d},
+		                     {0.01d,0.03d,0.03d,0.05d,0.04d},//{0.01d,0.03d,0.03d,0.05d,0.04d},
+		                     {0.03d,0.02d,0.05d,0.04d,0.03d},//{0.03d,0.02d,0.05d,0.04d,0.03d},
+		                     {0.5d,0.4d,0.3,0.2d,0.1d},//{0.5d,0.4d,0.3d,0.2d,0.1d},
+		                     {0.4d,0.3d,0.5,0.1d,0.3d},//{0.4d,0.3d,0.5d,0.1d,0.3d},
+		                     {0.3d,0.5d,0.4,0.3d,0.2d}};//{0.3d,0.5d,0.4d,0.3d,0.2d}};
             protected static int[,] cell_coord;// invertido para c#
             protected static int[,] cell_low;  // invertido para c#
             protected static int[,] cell_high; // invertido para c#
@@ -215,7 +228,7 @@ namespace NPB {
             BUF_SIZE     = MAX_CELL_DIM*MAX_CELL_DIM*(maxcells-1)*60+1;
             //sum          = new double[niter_default];
 
-            ce           = new double[13, 5];  //invertido para c#, indexado
+            //ce           = new double[13, 5];  //invertido para c#, indexado
             cell_coord   = new int[maxcells,3];// invertido para c#, indexado, valor corrigido
             cell_low     = new int[maxcells,3];// invertido para c#, indexado, valor corrigido
             cell_high    = new int[maxcells,3];// invertido para c#, indexado, valor corrigido
