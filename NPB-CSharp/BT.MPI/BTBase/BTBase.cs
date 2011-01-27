@@ -18,7 +18,7 @@ namespace NPB {
         //header.h
             protected int aa = 1, bb = 2, cc = 3, BLOCK_SIZE = 5;
             protected static int ncells;
-            protected static int[] grid_points = new int[3+le];
+            protected static int[] grid_points = new int[3];
             protected static double elapsed_time;
             protected static double tx1, tx2, tx3, ty1, ty2, ty3, tz1, tz2, tz3, dx1, dx2, dx3, dx4, dx5, dy1, dy2, dy3, dy4, dy5, 
                                  dz1, dz2, dz3, dz4, dz5, dssp, dt, dxmax, dymax, dzmax, xxcon1, xxcon2, xxcon3, xxcon4, xxcon5, 
@@ -52,8 +52,8 @@ namespace NPB {
             protected static int west_size, east_size, bottom_size, top_size, north_size, south_size, start_send_west, start_send_east,
                               start_send_south, start_send_north, start_send_bottom, start_send_top, start_recv_west, start_recv_east,
                               start_recv_south, start_recv_north, start_recv_bottom, start_recv_top;
-            protected static double[] tmp_vec = new double[5];
-            protected static double[] xce_sub = new double[5];
+            //protected static double[] tmp_vec = new double[5];
+            //protected static double[] xce_sub = new double[5];
             protected static int collbuf_nodes, collbuf_size, iosize, eltext, combined_btype, fp, idump, record_length, idump_sub, rd_interval;
             protected static int iseek, element, combined_ftype;
         //end header.h
@@ -215,16 +215,16 @@ namespace NPB {
             BUF_SIZE     = MAX_CELL_DIM*MAX_CELL_DIM*(maxcells-1)*60+1;
             //sum          = new double[niter_default];
 
-            ce           = new double[13+le, 5+le];  //invertido para c#
-            cell_coord   = new int[maxcells+le,3+le];// invertido para c#
-            cell_low     = new int[maxcells+le,3+le];// invertido para c#
-            cell_high    = new int[maxcells+le,3+le];// invertido para c#
-            cell_size    = new int[maxcells+le,3+le];// invertido para c#            
-            slice        = new int[maxcells+le,3+le];// invertido para c# 
-            start        = new int[maxcells+le,3+le];// invertido para c#  
-            end          = new int[maxcells+le,3+le];// invertido para c# 
-            ue           = new double[5+le, MAX_CELL_DIM+4];     //[-2:MAX_CELL_DIM+1,5]; // invertido para c#
-            buf          = new double[5+le, MAX_CELL_DIM+4];    //[-2:MAX_CELL_DIM+1,5]; // invertido para c#
+            ce           = new double[13, 5];  //invertido para c#, indexado
+            cell_coord   = new int[maxcells,3];// invertido para c#, indexado, valor corrigido
+            cell_low     = new int[maxcells,3];// invertido para c#, indexado, valor corrigido
+            cell_high    = new int[maxcells,3];// invertido para c#, indexado, valor corrigido
+            cell_size    = new int[maxcells,3];// invertido para c#, indexado, valor permanecido
+            slice        = new int[maxcells,3];// invertido para c#, indexado, valor corrigido
+            start        = new int[maxcells,3];// invertido para c#, indexado, valor corrigido
+            end          = new int[maxcells,3];// invertido para c#, indexado, valor permanecido
+            ue           = new double[5, MAX_CELL_DIM+3];     //[-2:MAX_CELL_DIM+1,5]; // invertido para c#, indexado
+            buf          = new double[5, MAX_CELL_DIM+3];    //[-2:MAX_CELL_DIM+1,5]; // invertido para c#,  indexado
  
 
 
