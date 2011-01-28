@@ -689,7 +689,7 @@ namespace NPB {
                         for(i = 0; i<= cell_size[c, 0]-1; i++) {
                             for(m = 0; m<5; m++) {
                                 for(n = 0; n< 5; n++) {
-                                    lhsc[c+1, k+1, j+1, i+1, n+1, m+1] = 0.0d; //lhsc[m,n,i,j,k,c] = 0.0d;
+                                    lhsc[c, k+2, j+2, i+2, n, m] = 0.0d; //lhsc[m,n,i,j,k,c] = 0.0d;
                                 }
                             }
                         }
@@ -708,13 +708,13 @@ namespace NPB {
             //---------------------------------------------------------------------
             //     next, set all diagonal values to 1. This is overkill, but convenient
             //---------------------------------------------------------------------
-            for(i = 0; i <= size; i++) {
+            for(i = 2; i <= size; i++) {
                 for(m = 0; m < 5; m++) {
                     for(n = 0; n < 5; n++) {
-                        lhsa[i+1, n+1, m+1] = 0.0d; //lhsa[m,n,i] = 0.0d;
-                        lhsb[i+1, n+1, m+1] = 0.0d; //lhsb[m,n,i] = 0.0d;
+                        lhsa[i, n, m] = 0.0d; //lhsa[m,n,i] = 0.0d;
+                        lhsb[i, n, m] = 0.0d; //lhsb[m,n,i] = 0.0d;
                     }
-                    lhsb[i+1, m+1, m+1] = 1.0d; //lhsb[m,m,i] = 1.0d;
+                    lhsb[i, m, m] = 1.0d; //lhsb[m,m,i] = 1.0d;
                 }
             }
         }
@@ -753,7 +753,7 @@ namespace NPB {
                     for(j = 2; j < jsize; j++) {
                         for(i = 2; i < isize; i++) { //forcing[5,   0:IMAX-1, 0:JMAX-1, 0:KMAX-1, maxcells]
                             for(m = 0; m < 5; m++) {             //forcing new double[maxcells+1,KMAX,JMAX,IMAX,6];
-                                forcing[c+1, k-2, j-2, i-2, m+1] = 0.0d; //forcing[m,i,j,k,c] = 0.0d;
+                                forcing[c, k, j, i, m] = 0.0d; //forcing[m,i,j,k,c] = 0.0d;
                             }
                         }
                     }
@@ -782,11 +782,11 @@ namespace NPB {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             im1 = i - 3;
                             ip1 = i - 1;
-                            forcing[c+1, (k-2), (j-2), i-2, 1] = forcing[c+1, (k-2), (j-2), i-2, 1] - tx2 * (ue[1, 2 + ip1] - ue[1, 2 + im1]) + dx1tx1 * (ue[0, 2 + ip1] - 2.0d * ue[0, i] + ue[0, 2 + im1]);
-                            forcing[c+1, (k-2), (j-2), i-2, 2] = forcing[c+1, (k-2), (j-2), i-2, 2] - tx2 * ((ue[1, 2 + ip1] * buf[1, 2 + ip1] + c2 * (ue[4, 2 + ip1] - q[2 + ip1])) - (ue[1, 2 + im1] * buf[1, 2 + im1] + c2 * (ue[4, 2 + im1] - q[2 + im1]))) + xxcon1 * (buf[1, 2 + ip1] - 2.0d * buf[1, i] + buf[1, 2 + im1]) + dx2tx1 * (ue[1, 2 + ip1] - 2.0d * ue[1, i] + ue[1, 2 + im1]);
-                            forcing[c+1, (k-2), (j-2), i-2, 3] = forcing[c+1, (k-2), (j-2), i-2, 3] - tx2 * (ue[2, 2 + ip1] * buf[1, 2 + ip1] - ue[2, 2 + im1] * buf[1, 2 + im1]) + xxcon2 * (buf[2, 2 + ip1] - 2.0d * buf[2, i] + buf[2, 2 + im1]) + dx3tx1 * (ue[2, 2 + ip1] - 2.0d * ue[2, i] + ue[2, 2 + im1]);
-                            forcing[c+1, (k-2), (j-2), i-2, 4] = forcing[c+1, (k-2), (j-2), i-2, 4] - tx2 * (ue[3, 2 + ip1] * buf[1, 2 + ip1] - ue[3, 2 + im1] * buf[1, 2 + im1]) + xxcon2 * (buf[3, 2 + ip1] - 2.0d * buf[3, i] + buf[3, 2 + im1]) + dx4tx1 * (ue[3, 2 + ip1] - 2.0d * ue[3, i] + ue[3, 2 + im1]);
-                            forcing[c+1, (k-2), (j-2), i-2, 5] = forcing[c+1, (k-2), (j-2), i-2, 5] - tx2 * (buf[1, 2 + ip1] * (c1 * ue[4, 2 + ip1] - c2 * q[2 + ip1]) - buf[1, 2 + im1] * (c1 * ue[4, 2 + im1] - c2 * q[2 + im1])) + 0.5d * xxcon3 * (buf[0, 2 + ip1] - 2.0d * buf[0, i] + buf[0, 2 + im1]) + xxcon4 * (cuf[2 + ip1] - 2.0d * cuf[i] + cuf[2 + im1]) + xxcon5 * (buf[4, 2 + ip1] - 2.0d * buf[4, i] + buf[4, 2 + im1]) + dx5tx1 * (ue[4, 2 + ip1] - 2.0d * ue[4, i] + ue[4, 2 + im1]);
+                            forcing[c, k, j, i, 0] = forcing[c, k, j, i, 0] - tx2 * (ue[1, 2 + ip1] - ue[1, 2 + im1]) + dx1tx1 * (ue[0, 2 + ip1] - 2.0d * ue[0, i] + ue[0, 2 + im1]);
+                            forcing[c, k, j, i, 1] = forcing[c, k, j, i, 1] - tx2 * ((ue[1, 2 + ip1] * buf[1, 2 + ip1] + c2 * (ue[4, 2 + ip1] - q[2 + ip1])) - (ue[1, 2 + im1] * buf[1, 2 + im1] + c2 * (ue[4, 2 + im1] - q[2 + im1]))) + xxcon1 * (buf[1, 2 + ip1] - 2.0d * buf[1, i] + buf[1, 2 + im1]) + dx2tx1 * (ue[1, 2 + ip1] - 2.0d * ue[1, i] + ue[1, 2 + im1]);
+                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - tx2 * (ue[2, 2 + ip1] * buf[1, 2 + ip1] - ue[2, 2 + im1] * buf[1, 2 + im1]) + xxcon2 * (buf[2, 2 + ip1] - 2.0d * buf[2, i] + buf[2, 2 + im1]) + dx3tx1 * (ue[2, 2 + ip1] - 2.0d * ue[2, i] + ue[2, 2 + im1]);
+                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - tx2 * (ue[3, 2 + ip1] * buf[1, 2 + ip1] - ue[3, 2 + im1] * buf[1, 2 + im1]) + xxcon2 * (buf[3, 2 + ip1] - 2.0d * buf[3, i] + buf[3, 2 + im1]) + dx4tx1 * (ue[3, 2 + ip1] - 2.0d * ue[3, i] + ue[3, 2 + im1]);
+                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - tx2 * (buf[1, 2 + ip1] * (c1 * ue[4, 2 + ip1] - c2 * q[2 + ip1]) - buf[1, 2 + im1] * (c1 * ue[4, 2 + im1] - c2 * q[2 + im1])) + 0.5d * xxcon3 * (buf[0, 2 + ip1] - 2.0d * buf[0, i] + buf[0, 2 + im1]) + xxcon4 * (cuf[2 + ip1] - 2.0d * cuf[i] + cuf[2 + im1]) + xxcon5 * (buf[4, 2 + ip1] - 2.0d * buf[4, i] + buf[4, 2 + im1]) + dx5tx1 * (ue[4, 2 + ip1] - 2.0d * ue[4, i] + ue[4, 2 + im1]);
                         }
                         //---------------------------------------------------------------------
                         //      Fourth-order dissipation                         
@@ -794,22 +794,22 @@ namespace NPB {
                         if(start[c, 0] > 2) {
                             for(m = 0; m < 5; m++) {
                                 i = 1;
-                                forcing[c+1, (k-2), (j-2), i, m+1] = forcing[c+1, (k-2), (j-2), i, m+1]-dssp*(5.0d*ue[m, 2+i]-4.0d*ue[m, 3+i]+ue[m, 4+i]);
+                                forcing[c, k, j, i+2, m] = forcing[c, k, j, i+2, m]-dssp*(5.0d*ue[m, 2+i]-4.0d*ue[m, 3+i]+ue[m, 4+i]);
                                 i = 2;
-                                forcing[c+1, (k-2), (j-2), i, m+1] = forcing[c+1, (k-2), (j-2), i, m+1]-dssp*(-4.0d*ue[m, 1+i]+6.0d*ue[m, 2+i]-4.0d*ue[m, 3+i]+ue[m, 4+i]);
+                                forcing[c, k, j, i+2, m] = forcing[c, k, j, i+2, m]-dssp*(-4.0d*ue[m, 1+i]+6.0d*ue[m, 2+i]-4.0d*ue[m, 3+i]+ue[m, 4+i]);
                             }
                         }
                         for(i = 3*start[c, 0]-4; i < isize - 3*end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                forcing[c+1, (k-2), (j-2), i-2, m+1] = forcing[c+1, (k-2), (j-2), i-2, m+1]-dssp*(ue[m, i-2]-4.0d*ue[m, i-1]+6.0d*ue[m, i]-4.0d*ue[m, i+1]+ue[m, i+2]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m]-dssp*(ue[m, i-2]-4.0d*ue[m, i-1]+6.0d*ue[m, i]-4.0d*ue[m, i+1]+ue[m, i+2]);
                             }
                         }
                         if(end[c, 0] > 0) {
                             for(m = 0; m < 5; m++) {
                                 i = isize - 3;
-                                forcing[c+1, (k-2), (j-2), i-2, m+1] = forcing[c+1, (k-2), (j-2), i-2, m+1] - dssp * (ue[m, i-2] - 4.0d * ue[m, i-1] + 6.0d * ue[m, i] - 4.0d * ue[m, i+1]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m, i-2] - 4.0d * ue[m, i-1] + 6.0d * ue[m, i] - 4.0d * ue[m, i+1]);
                                 i = isize - 2;
-                                forcing[c+1, (k-2), (j-2), i-2, m+1] = forcing[c+1, (k-2), (j-2), i-2, m+1] - dssp * (ue[m, i-2] - 4.0d * ue[m, i-1] + 5.0d * ue[m, i]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m, i-2] - 4.0d * ue[m, i-1] + 5.0d * ue[m, i]);
                             }
                         }
                     }
@@ -838,11 +838,11 @@ namespace NPB {
                         for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                             jm1 = j - 3;
                             jp1 = j - 1;
-                            forcing[c+1, (k-2), j-2, (i-2), 1] = forcing[c+1, (k-2), j-2, (i-2), 1] - ty2 * (ue[2, 2 + jp1] - ue[2, 2 + jm1]) + dy1ty1 * (ue[0, 2 + jp1] - 2.0d * ue[0, j] + ue[0, 2 + jm1]);
-                            forcing[c+1, (k-2), j-2, (i-2), 2] = forcing[c+1, (k-2), j-2, (i-2), 2] - ty2 * (ue[1, 2 + jp1] * buf[2, 2 + jp1] - ue[1, 2 + jm1] * buf[2, 2 + jm1]) + yycon2 * (buf[1, 2 + jp1] - 2.0d * buf[1, j] + buf[1, 2 + jm1]) + dy2ty1 * (ue[1, 2 + jp1] - 2.0 * ue[1, j] + ue[1, 2 + jm1]);
-                            forcing[c+1, (k-2), j-2, (i-2), 3] = forcing[c+1, (k-2), j-2, (i-2), 3] - ty2 * ((ue[2, 2 + jp1] * buf[2, 2 + jp1] + c2 * (ue[4, 2 + jp1] - q[2 + jp1])) - (ue[2, 2 + jm1] * buf[2, 2 + jm1] + c2 * (ue[4, 2 + jm1] - q[2 + jm1]))) + yycon1 * (buf[2, 2 + jp1] - 2.0d * buf[2, j] + buf[2, 2 + jm1]) + dy3ty1 * (ue[2, 2 + jp1] - 2.0d * ue[2, j] + ue[2, 2 + jm1]);
-                            forcing[c+1, (k-2), j-2, (i-2), 4] = forcing[c+1, (k-2), j-2, (i-2), 4] - ty2 * (ue[3, 2 + jp1] * buf[2, 2 + jp1] - ue[3, 2 + jm1] * buf[2, 2 + jm1]) + yycon2 * (buf[3, 2 + jp1] - 2.0d * buf[3, j] + buf[3, 2 + jm1]) + dy4ty1 * (ue[3, 2 + jp1] - 2.0d * ue[3, j] + ue[3, 2 + jm1]);
-                            forcing[c+1, (k-2), j-2, (i-2), 5] = forcing[c+1, (k-2), j-2, (i-2), 5] - ty2 * (buf[2, 2 + jp1] * (c1 * ue[4, 2 + jp1] - c2 * q[2 + jp1]) - buf[2, 2 + jm1] * (c1 * ue[4, 2 + jm1] - c2 * q[2 + jm1])) + 0.5d * yycon3 * (buf[0, 2 + jp1] - 2.0d * buf[0, j] + buf[0, 2 + jm1]) + yycon4 * (cuf[2 + jp1] - 2.0d * cuf[j] + cuf[2 + jm1]) + yycon5 * (buf[4, 2 + jp1] - 2.0d * buf[4, j] + buf[4, 2 + jm1]) + dy5ty1 * (ue[4, 2 + jp1] - 2.0d * ue[4, j] + ue[4, 2 + jm1]);
+                            forcing[c, k, j, i, 0] = forcing[c, k, j, i, 0] - ty2 * (ue[2, 2 + jp1] - ue[2, 2 + jm1]) + dy1ty1 * (ue[0, 2 + jp1] - 2.0d * ue[0, j] + ue[0, 2 + jm1]);
+                            forcing[c, k, j, i, 1] = forcing[c, k, j, i, 1] - ty2 * (ue[1, 2 + jp1] * buf[2, 2 + jp1] - ue[1, 2 + jm1] * buf[2, 2 + jm1]) + yycon2 * (buf[1, 2 + jp1] - 2.0d * buf[1, j] + buf[1, 2 + jm1]) + dy2ty1 * (ue[1, 2 + jp1] - 2.0 * ue[1, j] + ue[1, 2 + jm1]);
+                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - ty2 * ((ue[2, 2 + jp1] * buf[2, 2 + jp1] + c2 * (ue[4, 2 + jp1] - q[2 + jp1])) - (ue[2, 2 + jm1] * buf[2, 2 + jm1] + c2 * (ue[4, 2 + jm1] - q[2 + jm1]))) + yycon1 * (buf[2, 2 + jp1] - 2.0d * buf[2, j] + buf[2, 2 + jm1]) + dy3ty1 * (ue[2, 2 + jp1] - 2.0d * ue[2, j] + ue[2, 2 + jm1]);
+                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - ty2 * (ue[3, 2 + jp1] * buf[2, 2 + jp1] - ue[3, 2 + jm1] * buf[2, 2 + jm1]) + yycon2 * (buf[3, 2 + jp1] - 2.0d * buf[3, j] + buf[3, 2 + jm1]) + dy4ty1 * (ue[3, 2 + jp1] - 2.0d * ue[3, j] + ue[3, 2 + jm1]);
+                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - ty2 * (buf[2, 2 + jp1] * (c1 * ue[4, 2 + jp1] - c2 * q[2 + jp1]) - buf[2, 2 + jm1] * (c1 * ue[4, 2 + jm1] - c2 * q[2 + jm1])) + 0.5d * yycon3 * (buf[0, 2 + jp1] - 2.0d * buf[0, j] + buf[0, 2 + jm1]) + yycon4 * (cuf[2 + jp1] - 2.0d * cuf[j] + cuf[2 + jm1]) + yycon5 * (buf[4, 2 + jp1] - 2.0d * buf[4, j] + buf[4, 2 + jm1]) + dy5ty1 * (ue[4, 2 + jp1] - 2.0d * ue[4, j] + ue[4, 2 + jm1]);
                         }
                         //---------------------------------------------------------------------
                         //     Fourth-order dissipation                      
@@ -850,22 +850,22 @@ namespace NPB {
                         if(start[c, 1] > 2) {
                             for(m = 0; m < 5; m++) {
                                 j = 3;
-                                forcing[c+1, (k-2), j-2, (i-2), m+1] = forcing[c+1, (k-2), j-2, (i-2), m+1] - dssp * (5.0d * ue[m, j] - 4.0d * ue[m, j+1] + ue[m, j+2]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (5.0d * ue[m, j] - 4.0d * ue[m, j+1] + ue[m, j+2]);
                                 j = 4;
-                                forcing[c+1, (k-2), j-2, (i-2), m+1] = forcing[c+1, (k-2), j-2, (i-2), m+1] - dssp * (-4.0d * ue[m, j-1] + 6.0d * ue[m, j] - 4.0d * ue[m, j+1] + ue[m, j+2]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (-4.0d * ue[m, j-1] + 6.0d * ue[m, j] - 4.0d * ue[m, j+1] + ue[m, j+2]);
                             }
                         }
                         for(j = 3*start[c, 1]-4; j < jsize - 3*end[c, 1]; j++) {
                             for(m = 0; m < 5; m++) {
-                                forcing[c+1, (k-2), j-2, (i-2), m+1] = forcing[c+1, (k-2), j-2, (i-2), m+1] - dssp * (ue[m, j-2] - 4.0d * ue[m, j-1] + 6.0d * ue[m, j] - 4.0d * ue[m, j+1] + ue[m, j+2]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m, j-2] - 4.0d * ue[m, j-1] + 6.0d * ue[m, j] - 4.0d * ue[m, j+1] + ue[m, j+2]);
                             }
                         }
                         if(end[c, 1] > 0) {
                             for(m = 0; m < 5; m++) {
                                 j = jsize - 3;
-                                forcing[c+1, (k-2), j-2, (i-2), m+1] = forcing[c+1, (k-2), j-2, (i-2), m+1] - dssp * (ue[m, j-2] - 4.0d * ue[m, j-1] + 6.0d * ue[m, j] - 4.0d * ue[m, j+1]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m, j-2] - 4.0d * ue[m, j-1] + 6.0d * ue[m, j] - 4.0d * ue[m, j+1]);
                                 j = jsize - 2;
-                                forcing[c+1, (k-2), j-2, (i-2), m+1] = forcing[c+1, (k-2), j-2, (i-2), m+1] - dssp * (ue[m, j-2] - 4.0d * ue[m, j-1] + 5.0d * ue[m, j]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m, j-2] - 4.0d * ue[m, j-1] + 5.0d * ue[m, j]);
                             }
                         }
                     }
@@ -894,11 +894,11 @@ namespace NPB {
                         for(k = start[c, 2]; k < ksize - end[c, 2]; k++) {
                             km1 = k - 1;
                             kp1 = k + 1;
-                            forcing[c+1, k-2, (j-2), (i-2), 1] = forcing[c+1, k-2, (j-2), (i-2), 1] - tz2 * (ue[3, kp1] - ue[3, km1]) + dz1tz1 * (ue[0, kp1] - 2.0d * ue[0, k] + ue[0, km1]);
-                            forcing[c+1, k-2, (j-2), (i-2), 2] = forcing[c+1, k-2, (j-2), (i-2), 2] - tz2 * (ue[1, kp1] * buf[3, kp1] - ue[1, km1] * buf[3, km1]) + zzcon2 * (buf[1, kp1] - 2.0d * buf[1, k] + buf[1, km1]) + dz2tz1 * (ue[1, kp1] - 2.0d * ue[1, k] + ue[1, km1]);
-                            forcing[c+1, k-2, (j-2), (i-2), 3] = forcing[c+1, k-2, (j-2), (i-2), 3] - tz2 * (ue[2, kp1] * buf[3, kp1] - ue[2, km1] * buf[3, km1]) + zzcon2 * (buf[2, kp1] - 2.0d * buf[2, k] + buf[2, km1]) + dz3tz1 * (ue[2, kp1] - 2.0d * ue[2, k] + ue[2, km1]);
-                            forcing[c+1, k-2, (j-2), (i-2), 4] = forcing[c+1, k-2, (j-2), (i-2), 4] - tz2 * ((ue[3, kp1] * buf[3, kp1] + c2 * (ue[4, kp1] - q[kp1])) - (ue[3, km1] * buf[3, km1] + c2 * (ue[4, km1] - q[km1]))) + zzcon1 * (buf[3, kp1] - 2.0d * buf[3, k] + buf[3, km1]) + dz4tz1 * (ue[3, kp1] - 2.0d * ue[3, k] + ue[3, km1]);
-                            forcing[c+1, k-2, (j-2), (i-2), 5] = forcing[c+1, k-2, (j-2), (i-2), 5] - tz2 * (buf[3, kp1] * (c1 * ue[4, kp1] - c2 * q[kp1]) - buf[3, km1] * (c1 * ue[4, km1] - c2 * q[km1])) + 0.5d * zzcon3 * (buf[0, kp1] - 2.0d * buf[0, k] + buf[0, km1]) + zzcon4 * (cuf[kp1] - 2.0d * cuf[k] + cuf[km1]) + zzcon5 * (buf[4, kp1] - 2.0d * buf[4, k] + buf[4, km1]) + dz5tz1 * (ue[4, kp1] - 2.0d * ue[4, k] + ue[4, km1]);
+                            forcing[c, k, j, i, 0] = forcing[c, k, j, i, 0] - tz2 * (ue[3, kp1] - ue[3, km1]) + dz1tz1 * (ue[0, kp1] - 2.0d * ue[0, k] + ue[0, km1]);
+                            forcing[c, k, j, i, 1] = forcing[c, k, j, i, 1] - tz2 * (ue[1, kp1] * buf[3, kp1] - ue[1, km1] * buf[3, km1]) + zzcon2 * (buf[1, kp1] - 2.0d * buf[1, k] + buf[1, km1]) + dz2tz1 * (ue[1, kp1] - 2.0d * ue[1, k] + ue[1, km1]);
+                            forcing[c, k, j, i, 2] = forcing[c, k, j, i, 2] - tz2 * (ue[2, kp1] * buf[3, kp1] - ue[2, km1] * buf[3, km1]) + zzcon2 * (buf[2, kp1] - 2.0d * buf[2, k] + buf[2, km1]) + dz3tz1 * (ue[2, kp1] - 2.0d * ue[2, k] + ue[2, km1]);
+                            forcing[c, k, j, i, 3] = forcing[c, k, j, i, 3] - tz2 * ((ue[3, kp1] * buf[3, kp1] + c2 * (ue[4, kp1] - q[kp1])) - (ue[3, km1] * buf[3, km1] + c2 * (ue[4, km1] - q[km1]))) + zzcon1 * (buf[3, kp1] - 2.0d * buf[3, k] + buf[3, km1]) + dz4tz1 * (ue[3, kp1] - 2.0d * ue[3, k] + ue[3, km1]);
+                            forcing[c, k, j, i, 4] = forcing[c, k, j, i, 4] - tz2 * (buf[3, kp1] * (c1 * ue[4, kp1] - c2 * q[kp1]) - buf[3, km1] * (c1 * ue[4, km1] - c2 * q[km1])) + 0.5d * zzcon3 * (buf[0, kp1] - 2.0d * buf[0, k] + buf[0, km1]) + zzcon4 * (cuf[kp1] - 2.0d * cuf[k] + cuf[km1]) + zzcon5 * (buf[4, kp1] - 2.0d * buf[4, k] + buf[4, km1]) + dz5tz1 * (ue[4, kp1] - 2.0d * ue[4, k] + ue[4, km1]);
                         }
                         //---------------------------------------------------------------------
                         //     Fourth-order dissipation                        
@@ -906,22 +906,22 @@ namespace NPB {
                         if(start[c, 2] > 2) {
                             for(m = 0; m < 5; m++) {
                                 k = 3;
-                                forcing[c+1, k-2, (j-2), (i-2), m+1] = forcing[c+1, k-2, (j-2), (i-2), m+1] - dssp * (5.0d * ue[m, k] - 4.0d * ue[m, k+1] + ue[m, k+2]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (5.0d * ue[m, k] - 4.0d * ue[m, k+1] + ue[m, k+2]);
                                 k = 4;
-                                forcing[c+1, k-2, (j-2), (i-2), m+1] = forcing[c+1, k-2, (j-2), (i-2), m+1] - dssp * (-4.0d * ue[m, k-1] + 6.0d * ue[m, k] - 4.0d * ue[m, k+1] + ue[m, k+2]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (-4.0d * ue[m, k-1] + 6.0d * ue[m, k] - 4.0d * ue[m, k+1] + ue[m, k+2]);
                             }
                         }
                         for(k = 3*start[c, 2]-4; k < ksize - 3*end[c, 2]; k++) {
                             for(m = 0; m < 5; m++) {
-                                forcing[c+1, k-2, (j-2), (i-2), m+1] = forcing[c+1, k-2, (j-2), (i-2), m+1] - dssp * (ue[m, k-2] - 4.0d * ue[m, k-1] + 6.0d * ue[m, k] - 4.0d * ue[m, k+1] + ue[m, k+2]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m, k-2] - 4.0d * ue[m, k-1] + 6.0d * ue[m, k] - 4.0d * ue[m, k+1] + ue[m, k+2]);
                             }
                         }
                         if(end[c, 2] > 0) {
                             for(m = 0; m < 5; m++) {
                                 k = ksize - 3;
-                                forcing[c+1, k-2, (j-2), (i-2), m+1] = forcing[c+1, k-2, (j-2), (i-2), m+1] - dssp * (ue[m, k-2] - 4.0d * ue[m, k-1] + 6.0d * ue[m, k] - 4.0d * ue[m, k+1]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m, k-2] - 4.0d * ue[m, k-1] + 6.0d * ue[m, k] - 4.0d * ue[m, k+1]);
                                 k = ksize - 2;
-                                forcing[c+1, k-2, (j-2), (i-2), m+1] = forcing[c+1, k-2, (j-2), (i-2), m+1] - dssp * (ue[m, k-2] - 4.0d * ue[m, k-1] + 5.0d * ue[m, k]);
+                                forcing[c, k, j, i, m] = forcing[c, k, j, i, m] - dssp * (ue[m, k-2] - 4.0d * ue[m, k-1] + 5.0d * ue[m, k]);
                             }
                         }
                     }
@@ -933,7 +933,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                forcing[c+1, k-2, j-2, i-2, m+1] = -1.0 * forcing[c+1, k-2, j-2, i-2, m+1];
+                                forcing[c, k, j, i, m] = -1.0 * forcing[c, k, j, i, m];
                             }
                         }
                     }
@@ -1321,7 +1321,7 @@ namespace NPB {
                     for(j = 2; j < jsize; j++) {
                         for(i = 2; i < isize; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = forcing[c+1, k-2, j-2, i-2, m+1];
+                                rhs[c, k, j, i, m] = forcing[c, k, j, i, m];
                             }
                         }
                     }
@@ -1336,10 +1336,10 @@ namespace NPB {
                             up1 = us[c+1, k-1, j-1, i]; //up1  = us[i+1,j,k,c];
                             um1 = us[c+1, k-1, j-1, i-2]; //um1  = us[i-1,j,k,c];
                             //u(+0, +2, +2, +2, +0); rhs(+0, +1, +1, +1, +0); square(+0, +1, +1 + 1); /*vs(+0, +1, +1, +1);*/
-                            rhs[c+1, k-1, j-1, i-1, 1] = rhs[c+1, k-1, j-1, i-1, 1] + dx1tx1 * (u[c, k, j, i+1, 0] - /*rhs[1,i,j,k,c]=rhs[1,i,j,k,c]+dx1tx1*(u[1,i+1,j,k,c]*/
+                            rhs[c, k, j, i, 0] = rhs[c, k, j, i, 0] + dx1tx1 * (u[c, k, j, i+1, 0] - /*rhs[1,i,j,k,c]=rhs[1,i,j,k,c]+dx1tx1*(u[1,i+1,j,k,c]*/
                                              2.0d * u[c, k, j, i, 0] + u[c, k, j, i-1, 0]) - /*2.0d*u[1,i,j,k,c] + u[1,i-1,j,k,c])*/
                                              tx2 * (u[c, k, j, i+1, 1] - u[c, k, j, i-1, 1]); /*tx2*(u[2,i+1,j,k,c] - u[2,i-1,j,k,c])*/
-                            rhs[c+1, k-1, j-1, i-1, 2] = rhs[c+1, k-1, j-1, i-1, 2] + dx2tx1 * /*rhs[2, i, j, k, c] = rhs[2, i, j, k, c] + dx2tx1 */
+                            rhs[c, k, j, i, 1] = rhs[c, k, j, i, 1] + dx2tx1 * /*rhs[2, i, j, k, c] = rhs[2, i, j, k, c] + dx2tx1 */
                                 (u[c, k, j, i+1, 1] - 2.0d * u[c, k, j, i, 1] +  /*(u[2, i + 1, j, k, c] - 2.0d * u[2, i, j, k, c] +*/
                                 u[c, k, j, i-1, 1]) + /* u[2, i - 1, j, k, c]) +*/
                                 xxcon2 * con43 * (up1 - 2.0d * uijk + um1) - /*xxcon2 * con43 * (up1 - 2.0d * uijk + um1) -*/
@@ -1348,7 +1348,7 @@ namespace NPB {
                                 (u[c, k, j, i+1, 4] - square[c+1, k-1, j-1, i] - /*(u[5, i + 1, j, k, c] - square[i + 1, j, k, c] -*/
                                 u[c, k, j, i-1, 4] + square[c+1, k-1, j-1, i-2]) * /*u[5, i - 1, j, k, c] + square[i - 1, j, k, c]) **/
                                 c2);
-                            rhs[c+1, k-1, j-1, i-1, 3] = rhs[c+1, k-1, j-1, i-1, 3] + dx3tx1 * /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dx3tx1 * */
+                            rhs[c, k, j, i, 2] = rhs[c, k, j, i, 2] + dx3tx1 * /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dx3tx1 * */
                                 (u[c, k, j, i+1, 2] - 2.0d * u[c, k, j, i, 2] +  /*[u[3,i+1,j,k,c] - 2.0d0*u[3,i,j,k,c] +*/
                                 u[c, k, j, i-1, 2]) + /*u[3,i-1,j,k,c]] +*/
                                 xxcon2 * (vs[c+1, k-1, j-1, i] - 2.0d * vs[c+1, k-1, j-1, i-1] + /*xxcon2 * [vs[i+1,j,k,c] - 2.0d0*vs[i,j,k,c] +*/
@@ -1356,7 +1356,7 @@ namespace NPB {
                                 tx2 * (u[c, k, j, i+1, 2] * up1 - /* tx2 * [u[3,i+1,j,k,c]*up1 - */
                                 u[c, k, j, i-1, 2] * um1); /*u[3,i-1,j,k,c]*um1];*/
 
-                            rhs[c+1, k-1, j-1, i-1, 4] = rhs[c+1, k-1, j-1, i-1, 4] + dx4tx1 *  /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] + dx4tx1 * */
+                            rhs[c, k, j, i, 3] = rhs[c, k, j, i, 3] + dx4tx1 *  /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] + dx4tx1 * */
                                 (u[c, k, j, i+1, 3] - 2.0d * u[c, k, j, i, 3] + /*[u[4,i+1,j,k,c] - 2.0d0*u[4,i,j,k,c] +*/
                                 u[c, k, j, i-1, 3]) +  /*u[4,i-1,j,k,c]] +*/
                                 xxcon2 * (ws[c+1, k-1, j-1, i] - 2.0d * ws[c+1, k-1, j-1, i-1] + /*xxcon2 * [ws[i+1,j,k,c] - 2.0d0*ws[i,j,k,c] +*/
@@ -1364,7 +1364,7 @@ namespace NPB {
                                 tx2 * (u[c, k, j, i+1, 3] * up1 - /*tx2 * [u[4,i+1,j,k,c]*up1 - */
                                 u[c, k, j, i-1, 3] * um1); /*u[4,i-1,j,k,c]*um1];*/
 
-                            rhs[c+1, k-1, j-1, i-1, 5] = rhs[c+1, k-1, j-1, i-1, 5] + dx5tx1 *            /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + dx5tx1 * */
+                            rhs[c, k, j, i, 4] = rhs[c, k, j, i, 4] + dx5tx1 *            /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + dx5tx1 * */
                                 (u[c, k, j, i+1, 4] - 2.0d * u[c, k, j, i, 4] +             /*[u[5,i+1,j,k,c] - 2.0d0*u[5,i,j,k,c] +*/
                                 u[c, k, j, i-1, 4]) +                                       /*u[5,i-1,j,k,c]] +*/
                                 xxcon3 * (qs[c+1, k-1, j-1, i] - 2.0d * qs[c+1, k-1, j-1, i-1] +      /*xxcon3 * [qs[i+1,j,k,c] - 2.0d0*qs[i,j,k,c] +*/
@@ -1389,12 +1389,12 @@ namespace NPB {
                         for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                             i = 3;
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (5.0d * u[c, k, j, i, m] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp * (5.0d * u[c, k, j, i, m] -
                                                        4.0d * u[c, k, j, i+1, m] + u[c, k, j, i+2, m]);
                             }
                             i = 4;
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (-4.0d * u[c, k, j, i-1, m] + 6.0d * u[c, k, j, i, m] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp * (-4.0d * u[c, k, j, i-1, m] + 6.0d * u[c, k, j, i, m] -
                                                      4.0d * u[c, k, j, i+1, m] + u[c, k, j, i+2, m]);
                             }
                         }
@@ -1405,7 +1405,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = 3*start[c, 0]-4; i < isize - 3*end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp *
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                    (u[c, k, j, i-2, m] - 4.0d * u[c, k, j, i-1, m] +
                                    6.0 * u[c, k, j, i, m] - 4.0d * u[c, k, j, i+1, m] +
                                    u[c, k, j, i+2, m]);
@@ -1419,12 +1419,12 @@ namespace NPB {
                         for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                             i = isize - 3;
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (u[c, k, j, i-2, m] - 4.0d * u[c, k, j, i-1, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j, i+1, m]);
                             }
                             i = isize - 2;
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (u[c, k, j, i-2, m] - 4.0 * u[c, k, j, i-1, m] + 5.0 * u[c, k, j, i, m]);
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp * (u[c, k, j, i-2, m] - 4.0 * u[c, k, j, i-1, m] + 5.0 * u[c, k, j, i, m]);
                             }
                         }
                     }
@@ -1439,12 +1439,12 @@ namespace NPB {
                             vp1 = vs[c+1, k-1, j, i-1]; //vp1  = vs[i,j+1,k,c];
                             vm1 = vs[c+1, k-1, j-2, i-1]; //vm1  = vs[i,j-1,k,c];
 
-                            rhs[c+1, k-1, j-1, i-1, 1] = rhs[c+1, k-1, j-1, i-1, 1] + dy1ty1 *       /*rhs[1,i,j,k,c] = rhs[1,i,j,k,c] + dy1ty1 */
+                            rhs[c, k, j, i, 0] = rhs[c, k, j, i, 0] + dy1ty1 *       /*rhs[1,i,j,k,c] = rhs[1,i,j,k,c] + dy1ty1 */
                                 (u[c, k, j+1, i, 0] - 2.0d * u[c, k, j, i, 0] +        /*(u[1,i,j+1,k,c] - 2.0d*u[1,i,j,k,c] + */
                                 u[c, k, j-1, i, 0]) -                                  /*u[1,i,j-1,k,c]) -*/
                                 ty2 * (u[c, k, j+1, i, 2] - u[c, k, j-1, i, 2]);     /*ty2 * (u[3,i,j+1,k,c] - u[3,i,j-1,k,c]);*/
 
-                            rhs[c+1, k-1, j-1, i-1, 2] = rhs[c+1, k-1, j-1, i-1, 2] + dy2ty1 *       /*rhs[2,i,j,k,c] = rhs[2,i,j,k,c] + dy2ty1 * */
+                            rhs[c, k, j, i, 1] = rhs[c, k, j, i, 1] + dy2ty1 *       /*rhs[2,i,j,k,c] = rhs[2,i,j,k,c] + dy2ty1 * */
                                 (u[c, k, j+1, i, 1] - 2.0d * u[c, k, j, i, 1] +        /*(u[2,i,j+1,k,c] - 2.0d*u[2,i,j,k,c] + */
                                 u[c, k, j-1, i, 1]) +                                  /*u[2,i,j-1,k,c]) + */
                                 yycon2 * (us[c+1, k-1, j, i-1] - 2.0d * us[c+1, k-1, j-1, i-1] + /*yycon2 * (us[i,j+1,k,c] - 2.0d*us[i,j,k,c] + */
@@ -1452,7 +1452,7 @@ namespace NPB {
                                 ty2 * (u[c, k, j+1, i, 1] * vp1 -                        /*ty2 * (u[2,i,j+1,k,c]*vp1 - */
                                 u[c, k, j-1, i, 1] * vm1);                               /*u[2,i,j-1,k,c]*vm1);*/
 
-                            rhs[c+1, k-1, j-1, i-1, 3] = rhs[c+1, k-1, j-1, i-1, 3] + dy3ty1 *       /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dy3ty1 * */
+                            rhs[c, k, j, i, 2] = rhs[c, k, j, i, 2] + dy3ty1 *       /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dy3ty1 * */
                                 (u[c, k, j+1, i, 2] - 2.0d * u[c, k, j, i, 2] +        /*(u[3,i,j+1,k,c] - 2.0d*u[3,i,j,k,c] +*/
                                 u[c, k, j-1, i, 2]) +                                  /*u[3,i,j-1,k,c]) +*/
                                 yycon2 * con43 * (vp1 - 2.0d * vijk + vm1) -                 /*yycon2*con43 * (vp1 - 2.0d*vijk + vm1) -*/
@@ -1462,7 +1462,7 @@ namespace NPB {
                                 u[c, k, j-1, i, 4] + square[c+1, k-1, j-2, i-1])          /*u[5,i,j-1,k,c] + square[i,j-1,k,c])*/
                                 * c2);
 
-                            rhs[c+1, k-1, j-1, i-1, 4] = rhs[c+1, k-1, j-1, i-1, 4] + dy4ty1 *       /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] + dy4ty1 * */
+                            rhs[c, k, j, i, 3] = rhs[c, k, j, i, 3] + dy4ty1 *       /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] + dy4ty1 * */
                                 (u[c, k, j+1, i, 3] - 2.0d * u[c, k, j, i, 3] +        /*(u[4,i,j+1,k,c] - 2.0d*u[4,i,j,k,c] + */
                                 u[c, k, j-1, i, 3]) +                                  /*u[4,i,j-1,k,c]) + */
                                 yycon2 * (ws[c+1, k-1, j, i-1] - 2.0d * ws[c+1, k-1, j-1, i-1] + /*yycon2 * (ws[i,j+1,k,c] - 2.0d*ws[i,j,k,c] + */
@@ -1470,7 +1470,7 @@ namespace NPB {
                                 ty2 * (u[c, k, j+1, i, 3] * vp1 -                        /*ty2 * (u[4,i,j+1,k,c]*vp1 */
                                 u[c, k, j-1, i, 3] * vm1);                               /*u[4,i,j-1,k,c]*vm1)*/
 
-                            rhs[c+1, k-1, j-1, i-1, 5] = rhs[c+1, k-1, j-1, i-1, 5] + dy5ty1 *       /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + dy5ty1 */
+                            rhs[c, k, j, i, 4] = rhs[c, k, j, i, 4] + dy5ty1 *       /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + dy5ty1 */
                                 (u[c, k, j+1, i, 4] - 2.0d * u[c, k, j, i, 4] +        /*(u[5,i,j+1,k,c] - 2.0d*u[5,i,j,k,c] */
                                 u[c, k, j-1, i, 4]) +                                  /*u[5,i,j-1,k,c]) */
                                 yycon3 * (qs[c+1, k-1, j, i-1] - 2.0d * qs[c+1, k-1, j-1, i-1] + /*yycon3 * (qs[i,j+1,k,c] - 2.0d*qs[i,j,k,c] */
@@ -1495,13 +1495,13 @@ namespace NPB {
                         j = 3;
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) { //rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(5.0d*u[m,i,j,k,c]-4.0d*u[m,i,j+1,k,c]+u[m,i,j+2,k,c]);
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (5.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m] + u[c, k, j+2, i, m]);
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp * (5.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m] + u[c, k, j+2, i, m]);
                             }
                         }
                         j = 4;
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (-4.0d * u[c, k, j-1, i, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m] + u[c, k, j+2, i, m]);
                             }
                         }
@@ -1511,7 +1511,7 @@ namespace NPB {
                     for(j = 3*start[c, 1]-4; j < jsize - 3*end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (u[c, k, j-2, i, m] - 4.0d * u[c, k, j-1, i, m] +
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp * (u[c, k, j-2, i, m] - 4.0d * u[c, k, j-1, i, m] +
                                     6.0 * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m] + u[c, k, j+2, i, m]);
                             }
                         }
@@ -1522,14 +1522,14 @@ namespace NPB {
                         j = jsize-3;
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {//rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(u[m,i,j-2,k,c]-4.0d*u[m,i,j-1,k,c]+6.0d*u[m,i,j,k,c]-4.0d*u[m,i,j+1,k,c]);
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (u[c, k, j-2, i, m] - 4.0d * u[c, k, j-1, i, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m]);
                             }
                         }
                         j = jsize-2;
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {//rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - dssp*(u[m,i,j-2,k,c]-4.0*u[m,i,j-1,k,c]+5.0*u[m,i,j,k,c] );
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (u[c, k, j-2, i, m] - 4.0 * u[c, k, j-1, i, m] + 5.0 * u[c, k, j, i, m]);
                             }
                         }
@@ -1544,12 +1544,12 @@ namespace NPB {
                             wijk = ws[c+1, k-1, j-1, i-1]; //wijk = ws[i,j,k,c];
                             wp1 = ws[c+1, k, j-1, i-1]; //wp1  = ws[i,j,k+1,c];
                             wm1 = ws[c+1, k-2, j-1, i-1]; //wm1  = ws[i,j,k-1,c];
-                            rhs[c+1, k-1, j-1, i-1, 1] = rhs[c+1, k-1, j-1, i-1, 1] + dz1tz1 *        /*rhs[1,i,j,k,c] = rhs[1,i,j,k,c] + dz1tz1 * */
+                            rhs[c, k, j, i, 0] = rhs[c, k, j, i, 0] + dz1tz1 *        /*rhs[1,i,j,k,c] = rhs[1,i,j,k,c] + dz1tz1 * */
                                 (u[c, k+1, j, i, 0] - 2.0d * u[c, k, j, i, 0] +         /*(u[1,i,j,k+1,c] - 2.0d*u[1,i,j,k,c] + */
                                 u[c, k-1, j, i, 0]) -                                   /*u[1,i,j,k-1,c]) - */
                                 tz2 * (u[c, k+1, j, i, 3] - u[c, k-1, j, i, 3]);      /*tz2 * (u[4,i,j,k+1,c] - u[4,i,j,k-1,c]);*/
 
-                            rhs[c+1, k-1, j-1, i-1, 2] = rhs[c+1, k-1, j-1, i-1, 2] + dz2tz1 *        /*rhs[2,i,j,k,c] = rhs[2,i,j,k,c] + dz2tz1 **/
+                            rhs[c, k, j, i, 1] = rhs[c, k, j, i, 1] + dz2tz1 *        /*rhs[2,i,j,k,c] = rhs[2,i,j,k,c] + dz2tz1 **/
                                 (u[c, k+1, j, i, 1] - 2.0d * u[c, k, j, i, 1] +         /*(u[2,i,j,k+1,c] - 2.0d*u[2,i,j,k,c] */
                                 u[c, k-1, j, i, 1]) +                                   /*u[2,i,j,k-1,c]) */
                                 zzcon2 * (us[c+1, k, j-1, i-1] - 2.0d * us[c+1, k-1, j-1, i-1] +  /*zzcon2 * (us[i,j,k+1,c] - 2.0d*us[i,j,k,c] */
@@ -1557,7 +1557,7 @@ namespace NPB {
                                 tz2 * (u[c, k+1, j, i, 1] * wp1 -                         /*tz2 * (u[2,i,j,k+1,c]*wp1 */
                                 u[c, k-1, j, i, 1] * wm1);                                /*u[2,i,j,k-1,c]*wm1)*/
 
-                            rhs[c+1, k-1, j-1, i-1, 3] = rhs[c+1, k-1, j-1, i-1, 3] + dz3tz1 *        /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dz3tz1 */
+                            rhs[c, k, j, i, 2] = rhs[c, k, j, i, 2] + dz3tz1 *        /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dz3tz1 */
                                 (u[c, k+1, j, i, 2] - 2.0d * u[c, k, j, i, 2] +         /*(u[3,i,j,k+1,c] - 2.0d*u[3,i,j,k,c] */
                                 u[c, k-1, j, i, 2]) +                                   /*u[3,i,j,k-1,c]) */
                                 zzcon2 * (vs[c+1, k, j-1, i-1] - 2.0d * vs[c+1, k-1, j-1, i-1] +  /*zzcon2 * (vs[i,j,k+1,c] - 2.0d*vs[i,j,k,c] */
@@ -1565,7 +1565,7 @@ namespace NPB {
                                 tz2 * (u[c, k+1, j, i, 2] * wp1 -                         /*tz2 * (u[3,i,j,k+1,c]*wp1 */
                                 u[c, k-1, j, i, 2] * wm1);                                /*u[3,i,j,k-1,c]*wm1)*/
 
-                            rhs[c+1, k-1, j-1, i-1, 4] = rhs[c+1, k-1, j-1, i-1, 4] + dz4tz1 *        /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] */
+                            rhs[c, k, j, i, 3] = rhs[c, k, j, i, 3] + dz4tz1 *        /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] */
                                 (u[c, k+1, j, i, 3] - 2.0d * u[c, k, j, i, 3] +         /*(u[4,i,j,k+1,c] - 2.0d*u[4,i,j,k,c] */
                                 u[c, k-1, j, i, 3]) +                                   /*u[4,i,j,k-1,c]) */
                                 zzcon2 * con43 * (wp1 - 2.0d * wijk + wm1) -
@@ -1575,7 +1575,7 @@ namespace NPB {
                                 u[c, k-1, j, i, 4] + square[c+1, k-2, j-1, i-1])           /*u[5,i,j,k-1,c] + square[i,j,k-1,c]*/
                                 * c2);
 
-                            rhs[c+1, k-1, j-1, i-1, 5] = rhs[c+1, k-1, j-1, i-1, 5] + dz5tz1 *              /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + */
+                            rhs[c, k, j, i, 4] = rhs[c, k, j, i, 4] + dz5tz1 *              /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + */
                                 (u[c, k+1, j, i, 4] - 2.0d * u[c, k, j, i, 4] +               /*(u[5,i,j,k+1,c] - 2.0d*u[5,i,j,k,c] */
                                 u[c, k-1, j, i, 4]) +                                   /*u[5,i,j,k-1,c]) */
                                 zzcon3 * (qs[c+1, k, j-1, i-1] - 2.0d * qs[c+1, k-1, j-1, i-1] +        /*zzcon3 * (qs[i,j,k+1,c] - 2.0d*qs[i,j,k,c] */
@@ -1600,7 +1600,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) { //rhs[m,i,j,k,c] = rhs[m,i,j,k,c]-dssp*(5.0d*u[m,i,j,k,c]-4.0d*u[m,i,j,k+1,c] + u[m,i,j,k+2,c]);
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (5.0d * u[c, k, j, i, m] - 4.0d * u[c, k+1, j, i, m] + u[c, k+2, j, i, m]);
                             }
                         }
@@ -1609,7 +1609,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {//rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(-4.0d*u[m,i,j,k-1,c]+6.0d*u[m,i,j,k,c]-4.0d*u[m,i,j,k+1,c]+u[m,i,j,k+2,c]);
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (-4.0d * u[c, k-1, j, i, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k+1, j, i, m] + u[c, k+2, j, i, m]);
                             }
                         }
@@ -1619,7 +1619,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (u[c, k-2, j, i, m] - 4.0d * u[c, k-1, j, i, m] +
                                 6.0 * u[c, k, j, i, m] - 4.0d * u[c, k+1, j, i, m] + u[c, k+2, j, i, m]);
                             }
@@ -1632,7 +1632,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (u[c, k-2, j, i, m] - 4.0d * u[c, k-1, j, i, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k+1, j, i, m]);
                             }
                         }
@@ -1641,7 +1641,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
                                 dssp * (u[c, k-2, j, i, m] - 4.0 * u[c, k-1, j, i, m] + 5.0 * u[c, k, j, i, m]);
                             }
                         }
@@ -1651,7 +1651,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] * dt;
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] * dt;
                             }
                         }
                     }
@@ -1777,12 +1777,12 @@ namespace NPB {
                 for(j = 0; j <= JMAX - 1; j++) {
                     for(m = 1; m <= BLOCK_SIZE; m++) {
                         for(n = 0; n < BLOCK_SIZE; n++) {
-                            lhsc[c+1, k + 1, j + 1, istart-2, n + 1, m] = out_buffer_x[ptr + n]; //lhsc[m,n,istart-1,j,k,c] = out_buffer[ptr+n];
+                            lhsc[c, k+2, j+2, istart-1, n, m-1] = out_buffer_x[ptr + n]; //lhsc[m,n,istart-1,j,k,c] = out_buffer[ptr+n];
                         }
                         ptr = ptr + BLOCK_SIZE;
                     }
                     for(n = 0; n < BLOCK_SIZE; n++) {
-                        rhs[c+1, k + 1, j + 1, istart-2, n + 1] = out_buffer_x[ptr + n]; //rhs[n,istart-1,j,k,c] = out_buffer[ptr+n];
+                        rhs[c, k+2, j+2, istart-1, n] = out_buffer_x[ptr + n]; //rhs[n,istart-1,j,k,c] = out_buffer[ptr+n];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -1810,12 +1810,12 @@ namespace NPB {
                 for(j = 0; j <= JMAX - 1; j++) {
                     for(m = 1; m <= BLOCK_SIZE; m++) {
                         for(n = 0; n < BLOCK_SIZE; n++) {
-                            in_buffer_x[ptr + n] = lhsc[c+1, k + 1, j + 1, isize-1, n + 1, m];  //in_buffer[ptr+n] = lhsc[m,n,isize,j,k,c];
+                            in_buffer_x[ptr + n] = lhsc[c, k+2, j+2, isize, n, m-1];  //in_buffer[ptr+n] = lhsc[m,n,isize,j,k,c];
                         }
                         ptr = ptr + BLOCK_SIZE;
                     }
                     for(n = 0; n < BLOCK_SIZE; n++) {
-                        in_buffer_x[ptr + n] = rhs[c+1, k + 1, j + 1, isize-1, n + 1];  //in_buffer[ptr+n] = rhs[n,isize,j,k,c];
+                        in_buffer_x[ptr + n] = rhs[c, k+2, j+2, isize, n];  //in_buffer[ptr+n] = rhs[n,isize,j,k,c];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -1848,7 +1848,7 @@ namespace NPB {
             for(k = 0; k <= KMAX - 1; k++) {
                 for(j = 0; j <= JMAX - 1; j++) {
                     for(n = 0; n < BLOCK_SIZE; n++) {
-                        in_buffer_x[ptr + n] = rhs[c+1, k + 1, j + 1, istart-1, n + 1]; //in_buffer[ptr+n] = rhs[n,istart,j,k,c];
+                        in_buffer_x[ptr + n] = rhs[c, k+2, j+2, istart, n]; //in_buffer[ptr+n] = rhs[n,istart,j,k,c];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -1920,7 +1920,7 @@ namespace NPB {
                         //---------------------------------------------------------------------
                         for(m = 0; m < BLOCK_SIZE; m++) {
                             for(n = 0; n < BLOCK_SIZE; n++) {//rhs[m,isize,j,k,c] = rhs[m,isize,j,k,c] - lhsc[m,n,isize,j,k,c]*backsub_info[n,j,k,c]
-                                rhs[c+1, k-1, j-1, isize-1, m+1] = rhs[c+1, k-1, j-1, isize-1, m+1] - lhsc[c+1, k-1, j-1, isize-1, n+1, m+1] * backsub_info[c+1, k-2, j-2, n+1];
+                                rhs[c, k, j, isize, m] = rhs[c, k, j, isize, m] - lhsc[c, k, j, isize, n, m] * backsub_info[c+1, k-2, j-2, n+1];
                             }
                         }
                     }
@@ -1931,7 +1931,7 @@ namespace NPB {
                     for(i = isize-1; i >= istart; i--) {  //for(i=isize-1,istart,-1;
                         for(m = 0; m < BLOCK_SIZE; m++) {
                             for(n = 0; n < BLOCK_SIZE; n++) { //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i+1,j,k,c];
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - lhsc[c+1, k-1, j-1, i-1, n+1, m+1] * rhs[c+1, k-1, j-1, i, n+1];
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - lhsc[c, k, j, i, n, m] * rhs[c, k, j, i+1, n];
                             }
                         }
                     }
@@ -1956,7 +1956,7 @@ namespace NPB {
             jsize = cell_size[c, 1] - end[c, 1] + 1;
             ksize = cell_size[c, 2] - end[c, 2] + 1;
 
-            lhsabinit(lhsa, lhsb, isize-2);
+            lhsabinit(lhsa, lhsb, isize);
             for(k = start[c, 2]; k <= ksize; k++) {
                 for(j = start[c, 1]; j <= jsize; j++) {
                     //---------------------------------------------------------------------
@@ -2043,95 +2043,95 @@ namespace NPB {
                         tmp1 = dt * tx1;
                         tmp2 = dt * tx2;
 
-                        lhsa[i-1, 1, 1] = -tmp2 * fjac[i-1, 1, 1] - tmp1 * njac[i-1, 1, 1] - tmp1 * dx1;//2+i-1
-                        lhsa[i-1, 2, 1] = -tmp2 * fjac[i-1, 2, 1] - tmp1 * njac[i-1, 2, 1];
-                        lhsa[i-1, 3, 1] = -tmp2 * fjac[i-1, 3, 1] - tmp1 * njac[i-1, 3, 1];
-                        lhsa[i-1, 4, 1] = -tmp2 * fjac[i-1, 4, 1] - tmp1 * njac[i-1, 4, 1];
-                        lhsa[i-1, 5, 1] = -tmp2 * fjac[i-1, 5, 1] - tmp1 * njac[i-1, 5, 1];
+                        lhsa[i, 0, 0] = -tmp2 * fjac[i-1, 1, 1] - tmp1 * njac[i-1, 1, 1] - tmp1 * dx1;//2+i-1
+                        lhsa[i, 1, 0] = -tmp2 * fjac[i-1, 2, 1] - tmp1 * njac[i-1, 2, 1];
+                        lhsa[i, 2, 0] = -tmp2 * fjac[i-1, 3, 1] - tmp1 * njac[i-1, 3, 1];
+                        lhsa[i, 3, 0] = -tmp2 * fjac[i-1, 4, 1] - tmp1 * njac[i-1, 4, 1];
+                        lhsa[i, 4, 0] = -tmp2 * fjac[i-1, 5, 1] - tmp1 * njac[i-1, 5, 1];
 
-                        lhsa[i-1, 1, 2] = -tmp2 * fjac[i-1, 1, 2] - tmp1 * njac[i-1, 1, 2];
-                        lhsa[i-1, 2, 2] = -tmp2 * fjac[i-1, 2, 2] - tmp1 * njac[i-1, 2, 2] - tmp1 * dx2;
-                        lhsa[i-1, 3, 2] = -tmp2 * fjac[i-1, 3, 2] - tmp1 * njac[i-1, 3, 2];
-                        lhsa[i-1, 4, 2] = -tmp2 * fjac[i-1, 4, 2] - tmp1 * njac[i-1, 4, 2];
-                        lhsa[i-1, 5, 2] = -tmp2 * fjac[i-1, 5, 2] - tmp1 * njac[i-1, 5, 2];
+                        lhsa[i, 0, 1] = -tmp2 * fjac[i-1, 1, 2] - tmp1 * njac[i-1, 1, 2];
+                        lhsa[i, 1, 1] = -tmp2 * fjac[i-1, 2, 2] - tmp1 * njac[i-1, 2, 2] - tmp1 * dx2;
+                        lhsa[i, 2, 1] = -tmp2 * fjac[i-1, 3, 2] - tmp1 * njac[i-1, 3, 2];
+                        lhsa[i, 3, 1] = -tmp2 * fjac[i-1, 4, 2] - tmp1 * njac[i-1, 4, 2];
+                        lhsa[i, 4, 1] = -tmp2 * fjac[i-1, 5, 2] - tmp1 * njac[i-1, 5, 2];
 
-                        lhsa[i-1, 1, 3] = -tmp2 * fjac[i-1, 1, 3] - tmp1 * njac[i-1, 1, 3];
-                        lhsa[i-1, 2, 3] = -tmp2 * fjac[i-1, 2, 3] - tmp1 * njac[i-1, 2, 3];
-                        lhsa[i-1, 3, 3] = -tmp2 * fjac[i-1, 3, 3] - tmp1 * njac[i-1, 3, 3] - tmp1 * dx3;
-                        lhsa[i-1, 4, 3] = -tmp2 * fjac[i-1, 4, 3] - tmp1 * njac[i-1, 4, 3];
-                        lhsa[i-1, 5, 3] = -tmp2 * fjac[i-1, 5, 3] - tmp1 * njac[i-1, 5, 3];
+                        lhsa[i, 0, 2] = -tmp2 * fjac[i-1, 1, 3] - tmp1 * njac[i-1, 1, 3];
+                        lhsa[i, 1, 2] = -tmp2 * fjac[i-1, 2, 3] - tmp1 * njac[i-1, 2, 3];
+                        lhsa[i, 2, 2] = -tmp2 * fjac[i-1, 3, 3] - tmp1 * njac[i-1, 3, 3] - tmp1 * dx3;
+                        lhsa[i, 3, 2] = -tmp2 * fjac[i-1, 4, 3] - tmp1 * njac[i-1, 4, 3];
+                        lhsa[i, 4, 2] = -tmp2 * fjac[i-1, 5, 3] - tmp1 * njac[i-1, 5, 3];
 
-                        lhsa[i-1, 1, 4] = -tmp2 * fjac[i-1, 1, 4] - tmp1 * njac[i-1, 1, 4];
-                        lhsa[i-1, 2, 4] = -tmp2 * fjac[i-1, 2, 4] - tmp1 * njac[i-1, 2, 4];
-                        lhsa[i-1, 3, 4] = -tmp2 * fjac[i-1, 3, 4] - tmp1 * njac[i-1, 3, 4];
-                        lhsa[i-1, 4, 4] = -tmp2 * fjac[i-1, 4, 4] - tmp1 * njac[i-1, 4, 4] - tmp1 * dx4;
-                        lhsa[i-1, 5, 4] = -tmp2 * fjac[i-1, 5, 4] - tmp1 * njac[i-1, 5, 4];
+                        lhsa[i, 0, 3] = -tmp2 * fjac[i-1, 1, 4] - tmp1 * njac[i-1, 1, 4];
+                        lhsa[i, 1, 3] = -tmp2 * fjac[i-1, 2, 4] - tmp1 * njac[i-1, 2, 4];
+                        lhsa[i, 2, 3] = -tmp2 * fjac[i-1, 3, 4] - tmp1 * njac[i-1, 3, 4];
+                        lhsa[i, 3, 3] = -tmp2 * fjac[i-1, 4, 4] - tmp1 * njac[i-1, 4, 4] - tmp1 * dx4;
+                        lhsa[i, 4, 3] = -tmp2 * fjac[i-1, 5, 4] - tmp1 * njac[i-1, 5, 4];
 
-                        lhsa[i-1, 1, 5] = -tmp2 * fjac[i-1, 1, 5] - tmp1 * njac[i-1, 1, 5];
-                        lhsa[i-1, 2, 5] = -tmp2 * fjac[i-1, 2, 5] - tmp1 * njac[i-1, 2, 5];
-                        lhsa[i-1, 3, 5] = -tmp2 * fjac[i-1, 3, 5] - tmp1 * njac[i-1, 3, 5];
-                        lhsa[i-1, 4, 5] = -tmp2 * fjac[i-1, 4, 5] - tmp1 * njac[i-1, 4, 5];
-                        lhsa[i-1, 5, 5] = -tmp2 * fjac[i-1, 5, 5] - tmp1 * njac[i-1, 5, 5] - tmp1 * dx5;
+                        lhsa[i, 0, 4] = -tmp2 * fjac[i-1, 1, 5] - tmp1 * njac[i-1, 1, 5];
+                        lhsa[i, 1, 4] = -tmp2 * fjac[i-1, 2, 5] - tmp1 * njac[i-1, 2, 5];
+                        lhsa[i, 2, 4] = -tmp2 * fjac[i-1, 3, 5] - tmp1 * njac[i-1, 3, 5];
+                        lhsa[i, 3, 4] = -tmp2 * fjac[i-1, 4, 5] - tmp1 * njac[i-1, 4, 5];
+                        lhsa[i, 4, 4] = -tmp2 * fjac[i-1, 5, 5] - tmp1 * njac[i-1, 5, 5] - tmp1 * dx5;
 
-                        lhsb[i-1, 1, 1] = 1.0d + tmp1 * 2.0d * njac[i, 1, 1] + tmp1 * 2.0d * dx1;
-                        lhsb[i-1, 2, 1] = tmp1 * 2.0d * njac[i, 2, 1];
-                        lhsb[i-1, 3, 1] = tmp1 * 2.0d * njac[i, 3, 1];
-                        lhsb[i-1, 4, 1] = tmp1 * 2.0d * njac[i, 4, 1];
-                        lhsb[i-1, 5, 1] = tmp1 * 2.0d * njac[i, 5, 1];
+                        lhsb[i, 0, 0] = 1.0d + tmp1 * 2.0d * njac[i, 1, 1] + tmp1 * 2.0d * dx1;
+                        lhsb[i, 1, 0] = tmp1 * 2.0d * njac[i, 2, 1];
+                        lhsb[i, 2, 0] = tmp1 * 2.0d * njac[i, 3, 1];
+                        lhsb[i, 3, 0] = tmp1 * 2.0d * njac[i, 4, 1];
+                        lhsb[i, 4, 0] = tmp1 * 2.0d * njac[i, 5, 1];
 
-                        lhsb[i-1, 1, 2] = tmp1 * 2.0d * njac[i, 1, 2];
-                        lhsb[i-1, 2, 2] = 1.0d + tmp1 * 2.0d * njac[i, 2, 2] + tmp1 * 2.0d * dx2;
-                        lhsb[i-1, 3, 2] = tmp1 * 2.0d * njac[i, 3, 2];
-                        lhsb[i-1, 4, 2] = tmp1 * 2.0d * njac[i, 4, 2];
-                        lhsb[i-1, 5, 2] = tmp1 * 2.0d * njac[i, 5, 2];
+                        lhsb[i, 0, 1] = tmp1 * 2.0d * njac[i, 1, 2];
+                        lhsb[i, 1, 1] = 1.0d + tmp1 * 2.0d * njac[i, 2, 2] + tmp1 * 2.0d * dx2;
+                        lhsb[i, 2, 1] = tmp1 * 2.0d * njac[i, 3, 2];
+                        lhsb[i, 3, 1] = tmp1 * 2.0d * njac[i, 4, 2];
+                        lhsb[i, 4, 1] = tmp1 * 2.0d * njac[i, 5, 2];
 
-                        lhsb[i-1, 1, 3] = tmp1 * 2.0d * njac[i, 1, 3];
-                        lhsb[i-1, 2, 3] = tmp1 * 2.0d * njac[i, 2, 3];
-                        lhsb[i-1, 3, 3] = 1.0d + tmp1 * 2.0d * njac[i, 3, 3] + tmp1 * 2.0d * dx3;
-                        lhsb[i-1, 4, 3] = tmp1 * 2.0d * njac[i, 4, 3];
-                        lhsb[i-1, 5, 3] = tmp1 * 2.0d * njac[i, 5, 3];
+                        lhsb[i, 0, 2] = tmp1 * 2.0d * njac[i, 1, 3];
+                        lhsb[i, 1, 2] = tmp1 * 2.0d * njac[i, 2, 3];
+                        lhsb[i, 2, 2] = 1.0d + tmp1 * 2.0d * njac[i, 3, 3] + tmp1 * 2.0d * dx3;
+                        lhsb[i, 3, 2] = tmp1 * 2.0d * njac[i, 4, 3];
+                        lhsb[i, 4, 2] = tmp1 * 2.0d * njac[i, 5, 3];
 
-                        lhsb[i-1, 1, 4] = tmp1 * 2.0d * njac[i, 1, 4];
-                        lhsb[i-1, 2, 4] = tmp1 * 2.0d * njac[i, 2, 4];
-                        lhsb[i-1, 3, 4] = tmp1 * 2.0d * njac[i, 3, 4];
-                        lhsb[i-1, 4, 4] = 1.0d + tmp1 * 2.0d * njac[i, 4, 4] + tmp1 * 2.0d * dx4;
-                        lhsb[i-1, 5, 4] = tmp1 * 2.0d * njac[i, 5, 4];
+                        lhsb[i, 0, 3] = tmp1 * 2.0d * njac[i, 1, 4];
+                        lhsb[i, 1, 3] = tmp1 * 2.0d * njac[i, 2, 4];
+                        lhsb[i, 2, 3] = tmp1 * 2.0d * njac[i, 3, 4];
+                        lhsb[i, 3, 3] = 1.0d + tmp1 * 2.0d * njac[i, 4, 4] + tmp1 * 2.0d * dx4;
+                        lhsb[i, 4, 3] = tmp1 * 2.0d * njac[i, 5, 4];
 
-                        lhsb[i-1, 1, 5] = tmp1 * 2.0d * njac[i, 1, 5];
-                        lhsb[i-1, 2, 5] = tmp1 * 2.0d * njac[i, 2, 5];
-                        lhsb[i-1, 3, 5] = tmp1 * 2.0d * njac[i, 3, 5];
-                        lhsb[i-1, 4, 5] = tmp1 * 2.0d * njac[i, 4, 5];
-                        lhsb[i-1, 5, 5] = 1.0d + tmp1 * 2.0d * njac[i, 5, 5] + tmp1 * 2.0d * dx5;
+                        lhsb[i, 0, 4] = tmp1 * 2.0d * njac[i, 1, 5];
+                        lhsb[i, 1, 4] = tmp1 * 2.0d * njac[i, 2, 5];
+                        lhsb[i, 2, 4] = tmp1 * 2.0d * njac[i, 3, 5];
+                        lhsb[i, 3, 4] = tmp1 * 2.0d * njac[i, 4, 5];
+                        lhsb[i, 4, 4] = 1.0d + tmp1 * 2.0d * njac[i, 5, 5] + tmp1 * 2.0d * dx5;
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 1] = tmp2 * fjac[i+1, 1, 1] - tmp1 * njac[i+1, 1, 1] - tmp1 * dx1; //2+i+1
-                        lhsc[c+1, k-1, j-1, i-1, 2, 1] = tmp2 * fjac[i+1, 2, 1] - tmp1 * njac[i+1, 2, 1];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 1] = tmp2 * fjac[i+1, 3, 1] - tmp1 * njac[i+1, 3, 1];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 1] = tmp2 * fjac[i+1, 4, 1] - tmp1 * njac[i+1, 4, 1];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 1] = tmp2 * fjac[i+1, 5, 1] - tmp1 * njac[i+1, 5, 1];
+                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[i+1, 1, 1] - tmp1 * njac[i+1, 1, 1] - tmp1 * dx1; //2+i+1
+                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[i+1, 2, 1] - tmp1 * njac[i+1, 2, 1];
+                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[i+1, 3, 1] - tmp1 * njac[i+1, 3, 1];
+                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[i+1, 4, 1] - tmp1 * njac[i+1, 4, 1];
+                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[i+1, 5, 1] - tmp1 * njac[i+1, 5, 1];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 2] = tmp2 * fjac[i+1, 1, 2] - tmp1 * njac[i+1, 1, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 2] = tmp2 * fjac[i+1, 2, 2] - tmp1 * njac[i+1, 2, 2] - tmp1 * dx2;
-                        lhsc[c+1, k-1, j-1, i-1, 3, 2] = tmp2 * fjac[i+1, 3, 2] - tmp1 * njac[i+1, 3, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 2] = tmp2 * fjac[i+1, 4, 2] - tmp1 * njac[i+1, 4, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 2] = tmp2 * fjac[i+1, 5, 2] - tmp1 * njac[i+1, 5, 2];
+                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[i+1, 1, 2] - tmp1 * njac[i+1, 1, 2];
+                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[i+1, 2, 2] - tmp1 * njac[i+1, 2, 2] - tmp1 * dx2;
+                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[i+1, 3, 2] - tmp1 * njac[i+1, 3, 2];
+                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[i+1, 4, 2] - tmp1 * njac[i+1, 4, 2];
+                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[i+1, 5, 2] - tmp1 * njac[i+1, 5, 2];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 3] = tmp2 * fjac[i+1, 1, 3] - tmp1 * njac[i+1, 1, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 3] = tmp2 * fjac[i+1, 2, 3] - tmp1 * njac[i+1, 2, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 3] = tmp2 * fjac[i+1, 3, 3] - tmp1 * njac[i+1, 3, 3] - tmp1 * dx3;
-                        lhsc[c+1, k-1, j-1, i-1, 4, 3] = tmp2 * fjac[i+1, 4, 3] - tmp1 * njac[i+1, 4, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 3] = tmp2 * fjac[i+1, 5, 3] - tmp1 * njac[i+1, 5, 3];
+                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[i+1, 1, 3] - tmp1 * njac[i+1, 1, 3];
+                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[i+1, 2, 3] - tmp1 * njac[i+1, 2, 3];
+                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[i+1, 3, 3] - tmp1 * njac[i+1, 3, 3] - tmp1 * dx3;
+                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[i+1, 4, 3] - tmp1 * njac[i+1, 4, 3];
+                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[i+1, 5, 3] - tmp1 * njac[i+1, 5, 3];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 4] = tmp2 * fjac[i+1, 1, 4] - tmp1 * njac[i+1, 1, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 4] = tmp2 * fjac[i+1, 2, 4] - tmp1 * njac[i+1, 2, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 4] = tmp2 * fjac[i+1, 3, 4] - tmp1 * njac[i+1, 3, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 4] = tmp2 * fjac[i+1, 4, 4] - tmp1 * njac[i+1, 4, 4] - tmp1 * dx4;
-                        lhsc[c+1, k-1, j-1, i-1, 5, 4] = tmp2 * fjac[i+1, 5, 4] - tmp1 * njac[i+1, 5, 4];
+                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[i+1, 1, 4] - tmp1 * njac[i+1, 1, 4];
+                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[i+1, 2, 4] - tmp1 * njac[i+1, 2, 4];
+                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[i+1, 3, 4] - tmp1 * njac[i+1, 3, 4];
+                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[i+1, 4, 4] - tmp1 * njac[i+1, 4, 4] - tmp1 * dx4;
+                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[i+1, 5, 4] - tmp1 * njac[i+1, 5, 4];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 5] = tmp2 * fjac[i+1, 1, 5] - tmp1 * njac[i+1, 1, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 5] = tmp2 * fjac[i+1, 2, 5] - tmp1 * njac[i+1, 2, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 5] = tmp2 * fjac[i+1, 3, 5] - tmp1 * njac[i+1, 3, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 5] = tmp2 * fjac[i+1, 4, 5] - tmp1 * njac[i+1, 4, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 5] = tmp2 * fjac[i+1, 5, 5] - tmp1 * njac[i+1, 5, 5] - tmp1 * dx5;
+                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[i+1, 1, 5] - tmp1 * njac[i+1, 1, 5];
+                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[i+1, 2, 5] - tmp1 * njac[i+1, 2, 5];
+                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[i+1, 3, 5] - tmp1 * njac[i+1, 3, 5];
+                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[i+1, 4, 5] - tmp1 * njac[i+1, 4, 5];
+                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[i+1, 5, 5] - tmp1 * njac[i+1, 5, 5] - tmp1 * dx5;
                     }
                     //---------------------------------------------------------------------
                     //     outer most for(loops - sweeping in i direction
@@ -2142,7 +2142,8 @@ namespace NPB {
                         //     multiply rhs[istart] by b_inverse[istart] and copy to rhs
                         //---------------------------------------------------------------------
                         /* call binvcrhs(lhsb[1,1,istart], lhsc[1,1,istart,j,k,c], rhs[1,istart,j,k,c]); */
-                        binvcrhs(lhsb, lhsc, rhs, istart-1, c+1, k-1, j-1, istart-1, c+1, k-1, j-1, istart-1);
+                        //binvcrhs(lhsb, lhsc, rhs, istart-1, c+1, k-1, j-1, istart-1, c+1, k-1, j-1, istart-1);
+                        binvcrhs(lhsb, lhsc, rhs, istart, c, k, j, istart, c, k, j, istart);
                         //binvcrhs(lhsb[istart+1, 1, 1], lhsc[c, k+1, j+1, istart+1, 1, 1], rhs[c, k+1, j+1, istart+1, 1]);  
                     }
                     //---------------------------------------------------------------------
@@ -2155,19 +2156,22 @@ namespace NPB {
                         //---------------------------------------------------------------------
                         /*Fortran:  matvec_sub(lhsa[1,1,i], rhs[1,i-1,j,k,c],rhs[1,i,j,k,c]);*/
                         /*Padrao c# matvec_sub(lhsa[i+1,1,1], rhs[c,k+1,j+1,i-1+1,1],rhs[c,k+1,j+1,i+1,1]);*/
-                        matvec_sub(ref lhsa, ref rhs, ref rhs, (i-1), c+1, (k-1), (j-1), (i-2), c+1, (k-1), (j-1), (i-1));
+                        //matvec_sub(ref lhsa, ref rhs, ref rhs, (i-1), c+1, (k-1), (j-1), i-2, c+1, (k-1), (j-1), (i-1));
+                        matvec_sub(lhsa, rhs, rhs, i, c, k, j, i-1, c, k, j, i);
                         //---------------------------------------------------------------------
                         //     B[i] = B[i] - C[i-1]*A[i]
                         //---------------------------------------------------------------------
                         /*Fortran:   matmul_sub(lhsa[1,1,i], lhsc[1,1,i-1,j,k,c], lhsb[1,1,i]);*/
                         /*Padrao c#: matmul_sub(lhsa[i+1,1,1], lhsc[c,k+1,j+1,i-1+1,1,1], lhsb[i+1,1,1]);*/
-                        matmul_sub(ref lhsa, ref lhsc, ref lhsb, (i-1), c+1, (k-1), (j-1), (i-2), (i-1));
+                        //matmul_sub(lhsa, lhsc, lhsb, (i-1), c+1, (k-1), (j-1), i-2, (i-1));
+                        matmul_sub(lhsa, lhsc, lhsb, i, c, k, j, i-1, i);
                         //---------------------------------------------------------------------
                         //     multiply c[i,j,k] by b_inverse and copy back to c
                         //     multiply rhs[1,j,k] by b_inverse[1,j,k] and copy to rhs
                         //---------------------------------------------------------------------
                         /*Fortran binvcrhs( lhsb[1,1,i], lhsc[1,1,i,j,k,c], rhs[1,i,j,k,c] );*/
-                        binvcrhs(lhsb, lhsc, rhs, i-1, c+1, k-1, j-1, i-1, c+1, k-1, j-1, i-1);
+                        //binvcrhs(lhsb, lhsc, rhs, i-1, c+1, k-1, j-1, i-1, c+1, k-1, j-1, i-1);
+                        binvcrhs(lhsb, lhsc, rhs, i, c, k, j, i, c, k, j, i);
                     }
                     //---------------------------------------------------------------------
                     //     Now finish up special cases for last cell
@@ -2178,19 +2182,22 @@ namespace NPB {
                         //---------------------------------------------------------------------
                         /*Fortran: matvec_sub[lhsa[1,1,isize], rhs[1,isize-1,j,k,c],rhs[1,isize,j,k,c]];*/
                         /*C#:      matvec_sub[lhsa[isize+1,1,1], rhs[c,k+1,j+1,isize-1+1,1],rhs[c,k+1,j+1,isize+1,1]];*/
-                        matvec_sub(ref lhsa, ref rhs, ref rhs, (isize-1), c+1, (k-1), (j-1), (isize-2), c+1, (k-1), (j-1), (isize-1));
+                        //matvec_sub(ref lhsa, ref rhs, ref rhs, (isize-1), c+1, (k-1), (j-1), (isize-2), c+1, (k-1), (j-1), (isize-1));
+                        matvec_sub(lhsa, rhs, rhs, isize, c, k, j, isize-1, c, k, j, isize);
                         //---------------------------------------------------------------------
                         //     B[isize] = B[isize] - C[isize-1]*A[isize]
                         //---------------------------------------------------------------------
                         /*Fortran: matmul_sub[lhsa[1,1,isize], lhsc[1,1,isize-1,j,k,c], lhsb[1,1,isize]];*/
                         /*C#:      matmul_sub(lhsa[isize+1,1,1], lhsc[c,k+1,j+1,isize-1+1,1,1], lhsb[isize+1,1,1]);*/
-                        matmul_sub(ref lhsa, ref lhsc, ref lhsb, (isize-1), c+1, (k-1), (j-1), isize-2, (isize-1));
+                        //matmul_sub(ref lhsa, ref lhsc, ref lhsb, (isize-1), c+1, (k-1), (j-1), isize-2, (isize-1));
+                        matmul_sub(lhsa, lhsc, lhsb, isize, c, k, j, isize-1, isize);
                         //---------------------------------------------------------------------
                         //     multiply rhs[] by b_inverse[] and copy to rhs
                         //---------------------------------------------------------------------
                         /*Fortran: binvrhs[ lhsb[1,1,isize], rhs[1,isize,j,k,c] ];*/
                         /*C#:      binvrhs( lhsb[isize+1,1,1], rhs[c,k+1,j+1,isize+1,1] ); */
-                        binvrhs(ref lhsb, ref rhs, (isize-1), c+1, (k-1), (j-1), (isize-1));
+                        //binvrhs(ref lhsb, ref rhs, (isize-1), c+1, (k-1), (j-1), (isize-1));
+                        binvrhs(lhsb, rhs, isize, c, k, j, isize);
                     }
                 }
             }
@@ -2313,12 +2320,12 @@ namespace NPB {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(m = 1; m <= BLOCK_SIZE; m++) {
                         for(n = 0; n < BLOCK_SIZE; n++) {
-                            lhsc[c+1, k + 1, jstart-2, i + 1, n + 1, m] = out_buffer_x[ptr + n]; //lhsc[m,n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
+                            lhsc[c, k+2, jstart-1, i+2, n, m-1] = out_buffer_x[ptr + n]; //lhsc[m,n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
                         }
                         ptr = ptr + BLOCK_SIZE;
                     }
                     for(n = 0; n < BLOCK_SIZE; n++) {
-                        rhs[c+1, k + 1, jstart-2, i + 1, n + 1] = out_buffer_x[ptr + n];  // rhs[n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
+                        rhs[c, k+2, jstart-1, i+2, n] = out_buffer_x[ptr + n];  // rhs[n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -2347,12 +2354,12 @@ namespace NPB {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(m = 1; m <= BLOCK_SIZE; m++) {
                         for(n = 0; n < BLOCK_SIZE; n++) {
-                            in_buffer_x[ptr + n] = lhsc[c+1, k + 1, jsize-1, i + 1, n + 1, m];  //in_buffer[ptr+n] = lhsc[m,n,i,jsize,k,c]
+                            in_buffer_x[ptr + n] = lhsc[c, k+2, jsize, i+2, n, m-1];  //in_buffer[ptr+n] = lhsc[m,n,i,jsize,k,c]
                         }
                         ptr = ptr + BLOCK_SIZE;
                     }
                     for(n = 0; n < BLOCK_SIZE; n++) {
-                        in_buffer_x[ptr + n] = rhs[c+1, k + 1, jsize-1, i + 1, n + 1];       //in_buffer[ptr+n] = rhs[n,i,jsize,k,c] 
+                        in_buffer_x[ptr + n] = rhs[c, k+2, jsize, i+2, n];       //in_buffer[ptr+n] = rhs[n,i,jsize,k,c] 
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -2385,7 +2392,7 @@ namespace NPB {
             for(k = 0; k <= KMAX - 1; k++) {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(n = 0; n < BLOCK_SIZE; n++) {
-                        in_buffer_x[ptr + n] = rhs[c+1, k + 1, jstart-1, i + 1, n + 1];  //in_buffer[ptr+n] = rhs[n,i,jstart,k,c];
+                        in_buffer_x[ptr + n] = rhs[c, k+2, jstart, i+2, n];  //in_buffer[ptr+n] = rhs[n,i,jstart,k,c];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -2457,7 +2464,7 @@ namespace NPB {
                         //---------------------------------------------------------------------
                         for(m = 0; m < BLOCK_SIZE; m++) {
                             for(n = 0; n < BLOCK_SIZE; n++) { //rhs[m,i,jsize,k,c]=rhs[m,i,jsize,k,c]-lhsc[m,n,i,jsize,k,c]*backsub_info[n,i,k,c];
-                                rhs[c+1, k-1, jsize-1, i-1, m+1] = rhs[c+1, k-1, jsize-1, i-1, m+1] - lhsc[c+1, k-1, jsize-1, i-1, n+1, m+1] * backsub_info[c+1, k-2, i-2, n+1];
+                                rhs[c, k, jsize, i, m] = rhs[c, k, jsize, i, m] - lhsc[c, k, jsize, i, n, m] * backsub_info[c+1, k-2, i-2, n+1];
                             }
                         }
                     }
@@ -2468,7 +2475,7 @@ namespace NPB {
                     for(i = start[c, 0]; i <= isize; i++) {
                         for(m = 0; m < BLOCK_SIZE; m++) {
                             for(n = 0; n < BLOCK_SIZE; n++) {  //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i,j+1,k,c];
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - lhsc[c+1, k-1, j-1, i-1, n+1, m+1] * rhs[c+1, k-1, j, i-1, n+1];
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - lhsc[c, k, j, i, n, m] * rhs[c, k, j+1, i, n];
                             }
                         }
                     }
@@ -2494,7 +2501,7 @@ namespace NPB {
             jsize = cell_size[c, 1] + 1;
             ksize = cell_size[c, 2] - end[c, 2] + 1;
 
-            lhsabinit(lhsa, lhsb, jsize-2);
+            lhsabinit(lhsa, lhsb, jsize);
 
             for(k = start[c, 2]; k <= ksize; k++) {
                 for(i = start[c, 0]; i <= isize; i++) {
@@ -2587,95 +2594,95 @@ namespace NPB {
                     for(j = start[c, 1]; j <= jsize - end[c, 1]; j++) {
                         tmp1 = dt * ty1;
                         tmp2 = dt * ty2;//lhsa[1,1,j]=-tmp2*fjac[1,1,j-1]-tmp1*njac[1,1,j-1]-tmp1*dy1;
-                        lhsa[j-1, 1, 1] = -tmp2 * fjac[j-1, 1, 1] - tmp1 * njac[j-1, 1, 1] - tmp1 * dy1;
-                        lhsa[j-1, 2, 1] = -tmp2 * fjac[j-1, 2, 1] - tmp1 * njac[j-1, 2, 1];//lhsa[1,2,j]=-tmp2*fjac[1,2,j-1]-tmp1*njac[1,2,j-1];
-                        lhsa[j-1, 3, 1] = -tmp2 * fjac[j-1, 3, 1] - tmp1 * njac[j-1, 3, 1];
-                        lhsa[j-1, 4, 1] = -tmp2 * fjac[j-1, 4, 1] - tmp1 * njac[j-1, 4, 1];
-                        lhsa[j-1, 5, 1] = -tmp2 * fjac[j-1, 5, 1] - tmp1 * njac[j-1, 5, 1]; //Obs: fjac[2+j-1,5,1] - tmp1 * njac[2+j-1,5,1];
+                        lhsa[j, 0, 0] = -tmp2 * fjac[j-1, 1, 1] - tmp1 * njac[j-1, 1, 1] - tmp1 * dy1;
+                        lhsa[j, 1, 0] = -tmp2 * fjac[j-1, 2, 1] - tmp1 * njac[j-1, 2, 1];//lhsa[1,2,j]=-tmp2*fjac[1,2,j-1]-tmp1*njac[1,2,j-1];
+                        lhsa[j, 2, 0] = -tmp2 * fjac[j-1, 3, 1] - tmp1 * njac[j-1, 3, 1];
+                        lhsa[j, 3, 0] = -tmp2 * fjac[j-1, 4, 1] - tmp1 * njac[j-1, 4, 1];
+                        lhsa[j, 4, 0] = -tmp2 * fjac[j-1, 5, 1] - tmp1 * njac[j-1, 5, 1]; //Obs: fjac[2+j-1,5,1] - tmp1 * njac[2+j-1,5,1];
 
-                        lhsa[j-1, 1, 2] = -tmp2 * fjac[j-1, 1, 2] - tmp1 * njac[j-1, 1, 2];
-                        lhsa[j-1, 2, 2] = -tmp2 * fjac[j-1, 2, 2] - tmp1 * njac[j-1, 2, 2] - tmp1 * dy2;
-                        lhsa[j-1, 3, 2] = -tmp2 * fjac[j-1, 3, 2] - tmp1 * njac[j-1, 3, 2];
-                        lhsa[j-1, 4, 2] = -tmp2 * fjac[j-1, 4, 2] - tmp1 * njac[j-1, 4, 2];
-                        lhsa[j-1, 5, 2] = -tmp2 * fjac[j-1, 5, 2] - tmp1 * njac[j-1, 5, 2];
+                        lhsa[j, 0, 1] = -tmp2 * fjac[j-1, 1, 2] - tmp1 * njac[j-1, 1, 2];
+                        lhsa[j, 1, 1] = -tmp2 * fjac[j-1, 2, 2] - tmp1 * njac[j-1, 2, 2] - tmp1 * dy2;
+                        lhsa[j, 2, 1] = -tmp2 * fjac[j-1, 3, 2] - tmp1 * njac[j-1, 3, 2];
+                        lhsa[j, 3, 1] = -tmp2 * fjac[j-1, 4, 2] - tmp1 * njac[j-1, 4, 2];
+                        lhsa[j, 4, 1] = -tmp2 * fjac[j-1, 5, 2] - tmp1 * njac[j-1, 5, 2];
 
-                        lhsa[j-1, 1, 3] = -tmp2 * fjac[j-1, 1, 3] - tmp1 * njac[j-1, 1, 3];
-                        lhsa[j-1, 2, 3] = -tmp2 * fjac[j-1, 2, 3] - tmp1 * njac[j-1, 2, 3];
-                        lhsa[j-1, 3, 3] = -tmp2 * fjac[j-1, 3, 3] - tmp1 * njac[j-1, 3, 3] - tmp1 * dy3;
-                        lhsa[j-1, 4, 3] = -tmp2 * fjac[j-1, 4, 3] - tmp1 * njac[j-1, 4, 3];
-                        lhsa[j-1, 5, 3] = -tmp2 * fjac[j-1, 5, 3] - tmp1 * njac[j-1, 5, 3];
+                        lhsa[j, 0, 2] = -tmp2 * fjac[j-1, 1, 3] - tmp1 * njac[j-1, 1, 3];
+                        lhsa[j, 1, 2] = -tmp2 * fjac[j-1, 2, 3] - tmp1 * njac[j-1, 2, 3];
+                        lhsa[j, 2, 2] = -tmp2 * fjac[j-1, 3, 3] - tmp1 * njac[j-1, 3, 3] - tmp1 * dy3;
+                        lhsa[j, 3, 2] = -tmp2 * fjac[j-1, 4, 3] - tmp1 * njac[j-1, 4, 3];
+                        lhsa[j, 4, 2] = -tmp2 * fjac[j-1, 5, 3] - tmp1 * njac[j-1, 5, 3];
 
-                        lhsa[j-1, 1, 4] = -tmp2 * fjac[j-1, 1, 4] - tmp1 * njac[j-1, 1, 4];
-                        lhsa[j-1, 2, 4] = -tmp2 * fjac[j-1, 2, 4] - tmp1 * njac[j-1, 2, 4];
-                        lhsa[j-1, 3, 4] = -tmp2 * fjac[j-1, 3, 4] - tmp1 * njac[j-1, 3, 4];
-                        lhsa[j-1, 4, 4] = -tmp2 * fjac[j-1, 4, 4] - tmp1 * njac[j-1, 4, 4] - tmp1 * dy4;
-                        lhsa[j-1, 5, 4] = -tmp2 * fjac[j-1, 5, 4] - tmp1 * njac[j-1, 5, 4];
+                        lhsa[j, 0, 3] = -tmp2 * fjac[j-1, 1, 4] - tmp1 * njac[j-1, 1, 4];
+                        lhsa[j, 1, 3] = -tmp2 * fjac[j-1, 2, 4] - tmp1 * njac[j-1, 2, 4];
+                        lhsa[j, 2, 3] = -tmp2 * fjac[j-1, 3, 4] - tmp1 * njac[j-1, 3, 4];
+                        lhsa[j, 3, 3] = -tmp2 * fjac[j-1, 4, 4] - tmp1 * njac[j-1, 4, 4] - tmp1 * dy4;
+                        lhsa[j, 4, 3] = -tmp2 * fjac[j-1, 5, 4] - tmp1 * njac[j-1, 5, 4];
 
-                        lhsa[j-1, 1, 5] = -tmp2 * fjac[j-1, 1, 5] - tmp1 * njac[j-1, 1, 5];
-                        lhsa[j-1, 2, 5] = -tmp2 * fjac[j-1, 2, 5] - tmp1 * njac[j-1, 2, 5];
-                        lhsa[j-1, 3, 5] = -tmp2 * fjac[j-1, 3, 5] - tmp1 * njac[j-1, 3, 5];
-                        lhsa[j-1, 4, 5] = -tmp2 * fjac[j-1, 4, 5] - tmp1 * njac[j-1, 4, 5];
-                        lhsa[j-1, 5, 5] = -tmp2 * fjac[j-1, 5, 5] - tmp1 * njac[j-1, 5, 5] - tmp1 * dy5;
+                        lhsa[j, 0, 4] = -tmp2 * fjac[j-1, 1, 5] - tmp1 * njac[j-1, 1, 5];
+                        lhsa[j, 1, 4] = -tmp2 * fjac[j-1, 2, 5] - tmp1 * njac[j-1, 2, 5];
+                        lhsa[j, 2, 4] = -tmp2 * fjac[j-1, 3, 5] - tmp1 * njac[j-1, 3, 5];
+                        lhsa[j, 3, 4] = -tmp2 * fjac[j-1, 4, 5] - tmp1 * njac[j-1, 4, 5];
+                        lhsa[j, 4, 4] = -tmp2 * fjac[j-1, 5, 5] - tmp1 * njac[j-1, 5, 5] - tmp1 * dy5;
 
-                        lhsb[j-1, 1, 1] = 1.0d + tmp1 * 2.0d * njac[j, 1, 1] + tmp1 * 2.0d * dy1;
-                        lhsb[j-1, 2, 1] = tmp1 * 2.0d * njac[j, 2, 1];  //lhsb[1,2,j] = tmp1 * 2.0d * njac[1,2,j];
-                        lhsb[j-1, 3, 1] = tmp1 * 2.0d * njac[j, 3, 1];  //lhsb[1,3,j] = tmp1 * 2.0d * njac[1,3,j];
-                        lhsb[j-1, 4, 1] = tmp1 * 2.0d * njac[j, 4, 1];  //lhsb[1,4,j] = tmp1 * 2.0d * njac[1,4,j];
-                        lhsb[j-1, 5, 1] = tmp1 * 2.0d * njac[j, 5, 1];  //lhsb[1,5,j] = tmp1 * 2.0d * njac[1,5,j];
+                        lhsb[j, 0, 0] = 1.0d + tmp1 * 2.0d * njac[j, 1, 1] + tmp1 * 2.0d * dy1;
+                        lhsb[j, 1, 0] = tmp1 * 2.0d * njac[j, 2, 1];  //lhsb[1,2,j] = tmp1 * 2.0d * njac[1,2,j];
+                        lhsb[j, 2, 0] = tmp1 * 2.0d * njac[j, 3, 1];  //lhsb[1,3,j] = tmp1 * 2.0d * njac[1,3,j];
+                        lhsb[j, 3, 0] = tmp1 * 2.0d * njac[j, 4, 1];  //lhsb[1,4,j] = tmp1 * 2.0d * njac[1,4,j];
+                        lhsb[j, 4, 0] = tmp1 * 2.0d * njac[j, 5, 1];  //lhsb[1,5,j] = tmp1 * 2.0d * njac[1,5,j];
 
-                        lhsb[j-1, 1, 2] = tmp1 * 2.0d * njac[j, 1, 2];
-                        lhsb[j-1, 2, 2] = 1.0d + tmp1 * 2.0d * njac[j, 2, 2] + tmp1 * 2.0d * dy2;
-                        lhsb[j-1, 3, 2] = tmp1 * 2.0d * njac[j, 3, 2];
-                        lhsb[j-1, 4, 2] = tmp1 * 2.0d * njac[j, 4, 2];
-                        lhsb[j-1, 5, 2] = tmp1 * 2.0d * njac[j, 5, 2];
+                        lhsb[j, 0, 1] = tmp1 * 2.0d * njac[j, 1, 2];
+                        lhsb[j, 1, 1] = 1.0d + tmp1 * 2.0d * njac[j, 2, 2] + tmp1 * 2.0d * dy2;
+                        lhsb[j, 2, 1] = tmp1 * 2.0d * njac[j, 3, 2];
+                        lhsb[j, 3, 1] = tmp1 * 2.0d * njac[j, 4, 2];
+                        lhsb[j, 4, 1] = tmp1 * 2.0d * njac[j, 5, 2];
 
-                        lhsb[j-1, 1, 3] = tmp1 * 2.0d * njac[j, 1, 3];
-                        lhsb[j-1, 2, 3] = tmp1 * 2.0d * njac[j, 2, 3];
-                        lhsb[j-1, 3, 3] = 1.0d + tmp1 * 2.0d * njac[j, 3, 3] + tmp1 * 2.0d * dy3;
-                        lhsb[j-1, 4, 3] = tmp1 * 2.0d * njac[j, 4, 3];
-                        lhsb[j-1, 5, 3] = tmp1 * 2.0d * njac[j, 5, 3];
+                        lhsb[j, 0, 2] = tmp1 * 2.0d * njac[j, 1, 3];
+                        lhsb[j, 1, 2] = tmp1 * 2.0d * njac[j, 2, 3];
+                        lhsb[j, 2, 2] = 1.0d + tmp1 * 2.0d * njac[j, 3, 3] + tmp1 * 2.0d * dy3;
+                        lhsb[j, 3, 2] = tmp1 * 2.0d * njac[j, 4, 3];
+                        lhsb[j, 4, 2] = tmp1 * 2.0d * njac[j, 5, 3];
 
-                        lhsb[j-1, 1, 4] = tmp1 * 2.0d * njac[j, 1, 4];
-                        lhsb[j-1, 2, 4] = tmp1 * 2.0d * njac[j, 2, 4];
-                        lhsb[j-1, 3, 4] = tmp1 * 2.0d * njac[j, 3, 4];
-                        lhsb[j-1, 4, 4] = 1.0d + tmp1 * 2.0d * njac[j, 4, 4] + tmp1 * 2.0d * dy4;
-                        lhsb[j-1, 5, 4] = tmp1 * 2.0d * njac[j, 5, 4];
+                        lhsb[j, 0, 3] = tmp1 * 2.0d * njac[j, 1, 4];
+                        lhsb[j, 1, 3] = tmp1 * 2.0d * njac[j, 2, 4];
+                        lhsb[j, 2, 3] = tmp1 * 2.0d * njac[j, 3, 4];
+                        lhsb[j, 3, 3] = 1.0d + tmp1 * 2.0d * njac[j, 4, 4] + tmp1 * 2.0d * dy4;
+                        lhsb[j, 4, 3] = tmp1 * 2.0d * njac[j, 5, 4];
 
-                        lhsb[j-1, 1, 5] = tmp1 * 2.0d * njac[j, 1, 5];
-                        lhsb[j-1, 2, 5] = tmp1 * 2.0d * njac[j, 2, 5];
-                        lhsb[j-1, 3, 5] = tmp1 * 2.0d * njac[j, 3, 5];
-                        lhsb[j-1, 4, 5] = tmp1 * 2.0d * njac[j, 4, 5];
-                        lhsb[j-1, 5, 5] = 1.0d + tmp1 * 2.0d * njac[j, 5, 5] + tmp1 * 2.0d * dy5;
+                        lhsb[j, 0, 4] = tmp1 * 2.0d * njac[j, 1, 5];
+                        lhsb[j, 1, 4] = tmp1 * 2.0d * njac[j, 2, 5];
+                        lhsb[j, 2, 4] = tmp1 * 2.0d * njac[j, 3, 5];
+                        lhsb[j, 3, 4] = tmp1 * 2.0d * njac[j, 4, 5];
+                        lhsb[j, 4, 4] = 1.0d + tmp1 * 2.0d * njac[j, 5, 5] + tmp1 * 2.0d * dy5;
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 1] = tmp2 * fjac[j+1, 1, 1] - tmp1 * njac[j+1, 1, 1] - tmp1 * dy1;
-                        lhsc[c+1, k-1, j-1, i-1, 2, 1] = tmp2 * fjac[j+1, 2, 1] - tmp1 * njac[j+1, 2, 1];//lhsc[1,2,i,j,k,c]=tmp2*fjac[1,2,j+1]-tmp1*njac[1,2,j+1];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 1] = tmp2 * fjac[j+1, 3, 1] - tmp1 * njac[j+1, 3, 1];//lhsc[1,3,i,j,k,c]=tmp2*fjac[1,3,j+1]-tmp1*njac[1,3,j+1];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 1] = tmp2 * fjac[j+1, 4, 1] - tmp1 * njac[j+1, 4, 1];//lhsc[1,4,i,j,k,c]=tmp2*fjac[1,4,j+1]-tmp1*njac[1,4,j+1];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 1] = tmp2 * fjac[j+1, 5, 1] - tmp1 * njac[j+1, 5, 1];//lhsc[1,5,i,j,k,c]=tmp2*fjac[1,5,j+1]-tmp1*njac[1,5,j+1];
+                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[j+1, 1, 1] - tmp1 * njac[j+1, 1, 1] - tmp1 * dy1;
+                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[j+1, 2, 1] - tmp1 * njac[j+1, 2, 1];//lhsc[1,2,i,j,k,c]=tmp2*fjac[1,2,j+1]-tmp1*njac[1,2,j+1];
+                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[j+1, 3, 1] - tmp1 * njac[j+1, 3, 1];//lhsc[1,3,i,j,k,c]=tmp2*fjac[1,3,j+1]-tmp1*njac[1,3,j+1];
+                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[j+1, 4, 1] - tmp1 * njac[j+1, 4, 1];//lhsc[1,4,i,j,k,c]=tmp2*fjac[1,4,j+1]-tmp1*njac[1,4,j+1];
+                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[j+1, 5, 1] - tmp1 * njac[j+1, 5, 1];//lhsc[1,5,i,j,k,c]=tmp2*fjac[1,5,j+1]-tmp1*njac[1,5,j+1];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 2] = tmp2 * fjac[j+1, 1, 2] - tmp1 * njac[j+1, 1, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 2] = tmp2 * fjac[j+1, 2, 2] - tmp1 * njac[j+1, 2, 2] - tmp1 * dy2;
-                        lhsc[c+1, k-1, j-1, i-1, 3, 2] = tmp2 * fjac[j+1, 3, 2] - tmp1 * njac[j+1, 3, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 2] = tmp2 * fjac[j+1, 4, 2] - tmp1 * njac[j+1, 4, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 2] = tmp2 * fjac[j+1, 5, 2] - tmp1 * njac[j+1, 5, 2];
+                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[j+1, 1, 2] - tmp1 * njac[j+1, 1, 2];
+                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[j+1, 2, 2] - tmp1 * njac[j+1, 2, 2] - tmp1 * dy2;
+                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[j+1, 3, 2] - tmp1 * njac[j+1, 3, 2];
+                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[j+1, 4, 2] - tmp1 * njac[j+1, 4, 2];
+                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[j+1, 5, 2] - tmp1 * njac[j+1, 5, 2];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 3] = tmp2 * fjac[j+1, 1, 3] - tmp1 * njac[j+1, 1, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 3] = tmp2 * fjac[j+1, 2, 3] - tmp1 * njac[j+1, 2, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 3] = tmp2 * fjac[j+1, 3, 3] - tmp1 * njac[j+1, 3, 3] - tmp1 * dy3;
-                        lhsc[c+1, k-1, j-1, i-1, 4, 3] = tmp2 * fjac[j+1, 4, 3] - tmp1 * njac[j+1, 4, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 3] = tmp2 * fjac[j+1, 5, 3] - tmp1 * njac[j+1, 5, 3];
+                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[j+1, 1, 3] - tmp1 * njac[j+1, 1, 3];
+                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[j+1, 2, 3] - tmp1 * njac[j+1, 2, 3];
+                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[j+1, 3, 3] - tmp1 * njac[j+1, 3, 3] - tmp1 * dy3;
+                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[j+1, 4, 3] - tmp1 * njac[j+1, 4, 3];
+                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[j+1, 5, 3] - tmp1 * njac[j+1, 5, 3];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 4] = tmp2 * fjac[j+1, 1, 4] - tmp1 * njac[j+1, 1, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 4] = tmp2 * fjac[j+1, 2, 4] - tmp1 * njac[j+1, 2, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 4] = tmp2 * fjac[j+1, 3, 4] - tmp1 * njac[j+1, 3, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 4] = tmp2 * fjac[j+1, 4, 4] - tmp1 * njac[j+1, 4, 4] - tmp1 * dy4;
-                        lhsc[c+1, k-1, j-1, i-1, 5, 4] = tmp2 * fjac[j+1, 5, 4] - tmp1 * njac[j+1, 5, 4];
+                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[j+1, 1, 4] - tmp1 * njac[j+1, 1, 4];
+                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[j+1, 2, 4] - tmp1 * njac[j+1, 2, 4];
+                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[j+1, 3, 4] - tmp1 * njac[j+1, 3, 4];
+                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[j+1, 4, 4] - tmp1 * njac[j+1, 4, 4] - tmp1 * dy4;
+                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[j+1, 5, 4] - tmp1 * njac[j+1, 5, 4];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 5] = tmp2 * fjac[j+1, 1, 5] - tmp1 * njac[j+1, 1, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 5] = tmp2 * fjac[j+1, 2, 5] - tmp1 * njac[j+1, 2, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 5] = tmp2 * fjac[j+1, 3, 5] - tmp1 * njac[j+1, 3, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 5] = tmp2 * fjac[j+1, 4, 5] - tmp1 * njac[j+1, 4, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 5] = tmp2 * fjac[j+1, 5, 5] - tmp1 * njac[j+1, 5, 5] - tmp1 * dy5;
+                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[j+1, 1, 5] - tmp1 * njac[j+1, 1, 5];
+                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[j+1, 2, 5] - tmp1 * njac[j+1, 2, 5];
+                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[j+1, 3, 5] - tmp1 * njac[j+1, 3, 5];
+                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[j+1, 4, 5] - tmp1 * njac[j+1, 4, 5];
+                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[j+1, 5, 5] - tmp1 * njac[j+1, 5, 5] - tmp1 * dy5;
                     }
                     //---------------------------------------------------------------------
                     //     outer most for(loops - sweeping in i direction
@@ -2687,7 +2694,8 @@ namespace NPB {
                         //c---------------------------------------------------------------------
                         //Fortran: call binvcrhs[ lhsb[1,1,jstart],lhsc[1,1,i,jstart,k,c], rhs[1,i,jstart,k,c] ];
                         //C#:           binvcrhs(lhsb[jstart+1, 1, 1], lhsc[c, k+1, jstart+1, i+1, 1, 1], rhs[c, k+1, jstart+1, i+1, 1]);
-                        binvcrhs(lhsb, lhsc, rhs, jstart-1, c+1, (k-1), jstart-1, (i-1), c+1, (k-1), jstart-1, (i-1));
+                        //binvcrhs(lhsb, lhsc, rhs, jstart-1, c+1, (k-1), jstart-1, (i-1), c+1, (k-1), jstart-1, (i-1));
+                        binvcrhs(lhsb, lhsc, rhs, jstart, c, k, jstart, i, c, k, jstart, i);
                     }
                     //---------------------------------------------------------------------
                     //     begin inner most for(loop
@@ -2701,20 +2709,23 @@ namespace NPB {
                         //c---------------------------------------------------------------------
                         //Fortran: call matvec_sub[lhsa[1,1,j], rhs[1,i,j-1,k,c],rhs[1,i,j,k,c]];
                         //C#:           matvec_sub(lhsa[j+1,1,1], rhs[c,k+1,j,i+1,1],rhs[c,k+1,j+1,i+1,1]);
-                        matvec_sub(ref lhsa, ref rhs, ref rhs, (j-1), c+1, (k-1), j-2, (i-1), c+1, (k-1), (j-1), (i-1));
+                        //matvec_sub(lhsa, rhs, rhs, (j-1), c+1, (k-1), j-2, (i-1), c+1, (k-1), (j-1), (i-1));
+                        matvec_sub(lhsa, rhs, rhs, j, c, k, j-1, i, c, k, j, i);
                         //c---------------------------------------------------------------------
                         //c     B[j] = B[j] - C[j-1]*A[j]
                         //c---------------------------------------------------------------------
                         //call matmul_sub[lhsa[1,1,j],lhsc[1,1,i,j-1,k,c],lhsb[1,1,j]];
                         //C#:  matmul_sub(lhsa[j+1,1,1],lhsc[c,k+1,j-1+1,i+1,1,1],lhsb[j+1,1,1]);
-                        matmul_sub(ref lhsa, ref lhsc, ref lhsb, (j-1), c+1, (k-1), j-2, (i-1), (j-1));
+                        //matmul_sub(lhsa, lhsc, lhsb, (j-1), c+1, (k-1), j-2, (i-1), (j-1));
+                        matmul_sub(lhsa, lhsc, lhsb, j, c, k, j-1, i, j);
                         //c---------------------------------------------------------------------
                         //c     multiply c[i,j,k] by b_inverse and copy back to c
                         //c     multiply rhs[i,1,k] by b_inverse[i,1,k] and copy to rhs
                         //c---------------------------------------------------------------------
                         //Fortran: call binvcrhs[ lhsb[1,1,j],lhsc[1,1,i,j,k,c], rhs[1,i,j,k,c] ];
                         //C#:           binvcrhs( lhsb[j+1,1,1],lhsc[c,k+1,j+1,i+1,1,1], rhs[c,k+1,j+1,i+1,1] );
-                        binvcrhs(lhsb, lhsc, rhs, (j-1), c+1, (k-1), (j-1), (i-1), c+1, (k-1), (j-1), (i-1));
+                        //binvcrhs(lhsb, lhsc, rhs, (j-1), c+1, (k-1), (j-1), (i-1), c+1, (k-1), (j-1), (i-1));
+                        binvcrhs(lhsb, lhsc, rhs, j, c, k, j, i, c, k, j, i);
                     }
                     //c---------------------------------------------------------------------
                     //c     Now finish up special cases for last cell
@@ -2725,7 +2736,8 @@ namespace NPB {
                         //c---------------------------------------------------------------------
                         //Fortran: call matvec_sub[lhsa[1,1,jsize], rhs[1,i,jsize-1,k,c],rhs[1,i,jsize,k,c]];
                         //C#:           matvec_sub(lhsa[jsize+1,1,1], rhs[c,k+1,jsize-1+1,i+1,1],rhs[c,k+1,jsize+1,i+1,1]);
-                        matvec_sub(ref lhsa, ref rhs, ref rhs, (jsize-1), c+1, (k-1), jsize-2, (i-1), c+1, (k-1), (jsize-1), (i-1));
+                        //matvec_sub(lhsa, rhs, rhs, (jsize-1), c+1, (k-1), jsize-2, (i-1), c+1, (k-1), (jsize-1), (i-1));
+                        matvec_sub(lhsa, rhs, rhs, jsize, c, k, jsize-1, i, c, k, jsize, i);
                         //c---------------------------------------------------------------------
                         //c     B[jsize] = B[jsize] - C[jsize-1]*A[jsize]
                         //c     call matmul_sub[aa,i,jsize,k,c,
@@ -2733,13 +2745,14 @@ namespace NPB {
                         //c---------------------------------------------------------------------
                         //Fortran: call matmul_sub[lhsa[1,1,jsize], lhsc[1,1,i,jsize-1,k,c], lhsb[1,1,jsize]];
                         //C#:           matmul_sub(lhsa[jsize+1,1,1], lhsc[c,k+1,jsize-1+1,i+1,1,1], lhsb[jsize+1,1,1]);
-                        matmul_sub(ref lhsa, ref lhsc, ref lhsb, (jsize-1), c+1, (k-1), jsize-2, (i-1), (jsize-1));
+                        //matmul_sub(lhsa, lhsc, lhsb, (jsize-1), c+1, (k-1), jsize-2, (i-1), (jsize-1));
+                        matmul_sub(lhsa, lhsc, lhsb, jsize, c, k, jsize-1, i, jsize);
                         //c---------------------------------------------------------------------
                         //c     multiply rhs[jsize] by b_inverse[jsize] and copy to rhs
                         //c---------------------------------------------------------------------
                         //Fortran: call binvrhs[ lhsb[1,1,jsize],rhs[1,i,jsize,k,c] ];
                         //C#:           binvrhs(lhsb[jsize+1,1,1],rhs[c,k+1,jsize+1,i+1,1] );
-                        binvrhs(ref lhsb, ref rhs, (jsize-1), c+1, (k-1), (jsize-1), (i-1));
+                        binvrhs(lhsb, rhs, jsize, c, k, jsize, i);
                     }
                 }
             }
@@ -2860,12 +2873,12 @@ namespace NPB {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(m = 1; m <= BLOCK_SIZE; m++) {
                         for(n = 0; n < BLOCK_SIZE; n++) {  //lhsc[m,n,i,j,kstart-1,c] = out_buffer[ptr+n];
-                            lhsc[c+1, kstart-2, j + 1, i + 1, n + 1, m] = out_buffer_x[ptr + n];
+                            lhsc[c, kstart-1, j+2, i+2, n, m-1] = out_buffer_x[ptr + n];
                         }
                         ptr = ptr + BLOCK_SIZE;
                     }
                     for(n = 0; n < BLOCK_SIZE; n++) { //rhs[n,i,j,kstart-1,c] = out_buffer[ptr+n];
-                        rhs[c+1, kstart-2, j + 1, i + 1, n + 1] = out_buffer_x[ptr + n];
+                        rhs[c, kstart-1, j+2, i+2, n] = out_buffer_x[ptr + n];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -2894,12 +2907,12 @@ namespace NPB {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(m = 1; m <= BLOCK_SIZE; m++) {
                         for(n = 0; n < BLOCK_SIZE; n++) {  //in_buffer[ptr+n] = lhsc[m,n,i,j,ksize,c]
-                            in_buffer_x[ptr + n] = lhsc[c+1, ksize-1, j + 1, i + 1, n + 1, m];
+                            in_buffer_x[ptr + n] = lhsc[c, ksize, j+2, i+2, n, m-1];
                         }
                         ptr = ptr + BLOCK_SIZE;
                     }
                     for(n = 0; n < BLOCK_SIZE; n++) {  //in_buffer[ptr+n] = rhs[n,i,j,ksize,c];
-                        in_buffer_x[ptr + n] = rhs[c+1, ksize-1, j + 1, i + 1, n + 1];
+                        in_buffer_x[ptr + n] = rhs[c, ksize, j+2, i+2, n];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -2933,7 +2946,7 @@ namespace NPB {
             for(j = 0; j <= JMAX - 1; j++) {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(n = 0; n < BLOCK_SIZE; n++) {  //in_buffer[ptr+n] = rhs[n,i,j,kstart,c];
-                        in_buffer_x[ptr + n] = rhs[c+1, kstart-1, j + 1, i + 1, n + 1];
+                        in_buffer_x[ptr + n] = rhs[c, kstart, j+2, i+2, n];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -3005,7 +3018,7 @@ namespace NPB {
                         //---------------------------------------------------------------------
                         for(m = 0; m < BLOCK_SIZE; m++) {
                             for(n = 0; n < BLOCK_SIZE; n++) { //rhs[m,i,j,ksize,c] = rhs[m,i,j,ksize,c] - lhsc[m,n,i,j,ksize,c]*backsub_info[n,i,j,c]
-                                rhs[c+1, ksize-1, j-1, i-1, m+1] = rhs[c+1, ksize-1, j-1, i-1, m+1] - lhsc[c+1, ksize-1, j-1, i-1, n+1, m+1] * backsub_info[c+1, j-2, i-2, n+1];
+                                rhs[c, ksize, j, i, m] = rhs[c, ksize, j, i, m] - lhsc[c, ksize, j, i, n, m] * backsub_info[c+1, j-2, i-2, n+1];
                             }
                         }
                     }
@@ -3016,7 +3029,7 @@ namespace NPB {
                     for(i = start[c, 0]; i <= isize; i++) {
                         for(m = 0; m < BLOCK_SIZE; m++) {
                             for(n = 0; n < BLOCK_SIZE; n++) {  //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i,j,k+1,c];
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - lhsc[c+1, k-1, j-1, i-1, n+1, m+1] * rhs[c+1, k, j-1, i-1, n+1];
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - lhsc[c, k, j, i, n, m] * rhs[c, k+1, j, i, n];
                             }
                         }
                     }
@@ -3041,7 +3054,7 @@ namespace NPB {
             jsize = cell_size[c, 1] - end[c, 1] + 1;
             ksize = cell_size[c, 2] + 1;
 
-            lhsabinit(lhsa, lhsb, ksize-2); //call lhsabinit[lhsa, lhsb, ksize];
+            lhsabinit(lhsa, lhsb, ksize); //call lhsabinit[lhsa, lhsb, ksize];
 
             for(j = start[c, 1]; j <= jsize; j++) {
                 for(i = start[c, 0]; i <= isize; i++) {
@@ -3134,95 +3147,95 @@ namespace NPB {
                     for(k = start[c, 2]; k <= ksize - end[c, 2]; k++) {
                         tmp1 = dt * tz1;
                         tmp2 = dt * tz2;
-                        lhsa[k-1, 1, 1] = -tmp2 * fjac[k-1, 1, 1] - tmp1 * njac[k-1, 1, 1] - tmp1 * dz1;//lhsa[1,1,k]=-tmp2*fjac[1,1,k-1]-tmp1*njac[1,1,k-1]
-                        lhsa[k-1, 2, 1] = -tmp2 * fjac[k-1, 2, 1] - tmp1 * njac[k-1, 2, 1];    //fjac[k-1+2,2,1] njac[k-1+2,2,1]
-                        lhsa[k-1, 3, 1] = -tmp2 * fjac[k-1, 3, 1] - tmp1 * njac[k-1, 3, 1];
-                        lhsa[k-1, 4, 1] = -tmp2 * fjac[k-1, 4, 1] - tmp1 * njac[k-1, 4, 1];
-                        lhsa[k-1, 5, 1] = -tmp2 * fjac[k-1, 5, 1] - tmp1 * njac[k-1, 5, 1];
+                        lhsa[k, 0, 0] = -tmp2 * fjac[k-1, 1, 1] - tmp1 * njac[k-1, 1, 1] - tmp1 * dz1;//lhsa[1,1,k]=-tmp2*fjac[1,1,k-1]-tmp1*njac[1,1,k-1]
+                        lhsa[k, 1, 0] = -tmp2 * fjac[k-1, 2, 1] - tmp1 * njac[k-1, 2, 1];    //fjac[k-1+2,2,1] njac[k-1+2,2,1]
+                        lhsa[k, 2, 0] = -tmp2 * fjac[k-1, 3, 1] - tmp1 * njac[k-1, 3, 1];
+                        lhsa[k, 3, 0] = -tmp2 * fjac[k-1, 4, 1] - tmp1 * njac[k-1, 4, 1];
+                        lhsa[k, 4, 0] = -tmp2 * fjac[k-1, 5, 1] - tmp1 * njac[k-1, 5, 1];
 
-                        lhsa[k-1, 1, 2] = -tmp2 * fjac[k-1, 1, 2] - tmp1 * njac[k-1, 1, 2];
-                        lhsa[k-1, 2, 2] = -tmp2 * fjac[k-1, 2, 2] - tmp1 * njac[k-1, 2, 2] - tmp1 * dz2;
-                        lhsa[k-1, 3, 2] = -tmp2 * fjac[k-1, 3, 2] - tmp1 * njac[k-1, 3, 2];
-                        lhsa[k-1, 4, 2] = -tmp2 * fjac[k-1, 4, 2] - tmp1 * njac[k-1, 4, 2];
-                        lhsa[k-1, 5, 2] = -tmp2 * fjac[k-1, 5, 2] - tmp1 * njac[k-1, 5, 2];
+                        lhsa[k, 0, 1] = -tmp2 * fjac[k-1, 1, 2] - tmp1 * njac[k-1, 1, 2];
+                        lhsa[k, 1, 1] = -tmp2 * fjac[k-1, 2, 2] - tmp1 * njac[k-1, 2, 2] - tmp1 * dz2;
+                        lhsa[k, 2, 1] = -tmp2 * fjac[k-1, 3, 2] - tmp1 * njac[k-1, 3, 2];
+                        lhsa[k, 3, 1] = -tmp2 * fjac[k-1, 4, 2] - tmp1 * njac[k-1, 4, 2];
+                        lhsa[k, 4, 1] = -tmp2 * fjac[k-1, 5, 2] - tmp1 * njac[k-1, 5, 2];
 
-                        lhsa[k-1, 1, 3] = -tmp2 * fjac[k-1, 1, 3] - tmp1 * njac[k-1, 1, 3];
-                        lhsa[k-1, 2, 3] = -tmp2 * fjac[k-1, 2, 3] - tmp1 * njac[k-1, 2, 3];
-                        lhsa[k-1, 3, 3] = -tmp2 * fjac[k-1, 3, 3] - tmp1 * njac[k-1, 3, 3] - tmp1 * dz3;
-                        lhsa[k-1, 4, 3] = -tmp2 * fjac[k-1, 4, 3] - tmp1 * njac[k-1, 4, 3];
-                        lhsa[k-1, 5, 3] = -tmp2 * fjac[k-1, 5, 3] - tmp1 * njac[k-1, 5, 3];
+                        lhsa[k, 0, 2] = -tmp2 * fjac[k-1, 1, 3] - tmp1 * njac[k-1, 1, 3];
+                        lhsa[k, 1, 2] = -tmp2 * fjac[k-1, 2, 3] - tmp1 * njac[k-1, 2, 3];
+                        lhsa[k, 2, 2] = -tmp2 * fjac[k-1, 3, 3] - tmp1 * njac[k-1, 3, 3] - tmp1 * dz3;
+                        lhsa[k, 3, 2] = -tmp2 * fjac[k-1, 4, 3] - tmp1 * njac[k-1, 4, 3];
+                        lhsa[k, 4, 2] = -tmp2 * fjac[k-1, 5, 3] - tmp1 * njac[k-1, 5, 3];
 
-                        lhsa[k-1, 1, 4] = -tmp2 * fjac[k-1, 1, 4] - tmp1 * njac[k-1, 1, 4];
-                        lhsa[k-1, 2, 4] = -tmp2 * fjac[k-1, 2, 4] - tmp1 * njac[k-1, 2, 4];
-                        lhsa[k-1, 3, 4] = -tmp2 * fjac[k-1, 3, 4] - tmp1 * njac[k-1, 3, 4];
-                        lhsa[k-1, 4, 4] = -tmp2 * fjac[k-1, 4, 4] - tmp1 * njac[k-1, 4, 4] - tmp1 * dz4;
-                        lhsa[k-1, 5, 4] = -tmp2 * fjac[k-1, 5, 4] - tmp1 * njac[k-1, 5, 4];
+                        lhsa[k, 0, 3] = -tmp2 * fjac[k-1, 1, 4] - tmp1 * njac[k-1, 1, 4];
+                        lhsa[k, 1, 3] = -tmp2 * fjac[k-1, 2, 4] - tmp1 * njac[k-1, 2, 4];
+                        lhsa[k, 2, 3] = -tmp2 * fjac[k-1, 3, 4] - tmp1 * njac[k-1, 3, 4];
+                        lhsa[k, 3, 3] = -tmp2 * fjac[k-1, 4, 4] - tmp1 * njac[k-1, 4, 4] - tmp1 * dz4;
+                        lhsa[k, 4, 3] = -tmp2 * fjac[k-1, 5, 4] - tmp1 * njac[k-1, 5, 4];
 
-                        lhsa[k-1, 1, 5] = -tmp2 * fjac[k-1, 1, 5] - tmp1 * njac[k-1, 1, 5];
-                        lhsa[k-1, 2, 5] = -tmp2 * fjac[k-1, 2, 5] - tmp1 * njac[k-1, 2, 5];
-                        lhsa[k-1, 3, 5] = -tmp2 * fjac[k-1, 3, 5] - tmp1 * njac[k-1, 3, 5];
-                        lhsa[k-1, 4, 5] = -tmp2 * fjac[k-1, 4, 5] - tmp1 * njac[k-1, 4, 5];
-                        lhsa[k-1, 5, 5] = -tmp2 * fjac[k-1, 5, 5] - tmp1 * njac[k-1, 5, 5] - tmp1 * dz5;
+                        lhsa[k, 0, 4] = -tmp2 * fjac[k-1, 1, 5] - tmp1 * njac[k-1, 1, 5];
+                        lhsa[k, 1, 4] = -tmp2 * fjac[k-1, 2, 5] - tmp1 * njac[k-1, 2, 5];
+                        lhsa[k, 2, 4] = -tmp2 * fjac[k-1, 3, 5] - tmp1 * njac[k-1, 3, 5];
+                        lhsa[k, 3, 4] = -tmp2 * fjac[k-1, 4, 5] - tmp1 * njac[k-1, 4, 5];
+                        lhsa[k, 4, 4] = -tmp2 * fjac[k-1, 5, 5] - tmp1 * njac[k-1, 5, 5] - tmp1 * dz5;
 
-                        lhsb[k-1, 1, 1] = 1.0d + tmp1 * 2.0d * njac[k, 1, 1] + tmp1 * 2.0d * dz1; //lhsb[1,1,k]=1.0d+tmp1*2.0d+00*njac[1,1,k]
-                        lhsb[k-1, 2, 1] = tmp1 * 2.0d * njac[k, 2, 1];
-                        lhsb[k-1, 3, 1] = tmp1 * 2.0d * njac[k, 3, 1];
-                        lhsb[k-1, 4, 1] = tmp1 * 2.0d * njac[k, 4, 1];
-                        lhsb[k-1, 5, 1] = tmp1 * 2.0d * njac[k, 5, 1];
+                        lhsb[k, 0, 0] = 1.0d + tmp1 * 2.0d * njac[k, 1, 1] + tmp1 * 2.0d * dz1; //lhsb[1,1,k]=1.0d+tmp1*2.0d+00*njac[1,1,k]
+                        lhsb[k, 1, 0] = tmp1 * 2.0d * njac[k, 2, 1];
+                        lhsb[k, 2, 0] = tmp1 * 2.0d * njac[k, 3, 1];
+                        lhsb[k, 3, 0] = tmp1 * 2.0d * njac[k, 4, 1];
+                        lhsb[k, 4, 0] = tmp1 * 2.0d * njac[k, 5, 1];
 
-                        lhsb[k-1, 1, 2] = tmp1 * 2.0d * njac[k, 1, 2];
-                        lhsb[k-1, 2, 2] = 1.0d + tmp1 * 2.0d * njac[k, 2, 2] + tmp1 * 2.0d * dz2;
-                        lhsb[k-1, 3, 2] = tmp1 * 2.0d * njac[k, 3, 2];
-                        lhsb[k-1, 4, 2] = tmp1 * 2.0d * njac[k, 4, 2];
-                        lhsb[k-1, 5, 2] = tmp1 * 2.0d * njac[k, 5, 2];
+                        lhsb[k, 0, 1] = tmp1 * 2.0d * njac[k, 1, 2];
+                        lhsb[k, 1, 1] = 1.0d + tmp1 * 2.0d * njac[k, 2, 2] + tmp1 * 2.0d * dz2;
+                        lhsb[k, 2, 1] = tmp1 * 2.0d * njac[k, 3, 2];
+                        lhsb[k, 3, 1] = tmp1 * 2.0d * njac[k, 4, 2];
+                        lhsb[k, 4, 1] = tmp1 * 2.0d * njac[k, 5, 2];
 
-                        lhsb[k-1, 1, 3] = tmp1 * 2.0d * njac[k, 1, 3];
-                        lhsb[k-1, 2, 3] = tmp1 * 2.0d * njac[k, 2, 3];
-                        lhsb[k-1, 3, 3] = 1.0d + tmp1 * 2.0d * njac[k, 3, 3] + tmp1 * 2.0d * dz3;
-                        lhsb[k-1, 4, 3] = tmp1 * 2.0d * njac[k, 4, 3];
-                        lhsb[k-1, 5, 3] = tmp1 * 2.0d * njac[k, 5, 3];
+                        lhsb[k, 0, 2] = tmp1 * 2.0d * njac[k, 1, 3];
+                        lhsb[k, 1, 2] = tmp1 * 2.0d * njac[k, 2, 3];
+                        lhsb[k, 2, 2] = 1.0d + tmp1 * 2.0d * njac[k, 3, 3] + tmp1 * 2.0d * dz3;
+                        lhsb[k, 3, 2] = tmp1 * 2.0d * njac[k, 4, 3];
+                        lhsb[k, 4, 2] = tmp1 * 2.0d * njac[k, 5, 3];
 
-                        lhsb[k-1, 1, 4] = tmp1 * 2.0d * njac[k, 1, 4];
-                        lhsb[k-1, 2, 4] = tmp1 * 2.0d * njac[k, 2, 4];
-                        lhsb[k-1, 3, 4] = tmp1 * 2.0d * njac[k, 3, 4];
-                        lhsb[k-1, 4, 4] = 1.0d + tmp1 * 2.0d * njac[k, 4, 4] + tmp1 * 2.0d * dz4;
-                        lhsb[k-1, 5, 4] = tmp1 * 2.0d * njac[k, 5, 4];
+                        lhsb[k, 0, 3] = tmp1 * 2.0d * njac[k, 1, 4];
+                        lhsb[k, 1, 3] = tmp1 * 2.0d * njac[k, 2, 4];
+                        lhsb[k, 2, 3] = tmp1 * 2.0d * njac[k, 3, 4];
+                        lhsb[k, 3, 3] = 1.0d + tmp1 * 2.0d * njac[k, 4, 4] + tmp1 * 2.0d * dz4;
+                        lhsb[k, 4, 3] = tmp1 * 2.0d * njac[k, 5, 4];
 
-                        lhsb[k-1, 1, 5] = tmp1 * 2.0d * njac[k, 1, 5];
-                        lhsb[k-1, 2, 5] = tmp1 * 2.0d * njac[k, 2, 5];
-                        lhsb[k-1, 3, 5] = tmp1 * 2.0d * njac[k, 3, 5];
-                        lhsb[k-1, 4, 5] = tmp1 * 2.0d * njac[k, 4, 5];
-                        lhsb[k-1, 5, 5] = 1.0d + tmp1 * 2.0d * njac[k, 5, 5] + tmp1 * 2.0d * dz5;
+                        lhsb[k, 0, 4] = tmp1 * 2.0d * njac[k, 1, 5];
+                        lhsb[k, 1, 4] = tmp1 * 2.0d * njac[k, 2, 5];
+                        lhsb[k, 2, 4] = tmp1 * 2.0d * njac[k, 3, 5];
+                        lhsb[k, 3, 4] = tmp1 * 2.0d * njac[k, 4, 5];
+                        lhsb[k, 4, 4] = 1.0d + tmp1 * 2.0d * njac[k, 5, 5] + tmp1 * 2.0d * dz5;
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 1] = tmp2 * fjac[k+1, 1, 1] - tmp1 * njac[k+1, 1, 1] - tmp1 * dz1;//lhsc[1,1,i,j,k,c] fjac[1,1,k+1] njac[1,1,k+1]
-                        lhsc[c+1, k-1, j-1, i-1, 2, 1] = tmp2 * fjac[k+1, 2, 1] - tmp1 * njac[k+1, 2, 1];//fjac[k+1+2,2,1] njac[k+1+2,2,1]
-                        lhsc[c+1, k-1, j-1, i-1, 3, 1] = tmp2 * fjac[k+1, 3, 1] - tmp1 * njac[k+1, 3, 1];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 1] = tmp2 * fjac[k+1, 4, 1] - tmp1 * njac[k+1, 4, 1];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 1] = tmp2 * fjac[k+1, 5, 1] - tmp1 * njac[k+1, 5, 1];
+                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[k+1, 1, 1] - tmp1 * njac[k+1, 1, 1] - tmp1 * dz1;//lhsc[1,1,i,j,k,c] fjac[1,1,k+1] njac[1,1,k+1]
+                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[k+1, 2, 1] - tmp1 * njac[k+1, 2, 1];//fjac[k+1+2,2,1] njac[k+1+2,2,1]
+                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[k+1, 3, 1] - tmp1 * njac[k+1, 3, 1];
+                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[k+1, 4, 1] - tmp1 * njac[k+1, 4, 1];
+                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[k+1, 5, 1] - tmp1 * njac[k+1, 5, 1];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 2] = tmp2 * fjac[k+1, 1, 2] - tmp1 * njac[k+1, 1, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 2] = tmp2 * fjac[k+1, 2, 2] - tmp1 * njac[k+1, 2, 2] - tmp1 * dz2;
-                        lhsc[c+1, k-1, j-1, i-1, 3, 2] = tmp2 * fjac[k+1, 3, 2] - tmp1 * njac[k+1, 3, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 2] = tmp2 * fjac[k+1, 4, 2] - tmp1 * njac[k+1, 4, 2];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 2] = tmp2 * fjac[k+1, 5, 2] - tmp1 * njac[k+1, 5, 2];
+                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[k+1, 1, 2] - tmp1 * njac[k+1, 1, 2];
+                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[k+1, 2, 2] - tmp1 * njac[k+1, 2, 2] - tmp1 * dz2;
+                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[k+1, 3, 2] - tmp1 * njac[k+1, 3, 2];
+                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[k+1, 4, 2] - tmp1 * njac[k+1, 4, 2];
+                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[k+1, 5, 2] - tmp1 * njac[k+1, 5, 2];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 3] = tmp2 * fjac[k+1, 1, 3] - tmp1 * njac[k+1, 1, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 3] = tmp2 * fjac[k+1, 2, 3] - tmp1 * njac[k+1, 2, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 3] = tmp2 * fjac[k+1, 3, 3] - tmp1 * njac[k+1, 3, 3] - tmp1 * dz3;
-                        lhsc[c+1, k-1, j-1, i-1, 4, 3] = tmp2 * fjac[k+1, 4, 3] - tmp1 * njac[k+1, 4, 3];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 3] = tmp2 * fjac[k+1, 5, 3] - tmp1 * njac[k+1, 5, 3];
+                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[k+1, 1, 3] - tmp1 * njac[k+1, 1, 3];
+                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[k+1, 2, 3] - tmp1 * njac[k+1, 2, 3];
+                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[k+1, 3, 3] - tmp1 * njac[k+1, 3, 3] - tmp1 * dz3;
+                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[k+1, 4, 3] - tmp1 * njac[k+1, 4, 3];
+                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[k+1, 5, 3] - tmp1 * njac[k+1, 5, 3];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 4] = tmp2 * fjac[k+1, 1, 4] - tmp1 * njac[k+1, 1, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 4] = tmp2 * fjac[k+1, 2, 4] - tmp1 * njac[k+1, 2, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 4] = tmp2 * fjac[k+1, 3, 4] - tmp1 * njac[k+1, 3, 4];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 4] = tmp2 * fjac[k+1, 4, 4] - tmp1 * njac[k+1, 4, 4] - tmp1 * dz4;
-                        lhsc[c+1, k-1, j-1, i-1, 5, 4] = tmp2 * fjac[k+1, 5, 4] - tmp1 * njac[k+1, 5, 4];
+                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[k+1, 1, 4] - tmp1 * njac[k+1, 1, 4];
+                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[k+1, 2, 4] - tmp1 * njac[k+1, 2, 4];
+                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[k+1, 3, 4] - tmp1 * njac[k+1, 3, 4];
+                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[k+1, 4, 4] - tmp1 * njac[k+1, 4, 4] - tmp1 * dz4;
+                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[k+1, 5, 4] - tmp1 * njac[k+1, 5, 4];
 
-                        lhsc[c+1, k-1, j-1, i-1, 1, 5] = tmp2 * fjac[k+1, 1, 5] - tmp1 * njac[k+1, 1, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 2, 5] = tmp2 * fjac[k+1, 2, 5] - tmp1 * njac[k+1, 2, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 3, 5] = tmp2 * fjac[k+1, 3, 5] - tmp1 * njac[k+1, 3, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 4, 5] = tmp2 * fjac[k+1, 4, 5] - tmp1 * njac[k+1, 4, 5];
-                        lhsc[c+1, k-1, j-1, i-1, 5, 5] = tmp2 * fjac[k+1, 5, 5] - tmp1 * njac[k+1, 5, 5] - tmp1 * dz5;
+                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[k+1, 1, 5] - tmp1 * njac[k+1, 1, 5];
+                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[k+1, 2, 5] - tmp1 * njac[k+1, 2, 5];
+                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[k+1, 3, 5] - tmp1 * njac[k+1, 3, 5];
+                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[k+1, 4, 5] - tmp1 * njac[k+1, 4, 5];
+                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[k+1, 5, 5] - tmp1 * njac[k+1, 5, 5] - tmp1 * dz5;
                     }
                     //---------------------------------------------------------------------
                     //     outer most for(loops - sweeping in i direction
@@ -3234,7 +3247,8 @@ namespace NPB {
                         //---------------------------------------------------------------------
                         //Fortran: call binvcrhs[ lhsb[1,1,kstart], lhsc[1,1,i,j,kstart,c], rhs[1,i,j,kstart,c] ];
                         //C#:           binvcrhs( lhsb[kstart+1,1,1], lhsc[c,kstart+1,j+1,i+1,1,1], rhs[c,kstart+1,j+1,i+1,1] );
-                        binvcrhs(lhsb, lhsc, rhs, kstart-1, c+1, kstart-1, (j-1), (i-1), c+1, kstart-1, (j-1), (i-1));
+                        //binvcrhs(lhsb, lhsc, rhs, kstart-1, c+1, kstart-1, (j-1), (i-1), c+1, kstart-1, (j-1), (i-1));
+                        binvcrhs(lhsb, lhsc, rhs, kstart, c, kstart, j, i, c, kstart, j, i);
                     }
                     //c---------------------------------------------------------------------
                     //c     begin inner most for(loop
@@ -3248,21 +3262,24 @@ namespace NPB {
                         //c---------------------------------------------------------------------
                         //Fortran: call matvec_sub[lhsa[1,1,k], rhs[1,i,j,k-1,c],rhs[1,i,j,k,c]];
                         //C#: matvec_sub(lhsa[k+1,1,1], rhs[c,k-1+1,j+1,i+1,1],rhs[c,k+1,j+1,i+1,1]);
-                        matvec_sub(ref lhsa, ref rhs, ref rhs, (k-1), c+1, (k-2), (j-1), (i-1), c+1, (k-1), (j-1), (i-1));
+                        //matvec_sub(lhsa, rhs, rhs, (k-1), c+1, k-2, (j-1), (i-1), c+1, (k-1), (j-1), (i-1));
+                        matvec_sub(lhsa, rhs, rhs, k, c, k-1, j, i, c, k, j, i);
                         //c---------------------------------------------------------------------
                         //c     B[k] = B[k] - C[k-1]*A[k]
                         //c     call matmul_sub[aa,i,j,k,c,cc,i,j,k-1,c,bb,i,j,k,c]
                         //c---------------------------------------------------------------------
                         //Fortran: call matmul_sub[lhsa[1,1,k], lhsc[1,1,i,j,k-1,c], lhsb[1,1,k]];
                         //C#:           matmul_sub(lhsa[k+1,1,1], lhsc[c,k-1+1,j+1,i+1,1,1], lhsb[k+1,1,1]);
-                        matmul_sub(ref lhsa, ref lhsc, ref lhsb, (k-1), c+1, k-2, (j-1), (i-1), (k-1));
+                        //matmul_sub(lhsa, lhsc, lhsb, (k-1), c+1, k-2, (j-1), (i-1), (k-1));
+                        matmul_sub(lhsa, lhsc, lhsb, k, c, k-1, j, i, k);
                         //c---------------------------------------------------------------------
                         //c     multiply c[i,j,k] by b_inverse and copy back to c
                         //c     multiply rhs[i,j,1] by b_inverse[i,j,1] and copy to rhs
                         //c---------------------------------------------------------------------
                         //Fortran: call binvcrhs[ lhsb[1,1,k], lhsc[1,1,i,j,k,c], rhs[1,i,j,k,c] ];
                         //C#:           binvcrhs( lhsb[k+1,1,1],    lhsc[c,k+1,j+1,i+1,1,1],    rhs[c,k+1,j+1,i+1,1] );
-                        binvcrhs(lhsb, lhsc, rhs, (k-1), c+1, (k-1), (j-1), (i-1), c+1, (k-1), (j-1), (i-1));
+                        //binvcrhs(lhsb, lhsc, rhs, (k-1), c+1, (k-1), (j-1), (i-1), c+1, (k-1), (j-1), (i-1));
+                        binvcrhs(lhsb, lhsc, rhs, k, c, k, j, i, c, k, j, i);
                     }
                     //c---------------------------------------------------------------------
                     //c     Now finish up special cases for last cell
@@ -3273,7 +3290,8 @@ namespace NPB {
                         //c---------------------------------------------------------------------
                         //Fortran: call matvec_sub[lhsa[1,1,ksize], rhs[1,i,j,ksize-1,c],rhs[1,i,j,ksize,c]];
                         //C#:           matvec_sub(lhsa[ksize+1,1,1], rhs[c,ksize-1+1,j+1,i+1,1],rhs[c,ksize+1,j+1,i+1,1]);
-                        matvec_sub(ref lhsa, ref rhs, ref rhs, (ksize-1), c+1, (ksize-2), (j-1), (i-1), c+1, (ksize-1), (j-1), (i-1));
+                        //matvec_sub(lhsa, rhs, rhs, (ksize-1), c+1, (ksize-2), (j-1), (i-1), c+1, (ksize-1), (j-1), (i-1));
+                        matvec_sub(lhsa, rhs, rhs, ksize, c, ksize-1, j, i, c, ksize, j, i);
                         //c---------------------------------------------------------------------
                         //c     B[ksize] = B[ksize] - C[ksize-1]*A[ksize]
                         //c     call matmul_sub[aa,i,j,ksize,c,
@@ -3281,294 +3299,295 @@ namespace NPB {
                         //c---------------------------------------------------------------------
                         //Fortran: call matmul_sub[lhsa[1,1,ksize],lhsc[1,1,i,j,ksize-1,c],lhsb[1,1,ksize]];
                         //C#:           matmul_sub[lhsa[ksize+1,1,1],lhsc[c,ksize-1+1,j+1,i+1,1,1],lhsb[ksize+1,1,1]];
-                        matmul_sub(ref lhsa, ref lhsc, ref lhsb, (ksize-1), c+1, (ksize-2), (j-1), (i-1), (ksize-1));
+                        //matmul_sub(lhsa, lhsc, lhsb, (ksize-1), c+1, (ksize-2), (j-1), (i-1), (ksize-1));
+                        matmul_sub(lhsa, lhsc, lhsb, ksize, c, ksize-1, j, i, ksize);
                         //c---------------------------------------------------------------------
                         //c     multiply rhs[ksize] by b_inverse[ksize] and copy to rhs
                         //c---------------------------------------------------------------------
                         //Fortran: call binvrhs[ lhsb[1,1,ksize], rhs[1,i,j,ksize,c] ];
                         //C#:           binvrhs(lhsb[ksize+1,1,1], rhs[c,ksize+1,j+1,i+1,1] );
-                        binvrhs(ref lhsb, ref rhs, (ksize-1), c+1, (ksize-1), (j-1), (i-1));
+                        //binvrhs(lhsb, rhs, (ksize-1), c+1, (ksize-1), (j-1), (i-1));
+                        binvrhs(lhsb, rhs, ksize, c, ksize, j, i);
                     }
                 }
             }
         }//start[ ksize isize jsize kstart istart jstart
 
-
         public void binvcrhs(double[, ,] lhs, double[, , , , ,] c, double[, , , ,] r, int l1, int c1, int c2, int c3, int c4, int r1, int r2, int r3, int r4) {
             double pivot, coeff; //dimension lhs[5,5]; //double c[5,5], r[5];
+            pivot = 1.00d / lhs[l1, 0, 0];
+            lhs[l1, 1, 0] = lhs[l1, 1, 0] * pivot;
+            lhs[l1, 2, 0] = lhs[l1, 2, 0] * pivot;
+            lhs[l1, 3, 0] = lhs[l1, 3, 0] * pivot;
+            lhs[l1, 4, 0] = lhs[l1, 4, 0] * pivot;
+
+            c[c1, c2, c3, c4, 0, 0] = c[c1, c2, c3, c4, 0, 0] * pivot;
+            c[c1, c2, c3, c4, 1, 0] = c[c1, c2, c3, c4, 1, 0] * pivot;
+            c[c1, c2, c3, c4, 2, 0] = c[c1, c2, c3, c4, 2, 0] * pivot;
+            c[c1, c2, c3, c4, 3, 0] = c[c1, c2, c3, c4, 3, 0] * pivot;
+            c[c1, c2, c3, c4, 4, 0] = c[c1, c2, c3, c4, 4, 0] * pivot;
+
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] * pivot;
+            coeff = lhs[l1, 0, 1];
+            lhs[l1, 1, 1] = lhs[l1, 1, 1] - coeff * lhs[l1, 1, 0];
+            lhs[l1, 2, 1] = lhs[l1, 2, 1] - coeff * lhs[l1, 2, 0];
+            lhs[l1, 3, 1] = lhs[l1, 3, 1] - coeff * lhs[l1, 3, 0];
+            lhs[l1, 4, 1] = lhs[l1, 4, 1] - coeff * lhs[l1, 4, 0];
+
+            c[c1, c2, c3, c4, 0, 1] = c[c1, c2, c3, c4, 0, 1] - coeff * c[c1, c2, c3, c4, 0, 0];
+            c[c1, c2, c3, c4, 1, 1] = c[c1, c2, c3, c4, 1, 1] - coeff * c[c1, c2, c3, c4, 1, 0];
+            c[c1, c2, c3, c4, 2, 1] = c[c1, c2, c3, c4, 2, 1] - coeff * c[c1, c2, c3, c4, 2, 0];
+            c[c1, c2, c3, c4, 3, 1] = c[c1, c2, c3, c4, 3, 1] - coeff * c[c1, c2, c3, c4, 3, 0];
+            c[c1, c2, c3, c4, 4, 1] = c[c1, c2, c3, c4, 4, 1] - coeff * c[c1, c2, c3, c4, 4, 0];
+
+            r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 0];
+            coeff = lhs[l1, 0, 2];
+            lhs[l1, 1, 2] = lhs[l1, 1, 2] - coeff * lhs[l1, 1, 0];
+            lhs[l1, 2, 2] = lhs[l1, 2, 2] - coeff * lhs[l1, 2, 0];
+            lhs[l1, 3, 2] = lhs[l1, 3, 2] - coeff * lhs[l1, 3, 0];
+            lhs[l1, 4, 2] = lhs[l1, 4, 2] - coeff * lhs[l1, 4, 0];
+
+            c[c1, c2, c3, c4, 0, 2] = c[c1, c2, c3, c4, 0, 2] - coeff * c[c1, c2, c3, c4, 0, 0];
+            c[c1, c2, c3, c4, 1, 2] = c[c1, c2, c3, c4, 1, 2] - coeff * c[c1, c2, c3, c4, 1, 0];
+            c[c1, c2, c3, c4, 2, 2] = c[c1, c2, c3, c4, 2, 2] - coeff * c[c1, c2, c3, c4, 2, 0];
+            c[c1, c2, c3, c4, 3, 2] = c[c1, c2, c3, c4, 3, 2] - coeff * c[c1, c2, c3, c4, 3, 0];
+            c[c1, c2, c3, c4, 4, 2] = c[c1, c2, c3, c4, 4, 2] - coeff * c[c1, c2, c3, c4, 4, 0];
+
+            r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 0];
+            coeff = lhs[l1, 0, 3];
+            lhs[l1, 1, 3] = lhs[l1, 1, 3] - coeff * lhs[l1, 1, 0];
+            lhs[l1, 2, 3] = lhs[l1, 2, 3] - coeff * lhs[l1, 2, 0];
+            lhs[l1, 3, 3] = lhs[l1, 3, 3] - coeff * lhs[l1, 3, 0];
+            lhs[l1, 4, 3] = lhs[l1, 4, 3] - coeff * lhs[l1, 4, 0];
+
+            c[c1, c2, c3, c4, 0, 3] = c[c1, c2, c3, c4, 0, 3] - coeff * c[c1, c2, c3, c4, 0, 0];
+            c[c1, c2, c3, c4, 1, 3] = c[c1, c2, c3, c4, 1, 3] - coeff * c[c1, c2, c3, c4, 1, 0];
+            c[c1, c2, c3, c4, 2, 3] = c[c1, c2, c3, c4, 2, 3] - coeff * c[c1, c2, c3, c4, 2, 0];
+            c[c1, c2, c3, c4, 3, 3] = c[c1, c2, c3, c4, 3, 3] - coeff * c[c1, c2, c3, c4, 3, 0];
+            c[c1, c2, c3, c4, 4, 3] = c[c1, c2, c3, c4, 4, 3] - coeff * c[c1, c2, c3, c4, 4, 0];
+
+            r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 0];
+            coeff = lhs[l1, 0, 4];
+            lhs[l1, 1, 4] = lhs[l1, 1, 4] - coeff * lhs[l1, 1, 0];
+            lhs[l1, 2, 4] = lhs[l1, 2, 4] - coeff * lhs[l1, 2, 0];
+            lhs[l1, 3, 4] = lhs[l1, 3, 4] - coeff * lhs[l1, 3, 0];
+            lhs[l1, 4, 4] = lhs[l1, 4, 4] - coeff * lhs[l1, 4, 0];
+
+            c[c1, c2, c3, c4, 0, 4] = c[c1, c2, c3, c4, 0, 4] - coeff * c[c1, c2, c3, c4, 0, 0];
+            c[c1, c2, c3, c4, 1, 4] = c[c1, c2, c3, c4, 1, 4] - coeff * c[c1, c2, c3, c4, 1, 0];
+            c[c1, c2, c3, c4, 2, 4] = c[c1, c2, c3, c4, 2, 4] - coeff * c[c1, c2, c3, c4, 2, 0];
+            c[c1, c2, c3, c4, 3, 4] = c[c1, c2, c3, c4, 3, 4] - coeff * c[c1, c2, c3, c4, 3, 0];
+            c[c1, c2, c3, c4, 4, 4] = c[c1, c2, c3, c4, 4, 4] - coeff * c[c1, c2, c3, c4, 4, 0];
+
+            r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 0];
             pivot = 1.00d / lhs[l1, 1, 1];
             lhs[l1, 2, 1] = lhs[l1, 2, 1] * pivot;
             lhs[l1, 3, 1] = lhs[l1, 3, 1] * pivot;
             lhs[l1, 4, 1] = lhs[l1, 4, 1] * pivot;
-            lhs[l1, 5, 1] = lhs[l1, 5, 1] * pivot;
 
+            c[c1, c2, c3, c4, 0, 1] = c[c1, c2, c3, c4, 0, 1] * pivot;
             c[c1, c2, c3, c4, 1, 1] = c[c1, c2, c3, c4, 1, 1] * pivot;
             c[c1, c2, c3, c4, 2, 1] = c[c1, c2, c3, c4, 2, 1] * pivot;
             c[c1, c2, c3, c4, 3, 1] = c[c1, c2, c3, c4, 3, 1] * pivot;
             c[c1, c2, c3, c4, 4, 1] = c[c1, c2, c3, c4, 4, 1] * pivot;
-            c[c1, c2, c3, c4, 5, 1] = c[c1, c2, c3, c4, 5, 1] * pivot;
 
             r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] * pivot;
+            coeff = lhs[l1, 1, 0];
+            lhs[l1, 2, 0] = lhs[l1, 2, 0] - coeff * lhs[l1, 2, 1];
+            lhs[l1, 3, 0] = lhs[l1, 3, 0] - coeff * lhs[l1, 3, 1];
+            lhs[l1, 4, 0] = lhs[l1, 4, 0] - coeff * lhs[l1, 4, 1];
+
+            c[c1, c2, c3, c4, 0, 0] = c[c1, c2, c3, c4, 0, 0] - coeff * c[c1, c2, c3, c4, 0, 1];
+            c[c1, c2, c3, c4, 1, 0] = c[c1, c2, c3, c4, 1, 0] - coeff * c[c1, c2, c3, c4, 1, 1];
+            c[c1, c2, c3, c4, 2, 0] = c[c1, c2, c3, c4, 2, 0] - coeff * c[c1, c2, c3, c4, 2, 1];
+            c[c1, c2, c3, c4, 3, 0] = c[c1, c2, c3, c4, 3, 0] - coeff * c[c1, c2, c3, c4, 3, 1];
+            c[c1, c2, c3, c4, 4, 0] = c[c1, c2, c3, c4, 4, 0] - coeff * c[c1, c2, c3, c4, 4, 1];
+
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] - coeff * r[r1, r2, r3, r4, 1];
             coeff = lhs[l1, 1, 2];
             lhs[l1, 2, 2] = lhs[l1, 2, 2] - coeff * lhs[l1, 2, 1];
             lhs[l1, 3, 2] = lhs[l1, 3, 2] - coeff * lhs[l1, 3, 1];
             lhs[l1, 4, 2] = lhs[l1, 4, 2] - coeff * lhs[l1, 4, 1];
-            lhs[l1, 5, 2] = lhs[l1, 5, 2] - coeff * lhs[l1, 5, 1];
 
+            c[c1, c2, c3, c4, 0, 2] = c[c1, c2, c3, c4, 0, 2] - coeff * c[c1, c2, c3, c4, 0, 1];
             c[c1, c2, c3, c4, 1, 2] = c[c1, c2, c3, c4, 1, 2] - coeff * c[c1, c2, c3, c4, 1, 1];
             c[c1, c2, c3, c4, 2, 2] = c[c1, c2, c3, c4, 2, 2] - coeff * c[c1, c2, c3, c4, 2, 1];
             c[c1, c2, c3, c4, 3, 2] = c[c1, c2, c3, c4, 3, 2] - coeff * c[c1, c2, c3, c4, 3, 1];
             c[c1, c2, c3, c4, 4, 2] = c[c1, c2, c3, c4, 4, 2] - coeff * c[c1, c2, c3, c4, 4, 1];
-            c[c1, c2, c3, c4, 5, 2] = c[c1, c2, c3, c4, 5, 2] - coeff * c[c1, c2, c3, c4, 5, 1];
 
             r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 1];
             coeff = lhs[l1, 1, 3];
             lhs[l1, 2, 3] = lhs[l1, 2, 3] - coeff * lhs[l1, 2, 1];
             lhs[l1, 3, 3] = lhs[l1, 3, 3] - coeff * lhs[l1, 3, 1];
             lhs[l1, 4, 3] = lhs[l1, 4, 3] - coeff * lhs[l1, 4, 1];
-            lhs[l1, 5, 3] = lhs[l1, 5, 3] - coeff * lhs[l1, 5, 1];
 
+            c[c1, c2, c3, c4, 0, 3] = c[c1, c2, c3, c4, 0, 3] - coeff * c[c1, c2, c3, c4, 0, 1];
             c[c1, c2, c3, c4, 1, 3] = c[c1, c2, c3, c4, 1, 3] - coeff * c[c1, c2, c3, c4, 1, 1];
             c[c1, c2, c3, c4, 2, 3] = c[c1, c2, c3, c4, 2, 3] - coeff * c[c1, c2, c3, c4, 2, 1];
             c[c1, c2, c3, c4, 3, 3] = c[c1, c2, c3, c4, 3, 3] - coeff * c[c1, c2, c3, c4, 3, 1];
             c[c1, c2, c3, c4, 4, 3] = c[c1, c2, c3, c4, 4, 3] - coeff * c[c1, c2, c3, c4, 4, 1];
-            c[c1, c2, c3, c4, 5, 3] = c[c1, c2, c3, c4, 5, 3] - coeff * c[c1, c2, c3, c4, 5, 1];
 
             r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 1];
             coeff = lhs[l1, 1, 4];
             lhs[l1, 2, 4] = lhs[l1, 2, 4] - coeff * lhs[l1, 2, 1];
             lhs[l1, 3, 4] = lhs[l1, 3, 4] - coeff * lhs[l1, 3, 1];
             lhs[l1, 4, 4] = lhs[l1, 4, 4] - coeff * lhs[l1, 4, 1];
-            lhs[l1, 5, 4] = lhs[l1, 5, 4] - coeff * lhs[l1, 5, 1];
 
+            c[c1, c2, c3, c4, 0, 4] = c[c1, c2, c3, c4, 0, 4] - coeff * c[c1, c2, c3, c4, 0, 1];
             c[c1, c2, c3, c4, 1, 4] = c[c1, c2, c3, c4, 1, 4] - coeff * c[c1, c2, c3, c4, 1, 1];
             c[c1, c2, c3, c4, 2, 4] = c[c1, c2, c3, c4, 2, 4] - coeff * c[c1, c2, c3, c4, 2, 1];
             c[c1, c2, c3, c4, 3, 4] = c[c1, c2, c3, c4, 3, 4] - coeff * c[c1, c2, c3, c4, 3, 1];
             c[c1, c2, c3, c4, 4, 4] = c[c1, c2, c3, c4, 4, 4] - coeff * c[c1, c2, c3, c4, 4, 1];
-            c[c1, c2, c3, c4, 5, 4] = c[c1, c2, c3, c4, 5, 4] - coeff * c[c1, c2, c3, c4, 5, 1];
 
             r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 1];
-            coeff = lhs[l1, 1, 5];
-            lhs[l1, 2, 5] = lhs[l1, 2, 5] - coeff * lhs[l1, 2, 1];
-            lhs[l1, 3, 5] = lhs[l1, 3, 5] - coeff * lhs[l1, 3, 1];
-            lhs[l1, 4, 5] = lhs[l1, 4, 5] - coeff * lhs[l1, 4, 1];
-            lhs[l1, 5, 5] = lhs[l1, 5, 5] - coeff * lhs[l1, 5, 1];
-
-            c[c1, c2, c3, c4, 1, 5] = c[c1, c2, c3, c4, 1, 5] - coeff * c[c1, c2, c3, c4, 1, 1];
-            c[c1, c2, c3, c4, 2, 5] = c[c1, c2, c3, c4, 2, 5] - coeff * c[c1, c2, c3, c4, 2, 1];
-            c[c1, c2, c3, c4, 3, 5] = c[c1, c2, c3, c4, 3, 5] - coeff * c[c1, c2, c3, c4, 3, 1];
-            c[c1, c2, c3, c4, 4, 5] = c[c1, c2, c3, c4, 4, 5] - coeff * c[c1, c2, c3, c4, 4, 1];
-            c[c1, c2, c3, c4, 5, 5] = c[c1, c2, c3, c4, 5, 5] - coeff * c[c1, c2, c3, c4, 5, 1];
-
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] - coeff * r[r1, r2, r3, r4, 1];
             pivot = 1.00d / lhs[l1, 2, 2];
             lhs[l1, 3, 2] = lhs[l1, 3, 2] * pivot;
             lhs[l1, 4, 2] = lhs[l1, 4, 2] * pivot;
-            lhs[l1, 5, 2] = lhs[l1, 5, 2] * pivot;
 
+            c[c1, c2, c3, c4, 0, 2] = c[c1, c2, c3, c4, 0, 2] * pivot;
             c[c1, c2, c3, c4, 1, 2] = c[c1, c2, c3, c4, 1, 2] * pivot;
             c[c1, c2, c3, c4, 2, 2] = c[c1, c2, c3, c4, 2, 2] * pivot;
             c[c1, c2, c3, c4, 3, 2] = c[c1, c2, c3, c4, 3, 2] * pivot;
             c[c1, c2, c3, c4, 4, 2] = c[c1, c2, c3, c4, 4, 2] * pivot;
-            c[c1, c2, c3, c4, 5, 2] = c[c1, c2, c3, c4, 5, 2] * pivot;
 
             r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] * pivot;
+            coeff = lhs[l1, 2, 0];
+            lhs[l1, 3, 0] = lhs[l1, 3, 0] - coeff * lhs[l1, 3, 2];
+            lhs[l1, 4, 0] = lhs[l1, 4, 0] - coeff * lhs[l1, 4, 2];
+
+            c[c1, c2, c3, c4, 0, 0] = c[c1, c2, c3, c4, 0, 0] - coeff * c[c1, c2, c3, c4, 0, 2];
+            c[c1, c2, c3, c4, 1, 0] = c[c1, c2, c3, c4, 1, 0] - coeff * c[c1, c2, c3, c4, 1, 2];
+            c[c1, c2, c3, c4, 2, 0] = c[c1, c2, c3, c4, 2, 0] - coeff * c[c1, c2, c3, c4, 2, 2];
+            c[c1, c2, c3, c4, 3, 0] = c[c1, c2, c3, c4, 3, 0] - coeff * c[c1, c2, c3, c4, 3, 2];
+            c[c1, c2, c3, c4, 4, 0] = c[c1, c2, c3, c4, 4, 0] - coeff * c[c1, c2, c3, c4, 4, 2];
+
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] - coeff * r[r1, r2, r3, r4, 2];
             coeff = lhs[l1, 2, 1];
             lhs[l1, 3, 1] = lhs[l1, 3, 1] - coeff * lhs[l1, 3, 2];
             lhs[l1, 4, 1] = lhs[l1, 4, 1] - coeff * lhs[l1, 4, 2];
-            lhs[l1, 5, 1] = lhs[l1, 5, 1] - coeff * lhs[l1, 5, 2];
 
+            c[c1, c2, c3, c4, 0, 1] = c[c1, c2, c3, c4, 0, 1] - coeff * c[c1, c2, c3, c4, 0, 2];
             c[c1, c2, c3, c4, 1, 1] = c[c1, c2, c3, c4, 1, 1] - coeff * c[c1, c2, c3, c4, 1, 2];
             c[c1, c2, c3, c4, 2, 1] = c[c1, c2, c3, c4, 2, 1] - coeff * c[c1, c2, c3, c4, 2, 2];
             c[c1, c2, c3, c4, 3, 1] = c[c1, c2, c3, c4, 3, 1] - coeff * c[c1, c2, c3, c4, 3, 2];
             c[c1, c2, c3, c4, 4, 1] = c[c1, c2, c3, c4, 4, 1] - coeff * c[c1, c2, c3, c4, 4, 2];
-            c[c1, c2, c3, c4, 5, 1] = c[c1, c2, c3, c4, 5, 1] - coeff * c[c1, c2, c3, c4, 5, 2];
 
             r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 2];
             coeff = lhs[l1, 2, 3];
             lhs[l1, 3, 3] = lhs[l1, 3, 3] - coeff * lhs[l1, 3, 2];
             lhs[l1, 4, 3] = lhs[l1, 4, 3] - coeff * lhs[l1, 4, 2];
-            lhs[l1, 5, 3] = lhs[l1, 5, 3] - coeff * lhs[l1, 5, 2];
 
+            c[c1, c2, c3, c4, 0, 3] = c[c1, c2, c3, c4, 0, 3] - coeff * c[c1, c2, c3, c4, 0, 2];
             c[c1, c2, c3, c4, 1, 3] = c[c1, c2, c3, c4, 1, 3] - coeff * c[c1, c2, c3, c4, 1, 2];
             c[c1, c2, c3, c4, 2, 3] = c[c1, c2, c3, c4, 2, 3] - coeff * c[c1, c2, c3, c4, 2, 2];
             c[c1, c2, c3, c4, 3, 3] = c[c1, c2, c3, c4, 3, 3] - coeff * c[c1, c2, c3, c4, 3, 2];
             c[c1, c2, c3, c4, 4, 3] = c[c1, c2, c3, c4, 4, 3] - coeff * c[c1, c2, c3, c4, 4, 2];
-            c[c1, c2, c3, c4, 5, 3] = c[c1, c2, c3, c4, 5, 3] - coeff * c[c1, c2, c3, c4, 5, 2];
 
             r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 2];
             coeff = lhs[l1, 2, 4];
             lhs[l1, 3, 4] = lhs[l1, 3, 4] - coeff * lhs[l1, 3, 2];
             lhs[l1, 4, 4] = lhs[l1, 4, 4] - coeff * lhs[l1, 4, 2];
-            lhs[l1, 5, 4] = lhs[l1, 5, 4] - coeff * lhs[l1, 5, 2];
 
+            c[c1, c2, c3, c4, 0, 4] = c[c1, c2, c3, c4, 0, 4] - coeff * c[c1, c2, c3, c4, 0, 2];
             c[c1, c2, c3, c4, 1, 4] = c[c1, c2, c3, c4, 1, 4] - coeff * c[c1, c2, c3, c4, 1, 2];
             c[c1, c2, c3, c4, 2, 4] = c[c1, c2, c3, c4, 2, 4] - coeff * c[c1, c2, c3, c4, 2, 2];
             c[c1, c2, c3, c4, 3, 4] = c[c1, c2, c3, c4, 3, 4] - coeff * c[c1, c2, c3, c4, 3, 2];
             c[c1, c2, c3, c4, 4, 4] = c[c1, c2, c3, c4, 4, 4] - coeff * c[c1, c2, c3, c4, 4, 2];
-            c[c1, c2, c3, c4, 5, 4] = c[c1, c2, c3, c4, 5, 4] - coeff * c[c1, c2, c3, c4, 5, 2];
 
             r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 2];
-            coeff = lhs[l1, 2, 5];
-            lhs[l1, 3, 5] = lhs[l1, 3, 5] - coeff * lhs[l1, 3, 2];
-            lhs[l1, 4, 5] = lhs[l1, 4, 5] - coeff * lhs[l1, 4, 2];
-            lhs[l1, 5, 5] = lhs[l1, 5, 5] - coeff * lhs[l1, 5, 2];
-
-            c[c1, c2, c3, c4, 1, 5] = c[c1, c2, c3, c4, 1, 5] - coeff * c[c1, c2, c3, c4, 1, 2];
-            c[c1, c2, c3, c4, 2, 5] = c[c1, c2, c3, c4, 2, 5] - coeff * c[c1, c2, c3, c4, 2, 2];
-            c[c1, c2, c3, c4, 3, 5] = c[c1, c2, c3, c4, 3, 5] - coeff * c[c1, c2, c3, c4, 3, 2];
-            c[c1, c2, c3, c4, 4, 5] = c[c1, c2, c3, c4, 4, 5] - coeff * c[c1, c2, c3, c4, 4, 2];
-            c[c1, c2, c3, c4, 5, 5] = c[c1, c2, c3, c4, 5, 5] - coeff * c[c1, c2, c3, c4, 5, 2];
-
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] - coeff * r[r1, r2, r3, r4, 2];
             pivot = 1.00d / lhs[l1, 3, 3];
             lhs[l1, 4, 3] = lhs[l1, 4, 3] * pivot;
-            lhs[l1, 5, 3] = lhs[l1, 5, 3] * pivot;
 
+            c[c1, c2, c3, c4, 0, 3] = c[c1, c2, c3, c4, 0, 3] * pivot;
             c[c1, c2, c3, c4, 1, 3] = c[c1, c2, c3, c4, 1, 3] * pivot;
             c[c1, c2, c3, c4, 2, 3] = c[c1, c2, c3, c4, 2, 3] * pivot;
             c[c1, c2, c3, c4, 3, 3] = c[c1, c2, c3, c4, 3, 3] * pivot;
             c[c1, c2, c3, c4, 4, 3] = c[c1, c2, c3, c4, 4, 3] * pivot;
-            c[c1, c2, c3, c4, 5, 3] = c[c1, c2, c3, c4, 5, 3] * pivot;
 
             r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] * pivot;
+            coeff = lhs[l1, 3, 0];
+            lhs[l1, 4, 0] = lhs[l1, 4, 0] - coeff * lhs[l1, 4, 3];
+
+            c[c1, c2, c3, c4, 0, 0] = c[c1, c2, c3, c4, 0, 0] - coeff * c[c1, c2, c3, c4, 0, 3];
+            c[c1, c2, c3, c4, 1, 0] = c[c1, c2, c3, c4, 1, 0] - coeff * c[c1, c2, c3, c4, 1, 3];
+            c[c1, c2, c3, c4, 2, 0] = c[c1, c2, c3, c4, 2, 0] - coeff * c[c1, c2, c3, c4, 2, 3];
+            c[c1, c2, c3, c4, 3, 0] = c[c1, c2, c3, c4, 3, 0] - coeff * c[c1, c2, c3, c4, 3, 3];
+            c[c1, c2, c3, c4, 4, 0] = c[c1, c2, c3, c4, 4, 0] - coeff * c[c1, c2, c3, c4, 4, 3];
+
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] - coeff * r[r1, r2, r3, r4, 3];
             coeff = lhs[l1, 3, 1];
             lhs[l1, 4, 1] = lhs[l1, 4, 1] - coeff * lhs[l1, 4, 3];
-            lhs[l1, 5, 1] = lhs[l1, 5, 1] - coeff * lhs[l1, 5, 3];
 
+            c[c1, c2, c3, c4, 0, 1] = c[c1, c2, c3, c4, 0, 1] - coeff * c[c1, c2, c3, c4, 0, 3];
             c[c1, c2, c3, c4, 1, 1] = c[c1, c2, c3, c4, 1, 1] - coeff * c[c1, c2, c3, c4, 1, 3];
             c[c1, c2, c3, c4, 2, 1] = c[c1, c2, c3, c4, 2, 1] - coeff * c[c1, c2, c3, c4, 2, 3];
             c[c1, c2, c3, c4, 3, 1] = c[c1, c2, c3, c4, 3, 1] - coeff * c[c1, c2, c3, c4, 3, 3];
             c[c1, c2, c3, c4, 4, 1] = c[c1, c2, c3, c4, 4, 1] - coeff * c[c1, c2, c3, c4, 4, 3];
-            c[c1, c2, c3, c4, 5, 1] = c[c1, c2, c3, c4, 5, 1] - coeff * c[c1, c2, c3, c4, 5, 3];
 
             r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 3];
             coeff = lhs[l1, 3, 2];
             lhs[l1, 4, 2] = lhs[l1, 4, 2] - coeff * lhs[l1, 4, 3];
-            lhs[l1, 5, 2] = lhs[l1, 5, 2] - coeff * lhs[l1, 5, 3];
 
+            c[c1, c2, c3, c4, 0, 2] = c[c1, c2, c3, c4, 0, 2] - coeff * c[c1, c2, c3, c4, 0, 3];
             c[c1, c2, c3, c4, 1, 2] = c[c1, c2, c3, c4, 1, 2] - coeff * c[c1, c2, c3, c4, 1, 3];
             c[c1, c2, c3, c4, 2, 2] = c[c1, c2, c3, c4, 2, 2] - coeff * c[c1, c2, c3, c4, 2, 3];
             c[c1, c2, c3, c4, 3, 2] = c[c1, c2, c3, c4, 3, 2] - coeff * c[c1, c2, c3, c4, 3, 3];
             c[c1, c2, c3, c4, 4, 2] = c[c1, c2, c3, c4, 4, 2] - coeff * c[c1, c2, c3, c4, 4, 3];
-            c[c1, c2, c3, c4, 5, 2] = c[c1, c2, c3, c4, 5, 2] - coeff * c[c1, c2, c3, c4, 5, 3];
 
             r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 3];
             coeff = lhs[l1, 3, 4];
             lhs[l1, 4, 4] = lhs[l1, 4, 4] - coeff * lhs[l1, 4, 3];
-            lhs[l1, 5, 4] = lhs[l1, 5, 4] - coeff * lhs[l1, 5, 3];
 
+            c[c1, c2, c3, c4, 0, 4] = c[c1, c2, c3, c4, 0, 4] - coeff * c[c1, c2, c3, c4, 0, 3];
             c[c1, c2, c3, c4, 1, 4] = c[c1, c2, c3, c4, 1, 4] - coeff * c[c1, c2, c3, c4, 1, 3];
             c[c1, c2, c3, c4, 2, 4] = c[c1, c2, c3, c4, 2, 4] - coeff * c[c1, c2, c3, c4, 2, 3];
             c[c1, c2, c3, c4, 3, 4] = c[c1, c2, c3, c4, 3, 4] - coeff * c[c1, c2, c3, c4, 3, 3];
             c[c1, c2, c3, c4, 4, 4] = c[c1, c2, c3, c4, 4, 4] - coeff * c[c1, c2, c3, c4, 4, 3];
-            c[c1, c2, c3, c4, 5, 4] = c[c1, c2, c3, c4, 5, 4] - coeff * c[c1, c2, c3, c4, 5, 3];
 
             r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 3];
-            coeff = lhs[l1, 3, 5];
-            lhs[l1, 4, 5] = lhs[l1, 4, 5] - coeff * lhs[l1, 4, 3];
-            lhs[l1, 5, 5] = lhs[l1, 5, 5] - coeff * lhs[l1, 5, 3];
-
-            c[c1, c2, c3, c4, 1, 5] = c[c1, c2, c3, c4, 1, 5] - coeff * c[c1, c2, c3, c4, 1, 3];
-            c[c1, c2, c3, c4, 2, 5] = c[c1, c2, c3, c4, 2, 5] - coeff * c[c1, c2, c3, c4, 2, 3];
-            c[c1, c2, c3, c4, 3, 5] = c[c1, c2, c3, c4, 3, 5] - coeff * c[c1, c2, c3, c4, 3, 3];
-            c[c1, c2, c3, c4, 4, 5] = c[c1, c2, c3, c4, 4, 5] - coeff * c[c1, c2, c3, c4, 4, 3];
-            c[c1, c2, c3, c4, 5, 5] = c[c1, c2, c3, c4, 5, 5] - coeff * c[c1, c2, c3, c4, 5, 3];
-
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] - coeff * r[r1, r2, r3, r4, 3];
             pivot = 1.00d / lhs[l1, 4, 4];
-            lhs[l1, 5, 4] = lhs[l1, 5, 4] * pivot;
-
+            c[c1, c2, c3, c4, 0, 4] = c[c1, c2, c3, c4, 0, 4] * pivot;
             c[c1, c2, c3, c4, 1, 4] = c[c1, c2, c3, c4, 1, 4] * pivot;
             c[c1, c2, c3, c4, 2, 4] = c[c1, c2, c3, c4, 2, 4] * pivot;
             c[c1, c2, c3, c4, 3, 4] = c[c1, c2, c3, c4, 3, 4] * pivot;
             c[c1, c2, c3, c4, 4, 4] = c[c1, c2, c3, c4, 4, 4] * pivot;
-            c[c1, c2, c3, c4, 5, 4] = c[c1, c2, c3, c4, 5, 4] * pivot;
 
             r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] * pivot;
-            coeff = lhs[l1, 4, 1];
-            lhs[l1, 5, 1] = lhs[l1, 5, 1] - coeff * lhs[l1, 5, 4];
+            coeff = lhs[l1, 4, 0];
+            c[c1, c2, c3, c4, 0, 0] = c[c1, c2, c3, c4, 0, 0] - coeff * c[c1, c2, c3, c4, 0, 4];
+            c[c1, c2, c3, c4, 1, 0] = c[c1, c2, c3, c4, 1, 0] - coeff * c[c1, c2, c3, c4, 1, 4];
+            c[c1, c2, c3, c4, 2, 0] = c[c1, c2, c3, c4, 2, 0] - coeff * c[c1, c2, c3, c4, 2, 4];
+            c[c1, c2, c3, c4, 3, 0] = c[c1, c2, c3, c4, 3, 0] - coeff * c[c1, c2, c3, c4, 3, 4];
+            c[c1, c2, c3, c4, 4, 0] = c[c1, c2, c3, c4, 4, 0] - coeff * c[c1, c2, c3, c4, 4, 4];
 
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] - coeff * r[r1, r2, r3, r4, 4];
+            coeff = lhs[l1, 4, 1];
+            c[c1, c2, c3, c4, 0, 1] = c[c1, c2, c3, c4, 0, 1] - coeff * c[c1, c2, c3, c4, 0, 4];
             c[c1, c2, c3, c4, 1, 1] = c[c1, c2, c3, c4, 1, 1] - coeff * c[c1, c2, c3, c4, 1, 4];
             c[c1, c2, c3, c4, 2, 1] = c[c1, c2, c3, c4, 2, 1] - coeff * c[c1, c2, c3, c4, 2, 4];
             c[c1, c2, c3, c4, 3, 1] = c[c1, c2, c3, c4, 3, 1] - coeff * c[c1, c2, c3, c4, 3, 4];
             c[c1, c2, c3, c4, 4, 1] = c[c1, c2, c3, c4, 4, 1] - coeff * c[c1, c2, c3, c4, 4, 4];
-            c[c1, c2, c3, c4, 5, 1] = c[c1, c2, c3, c4, 5, 1] - coeff * c[c1, c2, c3, c4, 5, 4];
 
             r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 4];
             coeff = lhs[l1, 4, 2];
-            lhs[l1, 5, 2] = lhs[l1, 5, 2] - coeff * lhs[l1, 5, 4];
-
+            c[c1, c2, c3, c4, 0, 2] = c[c1, c2, c3, c4, 0, 2] - coeff * c[c1, c2, c3, c4, 0, 4];
             c[c1, c2, c3, c4, 1, 2] = c[c1, c2, c3, c4, 1, 2] - coeff * c[c1, c2, c3, c4, 1, 4];
             c[c1, c2, c3, c4, 2, 2] = c[c1, c2, c3, c4, 2, 2] - coeff * c[c1, c2, c3, c4, 2, 4];
             c[c1, c2, c3, c4, 3, 2] = c[c1, c2, c3, c4, 3, 2] - coeff * c[c1, c2, c3, c4, 3, 4];
             c[c1, c2, c3, c4, 4, 2] = c[c1, c2, c3, c4, 4, 2] - coeff * c[c1, c2, c3, c4, 4, 4];
-            c[c1, c2, c3, c4, 5, 2] = c[c1, c2, c3, c4, 5, 2] - coeff * c[c1, c2, c3, c4, 5, 4];
 
             r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 4];
             coeff = lhs[l1, 4, 3];
-            lhs[l1, 5, 3] = lhs[l1, 5, 3] - coeff * lhs[l1, 5, 4];
-
+            c[c1, c2, c3, c4, 0, 3] = c[c1, c2, c3, c4, 0, 3] - coeff * c[c1, c2, c3, c4, 0, 4];
             c[c1, c2, c3, c4, 1, 3] = c[c1, c2, c3, c4, 1, 3] - coeff * c[c1, c2, c3, c4, 1, 4];
             c[c1, c2, c3, c4, 2, 3] = c[c1, c2, c3, c4, 2, 3] - coeff * c[c1, c2, c3, c4, 2, 4];
             c[c1, c2, c3, c4, 3, 3] = c[c1, c2, c3, c4, 3, 3] - coeff * c[c1, c2, c3, c4, 3, 4];
             c[c1, c2, c3, c4, 4, 3] = c[c1, c2, c3, c4, 4, 3] - coeff * c[c1, c2, c3, c4, 4, 4];
-            c[c1, c2, c3, c4, 5, 3] = c[c1, c2, c3, c4, 5, 3] - coeff * c[c1, c2, c3, c4, 5, 4];
 
             r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 4];
-            coeff = lhs[l1, 4, 5];
-            lhs[l1, 5, 5] = lhs[l1, 5, 5] - coeff * lhs[l1, 5, 4];
+        }//lhs[ c[ r[ c[ r[
 
-            c[c1, c2, c3, c4, 1, 5] = c[c1, c2, c3, c4, 1, 5] - coeff * c[c1, c2, c3, c4, 1, 4];
-            c[c1, c2, c3, c4, 2, 5] = c[c1, c2, c3, c4, 2, 5] - coeff * c[c1, c2, c3, c4, 2, 4];
-            c[c1, c2, c3, c4, 3, 5] = c[c1, c2, c3, c4, 3, 5] - coeff * c[c1, c2, c3, c4, 3, 4];
-            c[c1, c2, c3, c4, 4, 5] = c[c1, c2, c3, c4, 4, 5] - coeff * c[c1, c2, c3, c4, 4, 4];
-            c[c1, c2, c3, c4, 5, 5] = c[c1, c2, c3, c4, 5, 5] - coeff * c[c1, c2, c3, c4, 5, 4];
-
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] - coeff * r[r1, r2, r3, r4, 4];
-            pivot = 1.00d / lhs[l1, 5, 5];
-            c[c1, c2, c3, c4, 1, 5] = c[c1, c2, c3, c4, 1, 5] * pivot;
-            c[c1, c2, c3, c4, 2, 5] = c[c1, c2, c3, c4, 2, 5] * pivot;
-            c[c1, c2, c3, c4, 3, 5] = c[c1, c2, c3, c4, 3, 5] * pivot;
-            c[c1, c2, c3, c4, 4, 5] = c[c1, c2, c3, c4, 4, 5] * pivot;
-            c[c1, c2, c3, c4, 5, 5] = c[c1, c2, c3, c4, 5, 5] * pivot;
-
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] * pivot;
-            coeff = lhs[l1, 5, 1];
-            c[c1, c2, c3, c4, 1, 1] = c[c1, c2, c3, c4, 1, 1] - coeff * c[c1, c2, c3, c4, 1, 5];
-            c[c1, c2, c3, c4, 2, 1] = c[c1, c2, c3, c4, 2, 1] - coeff * c[c1, c2, c3, c4, 2, 5];
-            c[c1, c2, c3, c4, 3, 1] = c[c1, c2, c3, c4, 3, 1] - coeff * c[c1, c2, c3, c4, 3, 5];
-            c[c1, c2, c3, c4, 4, 1] = c[c1, c2, c3, c4, 4, 1] - coeff * c[c1, c2, c3, c4, 4, 5];
-            c[c1, c2, c3, c4, 5, 1] = c[c1, c2, c3, c4, 5, 1] - coeff * c[c1, c2, c3, c4, 5, 5];
-
-            r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 5];
-            coeff = lhs[l1, 5, 2];
-            c[c1, c2, c3, c4, 1, 2] = c[c1, c2, c3, c4, 1, 2] - coeff * c[c1, c2, c3, c4, 1, 5];
-            c[c1, c2, c3, c4, 2, 2] = c[c1, c2, c3, c4, 2, 2] - coeff * c[c1, c2, c3, c4, 2, 5];
-            c[c1, c2, c3, c4, 3, 2] = c[c1, c2, c3, c4, 3, 2] - coeff * c[c1, c2, c3, c4, 3, 5];
-            c[c1, c2, c3, c4, 4, 2] = c[c1, c2, c3, c4, 4, 2] - coeff * c[c1, c2, c3, c4, 4, 5];
-            c[c1, c2, c3, c4, 5, 2] = c[c1, c2, c3, c4, 5, 2] - coeff * c[c1, c2, c3, c4, 5, 5];
-
-            r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 5];
-            coeff = lhs[l1, 5, 3];
-            c[c1, c2, c3, c4, 1, 3] = c[c1, c2, c3, c4, 1, 3] - coeff * c[c1, c2, c3, c4, 1, 5];
-            c[c1, c2, c3, c4, 2, 3] = c[c1, c2, c3, c4, 2, 3] - coeff * c[c1, c2, c3, c4, 2, 5];
-            c[c1, c2, c3, c4, 3, 3] = c[c1, c2, c3, c4, 3, 3] - coeff * c[c1, c2, c3, c4, 3, 5];
-            c[c1, c2, c3, c4, 4, 3] = c[c1, c2, c3, c4, 4, 3] - coeff * c[c1, c2, c3, c4, 4, 5];
-            c[c1, c2, c3, c4, 5, 3] = c[c1, c2, c3, c4, 5, 3] - coeff * c[c1, c2, c3, c4, 5, 5];
-
-            r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 5];
-            coeff = lhs[l1, 5, 4];
-            c[c1, c2, c3, c4, 1, 4] = c[c1, c2, c3, c4, 1, 4] - coeff * c[c1, c2, c3, c4, 1, 5];
-            c[c1, c2, c3, c4, 2, 4] = c[c1, c2, c3, c4, 2, 4] - coeff * c[c1, c2, c3, c4, 2, 5];
-            c[c1, c2, c3, c4, 3, 4] = c[c1, c2, c3, c4, 3, 4] - coeff * c[c1, c2, c3, c4, 3, 5];
-            c[c1, c2, c3, c4, 4, 4] = c[c1, c2, c3, c4, 4, 4] - coeff * c[c1, c2, c3, c4, 4, 5];
-            c[c1, c2, c3, c4, 5, 4] = c[c1, c2, c3, c4, 5, 4] - coeff * c[c1, c2, c3, c4, 5, 5];
-
-            r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 5];
-        }
-
-        public void matvec_sub(ref double[, ,] ablock, ref double[, , , ,] avec, ref double[, , , ,] bvec, int ab1, int av1, int av2, int av3, int av4, int bv1, int bv2, int bv3, int bv4) {
+        public void matvec_sub(double[, ,] ablock, double[, , , ,] avec, double[, , , ,] bvec, int ab1, int av1, int av2, int av3, int av4, int bv1, int bv2, int bv3, int bv4) {
             //---------------------------------------------------------------------
             //     subtracts bvec=bvec - ablock*avec
             //---------------------------------------------------------------------
@@ -3578,298 +3597,298 @@ namespace NPB {
             //            rhs[i,ic,jc,kc,ccell] = rhs[i,ic,jc,kc,ccell] 
             //     $           - lhs[i,1,ablock,ia,ja,ka,acell]*
             //---------------------------------------------------------------------
-            bvec[bv1, bv2, bv3, bv4, 1] = bvec[bv1, bv2, bv3, bv4, 1] - ablock[ab1, 1, 1] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 1] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 1] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 1] * avec[av1, av2, av3, av4, 4] - ablock[ab1, 5, 1] * avec[av1, av2, av3, av4, 5];
-            bvec[bv1, bv2, bv3, bv4, 2] = bvec[bv1, bv2, bv3, bv4, 2] - ablock[ab1, 1, 2] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 2] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 2] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 2] * avec[av1, av2, av3, av4, 4] - ablock[ab1, 5, 2] * avec[av1, av2, av3, av4, 5];
-            bvec[bv1, bv2, bv3, bv4, 3] = bvec[bv1, bv2, bv3, bv4, 3] - ablock[ab1, 1, 3] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 3] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 3] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 3] * avec[av1, av2, av3, av4, 4] - ablock[ab1, 5, 3] * avec[av1, av2, av3, av4, 5];
-            bvec[bv1, bv2, bv3, bv4, 4] = bvec[bv1, bv2, bv3, bv4, 4] - ablock[ab1, 1, 4] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 4] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 4] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 4] * avec[av1, av2, av3, av4, 4] - ablock[ab1, 5, 4] * avec[av1, av2, av3, av4, 5];
-            bvec[bv1, bv2, bv3, bv4, 5] = bvec[bv1, bv2, bv3, bv4, 5] - ablock[ab1, 1, 5] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 5] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 5] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 5] * avec[av1, av2, av3, av4, 4] - ablock[ab1, 5, 5] * avec[av1, av2, av3, av4, 5];
+            bvec[bv1, bv2, bv3, bv4, 0] = bvec[bv1, bv2, bv3, bv4, 0] - ablock[ab1, 0, 0] * avec[av1, av2, av3, av4, 0] - ablock[ab1, 1, 0] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 0] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 0] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 0] * avec[av1, av2, av3, av4, 4];
+            bvec[bv1, bv2, bv3, bv4, 1] = bvec[bv1, bv2, bv3, bv4, 1] - ablock[ab1, 0, 1] * avec[av1, av2, av3, av4, 0] - ablock[ab1, 1, 1] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 1] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 1] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 1] * avec[av1, av2, av3, av4, 4];
+            bvec[bv1, bv2, bv3, bv4, 2] = bvec[bv1, bv2, bv3, bv4, 2] - ablock[ab1, 0, 2] * avec[av1, av2, av3, av4, 0] - ablock[ab1, 1, 2] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 2] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 2] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 2] * avec[av1, av2, av3, av4, 4];
+            bvec[bv1, bv2, bv3, bv4, 3] = bvec[bv1, bv2, bv3, bv4, 3] - ablock[ab1, 0, 3] * avec[av1, av2, av3, av4, 0] - ablock[ab1, 1, 3] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 3] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 3] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 3] * avec[av1, av2, av3, av4, 4];
+            bvec[bv1, bv2, bv3, bv4, 4] = bvec[bv1, bv2, bv3, bv4, 4] - ablock[ab1, 0, 4] * avec[av1, av2, av3, av4, 0] - ablock[ab1, 1, 4] * avec[av1, av2, av3, av4, 1] - ablock[ab1, 2, 4] * avec[av1, av2, av3, av4, 2] - ablock[ab1, 3, 4] * avec[av1, av2, av3, av4, 3] - ablock[ab1, 4, 4] * avec[av1, av2, av3, av4, 4];
         }
 
-        public void matmul_sub(ref double[, ,] ablock, ref double[, , , , ,] bblock, ref double[, ,] cblock, int a1, int b1, int b2, int b3, int b4, int c1) {
+        public void matmul_sub(double[, ,] ablock, double[, , , , ,] bblock, double[, ,] cblock, int a1, int b1, int b2, int b3, int b4, int c1) {
             //---------------------------------------------------------------------
             //     subtracts a[i,j,k] X b[i,j,k] from c[i,j,k]
             //---------------------------------------------------------------------
             //      double ablock, bblock, cblock
             //      dimension ablock[5,5], bblock[5,5], cblock[5,5]
-            cblock[c1, 1, 1] = cblock[c1, 1, 1] - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 1, 1]
+            cblock[c1, 0, 0] = cblock[c1, 0, 0] - ablock[a1, 0, 0] * bblock[b1, b2, b3, b4, 0, 0]
+                                     - ablock[a1, 1, 0] * bblock[b1, b2, b3, b4, 0, 1]
+                                     - ablock[a1, 2, 0] * bblock[b1, b2, b3, b4, 0, 2]
+                                     - ablock[a1, 3, 0] * bblock[b1, b2, b3, b4, 0, 3]
+                                     - ablock[a1, 4, 0] * bblock[b1, b2, b3, b4, 0, 4];
+
+            cblock[c1, 0, 1] = cblock[c1, 0, 1] - ablock[a1, 0, 1] * bblock[b1, b2, b3, b4, 0, 0]
+                                     - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 0, 1]
+                                     - ablock[a1, 2, 1] * bblock[b1, b2, b3, b4, 0, 2]
+                                     - ablock[a1, 3, 1] * bblock[b1, b2, b3, b4, 0, 3]
+                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 0, 4];
+
+            cblock[c1, 0, 2] = cblock[c1, 0, 2] - ablock[a1, 0, 2] * bblock[b1, b2, b3, b4, 0, 0]
+                                     - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 0, 1]
+                                     - ablock[a1, 2, 2] * bblock[b1, b2, b3, b4, 0, 2]
+                                     - ablock[a1, 3, 2] * bblock[b1, b2, b3, b4, 0, 3]
+                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 0, 4];
+
+            cblock[c1, 0, 3] = cblock[c1, 0, 3] - ablock[a1, 0, 3] * bblock[b1, b2, b3, b4, 0, 0]
+                                     - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 0, 1]
+                                     - ablock[a1, 2, 3] * bblock[b1, b2, b3, b4, 0, 2]
+                                     - ablock[a1, 3, 3] * bblock[b1, b2, b3, b4, 0, 3]
+                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 0, 4];
+
+            cblock[c1, 0, 4] = cblock[c1, 0, 4] - ablock[a1, 0, 4] * bblock[b1, b2, b3, b4, 0, 0]
+                                     - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 0, 1]
+                                     - ablock[a1, 2, 4] * bblock[b1, b2, b3, b4, 0, 2]
+                                     - ablock[a1, 3, 4] * bblock[b1, b2, b3, b4, 0, 3]
+                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 0, 4];
+
+            cblock[c1, 1, 0] = cblock[c1, 1, 0] - ablock[a1, 0, 0] * bblock[b1, b2, b3, b4, 1, 0]
+                                     - ablock[a1, 1, 0] * bblock[b1, b2, b3, b4, 1, 1]
+                                     - ablock[a1, 2, 0] * bblock[b1, b2, b3, b4, 1, 2]
+                                     - ablock[a1, 3, 0] * bblock[b1, b2, b3, b4, 1, 3]
+                                     - ablock[a1, 4, 0] * bblock[b1, b2, b3, b4, 1, 4];
+
+            cblock[c1, 1, 1] = cblock[c1, 1, 1] - ablock[a1, 0, 1] * bblock[b1, b2, b3, b4, 1, 0]
+                                     - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 1, 1]
                                      - ablock[a1, 2, 1] * bblock[b1, b2, b3, b4, 1, 2]
                                      - ablock[a1, 3, 1] * bblock[b1, b2, b3, b4, 1, 3]
-                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 1, 4]
-                                     - ablock[a1, 5, 1] * bblock[b1, b2, b3, b4, 1, 5];
+                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 1, 4];
 
-            cblock[c1, 1, 2] = cblock[c1, 1, 2] - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 1, 1]
+            cblock[c1, 1, 2] = cblock[c1, 1, 2] - ablock[a1, 0, 2] * bblock[b1, b2, b3, b4, 1, 0]
+                                     - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 1, 1]
                                      - ablock[a1, 2, 2] * bblock[b1, b2, b3, b4, 1, 2]
                                      - ablock[a1, 3, 2] * bblock[b1, b2, b3, b4, 1, 3]
-                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 1, 4]
-                                     - ablock[a1, 5, 2] * bblock[b1, b2, b3, b4, 1, 5];
+                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 1, 4];
 
-            cblock[c1, 1, 3] = cblock[c1, 1, 3] - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 1, 1]
+            cblock[c1, 1, 3] = cblock[c1, 1, 3] - ablock[a1, 0, 3] * bblock[b1, b2, b3, b4, 1, 0]
+                                     - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 1, 1]
                                      - ablock[a1, 2, 3] * bblock[b1, b2, b3, b4, 1, 2]
                                      - ablock[a1, 3, 3] * bblock[b1, b2, b3, b4, 1, 3]
-                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 1, 4]
-                                     - ablock[a1, 5, 3] * bblock[b1, b2, b3, b4, 1, 5];
+                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 1, 4];
 
-            cblock[c1, 1, 4] = cblock[c1, 1, 4] - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 1, 1]
+            cblock[c1, 1, 4] = cblock[c1, 1, 4] - ablock[a1, 0, 4] * bblock[b1, b2, b3, b4, 1, 0]
+                                     - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 1, 1]
                                      - ablock[a1, 2, 4] * bblock[b1, b2, b3, b4, 1, 2]
                                      - ablock[a1, 3, 4] * bblock[b1, b2, b3, b4, 1, 3]
-                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 1, 4]
-                                     - ablock[a1, 5, 4] * bblock[b1, b2, b3, b4, 1, 5];
+                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 1, 4];
 
-            cblock[c1, 1, 5] = cblock[c1, 1, 5] - ablock[a1, 1, 5] * bblock[b1, b2, b3, b4, 1, 1]
-                                     - ablock[a1, 2, 5] * bblock[b1, b2, b3, b4, 1, 2]
-                                     - ablock[a1, 3, 5] * bblock[b1, b2, b3, b4, 1, 3]
-                                     - ablock[a1, 4, 5] * bblock[b1, b2, b3, b4, 1, 4]
-                                     - ablock[a1, 5, 5] * bblock[b1, b2, b3, b4, 1, 5];
+            cblock[c1, 2, 0] = cblock[c1, 2, 0] - ablock[a1, 0, 0] * bblock[b1, b2, b3, b4, 2, 0]
+                                     - ablock[a1, 1, 0] * bblock[b1, b2, b3, b4, 2, 1]
+                                     - ablock[a1, 2, 0] * bblock[b1, b2, b3, b4, 2, 2]
+                                     - ablock[a1, 3, 0] * bblock[b1, b2, b3, b4, 2, 3]
+                                     - ablock[a1, 4, 0] * bblock[b1, b2, b3, b4, 2, 4];
 
-            cblock[c1, 2, 1] = cblock[c1, 2, 1] - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 2, 1]
+            cblock[c1, 2, 1] = cblock[c1, 2, 1] - ablock[a1, 0, 1] * bblock[b1, b2, b3, b4, 2, 0]
+                                     - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 2, 1]
                                      - ablock[a1, 2, 1] * bblock[b1, b2, b3, b4, 2, 2]
                                      - ablock[a1, 3, 1] * bblock[b1, b2, b3, b4, 2, 3]
-                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 2, 4]
-                                     - ablock[a1, 5, 1] * bblock[b1, b2, b3, b4, 2, 5];
+                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 2, 4];
 
-            cblock[c1, 2, 2] = cblock[c1, 2, 2] - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 2, 1]
+            cblock[c1, 2, 2] = cblock[c1, 2, 2] - ablock[a1, 0, 2] * bblock[b1, b2, b3, b4, 2, 0]
+                                     - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 2, 1]
                                      - ablock[a1, 2, 2] * bblock[b1, b2, b3, b4, 2, 2]
                                      - ablock[a1, 3, 2] * bblock[b1, b2, b3, b4, 2, 3]
-                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 2, 4]
-                                     - ablock[a1, 5, 2] * bblock[b1, b2, b3, b4, 2, 5];
+                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 2, 4];
 
-            cblock[c1, 2, 3] = cblock[c1, 2, 3] - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 2, 1]
+            cblock[c1, 2, 3] = cblock[c1, 2, 3] - ablock[a1, 0, 3] * bblock[b1, b2, b3, b4, 2, 0]
+                                     - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 2, 1]
                                      - ablock[a1, 2, 3] * bblock[b1, b2, b3, b4, 2, 2]
                                      - ablock[a1, 3, 3] * bblock[b1, b2, b3, b4, 2, 3]
-                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 2, 4]
-                                     - ablock[a1, 5, 3] * bblock[b1, b2, b3, b4, 2, 5];
+                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 2, 4];
 
-            cblock[c1, 2, 4] = cblock[c1, 2, 4] - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 2, 1]
+            cblock[c1, 2, 4] = cblock[c1, 2, 4] - ablock[a1, 0, 4] * bblock[b1, b2, b3, b4, 2, 0]
+                                     - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 2, 1]
                                      - ablock[a1, 2, 4] * bblock[b1, b2, b3, b4, 2, 2]
                                      - ablock[a1, 3, 4] * bblock[b1, b2, b3, b4, 2, 3]
-                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 2, 4]
-                                     - ablock[a1, 5, 4] * bblock[b1, b2, b3, b4, 2, 5];
+                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 2, 4];
 
-            cblock[c1, 2, 5] = cblock[c1, 2, 5] - ablock[a1, 1, 5] * bblock[b1, b2, b3, b4, 2, 1]
-                                     - ablock[a1, 2, 5] * bblock[b1, b2, b3, b4, 2, 2]
-                                     - ablock[a1, 3, 5] * bblock[b1, b2, b3, b4, 2, 3]
-                                     - ablock[a1, 4, 5] * bblock[b1, b2, b3, b4, 2, 4]
-                                     - ablock[a1, 5, 5] * bblock[b1, b2, b3, b4, 2, 5];
+            cblock[c1, 3, 0] = cblock[c1, 3, 0] - ablock[a1, 0, 0] * bblock[b1, b2, b3, b4, 3, 0]
+                                     - ablock[a1, 1, 0] * bblock[b1, b2, b3, b4, 3, 1]
+                                     - ablock[a1, 2, 0] * bblock[b1, b2, b3, b4, 3, 2]
+                                     - ablock[a1, 3, 0] * bblock[b1, b2, b3, b4, 3, 3]
+                                     - ablock[a1, 4, 0] * bblock[b1, b2, b3, b4, 3, 4];
 
-            cblock[c1, 3, 1] = cblock[c1, 3, 1] - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 3, 1]
+            cblock[c1, 3, 1] = cblock[c1, 3, 1] - ablock[a1, 0, 1] * bblock[b1, b2, b3, b4, 3, 0]
+                                     - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 3, 1]
                                      - ablock[a1, 2, 1] * bblock[b1, b2, b3, b4, 3, 2]
                                      - ablock[a1, 3, 1] * bblock[b1, b2, b3, b4, 3, 3]
-                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 3, 4]
-                                     - ablock[a1, 5, 1] * bblock[b1, b2, b3, b4, 3, 5];
+                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 3, 4];
 
-            cblock[c1, 3, 2] = cblock[c1, 3, 2] - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 3, 1]
+            cblock[c1, 3, 2] = cblock[c1, 3, 2] - ablock[a1, 0, 2] * bblock[b1, b2, b3, b4, 3, 0]
+                                     - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 3, 1]
                                      - ablock[a1, 2, 2] * bblock[b1, b2, b3, b4, 3, 2]
                                      - ablock[a1, 3, 2] * bblock[b1, b2, b3, b4, 3, 3]
-                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 3, 4]
-                                     - ablock[a1, 5, 2] * bblock[b1, b2, b3, b4, 3, 5];
+                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 3, 4];
 
-            cblock[c1, 3, 3] = cblock[c1, 3, 3] - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 3, 1]
+            cblock[c1, 3, 3] = cblock[c1, 3, 3] - ablock[a1, 0, 3] * bblock[b1, b2, b3, b4, 3, 0]
+                                     - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 3, 1]
                                      - ablock[a1, 2, 3] * bblock[b1, b2, b3, b4, 3, 2]
                                      - ablock[a1, 3, 3] * bblock[b1, b2, b3, b4, 3, 3]
-                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 3, 4]
-                                     - ablock[a1, 5, 3] * bblock[b1, b2, b3, b4, 3, 5];
+                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 3, 4];
 
-            cblock[c1, 3, 4] = cblock[c1, 3, 4] - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 3, 1]
+            cblock[c1, 3, 4] = cblock[c1, 3, 4] - ablock[a1, 0, 4] * bblock[b1, b2, b3, b4, 3, 0]
+                                     - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 3, 1]
                                      - ablock[a1, 2, 4] * bblock[b1, b2, b3, b4, 3, 2]
                                      - ablock[a1, 3, 4] * bblock[b1, b2, b3, b4, 3, 3]
-                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 3, 4]
-                                     - ablock[a1, 5, 4] * bblock[b1, b2, b3, b4, 3, 5];
+                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 3, 4];
 
-            cblock[c1, 3, 5] = cblock[c1, 3, 5] - ablock[a1, 1, 5] * bblock[b1, b2, b3, b4, 3, 1]
-                                     - ablock[a1, 2, 5] * bblock[b1, b2, b3, b4, 3, 2]
-                                     - ablock[a1, 3, 5] * bblock[b1, b2, b3, b4, 3, 3]
-                                     - ablock[a1, 4, 5] * bblock[b1, b2, b3, b4, 3, 4]
-                                     - ablock[a1, 5, 5] * bblock[b1, b2, b3, b4, 3, 5];
+            cblock[c1, 4, 0] = cblock[c1, 4, 0] - ablock[a1, 0, 0] * bblock[b1, b2, b3, b4, 4, 0]
+                                     - ablock[a1, 1, 0] * bblock[b1, b2, b3, b4, 4, 1]
+                                     - ablock[a1, 2, 0] * bblock[b1, b2, b3, b4, 4, 2]
+                                     - ablock[a1, 3, 0] * bblock[b1, b2, b3, b4, 4, 3]
+                                     - ablock[a1, 4, 0] * bblock[b1, b2, b3, b4, 4, 4];
 
-            cblock[c1, 4, 1] = cblock[c1, 4, 1] - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 4, 1]
+            cblock[c1, 4, 1] = cblock[c1, 4, 1] - ablock[a1, 0, 1] * bblock[b1, b2, b3, b4, 4, 0]
+                                     - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 4, 1]
                                      - ablock[a1, 2, 1] * bblock[b1, b2, b3, b4, 4, 2]
                                      - ablock[a1, 3, 1] * bblock[b1, b2, b3, b4, 4, 3]
-                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 4, 4]
-                                     - ablock[a1, 5, 1] * bblock[b1, b2, b3, b4, 4, 5];
+                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 4, 4];
 
-            cblock[c1, 4, 2] = cblock[c1, 4, 2] - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 4, 1]
+            cblock[c1, 4, 2] = cblock[c1, 4, 2] - ablock[a1, 0, 2] * bblock[b1, b2, b3, b4, 4, 0]
+                                     - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 4, 1]
                                      - ablock[a1, 2, 2] * bblock[b1, b2, b3, b4, 4, 2]
                                      - ablock[a1, 3, 2] * bblock[b1, b2, b3, b4, 4, 3]
-                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 4, 4]
-                                     - ablock[a1, 5, 2] * bblock[b1, b2, b3, b4, 4, 5];
+                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 4, 4];
 
-            cblock[c1, 4, 3] = cblock[c1, 4, 3] - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 4, 1]
+            cblock[c1, 4, 3] = cblock[c1, 4, 3] - ablock[a1, 0, 3] * bblock[b1, b2, b3, b4, 4, 0]
+                                     - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 4, 1]
                                      - ablock[a1, 2, 3] * bblock[b1, b2, b3, b4, 4, 2]
                                      - ablock[a1, 3, 3] * bblock[b1, b2, b3, b4, 4, 3]
-                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 4, 4]
-                                     - ablock[a1, 5, 3] * bblock[b1, b2, b3, b4, 4, 5];
+                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 4, 4];
 
-            cblock[c1, 4, 4] = cblock[c1, 4, 4] - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 4, 1]
+            cblock[c1, 4, 4] = cblock[c1, 4, 4] - ablock[a1, 0, 4] * bblock[b1, b2, b3, b4, 4, 0]
+                                     - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 4, 1]
                                      - ablock[a1, 2, 4] * bblock[b1, b2, b3, b4, 4, 2]
                                      - ablock[a1, 3, 4] * bblock[b1, b2, b3, b4, 4, 3]
-                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 4, 4]
-                                     - ablock[a1, 5, 4] * bblock[b1, b2, b3, b4, 4, 5];
-
-            cblock[c1, 4, 5] = cblock[c1, 4, 5] - ablock[a1, 1, 5] * bblock[b1, b2, b3, b4, 4, 1]
-                                     - ablock[a1, 2, 5] * bblock[b1, b2, b3, b4, 4, 2]
-                                     - ablock[a1, 3, 5] * bblock[b1, b2, b3, b4, 4, 3]
-                                     - ablock[a1, 4, 5] * bblock[b1, b2, b3, b4, 4, 4]
-                                     - ablock[a1, 5, 5] * bblock[b1, b2, b3, b4, 4, 5];
-
-            cblock[c1, 5, 1] = cblock[c1, 5, 1] - ablock[a1, 1, 1] * bblock[b1, b2, b3, b4, 5, 1]
-                                     - ablock[a1, 2, 1] * bblock[b1, b2, b3, b4, 5, 2]
-                                     - ablock[a1, 3, 1] * bblock[b1, b2, b3, b4, 5, 3]
-                                     - ablock[a1, 4, 1] * bblock[b1, b2, b3, b4, 5, 4]
-                                     - ablock[a1, 5, 1] * bblock[b1, b2, b3, b4, 5, 5];
-
-            cblock[c1, 5, 2] = cblock[c1, 5, 2] - ablock[a1, 1, 2] * bblock[b1, b2, b3, b4, 5, 1]
-                                     - ablock[a1, 2, 2] * bblock[b1, b2, b3, b4, 5, 2]
-                                     - ablock[a1, 3, 2] * bblock[b1, b2, b3, b4, 5, 3]
-                                     - ablock[a1, 4, 2] * bblock[b1, b2, b3, b4, 5, 4]
-                                     - ablock[a1, 5, 2] * bblock[b1, b2, b3, b4, 5, 5];
-
-            cblock[c1, 5, 3] = cblock[c1, 5, 3] - ablock[a1, 1, 3] * bblock[b1, b2, b3, b4, 5, 1]
-                                     - ablock[a1, 2, 3] * bblock[b1, b2, b3, b4, 5, 2]
-                                     - ablock[a1, 3, 3] * bblock[b1, b2, b3, b4, 5, 3]
-                                     - ablock[a1, 4, 3] * bblock[b1, b2, b3, b4, 5, 4]
-                                     - ablock[a1, 5, 3] * bblock[b1, b2, b3, b4, 5, 5];
-
-            cblock[c1, 5, 4] = cblock[c1, 5, 4] - ablock[a1, 1, 4] * bblock[b1, b2, b3, b4, 5, 1]
-                                     - ablock[a1, 2, 4] * bblock[b1, b2, b3, b4, 5, 2]
-                                     - ablock[a1, 3, 4] * bblock[b1, b2, b3, b4, 5, 3]
-                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 5, 4]
-                                     - ablock[a1, 5, 4] * bblock[b1, b2, b3, b4, 5, 5];
-
-            cblock[c1, 5, 5] = cblock[c1, 5, 5] - ablock[a1, 1, 5] * bblock[b1, b2, b3, b4, 5, 1]
-                                     - ablock[a1, 2, 5] * bblock[b1, b2, b3, b4, 5, 2]
-                                     - ablock[a1, 3, 5] * bblock[b1, b2, b3, b4, 5, 3]
-                                     - ablock[a1, 4, 5] * bblock[b1, b2, b3, b4, 5, 4]
-                                     - ablock[a1, 5, 5] * bblock[b1, b2, b3, b4, 5, 5];
+                                     - ablock[a1, 4, 4] * bblock[b1, b2, b3, b4, 4, 4];
         }
 
-        public void binvrhs(ref double[, ,] lhs, ref double[, , , ,] r, int l1, int r1, int r2, int r3, int r4) {
+        public void binvrhs(double[, ,] lhs, double[, , , ,] r, int l1, int r1, int r2, int r3, int r4) {
             double pivot, coeff; // dimension lhs[5,5]; r[5];
+
+            pivot = 1.00d / lhs[l1, 0, 0];
+            lhs[l1, 1, 0] = lhs[l1, 1, 0] * pivot;
+            lhs[l1, 2, 0] = lhs[l1, 2, 0] * pivot;
+            lhs[l1, 3, 0] = lhs[l1, 3, 0] * pivot;
+            lhs[l1, 4, 0] = lhs[l1, 4, 0] * pivot;
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] * pivot;
+
+            coeff =         lhs[l1, 0, 1];
+            lhs[l1, 1, 1] = lhs[l1, 1, 1] - coeff * lhs[l1, 1, 0];
+            lhs[l1, 2, 1] = lhs[l1, 2, 1] - coeff * lhs[l1, 2, 0];
+            lhs[l1, 3, 1] = lhs[l1, 3, 1] - coeff * lhs[l1, 3, 0];
+            lhs[l1, 4, 1] = lhs[l1, 4, 1] - coeff * lhs[l1, 4, 0];
+            r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 0];
+
+            coeff =         lhs[l1, 0, 2];
+            lhs[l1, 1, 2] = lhs[l1, 1, 2] - coeff * lhs[l1, 1, 0];
+            lhs[l1, 2, 2] = lhs[l1, 2, 2] - coeff * lhs[l1, 2, 0];
+            lhs[l1, 3, 2] = lhs[l1, 3, 2] - coeff * lhs[l1, 3, 0];
+            lhs[l1, 4, 2] = lhs[l1, 4, 2] - coeff * lhs[l1, 4, 0];
+            r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 0];
+
+            coeff =         lhs[l1, 0, 3];
+            lhs[l1, 1, 3] = lhs[l1, 1, 3] - coeff * lhs[l1, 1, 0];
+            lhs[l1, 2, 3] = lhs[l1, 2, 3] - coeff * lhs[l1, 2, 0];
+            lhs[l1, 3, 3] = lhs[l1, 3, 3] - coeff * lhs[l1, 3, 0];
+            lhs[l1, 4, 3] = lhs[l1, 4, 3] - coeff * lhs[l1, 4, 0];
+            r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 0];
+
+            coeff =         lhs[l1, 0, 4];
+            lhs[l1, 1, 4] = lhs[l1, 1, 4] - coeff * lhs[l1, 1, 0];
+            lhs[l1, 2, 4] = lhs[l1, 2, 4] - coeff * lhs[l1, 2, 0];
+            lhs[l1, 3, 4] = lhs[l1, 3, 4] - coeff * lhs[l1, 3, 0];
+            lhs[l1, 4, 4] = lhs[l1, 4, 4] - coeff * lhs[l1, 4, 0];
+            r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 0];
 
             pivot = 1.00d / lhs[l1, 1, 1];
             lhs[l1, 2, 1] = lhs[l1, 2, 1] * pivot;
             lhs[l1, 3, 1] = lhs[l1, 3, 1] * pivot;
             lhs[l1, 4, 1] = lhs[l1, 4, 1] * pivot;
-            lhs[l1, 5, 1] = lhs[l1, 5, 1] * pivot;
             r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] * pivot;
 
-            coeff = lhs[l1, 1, 2];
+            coeff =         lhs[l1, 1, 0];
+            lhs[l1, 2, 0] = lhs[l1, 2, 0] - coeff * lhs[l1, 2, 1];
+            lhs[l1, 3, 0] = lhs[l1, 3, 0] - coeff * lhs[l1, 3, 1];
+            lhs[l1, 4, 0] = lhs[l1, 4, 0] - coeff * lhs[l1, 4, 1];
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] - coeff * r[r1, r2, r3, r4, 1];
+
+            coeff =         lhs[l1, 1, 2];
             lhs[l1, 2, 2] = lhs[l1, 2, 2] - coeff * lhs[l1, 2, 1];
             lhs[l1, 3, 2] = lhs[l1, 3, 2] - coeff * lhs[l1, 3, 1];
             lhs[l1, 4, 2] = lhs[l1, 4, 2] - coeff * lhs[l1, 4, 1];
-            lhs[l1, 5, 2] = lhs[l1, 5, 2] - coeff * lhs[l1, 5, 1];
             r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 1];
 
-            coeff = lhs[l1, 1, 3];
+            coeff =         lhs[l1, 1, 3];
             lhs[l1, 2, 3] = lhs[l1, 2, 3] - coeff * lhs[l1, 2, 1];
             lhs[l1, 3, 3] = lhs[l1, 3, 3] - coeff * lhs[l1, 3, 1];
             lhs[l1, 4, 3] = lhs[l1, 4, 3] - coeff * lhs[l1, 4, 1];
-            lhs[l1, 5, 3] = lhs[l1, 5, 3] - coeff * lhs[l1, 5, 1];
             r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 1];
 
-            coeff = lhs[l1, 1, 4];
+            coeff =         lhs[l1, 1, 4];
             lhs[l1, 2, 4] = lhs[l1, 2, 4] - coeff * lhs[l1, 2, 1];
             lhs[l1, 3, 4] = lhs[l1, 3, 4] - coeff * lhs[l1, 3, 1];
             lhs[l1, 4, 4] = lhs[l1, 4, 4] - coeff * lhs[l1, 4, 1];
-            lhs[l1, 5, 4] = lhs[l1, 5, 4] - coeff * lhs[l1, 5, 1];
             r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 1];
-
-            coeff = lhs[l1, 1, 5];
-            lhs[l1, 2, 5] = lhs[l1, 2, 5] - coeff * lhs[l1, 2, 1];
-            lhs[l1, 3, 5] = lhs[l1, 3, 5] - coeff * lhs[l1, 3, 1];
-            lhs[l1, 4, 5] = lhs[l1, 4, 5] - coeff * lhs[l1, 4, 1];
-            lhs[l1, 5, 5] = lhs[l1, 5, 5] - coeff * lhs[l1, 5, 1];
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] - coeff * r[r1, r2, r3, r4, 1];
 
             pivot = 1.00d / lhs[l1, 2, 2];
             lhs[l1, 3, 2] = lhs[l1, 3, 2] * pivot;
             lhs[l1, 4, 2] = lhs[l1, 4, 2] * pivot;
-            lhs[l1, 5, 2] = lhs[l1, 5, 2] * pivot;
             r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] * pivot;
 
-            coeff = lhs[l1, 2, 1];
+            coeff =         lhs[l1, 2, 0];
+            lhs[l1, 3, 0] = lhs[l1, 3, 0] - coeff * lhs[l1, 3, 2];
+            lhs[l1, 4, 0] = lhs[l1, 4, 0] - coeff * lhs[l1, 4, 2];
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] - coeff * r[r1, r2, r3, r4, 2];
+
+            coeff =         lhs[l1, 2, 1];
             lhs[l1, 3, 1] = lhs[l1, 3, 1] - coeff * lhs[l1, 3, 2];
             lhs[l1, 4, 1] = lhs[l1, 4, 1] - coeff * lhs[l1, 4, 2];
-            lhs[l1, 5, 1] = lhs[l1, 5, 1] - coeff * lhs[l1, 5, 2];
             r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 2];
 
-            coeff = lhs[l1, 2, 3];
+            coeff =         lhs[l1, 2, 3];
             lhs[l1, 3, 3] = lhs[l1, 3, 3] - coeff * lhs[l1, 3, 2];
             lhs[l1, 4, 3] = lhs[l1, 4, 3] - coeff * lhs[l1, 4, 2];
-            lhs[l1, 5, 3] = lhs[l1, 5, 3] - coeff * lhs[l1, 5, 2];
             r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 2];
 
-            coeff = lhs[l1, 2, 4];
+            coeff =         lhs[l1, 2, 4];
             lhs[l1, 3, 4] = lhs[l1, 3, 4] - coeff * lhs[l1, 3, 2];
             lhs[l1, 4, 4] = lhs[l1, 4, 4] - coeff * lhs[l1, 4, 2];
-            lhs[l1, 5, 4] = lhs[l1, 5, 4] - coeff * lhs[l1, 5, 2];
             r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 2];
-
-            coeff = lhs[l1, 2, 5];
-            lhs[l1, 3, 5] = lhs[l1, 3, 5] - coeff * lhs[l1, 3, 2];
-            lhs[l1, 4, 5] = lhs[l1, 4, 5] - coeff * lhs[l1, 4, 2];
-            lhs[l1, 5, 5] = lhs[l1, 5, 5] - coeff * lhs[l1, 5, 2];
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] - coeff * r[r1, r2, r3, r4, 2];
 
             pivot = 1.00d / lhs[l1, 3, 3];
             lhs[l1, 4, 3] = lhs[l1, 4, 3] * pivot;
-            lhs[l1, 5, 3] = lhs[l1, 5, 3] * pivot;
             r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] * pivot;
+
+            coeff = lhs[l1, 3, 0];
+            lhs[l1, 4, 0] = lhs[l1, 4, 0] - coeff * lhs[l1, 4, 3];
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] - coeff * r[r1, r2, r3, r4, 3];
 
             coeff = lhs[l1, 3, 1];
             lhs[l1, 4, 1] = lhs[l1, 4, 1] - coeff * lhs[l1, 4, 3];
-            lhs[l1, 5, 1] = lhs[l1, 5, 1] - coeff * lhs[l1, 5, 3];
             r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 3];
 
             coeff = lhs[l1, 3, 2];
             lhs[l1, 4, 2] = lhs[l1, 4, 2] - coeff * lhs[l1, 4, 3];
-            lhs[l1, 5, 2] = lhs[l1, 5, 2] - coeff * lhs[l1, 5, 3];
             r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 3];
 
             coeff = lhs[l1, 3, 4];
             lhs[l1, 4, 4] = lhs[l1, 4, 4] - coeff * lhs[l1, 4, 3];
-            lhs[l1, 5, 4] = lhs[l1, 5, 4] - coeff * lhs[l1, 5, 3];
             r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 3];
 
-            coeff = lhs[l1, 3, 5];
-            lhs[l1, 4, 5] = lhs[l1, 4, 5] - coeff * lhs[l1, 4, 3];
-            lhs[l1, 5, 5] = lhs[l1, 5, 5] - coeff * lhs[l1, 5, 3];
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] - coeff * r[r1, r2, r3, r4, 3];
-
             pivot = 1.00d / lhs[l1, 4, 4];
-            lhs[l1, 5, 4] = lhs[l1, 5, 4] * pivot;
             r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] * pivot;
 
+            coeff = lhs[l1, 4, 0];
+            r[r1, r2, r3, r4, 0] = r[r1, r2, r3, r4, 0] - coeff * r[r1, r2, r3, r4, 4];
+
             coeff = lhs[l1, 4, 1];
-            lhs[l1, 5, 1] = lhs[l1, 5, 1] - coeff * lhs[l1, 5, 4];
             r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 4];
 
             coeff = lhs[l1, 4, 2];
-            lhs[l1, 5, 2] = lhs[l1, 5, 2] - coeff * lhs[l1, 5, 4];
             r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 4];
 
             coeff = lhs[l1, 4, 3];
-            lhs[l1, 5, 3] = lhs[l1, 5, 3] - coeff * lhs[l1, 5, 4];
             r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 4];
-
-            coeff = lhs[l1, 4, 5];
-            lhs[l1, 5, 5] = lhs[l1, 5, 5] - coeff * lhs[l1, 5, 4];
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] - coeff * r[r1, r2, r3, r4, 4];
-
-            pivot = 1.00d / lhs[l1, 5, 5];
-            r[r1, r2, r3, r4, 5] = r[r1, r2, r3, r4, 5] * pivot;
-
-            coeff = lhs[l1, 5, 1];
-            r[r1, r2, r3, r4, 1] = r[r1, r2, r3, r4, 1] - coeff * r[r1, r2, r3, r4, 5];
-
-            coeff = lhs[l1, 5, 2];
-            r[r1, r2, r3, r4, 2] = r[r1, r2, r3, r4, 2] - coeff * r[r1, r2, r3, r4, 5];
-
-            coeff = lhs[l1, 5, 3];
-            r[r1, r2, r3, r4, 3] = r[r1, r2, r3, r4, 3] - coeff * r[r1, r2, r3, r4, 5];
-
-            coeff = lhs[l1, 5, 4];
-            r[r1, r2, r3, r4, 4] = r[r1, r2, r3, r4, 4] - coeff * r[r1, r2, r3, r4, 5];
-        }
+        }//lhs[ lhs[ r[ r[ c[ c[
 
 
         public void add() {
@@ -3882,7 +3901,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < cell_size[c, 1] - end[c, 1] + 2; j++) {//-2 <= -1
                         for(i = start[c, 0]; i < cell_size[c, 0] - end[c, 0] + 2; i++) {//-2 <= -1
                             for(m = 0; m < 5; m++) {  //u[m,i,j,k,c] = u[m,i,j,k,c] + rhs[m,i,j,k,c];
-                                u[c, k, j, i, m] += rhs[c+1, k-1, j-1, i-1, m+1];
+                                u[c, k, j, i, m] += rhs[c, k, j, i, m];
                             }
                         }
                     }
@@ -4291,7 +4310,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                add = rhs[c+1, k-1, j-1, i-1, m+1];
+                                add = rhs[c, k, j, i, m];
                                 rms_work[m] += add * add;
                             }
                         }

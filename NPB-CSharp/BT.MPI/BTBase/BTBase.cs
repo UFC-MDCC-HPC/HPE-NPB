@@ -249,10 +249,10 @@ namespace NPB {
             rho_i        = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //rho_i  [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
             square       = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //square [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
 
-            forcing      = new double[maxcells+le, KMAX, JMAX, IMAX, 5+le];       //forcing[5, 0:IMAX-1, 0:JMAX-1, 0:KMAX-1, maxcells]
+/**/        forcing      = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5];       //forcing[5, 0:IMAX-1, 0:JMAX-1, 0:KMAX-1, maxcells]
 /**/        u            = new double[maxcells, KMAX+4, JMAX+4, IMAX+4, 5];       //u[5,-2:IMAX+1,-2:JMAX+1,-2:KMAX+1, maxcells]
-            rhs          = new double[maxcells+le, KMAX+1, JMAX+1, IMAX+1, 5+le];       //rhs    [5,  -1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
-            lhsc         = new double[maxcells+le, (KMAX-1)+2, (JMAX-1)+2, (IMAX-1)+2, 5+le, 5+le];//lhsc[5,5,-1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
+/**/        rhs          = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5];       //rhs    [5,  -1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
+/**/        lhsc         = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];//lhsc[5,5,-1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
             backsub_info = new double[maxcells+le, MAX_CELL_DIM+1, MAX_CELL_DIM+1, 5+le];//backsub_info[5, 0:MAX_CELL_DIM, 0:MAX_CELL_DIM, maxcells]
             //in_buffer    = new double[BUF_SIZE+le];                                    //in_buffer[BUF_SIZE]
             //out_buffer   = new double[BUF_SIZE+le];                                    //out_buffer[BUF_SIZE]
@@ -266,8 +266,8 @@ namespace NPB {
 
             fjac = new double[MAX_CELL_DIM+4, 5+le, 5+le]; //[5, 5, -2:MAX_CELL_DIM+1];
             njac = new double[MAX_CELL_DIM+4, 5+le, 5+le]; //[5, 5, -2:MAX_CELL_DIM+1];
-            lhsa = new double[MAX_CELL_DIM+2, 5+le, 5+le]; //[5, 5, -1:MAX_CELL_DIM]; 
-            lhsb = new double[MAX_CELL_DIM+2, 5+le, 5+le]; //[5, 5, -1:MAX_CELL_DIM];            
+/**/        lhsa = new double[MAX_CELL_DIM+3, 5, 5]; //[5, 5, -1:MAX_CELL_DIM]; 
+/**/        lhsb = new double[MAX_CELL_DIM+3, 5, 5]; //[5, 5, -1:MAX_CELL_DIM];            
         }
     }
 }
