@@ -250,7 +250,7 @@ namespace NPB {
             square       = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //square [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
 
             forcing      = new double[maxcells+le, KMAX, JMAX, IMAX, 5+le];       //forcing[5, 0:IMAX-1, 0:JMAX-1, 0:KMAX-1, maxcells]
-            u            = new double[maxcells+le, KMAX+4, JMAX+4, IMAX+4, 5+le];       //u[5,-2:IMAX+1,-2:JMAX+1,-2:KMAX+1, maxcells]
+/**/        u            = new double[maxcells, KMAX+4, JMAX+4, IMAX+4, 5];       //u[5,-2:IMAX+1,-2:JMAX+1,-2:KMAX+1, maxcells]
             rhs          = new double[maxcells+le, KMAX+1, JMAX+1, IMAX+1, 5+le];       //rhs    [5,  -1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
             lhsc         = new double[maxcells+le, (KMAX-1)+2, (JMAX-1)+2, (IMAX-1)+2, 5+le, 5+le];//lhsc[5,5,-1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
             backsub_info = new double[maxcells+le, MAX_CELL_DIM+1, MAX_CELL_DIM+1, 5+le];//backsub_info[5, 0:MAX_CELL_DIM, 0:MAX_CELL_DIM, maxcells]

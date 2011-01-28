@@ -42,8 +42,7 @@ using System.IO;
 namespace NPB {
     public class BT: BTBase {
 
-        public BT(char c)
-            : base(c) {
+        public BT(char c): base(c) {
         }
 
         static void Main(String[] argv) {
@@ -489,11 +488,11 @@ namespace NPB {
                 for(kk = 1; kk <= KMAX+2; kk++) {
                     for(jj = 1; jj <= JMAX+2; jj++) {
                         for(ii = 1; ii <= IMAX+2; ii++) {//for (m = 0; m < 5; m++){u[c+1, kk, jj, ii, m+1] = 1.0; //u[m, ii, jj, kk, c] = 1.0;
-                            u[c+1, kk, jj, ii, 1]=1.0;
-                            u[c+1, kk, jj, ii, 2]=1.0;//diferente sp, validou com 0
-                            u[c+1, kk, jj, ii, 3]=1.0;//diferente sp, validou com 0
-                            u[c+1, kk, jj, ii, 4]=1.0;//diferente sp, validou com 0
-                            u[c+1, kk, jj, ii, 5]=1.0; //}
+                            u[c, kk, jj, ii, 0]=1.0;
+                            u[c, kk, jj, ii, 1]=1.0;//diferente sp, validou com 0
+                            u[c, kk, jj, ii, 2]=1.0;//diferente sp, validou com 0
+                            u[c, kk, jj, ii, 3]=1.0;//diferente sp, validou com 0
+                            u[c, kk, jj, ii, 4]=1.0; //}
                         }
                     }
                 }
@@ -524,7 +523,7 @@ namespace NPB {
                                 Pxi=xi*Pface[m+0*5+1*15]+(1.0d-xi)*Pface[m+0*5+0*15];
                                 Peta=eta*Pface[m+1*5+1*15]+(1.0d-eta)*Pface[m+1*5+0*15];
                                 Pzeta=zeta*Pface[m+2*5+1*15]+(1.0d-zeta)*Pface[m+2*5+0*15];
-                                u[c+1, kk, jj, ii, m+1] = Pxi + Peta + Pzeta - Pxi * Peta - Pxi * Pzeta - Peta * Pzeta + Pxi * Peta * Pzeta;
+                                u[c, kk, jj, ii, m] = Pxi + Peta + Pzeta - Pxi * Peta - Pxi * Pzeta - Peta * Pzeta + Pxi * Peta * Pzeta;
                             }
                             ii++;
                         }
@@ -550,7 +549,7 @@ namespace NPB {
                     eta = j * dnym1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for(m = 0; m < 5; m++) {
-                        u[c+1, kk, jj, ii, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
+                        u[c, kk, jj, ii, m] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
                     }
                     jj++;
                 }
@@ -570,7 +569,7 @@ namespace NPB {
                     eta = j * dnym1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for(m = 0; m < 5; m++) {                                    //temporario cnz m-1
-                        u[c+1, kk, jj, ii, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
+                        u[c, kk, jj, ii, m] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
                     }
                     jj++;
                 }
@@ -590,7 +589,7 @@ namespace NPB {
                     xi = i * dnxm1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for(m = 0; m < 5; m++) {                                    //temporario cnz m-1
-                        u[c+1, kk, jj, ii, m+1] = temp[m];  //u[m,ii,jj,kk,c] = temp[m];
+                        u[c, kk, jj, ii, m] = temp[m];  //u[m,ii,jj,kk,c] = temp[m];
                     }
                     ii++;
                 }
@@ -610,7 +609,7 @@ namespace NPB {
                     xi = i * dnxm1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for(m = 0; m < 5; m++) {                                     //temporario cnz m-1
-                        u[c+1, kk, jj, ii, m+1] = temp[m];  // u[m,ii,jj,kk,c] = temp[m];
+                        u[c, kk, jj, ii, m] = temp[m];  // u[m,ii,jj,kk,c] = temp[m];
                     }
                     ii++;
                 }
@@ -630,7 +629,7 @@ namespace NPB {
                     xi = i * dnxm1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for(m = 0; m < 5; m++) {                                     //temporario cnz m-1
-                        u[c+1, kk, jj, ii, m+1] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
+                        u[c, kk, jj, ii, m] = temp[m]; //u[m,ii,jj,kk,c] = temp[m];
                     }
                     ii++;
                 }
@@ -650,7 +649,7 @@ namespace NPB {
                     xi = i * dnxm1;
                     exact_solution(xi, eta, zeta, temp, 0);
                     for(m = 0; m < 5; m++) {                                     //temporario cnz m-1
-                        u[c+1, kk, jj, ii, m+1] = temp[m];  //u[m,ii,jj,kk,c] = temp[m];
+                        u[c, kk, jj, ii, m] = temp[m];  //u[m,ii,jj,kk,c] = temp[m];
                     }
                     ii++;
                 }
@@ -1081,7 +1080,7 @@ namespace NPB {
                         for(j = 2; j < jsize; j++) {
                             for(i = isize-2; i < isize; i++) {//for (i = isize - 2; i <= isize - 1; i++){original fortran
                                 for(m = 0; m < 5; m++) {
-                                    out_buffer[0][p0++] = u[c+1, k, j, i, m+1];//u[m,i,j,k,c]; //out_buffer[ss[0] + p0]  //Original i+2
+                                    out_buffer[0][p0++] = u[c, k, j, i, m];//u[m,i,j,k,c]; //out_buffer[ss[0] + p0]  //Original i+2
                                 }
                             }
                         }
@@ -1095,7 +1094,7 @@ namespace NPB {
                         for(j = 2; j < jsize; j++) {
                             for(i = 2; i <= 3; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    out_buffer[1][p1++] = u[c+1, k, j, i, m+1]; //u[m,i,j,k,c]; //out_buffer[ss[1] + p1] 
+                                    out_buffer[1][p1++] = u[c, k, j, i, m]; //u[m,i,j,k,c]; //out_buffer[ss[1] + p1] 
                                 }
                             }
                         }
@@ -1109,7 +1108,7 @@ namespace NPB {
                         for(j = jsize-2; j < jsize; j++) {
                             for(i = 2; i < isize; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    out_buffer[2][p2++] = u[c+1, k, j, i, m+1];  //u[m,i,j,k,c]; //out_buffer[ss[2] + p2] 
+                                    out_buffer[2][p2++] = u[c, k, j, i, m];  //u[m,i,j,k,c]; //out_buffer[ss[2] + p2] 
                                 }
                             }
                         }
@@ -1123,7 +1122,7 @@ namespace NPB {
                         for(j = 2; j <= 3; j++) {
                             for(i = 2; i < isize; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    out_buffer[3][p3++] = u[c+1, k, j, i, m+1]; //u[m,i,j,k,c]; //out_buffer[ss[3] + p3] 
+                                    out_buffer[3][p3++] = u[c, k, j, i, m]; //u[m,i,j,k,c]; //out_buffer[ss[3] + p3] 
                                 }
                             }
                         }
@@ -1137,7 +1136,7 @@ namespace NPB {
                         for(j = 2; j < jsize; j++) {
                             for(i = 2; i < isize; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    out_buffer[4][p4++] = u[c+1, k, j, i, m+1];  //u[m,i,j,k,c]; //out_buffer[ss[4] + p4] 
+                                    out_buffer[4][p4++] = u[c, k, j, i, m];  //u[m,i,j,k,c]; //out_buffer[ss[4] + p4] 
                                 }
                             }
                         }
@@ -1151,7 +1150,7 @@ namespace NPB {
                         for(j = 2; j < jsize; j++) {
                             for(i = 2; i < isize; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    out_buffer[5][p5++] = u[c+1, k, j, i, m+1]; //u[m,i,j,k,c]; //out_buffer[ss[5] + p5] = 
+                                    out_buffer[5][p5++] = u[c, k, j, i, m]; //u[m,i,j,k,c]; //out_buffer[ss[5] + p5] = 
                                 }
                             }
                         }
@@ -1204,7 +1203,7 @@ namespace NPB {
                         for(j = 2; j < jsize; j++) {
                             for(i = 0; i <= 1; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    u[c+1, k, j, i, m+1] = in_buffer[1][p0++]; //in_buffer[sr[1] + p0];
+                                    u[c, k, j, i, m] = in_buffer[1][p0++]; //in_buffer[sr[1] + p0];
                                 }
                             }
                         }
@@ -1216,7 +1215,7 @@ namespace NPB {
                         for(j = 2; j < jsize; j++) {
                             for(i = isize; i <= isize+1; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    u[c+1, k, j, i, m+1] = in_buffer[0][p1++];//in_buffer[sr[0] + p1];
+                                    u[c, k, j, i, m] = in_buffer[0][p1++];//in_buffer[sr[0] + p1];
                                 }
                             }
                         }
@@ -1228,7 +1227,7 @@ namespace NPB {
                         for(j = 0; j <= 1; j++) {
                             for(i = 2; i < isize; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    u[c+1, k, j, i, m+1] = in_buffer[3][p2++];//in_buffer[sr[3] + p2];
+                                    u[c, k, j, i, m] = in_buffer[3][p2++];//in_buffer[sr[3] + p2];
                                 }
                             }
                         }
@@ -1240,7 +1239,7 @@ namespace NPB {
                         for(j = jsize; j <= jsize+1; j++) {
                             for(i = 2; i < isize; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    u[c+1, k, j, i, m+1] = in_buffer[2][p3++];//in_buffer[sr[2] + p3];
+                                    u[c, k, j, i, m] = in_buffer[2][p3++];//in_buffer[sr[2] + p3];
                                 }
                             }
                         }
@@ -1252,7 +1251,7 @@ namespace NPB {
                         for(j = 2; j < jsize; j++) {
                             for(i = 2; i < isize; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    u[c+1, k, j, i, m+1] = in_buffer[5][p4++];//in_buffer[sr[5] + p4];
+                                    u[c, k, j, i, m] = in_buffer[5][p4++];//in_buffer[sr[5] + p4];
                                 }
                             }
                         }
@@ -1264,7 +1263,7 @@ namespace NPB {
                         for(j = 2; j < jsize; j++) {
                             for(i = 2; i < isize; i++) {
                                 for(m = 0; m < 5; m++) {
-                                    u[c+1, k, j, i, m+1] = in_buffer[4][p5++];//in_buffer[sr[4] + p5];
+                                    u[c, k, j, i, m] = in_buffer[4][p5++];//in_buffer[sr[4] + p5];
                                 }
                             }
                         }
@@ -1300,15 +1299,15 @@ namespace NPB {
                 for(k = 1; k <= ksize; k++) {
                     for(j = 1; j <= jsize; j++) {
                         for(i = 1; i <= isize; i++) {
-                            rho_inv = 1.0d / u[c+1, k, j, i, 1]; //u[1,i,j,k,c] 
+                            rho_inv = 1.0d / u[c, k, j, i, 0]; //u[1,i,j,k,c] 
                             rho_i[c+1, k-1, j-1, i-1] = rho_inv;                        //rho_i[i, j, k, c] = rho_inv;
-                            us[c+1, k-1, j-1, i-1] = u[c+1, k, j, i, 2] * rho_inv;        //us[i, j, k, c] = u[2, i, j, k, c]
-                            vs[c+1, k-1, j-1, i-1] = u[c+1, k, j, i, 3] * rho_inv;        //vs[i, j, k, c] = u[3, i, j, k, c] 
-                            ws[c+1, k-1, j-1, i-1] = u[c+1, k, j, i, 4] * rho_inv;        //ws[i, j, k, c] = u[4, i, j, k, c] 
+                            us[c+1, k-1, j-1, i-1] = u[c, k, j, i, 1] * rho_inv;        //us[i, j, k, c] = u[2, i, j, k, c]
+                            vs[c+1, k-1, j-1, i-1] = u[c, k, j, i, 2] * rho_inv;        //vs[i, j, k, c] = u[3, i, j, k, c] 
+                            ws[c+1, k-1, j-1, i-1] = u[c, k, j, i, 3] * rho_inv;        //ws[i, j, k, c] = u[4, i, j, k, c] 
                             square[c+1, k-1, j-1, i-1] = 0.5d * (                       /*square[i, j, k, c]*/
-                                u[c+1, k, j, i, 2] * u[c+1, k, j, i, 2] +           /*u[2, i, j, k, c] * u[2, i, j, k, c]*/
-                                u[c+1, k, j, i, 3] * u[c+1, k, j, i, 3] +           /*u[3, i, j, k, c] * u[3, i, j, k, c]*/
-                                u[c+1, k, j, i, 4] * u[c+1, k, j, i, 4]) * rho_inv; /*u[4, i, j, k, c] * u[4, i, j, k, c])*/
+                                u[c, k, j, i, 1] * u[c, k, j, i, 1] +           /*u[2, i, j, k, c] * u[2, i, j, k, c]*/
+                                u[c, k, j, i, 2] * u[c, k, j, i, 2] +           /*u[3, i, j, k, c] * u[3, i, j, k, c]*/
+                                u[c, k, j, i, 3] * u[c, k, j, i, 3]) * rho_inv; /*u[4, i, j, k, c] * u[4, i, j, k, c])*/
                             qs[c+1, k-1, j-1, i-1] = square[c+1, k-1, j-1, i-1] * rho_inv;      /*qs[i, j, k, c] = square[i, j, k, c]*/
                         }
                     }
@@ -1337,47 +1336,47 @@ namespace NPB {
                             up1 = us[c+1, k-1, j-1, i]; //up1  = us[i+1,j,k,c];
                             um1 = us[c+1, k-1, j-1, i-2]; //um1  = us[i-1,j,k,c];
                             //u(+0, +2, +2, +2, +0); rhs(+0, +1, +1, +1, +0); square(+0, +1, +1 + 1); /*vs(+0, +1, +1, +1);*/
-                            rhs[c+1, k-1, j-1, i-1, 1] = rhs[c+1, k-1, j-1, i-1, 1] + dx1tx1 * (u[c+1, k, j, i+1, 1] - /*rhs[1,i,j,k,c]=rhs[1,i,j,k,c]+dx1tx1*(u[1,i+1,j,k,c]*/
-                                             2.0d * u[c+1, k, j, i, 1] + u[c+1, k, j, i-1, 1]) - /*2.0d*u[1,i,j,k,c] + u[1,i-1,j,k,c])*/
-                                             tx2 * (u[c+1, k, j, i+1, 2] - u[c+1, k, j, i-1, 2]); /*tx2*(u[2,i+1,j,k,c] - u[2,i-1,j,k,c])*/
+                            rhs[c+1, k-1, j-1, i-1, 1] = rhs[c+1, k-1, j-1, i-1, 1] + dx1tx1 * (u[c, k, j, i+1, 0] - /*rhs[1,i,j,k,c]=rhs[1,i,j,k,c]+dx1tx1*(u[1,i+1,j,k,c]*/
+                                             2.0d * u[c, k, j, i, 0] + u[c, k, j, i-1, 0]) - /*2.0d*u[1,i,j,k,c] + u[1,i-1,j,k,c])*/
+                                             tx2 * (u[c, k, j, i+1, 1] - u[c, k, j, i-1, 1]); /*tx2*(u[2,i+1,j,k,c] - u[2,i-1,j,k,c])*/
                             rhs[c+1, k-1, j-1, i-1, 2] = rhs[c+1, k-1, j-1, i-1, 2] + dx2tx1 * /*rhs[2, i, j, k, c] = rhs[2, i, j, k, c] + dx2tx1 */
-                                (u[c+1, k, j, i+1, 2] - 2.0d * u[c+1, k, j, i, 2] +  /*(u[2, i + 1, j, k, c] - 2.0d * u[2, i, j, k, c] +*/
-                                u[c+1, k, j, i-1, 2]) + /* u[2, i - 1, j, k, c]) +*/
+                                (u[c, k, j, i+1, 1] - 2.0d * u[c, k, j, i, 1] +  /*(u[2, i + 1, j, k, c] - 2.0d * u[2, i, j, k, c] +*/
+                                u[c, k, j, i-1, 1]) + /* u[2, i - 1, j, k, c]) +*/
                                 xxcon2 * con43 * (up1 - 2.0d * uijk + um1) - /*xxcon2 * con43 * (up1 - 2.0d * uijk + um1) -*/
-                                tx2 * (u[c+1, k, j, i+1, 2] * up1 -  /*tx2 * (u[2, i + 1, j, k, c] * up1 -*/
-                                u[c+1, k, j, i-1, 2] * um1 + /*u[2, i - 1, j, k, c] * um1 +*/
-                                (u[c+1, k, j, i+1, 5] - square[c+1, k-1, j-1, i] - /*(u[5, i + 1, j, k, c] - square[i + 1, j, k, c] -*/
-                                u[c+1, k, j, i-1, 5] + square[c+1, k-1, j-1, i-2]) * /*u[5, i - 1, j, k, c] + square[i - 1, j, k, c]) **/
+                                tx2 * (u[c, k, j, i+1, 1] * up1 -  /*tx2 * (u[2, i + 1, j, k, c] * up1 -*/
+                                u[c, k, j, i-1, 1] * um1 + /*u[2, i - 1, j, k, c] * um1 +*/
+                                (u[c, k, j, i+1, 4] - square[c+1, k-1, j-1, i] - /*(u[5, i + 1, j, k, c] - square[i + 1, j, k, c] -*/
+                                u[c, k, j, i-1, 4] + square[c+1, k-1, j-1, i-2]) * /*u[5, i - 1, j, k, c] + square[i - 1, j, k, c]) **/
                                 c2);
                             rhs[c+1, k-1, j-1, i-1, 3] = rhs[c+1, k-1, j-1, i-1, 3] + dx3tx1 * /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dx3tx1 * */
-                                (u[c+1, k, j, i+1, 3] - 2.0d * u[c+1, k, j, i, 3] +  /*[u[3,i+1,j,k,c] - 2.0d0*u[3,i,j,k,c] +*/
-                                u[c+1, k, j, i-1, 3]) + /*u[3,i-1,j,k,c]] +*/
+                                (u[c, k, j, i+1, 2] - 2.0d * u[c, k, j, i, 2] +  /*[u[3,i+1,j,k,c] - 2.0d0*u[3,i,j,k,c] +*/
+                                u[c, k, j, i-1, 2]) + /*u[3,i-1,j,k,c]] +*/
                                 xxcon2 * (vs[c+1, k-1, j-1, i] - 2.0d * vs[c+1, k-1, j-1, i-1] + /*xxcon2 * [vs[i+1,j,k,c] - 2.0d0*vs[i,j,k,c] +*/
                                 vs[c+1, k-1, j-1, i-2]) - /*vs[i-1,j,k,c]] -*/
-                                tx2 * (u[c+1, k, j, i+1, 3] * up1 - /* tx2 * [u[3,i+1,j,k,c]*up1 - */
-                                u[c+1, k, j, i-1, 3] * um1); /*u[3,i-1,j,k,c]*um1];*/
+                                tx2 * (u[c, k, j, i+1, 2] * up1 - /* tx2 * [u[3,i+1,j,k,c]*up1 - */
+                                u[c, k, j, i-1, 2] * um1); /*u[3,i-1,j,k,c]*um1];*/
 
                             rhs[c+1, k-1, j-1, i-1, 4] = rhs[c+1, k-1, j-1, i-1, 4] + dx4tx1 *  /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] + dx4tx1 * */
-                                (u[c+1, k, j, i+1, 4] - 2.0d * u[c+1, k, j, i, 4] + /*[u[4,i+1,j,k,c] - 2.0d0*u[4,i,j,k,c] +*/
-                                u[c+1, k, j, i-1, 4]) +  /*u[4,i-1,j,k,c]] +*/
+                                (u[c, k, j, i+1, 3] - 2.0d * u[c, k, j, i, 3] + /*[u[4,i+1,j,k,c] - 2.0d0*u[4,i,j,k,c] +*/
+                                u[c, k, j, i-1, 3]) +  /*u[4,i-1,j,k,c]] +*/
                                 xxcon2 * (ws[c+1, k-1, j-1, i] - 2.0d * ws[c+1, k-1, j-1, i-1] + /*xxcon2 * [ws[i+1,j,k,c] - 2.0d0*ws[i,j,k,c] +*/
                                 ws[c+1, k-1, j-1, i-2]) - /*ws[i-1,j,k,c]] -*/
-                                tx2 * (u[c+1, k, j, i+1, 4] * up1 - /*tx2 * [u[4,i+1,j,k,c]*up1 - */
-                                u[c+1, k, j, i-1, 4] * um1); /*u[4,i-1,j,k,c]*um1];*/
+                                tx2 * (u[c, k, j, i+1, 3] * up1 - /*tx2 * [u[4,i+1,j,k,c]*up1 - */
+                                u[c, k, j, i-1, 3] * um1); /*u[4,i-1,j,k,c]*um1];*/
 
                             rhs[c+1, k-1, j-1, i-1, 5] = rhs[c+1, k-1, j-1, i-1, 5] + dx5tx1 *            /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + dx5tx1 * */
-                                (u[c+1, k, j, i+1, 5] - 2.0d * u[c+1, k, j, i, 5] +             /*[u[5,i+1,j,k,c] - 2.0d0*u[5,i,j,k,c] +*/
-                                u[c+1, k, j, i-1, 5]) +                                       /*u[5,i-1,j,k,c]] +*/
+                                (u[c, k, j, i+1, 4] - 2.0d * u[c, k, j, i, 4] +             /*[u[5,i+1,j,k,c] - 2.0d0*u[5,i,j,k,c] +*/
+                                u[c, k, j, i-1, 4]) +                                       /*u[5,i-1,j,k,c]] +*/
                                 xxcon3 * (qs[c+1, k-1, j-1, i] - 2.0d * qs[c+1, k-1, j-1, i-1] +      /*xxcon3 * [qs[i+1,j,k,c] - 2.0d0*qs[i,j,k,c] +*/
                                 qs[c+1, k-1, j-1, i-2]) +                                        /*qs[i-1,j,k,c]] +*/
                                 xxcon4 * (up1 * up1 - 2.0d * uijk * uijk +                           /*xxcon4 * [up1*up1 -       2.0d0*uijk*uijk + */
                                 um1 * um1) +                                                    /*um1*um1] +*/
-                                xxcon5 * (u[c+1, k, j, i+1, 5] * rho_i[c+1, k-1, j-1, i] -       /*xxcon5 * [u[5,i+1,j,k,c]*rho_i[i+1,j,k,c] - */
-                                2.0d * u[c+1, k, j, i, 5] * rho_i[c+1, k-1, j-1, i-1] +                /*2.0d0*u[5,i,j,k,c]*rho_i[i,j,k,c] +*/
-                                u[c+1, k, j, i-1, 5] * rho_i[c+1, k-1, j-1, i-2]) -                /*u[5,i-1,j,k,c]*rho_i[i-1,j,k,c]] -*/
-                                tx2 * ((c1 * u[c+1, k, j, i+1, 5] -                            /*tx2 * [ [c1*u[5,i+1,j,k,c] - */
+                                xxcon5 * (u[c, k, j, i+1, 4] * rho_i[c+1, k-1, j-1, i] -       /*xxcon5 * [u[5,i+1,j,k,c]*rho_i[i+1,j,k,c] - */
+                                2.0d * u[c, k, j, i, 4] * rho_i[c+1, k-1, j-1, i-1] +                /*2.0d0*u[5,i,j,k,c]*rho_i[i,j,k,c] +*/
+                                u[c, k, j, i-1, 4] * rho_i[c+1, k-1, j-1, i-2]) -                /*u[5,i-1,j,k,c]*rho_i[i-1,j,k,c]] -*/
+                                tx2 * ((c1 * u[c, k, j, i+1, 4] -                            /*tx2 * [ [c1*u[5,i+1,j,k,c] - */
                                 c2 * square[c+1, k-1, j-1, i]) * up1 -                             /*c2*square[i+1,j,k,c]]*up1 -*/
-                                (c1 * u[c+1, k, j, i-1, 5] -                                    /*[c1*u[5,i-1,j,k,c] - */
+                                (c1 * u[c, k, j, i-1, 4] -                                    /*[c1*u[5,i-1,j,k,c] - */
                                 c2 * square[c+1, k-1, j-1, i-2]) * um1);                            /*c2*square[i-1,j,k,c]]*um1 ];*/
                         }
                     }
@@ -1390,13 +1389,13 @@ namespace NPB {
                         for(j = start[c, 1]; j < jsize - end[c, 1]; j++) {
                             i = 3;
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (5.0d * u[c+1, k, j, i, m+1] -
-                                                       4.0d * u[c+1, k, j, i+1, m+1] + u[c+1, k, j, i+2, m+1]);
+                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (5.0d * u[c, k, j, i, m] -
+                                                       4.0d * u[c, k, j, i+1, m] + u[c, k, j, i+2, m]);
                             }
                             i = 4;
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (-4.0d * u[c+1, k, j, i-1, m+1] + 6.0d * u[c+1, k, j, i, m+1] -
-                                                     4.0d * u[c+1, k, j, i+1, m+1] + u[c+1, k, j, i+2, m+1]);
+                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (-4.0d * u[c, k, j, i-1, m] + 6.0d * u[c, k, j, i, m] -
+                                                     4.0d * u[c, k, j, i+1, m] + u[c, k, j, i+2, m]);
                             }
                         }
                     }
@@ -1407,9 +1406,9 @@ namespace NPB {
                         for(i = 3*start[c, 0]-4; i < isize - 3*end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp *
-                                   (u[c+1, k, j, i-2, m+1] - 4.0d * u[c+1, k, j, i-1, m+1] +
-                                   6.0 * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k, j, i+1, m+1] +
-                                   u[c+1, k, j, i+2, m+1]);
+                                   (u[c, k, j, i-2, m] - 4.0d * u[c, k, j, i-1, m] +
+                                   6.0 * u[c, k, j, i, m] - 4.0d * u[c, k, j, i+1, m] +
+                                   u[c, k, j, i+2, m]);
                             }
                         }
                     }
@@ -1421,11 +1420,11 @@ namespace NPB {
                             i = isize - 3;
                             for(m = 0; m < 5; m++) {
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (u[c+1, k, j, i-2, m+1] - 4.0d * u[c+1, k, j, i-1, m+1] + 6.0d * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k, j, i+1, m+1]);
+                                dssp * (u[c, k, j, i-2, m] - 4.0d * u[c, k, j, i-1, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j, i+1, m]);
                             }
                             i = isize - 2;
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (u[c+1, k, j, i-2, m+1] - 4.0 * u[c+1, k, j, i-1, m+1] + 5.0 * u[c+1, k, j, i, m+1]);
+                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (u[c, k, j, i-2, m] - 4.0 * u[c, k, j, i-1, m] + 5.0 * u[c, k, j, i, m]);
                             }
                         }
                     }
@@ -1441,49 +1440,49 @@ namespace NPB {
                             vm1 = vs[c+1, k-1, j-2, i-1]; //vm1  = vs[i,j-1,k,c];
 
                             rhs[c+1, k-1, j-1, i-1, 1] = rhs[c+1, k-1, j-1, i-1, 1] + dy1ty1 *       /*rhs[1,i,j,k,c] = rhs[1,i,j,k,c] + dy1ty1 */
-                                (u[c+1, k, j+1, i, 1] - 2.0d * u[c+1, k, j, i, 1] +        /*(u[1,i,j+1,k,c] - 2.0d*u[1,i,j,k,c] + */
-                                u[c+1, k, j-1, i, 1]) -                                  /*u[1,i,j-1,k,c]) -*/
-                                ty2 * (u[c+1, k, j+1, i, 3] - u[c+1, k, j-1, i, 3]);     /*ty2 * (u[3,i,j+1,k,c] - u[3,i,j-1,k,c]);*/
+                                (u[c, k, j+1, i, 0] - 2.0d * u[c, k, j, i, 0] +        /*(u[1,i,j+1,k,c] - 2.0d*u[1,i,j,k,c] + */
+                                u[c, k, j-1, i, 0]) -                                  /*u[1,i,j-1,k,c]) -*/
+                                ty2 * (u[c, k, j+1, i, 2] - u[c, k, j-1, i, 2]);     /*ty2 * (u[3,i,j+1,k,c] - u[3,i,j-1,k,c]);*/
 
                             rhs[c+1, k-1, j-1, i-1, 2] = rhs[c+1, k-1, j-1, i-1, 2] + dy2ty1 *       /*rhs[2,i,j,k,c] = rhs[2,i,j,k,c] + dy2ty1 * */
-                                (u[c+1, k, j+1, i, 2] - 2.0d * u[c+1, k, j, i, 2] +        /*(u[2,i,j+1,k,c] - 2.0d*u[2,i,j,k,c] + */
-                                u[c+1, k, j-1, i, 2]) +                                  /*u[2,i,j-1,k,c]) + */
+                                (u[c, k, j+1, i, 1] - 2.0d * u[c, k, j, i, 1] +        /*(u[2,i,j+1,k,c] - 2.0d*u[2,i,j,k,c] + */
+                                u[c, k, j-1, i, 1]) +                                  /*u[2,i,j-1,k,c]) + */
                                 yycon2 * (us[c+1, k-1, j, i-1] - 2.0d * us[c+1, k-1, j-1, i-1] + /*yycon2 * (us[i,j+1,k,c] - 2.0d*us[i,j,k,c] + */
                                 us[c+1, k-1, j-2, i-1]) -                                   /*us[i,j-1,k,c]) -   */
-                                ty2 * (u[c+1, k, j+1, i, 2] * vp1 -                        /*ty2 * (u[2,i,j+1,k,c]*vp1 - */
-                                u[c+1, k, j-1, i, 2] * vm1);                               /*u[2,i,j-1,k,c]*vm1);*/
+                                ty2 * (u[c, k, j+1, i, 1] * vp1 -                        /*ty2 * (u[2,i,j+1,k,c]*vp1 - */
+                                u[c, k, j-1, i, 1] * vm1);                               /*u[2,i,j-1,k,c]*vm1);*/
 
                             rhs[c+1, k-1, j-1, i-1, 3] = rhs[c+1, k-1, j-1, i-1, 3] + dy3ty1 *       /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dy3ty1 * */
-                                (u[c+1, k, j+1, i, 3] - 2.0d * u[c+1, k, j, i, 3] +        /*(u[3,i,j+1,k,c] - 2.0d*u[3,i,j,k,c] +*/
-                                u[c+1, k, j-1, i, 3]) +                                  /*u[3,i,j-1,k,c]) +*/
+                                (u[c, k, j+1, i, 2] - 2.0d * u[c, k, j, i, 2] +        /*(u[3,i,j+1,k,c] - 2.0d*u[3,i,j,k,c] +*/
+                                u[c, k, j-1, i, 2]) +                                  /*u[3,i,j-1,k,c]) +*/
                                 yycon2 * con43 * (vp1 - 2.0d * vijk + vm1) -                 /*yycon2*con43 * (vp1 - 2.0d*vijk + vm1) -*/
-                                ty2 * (u[c+1, k, j+1, i, 3] * vp1 -                        /*ty2 * (u[3,i,j+1,k,c]*vp1 -*/
-                                u[c+1, k, j-1, i, 3] * vm1 +                               /*u[3,i,j-1,k,c]*vm1 +*/
-                                (u[c+1, k, j+1, i, 5] - square[c+1, k-1, j, i-1] -        /*(u[5,i,j+1,k,c] - square[i,j+1,k,c] - */
-                                u[c+1, k, j-1, i, 5] + square[c+1, k-1, j-2, i-1])          /*u[5,i,j-1,k,c] + square[i,j-1,k,c])*/
+                                ty2 * (u[c, k, j+1, i, 2] * vp1 -                        /*ty2 * (u[3,i,j+1,k,c]*vp1 -*/
+                                u[c, k, j-1, i, 2] * vm1 +                               /*u[3,i,j-1,k,c]*vm1 +*/
+                                (u[c, k, j+1, i, 4] - square[c+1, k-1, j, i-1] -        /*(u[5,i,j+1,k,c] - square[i,j+1,k,c] - */
+                                u[c, k, j-1, i, 4] + square[c+1, k-1, j-2, i-1])          /*u[5,i,j-1,k,c] + square[i,j-1,k,c])*/
                                 * c2);
 
                             rhs[c+1, k-1, j-1, i-1, 4] = rhs[c+1, k-1, j-1, i-1, 4] + dy4ty1 *       /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] + dy4ty1 * */
-                                (u[c+1, k, j+1, i, 4] - 2.0d * u[c+1, k, j, i, 4] +        /*(u[4,i,j+1,k,c] - 2.0d*u[4,i,j,k,c] + */
-                                u[c+1, k, j-1, i, 4]) +                                  /*u[4,i,j-1,k,c]) + */
+                                (u[c, k, j+1, i, 3] - 2.0d * u[c, k, j, i, 3] +        /*(u[4,i,j+1,k,c] - 2.0d*u[4,i,j,k,c] + */
+                                u[c, k, j-1, i, 3]) +                                  /*u[4,i,j-1,k,c]) + */
                                 yycon2 * (ws[c+1, k-1, j, i-1] - 2.0d * ws[c+1, k-1, j-1, i-1] + /*yycon2 * (ws[i,j+1,k,c] - 2.0d*ws[i,j,k,c] + */
                                 ws[c+1, k-1, j-2, i-1]) -                                   /*ws[i,j-1,k,c]) */
-                                ty2 * (u[c+1, k, j+1, i, 4] * vp1 -                        /*ty2 * (u[4,i,j+1,k,c]*vp1 */
-                                u[c+1, k, j-1, i, 4] * vm1);                               /*u[4,i,j-1,k,c]*vm1)*/
+                                ty2 * (u[c, k, j+1, i, 3] * vp1 -                        /*ty2 * (u[4,i,j+1,k,c]*vp1 */
+                                u[c, k, j-1, i, 3] * vm1);                               /*u[4,i,j-1,k,c]*vm1)*/
 
                             rhs[c+1, k-1, j-1, i-1, 5] = rhs[c+1, k-1, j-1, i-1, 5] + dy5ty1 *       /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + dy5ty1 */
-                                (u[c+1, k, j+1, i, 5] - 2.0d * u[c+1, k, j, i, 5] +        /*(u[5,i,j+1,k,c] - 2.0d*u[5,i,j,k,c] */
-                                u[c+1, k, j-1, i, 5]) +                                  /*u[5,i,j-1,k,c]) */
+                                (u[c, k, j+1, i, 4] - 2.0d * u[c, k, j, i, 4] +        /*(u[5,i,j+1,k,c] - 2.0d*u[5,i,j,k,c] */
+                                u[c, k, j-1, i, 4]) +                                  /*u[5,i,j-1,k,c]) */
                                 yycon3 * (qs[c+1, k-1, j, i-1] - 2.0d * qs[c+1, k-1, j-1, i-1] + /*yycon3 * (qs[i,j+1,k,c] - 2.0d*qs[i,j,k,c] */
                                 qs[c+1, k-1, j-2, i-1]) +                                   /*qs[i,j-1,k,c]) */
                                 yycon4 * (vp1 * vp1 - 2.0d * vijk * vijk +
                                 vm1 * vm1) +
-                                yycon5 * (u[c+1, k, j+1, i, 5] * rho_i[c+1, k-1, j, i-1] -  /*yycon5 * (u[5,i,j+1,k,c]*rho_i[i,j+1,k,c] */
-                                2.0d * u[c+1, k, j, i, 5] * rho_i[c+1, k-1, j-1, i-1] +           /*2.0d*u[5,i,j,k,c]*rho_i[i,j,k,c] */
-                                u[c+1, k, j-1, i, 5] * rho_i[c+1, k-1, j-2, i-1]) -           /*u[5,i,j-1,k,c]*rho_i[i,j-1,k,c]) */
-                                ty2 * ((c1 * u[c+1, k, j+1, i, 5] -                        /*ty2 * ((c1*u[5,i,j+1,k,c] */
+                                yycon5 * (u[c, k, j+1, i, 4] * rho_i[c+1, k-1, j, i-1] -  /*yycon5 * (u[5,i,j+1,k,c]*rho_i[i,j+1,k,c] */
+                                2.0d * u[c, k, j, i, 4] * rho_i[c+1, k-1, j-1, i-1] +           /*2.0d*u[5,i,j,k,c]*rho_i[i,j,k,c] */
+                                u[c, k, j-1, i, 4] * rho_i[c+1, k-1, j-2, i-1]) -           /*u[5,i,j-1,k,c]*rho_i[i,j-1,k,c]) */
+                                ty2 * ((c1 * u[c, k, j+1, i, 4] -                        /*ty2 * ((c1*u[5,i,j+1,k,c] */
                                 c2 * square[c+1, k-1, j, i-1]) * vp1 -                      /*c2*square[i,j+1,k,c]) * vp1 */
-                                (c1 * u[c+1, k, j-1, i, 5] -                               /*(c1*u[5,i,j-1,k,c] */
+                                (c1 * u[c, k, j-1, i, 4] -                               /*(c1*u[5,i,j-1,k,c] */
                                 c2 * square[c+1, k-1, j-2, i-1]) * vm1);                      /*c2*square[i,j-1,k,c]) * vm1)*/
                         }
                     }
@@ -1496,14 +1495,14 @@ namespace NPB {
                         j = 3;
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) { //rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(5.0d*u[m,i,j,k,c]-4.0d*u[m,i,j+1,k,c]+u[m,i,j+2,k,c]);
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (5.0d * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k, j+1, i, m+1] + u[c+1, k, j+2, i, m+1]);
+                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (5.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m] + u[c, k, j+2, i, m]);
                             }
                         }
                         j = 4;
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (-4.0d * u[c+1, k, j-1, i, m+1] + 6.0d * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k, j+1, i, m+1] + u[c+1, k, j+2, i, m+1]);
+                                dssp * (-4.0d * u[c, k, j-1, i, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m] + u[c, k, j+2, i, m]);
                             }
                         }
                     }
@@ -1512,8 +1511,8 @@ namespace NPB {
                     for(j = 3*start[c, 1]-4; j < jsize - 3*end[c, 1]; j++) {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
-                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (u[c+1, k, j-2, i, m+1] - 4.0d * u[c+1, k, j-1, i, m+1] +
-                                    6.0 * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k, j+1, i, m+1] + u[c+1, k, j+2, i, m+1]);
+                                rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] - dssp * (u[c, k, j-2, i, m] - 4.0d * u[c, k, j-1, i, m] +
+                                    6.0 * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m] + u[c, k, j+2, i, m]);
                             }
                         }
                     }
@@ -1524,14 +1523,14 @@ namespace NPB {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {//rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(u[m,i,j-2,k,c]-4.0d*u[m,i,j-1,k,c]+6.0d*u[m,i,j,k,c]-4.0d*u[m,i,j+1,k,c]);
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (u[c+1, k, j-2, i, m+1] - 4.0d * u[c+1, k, j-1, i, m+1] + 6.0d * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k, j+1, i, m+1]);
+                                dssp * (u[c, k, j-2, i, m] - 4.0d * u[c, k, j-1, i, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j+1, i, m]);
                             }
                         }
                         j = jsize-2;
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {//rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - dssp*(u[m,i,j-2,k,c]-4.0*u[m,i,j-1,k,c]+5.0*u[m,i,j,k,c] );
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (u[c+1, k, j-2, i, m+1] - 4.0 * u[c+1, k, j-1, i, m+1] + 5.0 * u[c+1, k, j, i, m+1]);
+                                dssp * (u[c, k, j-2, i, m] - 4.0 * u[c, k, j-1, i, m] + 5.0 * u[c, k, j, i, m]);
                             }
                         }
                     }
@@ -1546,49 +1545,49 @@ namespace NPB {
                             wp1 = ws[c+1, k, j-1, i-1]; //wp1  = ws[i,j,k+1,c];
                             wm1 = ws[c+1, k-2, j-1, i-1]; //wm1  = ws[i,j,k-1,c];
                             rhs[c+1, k-1, j-1, i-1, 1] = rhs[c+1, k-1, j-1, i-1, 1] + dz1tz1 *        /*rhs[1,i,j,k,c] = rhs[1,i,j,k,c] + dz1tz1 * */
-                                (u[c+1, k+1, j, i, 1] - 2.0d * u[c+1, k, j, i, 1] +         /*(u[1,i,j,k+1,c] - 2.0d*u[1,i,j,k,c] + */
-                                u[c+1, k-1, j, i, 1]) -                                   /*u[1,i,j,k-1,c]) - */
-                                tz2 * (u[c+1, k+1, j, i, 4] - u[c+1, k-1, j, i, 4]);      /*tz2 * (u[4,i,j,k+1,c] - u[4,i,j,k-1,c]);*/
+                                (u[c, k+1, j, i, 0] - 2.0d * u[c, k, j, i, 0] +         /*(u[1,i,j,k+1,c] - 2.0d*u[1,i,j,k,c] + */
+                                u[c, k-1, j, i, 0]) -                                   /*u[1,i,j,k-1,c]) - */
+                                tz2 * (u[c, k+1, j, i, 3] - u[c, k-1, j, i, 3]);      /*tz2 * (u[4,i,j,k+1,c] - u[4,i,j,k-1,c]);*/
 
                             rhs[c+1, k-1, j-1, i-1, 2] = rhs[c+1, k-1, j-1, i-1, 2] + dz2tz1 *        /*rhs[2,i,j,k,c] = rhs[2,i,j,k,c] + dz2tz1 **/
-                                (u[c+1, k+1, j, i, 2] - 2.0d * u[c+1, k, j, i, 2] +         /*(u[2,i,j,k+1,c] - 2.0d*u[2,i,j,k,c] */
-                                u[c+1, k-1, j, i, 2]) +                                   /*u[2,i,j,k-1,c]) */
+                                (u[c, k+1, j, i, 1] - 2.0d * u[c, k, j, i, 1] +         /*(u[2,i,j,k+1,c] - 2.0d*u[2,i,j,k,c] */
+                                u[c, k-1, j, i, 1]) +                                   /*u[2,i,j,k-1,c]) */
                                 zzcon2 * (us[c+1, k, j-1, i-1] - 2.0d * us[c+1, k-1, j-1, i-1] +  /*zzcon2 * (us[i,j,k+1,c] - 2.0d*us[i,j,k,c] */
                                 us[c+1, k-2, j-1, i-1]) -                                    /*us[i,j,k-1,c]) */
-                                tz2 * (u[c+1, k+1, j, i, 2] * wp1 -                         /*tz2 * (u[2,i,j,k+1,c]*wp1 */
-                                u[c+1, k-1, j, i, 2] * wm1);                                /*u[2,i,j,k-1,c]*wm1)*/
+                                tz2 * (u[c, k+1, j, i, 1] * wp1 -                         /*tz2 * (u[2,i,j,k+1,c]*wp1 */
+                                u[c, k-1, j, i, 1] * wm1);                                /*u[2,i,j,k-1,c]*wm1)*/
 
                             rhs[c+1, k-1, j-1, i-1, 3] = rhs[c+1, k-1, j-1, i-1, 3] + dz3tz1 *        /*rhs[3,i,j,k,c] = rhs[3,i,j,k,c] + dz3tz1 */
-                                (u[c+1, k+1, j, i, 3] - 2.0d * u[c+1, k, j, i, 3] +         /*(u[3,i,j,k+1,c] - 2.0d*u[3,i,j,k,c] */
-                                u[c+1, k-1, j, i, 3]) +                                   /*u[3,i,j,k-1,c]) */
+                                (u[c, k+1, j, i, 2] - 2.0d * u[c, k, j, i, 2] +         /*(u[3,i,j,k+1,c] - 2.0d*u[3,i,j,k,c] */
+                                u[c, k-1, j, i, 2]) +                                   /*u[3,i,j,k-1,c]) */
                                 zzcon2 * (vs[c+1, k, j-1, i-1] - 2.0d * vs[c+1, k-1, j-1, i-1] +  /*zzcon2 * (vs[i,j,k+1,c] - 2.0d*vs[i,j,k,c] */
                                 vs[c+1, k-2, j-1, i-1]) -                                    /*vs[i,j,k-1,c]) */
-                                tz2 * (u[c+1, k+1, j, i, 3] * wp1 -                         /*tz2 * (u[3,i,j,k+1,c]*wp1 */
-                                u[c+1, k-1, j, i, 3] * wm1);                                /*u[3,i,j,k-1,c]*wm1)*/
+                                tz2 * (u[c, k+1, j, i, 2] * wp1 -                         /*tz2 * (u[3,i,j,k+1,c]*wp1 */
+                                u[c, k-1, j, i, 2] * wm1);                                /*u[3,i,j,k-1,c]*wm1)*/
 
                             rhs[c+1, k-1, j-1, i-1, 4] = rhs[c+1, k-1, j-1, i-1, 4] + dz4tz1 *        /*rhs[4,i,j,k,c] = rhs[4,i,j,k,c] */
-                                (u[c+1, k+1, j, i, 4] - 2.0d * u[c+1, k, j, i, 4] +         /*(u[4,i,j,k+1,c] - 2.0d*u[4,i,j,k,c] */
-                                u[c+1, k-1, j, i, 4]) +                                   /*u[4,i,j,k-1,c]) */
+                                (u[c, k+1, j, i, 3] - 2.0d * u[c, k, j, i, 3] +         /*(u[4,i,j,k+1,c] - 2.0d*u[4,i,j,k,c] */
+                                u[c, k-1, j, i, 3]) +                                   /*u[4,i,j,k-1,c]) */
                                 zzcon2 * con43 * (wp1 - 2.0d * wijk + wm1) -
-                                tz2 * (u[c+1, k+1, j, i, 4] * wp1 -                         /*tz2 * (u[4,i,j,k+1,c]*wp1 */
-                                u[c+1, k-1, j, i, 4] * wm1 +                                /*u[4,i,j,k-1,c]*wm1 */
-                                (u[c+1, k+1, j, i, 5] - square[c+1, k, j-1, i-1] -         /*(u[5,i,j,k+1,c] - square[i,j,k+1,c] */
-                                u[c+1, k-1, j, i, 5] + square[c+1, k-2, j-1, i-1])           /*u[5,i,j,k-1,c] + square[i,j,k-1,c]*/
+                                tz2 * (u[c, k+1, j, i, 3] * wp1 -                         /*tz2 * (u[4,i,j,k+1,c]*wp1 */
+                                u[c, k-1, j, i, 3] * wm1 +                                /*u[4,i,j,k-1,c]*wm1 */
+                                (u[c, k+1, j, i, 4] - square[c+1, k, j-1, i-1] -         /*(u[5,i,j,k+1,c] - square[i,j,k+1,c] */
+                                u[c, k-1, j, i, 4] + square[c+1, k-2, j-1, i-1])           /*u[5,i,j,k-1,c] + square[i,j,k-1,c]*/
                                 * c2);
 
                             rhs[c+1, k-1, j-1, i-1, 5] = rhs[c+1, k-1, j-1, i-1, 5] + dz5tz1 *              /*rhs[5,i,j,k,c] = rhs[5,i,j,k,c] + */
-                                (u[c+1, k+1, j, i, 5] - 2.0d * u[c+1, k, j, i, 5] +               /*(u[5,i,j,k+1,c] - 2.0d*u[5,i,j,k,c] */
-                                u[c+1, k-1, j, i, 5]) +                                   /*u[5,i,j,k-1,c]) */
+                                (u[c, k+1, j, i, 4] - 2.0d * u[c, k, j, i, 4] +               /*(u[5,i,j,k+1,c] - 2.0d*u[5,i,j,k,c] */
+                                u[c, k-1, j, i, 4]) +                                   /*u[5,i,j,k-1,c]) */
                                 zzcon3 * (qs[c+1, k, j-1, i-1] - 2.0d * qs[c+1, k-1, j-1, i-1] +        /*zzcon3 * (qs[i,j,k+1,c] - 2.0d*qs[i,j,k,c] */
                                 qs[c+1, k-2, j-1, i-1]) +                                    /*qs[i,j,k-1,c]) */
                                 zzcon4 * (wp1 * wp1 - 2.0d * wijk * wijk +
                                 wm1 * wm1) +
-                                zzcon5 * (u[c+1, k+1, j, i, 5] * rho_i[c+1, k, j-1, i-1] -         /*zzcon5 * (u[5,i,j,k+1,c]*rho_i[i,j,k+1,c] */
-                                2.0d * u[c+1, k, j, i, 5] * rho_i[c+1, k-1, j-1, i-1] +                  /*2.0d*u[5,i,j,k,c]*rho_i[i,j,k,c] */
-                                u[c+1, k-1, j, i, 5] * rho_i[c+1, k-2, j-1, i-1]) -                  /*u[5,i,j,k-1,c]*rho_i[i,j,k-1,c]) */
-                                tz2 * ((c1 * u[c+1, k+1, j, i, 5] -                        /*tz2 * ( (c1*u[5,i,j,k+1,c] */
+                                zzcon5 * (u[c, k+1, j, i, 4] * rho_i[c+1, k, j-1, i-1] -         /*zzcon5 * (u[5,i,j,k+1,c]*rho_i[i,j,k+1,c] */
+                                2.0d * u[c, k, j, i, 4] * rho_i[c+1, k-1, j-1, i-1] +                  /*2.0d*u[5,i,j,k,c]*rho_i[i,j,k,c] */
+                                u[c, k-1, j, i, 4] * rho_i[c+1, k-2, j-1, i-1]) -                  /*u[5,i,j,k-1,c]*rho_i[i,j,k-1,c]) */
+                                tz2 * ((c1 * u[c, k+1, j, i, 4] -                        /*tz2 * ( (c1*u[5,i,j,k+1,c] */
                                 c2 * square[c+1, k, j-1, i-1]) * wp1 -                         /*c2*square[i,j,k+1,c])*wp1 */
-                                (c1 * u[c+1, k-1, j, i, 5] -                                /*(c1*u[5,i,j,k-1,c] */
+                                (c1 * u[c, k-1, j, i, 4] -                                /*(c1*u[5,i,j,k-1,c] */
                                 c2 * square[c+1, k-2, j-1, i-1]) * wm1);                         /*c2*square[i,j,k-1,c])*wm1)*/
                         }
                     }
@@ -1602,7 +1601,7 @@ namespace NPB {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) { //rhs[m,i,j,k,c] = rhs[m,i,j,k,c]-dssp*(5.0d*u[m,i,j,k,c]-4.0d*u[m,i,j,k+1,c] + u[m,i,j,k+2,c]);
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (5.0d * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k+1, j, i, m+1] + u[c+1, k+2, j, i, m+1]);
+                                dssp * (5.0d * u[c, k, j, i, m] - 4.0d * u[c, k+1, j, i, m] + u[c, k+2, j, i, m]);
                             }
                         }
                     }
@@ -1611,7 +1610,7 @@ namespace NPB {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {//rhs[m,i,j,k,c]=rhs[m,i,j,k,c]-dssp*(-4.0d*u[m,i,j,k-1,c]+6.0d*u[m,i,j,k,c]-4.0d*u[m,i,j,k+1,c]+u[m,i,j,k+2,c]);
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (-4.0d * u[c+1, k-1, j, i, m+1] + 6.0d * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k+1, j, i, m+1] + u[c+1, k+2, j, i, m+1]);
+                                dssp * (-4.0d * u[c, k-1, j, i, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k+1, j, i, m] + u[c, k+2, j, i, m]);
                             }
                         }
                     }
@@ -1621,8 +1620,8 @@ namespace NPB {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (u[c+1, k-2, j, i, m+1] - 4.0d * u[c+1, k-1, j, i, m+1] +
-                                6.0 * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k+1, j, i, m+1] + u[c+1, k+2, j, i, m+1]);
+                                dssp * (u[c, k-2, j, i, m] - 4.0d * u[c, k-1, j, i, m] +
+                                6.0 * u[c, k, j, i, m] - 4.0d * u[c, k+1, j, i, m] + u[c, k+2, j, i, m]);
                             }
                         }
                     }
@@ -1634,7 +1633,7 @@ namespace NPB {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (u[c+1, k-2, j, i, m+1] - 4.0d * u[c+1, k-1, j, i, m+1] + 6.0d * u[c+1, k, j, i, m+1] - 4.0d * u[c+1, k+1, j, i, m+1]);
+                                dssp * (u[c, k-2, j, i, m] - 4.0d * u[c, k-1, j, i, m] + 6.0d * u[c, k, j, i, m] - 4.0d * u[c, k+1, j, i, m]);
                             }
                         }
                     }
@@ -1643,7 +1642,7 @@ namespace NPB {
                         for(i = start[c, 0]; i < isize - end[c, 0]; i++) {
                             for(m = 0; m < 5; m++) {
                                 rhs[c+1, k-1, j-1, i-1, m+1] = rhs[c+1, k-1, j-1, i-1, m+1] -
-                                dssp * (u[c+1, k-2, j, i, m+1] - 4.0 * u[c+1, k-1, j, i, m+1] + 5.0 * u[c+1, k, j, i, m+1]);
+                                dssp * (u[c, k-2, j, i, m] - 4.0 * u[c, k-1, j, i, m] + 5.0 * u[c, k, j, i, m]);
                             }
                         }
                     }
@@ -1977,29 +1976,29 @@ namespace NPB {
                         fjac[i, 4, 1] = 0.0d; // fjac[1, 4, i] = 0.0d;
                         fjac[i, 5, 1] = 0.0d; // fjac[1, 5, i] = 0.0d;
 
-                        fjac[i, 1, 2] = -(u[c+1, k, j, i, 2] * tmp2 * u[c+1, k, j, i, 2]) + c2 * qs[c+1, k-1, j-1, i-1];
-                        fjac[i, 2, 2] = (2.0d - c2) * (u[c+1, k, j, i, 2] * tmp1);
-                        fjac[i, 3, 2] = -c2 * (u[c+1, k, j, i, 3] * tmp1);
-                        fjac[i, 4, 2] = -c2 * (u[c+1, k, j, i, 4] * tmp1);
+                        fjac[i, 1, 2] = -(u[c, k, j, i, 1] * tmp2 * u[c, k, j, i, 1]) + c2 * qs[c+1, k-1, j-1, i-1];
+                        fjac[i, 2, 2] = (2.0d - c2) * (u[c, k, j, i, 1] * tmp1);
+                        fjac[i, 3, 2] = -c2 * (u[c, k, j, i, 2] * tmp1);
+                        fjac[i, 4, 2] = -c2 * (u[c, k, j, i, 3] * tmp1);
                         fjac[i, 5, 2] = c2;
 
-                        fjac[i, 1, 3] = -(u[c+1, k, j, i, 2] * u[c+1, k, j, i, 3]) * tmp2;
-                        fjac[i, 2, 3] = u[c+1, k, j, i, 3] * tmp1;
-                        fjac[i, 3, 3] = u[c+1, k, j, i, 2] * tmp1;
+                        fjac[i, 1, 3] = -(u[c, k, j, i, 1] * u[c, k, j, i, 2]) * tmp2;
+                        fjac[i, 2, 3] = u[c, k, j, i, 2] * tmp1;
+                        fjac[i, 3, 3] = u[c, k, j, i, 1] * tmp1;
                         fjac[i, 4, 3] = 0.0d;
                         fjac[i, 5, 3] = 0.0d;
 
-                        fjac[i, 1, 4] = -(u[c+1, k, j, i, 2] * u[c+1, k, j, i, 4]) * tmp2;
-                        fjac[i, 2, 4] = u[c+1, k, j, i, 4] * tmp1;
+                        fjac[i, 1, 4] = -(u[c, k, j, i, 1] * u[c, k, j, i, 3]) * tmp2;
+                        fjac[i, 2, 4] = u[c, k, j, i, 3] * tmp1;
                         fjac[i, 3, 4] = 0.0d;
-                        fjac[i, 4, 4] = u[c+1, k, j, i, 2] * tmp1;
+                        fjac[i, 4, 4] = u[c, k, j, i, 1] * tmp1;
                         fjac[i, 5, 4] = 0.0d;
 
-                        fjac[i, 1, 5] = (c2 * 2.0d * qs[c+1, k-1, j-1, i-1] - c1 * (u[c+1, k, j, i, 5] * tmp1)) * (u[c+1, k, j, i, 2] * tmp1);
-                        fjac[i, 2, 5] = c1 * u[c+1, k, j, i, 5] * tmp1 - c2 * (u[c+1, k, j, i, 2] * u[c+1, k, j, i, 2] * tmp2 + qs[c+1, k-1, j-1, i-1]);
-                        fjac[i, 3, 5] = -c2 * (u[c+1, k, j, i, 3] * u[c+1, k, j, i, 2]) * tmp2;
-                        fjac[i, 4, 5] = -c2 * (u[c+1, k, j, i, 4] * u[c+1, k, j, i, 2]) * tmp2;
-                        fjac[i, 5, 5] = c1 * (u[c+1, k, j, i, 2] * tmp1);
+                        fjac[i, 1, 5] = (c2 * 2.0d * qs[c+1, k-1, j-1, i-1] - c1 * (u[c, k, j, i, 4] * tmp1)) * (u[c, k, j, i, 1] * tmp1);
+                        fjac[i, 2, 5] = c1 * u[c, k, j, i, 4] * tmp1 - c2 * (u[c, k, j, i, 1] * u[c, k, j, i, 1] * tmp2 + qs[c+1, k-1, j-1, i-1]);
+                        fjac[i, 3, 5] = -c2 * (u[c, k, j, i, 2] * u[c, k, j, i, 1]) * tmp2;
+                        fjac[i, 4, 5] = -c2 * (u[c, k, j, i, 3] * u[c, k, j, i, 1]) * tmp2;
+                        fjac[i, 5, 5] = c1 * (u[c, k, j, i, 1] * tmp1);
 
                         njac[i, 1, 1] = 0.0d;
                         njac[i, 2, 1] = 0.0d;
@@ -2007,33 +2006,33 @@ namespace NPB {
                         njac[i, 4, 1] = 0.0d;
                         njac[i, 5, 1] = 0.0d;
 
-                        njac[i, 1, 2] = -con43 * c3c4 * tmp2 * u[c+1, k, j, i, 2];  //njac[2 + i, 1, 2] = -con43 * c3c4 * tmp2 * u[2, i, j, k, c];
+                        njac[i, 1, 2] = -con43 * c3c4 * tmp2 * u[c, k, j, i, 1];  //njac[2 + i, 1, 2] = -con43 * c3c4 * tmp2 * u[2, i, j, k, c];
                         njac[i, 2, 2] = con43 * c3c4 * tmp1;
                         njac[i, 3, 2] = 0.0d;
                         njac[i, 4, 2] = 0.0d;
                         njac[i, 5, 2] = 0.0d;
 
-                        njac[i, 1, 3] = -c3c4 * tmp2 * u[c+1, k, j, i, 3];  //c3c4 * tmp2 * u[3,i,j,k,c];
+                        njac[i, 1, 3] = -c3c4 * tmp2 * u[c, k, j, i, 2];  //c3c4 * tmp2 * u[3,i,j,k,c];
                         njac[i, 2, 3] = 0.0d;
                         njac[i, 3, 3] = c3c4 * tmp1;
                         njac[i, 4, 3] = 0.0d;
                         njac[i, 5, 3] = 0.0d;
 
-                        njac[i, 1, 4] = -c3c4 * tmp2 * u[c+1, k, j, i, 4];  //c3c4 * tmp2 * u[4,i,j,k,c];
+                        njac[i, 1, 4] = -c3c4 * tmp2 * u[c, k, j, i, 3];  //c3c4 * tmp2 * u[4,i,j,k,c];
                         njac[i, 2, 4] = 0.0d;
                         njac[i, 3, 4] = 0.0d;
                         njac[i, 4, 4] = c3c4 * tmp1;
                         njac[i, 5, 4] = 0.0d;
 
                         njac[i, 1, 5] = -(con43 * c3c4
-                            - c1345) * tmp3 * (pow2(u[c+1, k, j, i, 2]))           /*- c1345 ) * tmp3 * (u[2,i,j,k,c]**2) */
-                            - (c3c4 - c1345) * tmp3 * (pow2(u[c+1, k, j, i, 3]))  /*- ( c3c4 - c1345 ) * tmp3 * (u[3,i,j,k,c]**2) */
-                            - (c3c4 - c1345) * tmp3 * (pow2(u[c+1, k, j, i, 4]))  /*- ( c3c4 - c1345 ) * tmp3 * (u[4,i,j,k,c]**2) */
-                            - c1345 * tmp2 * u[c+1, k, j, i, 5];  //- c1345 * tmp2 * u[5,i,j,k,c];
+                            - c1345) * tmp3 * (pow2(u[c, k, j, i, 1]))           /*- c1345 ) * tmp3 * (u[2,i,j,k,c]**2) */
+                            - (c3c4 - c1345) * tmp3 * (pow2(u[c, k, j, i, 2]))  /*- ( c3c4 - c1345 ) * tmp3 * (u[3,i,j,k,c]**2) */
+                            - (c3c4 - c1345) * tmp3 * (pow2(u[c, k, j, i, 3]))  /*- ( c3c4 - c1345 ) * tmp3 * (u[4,i,j,k,c]**2) */
+                            - c1345 * tmp2 * u[c, k, j, i, 4];  //- c1345 * tmp2 * u[5,i,j,k,c];
 
-                        njac[i, 2, 5] = (con43 * c3c4 - c1345) * tmp2 * u[c+1, k, j, i, 2];  // u[2,i,j,k,c];
-                        njac[i, 3, 5] = (c3c4 - c1345) * tmp2 * u[c+1, k, j, i, 3];          // u[3,i,j,k,c];
-                        njac[i, 4, 5] = (c3c4 - c1345) * tmp2 * u[c+1, k, j, i, 4];          // u[4,i,j,k,c];
+                        njac[i, 2, 5] = (con43 * c3c4 - c1345) * tmp2 * u[c, k, j, i, 1];  // u[2,i,j,k,c];
+                        njac[i, 3, 5] = (c3c4 - c1345) * tmp2 * u[c, k, j, i, 2];          // u[3,i,j,k,c];
+                        njac[i, 4, 5] = (c3c4 - c1345) * tmp2 * u[c, k, j, i, 3];          // u[4,i,j,k,c];
                         njac[i, 5, 5] = (c1345) * tmp1;
                     }
                     //---------------------------------------------------------------------
@@ -2507,11 +2506,11 @@ namespace NPB {
                     //     determine a [labeled f] and n jacobians for cell c
                     //---------------------------------------------------------------------
                     for(j = start[c, 1]-1; j <= cell_size[c, 1] - end[c, 1] + 2; j++) {
-                        utmp[j, 1] = 1.0d / u[c+1, k, j, i, 1];  //u[1,i,j,k,c]
-                        utmp[j, 2] = u[c+1, k, j, i, 2];         //u[2,i,j,k,c]; 
-                        utmp[j, 3] = u[c+1, k, j, i, 3];         //u[3,i,j,k,c]; 
-                        utmp[j, 4] = u[c+1, k, j, i, 4];         //u[4,i,j,k,c]; 
-                        utmp[j, 5] = u[c+1, k, j, i, 5];         //u[5,i,j,k,c]; 
+                        utmp[j, 1] = 1.0d / u[c, k, j, i, 0];  //u[1,i,j,k,c]
+                        utmp[j, 2] = u[c, k, j, i, 1];         //u[2,i,j,k,c]; 
+                        utmp[j, 3] = u[c, k, j, i, 2];         //u[3,i,j,k,c]; 
+                        utmp[j, 4] = u[c, k, j, i, 3];         //u[4,i,j,k,c]; 
+                        utmp[j, 5] = u[c, k, j, i, 4];         //u[5,i,j,k,c]; 
                         utmp[j, 6] = qs[c+1, k-1, j-1, i-1];           //qs[i,j,k,c]; 
                     }
 
@@ -3054,11 +3053,11 @@ namespace NPB {
                     //     determine c [labeled f] and s jacobians for cell c
                     //---------------------------------------------------------------------
                     for(k = start[c, 2]-1; k <= cell_size[c, 2] - end[c, 2]+2; k++) {
-                        utmp[k, 1] = 1.0d / u[c+1, k, j, i, 1];  //utmp[1,k] = 1.0d0 / u[1,i,j,k,c]
-                        utmp[k, 2] = u[c+1, k, j, i, 2];  //utmp[2,k] =         u[2,i,j,k,c]
-                        utmp[k, 3] = u[c+1, k, j, i, 3];  //utmp[3,k] =         u[3,i,j,k,c]
-                        utmp[k, 4] = u[c+1, k, j, i, 4];  //utmp[4,k] =         u[4,i,j,k,c]
-                        utmp[k, 5] = u[c+1, k, j, i, 5];  //utmp[5,k] =         u[5,i,j,k,c]
+                        utmp[k, 1] = 1.0d / u[c, k, j, i, 0];  //utmp[1,k] = 1.0d0 / u[1,i,j,k,c]
+                        utmp[k, 2] = u[c, k, j, i, 1];  //utmp[2,k] =         u[2,i,j,k,c]
+                        utmp[k, 3] = u[c, k, j, i, 2];  //utmp[3,k] =         u[3,i,j,k,c]
+                        utmp[k, 4] = u[c, k, j, i, 3];  //utmp[4,k] =         u[4,i,j,k,c]
+                        utmp[k, 5] = u[c, k, j, i, 4];  //utmp[5,k] =         u[5,i,j,k,c]
                         utmp[k, 6] = qs[c+1, k-1, j-1, i-1];  //utmp[6,k] =          qs[i,j,k,c]
                     }
                     for(k = start[c, 2]-1; k <= cell_size[c, 2] - end[c, 2]+2; k++) {
@@ -3883,7 +3882,7 @@ namespace NPB {
                     for(j = start[c, 1]; j < cell_size[c, 1] - end[c, 1] + 2; j++) {//-2 <= -1
                         for(i = start[c, 0]; i < cell_size[c, 0] - end[c, 0] + 2; i++) {//-2 <= -1
                             for(m = 0; m < 5; m++) {  //u[m,i,j,k,c] = u[m,i,j,k,c] + rhs[m,i,j,k,c];
-                                u[c+1, k, j, i, m+1] += rhs[c+1, k-1, j-1, i-1, m+1];
+                                u[c, k, j, i, m] += rhs[c+1, k-1, j-1, i-1, m+1];
                             }
                         }
                     }
@@ -4256,7 +4255,7 @@ namespace NPB {
                             xi = i * dnxm1;
                             exact_solution(xi, eta, zeta, u_exact, 0);
                             for(m = 0; m < 5; m++) {
-                                add = u[c+1, kk, jj, ii, m+1] - u_exact[m];
+                                add = u[c, kk, jj, ii, m] - u_exact[m];
                                 rms_work[m] += add * add;
                             }
                             ii++;
