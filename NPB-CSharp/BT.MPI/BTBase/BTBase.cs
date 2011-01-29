@@ -61,7 +61,7 @@ namespace NPB {
         protected static double[, , , , ,] lhsc;
         //protected static double[] in_buffer, out_buffer;
         //protected static double[] sum;
-        protected static double[] cv, rhon, rhos, rhoq, cuf, q;
+        protected static double[] cuf, q;//cv, rhon, rhos, rhoq
         protected static int west_size, east_size, bottom_size, top_size, north_size, south_size, start_send_west, start_send_east,
                               start_send_south, start_send_north, start_send_bottom, start_send_top, start_recv_west, start_recv_east,
                               start_recv_south, start_recv_north, start_recv_bottom, start_recv_top;
@@ -242,25 +242,25 @@ namespace NPB {
             ue           = new double[5, MAX_CELL_DIM+3];     //[-2:MAX_CELL_DIM+1,5]; // invertido para c#, indexado
             buf          = new double[5, MAX_CELL_DIM+3];    //[-2:MAX_CELL_DIM+1,5]; // invertido para c#,  indexado
 
-            us           = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //us     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
-            vs           = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //vs     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
-            ws           = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //ws     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
-            qs           = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //qs     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
-            rho_i        = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //rho_i  [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
-            square       = new double[maxcells+le, KMAX+2, JMAX+2, IMAX+2];            //square [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
+/**/        us           = new double[maxcells, KMAX+3, JMAX+3, IMAX+3];            //us     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
+/**/        vs           = new double[maxcells, KMAX+3, JMAX+3, IMAX+3];            //vs     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
+/**/        ws           = new double[maxcells, KMAX+3, JMAX+3, IMAX+3];            //ws     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
+/**/        qs           = new double[maxcells, KMAX+3, JMAX+3, IMAX+3];            //qs     [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
+/**/        rho_i        = new double[maxcells, KMAX+3, JMAX+3, IMAX+3];            //rho_i  [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
+/**/        square       = new double[maxcells, KMAX+3, JMAX+3, IMAX+3];            //square [    -1:IMAX,  -1:JMAX,  -1:KMAX,   maxcells]
 
 /**/        forcing      = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5];       //forcing[5, 0:IMAX-1, 0:JMAX-1, 0:KMAX-1, maxcells]
 /**/        u            = new double[maxcells, KMAX+4, JMAX+4, IMAX+4, 5];       //u[5,-2:IMAX+1,-2:JMAX+1,-2:KMAX+1, maxcells]
 /**/        rhs          = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5];       //rhs    [5,  -1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
 /**/        lhsc         = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];//lhsc[5,5,-1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
-            backsub_info = new double[maxcells+le, MAX_CELL_DIM+1, MAX_CELL_DIM+1, 5+le];//backsub_info[5, 0:MAX_CELL_DIM, 0:MAX_CELL_DIM, maxcells]
+/**/        backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];//backsub_info[5, 0:MAX_CELL_DIM, 0:MAX_CELL_DIM, maxcells]
             //in_buffer    = new double[BUF_SIZE+le];                                    //in_buffer[BUF_SIZE]
             //out_buffer   = new double[BUF_SIZE+le];                                    //out_buffer[BUF_SIZE]
 
-            cv           = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
-            rhon         = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
-            rhos         = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
-            rhoq         = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
+            //cv           = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
+            //rhon         = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
+            //rhos         = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
+            //rhoq         = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
             cuf          = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
             q            = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
 
