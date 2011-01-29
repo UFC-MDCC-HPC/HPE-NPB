@@ -4,7 +4,6 @@ using NPB;
 namespace NPB {
     public class BTBase: Base {
         //******************************************** Attributes *******************************************************/
-        public const int le = 1;
         //npbparams.h
         protected static int maxcells, problem_size, niter_default;
         protected static double dt_default;
@@ -264,8 +263,8 @@ namespace NPB {
             cuf          = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
             q            = new double[MAX_CELL_DIM + 4];//[-2:MAX_CELL_DIM+1];
 
-            fjac = new double[MAX_CELL_DIM+4, 5+le, 5+le]; //[5, 5, -2:MAX_CELL_DIM+1];
-            njac = new double[MAX_CELL_DIM+4, 5+le, 5+le]; //[5, 5, -2:MAX_CELL_DIM+1];
+/**/        fjac = new double[MAX_CELL_DIM+5, 5, 5]; //[5, 5, -2:MAX_CELL_DIM+1];
+/**/        njac = new double[MAX_CELL_DIM+5, 5, 5]; //[5, 5, -2:MAX_CELL_DIM+1];
 /**/        lhsa = new double[MAX_CELL_DIM+3, 5, 5]; //[5, 5, -1:MAX_CELL_DIM]; 
 /**/        lhsb = new double[MAX_CELL_DIM+3, 5, 5]; //[5, 5, -1:MAX_CELL_DIM];            
         }

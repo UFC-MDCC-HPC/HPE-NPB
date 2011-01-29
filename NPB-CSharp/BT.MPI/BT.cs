@@ -1970,70 +1970,70 @@ namespace NPB {
                         tmp2 = tmp1 * tmp1;
                         tmp3 = tmp1 * tmp2;
 
-                        fjac[i, 1, 1] = 0.0d; // fjac[1, 1, i] = 0.0d;
-                        fjac[i, 2, 1] = 1.0d; // fjac[1, 2, i] = 1.0d;
-                        fjac[i, 3, 1] = 0.0d; // fjac[1, 3, i] = 0.0d;
-                        fjac[i, 4, 1] = 0.0d; // fjac[1, 4, i] = 0.0d;
-                        fjac[i, 5, 1] = 0.0d; // fjac[1, 5, i] = 0.0d;
+                        fjac[i+1, 0, 0] = 0.0d; // fjac[1, 1, i] = 0.0d;
+                        fjac[i+1, 1, 0] = 1.0d; // fjac[1, 2, i] = 1.0d;
+                        fjac[i+1, 2, 0] = 0.0d; // fjac[1, 3, i] = 0.0d;
+                        fjac[i+1, 3, 0] = 0.0d; // fjac[1, 4, i] = 0.0d;
+                        fjac[i+1, 4, 0] = 0.0d; // fjac[1, 5, i] = 0.0d;
 
-                        fjac[i, 1, 2] = -(u[c, k, j, i, 1] * tmp2 * u[c, k, j, i, 1]) + c2 * qs[c, k, j, i];
-                        fjac[i, 2, 2] = (2.0d - c2) * (u[c, k, j, i, 1] * tmp1);
-                        fjac[i, 3, 2] = -c2 * (u[c, k, j, i, 2] * tmp1);
-                        fjac[i, 4, 2] = -c2 * (u[c, k, j, i, 3] * tmp1);
-                        fjac[i, 5, 2] = c2;
+                        fjac[i+1, 0, 1] = -(u[c, k, j, i, 1] * tmp2 * u[c, k, j, i, 1]) + c2 * qs[c, k, j, i];
+                        fjac[i+1, 1, 1] = (2.0d - c2) * (u[c, k, j, i, 1] * tmp1);
+                        fjac[i+1, 2, 1] = -c2 * (u[c, k, j, i, 2] * tmp1);
+                        fjac[i+1, 3, 1] = -c2 * (u[c, k, j, i, 3] * tmp1);
+                        fjac[i+1, 4, 1] = c2;
 
-                        fjac[i, 1, 3] = -(u[c, k, j, i, 1] * u[c, k, j, i, 2]) * tmp2;
-                        fjac[i, 2, 3] = u[c, k, j, i, 2] * tmp1;
-                        fjac[i, 3, 3] = u[c, k, j, i, 1] * tmp1;
-                        fjac[i, 4, 3] = 0.0d;
-                        fjac[i, 5, 3] = 0.0d;
+                        fjac[i+1, 0, 2] = -(u[c, k, j, i, 1] * u[c, k, j, i, 2]) * tmp2;
+                        fjac[i+1, 1, 2] = u[c, k, j, i, 2] * tmp1;
+                        fjac[i+1, 2, 2] = u[c, k, j, i, 1] * tmp1;
+                        fjac[i+1, 3, 2] = 0.0d;
+                        fjac[i+1, 4, 2] = 0.0d;
 
-                        fjac[i, 1, 4] = -(u[c, k, j, i, 1] * u[c, k, j, i, 3]) * tmp2;
-                        fjac[i, 2, 4] = u[c, k, j, i, 3] * tmp1;
-                        fjac[i, 3, 4] = 0.0d;
-                        fjac[i, 4, 4] = u[c, k, j, i, 1] * tmp1;
-                        fjac[i, 5, 4] = 0.0d;
+                        fjac[i+1, 0, 3] = -(u[c, k, j, i, 1] * u[c, k, j, i, 3]) * tmp2;
+                        fjac[i+1, 1, 3] = u[c, k, j, i, 3] * tmp1;
+                        fjac[i+1, 2, 3] = 0.0d;
+                        fjac[i+1, 3, 3] = u[c, k, j, i, 1] * tmp1;
+                        fjac[i+1, 4, 3] = 0.0d;
 
-                        fjac[i, 1, 5] = (c2 * 2.0d * qs[c, k, j, i] - c1 * (u[c, k, j, i, 4] * tmp1)) * (u[c, k, j, i, 1] * tmp1);
-                        fjac[i, 2, 5] = c1 * u[c, k, j, i, 4] * tmp1 - c2 * (u[c, k, j, i, 1] * u[c, k, j, i, 1] * tmp2 + qs[c, k, j, i]);
-                        fjac[i, 3, 5] = -c2 * (u[c, k, j, i, 2] * u[c, k, j, i, 1]) * tmp2;
-                        fjac[i, 4, 5] = -c2 * (u[c, k, j, i, 3] * u[c, k, j, i, 1]) * tmp2;
-                        fjac[i, 5, 5] = c1 * (u[c, k, j, i, 1] * tmp1);
+                        fjac[i+1, 0, 4] = (c2 * 2.0d * qs[c, k, j, i] - c1 * (u[c, k, j, i, 4] * tmp1)) * (u[c, k, j, i, 1] * tmp1);
+                        fjac[i+1, 1, 4] = c1 * u[c, k, j, i, 4] * tmp1 - c2 * (u[c, k, j, i, 1] * u[c, k, j, i, 1] * tmp2 + qs[c, k, j, i]);
+                        fjac[i+1, 2, 4] = -c2 * (u[c, k, j, i, 2] * u[c, k, j, i, 1]) * tmp2;
+                        fjac[i+1, 3, 4] = -c2 * (u[c, k, j, i, 3] * u[c, k, j, i, 1]) * tmp2;
+                        fjac[i+1, 4, 4] = c1 * (u[c, k, j, i, 1] * tmp1);
 
-                        njac[i, 1, 1] = 0.0d;
-                        njac[i, 2, 1] = 0.0d;
-                        njac[i, 3, 1] = 0.0d;
-                        njac[i, 4, 1] = 0.0d;
-                        njac[i, 5, 1] = 0.0d;
+                        njac[i+1, 0, 0] = 0.0d;
+                        njac[i+1, 1, 0] = 0.0d;
+                        njac[i+1, 2, 0] = 0.0d;
+                        njac[i+1, 3, 0] = 0.0d;
+                        njac[i+1, 4, 0] = 0.0d;
 
-                        njac[i, 1, 2] = -con43 * c3c4 * tmp2 * u[c, k, j, i, 1];  //njac[2 + i, 1, 2] = -con43 * c3c4 * tmp2 * u[2, i, j, k, c];
-                        njac[i, 2, 2] = con43 * c3c4 * tmp1;
-                        njac[i, 3, 2] = 0.0d;
-                        njac[i, 4, 2] = 0.0d;
-                        njac[i, 5, 2] = 0.0d;
+                        njac[i+1, 0, 1] = -con43 * c3c4 * tmp2 * u[c, k, j, i, 1];  //njac[2 + i, 1, 2] = -con43 * c3c4 * tmp2 * u[2, i, j, k, c];
+                        njac[i+1, 1, 1] = con43 * c3c4 * tmp1;
+                        njac[i+1, 2, 1] = 0.0d;
+                        njac[i+1, 3, 1] = 0.0d;
+                        njac[i+1, 4, 1] = 0.0d;
 
-                        njac[i, 1, 3] = -c3c4 * tmp2 * u[c, k, j, i, 2];  //c3c4 * tmp2 * u[3,i,j,k,c];
-                        njac[i, 2, 3] = 0.0d;
-                        njac[i, 3, 3] = c3c4 * tmp1;
-                        njac[i, 4, 3] = 0.0d;
-                        njac[i, 5, 3] = 0.0d;
+                        njac[i+1, 0, 2] = -c3c4 * tmp2 * u[c, k, j, i, 2];  //c3c4 * tmp2 * u[3,i,j,k,c];
+                        njac[i+1, 1, 2] = 0.0d;
+                        njac[i+1, 2, 2] = c3c4 * tmp1;
+                        njac[i+1, 3, 2] = 0.0d;
+                        njac[i+1, 4, 2] = 0.0d;
 
-                        njac[i, 1, 4] = -c3c4 * tmp2 * u[c, k, j, i, 3];  //c3c4 * tmp2 * u[4,i,j,k,c];
-                        njac[i, 2, 4] = 0.0d;
-                        njac[i, 3, 4] = 0.0d;
-                        njac[i, 4, 4] = c3c4 * tmp1;
-                        njac[i, 5, 4] = 0.0d;
+                        njac[i+1, 0, 3] = -c3c4 * tmp2 * u[c, k, j, i, 3];  //c3c4 * tmp2 * u[4,i,j,k,c];
+                        njac[i+1, 1, 3] = 0.0d;
+                        njac[i+1, 2, 3] = 0.0d;
+                        njac[i+1, 3, 3] = c3c4 * tmp1;
+                        njac[i+1, 4, 3] = 0.0d;
 
-                        njac[i, 1, 5] = -(con43 * c3c4
+                        njac[i+1, 0, 4] = -(con43 * c3c4
                             - c1345) * tmp3 * (pow2(u[c, k, j, i, 1]))           /*- c1345 ) * tmp3 * (u[2,i,j,k,c]**2) */
                             - (c3c4 - c1345) * tmp3 * (pow2(u[c, k, j, i, 2]))  /*- ( c3c4 - c1345 ) * tmp3 * (u[3,i,j,k,c]**2) */
                             - (c3c4 - c1345) * tmp3 * (pow2(u[c, k, j, i, 3]))  /*- ( c3c4 - c1345 ) * tmp3 * (u[4,i,j,k,c]**2) */
                             - c1345 * tmp2 * u[c, k, j, i, 4];  //- c1345 * tmp2 * u[5,i,j,k,c];
 
-                        njac[i, 2, 5] = (con43 * c3c4 - c1345) * tmp2 * u[c, k, j, i, 1];  // u[2,i,j,k,c];
-                        njac[i, 3, 5] = (c3c4 - c1345) * tmp2 * u[c, k, j, i, 2];          // u[3,i,j,k,c];
-                        njac[i, 4, 5] = (c3c4 - c1345) * tmp2 * u[c, k, j, i, 3];          // u[4,i,j,k,c];
-                        njac[i, 5, 5] = (c1345) * tmp1;
+                        njac[i+1, 1, 4] = (con43 * c3c4 - c1345) * tmp2 * u[c, k, j, i, 1];  // u[2,i,j,k,c];
+                        njac[i+1, 2, 4] = (c3c4 - c1345) * tmp2 * u[c, k, j, i, 2];          // u[3,i,j,k,c];
+                        njac[i+1, 3, 4] = (c3c4 - c1345) * tmp2 * u[c, k, j, i, 3];          // u[4,i,j,k,c];
+                        njac[i+1, 4, 4] = (c1345) * tmp1;
                     }
                     //---------------------------------------------------------------------
                     //     now jacobians set, so form left hand side in x direction
@@ -2043,95 +2043,95 @@ namespace NPB {
                         tmp1 = dt * tx1;
                         tmp2 = dt * tx2;
 
-                        lhsa[i, 0, 0] = -tmp2 * fjac[i-1, 1, 1] - tmp1 * njac[i-1, 1, 1] - tmp1 * dx1;//2+i-1
-                        lhsa[i, 1, 0] = -tmp2 * fjac[i-1, 2, 1] - tmp1 * njac[i-1, 2, 1];
-                        lhsa[i, 2, 0] = -tmp2 * fjac[i-1, 3, 1] - tmp1 * njac[i-1, 3, 1];
-                        lhsa[i, 3, 0] = -tmp2 * fjac[i-1, 4, 1] - tmp1 * njac[i-1, 4, 1];
-                        lhsa[i, 4, 0] = -tmp2 * fjac[i-1, 5, 1] - tmp1 * njac[i-1, 5, 1];
+                        lhsa[i, 0, 0] = -tmp2 * fjac[i, 0, 0] - tmp1 * njac[i, 0, 0] - tmp1 * dx1;//2+i-1
+                        lhsa[i, 1, 0] = -tmp2 * fjac[i, 1, 0] - tmp1 * njac[i, 1, 0];
+                        lhsa[i, 2, 0] = -tmp2 * fjac[i, 2, 0] - tmp1 * njac[i, 2, 0];
+                        lhsa[i, 3, 0] = -tmp2 * fjac[i, 3, 0] - tmp1 * njac[i, 3, 0];
+                        lhsa[i, 4, 0] = -tmp2 * fjac[i, 4, 0] - tmp1 * njac[i, 4, 0];
 
-                        lhsa[i, 0, 1] = -tmp2 * fjac[i-1, 1, 2] - tmp1 * njac[i-1, 1, 2];
-                        lhsa[i, 1, 1] = -tmp2 * fjac[i-1, 2, 2] - tmp1 * njac[i-1, 2, 2] - tmp1 * dx2;
-                        lhsa[i, 2, 1] = -tmp2 * fjac[i-1, 3, 2] - tmp1 * njac[i-1, 3, 2];
-                        lhsa[i, 3, 1] = -tmp2 * fjac[i-1, 4, 2] - tmp1 * njac[i-1, 4, 2];
-                        lhsa[i, 4, 1] = -tmp2 * fjac[i-1, 5, 2] - tmp1 * njac[i-1, 5, 2];
+                        lhsa[i, 0, 1] = -tmp2 * fjac[i, 0, 1] - tmp1 * njac[i, 0, 1];
+                        lhsa[i, 1, 1] = -tmp2 * fjac[i, 1, 1] - tmp1 * njac[i, 1, 1] - tmp1 * dx2;
+                        lhsa[i, 2, 1] = -tmp2 * fjac[i, 2, 1] - tmp1 * njac[i, 2, 1];
+                        lhsa[i, 3, 1] = -tmp2 * fjac[i, 3, 1] - tmp1 * njac[i, 3, 1];
+                        lhsa[i, 4, 1] = -tmp2 * fjac[i, 4, 1] - tmp1 * njac[i, 4, 1];
 
-                        lhsa[i, 0, 2] = -tmp2 * fjac[i-1, 1, 3] - tmp1 * njac[i-1, 1, 3];
-                        lhsa[i, 1, 2] = -tmp2 * fjac[i-1, 2, 3] - tmp1 * njac[i-1, 2, 3];
-                        lhsa[i, 2, 2] = -tmp2 * fjac[i-1, 3, 3] - tmp1 * njac[i-1, 3, 3] - tmp1 * dx3;
-                        lhsa[i, 3, 2] = -tmp2 * fjac[i-1, 4, 3] - tmp1 * njac[i-1, 4, 3];
-                        lhsa[i, 4, 2] = -tmp2 * fjac[i-1, 5, 3] - tmp1 * njac[i-1, 5, 3];
+                        lhsa[i, 0, 2] = -tmp2 * fjac[i, 0, 2] - tmp1 * njac[i, 0, 2];
+                        lhsa[i, 1, 2] = -tmp2 * fjac[i, 1, 2] - tmp1 * njac[i, 1, 2];
+                        lhsa[i, 2, 2] = -tmp2 * fjac[i, 2, 2] - tmp1 * njac[i, 2, 2] - tmp1 * dx3;
+                        lhsa[i, 3, 2] = -tmp2 * fjac[i, 3, 2] - tmp1 * njac[i, 3, 2];
+                        lhsa[i, 4, 2] = -tmp2 * fjac[i, 4, 2] - tmp1 * njac[i, 4, 2];
 
-                        lhsa[i, 0, 3] = -tmp2 * fjac[i-1, 1, 4] - tmp1 * njac[i-1, 1, 4];
-                        lhsa[i, 1, 3] = -tmp2 * fjac[i-1, 2, 4] - tmp1 * njac[i-1, 2, 4];
-                        lhsa[i, 2, 3] = -tmp2 * fjac[i-1, 3, 4] - tmp1 * njac[i-1, 3, 4];
-                        lhsa[i, 3, 3] = -tmp2 * fjac[i-1, 4, 4] - tmp1 * njac[i-1, 4, 4] - tmp1 * dx4;
-                        lhsa[i, 4, 3] = -tmp2 * fjac[i-1, 5, 4] - tmp1 * njac[i-1, 5, 4];
+                        lhsa[i, 0, 3] = -tmp2 * fjac[i, 0, 3] - tmp1 * njac[i, 0, 3];
+                        lhsa[i, 1, 3] = -tmp2 * fjac[i, 1, 3] - tmp1 * njac[i, 1, 3];
+                        lhsa[i, 2, 3] = -tmp2 * fjac[i, 2, 3] - tmp1 * njac[i, 2, 3];
+                        lhsa[i, 3, 3] = -tmp2 * fjac[i, 3, 3] - tmp1 * njac[i, 3, 3] - tmp1 * dx4;
+                        lhsa[i, 4, 3] = -tmp2 * fjac[i, 4, 3] - tmp1 * njac[i, 4, 3];
 
-                        lhsa[i, 0, 4] = -tmp2 * fjac[i-1, 1, 5] - tmp1 * njac[i-1, 1, 5];
-                        lhsa[i, 1, 4] = -tmp2 * fjac[i-1, 2, 5] - tmp1 * njac[i-1, 2, 5];
-                        lhsa[i, 2, 4] = -tmp2 * fjac[i-1, 3, 5] - tmp1 * njac[i-1, 3, 5];
-                        lhsa[i, 3, 4] = -tmp2 * fjac[i-1, 4, 5] - tmp1 * njac[i-1, 4, 5];
-                        lhsa[i, 4, 4] = -tmp2 * fjac[i-1, 5, 5] - tmp1 * njac[i-1, 5, 5] - tmp1 * dx5;
+                        lhsa[i, 0, 4] = -tmp2 * fjac[i, 0, 4] - tmp1 * njac[i, 0, 4];
+                        lhsa[i, 1, 4] = -tmp2 * fjac[i, 1, 4] - tmp1 * njac[i, 1, 4];
+                        lhsa[i, 2, 4] = -tmp2 * fjac[i, 2, 4] - tmp1 * njac[i, 2, 4];
+                        lhsa[i, 3, 4] = -tmp2 * fjac[i, 3, 4] - tmp1 * njac[i, 3, 4];
+                        lhsa[i, 4, 4] = -tmp2 * fjac[i, 4, 4] - tmp1 * njac[i, 4, 4] - tmp1 * dx5;
 
-                        lhsb[i, 0, 0] = 1.0d + tmp1 * 2.0d * njac[i, 1, 1] + tmp1 * 2.0d * dx1;
-                        lhsb[i, 1, 0] = tmp1 * 2.0d * njac[i, 2, 1];
-                        lhsb[i, 2, 0] = tmp1 * 2.0d * njac[i, 3, 1];
-                        lhsb[i, 3, 0] = tmp1 * 2.0d * njac[i, 4, 1];
-                        lhsb[i, 4, 0] = tmp1 * 2.0d * njac[i, 5, 1];
+                        lhsb[i, 0, 0] = 1.0d + tmp1 * 2.0d * njac[i+1, 0, 0] + tmp1 * 2.0d * dx1;
+                        lhsb[i, 1, 0] = tmp1 * 2.0d * njac[i+1, 1, 0];
+                        lhsb[i, 2, 0] = tmp1 * 2.0d * njac[i+1, 2, 0];
+                        lhsb[i, 3, 0] = tmp1 * 2.0d * njac[i+1, 3, 0];
+                        lhsb[i, 4, 0] = tmp1 * 2.0d * njac[i+1, 4, 0];
 
-                        lhsb[i, 0, 1] = tmp1 * 2.0d * njac[i, 1, 2];
-                        lhsb[i, 1, 1] = 1.0d + tmp1 * 2.0d * njac[i, 2, 2] + tmp1 * 2.0d * dx2;
-                        lhsb[i, 2, 1] = tmp1 * 2.0d * njac[i, 3, 2];
-                        lhsb[i, 3, 1] = tmp1 * 2.0d * njac[i, 4, 2];
-                        lhsb[i, 4, 1] = tmp1 * 2.0d * njac[i, 5, 2];
+                        lhsb[i, 0, 1] = tmp1 * 2.0d * njac[i+1, 0, 1];
+                        lhsb[i, 1, 1] = 1.0d + tmp1 * 2.0d * njac[i+1, 1, 1] + tmp1 * 2.0d * dx2;
+                        lhsb[i, 2, 1] = tmp1 * 2.0d * njac[i+1, 2, 1];
+                        lhsb[i, 3, 1] = tmp1 * 2.0d * njac[i+1, 3, 1];
+                        lhsb[i, 4, 1] = tmp1 * 2.0d * njac[i+1, 4, 1];
 
-                        lhsb[i, 0, 2] = tmp1 * 2.0d * njac[i, 1, 3];
-                        lhsb[i, 1, 2] = tmp1 * 2.0d * njac[i, 2, 3];
-                        lhsb[i, 2, 2] = 1.0d + tmp1 * 2.0d * njac[i, 3, 3] + tmp1 * 2.0d * dx3;
-                        lhsb[i, 3, 2] = tmp1 * 2.0d * njac[i, 4, 3];
-                        lhsb[i, 4, 2] = tmp1 * 2.0d * njac[i, 5, 3];
+                        lhsb[i, 0, 2] = tmp1 * 2.0d * njac[i+1, 0, 2];
+                        lhsb[i, 1, 2] = tmp1 * 2.0d * njac[i+1, 1, 2];
+                        lhsb[i, 2, 2] = 1.0d + tmp1 * 2.0d * njac[i+1, 2, 2] + tmp1 * 2.0d * dx3;
+                        lhsb[i, 3, 2] = tmp1 * 2.0d * njac[i+1, 3, 2];
+                        lhsb[i, 4, 2] = tmp1 * 2.0d * njac[i+1, 4, 2];
 
-                        lhsb[i, 0, 3] = tmp1 * 2.0d * njac[i, 1, 4];
-                        lhsb[i, 1, 3] = tmp1 * 2.0d * njac[i, 2, 4];
-                        lhsb[i, 2, 3] = tmp1 * 2.0d * njac[i, 3, 4];
-                        lhsb[i, 3, 3] = 1.0d + tmp1 * 2.0d * njac[i, 4, 4] + tmp1 * 2.0d * dx4;
-                        lhsb[i, 4, 3] = tmp1 * 2.0d * njac[i, 5, 4];
+                        lhsb[i, 0, 3] = tmp1 * 2.0d * njac[i+1, 0, 3];
+                        lhsb[i, 1, 3] = tmp1 * 2.0d * njac[i+1, 1, 3];
+                        lhsb[i, 2, 3] = tmp1 * 2.0d * njac[i+1, 2, 3];
+                        lhsb[i, 3, 3] = 1.0d + tmp1 * 2.0d * njac[i+1, 3, 3] + tmp1 * 2.0d * dx4;
+                        lhsb[i, 4, 3] = tmp1 * 2.0d * njac[i+1, 4, 3];
 
-                        lhsb[i, 0, 4] = tmp1 * 2.0d * njac[i, 1, 5];
-                        lhsb[i, 1, 4] = tmp1 * 2.0d * njac[i, 2, 5];
-                        lhsb[i, 2, 4] = tmp1 * 2.0d * njac[i, 3, 5];
-                        lhsb[i, 3, 4] = tmp1 * 2.0d * njac[i, 4, 5];
-                        lhsb[i, 4, 4] = 1.0d + tmp1 * 2.0d * njac[i, 5, 5] + tmp1 * 2.0d * dx5;
+                        lhsb[i, 0, 4] = tmp1 * 2.0d * njac[i+1, 0, 4];
+                        lhsb[i, 1, 4] = tmp1 * 2.0d * njac[i+1, 1, 4];
+                        lhsb[i, 2, 4] = tmp1 * 2.0d * njac[i+1, 2, 4];
+                        lhsb[i, 3, 4] = tmp1 * 2.0d * njac[i+1, 3, 4];
+                        lhsb[i, 4, 4] = 1.0d + tmp1 * 2.0d * njac[i+1, 4, 4] + tmp1 * 2.0d * dx5;
 
-                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[i+1, 1, 1] - tmp1 * njac[i+1, 1, 1] - tmp1 * dx1; //2+i+1
-                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[i+1, 2, 1] - tmp1 * njac[i+1, 2, 1];
-                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[i+1, 3, 1] - tmp1 * njac[i+1, 3, 1];
-                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[i+1, 4, 1] - tmp1 * njac[i+1, 4, 1];
-                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[i+1, 5, 1] - tmp1 * njac[i+1, 5, 1];
+                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[i+2, 0, 0] - tmp1 * njac[i+2, 0, 0] - tmp1 * dx1; //2+i+1
+                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[i+2, 1, 0] - tmp1 * njac[i+2, 1, 0];
+                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[i+2, 2, 0] - tmp1 * njac[i+2, 2, 0];
+                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[i+2, 3, 0] - tmp1 * njac[i+2, 3, 0];
+                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[i+2, 4, 0] - tmp1 * njac[i+2, 4, 0];
 
-                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[i+1, 1, 2] - tmp1 * njac[i+1, 1, 2];
-                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[i+1, 2, 2] - tmp1 * njac[i+1, 2, 2] - tmp1 * dx2;
-                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[i+1, 3, 2] - tmp1 * njac[i+1, 3, 2];
-                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[i+1, 4, 2] - tmp1 * njac[i+1, 4, 2];
-                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[i+1, 5, 2] - tmp1 * njac[i+1, 5, 2];
+                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[i+2, 0, 1] - tmp1 * njac[i+2, 0, 1];
+                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[i+2, 1, 1] - tmp1 * njac[i+2, 1, 1] - tmp1 * dx2;
+                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[i+2, 2, 1] - tmp1 * njac[i+2, 2, 1];
+                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[i+2, 3, 1] - tmp1 * njac[i+2, 3, 1];
+                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[i+2, 4, 1] - tmp1 * njac[i+2, 4, 1];
 
-                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[i+1, 1, 3] - tmp1 * njac[i+1, 1, 3];
-                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[i+1, 2, 3] - tmp1 * njac[i+1, 2, 3];
-                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[i+1, 3, 3] - tmp1 * njac[i+1, 3, 3] - tmp1 * dx3;
-                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[i+1, 4, 3] - tmp1 * njac[i+1, 4, 3];
-                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[i+1, 5, 3] - tmp1 * njac[i+1, 5, 3];
+                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[i+2, 0, 2] - tmp1 * njac[i+2, 0, 2];
+                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[i+2, 1, 2] - tmp1 * njac[i+2, 1, 2];
+                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[i+2, 2, 2] - tmp1 * njac[i+2, 2, 2] - tmp1 * dx3;
+                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[i+2, 3, 2] - tmp1 * njac[i+2, 3, 2];
+                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[i+2, 4, 2] - tmp1 * njac[i+2, 4, 2];
 
-                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[i+1, 1, 4] - tmp1 * njac[i+1, 1, 4];
-                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[i+1, 2, 4] - tmp1 * njac[i+1, 2, 4];
-                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[i+1, 3, 4] - tmp1 * njac[i+1, 3, 4];
-                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[i+1, 4, 4] - tmp1 * njac[i+1, 4, 4] - tmp1 * dx4;
-                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[i+1, 5, 4] - tmp1 * njac[i+1, 5, 4];
+                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[i+2, 0, 3] - tmp1 * njac[i+2, 0, 3];
+                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[i+2, 1, 3] - tmp1 * njac[i+2, 1, 3];
+                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[i+2, 2, 3] - tmp1 * njac[i+2, 2, 3];
+                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[i+2, 3, 3] - tmp1 * njac[i+2, 3, 3] - tmp1 * dx4;
+                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[i+2, 4, 3] - tmp1 * njac[i+2, 4, 3];
 
-                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[i+1, 1, 5] - tmp1 * njac[i+1, 1, 5];
-                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[i+1, 2, 5] - tmp1 * njac[i+1, 2, 5];
-                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[i+1, 3, 5] - tmp1 * njac[i+1, 3, 5];
-                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[i+1, 4, 5] - tmp1 * njac[i+1, 4, 5];
-                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[i+1, 5, 5] - tmp1 * njac[i+1, 5, 5] - tmp1 * dx5;
+                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[i+2, 0, 4] - tmp1 * njac[i+2, 0, 4];
+                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[i+2, 1, 4] - tmp1 * njac[i+2, 1, 4];
+                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[i+2, 2, 4] - tmp1 * njac[i+2, 2, 4];
+                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[i+2, 3, 4] - tmp1 * njac[i+2, 3, 4];
+                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[i+2, 4, 4] - tmp1 * njac[i+2, 4, 4] - tmp1 * dx5;
                     }
                     //---------------------------------------------------------------------
                     //     outer most for(loops - sweeping in i direction
@@ -2526,67 +2526,67 @@ namespace NPB {
                         tmp2 = tmp1 * tmp1;
                         tmp3 = tmp1 * tmp2;
 
-                        fjac[j, 1, 1] = 0.0d;
-                        fjac[j, 2, 1] = 0.0d;
-                        fjac[j, 3, 1] = 1.0d;
-                        fjac[j, 4, 1] = 0.0d;
-                        fjac[j, 5, 1] = 0.0d;
+                        fjac[j+1, 0, 0] = 0.0d;
+                        fjac[j+1, 1, 0] = 0.0d;
+                        fjac[j+1, 2, 0] = 1.0d;
+                        fjac[j+1, 3, 0] = 0.0d;
+                        fjac[j+1, 4, 0] = 0.0d;
 
-                        fjac[j, 1, 2] = -(utmp[j, 2] * utmp[j, 3]) * tmp2;
-                        fjac[j, 2, 2] = utmp[j, 3] * tmp1;
-                        fjac[j, 3, 2] = utmp[j, 2] * tmp1;
-                        fjac[j, 4, 2] = 0.0d;
-                        fjac[j, 5, 2] = 0.0d;
+                        fjac[j+1, 0, 1] = -(utmp[j, 2] * utmp[j, 3]) * tmp2;
+                        fjac[j+1, 1, 1] = utmp[j, 3] * tmp1;
+                        fjac[j+1, 2, 1] = utmp[j, 2] * tmp1;
+                        fjac[j+1, 3, 1] = 0.0d;
+                        fjac[j+1, 4, 1] = 0.0d;
 
-                        fjac[j, 1, 3] = -(utmp[j, 3] * utmp[j, 3] * tmp2) + c2 * utmp[j, 6];
-                        fjac[j, 2, 3] = -c2 * utmp[j, 2] * tmp1;
-                        fjac[j, 3, 3] = (2.0d - c2) * utmp[j, 3] * tmp1;
-                        fjac[j, 4, 3] = -c2 * utmp[j, 4] * tmp1;
-                        fjac[j, 5, 3] = c2;
+                        fjac[j+1, 0, 2] = -(utmp[j, 3] * utmp[j, 3] * tmp2) + c2 * utmp[j, 6];
+                        fjac[j+1, 1, 2] = -c2 * utmp[j, 2] * tmp1;
+                        fjac[j+1, 2, 2] = (2.0d - c2) * utmp[j, 3] * tmp1;
+                        fjac[j+1, 3, 2] = -c2 * utmp[j, 4] * tmp1;
+                        fjac[j+1, 4, 2] = c2;
 
-                        fjac[j, 1, 4] = -(utmp[j, 3] * utmp[j, 4]) * tmp2;
-                        fjac[j, 2, 4] = 0.0d;
-                        fjac[j, 3, 4] = utmp[j, 4] * tmp1;
-                        fjac[j, 4, 4] = utmp[j, 3] * tmp1;
-                        fjac[j, 5, 4] = 0.0d;
+                        fjac[j+1, 0, 3] = -(utmp[j, 3] * utmp[j, 4]) * tmp2;
+                        fjac[j+1, 1, 3] = 0.0d;
+                        fjac[j+1, 2, 3] = utmp[j, 4] * tmp1;
+                        fjac[j+1, 3, 3] = utmp[j, 3] * tmp1;
+                        fjac[j+1, 4, 3] = 0.0d;
 
-                        fjac[j, 1, 5] = (c2 * 2.0d * utmp[j, 6] - c1 * utmp[j, 5] * tmp1) * utmp[j, 3] * tmp1;
-                        fjac[j, 2, 5] = -c2 * utmp[j, 2] * utmp[j, 3] * tmp2;
-                        fjac[j, 3, 5] = c1 * utmp[j, 5] * tmp1 - c2 * (utmp[j, 6] + utmp[j, 3] * utmp[j, 3] * tmp2);
-                        fjac[j, 4, 5] = -c2 * (utmp[j, 3] * utmp[j, 4]) * tmp2;
-                        fjac[j, 5, 5] = c1 * utmp[j, 3] * tmp1;
+                        fjac[j+1, 0, 4] = (c2 * 2.0d * utmp[j, 6] - c1 * utmp[j, 5] * tmp1) * utmp[j, 3] * tmp1;
+                        fjac[j+1, 1, 4] = -c2 * utmp[j, 2] * utmp[j, 3] * tmp2;
+                        fjac[j+1, 2, 4] = c1 * utmp[j, 5] * tmp1 - c2 * (utmp[j, 6] + utmp[j, 3] * utmp[j, 3] * tmp2);
+                        fjac[j+1, 3, 4] = -c2 * (utmp[j, 3] * utmp[j, 4]) * tmp2;
+                        fjac[j+1, 4, 4] = c1 * utmp[j, 3] * tmp1;
 
-                        njac[j, 1, 1] = 0.0d;
-                        njac[j, 2, 1] = 0.0d;
-                        njac[j, 3, 1] = 0.0d;
-                        njac[j, 4, 1] = 0.0d;
-                        njac[j, 5, 1] = 0.0d;
+                        njac[j+1, 0, 0] = 0.0d;
+                        njac[j+1, 1, 0] = 0.0d;
+                        njac[j+1, 2, 0] = 0.0d;
+                        njac[j+1, 3, 0] = 0.0d;
+                        njac[j+1, 4, 0] = 0.0d;
 
-                        njac[j, 1, 2] = -c3c4 * tmp2 * utmp[j, 2];
-                        njac[j, 2, 2] = c3c4 * tmp1;
-                        njac[j, 3, 2] = 0.0d;
-                        njac[j, 4, 2] = 0.0d;
-                        njac[j, 5, 2] = 0.0d;
+                        njac[j+1, 0, 1] = -c3c4 * tmp2 * utmp[j, 2];
+                        njac[j+1, 1, 1] = c3c4 * tmp1;
+                        njac[j+1, 2, 1] = 0.0d;
+                        njac[j+1, 3, 1] = 0.0d;
+                        njac[j+1, 4, 1] = 0.0d;
 
-                        njac[j, 1, 3] = -con43 * c3c4 * tmp2 * utmp[j, 3];
-                        njac[j, 2, 3] = 0.0d;
-                        njac[j, 3, 3] = con43 * c3c4 * tmp1;
-                        njac[j, 4, 3] = 0.0d;
-                        njac[j, 5, 3] = 0.0d;
+                        njac[j+1, 0, 2] = -con43 * c3c4 * tmp2 * utmp[j, 3];
+                        njac[j+1, 1, 2] = 0.0d;
+                        njac[j+1, 2, 2] = con43 * c3c4 * tmp1;
+                        njac[j+1, 3, 2] = 0.0d;
+                        njac[j+1, 4, 2] = 0.0d;
 
-                        njac[j, 1, 4] = -c3c4 * tmp2 * utmp[j, 4];
-                        njac[j, 2, 4] = 0.0d;
-                        njac[j, 3, 4] = 0.0d;
-                        njac[j, 4, 4] = c3c4 * tmp1;
-                        njac[j, 5, 4] = 0.0d;
+                        njac[j+1, 0, 3] = -c3c4 * tmp2 * utmp[j, 4];
+                        njac[j+1, 1, 3] = 0.0d;
+                        njac[j+1, 2, 3] = 0.0d;
+                        njac[j+1, 3, 3] = c3c4 * tmp1;
+                        njac[j+1, 4, 3] = 0.0d;
 
-                        njac[j, 1, 5] = -(c3c4 - c1345) * tmp3 * (pow2(utmp[j, 2])) -
+                        njac[j+1, 0, 4] = -(c3c4 - c1345) * tmp3 * (pow2(utmp[j, 2])) -
                                         (con43 * c3c4 - c1345) * tmp3 * (pow2(utmp[j, 3])) - (c3c4 - c1345) * tmp3 * (pow2(utmp[j, 4])) - c1345 * tmp2 * utmp[j, 5];
 
-                        njac[j, 2, 5] = (c3c4 - c1345) * tmp2 * utmp[j, 2];
-                        njac[j, 3, 5] = (con43 * c3c4 - c1345) * tmp2 * utmp[j, 3];
-                        njac[j, 4, 5] = (c3c4 - c1345) * tmp2 * utmp[j, 4];
-                        njac[j, 5, 5] = (c1345) * tmp1;
+                        njac[j+1, 1, 4] = (c3c4 - c1345) * tmp2 * utmp[j, 2];
+                        njac[j+1, 2, 4] = (con43 * c3c4 - c1345) * tmp2 * utmp[j, 3];
+                        njac[j+1, 3, 4] = (c3c4 - c1345) * tmp2 * utmp[j, 4];
+                        njac[j+1, 4, 4] = (c1345) * tmp1;
                     }
                     //---------------------------------------------------------------------
                     //     now joacobians set, so form left hand side in y direction
@@ -2594,95 +2594,95 @@ namespace NPB {
                     for(j = start[c, 1]; j <= jsize - end[c, 1]; j++) {
                         tmp1 = dt * ty1;
                         tmp2 = dt * ty2;//lhsa[1,1,j]=-tmp2*fjac[1,1,j-1]-tmp1*njac[1,1,j-1]-tmp1*dy1;
-                        lhsa[j, 0, 0] = -tmp2 * fjac[j-1, 1, 1] - tmp1 * njac[j-1, 1, 1] - tmp1 * dy1;
-                        lhsa[j, 1, 0] = -tmp2 * fjac[j-1, 2, 1] - tmp1 * njac[j-1, 2, 1];//lhsa[1,2,j]=-tmp2*fjac[1,2,j-1]-tmp1*njac[1,2,j-1];
-                        lhsa[j, 2, 0] = -tmp2 * fjac[j-1, 3, 1] - tmp1 * njac[j-1, 3, 1];
-                        lhsa[j, 3, 0] = -tmp2 * fjac[j-1, 4, 1] - tmp1 * njac[j-1, 4, 1];
-                        lhsa[j, 4, 0] = -tmp2 * fjac[j-1, 5, 1] - tmp1 * njac[j-1, 5, 1]; //Obs: fjac[2+j-1,5,1] - tmp1 * njac[2+j-1,5,1];
+                        lhsa[j, 0, 0] = -tmp2 * fjac[j, 0, 0] - tmp1 * njac[j, 0, 0] - tmp1 * dy1;
+                        lhsa[j, 1, 0] = -tmp2 * fjac[j, 1, 0] - tmp1 * njac[j, 1, 0];//lhsa[1,2,j]=-tmp2*fjac[1,2,j-1]-tmp1*njac[1,2,j-1];
+                        lhsa[j, 2, 0] = -tmp2 * fjac[j, 2, 0] - tmp1 * njac[j, 2, 0];
+                        lhsa[j, 3, 0] = -tmp2 * fjac[j, 3, 0] - tmp1 * njac[j, 3, 0];
+                        lhsa[j, 4, 0] = -tmp2 * fjac[j, 4, 0] - tmp1 * njac[j, 4, 0]; //Obs: fjac[2+j-1,5,1] - tmp1 * njac[2+j-1,5,1];
 
-                        lhsa[j, 0, 1] = -tmp2 * fjac[j-1, 1, 2] - tmp1 * njac[j-1, 1, 2];
-                        lhsa[j, 1, 1] = -tmp2 * fjac[j-1, 2, 2] - tmp1 * njac[j-1, 2, 2] - tmp1 * dy2;
-                        lhsa[j, 2, 1] = -tmp2 * fjac[j-1, 3, 2] - tmp1 * njac[j-1, 3, 2];
-                        lhsa[j, 3, 1] = -tmp2 * fjac[j-1, 4, 2] - tmp1 * njac[j-1, 4, 2];
-                        lhsa[j, 4, 1] = -tmp2 * fjac[j-1, 5, 2] - tmp1 * njac[j-1, 5, 2];
+                        lhsa[j, 0, 1] = -tmp2 * fjac[j, 0, 1] - tmp1 * njac[j, 0, 1];
+                        lhsa[j, 1, 1] = -tmp2 * fjac[j, 1, 1] - tmp1 * njac[j, 1, 1] - tmp1 * dy2;
+                        lhsa[j, 2, 1] = -tmp2 * fjac[j, 2, 1] - tmp1 * njac[j, 2, 1];
+                        lhsa[j, 3, 1] = -tmp2 * fjac[j, 3, 1] - tmp1 * njac[j, 3, 1];
+                        lhsa[j, 4, 1] = -tmp2 * fjac[j, 4, 1] - tmp1 * njac[j, 4, 1];
 
-                        lhsa[j, 0, 2] = -tmp2 * fjac[j-1, 1, 3] - tmp1 * njac[j-1, 1, 3];
-                        lhsa[j, 1, 2] = -tmp2 * fjac[j-1, 2, 3] - tmp1 * njac[j-1, 2, 3];
-                        lhsa[j, 2, 2] = -tmp2 * fjac[j-1, 3, 3] - tmp1 * njac[j-1, 3, 3] - tmp1 * dy3;
-                        lhsa[j, 3, 2] = -tmp2 * fjac[j-1, 4, 3] - tmp1 * njac[j-1, 4, 3];
-                        lhsa[j, 4, 2] = -tmp2 * fjac[j-1, 5, 3] - tmp1 * njac[j-1, 5, 3];
+                        lhsa[j, 0, 2] = -tmp2 * fjac[j, 0, 2] - tmp1 * njac[j, 0, 2];
+                        lhsa[j, 1, 2] = -tmp2 * fjac[j, 1, 2] - tmp1 * njac[j, 1, 2];
+                        lhsa[j, 2, 2] = -tmp2 * fjac[j, 2, 2] - tmp1 * njac[j, 2, 2] - tmp1 * dy3;
+                        lhsa[j, 3, 2] = -tmp2 * fjac[j, 3, 2] - tmp1 * njac[j, 3, 2];
+                        lhsa[j, 4, 2] = -tmp2 * fjac[j, 4, 2] - tmp1 * njac[j, 4, 2];
 
-                        lhsa[j, 0, 3] = -tmp2 * fjac[j-1, 1, 4] - tmp1 * njac[j-1, 1, 4];
-                        lhsa[j, 1, 3] = -tmp2 * fjac[j-1, 2, 4] - tmp1 * njac[j-1, 2, 4];
-                        lhsa[j, 2, 3] = -tmp2 * fjac[j-1, 3, 4] - tmp1 * njac[j-1, 3, 4];
-                        lhsa[j, 3, 3] = -tmp2 * fjac[j-1, 4, 4] - tmp1 * njac[j-1, 4, 4] - tmp1 * dy4;
-                        lhsa[j, 4, 3] = -tmp2 * fjac[j-1, 5, 4] - tmp1 * njac[j-1, 5, 4];
+                        lhsa[j, 0, 3] = -tmp2 * fjac[j, 0, 3] - tmp1 * njac[j, 0, 3];
+                        lhsa[j, 1, 3] = -tmp2 * fjac[j, 1, 3] - tmp1 * njac[j, 1, 3];
+                        lhsa[j, 2, 3] = -tmp2 * fjac[j, 2, 3] - tmp1 * njac[j, 2, 3];
+                        lhsa[j, 3, 3] = -tmp2 * fjac[j, 3, 3] - tmp1 * njac[j, 3, 3] - tmp1 * dy4;
+                        lhsa[j, 4, 3] = -tmp2 * fjac[j, 4, 3] - tmp1 * njac[j, 4, 3];
 
-                        lhsa[j, 0, 4] = -tmp2 * fjac[j-1, 1, 5] - tmp1 * njac[j-1, 1, 5];
-                        lhsa[j, 1, 4] = -tmp2 * fjac[j-1, 2, 5] - tmp1 * njac[j-1, 2, 5];
-                        lhsa[j, 2, 4] = -tmp2 * fjac[j-1, 3, 5] - tmp1 * njac[j-1, 3, 5];
-                        lhsa[j, 3, 4] = -tmp2 * fjac[j-1, 4, 5] - tmp1 * njac[j-1, 4, 5];
-                        lhsa[j, 4, 4] = -tmp2 * fjac[j-1, 5, 5] - tmp1 * njac[j-1, 5, 5] - tmp1 * dy5;
+                        lhsa[j, 0, 4] = -tmp2 * fjac[j, 0, 4] - tmp1 * njac[j, 0, 4];
+                        lhsa[j, 1, 4] = -tmp2 * fjac[j, 1, 4] - tmp1 * njac[j, 1, 4];
+                        lhsa[j, 2, 4] = -tmp2 * fjac[j, 2, 4] - tmp1 * njac[j, 2, 4];
+                        lhsa[j, 3, 4] = -tmp2 * fjac[j, 3, 4] - tmp1 * njac[j, 3, 4];
+                        lhsa[j, 4, 4] = -tmp2 * fjac[j, 4, 4] - tmp1 * njac[j, 4, 4] - tmp1 * dy5;
 
-                        lhsb[j, 0, 0] = 1.0d + tmp1 * 2.0d * njac[j, 1, 1] + tmp1 * 2.0d * dy1;
-                        lhsb[j, 1, 0] = tmp1 * 2.0d * njac[j, 2, 1];  //lhsb[1,2,j] = tmp1 * 2.0d * njac[1,2,j];
-                        lhsb[j, 2, 0] = tmp1 * 2.0d * njac[j, 3, 1];  //lhsb[1,3,j] = tmp1 * 2.0d * njac[1,3,j];
-                        lhsb[j, 3, 0] = tmp1 * 2.0d * njac[j, 4, 1];  //lhsb[1,4,j] = tmp1 * 2.0d * njac[1,4,j];
-                        lhsb[j, 4, 0] = tmp1 * 2.0d * njac[j, 5, 1];  //lhsb[1,5,j] = tmp1 * 2.0d * njac[1,5,j];
+                        lhsb[j, 0, 0] = 1.0d + tmp1 * 2.0d * njac[j+1, 0, 0] + tmp1 * 2.0d * dy1;
+                        lhsb[j, 1, 0] = tmp1 * 2.0d * njac[j+1, 1, 0];  //lhsb[1,2,j] = tmp1 * 2.0d * njac[1,2,j];
+                        lhsb[j, 2, 0] = tmp1 * 2.0d * njac[j+1, 2, 0];  //lhsb[1,3,j] = tmp1 * 2.0d * njac[1,3,j];
+                        lhsb[j, 3, 0] = tmp1 * 2.0d * njac[j+1, 3, 0];  //lhsb[1,4,j] = tmp1 * 2.0d * njac[1,4,j];
+                        lhsb[j, 4, 0] = tmp1 * 2.0d * njac[j+1, 4, 0];  //lhsb[1,5,j] = tmp1 * 2.0d * njac[1,5,j];
 
-                        lhsb[j, 0, 1] = tmp1 * 2.0d * njac[j, 1, 2];
-                        lhsb[j, 1, 1] = 1.0d + tmp1 * 2.0d * njac[j, 2, 2] + tmp1 * 2.0d * dy2;
-                        lhsb[j, 2, 1] = tmp1 * 2.0d * njac[j, 3, 2];
-                        lhsb[j, 3, 1] = tmp1 * 2.0d * njac[j, 4, 2];
-                        lhsb[j, 4, 1] = tmp1 * 2.0d * njac[j, 5, 2];
+                        lhsb[j, 0, 1] = tmp1 * 2.0d * njac[j+1, 0, 1];
+                        lhsb[j, 1, 1] = 1.0d + tmp1 * 2.0d * njac[j+1, 1, 1] + tmp1 * 2.0d * dy2;
+                        lhsb[j, 2, 1] = tmp1 * 2.0d * njac[j+1, 2, 1];
+                        lhsb[j, 3, 1] = tmp1 * 2.0d * njac[j+1, 3, 1];
+                        lhsb[j, 4, 1] = tmp1 * 2.0d * njac[j+1, 4, 1];
 
-                        lhsb[j, 0, 2] = tmp1 * 2.0d * njac[j, 1, 3];
-                        lhsb[j, 1, 2] = tmp1 * 2.0d * njac[j, 2, 3];
-                        lhsb[j, 2, 2] = 1.0d + tmp1 * 2.0d * njac[j, 3, 3] + tmp1 * 2.0d * dy3;
-                        lhsb[j, 3, 2] = tmp1 * 2.0d * njac[j, 4, 3];
-                        lhsb[j, 4, 2] = tmp1 * 2.0d * njac[j, 5, 3];
+                        lhsb[j, 0, 2] = tmp1 * 2.0d * njac[j+1, 0, 2];
+                        lhsb[j, 1, 2] = tmp1 * 2.0d * njac[j+1, 1, 2];
+                        lhsb[j, 2, 2] = 1.0d + tmp1 * 2.0d * njac[j+1, 2, 2] + tmp1 * 2.0d * dy3;
+                        lhsb[j, 3, 2] = tmp1 * 2.0d * njac[j+1, 3, 2];
+                        lhsb[j, 4, 2] = tmp1 * 2.0d * njac[j+1, 4, 2];
 
-                        lhsb[j, 0, 3] = tmp1 * 2.0d * njac[j, 1, 4];
-                        lhsb[j, 1, 3] = tmp1 * 2.0d * njac[j, 2, 4];
-                        lhsb[j, 2, 3] = tmp1 * 2.0d * njac[j, 3, 4];
-                        lhsb[j, 3, 3] = 1.0d + tmp1 * 2.0d * njac[j, 4, 4] + tmp1 * 2.0d * dy4;
-                        lhsb[j, 4, 3] = tmp1 * 2.0d * njac[j, 5, 4];
+                        lhsb[j, 0, 3] = tmp1 * 2.0d * njac[j+1, 0, 3];
+                        lhsb[j, 1, 3] = tmp1 * 2.0d * njac[j+1, 1, 3];
+                        lhsb[j, 2, 3] = tmp1 * 2.0d * njac[j+1, 2, 3];
+                        lhsb[j, 3, 3] = 1.0d + tmp1 * 2.0d * njac[j+1, 3, 3] + tmp1 * 2.0d * dy4;
+                        lhsb[j, 4, 3] = tmp1 * 2.0d * njac[j+1, 4, 3];
 
-                        lhsb[j, 0, 4] = tmp1 * 2.0d * njac[j, 1, 5];
-                        lhsb[j, 1, 4] = tmp1 * 2.0d * njac[j, 2, 5];
-                        lhsb[j, 2, 4] = tmp1 * 2.0d * njac[j, 3, 5];
-                        lhsb[j, 3, 4] = tmp1 * 2.0d * njac[j, 4, 5];
-                        lhsb[j, 4, 4] = 1.0d + tmp1 * 2.0d * njac[j, 5, 5] + tmp1 * 2.0d * dy5;
+                        lhsb[j, 0, 4] = tmp1 * 2.0d * njac[j+1, 0, 4];
+                        lhsb[j, 1, 4] = tmp1 * 2.0d * njac[j+1, 1, 4];
+                        lhsb[j, 2, 4] = tmp1 * 2.0d * njac[j+1, 2, 4];
+                        lhsb[j, 3, 4] = tmp1 * 2.0d * njac[j+1, 3, 4];
+                        lhsb[j, 4, 4] = 1.0d + tmp1 * 2.0d * njac[j+1, 4, 4] + tmp1 * 2.0d * dy5;
 
-                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[j+1, 1, 1] - tmp1 * njac[j+1, 1, 1] - tmp1 * dy1;
-                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[j+1, 2, 1] - tmp1 * njac[j+1, 2, 1];//lhsc[1,2,i,j,k,c]=tmp2*fjac[1,2,j+1]-tmp1*njac[1,2,j+1];
-                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[j+1, 3, 1] - tmp1 * njac[j+1, 3, 1];//lhsc[1,3,i,j,k,c]=tmp2*fjac[1,3,j+1]-tmp1*njac[1,3,j+1];
-                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[j+1, 4, 1] - tmp1 * njac[j+1, 4, 1];//lhsc[1,4,i,j,k,c]=tmp2*fjac[1,4,j+1]-tmp1*njac[1,4,j+1];
-                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[j+1, 5, 1] - tmp1 * njac[j+1, 5, 1];//lhsc[1,5,i,j,k,c]=tmp2*fjac[1,5,j+1]-tmp1*njac[1,5,j+1];
+                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[j+2, 0, 0] - tmp1 * njac[j+2, 0, 0] - tmp1 * dy1;
+                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[j+2, 1, 0] - tmp1 * njac[j+2, 1, 0];//lhsc[1,2,i,j,k,c]=tmp2*fjac[1,2,j+1]-tmp1*njac[1,2,j+1];
+                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[j+2, 2, 0] - tmp1 * njac[j+2, 2, 0];//lhsc[1,3,i,j,k,c]=tmp2*fjac[1,3,j+1]-tmp1*njac[1,3,j+1];
+                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[j+2, 3, 0] - tmp1 * njac[j+2, 3, 0];//lhsc[1,4,i,j,k,c]=tmp2*fjac[1,4,j+1]-tmp1*njac[1,4,j+1];
+                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[j+2, 4, 0] - tmp1 * njac[j+2, 4, 0];//lhsc[1,5,i,j,k,c]=tmp2*fjac[1,5,j+1]-tmp1*njac[1,5,j+1];
 
-                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[j+1, 1, 2] - tmp1 * njac[j+1, 1, 2];
-                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[j+1, 2, 2] - tmp1 * njac[j+1, 2, 2] - tmp1 * dy2;
-                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[j+1, 3, 2] - tmp1 * njac[j+1, 3, 2];
-                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[j+1, 4, 2] - tmp1 * njac[j+1, 4, 2];
-                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[j+1, 5, 2] - tmp1 * njac[j+1, 5, 2];
+                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[j+2, 0, 1] - tmp1 * njac[j+2, 0, 1];
+                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[j+2, 1, 1] - tmp1 * njac[j+2, 1, 1] - tmp1 * dy2;
+                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[j+2, 2, 1] - tmp1 * njac[j+2, 2, 1];
+                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[j+2, 3, 1] - tmp1 * njac[j+2, 3, 1];
+                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[j+2, 4, 1] - tmp1 * njac[j+2, 4, 1];
 
-                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[j+1, 1, 3] - tmp1 * njac[j+1, 1, 3];
-                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[j+1, 2, 3] - tmp1 * njac[j+1, 2, 3];
-                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[j+1, 3, 3] - tmp1 * njac[j+1, 3, 3] - tmp1 * dy3;
-                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[j+1, 4, 3] - tmp1 * njac[j+1, 4, 3];
-                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[j+1, 5, 3] - tmp1 * njac[j+1, 5, 3];
+                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[j+2, 0, 2] - tmp1 * njac[j+2, 0, 2];
+                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[j+2, 1, 2] - tmp1 * njac[j+2, 1, 2];
+                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[j+2, 2, 2] - tmp1 * njac[j+2, 2, 2] - tmp1 * dy3;
+                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[j+2, 3, 2] - tmp1 * njac[j+2, 3, 2];
+                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[j+2, 4, 2] - tmp1 * njac[j+2, 4, 2];
 
-                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[j+1, 1, 4] - tmp1 * njac[j+1, 1, 4];
-                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[j+1, 2, 4] - tmp1 * njac[j+1, 2, 4];
-                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[j+1, 3, 4] - tmp1 * njac[j+1, 3, 4];
-                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[j+1, 4, 4] - tmp1 * njac[j+1, 4, 4] - tmp1 * dy4;
-                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[j+1, 5, 4] - tmp1 * njac[j+1, 5, 4];
+                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[j+2, 0, 3] - tmp1 * njac[j+2, 0, 3];
+                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[j+2, 1, 3] - tmp1 * njac[j+2, 1, 3];
+                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[j+2, 2, 3] - tmp1 * njac[j+2, 2, 3];
+                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[j+2, 3, 3] - tmp1 * njac[j+2, 3, 3] - tmp1 * dy4;
+                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[j+2, 4, 3] - tmp1 * njac[j+2, 4, 3];
 
-                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[j+1, 1, 5] - tmp1 * njac[j+1, 1, 5];
-                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[j+1, 2, 5] - tmp1 * njac[j+1, 2, 5];
-                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[j+1, 3, 5] - tmp1 * njac[j+1, 3, 5];
-                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[j+1, 4, 5] - tmp1 * njac[j+1, 4, 5];
-                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[j+1, 5, 5] - tmp1 * njac[j+1, 5, 5] - tmp1 * dy5;
+                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[j+2, 0, 4] - tmp1 * njac[j+2, 0, 4];
+                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[j+2, 1, 4] - tmp1 * njac[j+2, 1, 4];
+                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[j+2, 2, 4] - tmp1 * njac[j+2, 2, 4];
+                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[j+2, 3, 4] - tmp1 * njac[j+2, 3, 4];
+                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[j+2, 4, 4] - tmp1 * njac[j+2, 4, 4] - tmp1 * dy5;
                     }
                     //---------------------------------------------------------------------
                     //     outer most for(loops - sweeping in i direction
@@ -3079,67 +3079,67 @@ namespace NPB {
                         tmp2 = tmp1 * tmp1;
                         tmp3 = tmp1 * tmp2;
 
-                        fjac[k, 1, 1] = 0.0d;   //fjac[1,1,k] = 0.0d+00
-                        fjac[k, 2, 1] = 0.0d;
-                        fjac[k, 3, 1] = 0.0d;
-                        fjac[k, 4, 1] = 1.0d;
-                        fjac[k, 5, 1] = 0.0d;
+                        fjac[k+1, 0, 0] = 0.0d;   //fjac[1,1,k] = 0.0d+00
+                        fjac[k+1, 1, 0] = 0.0d;
+                        fjac[k+1, 2, 0] = 0.0d;
+                        fjac[k+1, 3, 0] = 1.0d;
+                        fjac[k+1, 4, 0] = 0.0d;
 
-                        fjac[k, 1, 2] = -(utmp[k, 2] * utmp[k, 4]) * tmp2;
-                        fjac[k, 2, 2] = utmp[k, 4] * tmp1;
-                        fjac[k, 3, 2] = 0.0d;
-                        fjac[k, 4, 2] = utmp[k, 2] * tmp1;
-                        fjac[k, 5, 2] = 0.0d;
+                        fjac[k+1, 0, 1] = -(utmp[k, 2] * utmp[k, 4]) * tmp2;
+                        fjac[k+1, 1, 1] = utmp[k, 4] * tmp1;
+                        fjac[k+1, 2, 1] = 0.0d;
+                        fjac[k+1, 3, 1] = utmp[k, 2] * tmp1;
+                        fjac[k+1, 4, 1] = 0.0d;
 
-                        fjac[k, 1, 3] = -(utmp[k, 3] * utmp[k, 4]) * tmp2;
-                        fjac[k, 2, 3] = 0.0d;
-                        fjac[k, 3, 3] = utmp[k, 4] * tmp1;
-                        fjac[k, 4, 3] = utmp[k, 3] * tmp1;
-                        fjac[k, 5, 3] = 0.0d;
+                        fjac[k+1, 0, 2] = -(utmp[k, 3] * utmp[k, 4]) * tmp2;
+                        fjac[k+1, 1, 2] = 0.0d;
+                        fjac[k+1, 2, 2] = utmp[k, 4] * tmp1;
+                        fjac[k+1, 3, 2] = utmp[k, 3] * tmp1;
+                        fjac[k+1, 4, 2] = 0.0d;
 
-                        fjac[k, 1, 4] = -(utmp[k, 4] * utmp[k, 4] * tmp2) + c2 * utmp[k, 6];
-                        fjac[k, 2, 4] = -c2 * utmp[k, 2] * tmp1;
-                        fjac[k, 3, 4] = -c2 * utmp[k, 3] * tmp1;
-                        fjac[k, 4, 4] = (2.0d - c2) * utmp[k, 4] * tmp1;
-                        fjac[k, 5, 4] = c2;
+                        fjac[k+1, 0, 3] = -(utmp[k, 4] * utmp[k, 4] * tmp2) + c2 * utmp[k, 6];
+                        fjac[k+1, 1, 3] = -c2 * utmp[k, 2] * tmp1;
+                        fjac[k+1, 2, 3] = -c2 * utmp[k, 3] * tmp1;
+                        fjac[k+1, 3, 3] = (2.0d - c2) * utmp[k, 4] * tmp1;
+                        fjac[k+1, 4, 3] = c2;
 
-                        fjac[k, 1, 5] = (c2 * 2.0d * utmp[k, 6] - c1 * (utmp[k, 5] * tmp1)) * (utmp[k, 4] * tmp1);
-                        fjac[k, 2, 5] = -c2 * (utmp[k, 2] * utmp[k, 4]) * tmp2;
-                        fjac[k, 3, 5] = -c2 * (utmp[k, 3] * utmp[k, 4]) * tmp2;
-                        fjac[k, 4, 5] = c1 * (utmp[k, 5] * tmp1) - c2 * (utmp[k, 6] + utmp[k, 4] * utmp[k, 4] * tmp2);
-                        fjac[k, 5, 5] = c1 * utmp[k, 4] * tmp1;
+                        fjac[k+1, 0, 4] = (c2 * 2.0d * utmp[k, 6] - c1 * (utmp[k, 5] * tmp1)) * (utmp[k, 4] * tmp1);
+                        fjac[k+1, 1, 4] = -c2 * (utmp[k, 2] * utmp[k, 4]) * tmp2;
+                        fjac[k+1, 2, 4] = -c2 * (utmp[k, 3] * utmp[k, 4]) * tmp2;
+                        fjac[k+1, 3, 4] = c1 * (utmp[k, 5] * tmp1) - c2 * (utmp[k, 6] + utmp[k, 4] * utmp[k, 4] * tmp2);
+                        fjac[k+1, 4, 4] = c1 * utmp[k, 4] * tmp1;
 
-                        njac[k, 1, 1] = 0.0d;
-                        njac[k, 2, 1] = 0.0d;
-                        njac[k, 3, 1] = 0.0d;
-                        njac[k, 4, 1] = 0.0d;
-                        njac[k, 5, 1] = 0.0d;
+                        njac[k+1, 0, 0] = 0.0d;
+                        njac[k+1, 1, 0] = 0.0d;
+                        njac[k+1, 2, 0] = 0.0d;
+                        njac[k+1, 3, 0] = 0.0d;
+                        njac[k+1, 4, 0] = 0.0d;
 
-                        njac[k, 1, 2] = -c3c4 * tmp2 * utmp[k, 2];
-                        njac[k, 2, 2] = c3c4 * tmp1;
-                        njac[k, 3, 2] = 0.0d;
-                        njac[k, 4, 2] = 0.0d;
-                        njac[k, 5, 2] = 0.0d;
+                        njac[k+1, 0, 1] = -c3c4 * tmp2 * utmp[k, 2];
+                        njac[k+1, 1, 1] = c3c4 * tmp1;
+                        njac[k+1, 2, 1] = 0.0d;
+                        njac[k+1, 3, 1] = 0.0d;
+                        njac[k+1, 4, 1] = 0.0d;
 
-                        njac[k, 1, 3] = -c3c4 * tmp2 * utmp[k, 3];
-                        njac[k, 2, 3] = 0.0d;
-                        njac[k, 3, 3] = c3c4 * tmp1;
-                        njac[k, 4, 3] = 0.0d;
-                        njac[k, 5, 3] = 0.0d;
+                        njac[k+1, 0, 2] = -c3c4 * tmp2 * utmp[k, 3];
+                        njac[k+1, 1, 2] = 0.0d;
+                        njac[k+1, 2, 2] = c3c4 * tmp1;
+                        njac[k+1, 3, 2] = 0.0d;
+                        njac[k+1, 4, 2] = 0.0d;
 
-                        njac[k, 1, 4] = -con43 * c3c4 * tmp2 * utmp[k, 4];
-                        njac[k, 2, 4] = 0.0d;
-                        njac[k, 3, 4] = 0.0d;
-                        njac[k, 4, 4] = con43 * c3 * c4 * tmp1;
-                        njac[k, 5, 4] = 0.0d;
+                        njac[k+1, 0, 3] = -con43 * c3c4 * tmp2 * utmp[k, 4];
+                        njac[k+1, 1, 3] = 0.0d;
+                        njac[k+1, 2, 3] = 0.0d;
+                        njac[k+1, 3, 3] = con43 * c3 * c4 * tmp1;
+                        njac[k+1, 4, 3] = 0.0d;
 
-                        njac[k, 1, 5] = -(c3c4 - c1345) * tmp3 * (pow2(utmp[k, 2])) -
+                        njac[k+1, 0, 4] = -(c3c4 - c1345) * tmp3 * (pow2(utmp[k, 2])) -
                                         (c3c4 - c1345) * tmp3 * (pow2(utmp[k, 3])) - (con43 * c3c4 - c1345) * tmp3 * (pow2(utmp[k, 4])) - c1345 * tmp2 * utmp[k, 5];
 
-                        njac[k, 2, 5] = (c3c4 - c1345) * tmp2 * utmp[k, 2];
-                        njac[k, 3, 5] = (c3c4 - c1345) * tmp2 * utmp[k, 3];
-                        njac[k, 4, 5] = (con43 * c3c4 - c1345) * tmp2 * utmp[k, 4];
-                        njac[k, 5, 5] = (c1345) * tmp1;
+                        njac[k+1, 1, 4] = (c3c4 - c1345) * tmp2 * utmp[k, 2];
+                        njac[k+1, 2, 4] = (c3c4 - c1345) * tmp2 * utmp[k, 3];
+                        njac[k+1, 3, 4] = (con43 * c3c4 - c1345) * tmp2 * utmp[k, 4];
+                        njac[k+1, 4, 4] = (c1345) * tmp1;
                     }
                     //---------------------------------------------------------------------
                     //     now joacobians set, so form left hand side in z direction
@@ -3147,95 +3147,95 @@ namespace NPB {
                     for(k = start[c, 2]; k <= ksize - end[c, 2]; k++) {
                         tmp1 = dt * tz1;
                         tmp2 = dt * tz2;
-                        lhsa[k, 0, 0] = -tmp2 * fjac[k-1, 1, 1] - tmp1 * njac[k-1, 1, 1] - tmp1 * dz1;//lhsa[1,1,k]=-tmp2*fjac[1,1,k-1]-tmp1*njac[1,1,k-1]
-                        lhsa[k, 1, 0] = -tmp2 * fjac[k-1, 2, 1] - tmp1 * njac[k-1, 2, 1];    //fjac[k-1+2,2,1] njac[k-1+2,2,1]
-                        lhsa[k, 2, 0] = -tmp2 * fjac[k-1, 3, 1] - tmp1 * njac[k-1, 3, 1];
-                        lhsa[k, 3, 0] = -tmp2 * fjac[k-1, 4, 1] - tmp1 * njac[k-1, 4, 1];
-                        lhsa[k, 4, 0] = -tmp2 * fjac[k-1, 5, 1] - tmp1 * njac[k-1, 5, 1];
+                        lhsa[k, 0, 0] = -tmp2 * fjac[k, 0, 0] - tmp1 * njac[k, 0, 0] - tmp1 * dz1;//lhsa[1,1,k]=-tmp2*fjac[1,1,k-1]-tmp1*njac[1,1,k-1]
+                        lhsa[k, 1, 0] = -tmp2 * fjac[k, 1, 0] - tmp1 * njac[k, 1, 0];    //fjac[k-1+2,2,1] njac[k-1+2,2,1]
+                        lhsa[k, 2, 0] = -tmp2 * fjac[k, 2, 0] - tmp1 * njac[k, 2, 0];
+                        lhsa[k, 3, 0] = -tmp2 * fjac[k, 3, 0] - tmp1 * njac[k, 3, 0];
+                        lhsa[k, 4, 0] = -tmp2 * fjac[k, 4, 0] - tmp1 * njac[k, 4, 0];
 
-                        lhsa[k, 0, 1] = -tmp2 * fjac[k-1, 1, 2] - tmp1 * njac[k-1, 1, 2];
-                        lhsa[k, 1, 1] = -tmp2 * fjac[k-1, 2, 2] - tmp1 * njac[k-1, 2, 2] - tmp1 * dz2;
-                        lhsa[k, 2, 1] = -tmp2 * fjac[k-1, 3, 2] - tmp1 * njac[k-1, 3, 2];
-                        lhsa[k, 3, 1] = -tmp2 * fjac[k-1, 4, 2] - tmp1 * njac[k-1, 4, 2];
-                        lhsa[k, 4, 1] = -tmp2 * fjac[k-1, 5, 2] - tmp1 * njac[k-1, 5, 2];
+                        lhsa[k, 0, 1] = -tmp2 * fjac[k, 0, 1] - tmp1 * njac[k, 0, 1];
+                        lhsa[k, 1, 1] = -tmp2 * fjac[k, 1, 1] - tmp1 * njac[k, 1, 1] - tmp1 * dz2;
+                        lhsa[k, 2, 1] = -tmp2 * fjac[k, 2, 1] - tmp1 * njac[k, 2, 1];
+                        lhsa[k, 3, 1] = -tmp2 * fjac[k, 3, 1] - tmp1 * njac[k, 3, 1];
+                        lhsa[k, 4, 1] = -tmp2 * fjac[k, 4, 1] - tmp1 * njac[k, 4, 1];
 
-                        lhsa[k, 0, 2] = -tmp2 * fjac[k-1, 1, 3] - tmp1 * njac[k-1, 1, 3];
-                        lhsa[k, 1, 2] = -tmp2 * fjac[k-1, 2, 3] - tmp1 * njac[k-1, 2, 3];
-                        lhsa[k, 2, 2] = -tmp2 * fjac[k-1, 3, 3] - tmp1 * njac[k-1, 3, 3] - tmp1 * dz3;
-                        lhsa[k, 3, 2] = -tmp2 * fjac[k-1, 4, 3] - tmp1 * njac[k-1, 4, 3];
-                        lhsa[k, 4, 2] = -tmp2 * fjac[k-1, 5, 3] - tmp1 * njac[k-1, 5, 3];
+                        lhsa[k, 0, 2] = -tmp2 * fjac[k, 0, 2] - tmp1 * njac[k, 0, 2];
+                        lhsa[k, 1, 2] = -tmp2 * fjac[k, 1, 2] - tmp1 * njac[k, 1, 2];
+                        lhsa[k, 2, 2] = -tmp2 * fjac[k, 2, 2] - tmp1 * njac[k, 2, 2] - tmp1 * dz3;
+                        lhsa[k, 3, 2] = -tmp2 * fjac[k, 3, 2] - tmp1 * njac[k, 3, 2];
+                        lhsa[k, 4, 2] = -tmp2 * fjac[k, 4, 2] - tmp1 * njac[k, 4, 2];
 
-                        lhsa[k, 0, 3] = -tmp2 * fjac[k-1, 1, 4] - tmp1 * njac[k-1, 1, 4];
-                        lhsa[k, 1, 3] = -tmp2 * fjac[k-1, 2, 4] - tmp1 * njac[k-1, 2, 4];
-                        lhsa[k, 2, 3] = -tmp2 * fjac[k-1, 3, 4] - tmp1 * njac[k-1, 3, 4];
-                        lhsa[k, 3, 3] = -tmp2 * fjac[k-1, 4, 4] - tmp1 * njac[k-1, 4, 4] - tmp1 * dz4;
-                        lhsa[k, 4, 3] = -tmp2 * fjac[k-1, 5, 4] - tmp1 * njac[k-1, 5, 4];
+                        lhsa[k, 0, 3] = -tmp2 * fjac[k, 0, 3] - tmp1 * njac[k, 0, 3];
+                        lhsa[k, 1, 3] = -tmp2 * fjac[k, 1, 3] - tmp1 * njac[k, 1, 3];
+                        lhsa[k, 2, 3] = -tmp2 * fjac[k, 2, 3] - tmp1 * njac[k, 2, 3];
+                        lhsa[k, 3, 3] = -tmp2 * fjac[k, 3, 3] - tmp1 * njac[k, 3, 3] - tmp1 * dz4;
+                        lhsa[k, 4, 3] = -tmp2 * fjac[k, 4, 3] - tmp1 * njac[k, 4, 3];
 
-                        lhsa[k, 0, 4] = -tmp2 * fjac[k-1, 1, 5] - tmp1 * njac[k-1, 1, 5];
-                        lhsa[k, 1, 4] = -tmp2 * fjac[k-1, 2, 5] - tmp1 * njac[k-1, 2, 5];
-                        lhsa[k, 2, 4] = -tmp2 * fjac[k-1, 3, 5] - tmp1 * njac[k-1, 3, 5];
-                        lhsa[k, 3, 4] = -tmp2 * fjac[k-1, 4, 5] - tmp1 * njac[k-1, 4, 5];
-                        lhsa[k, 4, 4] = -tmp2 * fjac[k-1, 5, 5] - tmp1 * njac[k-1, 5, 5] - tmp1 * dz5;
+                        lhsa[k, 0, 4] = -tmp2 * fjac[k, 0, 4] - tmp1 * njac[k, 0, 4];
+                        lhsa[k, 1, 4] = -tmp2 * fjac[k, 1, 4] - tmp1 * njac[k, 1, 4];
+                        lhsa[k, 2, 4] = -tmp2 * fjac[k, 2, 4] - tmp1 * njac[k, 2, 4];
+                        lhsa[k, 3, 4] = -tmp2 * fjac[k, 3, 4] - tmp1 * njac[k, 3, 4];
+                        lhsa[k, 4, 4] = -tmp2 * fjac[k, 4, 4] - tmp1 * njac[k, 4, 4] - tmp1 * dz5;
 
-                        lhsb[k, 0, 0] = 1.0d + tmp1 * 2.0d * njac[k, 1, 1] + tmp1 * 2.0d * dz1; //lhsb[1,1,k]=1.0d+tmp1*2.0d+00*njac[1,1,k]
-                        lhsb[k, 1, 0] = tmp1 * 2.0d * njac[k, 2, 1];
-                        lhsb[k, 2, 0] = tmp1 * 2.0d * njac[k, 3, 1];
-                        lhsb[k, 3, 0] = tmp1 * 2.0d * njac[k, 4, 1];
-                        lhsb[k, 4, 0] = tmp1 * 2.0d * njac[k, 5, 1];
+                        lhsb[k, 0, 0] = 1.0d + tmp1 * 2.0d * njac[k+1, 0, 0] + tmp1 * 2.0d * dz1; //lhsb[1,1,k]=1.0d+tmp1*2.0d+00*njac[1,1,k]
+                        lhsb[k, 1, 0] = tmp1 * 2.0d * njac[k+1, 1, 0];
+                        lhsb[k, 2, 0] = tmp1 * 2.0d * njac[k+1, 2, 0];
+                        lhsb[k, 3, 0] = tmp1 * 2.0d * njac[k+1, 3, 0];
+                        lhsb[k, 4, 0] = tmp1 * 2.0d * njac[k+1, 4, 0];
 
-                        lhsb[k, 0, 1] = tmp1 * 2.0d * njac[k, 1, 2];
-                        lhsb[k, 1, 1] = 1.0d + tmp1 * 2.0d * njac[k, 2, 2] + tmp1 * 2.0d * dz2;
-                        lhsb[k, 2, 1] = tmp1 * 2.0d * njac[k, 3, 2];
-                        lhsb[k, 3, 1] = tmp1 * 2.0d * njac[k, 4, 2];
-                        lhsb[k, 4, 1] = tmp1 * 2.0d * njac[k, 5, 2];
+                        lhsb[k, 0, 1] = tmp1 * 2.0d * njac[k+1, 0, 1];
+                        lhsb[k, 1, 1] = 1.0d + tmp1 * 2.0d * njac[k+1, 1, 1] + tmp1 * 2.0d * dz2;
+                        lhsb[k, 2, 1] = tmp1 * 2.0d * njac[k+1, 2, 1];
+                        lhsb[k, 3, 1] = tmp1 * 2.0d * njac[k+1, 3, 1];
+                        lhsb[k, 4, 1] = tmp1 * 2.0d * njac[k+1, 4, 1];
 
-                        lhsb[k, 0, 2] = tmp1 * 2.0d * njac[k, 1, 3];
-                        lhsb[k, 1, 2] = tmp1 * 2.0d * njac[k, 2, 3];
-                        lhsb[k, 2, 2] = 1.0d + tmp1 * 2.0d * njac[k, 3, 3] + tmp1 * 2.0d * dz3;
-                        lhsb[k, 3, 2] = tmp1 * 2.0d * njac[k, 4, 3];
-                        lhsb[k, 4, 2] = tmp1 * 2.0d * njac[k, 5, 3];
+                        lhsb[k, 0, 2] = tmp1 * 2.0d * njac[k+1, 0, 2];
+                        lhsb[k, 1, 2] = tmp1 * 2.0d * njac[k+1, 1, 2];
+                        lhsb[k, 2, 2] = 1.0d + tmp1 * 2.0d * njac[k+1, 2, 2] + tmp1 * 2.0d * dz3;
+                        lhsb[k, 3, 2] = tmp1 * 2.0d * njac[k+1, 3, 2];
+                        lhsb[k, 4, 2] = tmp1 * 2.0d * njac[k+1, 4, 2];
 
-                        lhsb[k, 0, 3] = tmp1 * 2.0d * njac[k, 1, 4];
-                        lhsb[k, 1, 3] = tmp1 * 2.0d * njac[k, 2, 4];
-                        lhsb[k, 2, 3] = tmp1 * 2.0d * njac[k, 3, 4];
-                        lhsb[k, 3, 3] = 1.0d + tmp1 * 2.0d * njac[k, 4, 4] + tmp1 * 2.0d * dz4;
-                        lhsb[k, 4, 3] = tmp1 * 2.0d * njac[k, 5, 4];
+                        lhsb[k, 0, 3] = tmp1 * 2.0d * njac[k+1, 0, 3];
+                        lhsb[k, 1, 3] = tmp1 * 2.0d * njac[k+1, 1, 3];
+                        lhsb[k, 2, 3] = tmp1 * 2.0d * njac[k+1, 2, 3];
+                        lhsb[k, 3, 3] = 1.0d + tmp1 * 2.0d * njac[k+1, 3, 3] + tmp1 * 2.0d * dz4;
+                        lhsb[k, 4, 3] = tmp1 * 2.0d * njac[k+1, 4, 3];
 
-                        lhsb[k, 0, 4] = tmp1 * 2.0d * njac[k, 1, 5];
-                        lhsb[k, 1, 4] = tmp1 * 2.0d * njac[k, 2, 5];
-                        lhsb[k, 2, 4] = tmp1 * 2.0d * njac[k, 3, 5];
-                        lhsb[k, 3, 4] = tmp1 * 2.0d * njac[k, 4, 5];
-                        lhsb[k, 4, 4] = 1.0d + tmp1 * 2.0d * njac[k, 5, 5] + tmp1 * 2.0d * dz5;
+                        lhsb[k, 0, 4] = tmp1 * 2.0d * njac[k+1, 0, 4];
+                        lhsb[k, 1, 4] = tmp1 * 2.0d * njac[k+1, 1, 4];
+                        lhsb[k, 2, 4] = tmp1 * 2.0d * njac[k+1, 2, 4];
+                        lhsb[k, 3, 4] = tmp1 * 2.0d * njac[k+1, 3, 4];
+                        lhsb[k, 4, 4] = 1.0d + tmp1 * 2.0d * njac[k+1, 4, 4] + tmp1 * 2.0d * dz5;
 
-                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[k+1, 1, 1] - tmp1 * njac[k+1, 1, 1] - tmp1 * dz1;//lhsc[1,1,i,j,k,c] fjac[1,1,k+1] njac[1,1,k+1]
-                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[k+1, 2, 1] - tmp1 * njac[k+1, 2, 1];//fjac[k+1+2,2,1] njac[k+1+2,2,1]
-                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[k+1, 3, 1] - tmp1 * njac[k+1, 3, 1];
-                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[k+1, 4, 1] - tmp1 * njac[k+1, 4, 1];
-                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[k+1, 5, 1] - tmp1 * njac[k+1, 5, 1];
+                        lhsc[c, k, j, i, 0, 0] = tmp2 * fjac[k+2, 0, 0] - tmp1 * njac[k+2, 0, 0] - tmp1 * dz1;//lhsc[1,1,i,j,k,c] fjac[1,1,k+1] njac[1,1,k+1]
+                        lhsc[c, k, j, i, 1, 0] = tmp2 * fjac[k+2, 1, 0] - tmp1 * njac[k+2, 1, 0];//fjac[k+1+2,2,1] njac[k+1+2,2,1]
+                        lhsc[c, k, j, i, 2, 0] = tmp2 * fjac[k+2, 2, 0] - tmp1 * njac[k+2, 2, 0];
+                        lhsc[c, k, j, i, 3, 0] = tmp2 * fjac[k+2, 3, 0] - tmp1 * njac[k+2, 3, 0];
+                        lhsc[c, k, j, i, 4, 0] = tmp2 * fjac[k+2, 4, 0] - tmp1 * njac[k+2, 4, 0];
 
-                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[k+1, 1, 2] - tmp1 * njac[k+1, 1, 2];
-                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[k+1, 2, 2] - tmp1 * njac[k+1, 2, 2] - tmp1 * dz2;
-                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[k+1, 3, 2] - tmp1 * njac[k+1, 3, 2];
-                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[k+1, 4, 2] - tmp1 * njac[k+1, 4, 2];
-                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[k+1, 5, 2] - tmp1 * njac[k+1, 5, 2];
+                        lhsc[c, k, j, i, 0, 1] = tmp2 * fjac[k+2, 0, 1] - tmp1 * njac[k+2, 0, 1];
+                        lhsc[c, k, j, i, 1, 1] = tmp2 * fjac[k+2, 1, 1] - tmp1 * njac[k+2, 1, 1] - tmp1 * dz2;
+                        lhsc[c, k, j, i, 2, 1] = tmp2 * fjac[k+2, 2, 1] - tmp1 * njac[k+2, 2, 1];
+                        lhsc[c, k, j, i, 3, 1] = tmp2 * fjac[k+2, 3, 1] - tmp1 * njac[k+2, 3, 1];
+                        lhsc[c, k, j, i, 4, 1] = tmp2 * fjac[k+2, 4, 1] - tmp1 * njac[k+2, 4, 1];
 
-                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[k+1, 1, 3] - tmp1 * njac[k+1, 1, 3];
-                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[k+1, 2, 3] - tmp1 * njac[k+1, 2, 3];
-                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[k+1, 3, 3] - tmp1 * njac[k+1, 3, 3] - tmp1 * dz3;
-                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[k+1, 4, 3] - tmp1 * njac[k+1, 4, 3];
-                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[k+1, 5, 3] - tmp1 * njac[k+1, 5, 3];
+                        lhsc[c, k, j, i, 0, 2] = tmp2 * fjac[k+2, 0, 2] - tmp1 * njac[k+2, 0, 2];
+                        lhsc[c, k, j, i, 1, 2] = tmp2 * fjac[k+2, 1, 2] - tmp1 * njac[k+2, 1, 2];
+                        lhsc[c, k, j, i, 2, 2] = tmp2 * fjac[k+2, 2, 2] - tmp1 * njac[k+2, 2, 2] - tmp1 * dz3;
+                        lhsc[c, k, j, i, 3, 2] = tmp2 * fjac[k+2, 3, 2] - tmp1 * njac[k+2, 3, 2];
+                        lhsc[c, k, j, i, 4, 2] = tmp2 * fjac[k+2, 4, 2] - tmp1 * njac[k+2, 4, 2];
 
-                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[k+1, 1, 4] - tmp1 * njac[k+1, 1, 4];
-                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[k+1, 2, 4] - tmp1 * njac[k+1, 2, 4];
-                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[k+1, 3, 4] - tmp1 * njac[k+1, 3, 4];
-                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[k+1, 4, 4] - tmp1 * njac[k+1, 4, 4] - tmp1 * dz4;
-                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[k+1, 5, 4] - tmp1 * njac[k+1, 5, 4];
+                        lhsc[c, k, j, i, 0, 3] = tmp2 * fjac[k+2, 0, 3] - tmp1 * njac[k+2, 0, 3];
+                        lhsc[c, k, j, i, 1, 3] = tmp2 * fjac[k+2, 1, 3] - tmp1 * njac[k+2, 1, 3];
+                        lhsc[c, k, j, i, 2, 3] = tmp2 * fjac[k+2, 2, 3] - tmp1 * njac[k+2, 2, 3];
+                        lhsc[c, k, j, i, 3, 3] = tmp2 * fjac[k+2, 3, 3] - tmp1 * njac[k+2, 3, 3] - tmp1 * dz4;
+                        lhsc[c, k, j, i, 4, 3] = tmp2 * fjac[k+2, 4, 3] - tmp1 * njac[k+2, 4, 3];
 
-                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[k+1, 1, 5] - tmp1 * njac[k+1, 1, 5];
-                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[k+1, 2, 5] - tmp1 * njac[k+1, 2, 5];
-                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[k+1, 3, 5] - tmp1 * njac[k+1, 3, 5];
-                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[k+1, 4, 5] - tmp1 * njac[k+1, 4, 5];
-                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[k+1, 5, 5] - tmp1 * njac[k+1, 5, 5] - tmp1 * dz5;
+                        lhsc[c, k, j, i, 0, 4] = tmp2 * fjac[k+2, 0, 4] - tmp1 * njac[k+2, 0, 4];
+                        lhsc[c, k, j, i, 1, 4] = tmp2 * fjac[k+2, 1, 4] - tmp1 * njac[k+2, 1, 4];
+                        lhsc[c, k, j, i, 2, 4] = tmp2 * fjac[k+2, 2, 4] - tmp1 * njac[k+2, 2, 4];
+                        lhsc[c, k, j, i, 3, 4] = tmp2 * fjac[k+2, 3, 4] - tmp1 * njac[k+2, 3, 4];
+                        lhsc[c, k, j, i, 4, 4] = tmp2 * fjac[k+2, 4, 4] - tmp1 * njac[k+2, 4, 4] - tmp1 * dz5;
                     }
                     //---------------------------------------------------------------------
                     //     outer most for(loops - sweeping in i direction
