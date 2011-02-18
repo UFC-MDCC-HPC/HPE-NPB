@@ -174,11 +174,11 @@ namespace NPB {
                    itmax     = int.Parse(vetTemp[2]);//read [3,*] itmax
                    dt        = double.Parse(vetTemp[3]);//read [3,*] dt
                    omega     = double.Parse(vetTemp[4]);//read [3,*] omega
-                   tolrsd[1] = double.Parse(vetTemp[5]);
-                   tolrsd[2] = double.Parse(vetTemp[6]);
-                   tolrsd[3] = double.Parse(vetTemp[7]);
-                   tolrsd[4] = double.Parse(vetTemp[8]);
-                   tolrsd[5] = double.Parse(vetTemp[9]);//read [3,*] tolrsd[1],tolrsd[2],tolrsd[3],tolrsd[4],tolrsd[5]
+                   tolrsd[0] = double.Parse(vetTemp[5]);
+                   tolrsd[1] = double.Parse(vetTemp[6]);
+                   tolrsd[2] = double.Parse(vetTemp[7]);
+                   tolrsd[3] = double.Parse(vetTemp[8]);
+                   tolrsd[4] = double.Parse(vetTemp[9]);//read [3,*] tolrsd[1],tolrsd[2],tolrsd[3],tolrsd[4],tolrsd[5]
                    nx0       = int.Parse(vetTemp[10]);
                    ny0       = int.Parse(vetTemp[11]);
                    nz0       = int.Parse(vetTemp[12]);//read [3,*] nx0, ny0, nz0
@@ -188,11 +188,11 @@ namespace NPB {
                    itmax = itmax_default;
                    dt = dt_default;
                    omega = omega_default;
-                   tolrsd[1] = tolrsd1_def;
-                   tolrsd[2] = tolrsd2_def;
-                   tolrsd[3] = tolrsd3_def;
-                   tolrsd[4] = tolrsd4_def;
-                   tolrsd[5] = tolrsd5_def;
+                   tolrsd[0] = tolrsd1_def;
+                   tolrsd[1] = tolrsd2_def;
+                   tolrsd[2] = tolrsd3_def;
+                   tolrsd[3] = tolrsd4_def;
+                   tolrsd[4] = tolrsd5_def;
                    nx0 = isiz01;
                    ny0 = isiz02;
                    nz0 = isiz03;
@@ -227,11 +227,11 @@ namespace NPB {
             worldcomm.Broadcast<int>(ref itmax, root);        //call MPI_BCAST[itmax, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<double>(ref dt, root);        //call MPI_BCAST[dt, 1, dp_type, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<double>(ref omega, root);     //call MPI_BCAST[omega, 1, dp_type, root, MPI_COMM_WORLD, ierr]
+            worldcomm.Broadcast<double>(ref tolrsd[0], root); //call MPI_BCAST[tolrsd, 5, dp_type, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<double>(ref tolrsd[1], root); //call MPI_BCAST[tolrsd, 5, dp_type, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<double>(ref tolrsd[2], root); //call MPI_BCAST[tolrsd, 5, dp_type, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<double>(ref tolrsd[3], root); //call MPI_BCAST[tolrsd, 5, dp_type, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<double>(ref tolrsd[4], root); //call MPI_BCAST[tolrsd, 5, dp_type, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<double>(ref tolrsd[5], root); //call MPI_BCAST[tolrsd, 5, dp_type, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<int>(ref nx0, root);          //call MPI_BCAST[nx0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<int>(ref ny0, root);          //call MPI_BCAST[ny0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
             worldcomm.Broadcast<int>(ref nz0, root);          //call MPI_BCAST[nz0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
@@ -397,83 +397,83 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   coefficients of the exact solution to the first pde
             //---------------------------------------------------------------------
-            ce[1,1] = 2.0d;
-            ce[1,2] = 0.0d;
-            ce[1,3] = 0.0d;
-            ce[1,4] = 4.0d;
-            ce[1,5] = 5.0d;
-            ce[1,6] = 3.0d;
-            ce[1,7] = 5.0E-01;
-            ce[1,8] = 2.0E-02;
-            ce[1,9] = 1.0E-02;
-            ce[1,10] = 3.0E-02;
-            ce[1,11] = 5.0E-01;
-            ce[1,12] = 4.0E-01;
-            ce[1,13] = 3.0E-01;
+            ce[0,0] = 2.0d;
+            ce[1,0] = 0.0d;
+            ce[2,0] = 0.0d;
+            ce[3,0] = 4.0d;
+            ce[4,0] = 5.0d;
+            ce[5,0] = 3.0d;
+            ce[6,0] = 5.0E-01;
+            ce[7,0] = 2.0E-02;
+            ce[8,0] = 1.0E-02;
+            ce[9,0] = 3.0E-02;
+            ce[10,0] = 5.0E-01;
+            ce[11,0] = 4.0E-01;
+            ce[12,0] = 3.0E-01;
             //---------------------------------------------------------------------
             //   coefficients of the exact solution to the second pde
             //---------------------------------------------------------------------
-            ce[2,1] = 1.0d;
-            ce[2,2] = 0.0d;
-            ce[2,3] = 0.0d;
-            ce[2,4] = 0.0d;
-            ce[2,5] = 1.0d;
-            ce[2,6] = 2.0d;
-            ce[2,7] = 3.0d;
-            ce[2,8] = 1.0E-02;
-            ce[2,9] = 3.0E-02;
-            ce[2,10] = 2.0E-02;
-            ce[2,11] = 4.0E-01;
-            ce[2,12] = 3.0E-01;
-            ce[2,13] = 5.0E-01;
+            ce[0,1] = 1.0d;
+            ce[1,1] = 0.0d;
+            ce[2,1] = 0.0d;
+            ce[3,1] = 0.0d;
+            ce[4,1] = 1.0d;
+            ce[5,1] = 2.0d;
+            ce[6,1] = 3.0d;
+            ce[7,1] = 1.0E-02;
+            ce[8,1] = 3.0E-02;
+            ce[9,1] = 2.0E-02;
+            ce[10,1] = 4.0E-01;
+            ce[11,1] = 3.0E-01;
+            ce[12,1] = 5.0E-01;
             //---------------------------------------------------------------------
             //   coefficients of the exact solution to the third pde
             //---------------------------------------------------------------------
-            ce[3,1] = 2.0d;
-            ce[3,2] = 2.0d;
-            ce[3,3] = 0.0d;
-            ce[3,4] = 0.0d;
-            ce[3,5] = 0.0d;
-            ce[3,6] = 2.0d;
-            ce[3,7] = 3.0d;
-            ce[3,8] = 4.0E-02;
-            ce[3,9] = 3.0E-02;
-            ce[3,10] = 5.0E-02;
-            ce[3,11] = 3.0E-01;
-            ce[3,12] = 5.0E-01;
-            ce[3,13] = 4.0E-01;
+            ce[0,2] = 2.0d;
+            ce[1,2] = 2.0d;
+            ce[2,2] = 0.0d;
+            ce[3,2] = 0.0d;
+            ce[4,2] = 0.0d;
+            ce[5,2] = 2.0d;
+            ce[6,2] = 3.0d;
+            ce[7,2] = 4.0E-02;
+            ce[8,2] = 3.0E-02;
+            ce[9,2] = 5.0E-02;
+            ce[10,2] = 3.0E-01;
+            ce[11,2] = 5.0E-01;
+            ce[12,2] = 4.0E-01;
             //---------------------------------------------------------------------
             //   coefficients of the exact solution to the fourth pde
             //---------------------------------------------------------------------
-            ce[4,1] = 2.0d;
-            ce[4,2] = 2.0d;
+            ce[0,3] = 2.0d;
+            ce[1,3] = 2.0d;
+            ce[2,3] = 0.0d;
+            ce[3,3] = 0.0d;
             ce[4,3] = 0.0d;
-            ce[4,4] = 0.0d;
-            ce[4,5] = 0.0d;
-            ce[4,6] = 2.0d;
-            ce[4,7] = 3.0d;
-            ce[4,8] = 3.0E-02;
-            ce[4,9] = 5.0E-02;
-            ce[4,10] = 4.0E-02;
-            ce[4,11] = 2.0E-01;
-            ce[4,12] = 1.0E-01;
-            ce[4,13] = 3.0E-01;
+            ce[5,3] = 2.0d;
+            ce[6,3] = 3.0d;
+            ce[7,3] = 3.0E-02;
+            ce[8,3] = 5.0E-02;
+            ce[9,3] = 4.0E-02;
+            ce[10,3] = 2.0E-01;
+            ce[11,3] = 1.0E-01;
+            ce[12,3] = 3.0E-01;
             //---------------------------------------------------------------------
             //   coefficients of the exact solution to the fifth pde
             //---------------------------------------------------------------------
-            ce[5,1] = 5.0d;
-            ce[5,2] = 4.0d;
-            ce[5,3] = 3.0d;
-            ce[5,4] = 2.0d;
-            ce[5,5] = 1.0E-01;
-            ce[5,6] = 4.0E-01;
-            ce[5,7] = 3.0E-01;
-            ce[5,8] = 5.0E-02;
-            ce[5,9] = 4.0E-02;
-            ce[5,10] = 3.0E-02;
-            ce[5,11] = 1.0E-01;
-            ce[5,12] = 3.0E-01;
-            ce[5,13] = 2.0E-01;
+            ce[0,4] = 5.0d;
+            ce[1,4] = 4.0d;
+            ce[2,4] = 3.0d;
+            ce[3,4] = 2.0d;
+            ce[4,4] = 1.0E-01;
+            ce[5,4] = 4.0E-01;
+            ce[6,4] = 3.0E-01;
+            ce[7,4] = 5.0E-02;
+            ce[8,4] = 4.0E-02;
+            ce[9,4] = 3.0E-02;
+            ce[10,4] = 1.0E-01;
+            ce[11,4] = 3.0E-01;
+            ce[12,4] = 2.0E-01;
         }
 
         public void sethyper() {
@@ -484,7 +484,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             // compute the pointers for hyperplanes
             //---------------------------------------------------------------------
-              for(kp = 2; kp<=(nx0+ny0); kp++){
+              for(kp = 1; kp<(nx0+ny0); kp++){
                 icomms[kp] = false;
                 icommn[kp] = false;
                 icomme[kp] = false;
@@ -495,7 +495,7 @@ namespace NPB {
                 if (south!=-1) {
                   i     = iend;
                   iglob = ipt + i;
-                  jglob = kp - iglob;
+                  jglob = kp - iglob + 1;
                   j     = jglob - jpt;
                   if (jglob>=2 && jglob<=ny0-1 && j>=jst && j<=jend) icomms[kp] = true;
                 }
@@ -505,7 +505,7 @@ namespace NPB {
                 if (north!=-1) {
                   i     = ist;
                   iglob = ipt + i;
-                  jglob = kp - iglob;
+                  jglob = kp - iglob + 1;
                   j     = jglob - jpt;
                   if (jglob>=2 && jglob<=ny0-1 && j>=jst && j<=jend) icommn[kp] = true;
                 }
@@ -515,7 +515,7 @@ namespace NPB {
                 if (east!=-1) {
                   j     = jend;
                   jglob = jpt + j;
-                  iglob = kp - jglob;
+                  iglob = kp - jglob + 1;
                   i     = iglob - ipt;
                   if (iglob>=2 && iglob<=nx0-1 && i>=ist && i<=iend) icomme[kp] = true;
                 }
@@ -525,19 +525,19 @@ namespace NPB {
                 if (west!=-1) {
                   j = jst;
                   jglob = jpt + j;
-                  iglob = kp - jglob;
+                  iglob = kp - jglob + 1;
                   i     = iglob - ipt;
                   if (iglob>=2 && iglob<=nx0-1 && i>=ist && i<=iend) icommw[kp] = true;
                 }
               }
-              icomms[1] = false;
-              icommn[1] = false;
-              icomme[1] = false;
-              icommw[1] = false;
-              icomms[nx0+ny0+1] = false;
-              icommn[nx0+ny0+1] = false;
-              icomme[nx0+ny0+1] = false;
-              icommw[nx0+ny0+1] = false;
+              icomms[0] = false;
+              icommn[0] = false;
+              icomme[0] = false;
+              icommw[0] = false;
+              icomms[nx0+ny0] = false;
+              icommn[nx0+ny0] = false;
+              icomme[nx0+ny0] = false;
+              icommw[nx0+ny0] = false;
         }
 
         public void setbv() {
@@ -552,8 +552,8 @@ namespace NPB {
                jglob = jpt + j;
                for(i = 1; i<= nx; i++){
                  iglob = ipt + i;
-                  exact4(iglob,jglob,1, u,      1, j+1, i+1);   //exact( iglob, jglob, 1, u[ 1, i, j, 1 ] );
-                  exact4(iglob,jglob,nz,u,     nz, j+1, i+1);   //exact( iglob, jglob, nz, u[ 1, i, j, nz ] );
+                  exact(iglob,jglob,1, u,      1, j+1, i+1);   //exact( iglob, jglob, 1, u[ 1, i, j, 1 ] );
+                  exact(iglob,jglob,nz,u,     nz, j+1, i+1);   //exact( iglob, jglob, nz, u[ 1, i, j, nz ] );
                }
             }
             //---------------------------------------------------------------------
@@ -563,7 +563,7 @@ namespace NPB {
                for(k = 1; k<= nz; k++){
                   for(i = 1; i<= nx; i++){
                      iglob = ipt + i;
-                     exact4(iglob,1,k,u,   k,1+1,i+1);   //call exact[ iglob, 1, k, u[ 1, i, 1, k ] ];
+                     exact(iglob,1,k,u,   k,1+1,i+1);   //call exact[ iglob, 1, k, u[ 1, i, 1, k ] ];
                   }
                }
             }
@@ -571,7 +571,7 @@ namespace NPB {
                 for(k = 1; k<= nz; k++){
                    for(i = 1; i<= nx; i++){
                       iglob = ipt + i;
-                      exact4(iglob,ny0,k,u,     k,ny+1,i+1); //call exact[ iglob, ny0, k, u[ 1, i, ny, k ] ];
+                      exact(iglob,ny0,k,u,     k,ny+1,i+1); //call exact[ iglob, ny0, k, u[ 1, i, ny, k ] ];
                    }
                 }
             }
@@ -582,7 +582,7 @@ namespace NPB {
                for(k = 1; k<= nz; k++){
                   for(j = 1; j<= ny; j++){
                      jglob = jpt + j;
-                     exact4(1,jglob,k,u,   k,j+1,1+1);  //call exact[ 1, jglob, k, u[ 1, 1, j, k ] ];
+                     exact(1,jglob,k,u,   k,j+1,1+1);  //call exact[ 1, jglob, k, u[ 1, 1, j, k ] ];
                   }
                }
             }
@@ -590,56 +590,9 @@ namespace NPB {
                for(k = 1; k<= nz; k++){
                   for(j = 1; j<= ny; j++){
                     jglob = jpt + j;
-                    exact4(nx0,jglob,k,u,    k,j+1,nx+1); // call exact[ nx0, jglob, k, u[ 1, nx, j, k ] ];
+                    exact(nx0,jglob,k,u,    k,j+1,nx+1); // call exact[ nx0, jglob, k, u[ 1, nx, j, k ] ];
                   }
                }
-            }
-        }
-
-        public void exact4(int i, int j, int k, double[,,,] u000ijk, int i1, int i2, int i3) {
-            //---------------------------------------------------------------------
-            //
-            //   compute the exact solution at [i,j,k]
-            //
-            //---------------------------------------------------------------------
-            //---------------------------------------------------------------------
-            //  input parameters
-            //---------------------------------------------------------------------
-            //int i, j, k;
-            //double u000ijk[*];
-            int m;
-            double xi, eta, zeta;
-
-            xi   = ((double) (i-1))/(nx0-1); //( dble ( i - 1 ) ) / ( nx0 - 1 );
-            eta  = ((double) (j-1))/(ny0-1); //( dble ( j - 1 ) ) / ( ny0 - 1 );
-            zeta = ((double) (k-1))/(nz -1);  //( dble ( k - 1 ) ) / ( nz - 1 );
-            for(m = 1; m<= 5; m++){
-               u000ijk[i1,i2,i3,m] = ce[m,1] + ce[m,2]*xi + ce[m,3]*eta + ce[m,4]*zeta + ce[m,5]*xi*xi + ce[m,6]*eta*eta
-                   + ce[m,7]*zeta*zeta + ce[m,8]*xi*xi*xi + ce[m,9]*eta*eta*eta + ce[m,10]*zeta*zeta*zeta + ce[m,11]*xi*xi*xi*xi
-                   + ce[m,12]*eta*eta*eta*eta + ce[m,13]*zeta*zeta*zeta*zeta;
-            }
-        }
-
-        public void exact1(int i, int j, int k, double[] u000ijk) {
-            //---------------------------------------------------------------------
-            //
-            //   compute the exact solution at [i,j,k]
-            //
-            //---------------------------------------------------------------------
-            //---------------------------------------------------------------------
-            //  input parameters
-            //---------------------------------------------------------------------
-            //int i, j, k;
-            //double u000ijk[*];
-            int m;
-            double xi, eta, zeta;
-            xi   = ((double) (i-1))/(nx0-1); //( dble ( i - 1 ) ) / ( nx0 - 1 );
-            eta  = ((double) (j-1))/(ny0-1); //( dble ( j - 1 ) ) / ( ny0 - 1 );
-            zeta = ((double) (k-1))/(nz -1);  //( dble ( k - 1 ) ) / ( nz - 1 );
-            for(m = 1; m<= 5; m++){
-               u000ijk[m] = ce[m,1] + ce[m,2]*xi + ce[m,3]*eta + ce[m,4]*zeta + ce[m,5]*xi*xi + ce[m,6]*eta*eta
-                   + ce[m,7]*zeta*zeta + ce[m,8]*xi*xi*xi + ce[m,9]*eta*eta*eta + ce[m,10]*zeta*zeta*zeta + ce[m,11]*xi*xi*xi*xi
-                   + ce[m,12]*eta*eta*eta*eta + ce[m,13]*zeta*zeta*zeta*zeta;
             }
         }
 
@@ -651,12 +604,12 @@ namespace NPB {
             int iglob, jglob;
             double  xi, eta, zeta;
             double  pxi, peta, pzeta;
-            double[] ue_1jk   = new double[5+1];   //ue_1jk[5]
-            double[] ue_nx0jk = new double[5+1];   //ue_nx0jk[5]
-            double[] ue_i1k   = new double[5+1];   //ue_i1k[5]
-            double[] ue_iny0k = new double[5+1];   //ue_iny0k[5]
-            double[] ue_ij1   = new double[5+1];   //ue_ij1[5]
-            double[] ue_ijnz  = new double[5+1];   //ue_ijnz[5]
+            double[] ue_1jk   = new double[5];   //ue_1jk[5]
+            double[] ue_nx0jk = new double[5];   //ue_nx0jk[5]
+            double[] ue_i1k   = new double[5];   //ue_i1k[5]
+            double[] ue_iny0k = new double[5];   //ue_iny0k[5]
+            double[] ue_ij1   = new double[5];   //ue_ij1[5]
+            double[] ue_ijnz  = new double[5];   //ue_ijnz[5]
             for(k = 2; k<=nz-1; k++){
                 zeta = ((double)(k-1))/(nz-1);
                 for(j = 1; j<= ny; j++){
@@ -667,24 +620,24 @@ namespace NPB {
                             iglob = ipt + i;
                             if (iglob!=1 && iglob!=nx0) {
                                 xi = ((double)(iglob-1))/(nx0-1);
-                                exact1(1,jglob,k,ue_1jk);
-                                exact1(nx0,jglob,k,ue_nx0jk);
-                                exact1(iglob,1,k,ue_i1k);
-                                exact1(iglob,ny0,k,ue_iny0k);
-                                exact1(iglob,jglob,1,ue_ij1);
-                                exact1(iglob,jglob,nz,ue_ijnz);
-                                for(m = 1; m<= 5; m++){
+                                exact(1,jglob,k,ue_1jk);
+                                exact(nx0,jglob,k,ue_nx0jk);
+                                exact(iglob,1,k,ue_i1k);
+                                exact(iglob,ny0,k,ue_iny0k);
+                                exact(iglob,jglob,1,ue_ij1);
+                                exact(iglob,jglob,nz,ue_ijnz);
+                                for(m = 0; m< 5; m++){
                                     pxi =   (1.0d-xi) * ue_1jk[m] + xi   * ue_nx0jk[m];
                                     peta =  (1.0d-eta) * ue_i1k[m] + eta   * ue_iny0k[m];
                                     pzeta = (1.0d-zeta) * ue_ij1[m] + zeta   * ue_ijnz[m];
-                                    u[k,j+1,i+1,m] = pxi + peta + pzeta - pxi * peta - peta * pzeta - pzeta * pxi + pxi * peta * pzeta;
+                                    u[k,j+1,i+1,m+1] = pxi + peta + pzeta - pxi * peta - peta * pzeta - pzeta * pxi + pxi * peta * pzeta;
                                 }
                             }
                         }
                     }
                 }
             }
-        }
+        }//ue_1jk    ue_nx0jk      ue_i1k      ue_iny0k     ue_ij1     ue_ijnz m
 
         //erhs.f
         public void erhs() {
@@ -726,20 +679,20 @@ namespace NPB {
                   for(i = 1; i<= nx; i++){
                      iglob = ipt + i;
                      xi = ((double)(iglob-1))/(nx0-1);
-                     for(m = 1; m<= 5; m++){  //rsd[m,i,j,k] =  ce[m,1]
-                        rsd[k,j+1,i+1,m] =  ce[m,1]
-                            + ce[m,2] * xi
-                            + ce[m,3] * eta
-                            + ce[m,4] * zeta
-                            + ce[m,5] * xi * xi
-                            + ce[m,6] * eta * eta
-                            + ce[m,7] * zeta * zeta
-                            + ce[m,8] * xi * xi * xi
-                            + ce[m,9] * eta * eta * eta
-                            + ce[m,10] * zeta * zeta * zeta
-                            + ce[m,11] * xi * xi * xi * xi
-                            + ce[m,12] * eta * eta * eta * eta
-                            + ce[m,13] * zeta * zeta * zeta * zeta;
+                     for(m = 0; m< 5; m++){  //rsd[m,i,j,k] =  ce[m,1]
+                        rsd[k,j+1,i+1,m+1] =  ce[0,m]
+                            + ce[1,m] * xi
+                            + ce[2,m] * eta
+                            + ce[3,m] * zeta
+                            + ce[4,m] * xi * xi
+                            + ce[5,m] * eta * eta
+                            + ce[6,m] * zeta * zeta
+                            + ce[7,m] * xi * xi * xi
+                            + ce[8,m] * eta * eta * eta
+                            + ce[9,m] * zeta * zeta * zeta
+                            + ce[10,m] * xi * xi * xi * xi
+                            + ce[11,m] * eta * eta * eta * eta
+                            + ce[12,m] * zeta * zeta * zeta * zeta;
                      }
                   }
                }
@@ -1275,7 +1228,7 @@ namespace NPB {
             int i, j, k, m;
             int istep;
             double  tmp;
-            double[] delunm = new double[5+1];//delunm[5];
+            double[] delunm = new double[5];//delunm[5];
             double[,,] tv = new double[isiz2+1,isiz1+1,5+1];//tv[5,isiz1,isiz2];
             //external timer_read;
             //double wtime, timer_read;
@@ -1385,7 +1338,7 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 //   check the newton-iteration residuals against the tolerance levels
                 //---------------------------------------------------------------------
-                if ((rsdnm[1]<tolrsd[1]) && (rsdnm[2]<tolrsd[2]) && (rsdnm[3]<tolrsd[3]) && (rsdnm[4]<tolrsd[4]) && (rsdnm[5]<tolrsd[5])) {
+                if ((rsdnm[0]<tolrsd[0]) && (rsdnm[1]<tolrsd[1]) && (rsdnm[2]<tolrsd[2]) && (rsdnm[3]<tolrsd[3]) && (rsdnm[4]<tolrsd[4])) {
                     return;//   return;
                 }
             }
@@ -1720,18 +1673,18 @@ namespace NPB {
             //}
 
             int i, j, k, m;
-            double[] dummy = new double[5+1];//dummy[5];
+            double[] dummy = new double[5];//dummy[5];
 
             //int IERROR;
 
-            for(m = 1; m<= 5; m++){
+            for(m = 0; m< 5; m++){
                dummy[m] = 0.0d;
             }
             for(k = 2; k<= nz0-1; k++){
                for(j = jst; j<= jend; j++){
                   for(i = ist; i<= iend; i++){
-                     for(m = 1; m<= 5; m++){
-                        dummy[m] = dummy[m] + v[k,j+1,i+1,m] * v[k,j+1,i+1,m];  //dummy[m] = dummy[m] + v[m,i,j,k] * v[m,i,j,k];
+                     for(m = 0; m< 5; m++){
+                        dummy[m] = dummy[m] + v[k,j+1,i+1,m+1] * v[k,j+1,i+1,m+1];  //dummy[m] = dummy[m] + v[m,i,j,k] * v[m,i,j,k];
                      }
                   }
                }
@@ -1741,10 +1694,10 @@ namespace NPB {
             //---------------------------------------------------------------------
             worldcomm.Allreduce<double>(dummy, MPI.Operation<double>.Add, ref sum);//call MPI_ALLREDUCE[ dummy,sum,5,dp_type,MPI_SUM,MPI_COMM_WORLD,IERROR ]
 
-            for(m = 1; m<= 5; m++){
+            for(m = 0; m< 5; m++){
                sum[m] = Math.Sqrt(sum[m]/((nx0-2)*(ny0-2)*(nz0-2))); //sum[m] = sqrt(sum[m]/((nx0-2)*(ny0-2)*(nz0-2)));
             }
-        }
+        }//sum  dummy
             //end l2norm.f
             //jacld.f
         public void jacld(int k) {
@@ -1928,7 +1881,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             int i, j, m, iex;
             double  tmp, tmp1;
-            double[,] tmat = new double[5+1,5+1]; //tmat[5,5]  Obs: nao invertida a ordem
+            double[,] tmat = new double[5,5]; //tmat[5,5]
             //---------------------------------------------------------------------
             //   receive data from north and west
             //---------------------------------------------------------------------
@@ -1971,89 +1924,95 @@ namespace NPB {
                   //
                   //   forward elimination
                   //---------------------------------------------------------------------
-                  for(m = 1; m<= 5; m++){
-                     tmat[ m, 1 ] = d[ j, i, 1, m ];
-                     tmat[ m, 2 ] = d[ j, i, 2, m ];
-                     tmat[ m, 3 ] = d[ j, i, 3, m ];
-                     tmat[ m, 4 ] = d[ j, i, 4, m ];
-                     tmat[ m, 5 ] = d[ j, i, 5, m ];
+                  for(m = 0; m< 5; m++){
+                     tmat[0,m] = d[ j, i, 1, m+1 ];
+                     tmat[1,m] = d[ j, i, 2, m+1 ];
+                     tmat[2,m] = d[ j, i, 3, m+1 ];
+                     tmat[3,m] = d[ j, i, 4, m+1 ];
+                     tmat[4,m] = d[ j, i, 5, m+1 ];
                   }
-                  tmp1 = 1.0d / tmat[1, 1];
-                  tmp = tmp1 * tmat[2, 1];
-                  tmat[2, 2] = tmat[2, 2] - tmp * tmat[1, 2];
-                  tmat[2, 3] = tmat[2, 3] - tmp * tmat[1, 3];
-                  tmat[2, 4] = tmat[2, 4] - tmp * tmat[1, 4];
-                  tmat[2, 5] = tmat[2, 5] - tmp * tmat[1, 5];
+                  tmp1 = 1.0d /tmat[0,0];
+                  tmp = tmp1 * tmat[0,1];
+                  tmat[1,1] =  tmat[1,1] - tmp * tmat[1,0];
+                  tmat[2,1] =  tmat[2,1] - tmp * tmat[2,0];
+                  tmat[3,1] =  tmat[3,1] - tmp * tmat[3,0];
+                  tmat[4,1] =  tmat[4,1] - tmp * tmat[4,0];
                   v[k, j+1, i+1, 2] = v[k, j+1, i+1, 2] - v[k, j+1, i+1, 1] * tmp;
 
-                  tmp = tmp1 * tmat[3, 1];
-                  tmat[3, 2] = tmat[3, 2] - tmp * tmat[1, 2];
-                  tmat[3, 3] = tmat[3, 3] - tmp * tmat[1, 3];
-                  tmat[3, 4] = tmat[3, 4] - tmp * tmat[1, 4];
-                  tmat[3, 5] = tmat[3, 5] - tmp * tmat[1, 5];
+                  tmp = tmp1 * tmat[0,2];
+                  tmat[1,2] =  tmat[1,2] - tmp * tmat[1,0];
+                  tmat[2,2] =  tmat[2,2] - tmp * tmat[2,0];
+                  tmat[3,2] =  tmat[3,2] - tmp * tmat[3,0];
+                  tmat[4,2] =  tmat[4,2] - tmp * tmat[4,0];
                   v[k, j+1,i+1, 3] = v[k, j+1,i+1, 3] - v[k, j+1,i+1, 1] * tmp;
-
-                  tmp = tmp1 * tmat[4, 1];
-                  tmat[4, 2] = tmat[4, 2] - tmp * tmat[1, 2];
-                  tmat[4, 3] = tmat[4, 3] - tmp * tmat[1, 3];
-                  tmat[4, 4] = tmat[4, 4] - tmp * tmat[1, 4];
-                  tmat[4, 5] = tmat[4, 5] - tmp * tmat[1, 5];
+                  
+                  tmp = tmp1 * tmat[0,3];
+                  tmat[1,3] =  tmat[1,3] - tmp * tmat[1,0];
+                  tmat[2,3] =  tmat[2,3] - tmp * tmat[2,0];
+                  tmat[3,3] =  tmat[3,3] - tmp * tmat[3,0];
+                  tmat[4,3] =  tmat[4,3] - tmp * tmat[4,0];
                   v[k, j+1,i+1, 4] = v[k, j+1,i+1, 4] - v[k, j+1,i+1, 1] * tmp;
-
-                  tmp = tmp1 * tmat[5, 1];
-                  tmat[5, 2] = tmat[5, 2] - tmp * tmat[1, 2];
-                  tmat[5, 3] = tmat[5, 3] - tmp * tmat[1, 3];
-                  tmat[5, 4] = tmat[5, 4] - tmp * tmat[1, 4];
-                  tmat[5, 5] = tmat[5, 5] - tmp * tmat[1, 5];
+                  
+                  tmp = tmp1 * tmat[0,4];
+                  tmat[1,4] =  tmat[1,4] - tmp * tmat[1,0];
+                  tmat[2,4] =  tmat[2,4] - tmp * tmat[2,0];
+                  tmat[3,4] =  tmat[3,4] - tmp * tmat[3,0];
+                  tmat[4,4] =  tmat[4,4] - tmp * tmat[4,0];
                   v[k, j+1,i+1, 5] = v[k, j+1,i+1, 5] - v[k, j+1,i+1, 1] * tmp;
-
-
-                  tmp1 = 1.0d / tmat[2, 2];
-                  tmp = tmp1 * tmat[3, 2];
-                  tmat[3, 3] = tmat[3, 3] - tmp * tmat[2, 3];
-                  tmat[3, 4] = tmat[3, 4] - tmp * tmat[2, 4];
-                  tmat[3, 5] = tmat[3, 5] - tmp * tmat[2, 5];
+                  
+                  tmp1 = 1.0d /tmat[1,1];
+                  tmp = tmp1 * tmat[1,2];
+                  tmat[2,2] =  tmat[2,2] - tmp * tmat[2,1];
+                  tmat[3,2] =  tmat[3,2] - tmp * tmat[3,1];
+                  tmat[4,2] =  tmat[4,2] - tmp * tmat[4,1]; 
                   v[k, j+1,i+1, 3] = v[k, j+1,i+1, 3] - v[k, j+1,i+1, 2] * tmp;
-
-                  tmp = tmp1 * tmat[4, 2];
-                  tmat[4, 3] = tmat[4, 3] - tmp * tmat[2, 3];
-                  tmat[4, 4] = tmat[4, 4] - tmp * tmat[2, 4];
-                  tmat[4, 5] = tmat[4, 5] - tmp * tmat[2, 5];
+                  
+                  tmp = tmp1 * tmat[1,3];
+                  tmat[2,3] =  tmat[2,3] - tmp * tmat[2,1];
+                  tmat[3,3] =  tmat[3,3] - tmp * tmat[3,1];
+                  tmat[4,3] =  tmat[4,3] - tmp * tmat[4,1]; 
                   v[k, j+1,i+1, 4] = v[k, j+1,i+1, 4] - v[k, j+1,i+1, 2] * tmp;
 
-                  tmp = tmp1 * tmat[5, 2];
-                  tmat[5, 3] = tmat[5, 3] - tmp * tmat[2, 3];
-                  tmat[5, 4] = tmat[5, 4] - tmp * tmat[2, 4];
-                  tmat[5, 5] = tmat[5, 5] - tmp * tmat[2, 5];
+                  tmp = tmp1 * tmat[1,4];
+                  tmat[2,4] =  tmat[2,4] - tmp * tmat[2,1];
+                  tmat[3,4] =  tmat[3,4] - tmp * tmat[3,1];
+                  tmat[4,4] =  tmat[4,4] - tmp * tmat[4,1]; 
                   v[k, j+1,i+1, 5] = v[k, j+1,i+1, 5] - v[k, j+1,i+1, 2] * tmp;
 
-                  tmp1 = 1.0d / tmat[3, 3];
-                  tmp = tmp1 * tmat[4, 3];
-                  tmat[4, 4] = tmat[4, 4] - tmp * tmat[3, 4];
-                  tmat[4, 5] = tmat[4, 5] - tmp * tmat[3, 5];
+                  tmp1 = 1.0d /tmat[2,2];
+                  tmp = tmp1 * tmat[2,3];
+                  tmat[3,3] =  tmat[3,3] - tmp * tmat[3,2];
+                  tmat[4,3] =  tmat[4,3] - tmp * tmat[4,2]; 
                   v[k, j+1,i+1, 4] = v[k, j+1,i+1, 4] - v[k, j+1,i+1, 3] * tmp;
 
-                  tmp = tmp1 * tmat[5, 3];
-                  tmat[5, 4] = tmat[5, 4] - tmp * tmat[3, 4];
-                  tmat[5, 5] = tmat[5, 5] - tmp * tmat[3, 5];
+                  tmp = tmp1 * tmat[2,4];
+                  tmat[3,4] =  tmat[3,4] - tmp * tmat[3,2];
+                  tmat[4,4] =  tmat[4,4] - tmp * tmat[4,2]; 
                   v[k, j+1,i+1, 5] = v[k, j+1,i+1, 5] - v[k, j+1,i+1, 3] * tmp;
 
-                  tmp1 = 1.0d / tmat[4, 4];
-                  tmp = tmp1 * tmat[5, 4];
-                  tmat[5, 5] = tmat[5, 5] - tmp * tmat[4, 5];
+                  tmp1 = 1.0d /tmat[3,3];
+                  tmp = tmp1 * tmat[3,4];
+                  tmat[4,4] =  tmat[4,4] - tmp * tmat[4,3]; 
                   v[k, j+1,i+1, 5] = v[k, j+1,i+1, 5] - v[k, j+1,i+1, 4] * tmp;
+
                   //---------------------------------------------------------------------
                   //   back substitution
                   //---------------------------------------------------------------------
-                  v[k, j+1,i+1, 5] = v[k, j+1,i+1, 5]/ tmat[ 5, 5 ];
-                  v[k, j+1,i+1, 4] = v[k, j+1,i+1, 4]- tmat[ 4, 5 ] * v[ k, j+1, i+1, 5 ];
-                  v[k, j+1,i+1, 4] = v[k, j+1,i+1, 4]/ tmat[ 4, 4 ];
-                  v[k, j+1,i+1, 3] = v[k, j+1,i+1, 3] - tmat[3, 4] * v[k, j+1, i+1, 4] - tmat[3, 5] * v[k, j+1, i+1, 5];
-                  v[k, j+1,i+1, 3] = v[k, j+1,i+1, 3] / tmat[3, 3];
-                  v[k, j+1,i+1, 2] = v[k,j+1,i+1,2] - tmat[2, 3] * v[k,j+1,i+1,3]-tmat[2,4]*v[k,j+1,i+1,4]-tmat[2,5]*v[k,j+1,i+1,5];                
-                  v[k, j+1,i+1, 2] = v[k, j+1,i+1, 2] / tmat[2, 2];
-                  v[k,j+1,i+1,1] = v[k,j+1,i+1,1]-tmat[1,2]*v[k,j+1,i+1,2]-tmat[1,3]*v[k,j+1,i+1,3]-tmat[1,4]*v[k,j+1,i+1,4]-tmat[1,5]*v[k,j+1,i+1,5];
-                  v[k, j+1,i+1, 1] = v[k, j+1,i+1, 1] / tmat[1, 1];
+                  v[k, j+1,i+1, 5] = v[k, j+1,i+1, 5]/ tmat[4,4];
+                  v[k, j+1,i+1, 4] = v[k, j+1,i+1, 4]- tmat[4,3] * v[ k, j+1, i+1, 5 ];
+                  v[k, j+1,i+1, 4] = v[k, j+1,i+1, 4]/ tmat[3,3];
+                  v[k, j+1,i+1, 3] = v[k, j+1,i+1, 3] -tmat[3,2] * v[k, j+1, i+1, 4] - 
+                                                       tmat[4,2] * v[k, j+1, i+1, 5];
+                  v[k, j+1,i+1, 3] = v[k, j+1,i+1, 3] /tmat[2,2];
+                  v[k, j+1,i+1, 2] = v[k,j+1,i+1,2] -  tmat[2,1] * v[k,j+1,i+1,3]-
+                                                       tmat[3,1]*v[k,j+1,i+1,4]-
+                                                       tmat[4,1]*v[k,j+1,i+1,5];                
+                  v[k, j+1,i+1, 2] = v[k, j+1,i+1, 2] /tmat[1,1];
+                  v[k,j+1,i+1,1] = v[k,j+1,i+1,1] -    tmat[1,0]*v[k,j+1,i+1,2]-
+                                                       tmat[2,0]*v[k,j+1,i+1,3]-
+                                                       tmat[3,0]*v[k,j+1,i+1,4]-
+                                                       tmat[4,0]*v[k,j+1,i+1,5];
+                  v[k, j+1,i+1, 1] = v[k, j+1,i+1, 1] /tmat[0,0];
               }
             }
             //---------------------------------------------------------------------
@@ -2372,7 +2331,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             int i, j, m, iex;
             double tmp, tmp1;
-            double[,] tmat = new double[5 + 1, 5 + 1];//tmat[5,5]
+            double[,] tmat = new double[5,5];//tmat[5,5] 
             //---------------------------------------------------------------------
             //   receive data from south and east
             //---------------------------------------------------------------------
@@ -2413,88 +2372,96 @@ namespace NPB {
                   //---------------------------------------------------------------------
                   //   diagonal block inversion
                   //---------------------------------------------------------------------
-                  for(m = 1; m<= 5; m++){
-                     tmat[ m, 1 ] = d[j, i,1, m];
-                     tmat[ m, 2 ] = d[j, i,2, m];
-                     tmat[ m, 3 ] = d[j, i,3, m];
-                     tmat[ m, 4 ] = d[j, i,4, m];
-                     tmat[ m, 5 ] = d[j, i,5, m];
+                  for(m = 0; m< 5; m++){
+                     tmat[0,m] = d[j, i,1, m+1];
+                     tmat[1,m] = d[j, i,2, m+1];
+                     tmat[2,m] = d[j, i,3, m+1];
+                     tmat[3,m] = d[j, i,4, m+1];
+                     tmat[4,m] = d[j, i,5, m+1];
                   }
-                  tmp1 = 1.0d / tmat[1, 1];
-                  tmp = tmp1 * tmat[ 2, 1 ];
-                  tmat[ 2, 2 ] =  tmat[ 2, 2 ]- tmp * tmat[ 1, 2 ];
-                  tmat[ 2, 3 ] =  tmat[ 2, 3 ]- tmp * tmat[ 1, 3 ];
-                  tmat[ 2, 4 ] =  tmat[ 2, 4 ]- tmp * tmat[ 1, 4 ];
-                  tmat[ 2, 5 ] =  tmat[ 2, 5 ]- tmp * tmat[ 1, 5 ];
+
+                  tmp1 = 1.0d /tmat[0,0];
+                  tmp = tmp1 * tmat[0,1];
+                  tmat[1,1] =  tmat[1,1] - tmp * tmat[1,0];
+                  tmat[2,1] =  tmat[2,1] - tmp * tmat[2,0];
+                  tmat[3,1] =  tmat[3,1] - tmp * tmat[3,0];
+                  tmat[4,1] =  tmat[4,1] - tmp * tmat[4,0]; 
                   tv[j,i,2] = tv[j,i,2]- tv[j,i,1] * tmp;
-                  
-                  tmp = tmp1 * tmat[3, 1];
-                  tmat[3, 2] = tmat[3, 2] - tmp * tmat[1, 2];
-                  tmat[3, 3] = tmat[3, 3] - tmp * tmat[1, 3];
-                  tmat[3, 4] = tmat[3, 4] - tmp * tmat[1, 4];
-                  tmat[3, 5] = tmat[3, 5] - tmp * tmat[1, 5];
+
+                  tmp = tmp1 * tmat[0,2];
+                  tmat[1,2] =  tmat[1,2] - tmp * tmat[1,0];
+                  tmat[2,2] =  tmat[2,2] - tmp * tmat[2,0];
+                  tmat[3,2] =  tmat[3,2] - tmp * tmat[3,0];
+                  tmat[4,2] =  tmat[4,2] - tmp * tmat[4,0]; 
                   tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 1] * tmp;
-                  
-                  tmp = tmp1 * tmat[4, 1];
-                  tmat[4, 2] = tmat[4, 2] - tmp * tmat[1, 2];
-                  tmat[4, 3] = tmat[4, 3] - tmp * tmat[1, 3];
-                  tmat[4, 4] = tmat[4, 4] - tmp * tmat[1, 4];
-                  tmat[4, 5] = tmat[4, 5] - tmp * tmat[1, 5];
+
+                  tmp = tmp1 * tmat[0,3];
+                  tmat[1,3] =  tmat[1,3] - tmp * tmat[1,0];
+                  tmat[2,3] =  tmat[2,3] - tmp * tmat[2,0];
+                  tmat[3,3] =  tmat[3,3] - tmp * tmat[3,0];
+                  tmat[4,3] =  tmat[4,3] - tmp * tmat[4,0]; 
                   tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 1] * tmp;
-                  
-                  tmp = tmp1 * tmat[5, 1];
-                  tmat[5, 2] = tmat[5, 2] - tmp * tmat[1, 2];
-                  tmat[5, 3] = tmat[5, 3] - tmp * tmat[1, 3];
-                  tmat[5, 4] = tmat[5, 4] - tmp * tmat[1, 4];
-                  tmat[5, 5] = tmat[5, 5] - tmp * tmat[1, 5];
+
+                  tmp = tmp1 * tmat[0,4];
+                  tmat[1,4] =  tmat[1,4] - tmp * tmat[1,0];
+                  tmat[2,4] =  tmat[2,4] - tmp * tmat[2,0];
+                  tmat[3,4] =  tmat[3,4] - tmp * tmat[3,0];
+                  tmat[4,4] =  tmat[4,4] - tmp * tmat[4,0]; 
                   tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 1] * tmp;
-                  
-                  tmp1 = 1.0d / tmat[2, 2];
-                  tmp = tmp1 * tmat[3, 2];
-                  tmat[3, 3] = tmat[3, 3] - tmp * tmat[2, 3];
-                  tmat[3, 4] = tmat[3, 4] - tmp * tmat[2, 4];
-                  tmat[3, 5] = tmat[3, 5] - tmp * tmat[2, 5];
+
+                  tmp1 = 1.0d /tmat[1,1];
+                  tmp = tmp1 * tmat[1,2];
+                  tmat[2,2] =  tmat[2,2] - tmp * tmat[2,1];
+                  tmat[3,2] =  tmat[3,2] - tmp * tmat[3,1];
+                  tmat[4,2] =  tmat[4,2] - tmp * tmat[4,1]; 
                   tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 2] * tmp;
-                  
-                  tmp = tmp1 * tmat[4, 2];
-                  tmat[4, 3] = tmat[4, 3] - tmp * tmat[2, 3];
-                  tmat[4, 4] = tmat[4, 4] - tmp * tmat[2, 4];
-                  tmat[4, 5] = tmat[4, 5] - tmp * tmat[2, 5];
+
+                  tmp = tmp1 * tmat[1,3];
+                  tmat[2,3] =  tmat[2,3] - tmp * tmat[2,1];
+                  tmat[3,3] =  tmat[3,3] - tmp * tmat[3,1];
+                  tmat[4,3] =  tmat[4,3] - tmp * tmat[4,1]; 
                   tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 2] * tmp;
-                  
-                  tmp = tmp1 * tmat[5, 2];
-                  tmat[5, 3] = tmat[5, 3] - tmp * tmat[2, 3];
-                  tmat[5, 4] = tmat[5, 4] - tmp * tmat[2, 4];
-                  tmat[5, 5] = tmat[5, 5] - tmp * tmat[2, 5];
+
+                  tmp = tmp1 * tmat[1,4];
+                  tmat[2,4] =  tmat[2,4] - tmp * tmat[2,1];
+                  tmat[3,4] =  tmat[3,4] - tmp * tmat[3,1];
+                  tmat[4,4] =  tmat[4,4] - tmp * tmat[4,1]; 
                   tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 2] * tmp;
 
-                  tmp1 = 1.0d / tmat[3, 3];
-                  tmp = tmp1 * tmat[4, 3];
-                  tmat[4, 4] = tmat[4, 4] - tmp * tmat[3, 4];
-                  tmat[4, 5] = tmat[4, 5] - tmp * tmat[3, 5];
+                  tmp1 = 1.0d /tmat[2,2];
+                  tmp = tmp1 * tmat[2,3];
+                  tmat[3,3] =  tmat[3,3] - tmp * tmat[3,2];
+                  tmat[4,3] =  tmat[4,3] - tmp * tmat[4,2]; 
                   tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 3] * tmp;
 
-                  tmp = tmp1 * tmat[5, 3];
-                  tmat[5, 4] = tmat[5, 4] - tmp * tmat[3, 4];
-                  tmat[5, 5] = tmat[5, 5] - tmp * tmat[3, 5];
+                  tmp = tmp1 * tmat[2,4];
+                  tmat[3,4] =  tmat[3,4] - tmp * tmat[3,2];
+                  tmat[4,4] =  tmat[4,4] - tmp * tmat[4,2]; 
                   tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 3] * tmp;
 
-                  tmp1 = 1.0d / tmat[4, 4];
-                  tmp = tmp1 * tmat[5, 4];
-                  tmat[5, 5] = tmat[5, 5] - tmp * tmat[4, 5];
+                  tmp1 = 1.0d /tmat[3,3];
+                  tmp = tmp1 * tmat[3,4];
+                  tmat[4,4] =  tmat[4,4] - tmp * tmat[4,3]; 
                   tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 4] * tmp;
                   //---------------------------------------------------------------------
                   //   back substitution
                   //---------------------------------------------------------------------
-                  tv[j, i, 5] = tv[j, i, 5]/ tmat[ 5, 5 ];
-                  tv[j, i, 4] = tv[j, i, 4]- tmat[ 4, 5 ] * tv[j, i, 5];
-                  tv[j, i, 4] = tv[j, i, 4]/ tmat[ 4, 4 ];
-                  tv[j, i, 3] = tv[j, i, 3]- tmat[ 3, 4 ] * tv[j, i, 4]- tmat[ 3, 5 ] * tv[j, i, 5];
-                  tv[j, i, 3] = tv[j, i, 3]/ tmat[ 3, 3 ];
-                  tv[j, i, 2] = tv[j, i, 2]- tmat[ 2, 3 ] * tv[j, i, 3]- tmat[ 2, 4 ] * tv[j, i, 4]- tmat[ 2, 5 ] * tv[j, i, 5];
-                  tv[j, i, 2] = tv[j, i, 2]/ tmat[ 2, 2 ];
-                  tv[j, i, 1] = tv[j, i, 1]-tmat[1, 2]*tv[j,i,2]-tmat[1,3]*tv[j,i,3]-tmat[1,4]*tv[j,i,4]-tmat[1,5]*tv[j,i,5];
-                  tv[j, i, 1] = tv[j, i, 1] / tmat[1, 1];
+                  tv[j, i, 5] = tv[j, i, 5]/ tmat[4,4];
+                  tv[j, i, 4] = tv[j, i, 4]- tmat[4,3] * tv[j, i, 5];
+                  tv[j, i, 4] = tv[j, i, 4]/ tmat[3,3];
+                  tv[j, i, 3] = tv[j, i, 3]- tmat[3,2] * tv[j, i, 4]
+                                           - tmat[4,2] * tv[j, i, 5];
+                  tv[j, i, 3] = tv[j, i, 3]/ tmat[2,2];
+                  tv[j, i, 2] = tv[j, i, 2]- tmat[2,1] * tv[j, i, 3]
+                                           - tmat[3,1] * tv[j, i, 4]
+                                           - tmat[4,1] * tv[j, i, 5];
+                  tv[j, i, 2] = tv[j, i, 2]/ tmat[1,1];
+                  tv[j, i, 1] = tv[j, i, 1]- tmat[1,0]*tv[j,i,2]
+                                           - tmat[2,0]*tv[j,i,3]
+                                           - tmat[3,0]*tv[j,i,4]
+                                           - tmat[4,0]*tv[j,i,5];
+                  tv[j, i, 1] = tv[j, i, 1] /tmat[0,0];
+
                   v[k,j+1,i+1,1] = v[k,j+1,i+1,1] - tv[j, i, 1];
                   v[k,j+1,i+1,2] = v[k,j+1,i+1,2] - tv[j, i, 2];
                   v[k,j+1,i+1,3] = v[k,j+1,i+1,3] - tv[j, i, 3];
@@ -2517,10 +2484,10 @@ namespace NPB {
             //---------------------------------------------------------------------
             int i, j, k, m, iglob, jglob;
             double tmp;
-            double[] u000ijk = new double[5 + 1]; //u000ijk[5]
-            double[] dummy = new double[5 + 1]; //dummy[5]
+            double[] u000ijk = new double[5]; //u000ijk[5]
+            double[] dummy = new double[5]; //dummy[5]
             //int IERROR
-            for(m = 1; m<= 5; m++){
+            for(m = 0; m< 5; m++){
                errnm[m] = 0.0d;
                dummy[m] = 0.0d;
             }
@@ -2530,8 +2497,8 @@ namespace NPB {
                   for(i = ist; i<= iend; i++){
                      iglob = ipt + i;
                      exact(iglob, jglob, k, u000ijk);
-                     for(m = 1; m<= 5; m++){
-                        tmp = (u000ijk[m] - u[k,j+1,i+1,m]); //tmp = (u000ijk[m] - u[m,i,j,k]);
+                     for(m = 0; m< 5; m++){
+                        tmp = (u000ijk[m] - u[k,j+1,i+1,m+1]); //tmp = (u000ijk[m] - u[m,i,j,k]);
                         dummy[m] = dummy[m] + pow2(tmp);
                      }
                   }
@@ -2543,7 +2510,7 @@ namespace NPB {
             //call MPI_ALLREDUCE[ dummy,errnm,5,dp_type,MPI_SUM,MPI_COMM_WORLD,IERROR ];
             worldcomm.Allreduce<double>(dummy, MPI.Operation<double>.Add, ref errnm);
 
-            for(m = 1; m<= 5; m++){
+            for(m = 0; m< 5; m++){
                 errnm[m] = Math.Sqrt(errnm[m]/((nx0-2)*(ny0-2)*(nz0-2)));   //sqrt (errnm[m]/((nx0-2)*(ny0-2)*(nz0-2)));
             }
         }
@@ -2565,20 +2532,52 @@ namespace NPB {
             eta = ((double)(j - 1)) / (ny0 - 1);
             zeta = ((double)(k - 1)) / (nz - 1);
 
-            for(m = 1; m<=5; m++){
-               u000ijk[m] =  ce[m,1]
-                   + ce[m,2] * xi
-                   + ce[m,3] * eta
-                   + ce[m,4] * zeta
-                   + ce[m,5] * xi * xi
-                   + ce[m,6] * eta * eta
-                   + ce[m,7] * zeta * zeta
-                   + ce[m,8] * xi * xi * xi
-                   + ce[m,9] * eta * eta * eta
-                   + ce[m,10] * zeta * zeta * zeta
-                   + ce[m,11] * xi * xi * xi * xi
-                   + ce[m,12] * eta * eta * eta * eta
-                   + ce[m,13] * zeta * zeta * zeta * zeta;
+            for(m = 0; m<5; m++){
+               u000ijk[m] =  ce[0,m]
+                   + ce[1,m] * xi
+                   + ce[2,m] * eta
+                   + ce[3,m] * zeta
+                   + ce[4,m] * xi * xi
+                   + ce[5,m] * eta * eta
+                   + ce[6,m] * zeta * zeta
+                   + ce[7,m] * xi * xi * xi
+                   + ce[8,m] * eta * eta * eta
+                   + ce[9,m] * zeta * zeta * zeta
+                   + ce[10,m] * xi * xi * xi * xi
+                   + ce[11,m] * eta * eta * eta * eta
+                   + ce[12,m] * zeta * zeta * zeta * zeta;
+            }
+        }
+
+        public void exact(int i, int j, int k, double[, , ,] u000ijk, int i1, int i2, int i3) {
+            //---------------------------------------------------------------------
+            //
+            //   compute the exact solution at [i,j,k]
+            //
+            //---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
+            int m;
+            double xi, eta, zeta;
+
+            xi   = ((double)(i-1))/(nx0-1); //( dble ( i - 1 ) ) / ( nx0 - 1 );
+            eta  = ((double)(j-1))/(ny0-1); //( dble ( j - 1 ) ) / ( ny0 - 1 );
+            zeta = ((double)(k-1))/(nz -1);  //( dble ( k - 1 ) ) / ( nz - 1 );
+            for(m = 0; m< 5; m++) {
+                u000ijk[i1, i2, i3, m+1] = ce[0,m] 
+                    + ce[1,m]*xi 
+                    + ce[2,m]*eta 
+                    + ce[3,m]*zeta 
+                    + ce[4,m]*xi*xi 
+                    + ce[5,m]*eta*eta
+                    + ce[6,m]*zeta*zeta 
+                    + ce[7,m]*xi*xi*xi 
+                    + ce[8,m]*eta*eta*eta 
+                    + ce[9,m]*zeta*zeta*zeta 
+                    + ce[10,m]*xi*xi*xi*xi
+                    + ce[11,m]*eta*eta*eta*eta 
+                    + ce[12,m]*zeta*zeta*zeta*zeta;
             }
         }
             //end exact.f
@@ -2988,11 +2987,11 @@ namespace NPB {
             //  verification routine                         
             //---------------------------------------------------------------------
             ////double xcr[5], xce[5], xci
-            double[] xcrref = new double[5+1];//xcrref[5];
-            double[] xceref = new double[5+1];//xceref[5];
-            double[] xcrdif = new double[5+1];//xcrdif[5];
-            double[] xcedif = new double[5+1];//xcedif[5];
-            double xcidif, epsilon, dtref=0.0,xciref;
+            double[] xcrref = new double[5];//xcrref[5];
+            double[] xceref = new double[5];//xceref[5];
+            double[] xcrdif = new double[5];//xcrdif[5];
+            double[] xcedif = new double[5];//xcedif[5];
+            double epsilon, dtref=0.0, xciref, xcidif;
             int m;
             //---------------------------------------------------------------------
             //   tolerance level
@@ -3002,7 +3001,7 @@ namespace NPB {
             clss = 'U';
             verified = true;
 
-            for(m = 1; m<=5; m++){
+            for(m = 0; m<5; m++){
                xcrref[m] = 1.0;
                xceref[m] = 1.0;
             }
@@ -3015,20 +3014,20 @@ namespace NPB {
                 //   Reference values of RMS-norms of residual, for the [12X12X12] grid,
                 //   after 50 time steps, with  DT = 5.0d-01
                 //---------------------------------------------------------------------
-                xcrref[1] = 1.6196343210976702E-02;
-                xcrref[2] = 2.1976745164821318E-03;
-                xcrref[3] = 1.5179927653399185E-03;
-                xcrref[4] = 1.5029584435994323E-03;
-                xcrref[5] = 3.4264073155896461E-02;
+                xcrref[0] = 1.6196343210976702E-02;
+                xcrref[1] = 2.1976745164821318E-03;
+                xcrref[2] = 1.5179927653399185E-03;
+                xcrref[3] = 1.5029584435994323E-03;
+                xcrref[4] = 3.4264073155896461E-02;
                 //---------------------------------------------------------------------
                 //   Reference values of RMS-norms of solution error, for the [12X12X12] grid,
                 //   after 50 time steps, with  DT = 5.0d-01
                 //---------------------------------------------------------------------
-                xceref[1] = 6.4223319957960924E-04;
-                xceref[2] = 8.4144342047347926E-05;
-                xceref[3] = 5.8588269616485186E-05;
-                xceref[4] = 5.8474222595157350E-05;
-                xceref[5] = 1.3103347914111294E-03;
+                xceref[0] = 6.4223319957960924E-04;
+                xceref[1] = 8.4144342047347926E-05;
+                xceref[2] = 5.8588269616485186E-05;
+                xceref[3] = 5.8474222595157350E-05;
+                xceref[4] = 1.3103347914111294E-03;
                 //---------------------------------------------------------------------
                 //   Reference value of surface integral, for the [12X12X12] grid,
                 //   after 50 time steps, with DT = 5.0d-01
@@ -3041,19 +3040,19 @@ namespace NPB {
                 //   Reference values of RMS-norms of residual, for the [33x33x33] grid,
                 //   after 300 time steps, with  DT = 1.5d-3
                 //---------------------------------------------------------------------
-                xcrref[1] =   0.1236511638192E+02;
-                xcrref[2] =   0.1317228477799E+01;
-                xcrref[3] =   0.2550120713095E+01;
-                xcrref[4] =   0.2326187750252E+01;
-                xcrref[5] =   0.2826799444189E+02;
+                xcrref[0] =   0.1236511638192E+02;
+                xcrref[1] =   0.1317228477799E+01;
+                xcrref[2] =   0.2550120713095E+01;
+                xcrref[3] =   0.2326187750252E+01;
+                xcrref[4] =   0.2826799444189E+02;
                 //---------------------------------------------------------------------
                 //   Reference values of RMS-norms of solution error, for the [33X33X33] grid,
                 //---------------------------------------------------------------------
-                xceref[1] =   0.4867877144216E+00;
-                xceref[2] =   0.5064652880982E-01;
-                xceref[3] =   0.9281818101960E-01;
-                xceref[4] =   0.8570126542733E-01;
-                xceref[5] =   0.1084277417792E+01;
+                xceref[0] =   0.4867877144216E+00;
+                xceref[1] =   0.5064652880982E-01;
+                xceref[2] =   0.9281818101960E-01;
+                xceref[3] =   0.8570126542733E-01;
+                xceref[4] =   0.1084277417792E+01;
                 //---------------------------------------------------------------------
                 //   Reference value of surface integral, for the [33X33X33] grid,
                 //   after 300 time steps, with  DT = 1.5d-3
@@ -3066,20 +3065,20 @@ namespace NPB {
                 //   Reference values of RMS-norms of residual, for the [64X64X64] grid,
                 //   after 250 time steps, with  DT = 2.0d+00
                 //---------------------------------------------------------------------
-                xcrref[1] = 7.7902107606689367E+02;
-                xcrref[2] = 6.3402765259692870E+01;
-                xcrref[3] = 1.9499249727292479E+02;
-                xcrref[4] = 1.7845301160418537E+02;
-                xcrref[5] = 1.8384760349464247E+03;
+                xcrref[0] = 7.7902107606689367E+02;
+                xcrref[1] = 6.3402765259692870E+01;
+                xcrref[2] = 1.9499249727292479E+02;
+                xcrref[3] = 1.7845301160418537E+02;
+                xcrref[4] = 1.8384760349464247E+03;
                 //---------------------------------------------------------------------
                 //   Reference values of RMS-norms of solution error, for the [64X64X64] grid,
                 //   after 250 time steps, with  DT = 2.0d+00
                 //---------------------------------------------------------------------
-                xceref[1] = 2.9964085685471943E+01;
-                xceref[2] = 2.8194576365003349E+00;
-                xceref[3] = 7.3473412698774742E+00;
-                xceref[4] = 6.7139225687777051E+00;
-                xceref[5] = 7.0715315688392578E+01;
+                xceref[0] = 2.9964085685471943E+01;
+                xceref[1] = 2.8194576365003349E+00;
+                xceref[2] = 7.3473412698774742E+00;
+                xceref[3] = 6.7139225687777051E+00;
+                xceref[4] = 7.0715315688392578E+01;
                 //---------------------------------------------------------------------
                 //   Reference value of surface integral, for the [64X64X64] grid,
                 //   after 250 time steps, with DT = 2.0d+00
@@ -3092,20 +3091,20 @@ namespace NPB {
                 //   Reference values of RMS-norms of residual, for the [102X102X102] grid,
                 //   after 250 time steps, with  DT = 2.0d+00
                 //---------------------------------------------------------------------
-                xcrref[1] = 3.5532672969982736E+03;
-                xcrref[2] = 2.6214750795310692E+02;
-                xcrref[3] = 8.8333721850952190E+02;
-                xcrref[4] = 7.7812774739425265E+02;
-                xcrref[5] = 7.3087969592545314E+03;
+                xcrref[0] = 3.5532672969982736E+03;
+                xcrref[1] = 2.6214750795310692E+02;
+                xcrref[2] = 8.8333721850952190E+02;
+                xcrref[3] = 7.7812774739425265E+02;
+                xcrref[4] = 7.3087969592545314E+03;
                 //---------------------------------------------------------------------
                 //   Reference values of RMS-norms of solution error, for the [102X102X102] 
                 //   grid, after 250 time steps, with  DT = 2.0d+00
                 //---------------------------------------------------------------------
-                xceref[1] = 1.1401176380212709E+02;
-                xceref[2] = 8.1098963655421574E+00;
-                xceref[3] = 2.8480597317698308E+01;
-                xceref[4] = 2.5905394567832939E+01;
-                xceref[5] = 2.6054907504857413E+02;
+                xceref[0] = 1.1401176380212709E+02;
+                xceref[1] = 8.1098963655421574E+00;
+                xceref[2] = 2.8480597317698308E+01;
+                xceref[3] = 2.5905394567832939E+01;
+                xceref[4] = 2.6054907504857413E+02;
                 //---------------------------------------------------------------------
                 //   Reference value of surface integral, for the [102X102X102] grid,
                 //   after 250 time steps, with DT = 2.0d+00
@@ -3118,20 +3117,20 @@ namespace NPB {
                 //   Reference values of RMS-norms of residual, for the [162X162X162] grid,
                 //   after 250 time steps, with  DT = 2.0d+00
                 //---------------------------------------------------------------------
-                xcrref[1] = 1.03766980323537846E+04;
-                xcrref[2] = 8.92212458801008552E+02;
-                xcrref[3] = 2.56238814582660871E+03;
-                xcrref[4] = 2.19194343857831427E+03;
-                xcrref[5] = 1.78078057261061185E+04;
+                xcrref[0] = 1.03766980323537846E+04;
+                xcrref[1] = 8.92212458801008552E+02;
+                xcrref[2] = 2.56238814582660871E+03;
+                xcrref[3] = 2.19194343857831427E+03;
+                xcrref[4] = 1.78078057261061185E+04;
                 //---------------------------------------------------------------------
                 //   Reference values of RMS-norms of solution error, for the [162X162X162] 
                 //   grid, after 250 time steps, with  DT = 2.0d+00
                 //---------------------------------------------------------------------
-                xceref[1] = 2.15986399716949279E+02;
-                xceref[2] = 1.55789559239863600E+01;
-                xceref[3] = 5.41318863077207766E+01;
-                xceref[4] = 4.82262643154045421E+01;
-                xceref[5] = 4.55902910043250358E+02;
+                xceref[0] = 2.15986399716949279E+02;
+                xceref[1] = 1.55789559239863600E+01;
+                xceref[2] = 5.41318863077207766E+01;
+                xceref[3] = 4.82262643154045421E+01;
+                xceref[4] = 4.55902910043250358E+02;
                 //---------------------------------------------------------------------
                 //   Reference value of surface integral, for the [162X162X162] grid,
                 //   after 250 time steps, with DT = 2.0d+00
@@ -3144,20 +3143,20 @@ namespace NPB {
                 //   Reference values of RMS-norms of residual, for the [408X408X408] grid,
                 //   after 300 time steps, with  DT = 1.0d+00
                 //---------------------------------------------------------------------
-                xcrref[1] = 0.4868417937025E+05;
-                xcrref[2] = 0.4696371050071E+04;
-                xcrref[3] = 0.1218114549776E+05;
-                xcrref[4] = 0.1033801493461E+05;
-                xcrref[5] = 0.7142398413817E+05;
+                xcrref[0] = 0.4868417937025E+05;
+                xcrref[1] = 0.4696371050071E+04;
+                xcrref[2] = 0.1218114549776E+05;
+                xcrref[3] = 0.1033801493461E+05;
+                xcrref[4] = 0.7142398413817E+05;
                 //---------------------------------------------------------------------
                 //   Reference values of RMS-norms of solution error, for the [408X408X408] 
                 //   grid, after 300 time steps, with  DT = 1.0d+00
                 //---------------------------------------------------------------------
-                xceref[1] = 0.3752393004482E+03;
-                xceref[2] = 0.3084128893659E+02;
-                xceref[3] = 0.9434276905469E+02;
-                xceref[4] = 0.8230686681928E+02;
-                xceref[5] = 0.7002620636210E+03;
+                xceref[0] = 0.3752393004482E+03;
+                xceref[1] = 0.3084128893659E+02;
+                xceref[2] = 0.9434276905469E+02;
+                xceref[3] = 0.8230686681928E+02;
+                xceref[4] = 0.7002620636210E+03;
                 //---------------------------------------------------------------------
                 //   Reference value of surface integral, for the [408X408X408] grid,
                 //   after 300 time steps, with DT = 1.0d+00
@@ -3170,20 +3169,20 @@ namespace NPB {
                 //   Reference values of RMS-norms of residual, for the [1020X1020X1020] grid,
                 //   after 300 time steps, with  DT = 0.5d+00
                 //---------------------------------------------------------------------
-                xcrref[1] = 0.2099641687874E+06;
-                xcrref[2] = 0.2130403143165E+05;
-                xcrref[3] = 0.5319228789371E+05;
-                xcrref[4] = 0.4509761639833E+05;
-                xcrref[5] = 0.2932360006590E+06;
+                xcrref[0] = 0.2099641687874E+06;
+                xcrref[1] = 0.2130403143165E+05;
+                xcrref[2] = 0.5319228789371E+05;
+                xcrref[3] = 0.4509761639833E+05;
+                xcrref[4] = 0.2932360006590E+06;
                 //---------------------------------------------------------------------
                 //   Reference values of RMS-norms of solution error, for the [1020X1020X1020] 
                 //   grid, after 300 time steps, with  DT = 0.5d+00
                 //---------------------------------------------------------------------
-                xceref[1] = 0.4800572578333E+03;
-                xceref[2] = 0.4221993400184E+02;
-                xceref[3] = 0.1210851906824E+03;
-                xceref[4] = 0.1047888986770E+03;
-                xceref[5] = 0.8363028257389E+03;
+                xceref[0] = 0.4800572578333E+03;
+                xceref[1] = 0.4221993400184E+02;
+                xceref[2] = 0.1210851906824E+03;
+                xceref[3] = 0.1047888986770E+03;
+                xceref[4] = 0.8363028257389E+03;
                 //---------------------------------------------------------------------
                 //   Reference value of surface integral, for the [1020X1020X1020] grid,
                 //   after 300 time steps, with DT = 0.5d+00
@@ -3199,7 +3198,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //    Compute the difference of solution values and the known reference values.
             //---------------------------------------------------------------------
-            for(m = 1; m<= 5; m++){
+            for(m = 0; m< 5; m++){
                xcrdif[m] = Math.Abs((xcr[m]-xcrref[m])/xcrref[m]); //xcrdif[m] = dabs((xcr[m]-xcrref[m])/xcrref[m]);
                xcedif[m] = Math.Abs((xce[m]-xceref[m])/xceref[m]); //xcedif[m] = dabs((xce[m]-xceref[m])/xceref[m]);
             }
@@ -3223,7 +3222,7 @@ namespace NPB {
             } else {
                 Console.WriteLine(" RMS-norms of residual");//   write [*, 2005]// 2005   format[' RMS-norms of residual']
             }            
-            for(m = 1; m<= 5; m++){
+            for(m = 0; m< 5; m++){
                if (clss == 'U') {
                    Console.WriteLine("          " + m + " " + xcr[m]);//write[*, 2015] m, xcr[m];
                } else if (xcrdif[m] <= epsilon) {
@@ -3239,7 +3238,7 @@ namespace NPB {
             } else {
                 Console.WriteLine(" RMS-norms of solution error");//write [*,2006];// 2006   format[' RMS-norms of solution error'];
             }            
-            for(m = 1; m<= 5; m++){
+            for(m = 0; m< 5; m++){
                if (clss == 'U') {
                    Console.WriteLine("          " + m + " " + xce[m]);//write[*, 2015] m, xce[m];
                } else if (xcedif[m] <= epsilon) {

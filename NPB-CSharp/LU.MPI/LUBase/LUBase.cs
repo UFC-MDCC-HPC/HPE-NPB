@@ -30,11 +30,11 @@ namespace NPB {
             protected static int ipr, inorm;
             protected static int itmax, invert;
             protected static double dt, omega, frc, ttotal;
-            protected static double[] tolrsd = new double[5+1];     //tolrsd[5]
-            protected static double[] rsdnm  = new double[5+1];     //rsdnm[5]
-            protected static double[] errnm  = new double[5+1];     //errnm[5];
+/*tolrsd*/  protected static double[] tolrsd = new double[5];     //tolrsd[5]
+/*rsdnm*/   protected static double[] rsdnm  = new double[5];     //rsdnm[5]
+/*errnm*/   protected static double[] errnm  = new double[5];     //errnm[5];
             protected static double[, , ,] a, b, c, d;              //a[5,5,isiz1,isiz2], b[5,5,isiz1,isiz2], c[5,5,isiz1,isiz2], d[5,5,isiz1,isiz2];
-            protected static double[,] ce = new double[5+1,13+1];   //ce[5,13]
+/*ce*/      protected static double[,] ce = new double[13,5];   //ce[5,13]
             protected static int id, ndim, num, xdim, ydim, row, col;
             protected static int north, south, east, west;
             protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;
@@ -142,10 +142,10 @@ namespace NPB {
             isiz1 = isiz01 / xdiv; if (isiz1 * xdiv < isiz01) isiz1++;
             isiz2 = isiz01 / ydiv; if (isiz2 * ydiv < isiz01) isiz2++;
 
-            icommn = new bool[npmax+1+1];//icommn[npmax+1]
-            icomms = new bool[npmax+1+1];//icomms[npmax+1]
-            icomme = new bool[npmax+1+1];//icomme[npmax+1]
-            icommw = new bool[npmax+1+1];//icommw[npmax+1]
+/**/        icommn = new bool[npmax+1];//icommn[npmax+1]
+/**/        icomms = new bool[npmax+1];//icomms[npmax+1]
+/**/        icomme = new bool[npmax+1];//icomme[npmax+1]
+/**/        icommw = new bool[npmax+1];//icommw[npmax+1]
 
             a = new double[isiz2+1,isiz1+1,5+1,5+1];//a[5,5,isiz1,isiz2];
             b = new double[isiz2+1,isiz1+1,5+1,5+1];//b[5,5,isiz1,isiz2];
