@@ -73,7 +73,7 @@ namespace NPB {
             protected static double[,] pad3 = new double[3+sizeArrayAdd,2+sizeArrayAdd]; //complex pad1(3), pad2(3), pad3(3)
             protected int iter;
             protected double total_time, mflops;
-            protected bool verified;
+            //protected bool verified;
             protected char clss; 
         //end.f
 

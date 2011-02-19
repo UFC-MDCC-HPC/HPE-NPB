@@ -168,9 +168,9 @@ namespace NPB {
                 if (timers_enabled) timer.stop(T_checksum);
             }
 
-            verify(nx, ny, nz, niter, ref verified, clss);
+            int verified = verify(nx, ny, nz, niter);
             timer.stop(T_total);
-            if (np != np_min) verified = false;
+            if (np != np_min) verified = 0;
             total_time = timer.readTimer(T_total); //total_time = timer_read(t_total);
 
             if (total_time != 0) {
@@ -1565,14 +1565,14 @@ namespace NPB {
 
         }
 
-        public void verify(int d1, int d2, int d3, int nt, ref bool verified, char Class) {
+        public int verify(int d1, int d2, int d3, int nt) {
             int i;
             double err, epsilon;
             double[,] csum_ref = new double[25,2]; //     double complex csum_ref(25);
-            Class = 'U';
-            if (me != 0) return;
+            char Class = 'U';
+            if (me != 0) return 0;
             epsilon = 0.000000000001;//epsilon = 1.0D-12;
-            verified = false;
+            int verified = 0;
             if (d1 == 64 && d2 == 64 && d3 == 64 && nt == 6) {
                 Class = 'S';
                 csum_ref[0, REAL] = 554.6087004964;
@@ -1833,23 +1833,24 @@ namespace NPB {
                     err = Math.Sqrt(r1 + r2);
                     if (!(err <= epsilon)) goto Go100;
                 }
-                verified = true;
+                verified = 1;
             }
             Go100:
             if (worldcomm.Size != np) {
                 Console.WriteLine(" Warning: benchmark was compiled for "+np+" processors");
                 Console.WriteLine(" Must be run on this many processors for official verification");
                 Console.WriteLine(" so memory access is repeatable");
-                verified = false;
+                verified = 0;
             }
             if (Class != 'U') {
-                if (verified) {
+                if (verified==1) {
                     Console.WriteLine(" Result verification successful");
                 } else {
                     Console.WriteLine(" Result verification failed");
                 }
             }
             Console.WriteLine("Class = "+ Class);
+            return verified;
         }
 
         public void print_timers() {
