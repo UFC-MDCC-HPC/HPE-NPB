@@ -89,7 +89,7 @@ namespace NPB {
         protected int i, niter, step, c, error, fstatus;
         protected double navg, mflops, mbytes, n3;
         protected double t, tmax, tiominv, tpc;
-        protected bool verified;
+        //protected bool verified;
         protected string cbuff;
         protected int wr_interval;
         //end bt.f

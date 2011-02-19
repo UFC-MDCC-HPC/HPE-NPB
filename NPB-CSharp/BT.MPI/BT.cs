@@ -205,7 +205,7 @@ namespace NPB {
             }
             timer.stop(1);
             t = timer.readTimer(1);
-            verify(niter, clss, ref verified);
+            int verified = verify(niter);
             tmax = comm_setup.Reduce<double>(t, MPI.Operation<double>.Max, root);//mpi_reduce(t,tmax,1,dp_type,MPI_MAX,root,comm_setup,error)
             if(iotype != 0) {
                 t = timer.readTimer(2);
@@ -234,8 +234,7 @@ namespace NPB {
                     Console.WriteLine(" BTIO -- statistics:" + " " + "   I/O timing in seconds   : " + t + "   I/O timing percentage   : " +
                         tpc + "   Total data written [MB] : " + mbytes + "   I/O data rate  [MB/sec] : " + mbytes * tiominv);
                 }
-                IO.print_results(BMName, clss, grid_points[0], grid_points[1], grid_points[2], niter, maxcells * maxcells, total_nodes, tmax, mflops,
-                    "floating point", verified, npbversion);
+                IO.print_results(BMName, clss, grid_points[0], grid_points[1], grid_points[2], niter, maxcells * maxcells, total_nodes, tmax, mflops, "floating point", verified, npbversion);
             }
         GoToEnd: {
                 worldcomm.Barrier();
@@ -3909,7 +3908,7 @@ namespace NPB {
             }
         }//start[
 
-        public void verify(int no_time_steps, char clss, ref bool verified) {
+        public int verify(int no_time_steps) {
             //---------------------------------------------------------------------
             //  verification routine                         
             //---------------------------------------------------------------------
@@ -3925,7 +3924,7 @@ namespace NPB {
             //   tolerance level
             //---------------------------------------------------------------------
             epsilon = 1.0 * Math.Pow(.1, 8);//1.0d/100000000; //1.0d-08;
-            verified = true;
+            int verified = 1;
             //---------------------------------------------------------------------
             //   compute the error norm and the residual norm, and exit if not printing
             //---------------------------------------------------------------------
@@ -3938,8 +3937,8 @@ namespace NPB {
                 xcr[m] /= dt;
             }
             if(node != 0)
-                return;
-            clss = 'U';
+                return 0;
+            char clss = 'U';
             for(m = 0; m < 5; m++) {
                 xcrref[m] = 1.0;
                 xceref[m] = 1.0;
@@ -4173,7 +4172,7 @@ namespace NPB {
                 }
             }
             else {
-                verified = false;
+                verified = 0;
             }
             //---------------------------------------------------------------------
             //    verification test for residuals if gridsize is one of 
@@ -4192,9 +4191,9 @@ namespace NPB {
             if(clss != 'U') {
                 Console.WriteLine(" Verification being performed for class " + clss);
                 Console.WriteLine(" accuracy setting for epsilon = " + epsilon);
-                verified = (Math.Abs(dt - dtref) <= epsilon);
-                if(!verified) {
-                    verified = false;
+                verified = (Math.Abs(dt - dtref) <= epsilon)?1:0;
+                if(!(verified==1)) {
+                    verified = 0;
                     clss = 'U';
                     Console.WriteLine(" DT does not match the reference value of " + dtref);
                 }
@@ -4216,7 +4215,7 @@ namespace NPB {
                     Console.WriteLine("     " + m + " " + xcr[m] + " " + xcrref[m] + " " + xcrdif[m] + " ");
                 }
                 else {
-                    verified = false;
+                    verified = 0;
                     Console.WriteLine(" FAILURE: " + m + " " + xcr[m] + " " + xcrref[m] + " " + xcrdif[m] + " ");
                 }
             }
@@ -4234,7 +4233,7 @@ namespace NPB {
                     Console.WriteLine("      " + m + " " + xce[m] + " " + xceref[m] + " " + xcedif[m] + " ");
                 }
                 else {
-                    verified = false;
+                    verified = 0;
                     Console.WriteLine(" FAILURE: " + m + " " + xce[m] + " " + xceref[m] + " " + xcedif[m] + " ");
                 }
             }
@@ -4242,12 +4241,13 @@ namespace NPB {
                 Console.WriteLine(" No reference values provided");
                 Console.WriteLine(" No verification performed");
             }
-            else if(verified) {
+            else if(verified==1) {
                 Console.WriteLine(" Verification Successful");
             }
             else {
                 Console.WriteLine(" Verification failed");
             }
+            return verified;
         }
 
         public void error_norm(double[] rms) {
