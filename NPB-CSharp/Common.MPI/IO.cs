@@ -16,7 +16,7 @@ namespace NPB {
                                          double t, 
                                          double mops, 
                                          string optype, 
-                                         bool verified, 
+                                         int verified, 
                                          string npbversion) {
             Console.WriteLine("--------------------------------------------------");
             Console.WriteLine(" " + name + " Benchmark Completed.");
@@ -38,7 +38,7 @@ namespace NPB {
             Console.WriteLine(" Mop/s total     = " + mops);
             Console.WriteLine(" Mop/s/process   = " + mops / nprocs_total);
             Console.WriteLine(" Operation type  = " + optype);
-            if (verified) {
+            if (verified==1) {
                 Console.WriteLine(" Verification    = SUCCESSFUL");
             }
             else {
