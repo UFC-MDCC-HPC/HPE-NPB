@@ -46,7 +46,7 @@ namespace NPB {
         //end applu.incl
 
         //lu.f
-            protected static bool verified;
+            //protected static bool verified;
             protected static double mflops;
         //end lu.f
 

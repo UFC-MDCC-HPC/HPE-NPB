@@ -135,7 +135,7 @@ namespace NPB {
             //   verification test
             //---------------------------------------------------------------------
             if (id==0) {
-                verify(rsdnm, errnm, frc, clss, ref verified);
+                int verified = verify(rsdnm, errnm, frc);
                 mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
                 IO.print_results(BMName, clss, nx0, ny0, nz0, itmax, nnodes_compiled, num, maxtime, mflops, "floating point", verified, npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
             }
@@ -2982,7 +2982,7 @@ namespace NPB {
             // end exchange_6.f
         //end pintgr.f
         // verify.f
-        public void verify(double[] xcr, double[] xce, double xci, char clss, ref bool verified) {
+        public int verify(double[] xcr, double[] xce, double xci) {
             //---------------------------------------------------------------------
             //  verification routine                         
             //---------------------------------------------------------------------
@@ -2998,8 +2998,8 @@ namespace NPB {
             //---------------------------------------------------------------------
             epsilon = 1.0E-08;
 
-            clss = 'U';
-            verified = true;
+            char clss = 'U';
+            int verified = 1;
 
             for(m = 0; m<5; m++){
                xcrref[m] = 1.0;
@@ -3189,7 +3189,7 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 xciref =    0.9512163272273E+02;
             } else {
-                verified = false;
+                verified = 0;
             }
             //---------------------------------------------------------------------
             //    verification test for residuals if gridsize is one of 
@@ -3209,8 +3209,8 @@ namespace NPB {
             if (clss != 'U') {
                 Console.WriteLine(" Verification being performed for class " + clss);//   write[*, 1990] class //1990 format[/, ' Verification being performed for class ', a]
                 Console.WriteLine(" Accuracy setting for epsilon = " + epsilon); //   write [*,2000] epsilon //        2000      format[' Accuracy setting for epsilon = ', E20.13]
-                verified = (Math.Abs(dt-dtref) <= epsilon); //verified = (dabs(dt-dtref) <= epsilon);
-                if (!verified) {
+                verified = (Math.Abs(dt-dtref) <= epsilon)?1:0; //verified = (dabs(dt-dtref) <= epsilon);
+                if (!(verified==1)) {
                     clss = 'U';
                     Console.WriteLine(" DT does not match the reference value of " + dtref); //write [*,1000] dtref //1000         format[' DT does not match the reference value of ', E15.8]
                 }
@@ -3230,7 +3230,7 @@ namespace NPB {
                     //      write [*,2011] m,xcr[m],xcrref[m],xcrdif[m];
                } else {
                    Console.WriteLine(" FAILURE: "+m+" "+xcr[m]+" "+xcrref[m]+" "+xcrdif[m]);//write [*,2010] m,xcr[m],xcrref[m],xcrdif[m];
-                    verified = false;
+                    verified = 0;
                }
             }
             if (clss != 'U') {
@@ -3244,7 +3244,7 @@ namespace NPB {
                } else if (xcedif[m] <= epsilon) {
                    Console.WriteLine("          "+m+" "+xce[m]+" "+xceref[m]+" "+xcedif[m]);//write [*,2011] m,xce[m],xceref[m],xcedif[m];
                } else {
-                    verified = false;
+                    verified = 0;
                     Console.WriteLine(" FAILURE: "+m+" "+xce[m]+" "+xceref[m]+" "+xcedif[m]);//write [*,2010] m,xce[m],xceref[m],xcedif[m];
                }
             }
@@ -3258,17 +3258,18 @@ namespace NPB {
             } else if (xcidif <= epsilon) {
                 Console.WriteLine("          " + xci + " " + xciref + " " + xcidif);//   write[*, 2032] xci, xciref, xcidif;
             } else {
-                verified = false;
+                verified = 0;
                 Console.WriteLine(" FAILURE: " + xci + " " + xciref + " " + xcidif);//write[*, 2031] xci, xciref, xcidif;
             }
             if (clss == 'U') {
                 Console.WriteLine("' No reference values provided");//   write[*, 2022]//    2022      format[' No reference values provided']
                 Console.WriteLine(" No verification performed");//   write[*, 2023]//    2023      format[' No verification performed']
-            } else if (verified) {
+            } else if (verified==1) {
                 Console.WriteLine(" Verification Successful");//   write[*, 2020]//2020      format[' Verification Successful']
             } else {
                 Console.WriteLine(" Verification failed");//   write[*, 2021]//    2021      format[' Verification failed']
             }
+            return verified;
         }
         // end verify.f
     }
