@@ -147,9 +147,7 @@ namespace NPB {
             }
             worldcomm.Broadcast<int>(ref niter, root);          //call mpi_bcast[niter, 1, MPI_INTEGER,root, comm_setup, error]
             worldcomm.Broadcast<double>(ref dt, root);          //call mpi_bcast[dt, 1, dp_type, root, comm_setup, error]
-            worldcomm.Broadcast<int>(ref grid_points[0], root);
-            worldcomm.Broadcast<int>(ref grid_points[1], root); //call mpi_bcast[grid_points[1], 3, MPI_INTEGER, root, comm_setup, error]
-            worldcomm.Broadcast<int>(ref grid_points[2], root);
+            worldcomm.Broadcast<int>(ref grid_points, root);    //call mpi_bcast[grid_points[1], 3, MPI_INTEGER, root, comm_setup, error]
             worldcomm.Broadcast<int>(ref wr_interval, root);    //call mpi_bcast[wr_interval, 1, MPI_INTEGER,root, comm_setup, error]
             worldcomm.Broadcast<int>(ref rd_interval, root);    //call mpi_bcast[rd_interval, 1, MPI_INTEGER,root, comm_setup, error]
             make_set();
