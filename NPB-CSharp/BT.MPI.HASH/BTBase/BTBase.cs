@@ -47,22 +47,6 @@ using MPI;
 
 namespace NPB3_0_JAV.BTThreads{
     public class BTBase{
-        //Vars exclusivas do BT
-            //protected int BLOCK_SIZE = 5;//aa = 1, bb = 2, cc = 3,
-     
-            protected static double[, , , , ,] lhsc;
-            protected static double[, , ,] backsub_info;//us, vs, ws, qs, rho_i, square, 
-
-            protected double[,,] fjac; //[5, 5, -2:MAX_CELL_DIM+1];
-            protected double[,,] njac; //[5, 5, -2:MAX_CELL_DIM+1];
-            protected double[,,] lhsa; //[5, 5, -1:MAX_CELL_DIM]; 
-            protected double[,,] lhsb; //[5, 5, -1:MAX_CELL_DIM];
-
-            //protected double tmp1, tmp2, tmp3;
-
-            /*funções exclusivas: pow2()*/
-        //Fim
-      
 	    public static String BMName = "BT";
 	    public char CLASS = 'S';
 
@@ -220,18 +204,6 @@ namespace NPB3_0_JAV.BTThreads{
 
             predecessor = new int[3]; // make_set (def), copy_faces (use), x_solve (use), y_solve (use), z_solve (use)
             successor = new int[3];   // make_set (def), copy_faces (use), x_solve (use), y_solve (use), z_solve (use)
-
-            //Vars exclusivas do BT
-    /**/        lhsc         = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];//lhsc[5,5,-1:IMAX-1,-1:JMAX-1,-1:KMAX-1, maxcells]
-    /**/        backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];//backsub_info[5, 0:MAX_CELL_DIM, 0:MAX_CELL_DIM, maxcells]
-
-    /**/        fjac = new double[MAX_CELL_DIM+5, 5, 5]; //[5, 5, -2:MAX_CELL_DIM+1];
-    /**/        njac = new double[MAX_CELL_DIM+5, 5, 5]; //[5, 5, -2:MAX_CELL_DIM+1];
-    /**/        lhsa = new double[MAX_CELL_DIM+3, 5, 5]; //[5, 5, -1:MAX_CELL_DIM]; 
-    /**/        lhsb = new double[MAX_CELL_DIM+3, 5, 5]; //[5, 5, -1:MAX_CELL_DIM];            
-
-                //funções exclusivas: pow2()
-            //Fim
 	    }
 
 	    //protected Thread master = null;
