@@ -58,7 +58,7 @@ namespace NPB3_0_JAV.BTThreads{
             protected double[,,] lhsa; //[5, 5, -1:MAX_CELL_DIM]; 
             protected double[,,] lhsb; //[5, 5, -1:MAX_CELL_DIM];
 
-            protected double tmp1, tmp2, tmp3;
+            //protected double tmp1, tmp2, tmp3;
 
             /*funções exclusivas: pow2()*/
         //Fim
