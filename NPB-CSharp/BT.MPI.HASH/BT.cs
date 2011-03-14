@@ -2313,7 +2313,7 @@ namespace NPB3_0_JAV{
             //     c'[IMAX] and rhs'[IMAX] will be sent to next cell
             //---------------------------------------------------------------------
             int i, j, k, isize, ksize, jsize, istart;
-
+            double tmp1, tmp2, tmp3;
             istart = 2;
             isize = cell_size[c, 0] + 1;
             jsize = cell_size[c, 1] - end[c, 1] + 1;
@@ -2836,6 +2836,7 @@ namespace NPB3_0_JAV{
             //     c'[JMAX] and rhs'[JMAX] will be sent to next cell
             //---------------------------------------------------------------------
             int i, j, k, isize, ksize, jsize, jstart;
+            double tmp1, tmp2, tmp3;
             double[,] utmp = new double[JMAX + 4, 7];   //double utmp[6,-2:JMAX+1];
 
             jstart = 2;
@@ -3364,6 +3365,7 @@ namespace NPB3_0_JAV{
             //     c'[KMAX] and rhs'[KMAX] will be sent to next cell.
             //---------------------------------------------------------------------
             int i, j, k, isize, ksize, jsize, kstart;
+            double tmp1, tmp2, tmp3;
             double[,] utmp = new double[KMAX + 4, 7];   //double utmp[6,-2:KMAX+1];
             kstart = 2;
             isize = cell_size[c, 0] - end[c, 0] + 1;
