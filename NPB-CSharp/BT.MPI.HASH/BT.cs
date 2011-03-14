@@ -2057,7 +2057,7 @@ namespace NPB3_0_JAV{
             //     
             //---------------------------------------------------------------------
             int c, stage, first, last, buffer_size; //r_status[MPI_STATUS_SIZE];
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
+            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests = new MPI.Request[2] { null, null };
@@ -2116,7 +2116,7 @@ namespace NPB3_0_JAV{
                     x_solve_cell(first, last, c);
                 }
                 if(last == 0) {
-                    double[] in_buffer_x = new double[buffer_size];//buffer_size=(MAX_CELL_DIM*MAX_CELL_DIM*(BLOCK_SIZE*BLOCK_SIZE+BLOCK_SIZE))
+                    double[] in_buffer_x = new double[buffer_size];//buffer_size=(MAX_CELL_DIM*MAX_CELL_DIM*(5*5+5))
 
                     x_pack_solve_info(in_buffer_x, c); //send_id, c); //x_send_solve_info(send_id,c);
                     
@@ -2126,7 +2126,7 @@ namespace NPB3_0_JAV{
                 }
             }
             out_buffer_x = null;
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;
+            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
             out_buffer_x = new double[buffer_size];
             //---------------------------------------------------------------------
             //     now perform backsubstitution in reverse direction
@@ -2158,7 +2158,7 @@ namespace NPB3_0_JAV{
                 if(first == 0) {
                     int jp = cell_coord[c,1];
                     int kp = cell_coord[c,2];
-                    double[] in_buffer_x = new double[buffer_size];//buffer_size=(MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE)
+                    double[] in_buffer_x = new double[buffer_size];//buffer_size=(MAX_CELL_DIM * MAX_CELL_DIM * 5)
                     x_pack_backsub_info(in_buffer_x, c); //send_id, c);  //call x_send_backsub_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[0], EAST+jp+kp*ncells);                    
                 }
@@ -2175,16 +2175,16 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(k = 0; k <= KMAX - 1; k++) {
                 for(j = 0; j <= JMAX - 1; j++) {
-                    for(m = 1; m <= BLOCK_SIZE; m++) {
-                        for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(m = 1; m <= 5; m++) {
+                        for(n = 0; n < 5; n++) {
                             lhsc[c, k+2, j+2, istart-1, n, m-1] = out_buffer_x[ptr + n]; //lhsc[m,n,istart-1,j,k,c] = out_buffer[ptr+n];
                         }
-                        ptr = ptr + BLOCK_SIZE;
+                        ptr = ptr + 5;
                     }
-                    for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(n = 0; n < 5; n++) {
                         rhs[c, k+2, j+2, istart-1, n] = out_buffer_x[ptr + n]; //rhs[n,istart-1,j,k,c] = out_buffer[ptr+n];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
         }
@@ -2202,16 +2202,16 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(k = 0; k <= KMAX - 1; k++) {
                 for(j = 0; j <= JMAX - 1; j++) {
-                    for(m = 1; m <= BLOCK_SIZE; m++) {
-                        for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(m = 1; m <= 5; m++) {
+                        for(n = 0; n < 5; n++) {
                             in_buffer_x[ptr + n] = lhsc[c, k+2, j+2, isize, n, m-1];  //in_buffer[ptr+n] = lhsc[m,n,isize,j,k,c];
                         }
-                        ptr = ptr + BLOCK_SIZE;
+                        ptr = ptr + 5;
                     }
-                    for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(n = 0; n < 5; n++) {
                         in_buffer_x[ptr + n] = rhs[c, k+2, j+2, isize, n];  //in_buffer[ptr+n] = rhs[n,isize,j,k,c];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
             //---------------------------------------------------------------------
@@ -2235,10 +2235,10 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(k = 0; k <= KMAX - 1; k++) {
                 for(j = 0; j <= JMAX - 1; j++) {
-                    for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(n = 0; n < 5; n++) {
                         in_buffer_x[ptr + n] = rhs[c, k+2, j+2, istart, n]; //in_buffer[ptr+n] = rhs[n,istart,j,k,c];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
             //call mpi_isend[in_buffer, buffer_size,dp_type, predecessor[1], EAST+jp+kp*NCELLS, comm_solve, send_id,error];
@@ -2253,10 +2253,10 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(k = 0; k <= KMAX - 1; k++) {
                 for(j = 0; j <= JMAX - 1; j++) {
-                    for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(n = 0; n < 5; n++) {
                         backsub_info[c, k+2, j+2, n] = out_buffer_x[ptr + n];  //backsub_info[n,j,k,c] = out_buffer[ptr+n];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
         }
@@ -2281,8 +2281,8 @@ namespace NPB3_0_JAV{
                         //---------------------------------------------------------------------
                         //     U[isize] uses info from previous cell if not last cell
                         //---------------------------------------------------------------------
-                        for(m = 0; m < BLOCK_SIZE; m++) {
-                            for(n = 0; n < BLOCK_SIZE; n++) {//rhs[m,isize,j,k,c] = rhs[m,isize,j,k,c] - lhsc[m,n,isize,j,k,c]*backsub_info[n,j,k,c]
+                        for(m = 0; m < 5; m++) {
+                            for(n = 0; n < 5; n++) {//rhs[m,isize,j,k,c] = rhs[m,isize,j,k,c] - lhsc[m,n,isize,j,k,c]*backsub_info[n,j,k,c]
                                 rhs[c, k, j, isize, m] = rhs[c, k, j, isize, m] - lhsc[c, k, j, isize, n, m] * backsub_info[c, k, j, n];
                             }
                         }
@@ -2292,8 +2292,8 @@ namespace NPB3_0_JAV{
             for(k = start[c, 2]; k <= ksize; k++) {
                 for(j = start[c, 1]; j <= jsize; j++) {
                     for(i = isize-1; i >= istart; i--) {  //for(i=isize-1,istart,-1;
-                        for(m = 0; m < BLOCK_SIZE; m++) {
-                            for(n = 0; n < BLOCK_SIZE; n++) { //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i+1,j,k,c];
+                        for(m = 0; m < 5; m++) {
+                            for(n = 0; n < 5; n++) { //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i+1,j,k,c];
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - lhsc[c, k, j, i, n, m] * rhs[c, k, j, i+1, n];
                             }
                         }
@@ -2580,7 +2580,7 @@ namespace NPB3_0_JAV{
             //     of the sweep.
             //---------------------------------------------------------------------
             int c, stage, first, last, buffer_size;//int r_status[MPI_STATUS_SIZE];
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
+            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests=new MPI.Request[2] { null, null };
@@ -2640,13 +2640,13 @@ namespace NPB3_0_JAV{
                 if(last == 0) {
                     int ip = cell_coord[c,0];
                     int kp = cell_coord[c,2];
-                    double[] in_buffer_y = new double[buffer_size];//buffer_size=MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE)
+                    double[] in_buffer_y = new double[buffer_size];//buffer_size=MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5)
                     y_pack_solve_info(in_buffer_y, c); //send_id, c);  //call y_send_solve_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, successor[1], SOUTH+ip+kp*ncells);
                 }
             }
             out_buffer_y = null;
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;
+            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
             out_buffer_y = new double[buffer_size];
             //---------------------------------------------------------------------
             //     now perform backsubstitution in reverse direction
@@ -2680,7 +2680,7 @@ namespace NPB3_0_JAV{
                 if(first == 0) {
                     int ip = cell_coord[c,0];
                     int kp = cell_coord[c,2];                    
-                    double[] in_buffer_y = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;                    
+                    double[] in_buffer_y = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;                    
                     y_pack_backsub_info(in_buffer_y, c); //send_id, c);  //call y_send_backsub_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, predecessor[1], NORTH+ip+kp*ncells);
                 }
@@ -2697,16 +2697,16 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(k = 0; k <= KMAX - 1; k++) {
                 for(i = 0; i <= IMAX - 1; i++) {
-                    for(m = 1; m <= BLOCK_SIZE; m++) {
-                        for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(m = 1; m <= 5; m++) {
+                        for(n = 0; n < 5; n++) {
                             lhsc[c, k+2, jstart-1, i+2, n, m-1] = out_buffer_x[ptr + n]; //lhsc[m,n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
                         }
-                        ptr = ptr + BLOCK_SIZE;
+                        ptr = ptr + 5;
                     }
-                    for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(n = 0; n < 5; n++) {
                         rhs[c, k+2, jstart-1, i+2, n] = out_buffer_x[ptr + n];  // rhs[n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
         }
@@ -2725,16 +2725,16 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(k = 0; k <= KMAX - 1; k++) {
                 for(i = 0; i <= IMAX - 1; i++) {
-                    for(m = 1; m <= BLOCK_SIZE; m++) {
-                        for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(m = 1; m <= 5; m++) {
+                        for(n = 0; n < 5; n++) {
                             in_buffer_y[ptr + n] = lhsc[c, k+2, jsize, i+2, n, m-1];  //in_buffer[ptr+n] = lhsc[m,n,i,jsize,k,c]
                         }
-                        ptr = ptr + BLOCK_SIZE;
+                        ptr = ptr + 5;
                     }
-                    for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(n = 0; n < 5; n++) {
                         in_buffer_y[ptr + n] = rhs[c, k+2, jsize, i+2, n];       //in_buffer[ptr+n] = rhs[n,i,jsize,k,c] 
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
             //---------------------------------------------------------------------
@@ -2758,10 +2758,10 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(k = 0; k <= KMAX - 1; k++) {
                 for(i = 0; i <= IMAX - 1; i++) {
-                    for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(n = 0; n < 5; n++) {
                         in_buffer_y[ptr + n] = rhs[c, k+2, jstart, i+2, n];  //in_buffer[ptr+n] = rhs[n,i,jstart,k,c];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
             //call mpi_isend[in_buffer, buffer_size, dp_type, predecessor[2], NORTH+ip+kp*NCELLS, comm_solve, send_id,error];
@@ -2777,10 +2777,10 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(k = 0; k <= KMAX - 1; k++) {
                 for(i = 0; i <= IMAX - 1; i++) {
-                    for(n = 0; n < BLOCK_SIZE; n++) {
+                    for(n = 0; n < 5; n++) {
                         backsub_info[c, k+2, i+2, n] = out_buffer_x[ptr + n];  //backsub_info[n,i,k,c] = out_buffer[ptr+n];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
         }
@@ -2804,8 +2804,8 @@ namespace NPB3_0_JAV{
                         //---------------------------------------------------------------------
                         //     U[jsize] uses info from previous cell if not last cell
                         //---------------------------------------------------------------------
-                        for(m = 0; m < BLOCK_SIZE; m++) {
-                            for(n = 0; n < BLOCK_SIZE; n++) { //rhs[m,i,jsize,k,c]=rhs[m,i,jsize,k,c]-lhsc[m,n,i,jsize,k,c]*backsub_info[n,i,k,c];
+                        for(m = 0; m < 5; m++) {
+                            for(n = 0; n < 5; n++) { //rhs[m,i,jsize,k,c]=rhs[m,i,jsize,k,c]-lhsc[m,n,i,jsize,k,c]*backsub_info[n,i,k,c];
                                 rhs[c, k, jsize, i, m] = rhs[c, k, jsize, i, m] - lhsc[c, k, jsize, i, n, m] * backsub_info[c, k, i, n];
                             }
                         }
@@ -2815,8 +2815,8 @@ namespace NPB3_0_JAV{
             for(k = start[c, 2]; k <= ksize; k++) {
                 for(j = jsize-1; j >= jstart; j--) {//for(j=jsize-1,jstart,-1;
                     for(i = start[c, 0]; i <= isize; i++) {
-                        for(m = 0; m < BLOCK_SIZE; m++) {
-                            for(n = 0; n < BLOCK_SIZE; n++) {  //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i,j+1,k,c];
+                        for(m = 0; m < 5; m++) {
+                            for(n = 0; n < 5; n++) {  //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i,j+1,k,c];
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - lhsc[c, k, j, i, n, m] * rhs[c, k, j+1, i, n];
                             }
                         }
@@ -3113,7 +3113,7 @@ namespace NPB3_0_JAV{
             //     of the sweep.
             //---------------------------------------------------------------------
             int c, stage, first, last, buffer_size; //int[] r_status[MPI_STATUS_SIZE];
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
+            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests = new MPI.Request[2] { null, null };
@@ -3173,13 +3173,13 @@ namespace NPB3_0_JAV{
                 if(last == 0) {
                     int ip = cell_coord[c,0];
                     int jp = cell_coord[c,1];                    
-                    double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
+                    double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
                     z_pack_solve_info(in_buffer_z, c); //send_id, c);  //call z_send_solve_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, successor[2], BOTTOM+ip+jp*ncells);                    
                 }
             }
             out_buffer_z = null;
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;
+            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
             out_buffer_z = new double[buffer_size];
             //---------------------------------------------------------------------
             //     now perform backsubstitution in reverse direction
@@ -3212,7 +3212,7 @@ namespace NPB3_0_JAV{
                 if(first == 0) {
                     int ip = cell_coord[c,0];
                     int jp = cell_coord[c,1];                    
-                    double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;
+                    double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
                     z_pack_backsub_info(in_buffer_z, c); //send_id, c);  //call z_send_backsub_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, predecessor[2], TOP+ip+jp*ncells);
                 }
@@ -3229,16 +3229,16 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(j = 0; j <= JMAX - 1; j++) {
                 for(i = 0; i <= IMAX - 1; i++) {
-                    for(m = 1; m <= BLOCK_SIZE; m++) {
-                        for(n = 0; n < BLOCK_SIZE; n++) {  //lhsc[m,n,i,j,kstart-1,c] = out_buffer[ptr+n];
+                    for(m = 1; m <= 5; m++) {
+                        for(n = 0; n < 5; n++) {  //lhsc[m,n,i,j,kstart-1,c] = out_buffer[ptr+n];
                             lhsc[c, kstart-1, j+2, i+2, n, m-1] = out_buffer_x[ptr + n];
                         }
-                        ptr = ptr + BLOCK_SIZE;
+                        ptr = ptr + 5;
                     }
-                    for(n = 0; n < BLOCK_SIZE; n++) { //rhs[n,i,j,kstart-1,c] = out_buffer[ptr+n];
+                    for(n = 0; n < 5; n++) { //rhs[n,i,j,kstart-1,c] = out_buffer[ptr+n];
                         rhs[c, kstart-1, j+2, i+2, n] = out_buffer_x[ptr + n];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
         }
@@ -3256,16 +3256,16 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(j = 0; j <= JMAX - 1; j++) {
                 for(i = 0; i <= IMAX - 1; i++) {
-                    for(m = 1; m <= BLOCK_SIZE; m++) {
-                        for(n = 0; n < BLOCK_SIZE; n++) {  //in_buffer[ptr+n] = lhsc[m,n,i,j,ksize,c]
+                    for(m = 1; m <= 5; m++) {
+                        for(n = 0; n < 5; n++) {  //in_buffer[ptr+n] = lhsc[m,n,i,j,ksize,c]
                             in_buffer_z[ptr + n] = lhsc[c, ksize, j+2, i+2, n, m-1];
                         }
-                        ptr = ptr + BLOCK_SIZE;
+                        ptr = ptr + 5;
                     }
-                    for(n = 0; n < BLOCK_SIZE; n++) {  //in_buffer[ptr+n] = rhs[n,i,j,ksize,c];
+                    for(n = 0; n < 5; n++) {  //in_buffer[ptr+n] = rhs[n,i,j,ksize,c];
                         in_buffer_z[ptr + n] = rhs[c, ksize, j+2, i+2, n];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
             //---------------------------------------------------------------------
@@ -3287,10 +3287,10 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(j = 0; j <= JMAX - 1; j++) {
                 for(i = 0; i <= IMAX - 1; i++) {
-                    for(n = 0; n < BLOCK_SIZE; n++) {  //in_buffer[ptr+n] = rhs[n,i,j,kstart,c];
+                    for(n = 0; n < 5; n++) {  //in_buffer[ptr+n] = rhs[n,i,j,kstart,c];
                         in_buffer_z[ptr + n] = rhs[c, kstart, j+2, i+2, n];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
             //call mpi_isend[in_buffer, buffer_size, dp_type, predecessor[3], TOP+ip+jp*NCELLS, comm_solve, send_id,error];
@@ -3305,10 +3305,10 @@ namespace NPB3_0_JAV{
             ptr = 0;
             for(j = 0; j <= JMAX - 1; j++) {
                 for(i = 0; i <= IMAX - 1; i++) {
-                    for(n = 0; n < BLOCK_SIZE; n++) {  //backsub_info[n,i,j,c] = out_buffer[ptr+n];
+                    for(n = 0; n < 5; n++) {  //backsub_info[n,i,j,c] = out_buffer[ptr+n];
                         backsub_info[c, j+2, i+2, n] = out_buffer_x[ptr + n];
                     }
-                    ptr = ptr + BLOCK_SIZE;
+                    ptr = ptr + 5;
                 }
             }
         }
@@ -3333,8 +3333,8 @@ namespace NPB3_0_JAV{
                         //---------------------------------------------------------------------
                         //     U[jsize] uses info from previous cell if not last cell
                         //---------------------------------------------------------------------
-                        for(m = 0; m < BLOCK_SIZE; m++) {
-                            for(n = 0; n < BLOCK_SIZE; n++) { //rhs[m,i,j,ksize,c] = rhs[m,i,j,ksize,c] - lhsc[m,n,i,j,ksize,c]*backsub_info[n,i,j,c]
+                        for(m = 0; m < 5; m++) {
+                            for(n = 0; n < 5; n++) { //rhs[m,i,j,ksize,c] = rhs[m,i,j,ksize,c] - lhsc[m,n,i,j,ksize,c]*backsub_info[n,i,j,c]
                                 rhs[c, ksize, j, i, m] = rhs[c, ksize, j, i, m] - lhsc[c, ksize, j, i, n, m] * backsub_info[c, j, i, n];
                             }
                         }
@@ -3344,8 +3344,8 @@ namespace NPB3_0_JAV{
             for(k = ksize-1; k >= kstart; k--) {  //for(k=ksize-1,kstart,-1;
                 for(j = start[c, 1]; j <= jsize; j++) {
                     for(i = start[c, 0]; i <= isize; i++) {
-                        for(m = 0; m < BLOCK_SIZE; m++) {
-                            for(n = 0; n < BLOCK_SIZE; n++) {  //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i,j,k+1,c];
+                        for(m = 0; m < 5; m++) {
+                            for(n = 0; n < 5; n++) {  //rhs[m,i,j,k,c] = rhs[m,i,j,k,c] - lhsc[m,n,i,j,k,c]*rhs[n,i,j,k+1,c];
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - lhsc[c, k, j, i, n, m] * rhs[c, k+1, j, i, n];
                             }
                         }
