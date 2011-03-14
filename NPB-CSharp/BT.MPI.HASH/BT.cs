@@ -2062,6 +2062,8 @@ namespace NPB3_0_JAV{
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests = new MPI.Request[2] { null, null };
             double[] out_buffer_x = new double[buffer_size];
+            double[, , , , ,] lhsc = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];
+            double[, , ,] backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];
             //istart = 0;
             //---------------------------------------------------------------------
             //     in our terminology stage is the number of the cell in the x-direction
@@ -2087,7 +2089,7 @@ namespace NPB3_0_JAV{
                     //---------------------------------------------------------------------
                     first = 1;
                     //          //c            call lhsx[c];
-                    x_solve_cell(first, last, c);
+                    x_solve_cell(lhsc, first, last, c);
                 }
                 else {
                     //---------------------------------------------------------------------
@@ -2112,13 +2114,13 @@ namespace NPB3_0_JAV{
                     //---------------------------------------------------------------------
                     //     install C'[istart] and rhs'[istart] to be used in this cell
                     //---------------------------------------------------------------------
-                    x_unpack_solve_info(out_buffer_x, c);
-                    x_solve_cell(first, last, c);
+                    x_unpack_solve_info(lhsc, out_buffer_x, c);
+                    x_solve_cell(lhsc, first, last, c);
                 }
                 if(last == 0) {
                     double[] in_buffer_x = new double[buffer_size];//buffer_size=(MAX_CELL_DIM*MAX_CELL_DIM*(5*5+5))
 
-                    x_pack_solve_info(in_buffer_x, c); //send_id, c); //x_send_solve_info(send_id,c);
+                    x_pack_solve_info(lhsc, in_buffer_x, c); //send_id, c); //x_send_solve_info(send_id,c);
                     
                     int jp = cell_coord[c,1];
                     int kp = cell_coord[c,2];
@@ -2141,7 +2143,7 @@ namespace NPB3_0_JAV{
                     last = 1; //---------------------------------------------------------------------
                     //     last cell, so perform back substitute without waiting
                     //---------------------------------------------------------------------
-                    x_backsubstitute(first, last, c); //call x_backsubstitute[first, last,c];
+                    x_backsubstitute(lhsc, backsub_info, first, last, c); //call x_backsubstitute[first, last,c];
                 }
                 else {
                     int jp = cell_coord[c,1];
@@ -2152,8 +2154,8 @@ namespace NPB3_0_JAV{
                     requests[1].Wait(); //send_id[0].Wait();//      call mpi_wait[send_id,r_status,error];
                     requests[0].Wait(); //recv_id[0].Wait();//      call mpi_wait[recv_id,r_status,error];
                     
-                    x_unpack_backsub_info(out_buffer_x, c);
-                    x_backsubstitute(first, last, c);   //      call x_backsubstitute[first,last,c];
+                    x_unpack_backsub_info(backsub_info, out_buffer_x, c);
+                    x_backsubstitute(lhsc, backsub_info, first, last, c);   //      call x_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
                     int jp = cell_coord[c,1];
@@ -2165,7 +2167,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void x_unpack_solve_info(double[] out_buffer_x, int c) {
+        public void x_unpack_solve_info(double[, , , , ,] lhsc, double[] out_buffer_x, int c) {
             //---------------------------------------------------------------------
             //     unpack C'[-1] and rhs'[-1] for
             //     all j and k
@@ -2189,7 +2191,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void x_pack_solve_info(double[] in_buffer_x, int c) {
+        public void x_pack_solve_info(double[, , , , ,] lhsc, double[] in_buffer_x, int c) {
             //---------------------------------------------------------------------
             //     pack up and send C'[iend] and rhs'[iend] for
             //     all j and k
@@ -2245,7 +2247,7 @@ namespace NPB3_0_JAV{
             //send_id[0] =
         }
 
-        public void x_unpack_backsub_info(double[] out_buffer_x, int c) {
+        public void x_unpack_backsub_info(double[, , ,] backsub_info, double[] out_buffer_x, int c) {
             //---------------------------------------------------------------------
             //     unpack U[isize] for all j and k
             //---------------------------------------------------------------------
@@ -2261,7 +2263,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void x_backsubstitute(int first, int last, int c) {
+        public void x_backsubstitute(double[, , , , ,] lhsc, double[, , ,] backsub_info, int first, int last, int c) {
             //---------------------------------------------------------------------
             //     back solve: if last cell, { generate U[isize]=rhs[isize]
             //     } else { assume U[isize] is loaded in un pack backsub_info
@@ -2302,7 +2304,7 @@ namespace NPB3_0_JAV{
             }
         }//isize ksize jsize start[ istart
 
-        public void x_solve_cell(int first, int last, int c) {
+        public void x_solve_cell(double[, , , , ,] lhsc, int first, int last, int c) {
             //---------------------------------------------------------------------
             //     performs guaussian elimination on this cell.
             //     
@@ -2314,6 +2316,10 @@ namespace NPB3_0_JAV{
             //---------------------------------------------------------------------
             int i, j, k, isize, ksize, jsize, istart;
             double tmp1, tmp2, tmp3;
+            double[,,] fjac = new double[MAX_CELL_DIM+5, 5, 5];
+            double[,,] njac = new double[MAX_CELL_DIM+5, 5, 5];
+            double[,,] lhsa = new double[MAX_CELL_DIM+3, 5, 5];
+            double[,,] lhsb = new double[MAX_CELL_DIM+3, 5, 5];
             istart = 2;
             isize = cell_size[c, 0] + 1;
             jsize = cell_size[c, 1] - end[c, 1] + 1;
@@ -2585,6 +2591,9 @@ namespace NPB3_0_JAV{
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests=new MPI.Request[2] { null, null };
             double[] out_buffer_y = new double[buffer_size];
+            double[] out_buffer_x = new double[buffer_size];
+            double[, , , , ,] lhsc = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];
+            double[, , ,] backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];
             //---------------------------------------------------------------------
             //     in our terminology stage is the number of the cell in the y-direction
             //     i.e. stage = 1 means the start of the line stage=ncells means end
@@ -2609,7 +2618,7 @@ namespace NPB3_0_JAV{
                     //---------------------------------------------------------------------
                     first = 1;
                     //c            call lhsy[c]
-                    y_solve_cell(first, last, c); //call y_solve_cell[first,last,c];
+                    y_solve_cell(lhsc, first, last, c); //call y_solve_cell[first,last,c];
                 }
                 else {
                     //c---------------------------------------------------------------------
@@ -2634,14 +2643,14 @@ namespace NPB3_0_JAV{
                     //      c---------------------------------------------------------------------
                     //      c     install C'[jstart+1] and rhs'[jstart+1] to be used in this cell
                     //      c---------------------------------------------------------------------
-                    y_unpack_solve_info(out_buffer_y, c);
-                    y_solve_cell(first, last, c); //call y_solve_cell[first,last,c];
+                    y_unpack_solve_info(lhsc, out_buffer_y, c);
+                    y_solve_cell(lhsc, first, last, c); //call y_solve_cell[first,last,c];
                 }
                 if(last == 0) {
                     int ip = cell_coord[c,0];
                     int kp = cell_coord[c,2];
                     double[] in_buffer_y = new double[buffer_size];//buffer_size=MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5)
-                    y_pack_solve_info(in_buffer_y, c); //send_id, c);  //call y_send_solve_info[send_id,c];
+                    y_pack_solve_info(lhsc, in_buffer_y, c); //send_id, c);  //call y_send_solve_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, successor[1], SOUTH+ip+kp*ncells);
                 }
             }
@@ -2662,7 +2671,7 @@ namespace NPB3_0_JAV{
                     //---------------------------------------------------------------------
                     //     last cell, so perform back substitute without waiting
                     //---------------------------------------------------------------------
-                    y_backsubstitute(first, last, c);     //call y_backsubstitute[first, last,c];
+                    y_backsubstitute(lhsc, backsub_info, first, last, c);     //call y_backsubstitute[first, last,c];
                 }
                 else {
                     int ip = cell_coord[c, 0];
@@ -2674,8 +2683,8 @@ namespace NPB3_0_JAV{
                     requests[0].Wait();//recv_id[0].Wait();
                     //call mpi_wait[send_id,r_status,error];
                     //call mpi_wait[recv_id,r_status,error];
-                    y_unpack_backsub_info(out_buffer_y, c);
-                    y_backsubstitute(first, last, c);      //call y_backsubstitute[first,last,c];
+                    y_unpack_backsub_info(backsub_info, out_buffer_y, c);
+                    y_backsubstitute(lhsc, backsub_info, first, last, c);      //call y_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
                     int ip = cell_coord[c,0];
@@ -2687,7 +2696,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void y_unpack_solve_info(double[] out_buffer_x, int c) {
+        public void y_unpack_solve_info(double[, , , , ,] lhsc, double[] out_buffer_x, int c) {
             //---------------------------------------------------------------------
             //     unpack C'[-1] and rhs'[-1] for
             //     all i and k
@@ -2711,7 +2720,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void y_pack_solve_info(double[] in_buffer_y, int c) {
+        public void y_pack_solve_info(double[, , , , ,] lhsc, double[] in_buffer_y, int c) {
             //---------------------------------------------------------------------
             //     pack up and send C'[jend] and rhs'[jend] for
             //     all i and k
@@ -2768,7 +2777,7 @@ namespace NPB3_0_JAV{
             //send_id[0] =
         }
 
-        public void y_unpack_backsub_info(double[] out_buffer_x, int c) {
+        public void y_unpack_backsub_info(double[, , ,] backsub_info, double[] out_buffer_x, int c) {
             //  c---------------------------------------------------------------------
             //  c     unpack U[jsize] for all i and k
             //  c---------------------------------------------------------------------
@@ -2785,7 +2794,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void y_backsubstitute(int first, int last, int c) {
+        public void y_backsubstitute(double[, , , , ,] lhsc, double[, , ,] backsub_info, int first, int last, int c) {
             //---------------------------------------------------------------------
             //     back solve: if last cell, { generate U[jsize]=rhs[jsize]
             //     } else { assume U[jsize] is loaded in un pack backsub_info
@@ -2825,7 +2834,7 @@ namespace NPB3_0_JAV{
             }
         }//start[ isize jsize ksize jstart
 
-        public void y_solve_cell(int first, int last, int c) {
+        public void y_solve_cell(double[, , , , ,] lhsc, int first, int last, int c) {
             //---------------------------------------------------------------------
             //     performs guaussian elimination on this cell.
             //     
@@ -2838,7 +2847,10 @@ namespace NPB3_0_JAV{
             int i, j, k, isize, ksize, jsize, jstart;
             double tmp1, tmp2, tmp3;
             double[,] utmp = new double[JMAX + 4, 7];   //double utmp[6,-2:JMAX+1];
-
+            double[,,] fjac = new double[MAX_CELL_DIM+5, 5, 5];
+            double[,,] njac = new double[MAX_CELL_DIM+5, 5, 5];
+            double[,,] lhsa = new double[MAX_CELL_DIM+3, 5, 5];
+            double[,,] lhsb = new double[MAX_CELL_DIM+3, 5, 5];
             jstart = 2;
             isize = cell_size[c, 0] - end[c, 0] + 1;
             jsize = cell_size[c, 1] + 1;
@@ -3118,6 +3130,9 @@ namespace NPB3_0_JAV{
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests = new MPI.Request[2] { null, null };
             double[] out_buffer_z = new double[buffer_size];
+            double[] out_buffer_x = new double[buffer_size];
+            double[, , , , ,] lhsc = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];
+            double[, , ,] backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];
             //---------------------------------------------------------------------
             //     in our terminology stage is the number of the cell in the y-direction
             //     i.e. stage = 1 means the start of the line stage=ncells means end
@@ -3142,7 +3157,7 @@ namespace NPB3_0_JAV{
                     //     This is the first cell, so solve without receiving data
                     //---------------------------------------------------------------------
                     first = 1;
-                    z_solve_cell(first, last, c);  //call z_solve_cell[first,last,c];
+                    z_solve_cell(lhsc, first, last, c);  //call z_solve_cell[first,last,c];
                 }
                 else {
                     //---------------------------------------------------------------------
@@ -3167,14 +3182,14 @@ namespace NPB3_0_JAV{
                     //  c---------------------------------------------------------------------
                     //  c     install C'[kstart+1] and rhs'[kstart+1] to be used in this cell
                     //  c---------------------------------------------------------------------
-                    z_unpack_solve_info(out_buffer_z, c);
-                    z_solve_cell(first, last, c);  //call z_solve_cell[first,last,c];
+                    z_unpack_solve_info(lhsc, out_buffer_z, c);
+                    z_solve_cell(lhsc, first, last, c);  //call z_solve_cell[first,last,c];
                 }
                 if(last == 0) {
                     int ip = cell_coord[c,0];
                     int jp = cell_coord[c,1];                    
                     double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
-                    z_pack_solve_info(in_buffer_z, c); //send_id, c);  //call z_send_solve_info[send_id,c];
+                    z_pack_solve_info(lhsc, in_buffer_z, c); //send_id, c);  //call z_send_solve_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, successor[2], BOTTOM+ip+jp*ncells);                    
                 }
             }
@@ -3195,7 +3210,7 @@ namespace NPB3_0_JAV{
                     //---------------------------------------------------------------------
                     //     last cell, so perform back substitute without waiting
                     //---------------------------------------------------------------------
-                    z_backsubstitute(first, last, c); //call z_backsubstitute[first, last,c];
+                    z_backsubstitute(lhsc, backsub_info, first, last, c); //call z_backsubstitute[first, last,c];
                 }
                 else {
                     int ip = cell_coord[c, 0];
@@ -3206,8 +3221,8 @@ namespace NPB3_0_JAV{
                     requests[0].Wait(); //recv_id[0].Wait();
                     // Fortran: call mpi_wait[send_id,r_status,error]; 
                     // Fortran: call mpi_wait[recv_id,r_status,error];
-                    z_unpack_backsub_info(out_buffer_z, c);
-                    z_backsubstitute(first, last, c); //call z_backsubstitute[first,last,c];
+                    z_unpack_backsub_info(backsub_info, out_buffer_z, c);
+                    z_backsubstitute(lhsc, backsub_info, first, last, c); //call z_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
                     int ip = cell_coord[c,0];
@@ -3219,7 +3234,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void z_unpack_solve_info(double[] out_buffer_x, int c) {
+        public void z_unpack_solve_info(double[, , , , ,] lhsc, double[] out_buffer_x, int c) {
             //---------------------------------------------------------------------
             //     unpack C'[-1] and rhs'[-1] for
             //     all i and j
@@ -3243,7 +3258,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void z_pack_solve_info(double[] in_buffer_z, int c) {
+        public void z_pack_solve_info(double[, , , , ,] lhsc, double[] in_buffer_z, int c) {
             //---------------------------------------------------------------------
             //     pack up and send C'[kend] and rhs'[kend] for
             //     all i and j
@@ -3297,7 +3312,7 @@ namespace NPB3_0_JAV{
             //send_id[0] =
         }
 
-        public void z_unpack_backsub_info(double[] out_buffer_x, int c) {
+        public void z_unpack_backsub_info(double[, , ,] backsub_info, double[] out_buffer_x, int c) {
             //---------------------------------------------------------------------
             //     unpack U[ksize] for all i and j
             //---------------------------------------------------------------------
@@ -3313,7 +3328,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void z_backsubstitute(int first, int last, int c) {
+        public void z_backsubstitute(double[, , , , ,] lhsc, double[, , ,] backsub_info, int first, int last, int c) {
             //---------------------------------------------------------------------
             //     back solve: if last cell, { generate U[ksize]=rhs[ksize]
             //     } else { assume U[ksize] is loaded in un pack backsub_info
@@ -3354,7 +3369,7 @@ namespace NPB3_0_JAV{
             }
         }//start[ ksize jsize isize istart jstart kstart
 
-        public void z_solve_cell(int first, int last, int c) {
+        public void z_solve_cell(double[, , , , ,] lhsc, int first, int last, int c) {
             //---------------------------------------------------------------------
             //     performs guaussian elimination on this cell.
             //     
@@ -3367,6 +3382,10 @@ namespace NPB3_0_JAV{
             int i, j, k, isize, ksize, jsize, kstart;
             double tmp1, tmp2, tmp3;
             double[,] utmp = new double[KMAX + 4, 7];   //double utmp[6,-2:KMAX+1];
+            double[,,] fjac = new double[MAX_CELL_DIM+5, 5, 5];
+            double[,,] njac = new double[MAX_CELL_DIM+5, 5, 5];
+            double[,,] lhsa = new double[MAX_CELL_DIM+3, 5, 5];
+            double[,,] lhsb = new double[MAX_CELL_DIM+3, 5, 5];
             kstart = 2;
             isize = cell_size[c, 0] - end[c, 0] + 1;
             jsize = cell_size[c, 1] - end[c, 1] + 1;
