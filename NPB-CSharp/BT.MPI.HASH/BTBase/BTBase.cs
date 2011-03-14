@@ -48,7 +48,7 @@ using MPI;
 namespace NPB3_0_JAV.BTThreads{
     public class BTBase{
         //Vars exclusivas do BT
-            protected int BLOCK_SIZE = 5;//aa = 1, bb = 2, cc = 3,
+            //protected int BLOCK_SIZE = 5;//aa = 1, bb = 2, cc = 3,
      
             protected static double[, , , , ,] lhsc;
             protected static double[, , ,] backsub_info;//us, vs, ws, qs, rho_i, square, 
