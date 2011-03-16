@@ -2696,7 +2696,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void y_unpack_solve_info(double[, , , , ,] lhsc, double[] out_buffer_x, int c) {
+        public void y_unpack_solve_info(double[,,,,,] lhsc, double[] out_buffer_y, int c) {
             //---------------------------------------------------------------------
             //     unpack C'[-1] and rhs'[-1] for
             //     all i and k
@@ -2708,12 +2708,12 @@ namespace NPB3_0_JAV{
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(m = 1; m <= 5; m++) {
                         for(n = 0; n < 5; n++) {
-                            lhsc[c, k+2, jstart-1, i+2, n, m-1] = out_buffer_x[ptr + n]; //lhsc[m,n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
+                            lhsc[c, k+2, jstart-1, i+2, n, m-1] = out_buffer_y[ptr + n]; //lhsc[m,n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
                         }
                         ptr = ptr + 5;
                     }
                     for(n = 0; n < 5; n++) {
-                        rhs[c, k+2, jstart-1, i+2, n] = out_buffer_x[ptr + n];  // rhs[n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
+                        rhs[c, k+2, jstart-1, i+2, n] = out_buffer_y[ptr + n];  // rhs[n,i,jstart-1,k,c] = out_buffer_x[ptr+n];
                     }
                     ptr = ptr + 5;
                 }
