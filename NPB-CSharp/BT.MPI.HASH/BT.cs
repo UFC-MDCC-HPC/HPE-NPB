@@ -3234,7 +3234,7 @@ namespace NPB3_0_JAV{
             }
         }
 
-        public void z_unpack_solve_info(double[, , , , ,] lhsc, double[] out_buffer_x, int c) {
+        public void z_unpack_solve_info(double[,,,,,] lhsc, double[] out_buffer_z, int c) {
             //---------------------------------------------------------------------
             //     unpack C'[-1] and rhs'[-1] for
             //     all i and j
@@ -3246,19 +3246,19 @@ namespace NPB3_0_JAV{
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(m = 1; m <= 5; m++) {
                         for(n = 0; n < 5; n++) {  //lhsc[m,n,i,j,kstart-1,c] = out_buffer[ptr+n];
-                            lhsc[c, kstart-1, j+2, i+2, n, m-1] = out_buffer_x[ptr + n];
+                            lhsc[c, kstart-1, j+2, i+2, n, m-1] = out_buffer_z[ptr + n];
                         }
                         ptr = ptr + 5;
                     }
                     for(n = 0; n < 5; n++) { //rhs[n,i,j,kstart-1,c] = out_buffer[ptr+n];
-                        rhs[c, kstart-1, j+2, i+2, n] = out_buffer_x[ptr + n];
+                        rhs[c, kstart-1, j+2, i+2, n] = out_buffer_z[ptr + n];
                     }
                     ptr = ptr + 5;
                 }
             }
         }
 
-        public void z_pack_solve_info(double[, , , , ,] lhsc, double[] in_buffer_z, int c) {
+        public void z_pack_solve_info(double[,,,,,] lhsc, double[] in_buffer_z, int c) {
             //---------------------------------------------------------------------
             //     pack up and send C'[kend] and rhs'[kend] for
             //     all i and j
@@ -3312,7 +3312,7 @@ namespace NPB3_0_JAV{
             //send_id[0] =
         }
 
-        public void z_unpack_backsub_info(double[, , ,] backsub_info, double[] out_buffer_x, int c) {
+        public void z_unpack_backsub_info(double[,,,] backsub_info, double[] out_buffer_z, int c) {
             //---------------------------------------------------------------------
             //     unpack U[ksize] for all i and j
             //---------------------------------------------------------------------
@@ -3321,14 +3321,14 @@ namespace NPB3_0_JAV{
             for(j = 0; j <= JMAX - 1; j++) {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(n = 0; n < 5; n++) {  //backsub_info[n,i,j,c] = out_buffer[ptr+n];
-                        backsub_info[c, j+2, i+2, n] = out_buffer_x[ptr + n];
+                        backsub_info[c, j+2, i+2, n] = out_buffer_z[ptr + n];
                     }
                     ptr = ptr + 5;
                 }
             }
         }
 
-        public void z_backsubstitute(double[, , , , ,] lhsc, double[, , ,] backsub_info, int first, int last, int c) {
+        public void z_backsubstitute(double[,,,,,] lhsc, double[,,,] backsub_info, int first, int last, int c) {
             //---------------------------------------------------------------------
             //     back solve: if last cell, { generate U[ksize]=rhs[ksize]
             //     } else { assume U[ksize] is loaded in un pack backsub_info
@@ -3369,7 +3369,7 @@ namespace NPB3_0_JAV{
             }
         }//start[ ksize jsize isize istart jstart kstart
 
-        public void z_solve_cell(double[, , , , ,] lhsc, int first, int last, int c) {
+        public void z_solve_cell(double[,,,,,] lhsc, int first, int last, int c) {
             //---------------------------------------------------------------------
             //     performs guaussian elimination on this cell.
             //     
