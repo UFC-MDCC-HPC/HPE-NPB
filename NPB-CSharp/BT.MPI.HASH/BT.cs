@@ -2777,7 +2777,7 @@ namespace NPB3_0_JAV{
             //send_id[0] =
         }
 
-        public void y_unpack_backsub_info(double[, , ,] backsub_info, double[] out_buffer_x, int c) {
+        public void y_unpack_backsub_info(double[, , ,] backsub_info, double[] out_buffer_y, int c) {
             //  c---------------------------------------------------------------------
             //  c     unpack U[jsize] for all i and k
             //  c---------------------------------------------------------------------
@@ -2787,7 +2787,7 @@ namespace NPB3_0_JAV{
             for(k = 0; k <= KMAX - 1; k++) {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(n = 0; n < 5; n++) {
-                        backsub_info[c, k+2, i+2, n] = out_buffer_x[ptr + n];  //backsub_info[n,i,k,c] = out_buffer[ptr+n];
+                        backsub_info[c, k+2, i+2, n] = out_buffer_y[ptr + n];  //backsub_info[n,i,k,c] = out_buffer[ptr+n];
                     }
                     ptr = ptr + 5;
                 }
