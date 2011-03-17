@@ -285,8 +285,7 @@ namespace NPB3_0_JAV{
             }
             else
             {
-                Console.WriteLine("No input file inputbt.data," +
-                                   "Using compiled defaults");
+                if (node==root) Console.WriteLine("No input file inputbt.data," + "Using compiled defaults");
                 niter = niter_default;
                 dt = dt_default;
                 grid_points[0] = problem_size;
