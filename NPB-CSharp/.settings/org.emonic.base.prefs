@@ -1,6 +1,6 @@
 #Fri Apr 03 00:39:45 BRT 2009
 eclipse.preferences.version=1
-org.emonic.base.build.file=npb.build
+org.emonic.base.build.file=build.xml
 org.emonic.base.build.mechanism=nant
 org.emonic.base.project.copyright=(c) all rights reserved
 org.emonic.base.project.defaultNamespace=NPB3_0_JAV
