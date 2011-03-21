@@ -148,7 +148,7 @@ namespace NPB3_0_JAV
             timer.resetAllTimers();
             timer.start(t_total);
 
-            Console.WriteLine("STARTING"); Console.Out.Flush();
+            if(node==root) Console.WriteLine("STARTING"); Console.Out.Flush();
 
             for (int step = 1; step <= niter; step++)
             {
@@ -289,17 +289,14 @@ namespace NPB3_0_JAV
             }
             else
             {
-                Console.WriteLine("No input file inputsp.data," +
-                                   "Using compiled defaults");
+                if(node==root) Console.WriteLine("No input file inputsp.data," + "Using compiled defaults");
                 niter = niter_default;
                 dt = dt_default;
                 grid_points[0] = problem_size;
                 grid_points[1] = problem_size;
                 grid_points[2] = problem_size;
             }
-            Console.WriteLine("Size: " + grid_points[0]
-                                 + " X " + grid_points[1]
-                     + " X " + grid_points[2]);
+            if(node==root) Console.WriteLine("Size: " + grid_points[0] + " X " + grid_points[1] + " X " + grid_points[2]);
             for (int c = 0; c < ncells; c++)
             {
                 if ((cell_size[c, 0] > IMAX) ||
@@ -310,7 +307,7 @@ namespace NPB3_0_JAV
                     System.Environment.Exit(0);
                 }
             }
-            Console.WriteLine("Iterations: " + niter + " dt: " + dt);
+            if(node==root) Console.WriteLine("Iterations: " + niter + " dt: " + dt);
 
             return niter;
         }
