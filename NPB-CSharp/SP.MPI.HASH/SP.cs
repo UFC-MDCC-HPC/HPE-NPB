@@ -1983,6 +1983,9 @@ namespace NPB3_0_JAV
             for (m = 0; m < 5; m++) 
                 xcr[m] /= dt;
 
+            if(node != 0)
+                return 0;
+
             for (m = 0; m < 5; m++)
             {
                 xcrref[m] = 1.0d;
