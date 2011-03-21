@@ -2210,7 +2210,6 @@ namespace NPB3_0_JAV
             double r1, r2, d, e, sm1, sm2, fac1, fac2;
             double[] s = new double[5];
             Request[] requests = new Request[2] { null, null};
-            RequestList requestList = new RequestList();
             double[] in_buffer_x;
             double[] out_buffer_x;
 
@@ -2804,7 +2803,6 @@ namespace NPB3_0_JAV
             double r1, r2, d, e, sm1, sm2, fac1, fac2;
             double[] s = new double[5];
             Request[] requests = new Request[2] { null, null };
-            RequestList requestList = new RequestList();
             double[] in_buffer_y;
             double[] out_buffer_y;
 
@@ -3427,7 +3425,6 @@ namespace NPB3_0_JAV
             double r1, r2, d, e, sm1, sm2, fac1, fac2;
             double[] s = new double[5];
             double[] rtmp = new double[5 * (KMAX + 1)];
-            RequestList requestList = new RequestList();
             Request[] requests = new Request[2] { null, null };
             double[] in_buffer_z;
             double[] out_buffer_z;            
