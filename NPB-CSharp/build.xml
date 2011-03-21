@@ -3,7 +3,7 @@
   <property name='src' value='.'/>
   <property name='build' value='bin'/>
   <property name='nant.settings.currentframework' value='mono-2.0'/>
-  <property name="mpi" value="C://Arquivos de programas//MPI.NET//Lib//MPI.dll" />
+  <property name="mpi" value="C://Program Files (x86)//MPI.NET//Lib//MPI.dll" />
   <target depends='BT,FT,LU,SP,BT.MPI,FT.MPI,LU.MPI,SP.MPI,LIB' name='all'/>
   <target depends='' name='BT'>
     <csc debug='true' define='' optimize='true' output='${build}//BT.exe' target='exe' warninglevel='4'>
