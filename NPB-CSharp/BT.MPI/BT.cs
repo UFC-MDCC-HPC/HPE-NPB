@@ -1670,7 +1670,7 @@ namespace NPB {
             //     of the sweep.
             //     
             //---------------------------------------------------------------------
-            int c, stage, first, last, isize, jsize, ksize, buffer_size; //r_status[MPI_STATUS_SIZE];
+            int c, stage, first, last, buffer_size; //r_status[MPI_STATUS_SIZE];
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
@@ -2213,7 +2213,7 @@ namespace NPB {
             //     Make sure we treat elements zero to cell_size in the direction
             //     of the sweep.
             //---------------------------------------------------------------------
-            int c, stage, first, last, isize, jsize, ksize, buffer_size;//int r_status[MPI_STATUS_SIZE];
+            int c, stage, first, last, buffer_size;//int r_status[MPI_STATUS_SIZE];
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
@@ -2766,12 +2766,12 @@ namespace NPB {
             //     Make sure we treat elements zero to cell_size in the direction
             //     of the sweep.
             //---------------------------------------------------------------------
-            int c, stage, first, last, isize, jsize, ksize, buffer_size; //int[] r_status[MPI_STATUS_SIZE];
+            int c, stage, first, last, buffer_size; //int[] r_status[MPI_STATUS_SIZE];
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (BLOCK_SIZE * BLOCK_SIZE + BLOCK_SIZE);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests = new MPI.Request[2] { null, null };
-            double[] out_buffer_x = new double[buffer_size];
+            double[] out_buffer_z = new double[buffer_size];
             //---------------------------------------------------------------------
             //     in our terminology stage is the number of the cell in the y-direction
             //     i.e. stage = 1 means the start of the line stage=ncells means end
@@ -2804,7 +2804,7 @@ namespace NPB {
                     //     processor working on preceeding cell
                     //---------------------------------------------------------------------
                     first = 0;
-                    z_receive_solve_info(out_buffer_x, requests, c); //recv_id, c);//call z_receive_solve_info[recv_id,c];
+                    z_receive_solve_info(out_buffer_z, requests, c); //recv_id, c);//call z_receive_solve_info[recv_id,c];
                     //  c---------------------------------------------------------------------
                     //  c     overlap computations and communications
                     //  c---------------------------------------------------------------------
@@ -2819,15 +2819,15 @@ namespace NPB {
                     //  c---------------------------------------------------------------------
                     //  c     install C'[kstart+1] and rhs'[kstart+1] to be used in this cell
                     //  c---------------------------------------------------------------------
-                    z_unpack_solve_info(out_buffer_x, c);
+                    z_unpack_solve_info(out_buffer_z, c);
                     z_solve_cell(first, last, c);  //call z_solve_cell[first,last,c];
                 }
                 if(last == 0)
                     z_send_solve_info(requests, c); //send_id, c);  //call z_send_solve_info[send_id,c];
             }
-            out_buffer_x = null;
+            out_buffer_z = null;
             buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * BLOCK_SIZE;
-            out_buffer_x = new double[buffer_size];
+            out_buffer_z = new double[buffer_size];
             //---------------------------------------------------------------------
             //     now perform backsubstitution in reverse direction
             //---------------------------------------------------------------------
@@ -2845,12 +2845,12 @@ namespace NPB {
                     z_backsubstitute(first, last, c); //call z_backsubstitute[first, last,c];
                 }
                 else {
-                    z_receive_backsub_info(out_buffer_x, requests, c); //recv_id, c);            //call z_receive_backsub_info[recv_id,c];
+                    z_receive_backsub_info(out_buffer_z, requests, c); //recv_id, c);            //call z_receive_backsub_info[recv_id,c];
                     requests[1].Wait(); //send_id[0].Wait();
                     requests[0].Wait(); //recv_id[0].Wait();
                     // Fortran: call mpi_wait[send_id,r_status,error]; 
                     // Fortran: call mpi_wait[recv_id,r_status,error];
-                    z_unpack_backsub_info(out_buffer_x, c);
+                    z_unpack_backsub_info(out_buffer_z, c);
                     z_backsubstitute(first, last, c); //call z_backsubstitute[first,last,c];
                 }
                 if(first == 0)
@@ -2858,7 +2858,7 @@ namespace NPB {
             }
         }//stage slice[
 
-        public void z_unpack_solve_info(double[] out_buffer_x, int c) {
+        public void z_unpack_solve_info(double[] out_buffer_z, int c) {
             //---------------------------------------------------------------------
             //     unpack C'[-1] and rhs'[-1] for
             //     all i and j
@@ -2870,12 +2870,12 @@ namespace NPB {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(m = 1; m <= BLOCK_SIZE; m++) {
                         for(n = 0; n < BLOCK_SIZE; n++) {  //lhsc[m,n,i,j,kstart-1,c] = out_buffer[ptr+n];
-                            lhsc[c, kstart-1, j+2, i+2, n, m-1] = out_buffer_x[ptr + n];
+                            lhsc[c, kstart-1, j+2, i+2, n, m-1] = out_buffer_z[ptr + n];
                         }
                         ptr = ptr + BLOCK_SIZE;
                     }
                     for(n = 0; n < BLOCK_SIZE; n++) { //rhs[n,i,j,kstart-1,c] = out_buffer[ptr+n];
-                        rhs[c, kstart-1, j+2, i+2, n] = out_buffer_x[ptr + n];
+                        rhs[c, kstart-1, j+2, i+2, n] = out_buffer_z[ptr + n];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
@@ -2953,7 +2953,7 @@ namespace NPB {
             requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[2], TOP+ip+jp*ncells);
         }
 
-        public void z_unpack_backsub_info(double[] out_buffer_x, int c) {
+        public void z_unpack_backsub_info(double[] out_buffer_z, int c) {
             //---------------------------------------------------------------------
             //     unpack U[ksize] for all i and j
             //---------------------------------------------------------------------
@@ -2962,14 +2962,14 @@ namespace NPB {
             for(j = 0; j <= JMAX - 1; j++) {
                 for(i = 0; i <= IMAX - 1; i++) {
                     for(n = 0; n < BLOCK_SIZE; n++) {  //backsub_info[n,i,j,c] = out_buffer[ptr+n];
-                        backsub_info[c, j+2, i+2, n] = out_buffer_x[ptr + n];
+                        backsub_info[c, j+2, i+2, n] = out_buffer_z[ptr + n];
                     }
                     ptr = ptr + BLOCK_SIZE;
                 }
             }
         }
 
-        public void z_receive_backsub_info(double[] out_buffer_x, MPI.Request[] requests, int c) {
+        public void z_receive_backsub_info(double[] out_buffer_z, MPI.Request[] requests, int c) {
             //---------------------------------------------------------------------
             //     post mpi receives
             //---------------------------------------------------------------------
@@ -2978,10 +2978,10 @@ namespace NPB {
             jp = cell_coord[c, 1];
             //call mpi_irecv[out_buffer, buffer_size, dp_type, successor[3], TOP+ip+jp*NCELLS, comm_solve, recv_id, error];
             //recv_id[0]=
-            requests[0] = comm_solve.ImmediateReceive<double>(successor[2], TOP+ip+jp*ncells, out_buffer_x);
+            requests[0] = comm_solve.ImmediateReceive<double>(successor[2], TOP+ip+jp*ncells, out_buffer_z);
         }
 
-        public void z_receive_solve_info(double[] out_buffer_x, MPI.Request[] requests, int c) {
+        public void z_receive_solve_info(double[] out_buffer_z, MPI.Request[] requests, int c) {
             //---------------------------------------------------------------------
             //     post mpi receives 
             //---------------------------------------------------------------------
@@ -2990,7 +2990,7 @@ namespace NPB {
             jp = cell_coord[c, 1];
             //call mpi_irecv[out_buffer, buffer_size, dp_type, predecessor[3], BOTTOM+ip+jp*NCELLS, comm_solve, recv_id, error];
             //recv_id[0] =
-            requests[0] = comm_solve.ImmediateReceive<double>(predecessor[2], BOTTOM+ip+jp*ncells, out_buffer_x);
+            requests[0] = comm_solve.ImmediateReceive<double>(predecessor[2], BOTTOM+ip+jp*ncells, out_buffer_z);
         }
 
         public void z_backsubstitute(int first, int last, int c) {
