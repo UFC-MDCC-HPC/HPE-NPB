@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BT.MPI.HASH", "BT.MPI.HASH\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SP.MPI.HASH", "SP.MPI.HASH\SP.MPI.HASH.csproj", "{274A4B51-7A86-4717-8E24-728EF0D22753}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LU.MPI.HASH", "LU.MPI.HASH\LU.MPI.HASH.csproj", "{67D2B1C8-5E06-4DDB-AAFF-3B0640E69E29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,12 @@ Global
 		{274A4B51-7A86-4717-8E24-728EF0D22753}.MPI|Any CPU.Build.0 = Release|Any CPU
 		{274A4B51-7A86-4717-8E24-728EF0D22753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{274A4B51-7A86-4717-8E24-728EF0D22753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67D2B1C8-5E06-4DDB-AAFF-3B0640E69E29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D2B1C8-5E06-4DDB-AAFF-3B0640E69E29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D2B1C8-5E06-4DDB-AAFF-3B0640E69E29}.MPI|Any CPU.ActiveCfg = Release|Any CPU
+		{67D2B1C8-5E06-4DDB-AAFF-3B0640E69E29}.MPI|Any CPU.Build.0 = Release|Any CPU
+		{67D2B1C8-5E06-4DDB-AAFF-3B0640E69E29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D2B1C8-5E06-4DDB-AAFF-3B0640E69E29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
