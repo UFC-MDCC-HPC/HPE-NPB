@@ -134,7 +134,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   verification test
             //---------------------------------------------------------------------
-            if (id==0) {
+            if (node==0) {
                 int verified = verify(rsdnm, errnm, frc);
                 mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
                 IO.print_results(BMName, clss, nx0, ny0, nz0, itmax, nnodes_compiled, num, maxtime, mflops, "floating point", verified, npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
@@ -155,7 +155,7 @@ namespace NPB {
             //       tolrsd = steady state residual tolerance levels
             //       nx, ny, nz = number of grid points in x, y, z directions
             //---------------------------------------------------------------------
-            if (id == root) {
+            if (node == root) {
                 string[] vetTemp = new string[13];
                 try {
                     Console.Write("Trying Reading from input file inputlu.data: ");
@@ -243,8 +243,8 @@ namespace NPB {
             xdim   = (int) Math.Pow(2,(ndim/2));//xdim   = 2**(ndim/2);
             if (mod(ndim,2)==1) xdim = xdim + xdim;
             ydim   = num/xdim;
-            row    = (int) mod(id,xdim) + 1;
-            col    = id/xdim + 1;
+            row    = (int) mod(node,xdim) + 1;
+            col    = node/xdim + 1;
         }
 
         public void neighbors() {
@@ -256,23 +256,23 @@ namespace NPB {
             north = -1;
             west  = -1;
             if (row>1) {
-                    north = id -1;
+                    north = node -1;
             } else {
                     north = -1;
             }
             if (row < xdim) {
-                south = id + 1;
+                south = node + 1;
             } else {
                 south = -1;
             }
 
             if (col > 1) {
-                west = id - xdim;
+                west = node - xdim;
             } else {
                 west = -1;
             }
             if (col < ydim) {
-                east = id + xdim;
+                east = node + xdim;
             } else {
                 east = -1;
             }
@@ -1266,7 +1266,7 @@ namespace NPB {
             //   the timestep loop
             //---------------------------------------------------------------------
             for(istep = 1; istep<= niter; istep++){
-               if (id == 0) {
+               if (node == 0) {
                   if (mod(istep, 20) == 0 || istep == itmax || istep == 1) {
                      if (niter > 1) Console.WriteLine(" Time step "+istep); //write[ *, 200] istep       200           format[' Time step ', i4]
                   }
