@@ -35,7 +35,7 @@ namespace NPB {
 /*errnm*/   protected static double[] errnm  = new double[5];     //errnm[5];
             protected static double[, , ,] a, b, c, d;              //a[5,5,isiz1,isiz2], b[5,5,isiz1,isiz2], c[5,5,isiz1,isiz2], d[5,5,isiz1,isiz2];
 /*ce*/      protected static double[,] ce = new double[13,5];   //ce[5,13]
-            protected static int id, ndim, num, xdim, ydim, row, col;
+            protected static int node, ndim, num, xdim, ydim, row, col;
             protected static int north, south, east, west;
             protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;
             protected static int npmax;
@@ -51,7 +51,7 @@ namespace NPB {
         //end lu.f
 
         //mpinpb.h
-            protected static int node, no_nodes;//, dp_type;
+            protected static int no_nodes;//, dp_type;node
             protected MPI.Environment mpi = null;
             protected MPI.Intracommunicator worldcomm;//, comm_setup;//, comm_solve;//, comm_rhs = null;
         //end mpinpb.h
@@ -123,7 +123,7 @@ namespace NPB {
             mpi = new MPI.Environment(ref args);
             worldcomm = MPI.Communicator.world;//call MPI_INIT(IERROR)
             num = worldcomm.Size;//call MPI_COMM_SIZE(MPI_COMM_WORLD, num, IERROR)
-            id = worldcomm.Rank;//call MPI_COMM_RANK(MPI_COMM_WORLD, id, IERROR)            
+            node = worldcomm.Rank;//call MPI_COMM_RANK(MPI_COMM_WORLD, id, IERROR)            
             ndim   = nodedim(num);
         }
 
