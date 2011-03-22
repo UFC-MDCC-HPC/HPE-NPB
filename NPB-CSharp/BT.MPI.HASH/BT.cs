@@ -2096,9 +2096,7 @@ namespace NPB3_0_JAV{
                     //     processor working on preceeding cell
                     //---------------------------------------------------------------------
                     first = 0;
-                    int jp = cell_coord[c,1];
-                    int kp = cell_coord[c,2];
-                    requests[0] = comm_solve.ImmediateReceive<double>(predecessor[0], WEST + jp + kp * ncells, out_buffer_x); //x_receive_solve_info(out_buffer_x, requests, c); //recv_id, c);  //x_receive_solve_info(recv_id,c);
+                    requests[0] = comm_solve.ImmediateReceive<double>(predecessor[0], DEFAULT_TAG, out_buffer_x); //x_receive_solve_info(out_buffer_x, requests, c); //recv_id, c);  //x_receive_solve_info(recv_id,c);
                     //---------------------------------------------------------------------
                     //     overlap computations and communications
                     //---------------------------------------------------------------------
@@ -2121,9 +2119,7 @@ namespace NPB3_0_JAV{
 
                     x_pack_solve_info(lhsc, in_buffer_x, c); //send_id, c); //x_send_solve_info(send_id,c);
                     
-                    int jp = cell_coord[c,1];
-                    int kp = cell_coord[c,2];
-                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[0], WEST+jp+kp*ncells);
+                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[0], DEFAULT_TAG);
                 }
             }
             out_buffer_x = null;
@@ -2145,23 +2141,16 @@ namespace NPB3_0_JAV{
                     x_backsubstitute(lhsc, backsub_info, first, last, c); //call x_backsubstitute[first, last,c];
                 }
                 else {
-                    int jp = cell_coord[c,1];
-                    int kp = cell_coord[c,2];
-                    
-                    requests[0] = comm_solve.ImmediateReceive<double>(successor[0], EAST+jp+kp*ncells, out_buffer_x); //x_receive_backsub_info(out_buffer_x, requests, c); //recv_id, c);  //      call x_receive_backsub_info[recv_id,c];
-
+                    requests[0] = comm_solve.ImmediateReceive<double>(successor[0], DEFAULT_TAG, out_buffer_x); //x_receive_backsub_info(out_buffer_x, requests, c); //recv_id, c);  //      call x_receive_backsub_info[recv_id,c];
                     requests[1].Wait(); //send_id[0].Wait();//      call mpi_wait[send_id,r_status,error];
                     requests[0].Wait(); //recv_id[0].Wait();//      call mpi_wait[recv_id,r_status,error];
-                    
                     x_unpack_backsub_info(backsub_info, out_buffer_x, c);
                     x_backsubstitute(lhsc, backsub_info, first, last, c);   //      call x_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
-                    int jp = cell_coord[c,1];
-                    int kp = cell_coord[c,2];
                     double[] in_buffer_x = new double[buffer_size];//buffer_size=(MAX_CELL_DIM * MAX_CELL_DIM * 5)
                     x_pack_backsub_info(in_buffer_x, c); //send_id, c);  //call x_send_backsub_info[send_id,c];
-                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[0], EAST+jp+kp*ncells);                    
+                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[0], DEFAULT_TAG);                    
                 }
             }
         }
@@ -2625,9 +2614,7 @@ namespace NPB3_0_JAV{
                     //c     processor working on preceeding cell
                     //c---------------------------------------------------------------------
                     first = 0;
-                    int ip = cell_coord[c,0];
-                    int kp = cell_coord[c,2];
-                    requests[0] = comm_solve.ImmediateReceive<double>(predecessor[1], SOUTH+ip+kp*ncells, out_buffer_y);//y_receive_solve_info(out_buffer_y, requests, c); //recv_id, c); //call y_receive_solve_info[recv_id,c];
+                    requests[0] = comm_solve.ImmediateReceive<double>(predecessor[1], DEFAULT_TAG, out_buffer_y);//y_receive_solve_info(out_buffer_y, requests, c); //recv_id, c); //call y_receive_solve_info[recv_id,c];
                     //      c---------------------------------------------------------------------
                     //      c     overlap computations and communications
                     //      c---------------------------------------------------------------------
@@ -2646,11 +2633,9 @@ namespace NPB3_0_JAV{
                     y_solve_cell(lhsc, first, last, c); //call y_solve_cell[first,last,c];
                 }
                 if(last == 0) {
-                    int ip = cell_coord[c,0];
-                    int kp = cell_coord[c,2];
                     double[] in_buffer_y = new double[buffer_size];//buffer_size=MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5)
                     y_pack_solve_info(lhsc, in_buffer_y, c); //send_id, c);  //call y_send_solve_info[send_id,c];
-                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, successor[1], SOUTH+ip+kp*ncells);
+                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, successor[1], DEFAULT_TAG);
                 }
             }
             out_buffer_y = null;
@@ -2673,11 +2658,7 @@ namespace NPB3_0_JAV{
                     y_backsubstitute(lhsc, backsub_info, first, last, c);     //call y_backsubstitute[first, last,c];
                 }
                 else {
-                    int ip = cell_coord[c, 0];
-                    int kp = cell_coord[c, 2];
-
-                    requests[0] = comm_solve.ImmediateReceive<double>(successor[1], NORTH+ip+kp*ncells, out_buffer_y);//y_receive_backsub_info(out_buffer_y, requests, c); //recv_id, c);   //call y_receive_backsub_info[recv_id,c];
-
+                    requests[0] = comm_solve.ImmediateReceive<double>(successor[1], DEFAULT_TAG, out_buffer_y);//y_receive_backsub_info(out_buffer_y, requests, c); //recv_id, c);   //call y_receive_backsub_info[recv_id,c];
                     requests[1].Wait();//send_id[0].Wait();
                     requests[0].Wait();//recv_id[0].Wait();
                     //call mpi_wait[send_id,r_status,error];
@@ -2686,11 +2667,9 @@ namespace NPB3_0_JAV{
                     y_backsubstitute(lhsc, backsub_info, first, last, c);      //call y_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
-                    int ip = cell_coord[c,0];
-                    int kp = cell_coord[c,2];                    
                     double[] in_buffer_y = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;                    
                     y_pack_backsub_info(in_buffer_y, c); //send_id, c);  //call y_send_backsub_info[send_id,c];
-                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, predecessor[1], NORTH+ip+kp*ncells);
+                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, predecessor[1], DEFAULT_TAG);
                 }
             }
         }
@@ -3164,9 +3143,7 @@ namespace NPB3_0_JAV{
                     //     processor working on preceeding cell
                     //---------------------------------------------------------------------
                     first = 0;
-                    int ip = cell_coord[c, 0];
-                    int jp = cell_coord[c, 1];
-                    requests[0] = comm_solve.ImmediateReceive<double>(predecessor[2], BOTTOM+ip+jp*ncells, out_buffer_z);//z_receive_solve_info(out_buffer_z, requests, c); //recv_id, c);//call z_receive_solve_info[recv_id,c];
+                    requests[0] = comm_solve.ImmediateReceive<double>(predecessor[2], DEFAULT_TAG, out_buffer_z);//z_receive_solve_info(out_buffer_z, requests, c); //recv_id, c);//call z_receive_solve_info[recv_id,c];
                     //  c---------------------------------------------------------------------
                     //  c     overlap computations and communications
                     //  c---------------------------------------------------------------------
@@ -3185,11 +3162,9 @@ namespace NPB3_0_JAV{
                     z_solve_cell(lhsc, first, last, c);  //call z_solve_cell[first,last,c];
                 }
                 if(last == 0) {
-                    int ip = cell_coord[c,0];
-                    int jp = cell_coord[c,1];                    
                     double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
                     z_pack_solve_info(lhsc, in_buffer_z, c); //send_id, c);  //call z_send_solve_info[send_id,c];
-                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, successor[2], BOTTOM+ip+jp*ncells);                    
+                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, successor[2], DEFAULT_TAG);                    
                 }
             }
             out_buffer_z = null;
@@ -3212,10 +3187,7 @@ namespace NPB3_0_JAV{
                     z_backsubstitute(lhsc, backsub_info, first, last, c); //call z_backsubstitute[first, last,c];
                 }
                 else {
-                    int ip = cell_coord[c, 0];
-                    int jp = cell_coord[c, 1];
-                    requests[0] = comm_solve.ImmediateReceive<double>(successor[2], TOP+ip+jp*ncells, out_buffer_z);// z_receive_backsub_info(out_buffer_z, requests, c); //recv_id, c);            //call z_receive_backsub_info[recv_id,c];
-                    
+                    requests[0] = comm_solve.ImmediateReceive<double>(successor[2], DEFAULT_TAG, out_buffer_z);// z_receive_backsub_info(out_buffer_z, requests, c); //recv_id, c);            //call z_receive_backsub_info[recv_id,c];
                     requests[1].Wait(); //send_id[0].Wait();
                     requests[0].Wait(); //recv_id[0].Wait();
                     // Fortran: call mpi_wait[send_id,r_status,error]; 
@@ -3224,11 +3196,9 @@ namespace NPB3_0_JAV{
                     z_backsubstitute(lhsc, backsub_info, first, last, c); //call z_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
-                    int ip = cell_coord[c,0];
-                    int jp = cell_coord[c,1];                    
                     double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
                     z_pack_backsub_info(in_buffer_z, c); //send_id, c);  //call z_send_backsub_info[send_id,c];
-                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, predecessor[2], TOP+ip+jp*ncells);
+                    requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, predecessor[2], DEFAULT_TAG);
                 }
             }
         }
