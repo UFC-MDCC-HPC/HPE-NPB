@@ -39,6 +39,8 @@
 */
 using System;
 using System.IO;
+using NPB3_0_JAV.BMInOut;
+using MPI;
 
 namespace NPB {
     public class LU:LUBase {
@@ -71,7 +73,7 @@ namespace NPB {
             }
             catch (OutOfMemoryException e) {
                 Console.WriteLine(e.ToString());
-                Environment.Exit(0);
+                System.Environment.Exit(0);
             }
             lu.runBenchMark();
         }
@@ -208,14 +210,14 @@ namespace NPB {
                    Console.WriteLine("PROBLEM SIZE IS TOO SMALL - "+" SET EACH OF NX, NY AND NZ AT LEAST EQUAL TO 5");
                    worldcomm.Abort(0);
                    mpi.Dispose();//CALL MPI_ABORT[ MPI_COMM_WORLD, MPI_ERR_OTHER, IERROR ];
-                   Environment.Exit(0);
+                   System.Environment.Exit(0);
                }
 
                if ((nx0 > isiz01) || (ny0 > isiz02) || (nz0 > isiz03)){
                    Console.WriteLine("PROBLEM SIZE IS TOO LARGE - NX, NY AND NZ SHOULD BE LESS THAN OR EQUAL TO ISIZ01, ISIZ02 AND ISIZ03 RESPECTIVELY");
                    worldcomm.Abort(0);
                    mpi.Dispose();//      CALL MPI_ABORT[ MPI_COMM_WORLD, MPI_ERR_OTHER, IERROR ];
-                   Environment.Exit(0);
+                   System.Environment.Exit(0);
                }
                Console.WriteLine(" Size: " + nx0 + " x " + ny0 + " x " + nz0);
                Console.WriteLine(" Iterations: " + itmax);
@@ -316,7 +318,7 @@ namespace NPB {
                     "SO THAT NX, NY AND NZ ARE GREATER THAN OR EQUAL TO 4 THEY ARE CURRENTLY: "+nx+"x"+ny+"x"+nz);
                 worldcomm.Abort(0);//CALL MPI_ABORT[ MPI_COMM_WORLD,ERRORCODE,IERROR ]
                 mpi.Dispose();
-                Environment.Exit(0);            
+                System.Environment.Exit(0);            
             }
             if ( ( nx > isiz1 ) || ( ny > isiz2 ) || ( nz > isiz3 ) ) {
                 Console.WriteLine("SUBDOMAIN SIZE IS TOO LARGE - ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS" +
@@ -324,7 +326,7 @@ namespace NPB {
                     " "+nx+"x"+ny+"x"+nz);
                 worldcomm.Abort(0);//CALL MPI_ABORT[ MPI_COMM_WORLD,ERRORCODE, IERROR ]
                 mpi.Dispose();
-                Environment.Exit(0);
+                System.Environment.Exit(0);
             }
             //---------------------------------------------------------------------
             //   set up the start and end in i and j extents for all processors
