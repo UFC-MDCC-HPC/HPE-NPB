@@ -51,13 +51,13 @@ namespace NPB {
         //end lu.f
 
         //mpinpb.h
-            protected static int node, no_nodes, dp_type;
+            protected static int node, no_nodes;//, dp_type;
             protected MPI.Environment mpi = null;
-            protected MPI.Intracommunicator worldcomm, comm_setup, comm_solve, comm_rhs = null;
+            protected MPI.Intracommunicator worldcomm;//, comm_setup;//, comm_solve;//, comm_rhs = null;
         //end mpinpb.h
 
         //Suporte
-            protected int npDebug = 0, root = 0;
+            protected int root = 0;
             protected Timer timer = new Timer();
             protected static bool debug = false;
             protected static String BMName = "LU";
@@ -122,14 +122,9 @@ namespace NPB {
             string[] args = System.Environment.GetCommandLineArgs();
             mpi = new MPI.Environment(ref args);
             worldcomm = MPI.Communicator.world;//call MPI_INIT(IERROR)
-            num = worldcomm.Size + npDebug;//call MPI_COMM_SIZE(MPI_COMM_WORLD, num, IERROR)
+            num = worldcomm.Size;//call MPI_COMM_SIZE(MPI_COMM_WORLD, num, IERROR)
             id = worldcomm.Rank;//call MPI_COMM_RANK(MPI_COMM_WORLD, id, IERROR)            
             ndim   = nodedim(num);
-            //if (!convertdouble) {
-            //dp_type = MPI_DOUBLE_PRECISION
-            //} else {
-            //dp_type = MPI_REAL
-            //}
         }
 
         private void initVars(){
