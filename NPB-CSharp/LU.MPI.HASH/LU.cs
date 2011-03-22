@@ -137,9 +137,24 @@ namespace NPB {
             //   verification test
             //---------------------------------------------------------------------
             if (node==0) {
-                int verified = verify(rsdnm, errnm, frc);
+                //int verified = verify(rsdnm, errnm, frc);
                 mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
-                IO.print_results(BMName, clss, nx0, ny0, nz0, itmax, nnodes_compiled, num, maxtime, mflops, "floating point", verified, npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
+                //IO.print_results(BMName, clss, nx0, ny0, nz0, itmax, nnodes_compiled, num, maxtime, mflops, "floating point", verified, npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
+                int verified = verify(rsdnm, errnm, frc);
+                BMResults results = new BMResults(BMName,
+                                        clss,
+                                        nx0,
+                                        ny0,
+                                        nz0,
+                                        itmax,
+                                        maxtime,
+                                        mflops,
+                                        "floating point",
+                                        verified,
+                                        true,
+                                        num,
+                                        -1);
+                results.print();
             }
             mpi.Dispose();//call mpi_finalize[ierr];
         }
