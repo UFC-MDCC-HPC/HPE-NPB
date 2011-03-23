@@ -161,10 +161,10 @@ namespace NPB {
             /**/
             icommw = new bool[npmax+1];//icommw[npmax+1]
 
-            a = new double[isiz2+1, isiz1+1, 5+1, 5+1];//a[5,5,isiz1,isiz2];
-            b = new double[isiz2+1, isiz1+1, 5+1, 5+1];//b[5,5,isiz1,isiz2];
-            c = new double[isiz2+1, isiz1+1, 5+1, 5+1];//c[5,5,isiz1,isiz2];
-            d = new double[isiz2+1, isiz1+1, 5+1, 5+1];//d[5,5,isiz1,isiz2];
+/**/        a = new double[isiz2, isiz1, 5, 5];//a[5,5,isiz1,isiz2];
+/**/        b = new double[isiz2, isiz1, 5, 5];//b[5,5,isiz1,isiz2];
+/**/        c = new double[isiz2, isiz1, 5, 5];//c[5,5,isiz1,isiz2];
+/**/        d = new double[isiz2, isiz1, 5, 5];//d[5,5,isiz1,isiz2];
 
             /**/
             u    = new double[isiz3, isiz2+4, isiz1+4, 5];//       u[5, -1:isiz1+2, -1:isiz2+2, isiz3];
