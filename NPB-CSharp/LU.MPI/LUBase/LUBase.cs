@@ -154,8 +154,8 @@ namespace NPB {
 
 /**/        u    = new double[isiz3, isiz2+4, isiz1+4, 5];//       u[5, -1:isiz1+2, -1:isiz2+2, isiz3];
 /**/        rsd  = new double[isiz3, isiz2+4, isiz1+4, 5];//     rsd[5, -1:isiz1+2, -1:isiz2+2, isiz3];
-            frct = new double[isiz3+1, isiz2+4, isiz1+4, 5+1];//    frct[5, -1:isiz1+2, -1:isiz2+2, isiz3];
-            flux = new double[isiz3+1, isiz2+2, isiz1+2, 5+1];//    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
+/**/        frct = new double[isiz3, isiz2+4, isiz1+4, 5];//    frct[5, -1:isiz1+2, -1:isiz2+2, isiz3];
+/**/        flux = new double[isiz3, isiz2+2, isiz1+2, 5];//    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
         }
         public static int nodedim(double n) { return (int)(Math.Log(n) / Math.Log(2.0d) + 0.00001); }
         public static int ilog2(int i) {
