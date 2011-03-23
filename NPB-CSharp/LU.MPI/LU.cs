@@ -675,25 +675,25 @@ namespace NPB {
             double u21jm1, u31jm1, u41jm1, u51jm1;
             double u21km1, u31km1, u41km1, u51km1;
             dsspm = dssp;
-            for(k = 1; k<= nz; k++) {
-                for(j = 1; j<= ny; j++) {
-                    for(i = 1; i<= nx; i++) {
+            for(k = 0; k< nz; k++) {
+                for(j = 2; j< ny+2; j++) {
+                    for(i = 2; i< nx+2; i++) {
                         for(m = 0; m< 5; m++) {
-                            frct[k-1, j+1, i+1, m] = 0.0d; //frct[ m, i, j, k ] = 0.0d;
+                            frct[k, j, i, m] = 0.0d; //frct[ m, i, j, k ] = 0.0d;
                         }
                     }
                 }
             }
-            for(k = 1; k<= nz; k++) {
-                zeta = ((double)(k-1))/(nz-1);
-                for(j = 1; j<= ny; j++) {
-                    jglob = jpt + j;
-                    eta = ((double)(jglob-1))/(ny0-1);
-                    for(i = 1; i<= nx; i++) {
-                        iglob = ipt + i;
-                        xi = ((double)(iglob-1))/(nx0-1);
+            for(k = 0; k< nz; k++) {
+                zeta = ((double)(k))/(nz-1);
+                for(j = 2; j< ny+2; j++) {
+                    jglob = jpt + j - 2;
+                    eta = ((double)(jglob))/(ny0-1);
+                    for(i = 2; i< nx+2; i++) {
+                        iglob = ipt + i - 2;
+                        xi = ((double)(iglob))/(nx0-1);
                         for(m = 0; m< 5; m++) {  //rsd[m,i,j,k] =  ce[m,1]
-                            rsd[k-1, j+1, i+1, m] =  ce[0, m]
+                            rsd[k, j, i, m] =  ce[0, m]
                             + ce[1, m] * xi
                             + ce[2, m] * eta
                             + ce[3, m] * zeta
@@ -709,7 +709,7 @@ namespace NPB {
                         }
                     }
                 }
-            }
+            }//k i j jglob iglob
             //---------------------------------------------------------------------
             //   xi-direction flux differences
             //---------------------------------------------------------------------
