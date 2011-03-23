@@ -56,7 +56,7 @@ namespace NPB {
             }
             catch(Exception) {
                 argv = new String[1];
-                argv[0] = "CLASS=S"; // CLASS DEFAULT, IF USER NOT TYPE CLASS=S IN COMMAND-LINE ARGUMENT
+                argv[0] = "CLASS=S"; 
             }
             char paramClass;
             if(!LUBase.debug) {
@@ -64,8 +64,8 @@ namespace NPB {
                 paramClass = IO.CLASS;
             }
             else {
-                paramClass = 'K';  //DEBUG: CHANGE TO [K=(S and 4 PROCESSORS)] OR [S=(S and 1 PROCESSOR)]
-            }                      //DEBUG: OR [T=(A and 4 PROCESSORS)] OR [I=(B and 4 PROCESSORS)]
+                paramClass = 'K';  
+            }                      
 
             try {
                 lu = new LU(paramClass);
