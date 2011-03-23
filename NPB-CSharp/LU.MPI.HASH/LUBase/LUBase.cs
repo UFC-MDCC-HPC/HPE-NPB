@@ -38,7 +38,22 @@ namespace NPB {
         protected static double[] errnm  = new double[5];     //errnm[5];
         protected static double[, , ,] a, b, c, d;              //a[5,5,isiz1,isiz2], b[5,5,isiz1,isiz2], c[5,5,isiz1,isiz2], d[5,5,isiz1,isiz2];
         /*ce*/
-        protected static double[,] ce = new double[13, 5];   //ce[5,13]
+        //protected static double[,] ce = new double[13, 5];   //ce[5,13]
+        protected static double[,] ce = 
+                                        {{   2.0d,    1.0d,    2.0d,    2.0d,    5.0d},
+                                         {   0.0d,    0.0d,    2.0d,    2.0d,    4.0d},
+                                         {   0.0d,    0.0d,    0.0d,    0.0d,    3.0d},
+                                         {   4.0d,    0.0d,    0.0d,    0.0d,    2.0d},
+                                         {   5.0d,    1.0d,    0.0d,    0.0d, 1.0E-01},
+                                         {   3.0d,    2.0d,    2.0d,    2.0d, 4.0E-01},
+                                         {5.0E-01,    3.0d,    3.0d,    3.0d, 3.0E-01},
+                                         {2.0E-02, 1.0E-02, 4.0E-02, 3.0E-02, 5.0E-02},
+                                         {1.0E-02, 3.0E-02, 3.0E-02, 5.0E-02, 4.0E-02},
+                                         {3.0E-02, 2.0E-02, 5.0E-02, 4.0E-02, 3.0E-02},
+                                         {5.0E-01, 4.0E-01, 3.0E-01, 2.0E-01, 1.0E-01},
+                                         {4.0E-01, 3.0E-01, 5.0E-01, 1.0E-01, 3.0E-01},
+                                         {3.0E-01, 5.0E-01, 4.0E-01, 3.0E-01, 2.0E-01}};
+
         protected static int node, ndim, num, xdim, ydim, row, col;
         protected static int north, south, east, west;
         protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;
