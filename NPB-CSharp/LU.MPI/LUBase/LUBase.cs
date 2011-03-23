@@ -152,8 +152,8 @@ namespace NPB {
             c = new double[isiz2+1,isiz1+1,5+1,5+1];//c[5,5,isiz1,isiz2];
             d = new double[isiz2+1,isiz1+1,5+1,5+1];//d[5,5,isiz1,isiz2];
 
-            u    = new double[isiz3+1, isiz2+4, isiz1+4, 5+1];//       u[5, -1:isiz1+2, -1:isiz2+2, isiz3];
-            rsd  = new double[isiz3+1, isiz2+4, isiz1+4, 5+1];//     rsd[5, -1:isiz1+2, -1:isiz2+2, isiz3];
+/**/        u    = new double[isiz3, isiz2+4, isiz1+4, 5];//       u[5, -1:isiz1+2, -1:isiz2+2, isiz3];
+/**/        rsd  = new double[isiz3, isiz2+4, isiz1+4, 5];//     rsd[5, -1:isiz1+2, -1:isiz2+2, isiz3];
             frct = new double[isiz3+1, isiz2+4, isiz1+4, 5+1];//    frct[5, -1:isiz1+2, -1:isiz2+2, isiz3];
             flux = new double[isiz3+1, isiz2+2, isiz1+2, 5+1];//    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
         }
