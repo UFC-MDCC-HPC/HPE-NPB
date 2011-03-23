@@ -600,12 +600,12 @@ namespace NPB {
             int iglob, jglob;
             double  xi, eta, zeta;
             double  pxi, peta, pzeta;
-            double[] ue_1jk   = new double[5];   //ue_1jk[5]
-            double[] ue_nx0jk = new double[5];   //ue_nx0jk[5]
-            double[] ue_i1k   = new double[5];   //ue_i1k[5]
-            double[] ue_iny0k = new double[5];   //ue_iny0k[5]
-            double[] ue_ij1   = new double[5];   //ue_ij1[5]
-            double[] ue_ijnz  = new double[5];   //ue_ijnz[5]
+            double[,,,] ue_1jk   = new double[1,1,1,5];   //ue_1jk[5]
+            double[,,,] ue_nx0jk = new double[1,1,1,5];   //ue_nx0jk[5]
+            double[,,,] ue_i1k   = new double[1,1,1,5];   //ue_i1k[5]
+            double[,,,] ue_iny0k = new double[1,1,1,5];   //ue_iny0k[5]
+            double[,,,] ue_ij1   = new double[1,1,1,5];   //ue_ij1[5]
+            double[,,,] ue_ijnz  = new double[1,1,1,5];   //ue_ijnz[5]
             for(k = 2; k<=nz-1; k++){
                 zeta = ((double)(k-1))/(nz-1);
                 for(j = 1; j<= ny; j++){
@@ -616,16 +616,16 @@ namespace NPB {
                             iglob = ipt + i;
                             if (iglob!=1 && iglob!=nx0) {
                                 xi = ((double)(iglob-1))/(nx0-1);
-                                exact(1,jglob,k,ue_1jk);
-                                exact(nx0,jglob,k,ue_nx0jk);
-                                exact(iglob,1,k,ue_i1k);
-                                exact(iglob,ny0,k,ue_iny0k);
-                                exact(iglob,jglob,1,ue_ij1);
-                                exact(iglob,jglob,nz,ue_ijnz);
+                                exact(1,jglob,k,ue_1jk,0,0,0);
+                                exact(nx0,jglob,k,ue_nx0jk,0,0,0);
+                                exact(iglob,1,k,ue_i1k,0,0,0);
+                                exact(iglob,ny0,k,ue_iny0k,0,0,0);
+                                exact(iglob,jglob,1,ue_ij1,0,0,0);
+                                exact(iglob,jglob,nz,ue_ijnz,0,0,0);
                                 for(m = 0; m< 5; m++){
-                                    pxi =   (1.0d-xi) * ue_1jk[m] + xi   * ue_nx0jk[m];
-                                    peta =  (1.0d-eta) * ue_i1k[m] + eta   * ue_iny0k[m];
-                                    pzeta = (1.0d-zeta) * ue_ij1[m] + zeta   * ue_ijnz[m];
+                                    pxi =   (1.0d-xi) * ue_1jk[0,0,0,m] + xi   * ue_nx0jk[0,0,0,m];
+                                    peta =  (1.0d-eta) * ue_i1k[0,0,0,m] + eta   * ue_iny0k[0,0,0,m];
+                                    pzeta = (1.0d-zeta) * ue_ij1[0,0,0,m] + zeta   * ue_ijnz[0,0,0,m];
                                     u[-1+k,j+1,i+1,m] = pxi + peta + pzeta - pxi * peta - peta * pzeta - pzeta * pxi + pxi * peta * pzeta;
                                 }
                             }
@@ -2481,7 +2481,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             int i, j, k, m, iglob, jglob;
             double tmp;
-            double[] u000ijk = new double[5]; //u000ijk[5]
+            double[,,,] u000ijk = new double[1,1,1,5]; //u000ijk[5]
             double[] dummy = new double[5]; //dummy[5]
             //int IERROR
             for(m = 0; m< 5; m++){
@@ -2493,9 +2493,9 @@ namespace NPB {
                   jglob = jpt + j;
                   for(i = ist; i<= iend; i++){
                      iglob = ipt + i;
-                     exact(iglob, jglob, k, u000ijk);
+                     exact(iglob, jglob, k, u000ijk, 0, 0, 0);
                      for(m = 0; m< 5; m++){
-                        tmp = (u000ijk[m] - u[-1+k,j+1,i+1,m]); //tmp = (u000ijk[m] - u[m,i,j,k]);
+                        tmp = (u000ijk[0,0,0,m] - u[-1+k,j+1,i+1,m]); //tmp = (u000ijk[m] - u[m,i,j,k]);
                         dummy[m] = dummy[m] + pow2(tmp);
                      }
                   }
@@ -2512,40 +2512,6 @@ namespace NPB {
             }
         }
             //exact.f
-        public void exact(int i, int j, int k, double[] u000ijk) {
-            //---------------------------------------------------------------------
-            //   compute the exact solution at [i,j,k]
-            //---------------------------------------------------------------------
-            //  input parameters
-            //---------------------------------------------------------------------
-            //int i, j, k
-            //double u000ijk[*]
-            //---------------------------------------------------------------------
-            //  local variables
-            //---------------------------------------------------------------------
-            int m;
-            double xi, eta, zeta;
-            xi = ((double)(i - 1)) / (nx0 - 1); //(dble(i-1))/(nx0-1);
-            eta = ((double)(j - 1)) / (ny0 - 1);
-            zeta = ((double)(k - 1)) / (nz - 1);
-
-            for(m = 0; m<5; m++){
-               u000ijk[m] =  ce[0,m]
-                   + ce[1,m] * xi
-                   + ce[2,m] * eta
-                   + ce[3,m] * zeta
-                   + ce[4,m] * xi * xi
-                   + ce[5,m] * eta * eta
-                   + ce[6,m] * zeta * zeta
-                   + ce[7,m] * xi * xi * xi
-                   + ce[8,m] * eta * eta * eta
-                   + ce[9,m] * zeta * zeta * zeta
-                   + ce[10,m] * xi * xi * xi * xi
-                   + ce[11,m] * eta * eta * eta * eta
-                   + ce[12,m] * zeta * zeta * zeta * zeta;
-            }
-        }
-
         public void exact(int i, int j, int k, double[, , ,] u000ijk, int i1, int i2, int i3) {
             //---------------------------------------------------------------------
             //
