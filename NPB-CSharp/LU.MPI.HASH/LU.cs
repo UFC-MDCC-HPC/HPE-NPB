@@ -956,7 +956,7 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 if(north!=-1) {
                     //call MPI_IRECV[ buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_n, MPI_COMM_WORLD, mid, IERROR ];
-                    mid[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_n, buf1);
+                    mid[0] = worldcomm.ImmediateReceive<double>(north, from_n, buf1);
                 }
                 //---------------------------------------------------------------------
                 //   send south
@@ -1008,7 +1008,7 @@ namespace NPB {
                 }
                 if(south!=-1) {
                     //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
-                    mid[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_s, buf1);
+                    mid[0] = worldcomm.ImmediateReceive<double>(south, from_s, buf1);
                 }
                 //---------------------------------------------------------------------
                 //   send north
@@ -1069,7 +1069,7 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 if(west!=-1) {
                     //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_w, MPI_COMM_WORLD, mid, IERROR ];
-                    mid[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_w, buf1);
+                    mid[0] = worldcomm.ImmediateReceive<double>(west, from_w, buf1);
                 }
                 //---------------------------------------------------------------------
                 //   send east
@@ -1121,7 +1121,7 @@ namespace NPB {
                 }
                 if(east!=-1) {
                     //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_e, MPI_COMM_WORLD, mid, IERROR ];
-                    mid[0] = worldcomm.ImmediateReceive<double>(MPI.Unsafe.MPI_ANY_SOURCE, from_e, buf1);
+                    mid[0] = worldcomm.ImmediateReceive<double>(east, from_e, buf1);
                 }
                 //---------------------------------------------------------------------
                 //   send west
