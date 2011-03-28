@@ -2596,7 +2596,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //  communicate in i and j directions
             //---------------------------------------------------------------------
-            exchange_4(phi1, phi2, ibeg, ifin1, jbeg, jfin1); // Obs: phi1 e phi2 will change order index
+            exchange_4(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
 
             frc1 = 0.0d;
 
