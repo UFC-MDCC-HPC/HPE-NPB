@@ -2662,10 +2662,10 @@ namespace NPB {
             //  communicate in i direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                computeRightSideSouthToNorth(phi1, ibeg, ifin1);
+                computeSideSouthToNorth(phi1, ibeg, ifin1);
             }
             if(ind2==1) {
-                computeRightSideSouthToNorth(phi2, ibeg, ifin1);
+                computeSideSouthToNorth(phi2, ibeg, ifin1);
             }
             frc2 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2730,10 +2730,10 @@ namespace NPB {
             //  communicate in j direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                computeRightSideEastToWest(phi1, jbeg, jfin1);
+                computeSideEastToWest(phi1, jbeg, jfin1);
             }
             if(ind2==1) {
-                computeRightSideEastToWest(phi2, jbeg, jfin1);
+                computeSideEastToWest(phi2, jbeg, jfin1);
             }
             frc3 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2840,7 +2840,7 @@ namespace NPB {
         }
         //end exchange_4.f
         // exchange_5.f
-        public void computeRightSideSouthToNorth(double[,] g, int beg, int fin1) {
+        public void computeSideSouthToNorth(double[,] g, int beg, int fin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2886,7 +2886,7 @@ namespace NPB {
         }
         //end exchange_5.f
         // exchange_6.f
-        public void computeRightSideEastToWest(double[,] g, int beg, int fin1) {
+        public void computeSideEastToWest(double[,] g, int beg, int fin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
