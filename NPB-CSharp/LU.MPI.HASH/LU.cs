@@ -2662,10 +2662,10 @@ namespace NPB {
             //  communicate in i direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                exchange_5(phi1, ibeg, ifin1);
+                computeRightSideSouthToNorth(phi1, ibeg, ifin1);
             }
             if(ind2==1) {
-                exchange_5(phi2, ibeg, ifin1);
+                computeRightSideSouthToNorth(phi2, ibeg, ifin1);
             }
             frc2 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2730,10 +2730,10 @@ namespace NPB {
             //  communicate in j direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                exchange_6(phi1, jbeg, jfin1);
+                computeRightSideEastToWest(phi1, jbeg, jfin1);
             }
             if(ind2==1) {
-                exchange_6(phi2, jbeg, jfin1);
+                computeRightSideEastToWest(phi2, jbeg, jfin1);
             }
             frc3 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2840,7 +2840,7 @@ namespace NPB {
         }
         //end exchange_4.f
         // exchange_5.f
-        public void exchange_5(double[,] g, int ibeg, int ifin1) {
+        public void computeRightSideSouthToNorth(double[,] g, int ibeg, int ifin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2886,7 +2886,7 @@ namespace NPB {
         }
         //end exchange_5.f
         // exchange_6.f
-        public void exchange_6(double[,] g, int jbeg, int jfin1) {
+        public void computeRightSideEastToWest(double[,] g, int jbeg, int jfin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
