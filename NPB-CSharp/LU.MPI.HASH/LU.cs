@@ -2840,7 +2840,7 @@ namespace NPB {
         }
         //end exchange_4.f
         // exchange_5.f
-        public void computeRightSideSouthToNorth(double[,] g, int ibeg, int ifin1) {
+        public void computeRightSideSouthToNorth(double[,] g, int beg, int fin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2862,7 +2862,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   receive from south
             //---------------------------------------------------------------------
-            if(ifin1==nx) {
+            if(fin1==nx) {
                 MPI.Request[] msgid1 = new MPI.Request[1];
                 double[] dum = new double[nz];
                 //call MPI_IRECV[ dum, nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, msgid1, IERROR ];
@@ -2875,7 +2875,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   send north
             //---------------------------------------------------------------------
-            if(ibeg==1) {
+            if(beg==1) {
                 double[] dum = new double[nz];
                 for(k = 1; k<=nz; k++) {
                     dum[k-1] = g[k, 1];  //dum[k] = g[1,k];
@@ -2886,7 +2886,7 @@ namespace NPB {
         }
         //end exchange_5.f
         // exchange_6.f
-        public void computeRightSideEastToWest(double[,] g, int jbeg, int jfin1) {
+        public void computeRightSideEastToWest(double[,] g, int beg, int fin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2907,7 +2907,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   receive from east
             //---------------------------------------------------------------------
-            if(jfin1==ny) {
+            if(fin1==ny) {
                 double[] dum = new double[nz];
                 MPI.Request[] msgid3 = new MPI.Request[1];
                 //call MPI_IRECV[ dum, nz,dp_type,MPI_ANY_SOURCE,from_e,MPI_COMM_WORLD,msgid3,IERROR ];
@@ -2921,7 +2921,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   send west
             //---------------------------------------------------------------------
-            if(jbeg==1) {
+            if(beg==1) {
                 double[] dum = new double[nz];
                 for(k = 1; k<=nz; k++) {
                     dum[k-1] = g[k, 1];  //dum[k] = g[1,k];
