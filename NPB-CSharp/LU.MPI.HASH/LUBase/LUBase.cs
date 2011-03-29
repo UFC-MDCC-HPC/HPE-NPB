@@ -4,20 +4,20 @@ using NPB;
 namespace NPB {
     public class LUBase: Base {
         //******************************************** Attributes *******************************************************/
-        //npbparams.h
-        protected static int nnodes_compiled, isiz01, isiz02, isiz03, isiz1, isiz2, isiz3, itmax_default, inorm_default;
-        protected static double dt_default;
-        protected static bool convertdouble = false;
+        //npbparams.h , 
+        protected static int isiz01, isiz02, isiz03, isiz2,  isiz1, isiz3;//nnodes_compiled inorm_default itmax_default
+        //protected static double dt_default;
+        //protected static bool convertdouble = false;
         protected static string compiletime, npbversion="3.3";
         //end npbparans.h
 
         //applu.incl
-        protected static int ipr_default=1;
-        protected static double omega_default=1.2d;
+        //protected static int ipr_default=1;
+        //protected static double omega_default=1.2d;
         protected static double tolrsd1_def=1.0E-08, tolrsd2_def=1.0E-08, tolrsd3_def=1.0E-08, tolrsd4_def=1.0E-08, tolrsd5_def=1.0E-08;
         protected static double c1=1.40d, c2=0.40d, c3=1.00E-01, c4=1.00d, c5=1.40d;
         //-- grid -------------------------------------------------------------
-        protected static int nx, ny, nz, nx0, ny0, nz0, ipt, ist, iend, jpt, jst, jend, ii1, ii2, ji1, ji2, ki1, ki2;
+        protected static int nx, ny, nz, nx0, ny0, nz0, ipt, ist, iend, jpt, jst, jend, ii1, ii2, ji1, ji2, ki1, ki2;//blocksInfo
         protected static double dxi, deta, dzeta, tx1, tx2, tx3, ty1, ty2, ty3, tz1, tz2, tz3;
         //---------------------------------------------------------------------
         //   dissipation ------------------------------------------------------            
@@ -27,9 +27,9 @@ namespace NPB {
         //     rsd[5, -1:isiz1+2, -1:isiz2+2, isiz3],
         //    frct[5, -1:isiz1+2, -1:isiz2+2, isiz3],
         //    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
-        protected static int ipr, inorm;
-        protected static int itmax, invert;
-        protected static double dt, omega, frc, ttotal;
+        protected static int inorm;//ipr //blocksInfo
+        protected static int itmax;//, invert; //blocksInfo
+        protected static double frc, dt, omega;//, , ttotal; //blocksInfo
         /*tolrsd*/
         protected static double[] tolrsd = new double[5];     //tolrsd[5]
         /*rsdnm*/
@@ -54,29 +54,29 @@ namespace NPB {
                                          {4.0E-01, 3.0E-01, 5.0E-01, 1.0E-01, 3.0E-01},
                                          {3.0E-01, 5.0E-01, 4.0E-01, 3.0E-01, 2.0E-01}};
 
-        protected static int node, ndim, num, xdim, ydim, row, col;
+        //protected static int node, ndim, num, xdim, ydim, row, col; //blocksInfo
         protected static int north, south, east, west;
         protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;
-        protected static int npmax;
+        //protected static int npmax;
 
-        protected static bool[] icommn, icomms, icomme, icommw; //Fortran: icommn[npmax+1],icomms[npmax+1], icomme[npmax+1],icommw[npmax+1]
+        protected static bool[] icommn, icomms, icomme, icommw; //blocksInfo //Fortran: icommn[npmax+1],icomms[npmax+1], icomme[npmax+1],icommw[npmax+1]
         //protected static double[,] buf, buf1;                   //Fortran: buf[5,2*isiz2*isiz3], buf1[5,2*isiz2*isiz3]
         protected static double maxtime;
         //end applu.incl
 
         //lu.f
         //protected static bool verified;
-        protected static double mflops;
+        //protected static double mflops;
         //end lu.f
 
         //mpinpb.h
-        protected static int no_nodes;// dp_type, node
+        //protected static int no_nodes;// dp_type, node
         protected MPI.Environment mpi = null;
         protected MPI.Intracommunicator worldcomm;// comm_setup, comm_solve, comm_rhs = null;
         //end mpinpb.h
 
         //Suporte
-        protected int root = 0;
+        //protected int root = 0;
         protected Timer timer = new Timer();
         protected static bool debug = false;
         protected static String BMName = "LU";
@@ -93,44 +93,44 @@ namespace NPB {
                 case 'S':
                     isiz01 = isiz02 = isiz03 =12;
                     isiz3  = isiz03;
-                    itmax_default = inorm_default=50;
-                    dt_default = 0.5d;
+                    itmax = inorm=50;
+                    dt = 0.5d;
                     break;
                 case 'W':
                     isiz01 = isiz02 = isiz03 = 33;
                     isiz3  = isiz03;
-                    itmax_default = inorm_default = 300;
-                    dt_default = 1.5E-3; // dt_default = .0015;
+                    itmax = inorm = 300;
+                    dt = 1.5E-3; // dt_default = .0015;
                     break;
                 case 'A':
                     isiz01 = isiz02 = isiz03 = 64;
                     isiz3  = isiz03;
-                    itmax_default = inorm_default = 250;
-                    dt_default = 2.0d;
+                    itmax = inorm = 250;
+                    dt = 2.0d;
                     break;
                 case 'B':
                     isiz01 = isiz02 = isiz03 = 102;
                     isiz3  = isiz03;
-                    itmax_default = inorm_default = 250;
-                    dt_default = 2.0d;
+                    itmax = inorm = 250;
+                    dt = 2.0d;
                     break;
                 case 'C':
                     isiz01 = isiz02 = isiz03 = 162;
                     isiz3  = isiz03;
-                    itmax_default = inorm_default = 250;
-                    dt_default = 2.0d;
+                    itmax = inorm = 250;
+                    dt = 2.0d;
                     break;
                 case 'D':
                     isiz01 = isiz02 = isiz03 = 408;
                     isiz3  = isiz03;
-                    itmax_default = inorm_default = 300;
-                    dt_default = 1.0d;
+                    itmax = inorm = 300;
+                    dt = 1.0d;
                     break;
                 case 'E':
                     isiz01 = isiz02 = isiz03 = 1020;
                     isiz3  = isiz03;
-                    itmax_default = inorm_default = 300;
-                    dt_default = 0.5d;
+                    itmax = inorm = 300;
+                    dt = 0.5d;
                     break;
             }
             mpi_start();
@@ -147,8 +147,8 @@ namespace NPB {
         }
 
         private void initVars() {
-            npmax = isiz01 + isiz02;
-            nnodes_compiled = num;
+            int npmax = isiz01 + isiz02;
+            //nnodes_compiled = num;
             int ydiv = ilog2(num) / 2;
             int xdiv = ydiv;
             if(xdiv + ydiv != ilog2(num))

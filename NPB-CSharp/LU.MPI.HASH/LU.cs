@@ -138,7 +138,7 @@ namespace NPB {
             //   verification test
             //---------------------------------------------------------------------
             if(node==0) {
-                mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
+                double mflops = ((double)(itmax))*(1984.77*((double)(nx0))*((double)(ny0))*((double)(nz0))-10923.3*pow2((((double)(nx0+ny0+nz0))/3.0))+27770.9*((double)(nx0+ny0+nz0))/3.0-144010.0) / (maxtime*1000000.0);
                 //IO.print_results(BMName, clss, nx0, ny0, nz0, itmax, nnodes_compiled, num, maxtime, mflops, "floating point", verified, npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
                 int verified = verify(rsdnm, errnm, frc);
                 BMResults results = new BMResults(BMName,
@@ -172,83 +172,83 @@ namespace NPB {
             //       tolrsd = steady state residual tolerance levels
             //       nx, ny, nz = number of grid points in x, y, z directions
             //---------------------------------------------------------------------
-            if(node == root) {
-                string[] vetTemp = new string[13];
-                try {
-                    Console.Write("Trying Reading from input file inputlu.data: ");
-                    int[] conf = { 0, 0, 2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 5, 0, 0, 3 };
-                    vetTemp = IO.readFileData("inputlu.data", conf);//open [unit=3,file='inputlu.data',status='old', access='sequential',form='formatted', iostat=fstatus];
-                }
-                catch(System.IO.FileNotFoundException) {
-                    Console.WriteLine("inputlu.data not found");
-                    fstatus = 1;
-                }
-                Console.WriteLine(" NAS Parallel Benchmarks "+npbversion+" -- LU Benchmark ");
-                if(fstatus == 0) {
-                    Console.WriteLine("Reading from input file inputlu.data");
-                    ipr       = int.Parse(vetTemp[0]);//read [3,*] ipr, inorm
-                    inorm     = int.Parse(vetTemp[1]);
-                    itmax     = int.Parse(vetTemp[2]);//read [3,*] itmax
-                    dt        = double.Parse(vetTemp[3]);//read [3,*] dt
-                    omega     = double.Parse(vetTemp[4]);//read [3,*] omega
-                    tolrsd[0] = double.Parse(vetTemp[5]);
-                    tolrsd[1] = double.Parse(vetTemp[6]);
-                    tolrsd[2] = double.Parse(vetTemp[7]);
-                    tolrsd[3] = double.Parse(vetTemp[8]);
-                    tolrsd[4] = double.Parse(vetTemp[9]);//read [3,*] tolrsd[1],tolrsd[2],tolrsd[3],tolrsd[4],tolrsd[5]
-                    nx0       = int.Parse(vetTemp[10]);
-                    ny0       = int.Parse(vetTemp[11]);
-                    nz0       = int.Parse(vetTemp[12]);//read [3,*] nx0, ny0, nz0
-                }
-                else {
-                    ipr = ipr_default;
-                    inorm = inorm_default;
-                    itmax = itmax_default;
-                    dt = dt_default;
-                    omega = omega_default;
-                    tolrsd[0] = tolrsd1_def;
-                    tolrsd[1] = tolrsd2_def;
-                    tolrsd[2] = tolrsd3_def;
-                    tolrsd[3] = tolrsd4_def;
-                    tolrsd[4] = tolrsd5_def;
-                    nx0 = isiz01;
-                    ny0 = isiz02;
-                    nz0 = isiz03;
-                }
-                nnodes = num;//   call MPI_COMM_SIZE[MPI_COMM_WORLD, nnodes, ierror];
-                //---------------------------------------------------------------------
-                //   check problem size
-                //---------------------------------------------------------------------
-                if(nnodes != nnodes_compiled) {
-                    Console.WriteLine("Warning: program is running on"+nnodes+" processors, but was compiled for "+nnodes_compiled);
-                }
-                if((nx0 < 4) || (ny0 < 4) || (nz0 < 4)) {
-                    Console.WriteLine("PROBLEM SIZE IS TOO SMALL - "+" SET EACH OF NX, NY AND NZ AT LEAST EQUAL TO 5");
-                    worldcomm.Abort(0);
-                    mpi.Dispose();//CALL MPI_ABORT[ MPI_COMM_WORLD, MPI_ERR_OTHER, IERROR ];
-                    System.Environment.Exit(0);
-                }
-
-                if((nx0 > isiz01) || (ny0 > isiz02) || (nz0 > isiz03)) {
-                    Console.WriteLine("PROBLEM SIZE IS TOO LARGE - NX, NY AND NZ SHOULD BE LESS THAN OR EQUAL TO ISIZ01, ISIZ02 AND ISIZ03 RESPECTIVELY");
-                    worldcomm.Abort(0);
-                    mpi.Dispose();//      CALL MPI_ABORT[ MPI_COMM_WORLD, MPI_ERR_OTHER, IERROR ];
-                    System.Environment.Exit(0);
-                }
-                Console.WriteLine(" Size: " + nx0 + " x " + ny0 + " x " + nz0);
-                Console.WriteLine(" Iterations: " + itmax);
-                Console.WriteLine(" Number of processes: " + nnodes);
+            //if(node == root) {
+            string[] vetTemp = new string[13];
+            try {
+                if(node == 0) Console.Write("Trying Reading from input file inputlu.data: ");
+                int[] conf = { 0, 0, 2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 5, 0, 0, 3 };
+                vetTemp = IO.readFileData("inputlu.data", conf);//open [unit=3,file='inputlu.data',status='old', access='sequential',form='formatted', iostat=fstatus];
             }
+            catch(System.IO.FileNotFoundException) {
+                if(node == 0) Console.WriteLine("inputlu.data not found");
+                fstatus = 1;
+            }
+            if(node == 0) Console.WriteLine(" NAS Parallel Benchmarks "+npbversion+" -- LU Benchmark ");
+            if(fstatus == 0) {
+                if(node == 0) Console.WriteLine("Reading from input file inputlu.data");
+                //ipr       = int.Parse(vetTemp[0]);//read [3,*] ipr, inorm
+                inorm     = int.Parse(vetTemp[1]);
+                itmax     = int.Parse(vetTemp[2]);//read [3,*] itmax
+                dt        = double.Parse(vetTemp[3]);//read [3,*] dt
+                omega     = double.Parse(vetTemp[4]);//read [3,*] omega
+                tolrsd[0] = double.Parse(vetTemp[5]);
+                tolrsd[1] = double.Parse(vetTemp[6]);
+                tolrsd[2] = double.Parse(vetTemp[7]);
+                tolrsd[3] = double.Parse(vetTemp[8]);
+                tolrsd[4] = double.Parse(vetTemp[9]);//read [3,*] tolrsd[1],tolrsd[2],tolrsd[3],tolrsd[4],tolrsd[5]
+                nx0       = int.Parse(vetTemp[10]);
+                ny0       = int.Parse(vetTemp[11]);
+                nz0       = int.Parse(vetTemp[12]);//read [3,*] nx0, ny0, nz0
+            }
+            else {
+                //ipr = ipr_default;
+                //inorm = inorm_default;
+                //itmax = itmax_default;
+                //dt = dt_default;
+                omega = 1.2d;//omega_default;
+                tolrsd[0] = tolrsd1_def;
+                tolrsd[1] = tolrsd2_def;
+                tolrsd[2] = tolrsd3_def;
+                tolrsd[3] = tolrsd4_def;
+                tolrsd[4] = tolrsd5_def;
+                nx0 = isiz01;
+                ny0 = isiz02;
+                nz0 = isiz03;
+            }
+            nnodes = num;//   call MPI_COMM_SIZE[MPI_COMM_WORLD, nnodes, ierror];
+            //---------------------------------------------------------------------
+            //   check problem size
+            //---------------------------------------------------------------------
+            //if(nnodes != nnodes_compiled) {
+            //    if(node == 0) Console.WriteLine("Warning: program is running on"+nnodes+" processors, but was compiled for "+nnodes_compiled);
+            //}
+            if((nx0 < 4) || (ny0 < 4) || (nz0 < 4)) {
+                if(node == 0) Console.WriteLine("PROBLEM SIZE IS TOO SMALL - "+" SET EACH OF NX, NY AND NZ AT LEAST EQUAL TO 5");
+                worldcomm.Abort(0);
+                mpi.Dispose();//CALL MPI_ABORT[ MPI_COMM_WORLD, MPI_ERR_OTHER, IERROR ];
+                System.Environment.Exit(0);
+            }
+
+            if((nx0 > isiz01) || (ny0 > isiz02) || (nz0 > isiz03)) {
+                if(node == 0) Console.WriteLine("PROBLEM SIZE IS TOO LARGE - NX, NY AND NZ SHOULD BE LESS THAN OR EQUAL TO ISIZ01, ISIZ02 AND ISIZ03 RESPECTIVELY");
+                worldcomm.Abort(0);
+                mpi.Dispose();//      CALL MPI_ABORT[ MPI_COMM_WORLD, MPI_ERR_OTHER, IERROR ];
+                System.Environment.Exit(0);
+            }
+            if(node == 0) Console.WriteLine(" Size: " + nx0 + " x " + ny0 + " x " + nz0);
+            if(node == 0) Console.WriteLine(" Iterations: " + itmax);
+            if(node == 0) Console.WriteLine(" Number of processes: " + nnodes);
+            //}
             //call bcast_inputs; call bcast below:
-            worldcomm.Broadcast<int>(ref ipr, root);          //call MPI_BCAST[ipr, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<int>(ref inorm, root);        //call MPI_BCAST[inorm, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<int>(ref itmax, root);        //call MPI_BCAST[itmax, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<double>(ref dt, root);        //call MPI_BCAST[dt, 1, dp_type, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<double>(ref omega, root);     //call MPI_BCAST[omega, 1, dp_type, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<double>(ref tolrsd, root);    //call MPI_BCAST[tolrsd, 5, dp_type, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<int>(ref nx0, root);          //call MPI_BCAST[nx0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<int>(ref ny0, root);          //call MPI_BCAST[ny0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
-            worldcomm.Broadcast<int>(ref nz0, root);          //call MPI_BCAST[nz0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<int>(ref ipr, root);          //call MPI_BCAST[ipr, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<int>(ref inorm, root);        //call MPI_BCAST[inorm, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<int>(ref itmax, root);        //call MPI_BCAST[itmax, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<double>(ref dt, root);        //call MPI_BCAST[dt, 1, dp_type, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<double>(ref omega, root);     //call MPI_BCAST[omega, 1, dp_type, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<double>(ref tolrsd, root);    //call MPI_BCAST[tolrsd, 5, dp_type, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<int>(ref nx0, root);          //call MPI_BCAST[nx0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<int>(ref ny0, root);          //call MPI_BCAST[ny0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
+            //worldcomm.Broadcast<int>(ref nz0, root);          //call MPI_BCAST[nz0, 1, MPI_int, root, MPI_COMM_WORLD, ierr]
         }
 
         public void proc_grid() {
