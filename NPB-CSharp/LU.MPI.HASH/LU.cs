@@ -929,7 +929,7 @@ namespace NPB {
             }
         }
         //Exchange_3.f
-        public void exchangeTempNSEW(double[, , ,] g, int iex) {
+        public void TempExchangeNSEW(double[, , ,] g, int iex) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
