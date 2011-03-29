@@ -1859,7 +1859,7 @@ namespace NPB {
             //}//end Debug
 
             iex = 0;
-            exchange_1(v, iex, k);
+            exchangeToSouthEastNorthWest(v, iex, k);
             for(j = jst; j<= jend; j++) {
                 for(i = ist; i<= iend; i++) {
                     for(m = 1; m<= 5; m++) {
@@ -1989,11 +1989,11 @@ namespace NPB {
             //   send data to east and south
             //---------------------------------------------------------------------
             iex = 2;
-            exchange_1(v, iex, k);
+            exchangeToSouthEastNorthWest(v, iex, k);
         }
         // end blts.f
         // Exchange_1.f
-        public void exchange_1(double[, , ,] g, int iex, int k) {
+        public void exchangeToSouthEastNorthWest(double[, , ,] g, int iex, int k) {
             //double  g[5,-1:isiz1+2,-1:isiz2+2,isiz3];
             //int k,iex;
             int i, j;
@@ -2311,7 +2311,7 @@ namespace NPB {
             //   receive data from south and east
             //---------------------------------------------------------------------
             iex = 1;
-            exchange_1(v, iex, k);
+            exchangeToSouthEastNorthWest(v, iex, k);
             //Debug 
             //if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
             //    throw new ArgumentException("Look this code: vetor v");
@@ -2448,7 +2448,7 @@ namespace NPB {
             //   send data to north and west
             //---------------------------------------------------------------------
             iex = 3;
-            exchange_1(v, iex, k);
+            exchangeToSouthEastNorthWest(v, iex, k);
         }
         // end buts.f
         //end ssor.f
