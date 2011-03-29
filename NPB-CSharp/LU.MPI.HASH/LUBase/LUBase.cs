@@ -54,7 +54,7 @@ namespace NPB {
                                          {4.0E-01, 3.0E-01, 5.0E-01, 1.0E-01, 3.0E-01},
                                          {3.0E-01, 5.0E-01, 4.0E-01, 3.0E-01, 2.0E-01}};
 
-        //protected static int node, ndim, num, xdim, ydim, row, col; //blocksInfo
+        protected static int node, ndim, num, xdim, ydim, row, col; //blocksInfo
         protected static int north, south, east, west;
         protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;
         //protected static int npmax;
@@ -146,7 +146,7 @@ namespace NPB {
             ndim   = nodedim(num);
         }
 
-        private void initVars() {
+        private void initVars() {// ProblemDefination
             int npmax = isiz01 + isiz02;
             //nnodes_compiled = num;
             int ydiv = ilog2(num) / 2;
