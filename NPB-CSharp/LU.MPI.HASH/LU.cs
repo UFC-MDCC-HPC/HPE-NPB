@@ -656,7 +656,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange_3(rsd, iex);
+            exchangeNSEW(rsd, iex);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -752,7 +752,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange_3(rsd, iex);
+            exchangeNSEW(rsd, iex);
             L1 = 0;
             if(west==-1)
                 L1 = 1;
@@ -929,7 +929,7 @@ namespace NPB {
             }
         }
         //Exchange_3.f
-        public void exchange_3(double[, , ,] g, int iex) {
+        public void exchangeNSEW(double[, , ,] g, int iex) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -938,7 +938,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //double  g[5,-1:isiz1+2,-1:isiz2+2,isiz3];
             //int iex;
-            int i, j, k;
+            int i, j, k0;
             int ipos1, ipos2;
             //int mid;
             //int STATUS[MPI_STATUS_SIZE];
@@ -962,21 +962,21 @@ namespace NPB {
                 //   send south
                 //---------------------------------------------------------------------
                 if(south!=-1) {
-                    for(k = 1; k<=nz; k++) {
+                    for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
-                            ipos1 = (k-1)*ny+j              -1;  //ipos1 = (k-1)*ny+j;
+                            ipos1 = (k0-1)*ny+j              -1;  //ipos1 = (k-1)*ny+j;
                             ipos2 = ipos1 + ny*nz;               //ipos2 = ipos1 + ny*nz;
-                            buf[0*size2+ipos1] = g[k-1, j+1, nx, 0];  //buf[1,ipos1] = g[1,nx-1,j,k];
-                            buf[1*size2+ipos1] = g[k-1, j+1, nx, 1];  //buf[2,ipos1] = g[2,nx-1,j,k];
-                            buf[2*size2+ipos1] = g[k-1, j+1, nx, 2];  //buf[3,ipos1] = g[3,nx-1,j,k];
-                            buf[3*size2+ipos1] = g[k-1, j+1, nx, 3];  //buf[4,ipos1] = g[4,nx-1,j,k]; 
-                            buf[4*size2+ipos1] = g[k-1, j+1, nx, 4];  //buf[5,ipos1] = g[5,nx-1,j,k];
+                            buf[0*size2+ipos1] = g[k0-1, j+1, nx, 0];  //buf[1,ipos1] = g[1,nx-1,j,k];
+                            buf[1*size2+ipos1] = g[k0-1, j+1, nx, 1];  //buf[2,ipos1] = g[2,nx-1,j,k];
+                            buf[2*size2+ipos1] = g[k0-1, j+1, nx, 2];  //buf[3,ipos1] = g[3,nx-1,j,k];
+                            buf[3*size2+ipos1] = g[k0-1, j+1, nx, 3];  //buf[4,ipos1] = g[4,nx-1,j,k]; 
+                            buf[4*size2+ipos1] = g[k0-1, j+1, nx, 4];  //buf[5,ipos1] = g[5,nx-1,j,k];
 
-                            buf[0*size2+ipos2] = g[k-1, j+1, nx+1, 0];    //buf[1,ipos2] = g[1,nx,j,k];
-                            buf[1*size2+ipos2] = g[k-1, j+1, nx+1, 1];    //buf[2,ipos2] = g[2,nx,j,k];
-                            buf[2*size2+ipos2] = g[k-1, j+1, nx+1, 2];    //buf[3,ipos2] = g[3,nx,j,k];
-                            buf[3*size2+ipos2] = g[k-1, j+1, nx+1, 3];    //buf[4,ipos2] = g[4,nx,j,k];
-                            buf[4*size2+ipos2] = g[k-1, j+1, nx+1, 4];    //buf[5,ipos2] = g[5,nx,j,k];
+                            buf[0*size2+ipos2] = g[k0-1, j+1, nx+1, 0];    //buf[1,ipos2] = g[1,nx,j,k];
+                            buf[1*size2+ipos2] = g[k0-1, j+1, nx+1, 1];    //buf[2,ipos2] = g[2,nx,j,k];
+                            buf[2*size2+ipos2] = g[k0-1, j+1, nx+1, 2];    //buf[3,ipos2] = g[3,nx,j,k];
+                            buf[3*size2+ipos2] = g[k0-1, j+1, nx+1, 3];    //buf[4,ipos2] = g[4,nx,j,k];
+                            buf[4*size2+ipos2] = g[k0-1, j+1, nx+1, 4];    //buf[5,ipos2] = g[5,nx,j,k];
                         }
                     }
                     //call MPI_SEND[ buf, 10*ny*nz, dp_type, south, from_n, MPI_COMM_WORLD, IERROR ];
@@ -988,21 +988,21 @@ namespace NPB {
                 if(north!=-1) {
                     //call MPI_WAIT[ mid, STATUS, IERROR ];
                     mid[0].Wait();
-                    for(k = 1; k<=nz; k++) {
+                    for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
-                            ipos1 = (k-1)*ny + j           -1;     //ipos1 = (k-1)*ny + j;
+                            ipos1 = (k0-1)*ny + j           -1;     //ipos1 = (k-1)*ny + j;
                             ipos2 = ipos1 + ny*nz;                 //ipos2 = ipos1 + ny*nz; 
-                            g[k-1, j+1, 0, 0] = buf1[0*size2+ipos1];     //g[1,-1,j,k] = buf1[1,ipos1];       
-                            g[k-1, j+1, 0, 1] = buf1[1*size2+ipos1];     //g[2,-1,j,k] = buf1[2,ipos1];
-                            g[k-1, j+1, 0, 2] = buf1[2*size2+ipos1];     //g[3,-1,j,k] = buf1[3,ipos1];
-                            g[k-1, j+1, 0, 3] = buf1[3*size2+ipos1];     //g[4,-1,j,k] = buf1[4,ipos1];
-                            g[k-1, j+1, 0, 4] = buf1[4*size2+ipos1];     //g[5,-1,j,k] = buf1[5,ipos1];
+                            g[k0-1, j+1, 0, 0] = buf1[0*size2+ipos1];     //g[1,-1,j,k] = buf1[1,ipos1];       
+                            g[k0-1, j+1, 0, 1] = buf1[1*size2+ipos1];     //g[2,-1,j,k] = buf1[2,ipos1];
+                            g[k0-1, j+1, 0, 2] = buf1[2*size2+ipos1];     //g[3,-1,j,k] = buf1[3,ipos1];
+                            g[k0-1, j+1, 0, 3] = buf1[3*size2+ipos1];     //g[4,-1,j,k] = buf1[4,ipos1];
+                            g[k0-1, j+1, 0, 4] = buf1[4*size2+ipos1];     //g[5,-1,j,k] = buf1[5,ipos1];
 
-                            g[k-1, j+1, 1, 0] = buf1[0*size2+ipos2];      //g[1,0,j,k] = buf1[1,ipos2];
-                            g[k-1, j+1, 1, 1] = buf1[1*size2+ipos2];      //g[2,0,j,k] = buf1[2,ipos2];
-                            g[k-1, j+1, 1, 2] = buf1[2*size2+ipos2];      //g[3,0,j,k] = buf1[3,ipos2]; 
-                            g[k-1, j+1, 1, 3] = buf1[3*size2+ipos2];      //g[4,0,j,k] = buf1[4,ipos2];
-                            g[k-1, j+1, 1, 4] = buf1[4*size2+ipos2];      //g[5,0,j,k] = buf1[5,ipos2];
+                            g[k0-1, j+1, 1, 0] = buf1[0*size2+ipos2];      //g[1,0,j,k] = buf1[1,ipos2];
+                            g[k0-1, j+1, 1, 1] = buf1[1*size2+ipos2];      //g[2,0,j,k] = buf1[2,ipos2];
+                            g[k0-1, j+1, 1, 2] = buf1[2*size2+ipos2];      //g[3,0,j,k] = buf1[3,ipos2]; 
+                            g[k0-1, j+1, 1, 3] = buf1[3*size2+ipos2];      //g[4,0,j,k] = buf1[4,ipos2];
+                            g[k0-1, j+1, 1, 4] = buf1[4*size2+ipos2];      //g[5,0,j,k] = buf1[5,ipos2];
                         }
                     }
                 }
@@ -1014,21 +1014,21 @@ namespace NPB {
                 //   send north
                 //---------------------------------------------------------------------
                 if(north!=-1) {
-                    for(k = 1; k<=nz; k++) {
+                    for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
-                            ipos1 = (k-1)*ny + j   -1;          //ipos1 = (k-1)*ny + j;
+                            ipos1 = (k0-1)*ny + j   -1;          //ipos1 = (k-1)*ny + j;
                             ipos2 = ipos1 + ny*nz;              //ipos2 = ipos1 + ny*nz;
-                            buf[0*size2+ipos1] = g[k-1, j+1, 3, 0];  //buf[1,ipos1] = g[1,2,j,k];
-                            buf[1*size2+ipos1] = g[k-1, j+1, 3, 1];  //buf[2,ipos1] = g[2,2,j,k];
-                            buf[2*size2+ipos1] = g[k-1, j+1, 3, 2];  //buf[3,ipos1] = g[3,2,j,k];
-                            buf[3*size2+ipos1] = g[k-1, j+1, 3, 3];  //buf[4,ipos1] = g[4,2,j,k];
-                            buf[4*size2+ipos1] = g[k-1, j+1, 3, 4];  //buf[5,ipos1] = g[5,2,j,k];
+                            buf[0*size2+ipos1] = g[k0-1, j+1, 3, 0];  //buf[1,ipos1] = g[1,2,j,k];
+                            buf[1*size2+ipos1] = g[k0-1, j+1, 3, 1];  //buf[2,ipos1] = g[2,2,j,k];
+                            buf[2*size2+ipos1] = g[k0-1, j+1, 3, 2];  //buf[3,ipos1] = g[3,2,j,k];
+                            buf[3*size2+ipos1] = g[k0-1, j+1, 3, 3];  //buf[4,ipos1] = g[4,2,j,k];
+                            buf[4*size2+ipos1] = g[k0-1, j+1, 3, 4];  //buf[5,ipos1] = g[5,2,j,k];
 
-                            buf[0*size2+ipos2] = g[k-1, j+1, 2, 0];  //buf[1,ipos2] = g[1,1,j,k];
-                            buf[1*size2+ipos2] = g[k-1, j+1, 2, 1];  //buf[2,ipos2] = g[2,1,j,k];
-                            buf[2*size2+ipos2] = g[k-1, j+1, 2, 2];  //buf[3,ipos2] = g[3,1,j,k];
-                            buf[3*size2+ipos2] = g[k-1, j+1, 2, 3];  //buf[4,ipos2] = g[4,1,j,k];
-                            buf[4*size2+ipos2] = g[k-1, j+1, 2, 4];  //buf[5,ipos2] = g[5,1,j,k];
+                            buf[0*size2+ipos2] = g[k0-1, j+1, 2, 0];  //buf[1,ipos2] = g[1,1,j,k];
+                            buf[1*size2+ipos2] = g[k0-1, j+1, 2, 1];  //buf[2,ipos2] = g[2,1,j,k];
+                            buf[2*size2+ipos2] = g[k0-1, j+1, 2, 2];  //buf[3,ipos2] = g[3,1,j,k];
+                            buf[3*size2+ipos2] = g[k0-1, j+1, 2, 3];  //buf[4,ipos2] = g[4,1,j,k];
+                            buf[4*size2+ipos2] = g[k0-1, j+1, 2, 4];  //buf[5,ipos2] = g[5,1,j,k];
                         }
                     }
                     //call MPI_SEND[ buf, 10*ny*nz, dp_type, north, from_s, MPI_COMM_WORLD, IERROR ];
@@ -1040,21 +1040,21 @@ namespace NPB {
                 if(south!=-1) {
                     //call MPI_WAIT[ mid, STATUS, IERROR ];
                     mid[0].Wait();
-                    for(k = 1; k<=nz; k++) {
+                    for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
-                            ipos1 = (k-1)*ny + j                -1; //ipos1 = (k-1)*ny + j;
+                            ipos1 = (k0-1)*ny + j                -1; //ipos1 = (k-1)*ny + j;
                             ipos2 = ipos1 + ny*nz;                  //ipos2 = ipos1 + ny*nz;
-                            g[k-1, j+1, nx+3, 0]  = buf1[0*size2+ipos1]; //g[1,nx+2,j,k]  = buf1[1,ipos1];
-                            g[k-1, j+1, nx+3, 1]  = buf1[1*size2+ipos1]; //g[2,nx+2,j,k]  = buf1[2,ipos1];
-                            g[k-1, j+1, nx+3, 2]  = buf1[2*size2+ipos1]; //g[3,nx+2,j,k]  = buf1[3,ipos1];
-                            g[k-1, j+1, nx+3, 3]  = buf1[3*size2+ipos1]; //g[4,nx+2,j,k]  = buf1[4,ipos1];
-                            g[k-1, j+1, nx+3, 4]  = buf1[4*size2+ipos1]; //g[5,nx+2,j,k]  = buf1[5,ipos1];
+                            g[k0-1, j+1, nx+3, 0]  = buf1[0*size2+ipos1]; //g[1,nx+2,j,k]  = buf1[1,ipos1];
+                            g[k0-1, j+1, nx+3, 1]  = buf1[1*size2+ipos1]; //g[2,nx+2,j,k]  = buf1[2,ipos1];
+                            g[k0-1, j+1, nx+3, 2]  = buf1[2*size2+ipos1]; //g[3,nx+2,j,k]  = buf1[3,ipos1];
+                            g[k0-1, j+1, nx+3, 3]  = buf1[3*size2+ipos1]; //g[4,nx+2,j,k]  = buf1[4,ipos1];
+                            g[k0-1, j+1, nx+3, 4]  = buf1[4*size2+ipos1]; //g[5,nx+2,j,k]  = buf1[5,ipos1];
 
-                            g[k-1, j+1, nx+2, 0] = buf1[0*size2+ipos2];  //g[1,nx+1,j,k] = buf1[1,ipos2];
-                            g[k-1, j+1, nx+2, 1] = buf1[1*size2+ipos2];  //g[2,nx+1,j,k] = buf1[2,ipos2];
-                            g[k-1, j+1, nx+2, 2] = buf1[2*size2+ipos2];  //g[3,nx+1,j,k] = buf1[3,ipos2];
-                            g[k-1, j+1, nx+2, 3] = buf1[3*size2+ipos2];  //g[4,nx+1,j,k] = buf1[4,ipos2];
-                            g[k-1, j+1, nx+2, 4] = buf1[4*size2+ipos2];  //g[5,nx+1,j,k] = buf1[5,ipos2];
+                            g[k0-1, j+1, nx+2, 0] = buf1[0*size2+ipos2];  //g[1,nx+1,j,k] = buf1[1,ipos2];
+                            g[k0-1, j+1, nx+2, 1] = buf1[1*size2+ipos2];  //g[2,nx+1,j,k] = buf1[2,ipos2];
+                            g[k0-1, j+1, nx+2, 2] = buf1[2*size2+ipos2];  //g[3,nx+1,j,k] = buf1[3,ipos2];
+                            g[k0-1, j+1, nx+2, 3] = buf1[3*size2+ipos2];  //g[4,nx+1,j,k] = buf1[4,ipos2];
+                            g[k0-1, j+1, nx+2, 4] = buf1[4*size2+ipos2];  //g[5,nx+1,j,k] = buf1[5,ipos2];
                         }
                     }
                 }
@@ -1075,21 +1075,21 @@ namespace NPB {
                 //   send east
                 //---------------------------------------------------------------------
                 if(east!=-1) {
-                    for(k = 1; k<=nz; k++) {
+                    for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
-                            ipos1 = (k-1)*nx+i        -1;         //ipos1 = (k-1)*nx+i;
+                            ipos1 = (k0-1)*nx+i        -1;         //ipos1 = (k-1)*nx+i;
                             ipos2 = ipos1+nx*nz;                  //ipos2 = ipos1+nx*nz;
-                            buf[0*size2+ipos1] = g[k-1, ny, i+1, 0];   //buf[1,ipos1] = g[1,i,ny-1,k];
-                            buf[1*size2+ipos1] = g[k-1, ny, i+1, 1];   //buf[2,ipos1] = g[2,i,ny-1,k];
-                            buf[2*size2+ipos1] = g[k-1, ny, i+1, 2];   //buf[3,ipos1] = g[3,i,ny-1,k];
-                            buf[3*size2+ipos1] = g[k-1, ny, i+1, 3];   //buf[4,ipos1] = g[4,i,ny-1,k];
-                            buf[4*size2+ipos1] = g[k-1, ny, i+1, 4];   //buf[5,ipos1] = g[5,i,ny-1,k];
+                            buf[0*size2+ipos1] = g[k0-1, ny, i+1, 0];   //buf[1,ipos1] = g[1,i,ny-1,k];
+                            buf[1*size2+ipos1] = g[k0-1, ny, i+1, 1];   //buf[2,ipos1] = g[2,i,ny-1,k];
+                            buf[2*size2+ipos1] = g[k0-1, ny, i+1, 2];   //buf[3,ipos1] = g[3,i,ny-1,k];
+                            buf[3*size2+ipos1] = g[k0-1, ny, i+1, 3];   //buf[4,ipos1] = g[4,i,ny-1,k];
+                            buf[4*size2+ipos1] = g[k0-1, ny, i+1, 4];   //buf[5,ipos1] = g[5,i,ny-1,k];
 
-                            buf[0*size2+ipos2] = g[k-1, ny+1, i+1, 0];     //buf[1,ipos2] = g[1,i,ny,k];
-                            buf[1*size2+ipos2] = g[k-1, ny+1, i+1, 1];     //buf[2,ipos2] = g[2,i,ny,k];
-                            buf[2*size2+ipos2] = g[k-1, ny+1, i+1, 2];     //buf[3,ipos2] = g[3,i,ny,k];
-                            buf[3*size2+ipos2] = g[k-1, ny+1, i+1, 3];     //buf[4,ipos2] = g[4,i,ny,k];
-                            buf[4*size2+ipos2] = g[k-1, ny+1, i+1, 4];     //buf[5,ipos2] = g[5,i,ny,k];
+                            buf[0*size2+ipos2] = g[k0-1, ny+1, i+1, 0];     //buf[1,ipos2] = g[1,i,ny,k];
+                            buf[1*size2+ipos2] = g[k0-1, ny+1, i+1, 1];     //buf[2,ipos2] = g[2,i,ny,k];
+                            buf[2*size2+ipos2] = g[k0-1, ny+1, i+1, 2];     //buf[3,ipos2] = g[3,i,ny,k];
+                            buf[3*size2+ipos2] = g[k0-1, ny+1, i+1, 3];     //buf[4,ipos2] = g[4,i,ny,k];
+                            buf[4*size2+ipos2] = g[k0-1, ny+1, i+1, 4];     //buf[5,ipos2] = g[5,i,ny,k];
                         }
                     }
                     //call MPI_SEND[ buf, 10*nx*nz, dp_type, east, from_w, MPI_COMM_WORLD, IERROR ];
@@ -1101,21 +1101,21 @@ namespace NPB {
                 if(west!=-1) {
                     //call MPI_WAIT[ mid, STATUS, IERROR ];
                     mid[0].Wait();
-                    for(k = 1; k<=nz; k++) {
+                    for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
-                            ipos1 = (k-1)*nx + i     -1;           //ipos1 = (k-1)*nx + i;
+                            ipos1 = (k0-1)*nx + i     -1;           //ipos1 = (k-1)*nx + i;
                             ipos2 = ipos1 + nx*nz;                 //ipos2 = ipos1 + nx*nz;
-                            g[k-1, 0, i+1, 0] = buf1[0*size2+ipos1];    //g[1,i,-1,k] = buf1[1,ipos1];
-                            g[k-1, 0, i+1, 1] = buf1[1*size2+ipos1];    //g[2,i,-1,k] = buf1[2,ipos1];
-                            g[k-1, 0, i+1, 2] = buf1[2*size2+ipos1];    //g[3,i,-1,k] = buf1[3,ipos1];
-                            g[k-1, 0, i+1, 3] = buf1[3*size2+ipos1];    //g[4,i,-1,k] = buf1[4,ipos1];
-                            g[k-1, 0, i+1, 4] = buf1[4*size2+ipos1];    //g[5,i,-1,k] = buf1[5,ipos1];
+                            g[k0-1, 0, i+1, 0] = buf1[0*size2+ipos1];    //g[1,i,-1,k] = buf1[1,ipos1];
+                            g[k0-1, 0, i+1, 1] = buf1[1*size2+ipos1];    //g[2,i,-1,k] = buf1[2,ipos1];
+                            g[k0-1, 0, i+1, 2] = buf1[2*size2+ipos1];    //g[3,i,-1,k] = buf1[3,ipos1];
+                            g[k0-1, 0, i+1, 3] = buf1[3*size2+ipos1];    //g[4,i,-1,k] = buf1[4,ipos1];
+                            g[k0-1, 0, i+1, 4] = buf1[4*size2+ipos1];    //g[5,i,-1,k] = buf1[5,ipos1];
 
-                            g[k-1, 1, i+1, 0] = buf1[0*size2+ipos2];     //g[1,i,0,k] = buf1[1,ipos2];
-                            g[k-1, 1, i+1, 1] = buf1[1*size2+ipos2];     //g[2,i,0,k] = buf1[2,ipos2];
-                            g[k-1, 1, i+1, 2] = buf1[2*size2+ipos2];     //g[3,i,0,k] = buf1[3,ipos2];
-                            g[k-1, 1, i+1, 3] = buf1[3*size2+ipos2];     //g[4,i,0,k] = buf1[4,ipos2];
-                            g[k-1, 1, i+1, 4] = buf1[4*size2+ipos2];     //g[5,i,0,k] = buf1[5,ipos2];
+                            g[k0-1, 1, i+1, 0] = buf1[0*size2+ipos2];     //g[1,i,0,k] = buf1[1,ipos2];
+                            g[k0-1, 1, i+1, 1] = buf1[1*size2+ipos2];     //g[2,i,0,k] = buf1[2,ipos2];
+                            g[k0-1, 1, i+1, 2] = buf1[2*size2+ipos2];     //g[3,i,0,k] = buf1[3,ipos2];
+                            g[k0-1, 1, i+1, 3] = buf1[3*size2+ipos2];     //g[4,i,0,k] = buf1[4,ipos2];
+                            g[k0-1, 1, i+1, 4] = buf1[4*size2+ipos2];     //g[5,i,0,k] = buf1[5,ipos2];
                         }
                     }
                 }
@@ -1127,21 +1127,21 @@ namespace NPB {
                 //   send west
                 //---------------------------------------------------------------------
                 if(west!=-1) {
-                    for(k = 1; k<=nz; k++) {
+                    for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
-                            ipos1 = (k-1)*nx + i   -1;          //ipos1 = (k-1)*nx + i;
+                            ipos1 = (k0-1)*nx + i   -1;          //ipos1 = (k-1)*nx + i;
                             ipos2 = ipos1 + nx*nz;              //ipos2 = ipos1 + nx*nz;
-                            buf[0*size2+ipos1] = g[k-1, 3, i+1, 0];  //buf[1,ipos1] = g[1,i,2,k];
-                            buf[1*size2+ipos1] = g[k-1, 3, i+1, 1];  //buf[2,ipos1] = g[2,i,2,k];
-                            buf[2*size2+ipos1] = g[k-1, 3, i+1, 2];  //buf[3,ipos1] = g[3,i,2,k];
-                            buf[3*size2+ipos1] = g[k-1, 3, i+1, 3];  //buf[4,ipos1] = g[4,i,2,k];
-                            buf[4*size2+ipos1] = g[k-1, 3, i+1, 4];  //buf[5,ipos1] = g[5,i,2,k];
+                            buf[0*size2+ipos1] = g[k0-1, 3, i+1, 0];  //buf[1,ipos1] = g[1,i,2,k];
+                            buf[1*size2+ipos1] = g[k0-1, 3, i+1, 1];  //buf[2,ipos1] = g[2,i,2,k];
+                            buf[2*size2+ipos1] = g[k0-1, 3, i+1, 2];  //buf[3,ipos1] = g[3,i,2,k];
+                            buf[3*size2+ipos1] = g[k0-1, 3, i+1, 3];  //buf[4,ipos1] = g[4,i,2,k];
+                            buf[4*size2+ipos1] = g[k0-1, 3, i+1, 4];  //buf[5,ipos1] = g[5,i,2,k];
 
-                            buf[0*size2+ipos2] = g[k-1, 2, i+1, 0];  //buf[1,ipos2] = g[1,i,1,k];
-                            buf[1*size2+ipos2] = g[k-1, 2, i+1, 1];  //buf[2,ipos2] = g[2,i,1,k];
-                            buf[2*size2+ipos2] = g[k-1, 2, i+1, 2];  //buf[3,ipos2] = g[3,i,1,k];
-                            buf[3*size2+ipos2] = g[k-1, 2, i+1, 3];  //buf[4,ipos2] = g[4,i,1,k];
-                            buf[4*size2+ipos2] = g[k-1, 2, i+1, 4];  //buf[5,ipos2] = g[5,i,1,k];
+                            buf[0*size2+ipos2] = g[k0-1, 2, i+1, 0];  //buf[1,ipos2] = g[1,i,1,k];
+                            buf[1*size2+ipos2] = g[k0-1, 2, i+1, 1];  //buf[2,ipos2] = g[2,i,1,k];
+                            buf[2*size2+ipos2] = g[k0-1, 2, i+1, 2];  //buf[3,ipos2] = g[3,i,1,k];
+                            buf[3*size2+ipos2] = g[k0-1, 2, i+1, 3];  //buf[4,ipos2] = g[4,i,1,k];
+                            buf[4*size2+ipos2] = g[k0-1, 2, i+1, 4];  //buf[5,ipos2] = g[5,i,1,k];
                         }
                     }
                     //call MPI_SEND[buf, 10*nx*nz, dp_type, west, from_e, MPI_COMM_WORLD, IERROR ];
@@ -1153,21 +1153,21 @@ namespace NPB {
                 if(east!=-1) {
                     //call MPI_WAIT[ mid, STATUS, IERROR ];
                     mid[0].Wait();
-                    for(k = 1; k<=nz; k++) {
+                    for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
-                            ipos1 = (k-1)*nx + i        -1;         //ipos1 = (k-1)*nx + i;
+                            ipos1 = (k0-1)*nx + i        -1;         //ipos1 = (k-1)*nx + i;
                             ipos2 = ipos1 + nx*nz;                  //ipos2 = ipos1 + nx*nz;
-                            g[k-1, ny+3, i+1, 0]  = buf1[0*size2+ipos1]; //g[1,i,ny+2,k]  = buf1[1,ipos1];
-                            g[k-1, ny+3, i+1, 1]  = buf1[1*size2+ipos1]; //g[2,i,ny+2,k]  = buf1[2,ipos1];
-                            g[k-1, ny+3, i+1, 2]  = buf1[2*size2+ipos1]; //g[3,i,ny+2,k]  = buf1[3,ipos1];
-                            g[k-1, ny+3, i+1, 3]  = buf1[3*size2+ipos1]; //g[4,i,ny+2,k]  = buf1[4,ipos1];
-                            g[k-1, ny+3, i+1, 4]  = buf1[4*size2+ipos1]; //g[5,i,ny+2,k]  = buf1[5,ipos1];
+                            g[k0-1, ny+3, i+1, 0]  = buf1[0*size2+ipos1]; //g[1,i,ny+2,k]  = buf1[1,ipos1];
+                            g[k0-1, ny+3, i+1, 1]  = buf1[1*size2+ipos1]; //g[2,i,ny+2,k]  = buf1[2,ipos1];
+                            g[k0-1, ny+3, i+1, 2]  = buf1[2*size2+ipos1]; //g[3,i,ny+2,k]  = buf1[3,ipos1];
+                            g[k0-1, ny+3, i+1, 3]  = buf1[3*size2+ipos1]; //g[4,i,ny+2,k]  = buf1[4,ipos1];
+                            g[k0-1, ny+3, i+1, 4]  = buf1[4*size2+ipos1]; //g[5,i,ny+2,k]  = buf1[5,ipos1];
 
-                            g[k-1, ny+2, i+1, 0] = buf1[0*size2+ipos2];  //g[1,i,ny+1,k] = buf1[1,ipos2];
-                            g[k-1, ny+2, i+1, 1] = buf1[1*size2+ipos2];  //g[2,i,ny+1,k] = buf1[2,ipos2];
-                            g[k-1, ny+2, i+1, 2] = buf1[2*size2+ipos2];  //g[3,i,ny+1,k] = buf1[3,ipos2];
-                            g[k-1, ny+2, i+1, 3] = buf1[3*size2+ipos2];  //g[4,i,ny+1,k] = buf1[4,ipos2];
-                            g[k-1, ny+2, i+1, 4] = buf1[4*size2+ipos2];  //g[5,i,ny+1,k] = buf1[5,ipos2];
+                            g[k0-1, ny+2, i+1, 0] = buf1[0*size2+ipos2];  //g[1,i,ny+1,k] = buf1[1,ipos2];
+                            g[k0-1, ny+2, i+1, 1] = buf1[1*size2+ipos2];  //g[2,i,ny+1,k] = buf1[2,ipos2];
+                            g[k0-1, ny+2, i+1, 2] = buf1[2*size2+ipos2];  //g[3,i,ny+1,k] = buf1[3,ipos2];
+                            g[k0-1, ny+2, i+1, 3] = buf1[3*size2+ipos2];  //g[4,i,ny+1,k] = buf1[4,ipos2];
+                            g[k0-1, ny+2, i+1, 4] = buf1[4*size2+ipos2];  //g[5,i,ny+1,k] = buf1[5,ipos2];
                         }
                     }
                 }
@@ -1345,7 +1345,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange_3(u, iex);
+            exchangeNSEW(u, iex);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -1436,7 +1436,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange_3(u, iex);
+            exchangeNSEW(u, iex);
 
             L1 = 0;
             if(west==-1)
@@ -1859,7 +1859,7 @@ namespace NPB {
             //}//end Debug
 
             iex = 0;
-            exchangeToNSEW(v, iex, k);
+            exchangeNSEW(v, iex, k);
             for(j = jst; j<= jend; j++) {
                 for(i = ist; i<= iend; i++) {
                     for(m = 1; m<= 5; m++) {
@@ -1989,11 +1989,11 @@ namespace NPB {
             //   send data to east and south
             //---------------------------------------------------------------------
             iex = 2;
-            exchangeToNSEW(v, iex, k);
+            exchangeNSEW(v, iex, k);
         }
         // end blts.f
         // Exchange_1.f
-        public void exchangeToNSEW(double[, , ,] g, int iex, int k) {
+        public void exchangeNSEW(double[, , ,] g, int iex, int k) {
             //double  g[5,-1:isiz1+2,-1:isiz2+2,isiz3];
             //int k,iex;
             int i, j;
@@ -2311,7 +2311,7 @@ namespace NPB {
             //   receive data from south and east
             //---------------------------------------------------------------------
             iex = 1;
-            exchangeToNSEW(v, iex, k);
+            exchangeNSEW(v, iex, k);
             //Debug 
             //if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
             //    throw new ArgumentException("Look this code: vetor v");
@@ -2448,7 +2448,7 @@ namespace NPB {
             //   send data to north and west
             //---------------------------------------------------------------------
             iex = 3;
-            exchangeToNSEW(v, iex, k);
+            exchangeNSEW(v, iex, k);
         }
         // end buts.f
         //end ssor.f
@@ -2596,7 +2596,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //  communicate in i and j directions
             //---------------------------------------------------------------------
-            exchangeToNW(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
+            exchangeNW(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
 
             frc1 = 0.0d;
 
@@ -2662,10 +2662,10 @@ namespace NPB {
             //  communicate in i direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                exchangeToN(phi1, ibeg, ifin1);
+                exchangeN(phi1, ibeg, ifin1);
             }
             if(ind2==1) {
-                exchangeToN(phi2, ibeg, ifin1);
+                exchangeN(phi2, ibeg, ifin1);
             }
             frc2 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2730,10 +2730,10 @@ namespace NPB {
             //  communicate in j direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                exchangeToW(phi1, jbeg, jfin1);
+                exchangeW(phi1, jbeg, jfin1);
             }
             if(ind2==1) {
-                exchangeToW(phi2, jbeg, jfin1);
+                exchangeW(phi2, jbeg, jfin1);
             }
             frc3 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2758,7 +2758,7 @@ namespace NPB {
             frc = 0.25d * (frc1 + frc2 + frc3);
         }
         //exchange_4.f
-        public void exchangeToNW(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
+        public void exchangeNW(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2840,7 +2840,7 @@ namespace NPB {
         }
         //end exchange_4.f
         // exchange_5.f
-        public void exchangeToN(double[,] g, int beg, int fin1) {
+        public void exchangeN(double[,] g, int beg, int fin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2886,7 +2886,7 @@ namespace NPB {
         }
         //end exchange_5.f
         // exchange_6.f
-        public void exchangeToW(double[,] g, int beg, int fin1) {
+        public void exchangeW(double[,] g, int beg, int fin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
