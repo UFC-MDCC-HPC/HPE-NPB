@@ -2596,7 +2596,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //  communicate in i and j directions
             //---------------------------------------------------------------------
-            computeSideExchange(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
+            exchangeToNorthWest(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
 
             frc1 = 0.0d;
 
@@ -2662,10 +2662,10 @@ namespace NPB {
             //  communicate in i direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                computeSideSouthNorth(phi1, ibeg, ifin1);
+                exchangeToNorth(phi1, ibeg, ifin1);
             }
             if(ind2==1) {
-                computeSideSouthNorth(phi2, ibeg, ifin1);
+                exchangeToNorth(phi2, ibeg, ifin1);
             }
             frc2 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2730,10 +2730,10 @@ namespace NPB {
             //  communicate in j direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                computeSideEastWest(phi1, jbeg, jfin1);
+                exchangeToWest(phi1, jbeg, jfin1);
             }
             if(ind2==1) {
-                computeSideEastWest(phi2, jbeg, jfin1);
+                exchangeToWest(phi2, jbeg, jfin1);
             }
             frc3 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2758,7 +2758,7 @@ namespace NPB {
             frc = 0.25d * (frc1 + frc2 + frc3);
         }
         //exchange_4.f
-        public void computeSideExchange(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
+        public void exchangeToNorthWest(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2840,7 +2840,7 @@ namespace NPB {
         }
         //end exchange_4.f
         // exchange_5.f
-        public void computeSideSouthNorth(double[,] g, int beg, int fin1) {
+        public void exchangeToNorth(double[,] g, int beg, int fin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2886,7 +2886,7 @@ namespace NPB {
         }
         //end exchange_5.f
         // exchange_6.f
-        public void computeSideEastWest(double[,] g, int beg, int fin1) {
+        public void exchangeToWest(double[,] g, int beg, int fin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
