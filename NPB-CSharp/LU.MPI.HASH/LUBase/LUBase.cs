@@ -91,44 +91,37 @@ namespace NPB {
             this.CLASS = c;
             switch(c) {
                 case 'S':
-                    isiz01 = isiz02 = isiz03 =12;
-                    isiz3  = isiz03;
+                    isiz3  = isiz01 = isiz02 = isiz03 =12;
                     itmax = inorm=50;
                     dt = 0.5d;
                     break;
                 case 'W':
-                    isiz01 = isiz02 = isiz03 = 33;
-                    isiz3  = isiz03;
+                    isiz3  = isiz01 = isiz02 = isiz03 = 33;
                     itmax = inorm = 300;
                     dt = 1.5E-3; // dt_default = .0015;
                     break;
                 case 'A':
-                    isiz01 = isiz02 = isiz03 = 64;
-                    isiz3  = isiz03;
+                    isiz3  = isiz01 = isiz02 = isiz03 = 64;
                     itmax = inorm = 250;
                     dt = 2.0d;
                     break;
                 case 'B':
-                    isiz01 = isiz02 = isiz03 = 102;
-                    isiz3  = isiz03;
+                    isiz3  = isiz01 = isiz02 = isiz03 = 102;
                     itmax = inorm = 250;
                     dt = 2.0d;
                     break;
                 case 'C':
-                    isiz01 = isiz02 = isiz03 = 162;
-                    isiz3  = isiz03;
+                    isiz3  = isiz01 = isiz02 = isiz03 = 162;
                     itmax = inorm = 250;
                     dt = 2.0d;
                     break;
                 case 'D':
-                    isiz01 = isiz02 = isiz03 = 408;
-                    isiz3  = isiz03;
+                    isiz3  = isiz01 = isiz02 = isiz03 = 408;
                     itmax = inorm = 300;
                     dt = 1.0d;
                     break;
                 case 'E':
-                    isiz01 = isiz02 = isiz03 = 1020;
-                    isiz3  = isiz03;
+                    isiz3  = isiz01 = isiz02 = isiz03 = 1020;
                     itmax = inorm = 300;
                     dt = 0.5d;
                     break;
