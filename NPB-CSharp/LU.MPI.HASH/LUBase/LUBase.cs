@@ -80,7 +80,7 @@ namespace NPB {
         protected Timer timer = new Timer();
         protected static bool debug = false;
         protected static String BMName = "LU";
-        protected char clss;
+        protected char CLASS;
         //Suporte
 
         //***************************************************************************************************************/
@@ -88,7 +88,7 @@ namespace NPB {
         public LUBase(char c) {
             DateTime nowTime = DateTime.Now;
             compiletime = nowTime.Day + "/" + nowTime.Month + "/" + nowTime.Year;
-            this.clss = c;
+            this.CLASS = c;
             switch(c) {
                 case 'S':
                     isiz01 = isiz02 = isiz03 =12;

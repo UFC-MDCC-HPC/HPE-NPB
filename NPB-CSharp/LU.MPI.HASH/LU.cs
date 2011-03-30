@@ -142,7 +142,7 @@ namespace NPB {
                 //IO.print_results(BMName, clss, nx0, ny0, nz0, itmax, nnodes_compiled, num, maxtime, mflops, "floating point", verified, npbversion);//compiletime, cs1, cs2, cs3, cs4, cs5, cs6, '[none]');
                 int verified = verify(rsdnm, errnm, frc);
                 BMResults results = new BMResults(BMName,
-                                        clss,
+                                        CLASS,
                                         nx0,
                                         ny0,
                                         nz0,
