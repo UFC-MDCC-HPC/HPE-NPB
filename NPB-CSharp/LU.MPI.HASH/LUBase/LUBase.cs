@@ -140,6 +140,10 @@ namespace NPB {
         }
 
         private void initVars() {// ProblemDefination
+            nx0 = isiz01;
+            ny0 = isiz02;
+            nz0 = isiz03;
+
             int npmax = isiz01 + isiz02;
             //nnodes_compiled = num;
             int ydiv = ilog2(num) / 2;
