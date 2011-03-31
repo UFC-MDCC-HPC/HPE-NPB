@@ -14,7 +14,7 @@ namespace NPB {
         //applu.incl
         //protected static int ipr_default=1;
         //protected static double omega_default=1.2d;
-        protected static double tolrsd1_def=1.0E-08, tolrsd2_def=1.0E-08, tolrsd3_def=1.0E-08, tolrsd4_def=1.0E-08, tolrsd5_def=1.0E-08;
+        //protected static double tolrsd1_def=1.0E-08, tolrsd2_def=1.0E-08, tolrsd3_def=1.0E-08, tolrsd4_def=1.0E-08, tolrsd5_def=1.0E-08;
         protected static double c1=1.40d, c2=0.40d, c3=1.00E-01, c4=1.00d, c5=1.40d;
         //-- grid -------------------------------------------------------------
         protected static int nx, ny, nz, nx0, ny0, nz0, ipt, ist, iend, jpt, jst, jend, ii1, ii2, ji1, ji2, ki1, ki2;//blocksInfo
@@ -29,9 +29,9 @@ namespace NPB {
         //    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
         protected static int inorm;//ipr //blocksInfo
         protected static int itmax;//, invert; //blocksInfo
-        protected static double frc, dt, omega;//, , ttotal; //blocksInfo
+        protected static double dt;//frc, , ttotal; //blocksInfo
         /*tolrsd*/
-        protected static double[] tolrsd = new double[5];     //tolrsd[5]
+        //protected static double[] tolrsd = {1.0E-08, 1.0E-08, 1.0E-08, 1.0E-08, 1.0E-08};
         /*rsdnm*/
         protected static double[] rsdnm  = new double[5];     //rsdnm[5]
         /*errnm*/
@@ -174,9 +174,7 @@ namespace NPB {
             frct = new double[isiz3, isiz2+4, isiz1+4, 5];//    frct[5, -1:isiz1+2, -1:isiz2+2, isiz3];
             flux = new double[isiz3, isiz2+2, isiz1+2, 5];//    flux[5,  0:isiz1+1,  0:isiz2+1, isiz3];
         }
-        public static int nodedim(double n) {
-            return (int)(Math.Log(n) / Math.Log(2.0d) + 0.00001);
-        }
+        public static int nodedim(double n) { return (int)(Math.Log(n) / Math.Log(2.0d) + 0.00001); }
         public static int ilog2(int i) {
             int log2;
             int exp2 = 1;
