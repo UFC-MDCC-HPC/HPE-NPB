@@ -18,7 +18,7 @@ namespace NPB {
         protected static double c1=1.40d, c2=0.40d, c3=1.00E-01, c4=1.00d, c5=1.40d;
         //-- grid -------------------------------------------------------------
         protected static int nx, ny, nz, nx0, ny0, nz0, ipt, ist, iend, jpt, jst, jend, ii1, ii2, ji1, ji2, ki1, ki2;//blocksInfo
-        protected static double dxi, deta, dzeta, tx1, tx2, tx3, ty1, ty2, ty3, tz1, tz2, tz3;
+        protected static double dxi, deta, dzeta, tx1, tx2, tx3, ty1, ty2, ty3, tz1, tz2, tz3; //setConstants
         //---------------------------------------------------------------------
         //   dissipation ------------------------------------------------------            
         protected static double dx1, dx2, dx3, dx4, dx5, dy1, dy2, dy3, dy4, dy5, dz1, dz2, dz3, dz4, dz5, dssp;
@@ -33,9 +33,9 @@ namespace NPB {
         /*tolrsd*/
         //protected static double[] tolrsd = {1.0E-08, 1.0E-08, 1.0E-08, 1.0E-08, 1.0E-08};
         /*rsdnm*/
-        protected static double[] rsdnm  = new double[5];     //rsdnm[5]
+        //protected static double[] rsdnm  = new double[5];     //rsdnm[5]
         /*errnm*/
-        protected static double[] errnm  = new double[5];     //errnm[5];
+        //protected static double[] errnm  = new double[5];     //errnm[5];
         protected static double[, , ,] a, b, c, d;              //a[5,5,isiz1,isiz2], b[5,5,isiz1,isiz2], c[5,5,isiz1,isiz2], d[5,5,isiz1,isiz2];
         /*ce*/
         //protected static double[,] ce = new double[13, 5];   //ce[5,13]

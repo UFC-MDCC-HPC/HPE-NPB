@@ -127,11 +127,11 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   perform the SSOR iterations
             //---------------------------------------------------------------------
-            ssor(itmax);
+            double[] rsdnm  = ssor(itmax);
             //---------------------------------------------------------------------
             //   compute the solution error
             //---------------------------------------------------------------------
-            error();
+            double[] errnm = error();
             //---------------------------------------------------------------------
             //   compute the surface integral
             //---------------------------------------------------------------------
@@ -1065,7 +1065,7 @@ namespace NPB {
         //end Exchange_3.f
         //End erhs.f
         //ssor.f
-        public void ssor(int niter) {
+        public double[] ssor(int niter) {
             //---------------------------------------------------------------------
             //   to perform pseudo-time stepping SSOR iterations
             //   for five nonlinear pde's.
@@ -1078,6 +1078,7 @@ namespace NPB {
             double[,,] tv = new double[isiz2+1, isiz1+1, 5+1];//tv[5,isiz1,isiz2];
             double[] tolrsd = {1.0E-08, 1.0E-08, 1.0E-08, 1.0E-08, 1.0E-08};
             double omega=1.2d;
+            double[] rsdnm  = new double[5];
             //external timer_read;
             //double wtime, timer_read;
             double wtime;
@@ -1188,13 +1189,14 @@ namespace NPB {
                 //   check the newton-iteration residuals against the tolerance levels
                 //---------------------------------------------------------------------
                 if((rsdnm[0]<tolrsd[0]) && (rsdnm[1]<tolrsd[1]) && (rsdnm[2]<tolrsd[2]) && (rsdnm[3]<tolrsd[3]) && (rsdnm[4]<tolrsd[4])) {
-                    return;//   return;
+                    return rsdnm;//   return;
                 }
             }
             timer.stop(1); //call timer_stop[1];
             wtime = timer.readTimer(1); //wtime = timer_read[1];
             //call MPI_ALLREDUCE[wtime, maxtime, 1, MPI_DOUBLE_PRECISION, MPI_MAX, MPI_COMM_WORLD, IERROR ];
             maxtime = worldcomm.Allreduce<double>(wtime, MPI.Operation<double>.Max);
+            return rsdnm;
         }
         //rhs.f
         public void rhs() {
@@ -2553,7 +2555,7 @@ namespace NPB {
         // end buts.f
         //end ssor.f
         //error.f
-        public void error() {
+        public double[] error() {
             //---------------------------------------------------------------------
             //   compute the solution error
             //---------------------------------------------------------------------
@@ -2561,6 +2563,7 @@ namespace NPB {
             double tmp;
             double[,,,] u000ijk = new double[1, 1, 1, 5]; //u000ijk[5]
             double[] dummy = new double[5]; //dummy[5]
+            double[] errnm  = new double[5];
             //int IERROR
             for(m = 0; m< 5; m++) {
                 errnm[m] = 0.0d;
@@ -2588,6 +2591,7 @@ namespace NPB {
             for(m = 0; m< 5; m++) {
                 errnm[m] = Math.Sqrt(errnm[m]/((nx0-2)*(ny0-2)*(nz0-2)));   //sqrt (errnm[m]/((nx0-2)*(ny0-2)*(nz0-2)));
             }
+            return errnm;
         }
         //exact.f
         public void exact(int i, int j, int k, double[, , ,] u000ijk, int i1, int i2, int i3) {
