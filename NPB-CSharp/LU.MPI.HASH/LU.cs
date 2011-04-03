@@ -1894,13 +1894,15 @@ namespace NPB {
         // end blts.f
         // Exchange_1.f
         public void exchangeNSEW(double[, , ,] g, int iex, int k) {
+            MPI.Request[] mid = new MPI.Request[1];
             if(k>0) {
                 int i, j;
                 if(iex == 0) {
                     if(north != -1) {
                         double[] dum1 = new double[5*(jend-jst+1)];
                         int idx = 0;
-                        worldcomm.Receive<double>(north, from_n, ref dum1); //call MPI_RECV[ dum1[1,jst],5*[jend-jst+1],dp_type,north,from_n,MPI_COMM_WORLD,status,IERROR ]
+                        mid[0] = worldcomm.ImmediateReceive<double>(north, from_n, dum1); //call MPI_RECV[ dum1[1,jst],5*[jend-jst+1],dp_type,north,from_n,MPI_COMM_WORLD,status,IERROR ]
+                        mid[0].Wait();
                         for(j=jst; j<=jend; j++) {
                             g[k-1, j+1, 1, 0] = dum1[0+idx];//g[1,0,j,k] = dum1[1,j];
                             g[k-1, j+1, 1, 1] = dum1[1+idx];//g[2,0,j,k] = dum1[2,j];
@@ -1913,7 +1915,8 @@ namespace NPB {
                     if(west != -1) {
                         double[] dum1 = new double[(5*(iend-ist+1))];
                         int idx = 0;
-                        worldcomm.Receive<double>(west, from_w, ref dum1); //call MPI_RECV[ dum1[1,ist],5*[iend-ist+1],dp_type,west,from_w,MPI_COMM_WORLD,status,IERROR ]
+                        mid[0] = worldcomm.ImmediateReceive<double>(west, from_w, dum1); //call MPI_RECV[ dum1[1,ist],5*[iend-ist+1],dp_type,west,from_w,MPI_COMM_WORLD,status,IERROR ]
+                        mid[0].Wait();
                         for(i=ist; i<=iend; i++) {
                             g[k-1, 1, i+1, 0] = dum1[0+idx];//g[1,i,0,k] = dum1[1,i];
                             g[k-1, 1, i+1, 1] = dum1[1+idx];//g[2,i,0,k] = dum1[2,i];
@@ -1928,7 +1931,8 @@ namespace NPB {
                     if(south != -1) {
                         double[] dum1 = new double[(5*(jend-jst+1))];
                         int idx = 0;
-                        worldcomm.Receive<double>(south, from_s, ref dum1); //call MPI_RECV[ dum1[1,jst],5*[jend-jst+1],dp_type,south,from_s,MPI_COMM_WORLD,status,IERROR ]
+                        mid[0] = worldcomm.ImmediateReceive<double>(south, from_s, dum1); //call MPI_RECV[ dum1[1,jst],5*[jend-jst+1],dp_type,south,from_s,MPI_COMM_WORLD,status,IERROR ]
+                        mid[0].Wait();
                         for(j=jst; j<=jend; j++) {
                             g[k-1, j+1, nx+2, 0] = dum1[0+idx];//g[1,nx+1,j,k] = dum1[1,j];
                             g[k-1, j+1, nx+2, 1] = dum1[1+idx];//g[2,nx+1,j,k] = dum1[2,j];
@@ -1941,7 +1945,8 @@ namespace NPB {
                     if(east != -1) {
                         double[] dum1 = new double[(5*(iend-ist+1))];
                         int idx = 0;
-                        worldcomm.Receive<double>(east, from_e, ref dum1); //call MPI_RECV[ dum1[1,ist],5*[iend-ist+1],dp_type,east,from_e,MPI_COMM_WORLD,status,IERROR ]
+                        mid[0] = worldcomm.ImmediateReceive<double>(east, from_e, dum1); //call MPI_RECV[ dum1[1,ist],5*[iend-ist+1],dp_type,east,from_e,MPI_COMM_WORLD,status,IERROR ]
+                        mid[0].Wait();
                         for(i=ist; i<=iend; i++) {
                             g[k-1, ny+2, i+1, 0] = dum1[0+idx];//g[1,i,ny+1,k] = dum1[1,i];
                             g[k-1, ny+2, i+1, 1] = dum1[1+idx];//g[2,i,ny+1,k] = dum1[2,i];
@@ -2017,7 +2022,7 @@ namespace NPB {
                 int ipos1, ipos2;
                 int bsize = 10*ny*nz;
                 int size2 = bsize / 5;
-                MPI.Request[] mid = new MPI.Request[1];
+                //MPI.Request[] mid = new MPI.Request[1];
                 double[] buf1 = new double[bsize];
                 double[] buf  = new double[bsize];
 
