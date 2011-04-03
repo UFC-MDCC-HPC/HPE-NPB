@@ -54,12 +54,12 @@ namespace NPB {
                                          {4.0E-01, 3.0E-01, 5.0E-01, 1.0E-01, 3.0E-01},
                                          {3.0E-01, 5.0E-01, 4.0E-01, 3.0E-01, 2.0E-01}};
 
-        protected static int node, ndim, num, xdim, ydim, row, col; //blocksInfo
+        protected static int node, ndim, num, xdim, ydim, row, col; //blocksInfo  
         protected static int north, south, east, west;
         protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;
         //protected static int npmax;
 
-        protected static bool[] icommn, icomms, icomme, icommw; //blocksInfo //Fortran: icommn[npmax+1],icomms[npmax+1], icomme[npmax+1],icommw[npmax+1]
+        //protected static bool[] icommn, icomms, icomme, icommw; //blocksInfo //Fortran: icommn[npmax+1],icomms[npmax+1], icomme[npmax+1],icommw[npmax+1]
         //protected static double[,] buf, buf1;                   //Fortran: buf[5,2*isiz2*isiz3], buf1[5,2*isiz2*isiz3]
         protected static double maxtime;
         //end applu.incl
@@ -126,8 +126,12 @@ namespace NPB {
                     dt = 0.5d;
                     break;
             }
+            nx0 = isiz01;
+            ny0 = isiz02;
+            nz0 = isiz03;
+            
             mpi_start();
-            initVars();
+            initVars();            
         }
 
         private void mpi_start() {
@@ -140,10 +144,6 @@ namespace NPB {
         }
 
         private void initVars() {// ProblemDefination
-            nx0 = isiz01;
-            ny0 = isiz02;
-            nz0 = isiz03;
-
             int npmax = isiz01 + isiz02;
             //nnodes_compiled = num;
             int ydiv = ilog2(num) / 2;
@@ -160,13 +160,13 @@ namespace NPB {
                 isiz2++;
 
             /**/
-            icommn = new bool[npmax+1];//icommn[npmax+1]
-            /**/
-            icomms = new bool[npmax+1];//icomms[npmax+1]
-            /**/
-            icomme = new bool[npmax+1];//icomme[npmax+1]
-            /**/
-            icommw = new bool[npmax+1];//icommw[npmax+1]
+            //icommn = new bool[npmax+1];//icommn[npmax+1]
+            ///**/
+            //icomms = new bool[npmax+1];//icomms[npmax+1]
+            ///**/
+            //icomme = new bool[npmax+1];//icomme[npmax+1]
+            ///**/
+            //icommw = new bool[npmax+1];//icommw[npmax+1]
 
             a = new double[isiz2, isiz1, 5, 5];//a[5,5,isiz1,isiz2];
             b = new double[isiz2, isiz1, 5, 5];//b[5,5,isiz1,isiz2];

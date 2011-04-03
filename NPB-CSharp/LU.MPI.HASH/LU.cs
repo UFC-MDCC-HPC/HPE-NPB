@@ -102,7 +102,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   set the masks required for comm
             //---------------------------------------------------------------------
-            sethyper();
+            //sethyper();
             //---------------------------------------------------------------------
             //   set the boundary values for dependent variables
             //---------------------------------------------------------------------
@@ -247,14 +247,14 @@ namespace NPB {
             //   check the sub-domain size
             //---------------------------------------------------------------------
             if((nx < 4) || (ny < 4) || (nz < 4)) {
-                Console.WriteLine("SUBDOMAIN SIZE IS TOO SMALL - ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS, "+
+                Console.WriteLine("%SUBDOMAIN SIZE IS TOO SMALL - ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS, "+
                     "SO THAT NX, NY AND NZ ARE GREATER THAN OR EQUAL TO 4 THEY ARE CURRENTLY: "+nx+"x"+ny+"x"+nz);
                 worldcomm.Abort(0);//CALL MPI_ABORT[ MPI_COMM_WORLD,ERRORCODE,IERROR ]
                 mpi.Dispose();
                 System.Environment.Exit(0);
             }
             if((nx > isiz1) || (ny > isiz2) || (nz > isiz3)) {
-                Console.WriteLine("SUBDOMAIN SIZE IS TOO LARGE - ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS" +
+                Console.WriteLine("*SUBDOMAIN SIZE IS TOO LARGE - ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS" +
                     "SO THAT NX, NY AND NZ ARE LESS THAN OR EQUAL TO ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY. THEY ARE CURRENTLY"+
                     " "+nx+"x"+ny+"x"+nz);
                 worldcomm.Abort(0);//CALL MPI_ABORT[ MPI_COMM_WORLD,ERRORCODE, IERROR ]
@@ -335,7 +335,14 @@ namespace NPB {
             //---------------------------------------------------------------------
             //    for each column in a hyperplane, istart = first row,
             //---------------------------------------------------------------------
-            int i, j, iglob, jglob, kp;
+            int i, j, iglob, jglob, kp, nmap;
+            bool[] icommn, icomms, icomme, icommw;
+            nmap = nx0 + ny0 + 1;
+            icommn = new bool[nmap];
+            icomms = new bool[nmap];
+            icomme = new bool[nmap];
+            icommw = new bool[nmap];
+
             //---------------------------------------------------------------------
             // compute the pointers for hyperplanes
             //---------------------------------------------------------------------
