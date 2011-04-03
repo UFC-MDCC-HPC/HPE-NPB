@@ -864,6 +864,7 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 if(north!=-1) {
                     mid[0] = worldcomm.ImmediateReceive<double>(north, from_n, buf1); //call MPI_IRECV[ buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_n, MPI_COMM_WORLD, mid, IERROR ];
+                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                 }
                 //---------------------------------------------------------------------
                 //   send south
@@ -892,7 +893,7 @@ namespace NPB {
                 //   receive from north
                 //---------------------------------------------------------------------
                 if(north!=-1) {
-                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    
                     for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
                             ipos1 = (k0-1)*ny + j - 1;     //ipos1 = (k-1)*ny + j;
@@ -913,6 +914,7 @@ namespace NPB {
                 }
                 if(south!=-1) {
                     mid[0] = worldcomm.ImmediateReceive<double>(south, from_s, buf1); //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
+                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                 }
                 //---------------------------------------------------------------------
                 //   send north
@@ -941,7 +943,7 @@ namespace NPB {
                 //   receive from south
                 //---------------------------------------------------------------------
                 if(south!=-1) {
-                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    
                     for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
                             ipos1 = (k0-1)*ny + j - 1; //ipos1 = (k-1)*ny + j;
@@ -971,6 +973,7 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 if(west!=-1) {
                     mid[0] = worldcomm.ImmediateReceive<double>(west, from_w, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_w, MPI_COMM_WORLD, mid, IERROR ];
+                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                 }
                 //---------------------------------------------------------------------
                 //   send east
@@ -999,7 +1002,7 @@ namespace NPB {
                 //   receive from west
                 //---------------------------------------------------------------------
                 if(west!=-1) {
-                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    
                     for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
                             ipos1 = (k0-1)*nx + i - 1;           //ipos1 = (k-1)*nx + i;
@@ -1020,6 +1023,7 @@ namespace NPB {
                 }
                 if(east!=-1) {
                     mid[0] = worldcomm.ImmediateReceive<double>(east, from_e, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_e, MPI_COMM_WORLD, mid, IERROR ];
+                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                 }
                 //---------------------------------------------------------------------
                 //   send west
@@ -1048,7 +1052,7 @@ namespace NPB {
                 //   receive from east
                 //---------------------------------------------------------------------
                 if(east!=-1) {
-                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    
                     for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
                             ipos1 = (k0-1)*nx + i - 1;              //ipos1 = (k-1)*nx + i;
@@ -2032,6 +2036,7 @@ namespace NPB {
                     //---------------------------------------------------------------------
                     if(north!=-1) {
                         mid[0] = worldcomm.ImmediateReceive<double>(north, from_n, buf1); //call MPI_IRECV[ buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_n, MPI_COMM_WORLD, mid, IERROR ];
+                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                     }
                     //---------------------------------------------------------------------
                     //   send south
@@ -2060,7 +2065,7 @@ namespace NPB {
                     //   receive from north
                     //---------------------------------------------------------------------
                     if(north!=-1) {
-                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                        
                         for(k0 = 1; k0<=nz; k0++) {
                             for(j = 1; j<=ny; j++) {
                                 ipos1 = (k0-1)*ny + j - 1;     //ipos1 = (k-1)*ny + j;
@@ -2081,6 +2086,7 @@ namespace NPB {
                     }
                     if(south!=-1) {
                         mid[0] = worldcomm.ImmediateReceive<double>(south, from_s, buf1); //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
+                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                     }
                     //---------------------------------------------------------------------
                     //   send north
@@ -2109,7 +2115,7 @@ namespace NPB {
                     //   receive from south
                     //---------------------------------------------------------------------
                     if(south!=-1) {
-                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                        
                         for(k0 = 1; k0<=nz; k0++) {
                             for(j = 1; j<=ny; j++) {
                                 ipos1 = (k0-1)*ny + j - 1; //ipos1 = (k-1)*ny + j;
@@ -2139,6 +2145,7 @@ namespace NPB {
                     //---------------------------------------------------------------------
                     if(west!=-1) {
                         mid[0] = worldcomm.ImmediateReceive<double>(west, from_w, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_w, MPI_COMM_WORLD, mid, IERROR ];
+                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                     }
                     //---------------------------------------------------------------------
                     //   send east
@@ -2167,7 +2174,7 @@ namespace NPB {
                     //   receive from west
                     //---------------------------------------------------------------------
                     if(west!=-1) {
-                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                        
                         for(k0 = 1; k0<=nz; k0++) {
                             for(i = 1; i<=nx; i++) {
                                 ipos1 = (k0-1)*nx + i - 1;           //ipos1 = (k-1)*nx + i;
@@ -2188,6 +2195,7 @@ namespace NPB {
                     }
                     if(east!=-1) {
                         mid[0] = worldcomm.ImmediateReceive<double>(east, from_e, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_e, MPI_COMM_WORLD, mid, IERROR ];
+                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                     }
                     //---------------------------------------------------------------------
                     //   send west
@@ -2216,7 +2224,7 @@ namespace NPB {
                     //   receive from east
                     //---------------------------------------------------------------------
                     if(east!=-1) {
-                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                        
                         for(k0 = 1; k0<=nz; k0++) {
                             for(i = 1; i<=nx; i++) {
                                 ipos1 = (k0-1)*nx + i - 1;              //ipos1 = (k-1)*nx + i;
