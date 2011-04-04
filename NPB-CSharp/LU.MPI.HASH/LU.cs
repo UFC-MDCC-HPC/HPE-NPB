@@ -169,8 +169,7 @@ namespace NPB {
             //
             //---------------------------------------------------------------------
             xdim   = (int)Math.Pow(2, (ndim/2));//xdim   = 2**(ndim/2);
-            if(mod(ndim, 2)==1)
-                xdim = xdim + xdim;
+            if(mod(ndim, 2)==1) xdim = xdim + xdim;
             ydim   = num/xdim;
             row    = (int)mod(node, xdim) + 1;
             col    = node/xdim + 1;
@@ -184,31 +183,14 @@ namespace NPB {
             east  = -1;
             north = -1;
             west  = -1;
-            if(row>1) {
-                north = node -1;
-            }
-            else {
-                north = -1;
-            }
-            if(row < xdim) {
-                south = node + 1;
-            }
-            else {
-                south = -1;
-            }
-
-            if(col > 1) {
-                west = node - xdim;
-            }
-            else {
-                west = -1;
-            }
-            if(col < ydim) {
-                east = node + xdim;
-            }
-            else {
-                east = -1;
-            }
+            if(row>1) north = node -1;
+            else north = -1;
+            if(row < xdim) south = node + 1;
+            else south = -1;
+            if(col > 1) west = node - xdim;
+            else west = -1;
+            if(col < ydim) east = node + xdim;
+            else east = -1;
         }
 
         public void subdomain() {
@@ -266,16 +248,12 @@ namespace NPB {
             //---------------------------------------------------------------------
             ist = 1;
             iend = nx;
-            if(north==-1)
-                ist = 2;
-            if(south==-1)
-                iend = nx - 1;
+            if(north==-1) ist = 2;
+            if(south==-1) iend = nx - 1;
             jst = 1;
             jend = ny;
-            if(west==-1)
-                jst = 2;
-            if(east==-1)
-                jend = ny - 1;
+            if(west==-1) jst = 2;
+            if(east==-1) jend = ny - 1;
         }
 
         public void setConstants() { // setcoeff()
