@@ -854,7 +854,7 @@ namespace NPB {
             int ipos1, ipos2;
             int bsize = 10*ny*nz;
             int size2 = bsize / 5;
-            MPI.Request[] mid = new MPI.Request[1];
+            MPI.Request mid;// = new MPI.Request[1];
             double[] buf1 = new double[bsize];
             double[] buf  = new double[bsize];
 
@@ -863,8 +863,8 @@ namespace NPB {
                 //   communicate in the south and north directions
                 //---------------------------------------------------------------------
                 if(north!=-1) {
-                    mid[0] = worldcomm.ImmediateReceive<double>(north, from_n, buf1); //call MPI_IRECV[ buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_n, MPI_COMM_WORLD, mid, IERROR ];
-                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    mid = worldcomm.ImmediateReceive<double>(north, from_n, buf1); //call MPI_IRECV[ buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_n, MPI_COMM_WORLD, mid, IERROR ];
+                    mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                 }
                 //---------------------------------------------------------------------
                 //   send south
@@ -913,8 +913,8 @@ namespace NPB {
                     }
                 }
                 if(south!=-1) {
-                    mid[0] = worldcomm.ImmediateReceive<double>(south, from_s, buf1); //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
-                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    mid = worldcomm.ImmediateReceive<double>(south, from_s, buf1); //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
+                    mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                 }
                 //---------------------------------------------------------------------
                 //   send north
@@ -972,8 +972,8 @@ namespace NPB {
                 //   communicate in the east and west directions
                 //---------------------------------------------------------------------
                 if(west!=-1) {
-                    mid[0] = worldcomm.ImmediateReceive<double>(west, from_w, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_w, MPI_COMM_WORLD, mid, IERROR ];
-                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    mid = worldcomm.ImmediateReceive<double>(west, from_w, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_w, MPI_COMM_WORLD, mid, IERROR ];
+                    mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                 }
                 //---------------------------------------------------------------------
                 //   send east
@@ -1022,8 +1022,8 @@ namespace NPB {
                     }
                 }
                 if(east!=-1) {
-                    mid[0] = worldcomm.ImmediateReceive<double>(east, from_e, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_e, MPI_COMM_WORLD, mid, IERROR ];
-                    mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    mid = worldcomm.ImmediateReceive<double>(east, from_e, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_e, MPI_COMM_WORLD, mid, IERROR ];
+                    mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                 }
                 //---------------------------------------------------------------------
                 //   send west
@@ -1898,15 +1898,15 @@ namespace NPB {
         // end blts.f
         // Exchange_1.f
         public void exchangeNSEW(double[, , ,] g, int iex, int k) {
-            MPI.Request[] mid = new MPI.Request[1];
+            MPI.Request mid;// = new MPI.Request[1];
             if(k>0) {
                 int i, j;
                 if(iex == 0) {
                     if(north != -1) {
                         double[] dum1 = new double[5*(jend-jst+1)];
                         int idx = 0;
-                        mid[0] = worldcomm.ImmediateReceive<double>(north, from_n, dum1); //call MPI_RECV[ dum1[1,jst],5*[jend-jst+1],dp_type,north,from_n,MPI_COMM_WORLD,status,IERROR ]
-                        mid[0].Wait();
+                        mid = worldcomm.ImmediateReceive<double>(north, from_n, dum1); //call MPI_RECV[ dum1[1,jst],5*[jend-jst+1],dp_type,north,from_n,MPI_COMM_WORLD,status,IERROR ]
+                        mid.Wait();
                         for(j=jst; j<=jend; j++) {
                             g[k-1, j+1, 1, 0] = dum1[0+idx];//g[1,0,j,k] = dum1[1,j];
                             g[k-1, j+1, 1, 1] = dum1[1+idx];//g[2,0,j,k] = dum1[2,j];
@@ -1919,8 +1919,8 @@ namespace NPB {
                     if(west != -1) {
                         double[] dum1 = new double[(5*(iend-ist+1))];
                         int idx = 0;
-                        mid[0] = worldcomm.ImmediateReceive<double>(west, from_w, dum1); //call MPI_RECV[ dum1[1,ist],5*[iend-ist+1],dp_type,west,from_w,MPI_COMM_WORLD,status,IERROR ]
-                        mid[0].Wait();
+                        mid = worldcomm.ImmediateReceive<double>(west, from_w, dum1); //call MPI_RECV[ dum1[1,ist],5*[iend-ist+1],dp_type,west,from_w,MPI_COMM_WORLD,status,IERROR ]
+                        mid.Wait();
                         for(i=ist; i<=iend; i++) {
                             g[k-1, 1, i+1, 0] = dum1[0+idx];//g[1,i,0,k] = dum1[1,i];
                             g[k-1, 1, i+1, 1] = dum1[1+idx];//g[2,i,0,k] = dum1[2,i];
@@ -1935,8 +1935,8 @@ namespace NPB {
                     if(south != -1) {
                         double[] dum1 = new double[(5*(jend-jst+1))];
                         int idx = 0;
-                        mid[0] = worldcomm.ImmediateReceive<double>(south, from_s, dum1); //call MPI_RECV[ dum1[1,jst],5*[jend-jst+1],dp_type,south,from_s,MPI_COMM_WORLD,status,IERROR ]
-                        mid[0].Wait();
+                        mid = worldcomm.ImmediateReceive<double>(south, from_s, dum1); //call MPI_RECV[ dum1[1,jst],5*[jend-jst+1],dp_type,south,from_s,MPI_COMM_WORLD,status,IERROR ]
+                        mid.Wait();
                         for(j=jst; j<=jend; j++) {
                             g[k-1, j+1, nx+2, 0] = dum1[0+idx];//g[1,nx+1,j,k] = dum1[1,j];
                             g[k-1, j+1, nx+2, 1] = dum1[1+idx];//g[2,nx+1,j,k] = dum1[2,j];
@@ -1949,8 +1949,8 @@ namespace NPB {
                     if(east != -1) {
                         double[] dum1 = new double[(5*(iend-ist+1))];
                         int idx = 0;
-                        mid[0] = worldcomm.ImmediateReceive<double>(east, from_e, dum1); //call MPI_RECV[ dum1[1,ist],5*[iend-ist+1],dp_type,east,from_e,MPI_COMM_WORLD,status,IERROR ]
-                        mid[0].Wait();
+                        mid = worldcomm.ImmediateReceive<double>(east, from_e, dum1); //call MPI_RECV[ dum1[1,ist],5*[iend-ist+1],dp_type,east,from_e,MPI_COMM_WORLD,status,IERROR ]
+                        mid.Wait();
                         for(i=ist; i<=iend; i++) {
                             g[k-1, ny+2, i+1, 0] = dum1[0+idx];//g[1,i,ny+1,k] = dum1[1,i];
                             g[k-1, ny+2, i+1, 1] = dum1[1+idx];//g[2,i,ny+1,k] = dum1[2,i];
@@ -2035,8 +2035,8 @@ namespace NPB {
                     //   communicate in the south and north directions
                     //---------------------------------------------------------------------
                     if(north!=-1) {
-                        mid[0] = worldcomm.ImmediateReceive<double>(north, from_n, buf1); //call MPI_IRECV[ buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_n, MPI_COMM_WORLD, mid, IERROR ];
-                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                        mid = worldcomm.ImmediateReceive<double>(north, from_n, buf1); //call MPI_IRECV[ buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_n, MPI_COMM_WORLD, mid, IERROR ];
+                        mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                     }
                     //---------------------------------------------------------------------
                     //   send south
@@ -2085,8 +2085,8 @@ namespace NPB {
                         }
                     }
                     if(south!=-1) {
-                        mid[0] = worldcomm.ImmediateReceive<double>(south, from_s, buf1); //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
-                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                        mid = worldcomm.ImmediateReceive<double>(south, from_s, buf1); //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
+                        mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                     }
                     //---------------------------------------------------------------------
                     //   send north
@@ -2144,8 +2144,8 @@ namespace NPB {
                     //   communicate in the east and west directions
                     //---------------------------------------------------------------------
                     if(west!=-1) {
-                        mid[0] = worldcomm.ImmediateReceive<double>(west, from_w, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_w, MPI_COMM_WORLD, mid, IERROR ];
-                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                        mid = worldcomm.ImmediateReceive<double>(west, from_w, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_w, MPI_COMM_WORLD, mid, IERROR ];
+                        mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                     }
                     //---------------------------------------------------------------------
                     //   send east
@@ -2194,8 +2194,8 @@ namespace NPB {
                         }
                     }
                     if(east!=-1) {
-                        mid[0] = worldcomm.ImmediateReceive<double>(east, from_e, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_e, MPI_COMM_WORLD, mid, IERROR ];
-                        mid[0].Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                        mid = worldcomm.ImmediateReceive<double>(east, from_e, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_e, MPI_COMM_WORLD, mid, IERROR ];
+                        mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
                     }
                     //---------------------------------------------------------------------
                     //   send west
@@ -2910,11 +2910,11 @@ namespace NPB {
             //   receive from east
             //---------------------------------------------------------------------
             if(jfin1==ny) {
-                MPI.Request[] msgid3 = new MPI.Request[1];  //int msgid3;
+                MPI.Request msgid3;// = new MPI.Request[1];  //int msgid3;
                 double[] dum = new double[2*nx];
                 //call MPI_IRECV[ dum,2*nx,dp_type,MPI_ANY_SOURCE,from_e,MPI_COMM_WORLD,msgid3,IERROR ];
-                msgid3[0] = worldcomm.ImmediateReceive<double>(east, from_e, dum);
-                msgid3[0].Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ];
+                msgid3 = worldcomm.ImmediateReceive<double>(east, from_e, dum);
+                msgid3.Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ];
                 for(i = 1; i<=nx; i++) {
                     g[ny+1, i] = dum[i-1];     //g[i,ny+1] = dum[i];
                     h[ny+1, i] = dum[i+nx-1];  //h[i,ny+1] = dum[i+nx];
@@ -2939,11 +2939,11 @@ namespace NPB {
             //   receive from south
             //---------------------------------------------------------------------
             if(ifin1==nx) {
-                MPI.Request[] msgid1 = new MPI.Request[1];  //int msgid1;
+                MPI.Request msgid1;// = new MPI.Request[1];  //int msgid1;
                 double[] dum = new double[2*ny2];
                 //call MPI_IRECV[ dum, 2*ny2, dp_type,MPI_ANY_SOURCE,from_s,MPI_COMM_WORLD,msgid1,IERROR ];
-                msgid1[0] = worldcomm.ImmediateReceive<double>(south, from_s, dum);
-                msgid1[0].Wait(); //call MPI_WAIT[ msgid1, STATUS, IERROR ];
+                msgid1 = worldcomm.ImmediateReceive<double>(south, from_s, dum);
+                msgid1.Wait(); //call MPI_WAIT[ msgid1, STATUS, IERROR ];
 
                 for(j = 0; j<=ny+1; j++) {
                     g[j, nx+1] = dum[j];      //g[nx+1,j] = dum[j+1];
@@ -2988,11 +2988,11 @@ namespace NPB {
             //   receive from south
             //---------------------------------------------------------------------
             if(fin1==nx) {
-                MPI.Request[] msgid1 = new MPI.Request[1];
+                MPI.Request msgid1;// = new MPI.Request[1];
                 double[] dum = new double[nz];
                 //call MPI_IRECV[ dum, nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, msgid1, IERROR ];
-                msgid1[0] = worldcomm.ImmediateReceive<double>(south, from_s, dum);
-                msgid1[0].Wait();    //call MPI_WAIT[ msgid1, STATUS, IERROR ]
+                msgid1 = worldcomm.ImmediateReceive<double>(south, from_s, dum);
+                msgid1.Wait();    //call MPI_WAIT[ msgid1, STATUS, IERROR ]
                 for(k = 1; k<=nz; k++) {
                     g[k, nx+1] = dum[k-1];  //g[nx+1,k] = dum[k];
                 }
@@ -3034,10 +3034,10 @@ namespace NPB {
             //---------------------------------------------------------------------
             if(fin1==ny) {
                 double[] dum = new double[nz];
-                MPI.Request[] msgid3 = new MPI.Request[1];
+                MPI.Request msgid3;// = new MPI.Request[1];
                 //call MPI_IRECV[ dum, nz,dp_type,MPI_ANY_SOURCE,from_e,MPI_COMM_WORLD,msgid3,IERROR ];
-                msgid3[0] = worldcomm.ImmediateReceive<double>(east, from_e, dum);
-                msgid3[0].Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ]
+                msgid3 = worldcomm.ImmediateReceive<double>(east, from_e, dum);
+                msgid3.Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ]
 
                 for(k = 1; k<=nz; k++) {
                     g[k, ny+1] = dum[k-1];  //g[ny+1,k] = dum[k];
