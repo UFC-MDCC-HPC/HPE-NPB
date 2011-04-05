@@ -551,7 +551,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchangeNSEW(rsd, iex, -1);
+            exchange_NSEW(rsd, iex, -1);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -647,7 +647,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchangeNSEW(rsd, iex, -1);
+            exchange_NSEW(rsd, iex, -1);
             L1 = 0;
             if(west==-1)
                 L1 = 1;
@@ -1227,7 +1227,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchangeNSEW(u, iex, -1);
+            exchange_NSEW(u, iex, -1);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -1318,7 +1318,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchangeNSEW(u, iex, -1);
+            exchange_NSEW(u, iex, -1);
 
             L1 = 0;
             if(west==-1)
@@ -1741,7 +1741,7 @@ namespace NPB {
             //}//end Debug
 
             iex = 0;
-            exchangeNSEW(v, iex, k);
+            exchange_NSEW(v, iex, k);
             for(j = jst; j<= jend; j++) {
                 for(i = ist; i<= iend; i++) {
                     for(m = 1; m<= 5; m++) {
@@ -1871,11 +1871,11 @@ namespace NPB {
             //   send data to east and south
             //---------------------------------------------------------------------
             iex = 2;
-            exchangeNSEW(v, iex, k);
+            exchange_NSEW(v, iex, k);
         }
         // end blts.f
         // Exchange_1.f
-        public void exchangeNSEW(double[, , ,] g, int iex, int k) {
+        public void exchange_NSEW(double[, , ,] g, int iex, int k) {
             MPI.Request mid;// = new MPI.Request[1];
             if(k>0) {
                 int i, j;
@@ -2411,7 +2411,7 @@ namespace NPB {
             //   receive data from south and east
             //---------------------------------------------------------------------
             iex = 1;
-            exchangeNSEW(v, iex, k);
+            exchange_NSEW(v, iex, k);
             //Debug 
             //if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
             //    throw new ArgumentException("Look this code: vetor v");
@@ -2548,7 +2548,7 @@ namespace NPB {
             //   send data to north and west
             //---------------------------------------------------------------------
             iex = 3;
-            exchangeNSEW(v, iex, k);
+            exchange_NSEW(v, iex, k);
         }
         // end buts.f
         //end ssor.f
@@ -2698,7 +2698,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //  communicate in i and j directions
             //---------------------------------------------------------------------
-            exchangeNW(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
+            exchange_NW(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
 
             frc1 = 0.0d;
 
@@ -2764,10 +2764,10 @@ namespace NPB {
             //  communicate in i direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                exchangeN(phi1, ibeg, ifin1);
+                exchange(phi1, ibeg, ifin1, from_s);
             }
             if(ind2==1) {
-                exchangeN(phi2, ibeg, ifin1);
+                exchange(phi2, ibeg, ifin1, from_s);
             }
             frc2 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2832,10 +2832,10 @@ namespace NPB {
             //  communicate in j direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                exchangeW(phi1, jbeg, jfin1);
+                exchange(phi1, jbeg, jfin1, from_e);
             }
             if(ind2==1) {
-                exchangeW(phi2, jbeg, jfin1);
+                exchange(phi2, jbeg, jfin1, from_e);
             }
             frc3 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2861,7 +2861,7 @@ namespace NPB {
             return frc;
         }
         //exchange_4.f
-        public void exchangeNW(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
+        public void exchange_NW(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2943,7 +2943,7 @@ namespace NPB {
         }
         //end exchange_4.f
         // exchange_5.f
-        public void exchangeN(double[,] g, int beg, int fin1) {
+        public void exchange(double[,] g, int beg, int fin1, int from) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2965,74 +2965,76 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   receive from south
             //---------------------------------------------------------------------
-            if(fin1==nx) {
-                MPI.Request msgid1;// = new MPI.Request[1];
-                double[] dum = new double[nz];
-                //call MPI_IRECV[ dum, nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, msgid1, IERROR ];
-                msgid1 = worldcomm.ImmediateReceive<double>(south, from_s, dum);
-                msgid1.Wait();    //call MPI_WAIT[ msgid1, STATUS, IERROR ]
-                for(k = 1; k<=nz; k++) {
-                    g[k, nx+1] = dum[k-1];  //g[nx+1,k] = dum[k];
+            if(from==from_s) {
+                if(fin1==nx) {
+                    MPI.Request msgid1;// = new MPI.Request[1];
+                    double[] dum = new double[nz];
+                    //call MPI_IRECV[ dum, nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, msgid1, IERROR ];
+                    msgid1 = worldcomm.ImmediateReceive<double>(south, from_s, dum);
+                    msgid1.Wait();    //call MPI_WAIT[ msgid1, STATUS, IERROR ]
+                    for(k = 1; k<=nz; k++) {
+                        g[k, nx+1] = dum[k-1];  //g[nx+1,k] = dum[k];
+                    }
+                }
+                //---------------------------------------------------------------------
+                //   send north
+                //---------------------------------------------------------------------
+                if(beg==1) {
+                    double[] dum = new double[nz];
+                    for(k = 1; k<=nz; k++) {
+                        dum[k-1] = g[k, 1];  //dum[k] = g[1,k];
+                    }
+                    //call MPI_SEND[ dum, nz, dp_type, north, from_s, MPI_COMM_WORLD, IERROR ];
+                    worldcomm.Send<double>(dum, north, from_s);
                 }
             }
-            //---------------------------------------------------------------------
-            //   send north
-            //---------------------------------------------------------------------
-            if(beg==1) {
-                double[] dum = new double[nz];
-                for(k = 1; k<=nz; k++) {
-                    dum[k-1] = g[k, 1];  //dum[k] = g[1,k];
+            else if(from==from_e) {
+                //---------------------------------------------------------------------
+                //   compute the right hand side based on exact solution
+                //---------------------------------------------------------------------
+                //  input parameters
+                //---------------------------------------------------------------------
+                //double  g[0:isiz2+1,0:isiz3+1]
+                //int jbeg, jfin1
+                //---------------------------------------------------------------------
+                //  local parameters
+                //---------------------------------------------------------------------
+                k = 0;
+                //double[] dum = new double[1025]; //dum[1024]
+                //int msgid3
+                //int STATUS[MPI_STATUS_SIZE]
+                //int IERROR
+                //---------------------------------------------------------------------
+                //   communicate in the east and west directions
+                //---------------------------------------------------------------------
+                //   receive from east
+                //---------------------------------------------------------------------
+                if(fin1==ny) {
+                    double[] dum = new double[nz];
+                    MPI.Request msgid3;// = new MPI.Request[1];
+                    //call MPI_IRECV[ dum, nz,dp_type,MPI_ANY_SOURCE,from_e,MPI_COMM_WORLD,msgid3,IERROR ];
+                    msgid3 = worldcomm.ImmediateReceive<double>(east, from_e, dum);
+                    msgid3.Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ]
+
+                    for(k = 1; k<=nz; k++) {
+                        g[k, ny+1] = dum[k-1];  //g[ny+1,k] = dum[k];
+                    }
                 }
-                //call MPI_SEND[ dum, nz, dp_type, north, from_s, MPI_COMM_WORLD, IERROR ];
-                worldcomm.Send<double>(dum, north, from_s);
+                //---------------------------------------------------------------------
+                //   send west
+                //---------------------------------------------------------------------
+                if(beg==1) {
+                    double[] dum = new double[nz];
+                    for(k = 1; k<=nz; k++) {
+                        dum[k-1] = g[k, 1];  //dum[k] = g[1,k];
+                    }
+                    //call MPI_SEND[ dum, nz, dp_type, west, from_e, MPI_COMM_WORLD, IERROR ];
+                    worldcomm.Send<double>(dum, west, from_e);
+                }
             }
         }
         //end exchange_5.f
         // exchange_6.f
-        public void exchangeW(double[,] g, int beg, int fin1) {
-            //---------------------------------------------------------------------
-            //   compute the right hand side based on exact solution
-            //---------------------------------------------------------------------
-            //  input parameters
-            //---------------------------------------------------------------------
-            //double  g[0:isiz2+1,0:isiz3+1]
-            //int jbeg, jfin1
-            //---------------------------------------------------------------------
-            //  local parameters
-            //---------------------------------------------------------------------
-            int k;
-            //double[] dum = new double[1025]; //dum[1024]
-            //int msgid3
-            //int STATUS[MPI_STATUS_SIZE]
-            //int IERROR
-            //---------------------------------------------------------------------
-            //   communicate in the east and west directions
-            //---------------------------------------------------------------------
-            //   receive from east
-            //---------------------------------------------------------------------
-            if(fin1==ny) {
-                double[] dum = new double[nz];
-                MPI.Request msgid3;// = new MPI.Request[1];
-                //call MPI_IRECV[ dum, nz,dp_type,MPI_ANY_SOURCE,from_e,MPI_COMM_WORLD,msgid3,IERROR ];
-                msgid3 = worldcomm.ImmediateReceive<double>(east, from_e, dum);
-                msgid3.Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ]
-
-                for(k = 1; k<=nz; k++) {
-                    g[k, ny+1] = dum[k-1];  //g[ny+1,k] = dum[k];
-                }
-            }
-            //---------------------------------------------------------------------
-            //   send west
-            //---------------------------------------------------------------------
-            if(beg==1) {
-                double[] dum = new double[nz];
-                for(k = 1; k<=nz; k++) {
-                    dum[k-1] = g[k, 1];  //dum[k] = g[1,k];
-                }
-                //call MPI_SEND[ dum, nz, dp_type, west, from_e, MPI_COMM_WORLD, IERROR ];
-                worldcomm.Send<double>(dum, west, from_e);
-            }
-        }
         // end exchange_6.f
         //end pintgr.f
         // verify.f
