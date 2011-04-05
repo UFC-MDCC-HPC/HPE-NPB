@@ -2943,7 +2943,7 @@ namespace NPB {
         }
         //end exchange_4.f
         // exchange_5.f
-        public void exchange(double[,] g, int beg, int fin1, int from) {
+        public void exchange(double[,] g, int beg, int fin1, int from_) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -2965,7 +2965,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   receive from south
             //---------------------------------------------------------------------
-            if(from==from_s) {
+            if(from_==from_s) {
                 if(fin1==nx) {
                     MPI.Request msgid1;// = new MPI.Request[1];
                     double[] dum = new double[nz];
@@ -2988,7 +2988,7 @@ namespace NPB {
                     worldcomm.Send<double>(dum, north, from_s);
                 }
             }
-            else if(from==from_e) {
+            else if(from_==from_e) {
                 //---------------------------------------------------------------------
                 //   compute the right hand side based on exact solution
                 //---------------------------------------------------------------------
