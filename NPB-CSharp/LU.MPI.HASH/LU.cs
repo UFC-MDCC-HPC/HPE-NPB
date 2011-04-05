@@ -2698,7 +2698,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //  communicate in i and j directions
             //---------------------------------------------------------------------
-            exchange_NW(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
+            exchangeNW(phi1, phi2, ibeg, ifin1, jbeg, jfin1); 
 
             frc1 = 0.0d;
 
@@ -2861,7 +2861,7 @@ namespace NPB {
             return frc;
         }
         //exchange_4.f
-        public void exchange_NW(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
+        public void exchangeNW(double[,] g, double[,] h, int ibeg, int ifin1, int jbeg, int jfin1) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
