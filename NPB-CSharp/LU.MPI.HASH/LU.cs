@@ -551,7 +551,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange1(rsd, iex, -1);
+            exchange1(rsd, iex);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -647,7 +647,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange1(rsd, iex, -1);
+            exchange1(rsd, iex);
             L1 = 0;
             if(west==-1)
                 L1 = 1;
@@ -1227,7 +1227,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange1(u, iex, -1);
+            exchange1(u, iex);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -1318,7 +1318,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange1(u, iex, -1);
+            exchange1(u, iex);
 
             L1 = 0;
             if(west==-1)
@@ -1875,9 +1875,12 @@ namespace NPB {
         }
         // end blts.f
         // Exchange_1.f NSEW
+        public void exchange1(double[, , ,] g, int iex) {
+            exchange1(g, iex, -1);
+        }
         public void exchange1(double[, , ,] g, int iex, int k) {
             MPI.Request mid;// = new MPI.Request[1];
-            if(k>0) {
+            if(k>=0) {
                 int i, j;
                 if(iex == 0) {
                     if(north != -1) {
