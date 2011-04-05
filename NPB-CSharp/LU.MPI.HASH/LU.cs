@@ -551,7 +551,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange_NSEW(rsd, iex, -1);
+            exchange1(rsd, iex, -1);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -647,7 +647,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange_NSEW(rsd, iex, -1);
+            exchange1(rsd, iex, -1);
             L1 = 0;
             if(west==-1)
                 L1 = 1;
@@ -1227,7 +1227,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange_NSEW(u, iex, -1);
+            exchange1(u, iex, -1);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -1318,7 +1318,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange_NSEW(u, iex, -1);
+            exchange1(u, iex, -1);
 
             L1 = 0;
             if(west==-1)
@@ -1741,7 +1741,7 @@ namespace NPB {
             //}//end Debug
 
             iex = 0;
-            exchange_NSEW(v, iex, k);
+            exchange1(v, iex, k);
             for(j = jst; j<= jend; j++) {
                 for(i = ist; i<= iend; i++) {
                     for(m = 1; m<= 5; m++) {
@@ -1871,11 +1871,11 @@ namespace NPB {
             //   send data to east and south
             //---------------------------------------------------------------------
             iex = 2;
-            exchange_NSEW(v, iex, k);
+            exchange1(v, iex, k);
         }
         // end blts.f
-        // Exchange_1.f
-        public void exchange_NSEW(double[, , ,] g, int iex, int k) {
+        // Exchange_1.f NSEW
+        public void exchange1(double[, , ,] g, int iex, int k) {
             MPI.Request mid;// = new MPI.Request[1];
             if(k>0) {
                 int i, j;
@@ -2411,7 +2411,7 @@ namespace NPB {
             //   receive data from south and east
             //---------------------------------------------------------------------
             iex = 1;
-            exchange_NSEW(v, iex, k);
+            exchange1(v, iex, k);
             //Debug 
             //if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
             //    throw new ArgumentException("Look this code: vetor v");
@@ -2548,7 +2548,7 @@ namespace NPB {
             //   send data to north and west
             //---------------------------------------------------------------------
             iex = 3;
-            exchange_NSEW(v, iex, k);
+            exchange1(v, iex, k);
         }
         // end buts.f
         //end ssor.f
