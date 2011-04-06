@@ -2578,7 +2578,7 @@ namespace NPB {
             return errnm;
         }
         //exact.f
-        public void exact(int i, int j, int k, double[, , ,] u000ijk, int i1, int i2, int i3) {
+        public void exact(int i, int j, int k, double[,,,] u000ijk, int i1, int i2, int i3) {
             //---------------------------------------------------------------------
             //
             //   compute the exact solution at [i,j,k]
