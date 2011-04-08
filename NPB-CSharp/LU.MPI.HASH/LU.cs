@@ -2410,30 +2410,29 @@ namespace NPB {
 
             for(j = jend; j>= jst; j--) { //for(j = jend, jst, -1;
                 for(i = iend; i>= ist; i--) { //for(i = iend, ist, -1;
-                    for(m = 1; m<= 5; m++) {//tv[ m, i, j ] = 
-                        tv[j-1, i-1, m-1] = 
-                                         omega * (  udz[j-1, i-1, 0, m-1] * rsd[k, j+1, i+1, 0]
-                                                  + udz[j-1, i-1, 1, m-1] * rsd[k, j+1, i+1, 1]
-                                                  + udz[j-1, i-1, 2, m-1] * rsd[k, j+1, i+1, 2]
-                                                  + udz[j-1, i-1, 3, m-1] * rsd[k, j+1, i+1, 3]
-                                                  + udz[j-1, i-1, 4, m-1] * rsd[k, j+1, i+1, 4]);
+                    for(m = 0; m< 5; m++) {//tv[ m, i, j ] = 
+                        tv[j-1, i-1, m] = omega*( udz[j-1, i-1, 0, m] * rsd[k, j+1, i+1, 0]
+                                                + udz[j-1, i-1, 1, m] * rsd[k, j+1, i+1, 1]
+                                                + udz[j-1, i-1, 2, m] * rsd[k, j+1, i+1, 2]
+                                                + udz[j-1, i-1, 3, m] * rsd[k, j+1, i+1, 3]
+                                                + udz[j-1, i-1, 4, m] * rsd[k, j+1, i+1, 4]);
                     }
                 }
             }
             for(j = jend; j>=jst; j--) {   //for(j = jend,jst,-1;
                 for(i = iend; i>=ist; i--) { //for(i = iend,ist,-1;
-                    for(m = 1; m<= 5; m++) {
-                        tv[j-1, i-1, m-1] = tv[j-1, i-1, m-1]
-                                            + omega * ( udy[j-1, i-1, 0, m-1] * rsd[k-1, j+2, i+1, 0]
-                                                      + udx[j-1, i-1, 0, m-1] * rsd[k-1, j+1, i+2, 0]
-                                                      + udy[j-1, i-1, 1, m-1] * rsd[k-1, j+2, i+1, 1]
-                                                      + udx[j-1, i-1, 1, m-1] * rsd[k-1, j+1, i+2, 1]
-                                                      + udy[j-1, i-1, 2, m-1] * rsd[k-1, j+2, i+1, 2]
-                                                      + udx[j-1, i-1, 2, m-1] * rsd[k-1, j+1, i+2, 2]
-                                                      + udy[j-1, i-1, 3, m-1] * rsd[k-1, j+2, i+1, 3]
-                                                      + udx[j-1, i-1, 3, m-1] * rsd[k-1, j+1, i+2, 3]
-                                                      + udy[j-1, i-1, 4, m-1] * rsd[k-1, j+2, i+1, 4]
-                                                      + udx[j-1, i-1, 4, m-1] * rsd[k-1, j+1, i+2, 4]);
+                    for(m = 0; m< 5; m++) {
+                        tv[j-1, i-1, m] = tv[j-1, i-1, m]
+                                            + omega * ( udy[j-1, i-1, 0, m] * rsd[k-1, j+2, i+1, 0]
+                                                      + udx[j-1, i-1, 0, m] * rsd[k-1, j+1, i+2, 0]
+                                                      + udy[j-1, i-1, 1, m] * rsd[k-1, j+2, i+1, 1]
+                                                      + udx[j-1, i-1, 1, m] * rsd[k-1, j+1, i+2, 1]
+                                                      + udy[j-1, i-1, 2, m] * rsd[k-1, j+2, i+1, 2]
+                                                      + udx[j-1, i-1, 2, m] * rsd[k-1, j+1, i+2, 2]
+                                                      + udy[j-1, i-1, 3, m] * rsd[k-1, j+2, i+1, 3]
+                                                      + udx[j-1, i-1, 3, m] * rsd[k-1, j+1, i+2, 3]
+                                                      + udy[j-1, i-1, 4, m] * rsd[k-1, j+2, i+1, 4]
+                                                      + udx[j-1, i-1, 4, m] * rsd[k-1, j+1, i+2, 4]);
                     }
                     //---------------------------------------------------------------------
                     //   diagonal block inversion
