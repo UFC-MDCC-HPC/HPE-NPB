@@ -1134,7 +1134,7 @@ namespace NPB {
                     //---------------------------------------------------------------------
                     //   perform the lower triangular solution
                     //---------------------------------------------------------------------
-                    blts(isiz1, isiz2, isiz3, nx, ny, nz, k, omega, rsd, a, b, c, d, ist, iend, jst, jend, nx0, ny0, ipt, jpt);
+                    blts(k, omega, a, b, c, d);
                 }
                 for(k=nz-1; k>= 2; k--) { //for(k = nz - 1, 2, -1;
                     //---------------------------------------------------------------------
@@ -1144,7 +1144,8 @@ namespace NPB {
                     //---------------------------------------------------------------------
                     //   perform the upper triangular solution
                     //---------------------------------------------------------------------
-                    buts(isiz1, isiz2, isiz3, nx, ny, nz, k, omega, rsd, tv, d, a, b, c, ist, iend, jst, jend, nx0, ny0, ipt, jpt);
+                    buts(k, omega, tv, d, a, b, c);
+                    //buts(k);
                 }
                 //---------------------------------------------------------------------
                 //   update the variables
@@ -1713,18 +1714,16 @@ namespace NPB {
         }
         //end jacld.f
         // blts.f
-        public void blts(int ldmx, int ldmy, int ldmz, int nx, int ny, int nz, int k, double omega, double[, , ,] v, 
-                         double[, , ,] zld, double[, , ,] yld, double[, , ,] xld, double[, , ,] d, 
-                         int ist, int iend, int jst, int jend, int nx0, int ny0, int ipt, int jpt) {
+        public void blts(int k, double omega, double[, , ,] ldz, double[, , ,] ldy, double[, , ,] ldx, double[, , ,] d) {
             //---------------------------------------------------------------------
             //   compute the regular-sparse, block lower triangular solution:
-            //                     v <-- [ L-inv ] * v
+            //                     rsd <-- [ L-inv ] * rsd
             //---------------------------------------------------------------------
             //  input parameters
             //---------------------------------------------------------------------
             //int ldmx, ldmy, ldmz,nx, ny, nz,k;
             //double  omega;
-            //double  v[ 5, -1:ldmx+2, -1:ldmy+2, *],ldz[ 5, 5, ldmx, ldmy],ldy[ 5, 5, ldmx, ldmy],ldx[ 5, 5, ldmx, ldmy],d[ 5, 5, ldmx, ldmy];
+            //double  rsd[ 5, -1:ldmx+2, -1:ldmy+2, *],ldz[ 5, 5, ldmx, ldmy],ldy[ 5, 5, ldmx, ldmy],ldx[ 5, 5, ldmx, ldmy],d[ 5, 5, ldmx, ldmy];
             //int ist, iend,jst, jend,nx0, ny0,ipt, jpt;
             //---------------------------------------------------------------------
             //  local variables
@@ -1732,42 +1731,45 @@ namespace NPB {
             int i, j, m, iex;
             double  tmp, tmp1;
             double[,] tmat = new double[5, 5]; //tmat[5,5]
+            //int ldmx = isiz1;
+            //int ldmy = isiz2;
+            //int ldmz = isiz3;
             //---------------------------------------------------------------------
             //   receive data from north and west
             //---------------------------------------------------------------------
             //Debug
             //if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
-            //    throw new ArgumentException("Look this code: vetor v");
+            //    throw new ArgumentException("Look this code: vetor rsd");
             //}//end Debug
 
             iex = 0;
-            exchange1(v, iex, k);
+            exchange1(rsd, iex, k);
             for(j = jst; j<= jend; j++) {
                 for(i = ist; i<= iend; i++) {
                     for(m = 1; m<= 5; m++) {
-                        v[k-1, j+1, i+1, m -1] =  v[k-1, j+1, i+1, m -1]
-             - omega * (  zld[j-1, i-1, 0, m-1] * v[k-2, j+1, i+1, 0]
-                        + zld[j-1, i-1, 1, m-1] * v[k-2, j+1, i+1, 1]
-                        + zld[j-1, i-1, 2, m-1] * v[k-2, j+1, i+1, 2]
-                        + zld[j-1, i-1, 3, m-1] * v[k-2, j+1, i+1, 3]
-                        + zld[j-1, i-1, 4, m-1] * v[k-2, j+1, i+1, 4]);
+                        rsd[k-1, j+1, i+1, m -1] =  rsd[k-1, j+1, i+1, m -1]
+             - omega * (  ldz[j-1, i-1, 0, m-1] * rsd[k-2, j+1, i+1, 0]
+                        + ldz[j-1, i-1, 1, m-1] * rsd[k-2, j+1, i+1, 1]
+                        + ldz[j-1, i-1, 2, m-1] * rsd[k-2, j+1, i+1, 2]
+                        + ldz[j-1, i-1, 3, m-1] * rsd[k-2, j+1, i+1, 3]
+                        + ldz[j-1, i-1, 4, m-1] * rsd[k-2, j+1, i+1, 4]);
                     }
                 }
             }
             for(j=jst; j<=jend; j++) {
                 for(i = ist; i<= iend; i++) {
                     for(m = 1; m<= 5; m++) {
-                        v[k-1, j+1, i+1, m-1] =  v[k-1, j+1, i+1, m-1]
-                        - omega * ( yld[j-1, i-1, 0, m-1] * v[k-1, j, i+1, 0]
-                                  + xld[j-1, i-1, 0, m-1] * v[k-1, j+1, i, 0]
-                                  + yld[j-1, i-1, 1, m-1] * v[k-1, j, i+1, 1]
-                                  + xld[j-1, i-1, 1, m-1] * v[k-1, j+1, i, 1]
-                                  + yld[j-1, i-1, 2, m-1] * v[k-1, j, i+1, 2]
-                                  + xld[j-1, i-1, 2, m-1] * v[k-1, j+1, i, 2]
-                                  + yld[j-1, i-1, 3, m-1] * v[k-1, j, i+1, 3]
-                                  + xld[j-1, i-1, 3, m-1] * v[k-1, j+1, i, 3]
-                                  + yld[j-1, i-1, 4, m-1] * v[k-1, j, i+1, 4]
-                                  + xld[j-1, i-1, 4, m-1] * v[k-1, j+1, i, 4]);
+                        rsd[k-1, j+1, i+1, m-1] =  rsd[k-1, j+1, i+1, m-1]
+                        - omega * ( ldy[j-1, i-1, 0, m-1] * rsd[k-1, j, i+1, 0]
+                                  + ldx[j-1, i-1, 0, m-1] * rsd[k-1, j+1, i, 0]
+                                  + ldy[j-1, i-1, 1, m-1] * rsd[k-1, j, i+1, 1]
+                                  + ldx[j-1, i-1, 1, m-1] * rsd[k-1, j+1, i, 1]
+                                  + ldy[j-1, i-1, 2, m-1] * rsd[k-1, j, i+1, 2]
+                                  + ldx[j-1, i-1, 2, m-1] * rsd[k-1, j+1, i, 2]
+                                  + ldy[j-1, i-1, 3, m-1] * rsd[k-1, j, i+1, 3]
+                                  + ldx[j-1, i-1, 3, m-1] * rsd[k-1, j+1, i, 3]
+                                  + ldy[j-1, i-1, 4, m-1] * rsd[k-1, j, i+1, 4]
+                                  + ldx[j-1, i-1, 4, m-1] * rsd[k-1, j+1, i, 4]);
                     }
                     //---------------------------------------------------------------------
                     //   diagonal block inversion
@@ -1787,83 +1789,83 @@ namespace NPB {
                     tmat[2, 1] =  tmat[2, 1] - tmp * tmat[2, 0];
                     tmat[3, 1] =  tmat[3, 1] - tmp * tmat[3, 0];
                     tmat[4, 1] =  tmat[4, 1] - tmp * tmat[4, 0];
-                    v[k-1, j+1, i+1, 1] = v[k-1, j+1, i+1, 1] - v[k-1, j+1, i+1, 0] * tmp;
+                    rsd[k-1, j+1, i+1, 1] = rsd[k-1, j+1, i+1, 1] - rsd[k-1, j+1, i+1, 0] * tmp;
 
                     tmp = tmp1 * tmat[0, 2];
                     tmat[1, 2] =  tmat[1, 2] - tmp * tmat[1, 0];
                     tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 0];
                     tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 0];
                     tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 0];
-                    v[k-1, j+1, i+1, 2] = v[k-1, j+1, i+1, 2] - v[k-1, j+1, i+1, 0] * tmp;
+                    rsd[k-1, j+1, i+1, 2] = rsd[k-1, j+1, i+1, 2] - rsd[k-1, j+1, i+1, 0] * tmp;
 
                     tmp = tmp1 * tmat[0, 3];
                     tmat[1, 3] =  tmat[1, 3] - tmp * tmat[1, 0];
                     tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 0];
                     tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 0];
                     tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 0];
-                    v[k-1, j+1, i+1, 3] = v[k-1, j+1, i+1, 3] - v[k-1, j+1, i+1, 0] * tmp;
+                    rsd[k-1, j+1, i+1, 3] = rsd[k-1, j+1, i+1, 3] - rsd[k-1, j+1, i+1, 0] * tmp;
 
                     tmp = tmp1 * tmat[0, 4];
                     tmat[1, 4] =  tmat[1, 4] - tmp * tmat[1, 0];
                     tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 0];
                     tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 0];
                     tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 0];
-                    v[k-1, j+1, i+1, 4] = v[k-1, j+1, i+1, 4] - v[k-1, j+1, i+1, 0] * tmp;
+                    rsd[k-1, j+1, i+1, 4] = rsd[k-1, j+1, i+1, 4] - rsd[k-1, j+1, i+1, 0] * tmp;
 
                     tmp1 = 1.0d /tmat[1, 1];
                     tmp = tmp1 * tmat[1, 2];
                     tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 1];
                     tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 1];
                     tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 1];
-                    v[k-1, j+1, i+1, 2] = v[k-1, j+1, i+1, 2] - v[k-1, j+1, i+1, 1] * tmp;
+                    rsd[k-1, j+1, i+1, 2] = rsd[k-1, j+1, i+1, 2] - rsd[k-1, j+1, i+1, 1] * tmp;
 
                     tmp = tmp1 * tmat[1, 3];
                     tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 1];
                     tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 1];
                     tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 1];
-                    v[k-1, j+1, i+1, 3] = v[k-1, j+1, i+1, 3] - v[k-1, j+1, i+1, 1] * tmp;
+                    rsd[k-1, j+1, i+1, 3] = rsd[k-1, j+1, i+1, 3] - rsd[k-1, j+1, i+1, 1] * tmp;
 
                     tmp = tmp1 * tmat[1, 4];
                     tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 1];
                     tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 1];
                     tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 1];
-                    v[k-1, j+1, i+1, 4] = v[k-1, j+1, i+1, 4] - v[k-1, j+1, i+1, 1] * tmp;
+                    rsd[k-1, j+1, i+1, 4] = rsd[k-1, j+1, i+1, 4] - rsd[k-1, j+1, i+1, 1] * tmp;
 
                     tmp1 = 1.0d /tmat[2, 2];
                     tmp = tmp1 * tmat[2, 3];
                     tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 2];
                     tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 2];
-                    v[k-1, j+1, i+1, 3] = v[k-1, j+1, i+1, 3] - v[k-1, j+1, i+1, 2] * tmp;
+                    rsd[k-1, j+1, i+1, 3] = rsd[k-1, j+1, i+1, 3] - rsd[k-1, j+1, i+1, 2] * tmp;
 
                     tmp = tmp1 * tmat[2, 4];
                     tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 2];
                     tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 2];
-                    v[k-1, j+1, i+1, 4] = v[k-1, j+1, i+1, 4] - v[k-1, j+1, i+1, 2] * tmp;
+                    rsd[k-1, j+1, i+1, 4] = rsd[k-1, j+1, i+1, 4] - rsd[k-1, j+1, i+1, 2] * tmp;
 
                     tmp1 = 1.0d /tmat[3, 3];
                     tmp = tmp1 * tmat[3, 4];
                     tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 3];
-                    v[k-1, j+1, i+1, 4] = v[k-1, j+1, i+1, 4] - v[k-1, j+1, i+1, 3] * tmp;
+                    rsd[k-1, j+1, i+1, 4] = rsd[k-1, j+1, i+1, 4] - rsd[k-1, j+1, i+1, 3] * tmp;
 
                     //---------------------------------------------------------------------
                     //   back substitution
                     //---------------------------------------------------------------------
 
-                    v[k-1, j+1, i+1, 4] = v[k-1, j+1, i+1, 4]/ tmat[4, 4];
-                    v[k-1, j+1, i+1, 3] = v[k-1, j+1, i+1, 3]- tmat[4, 3] * v[k-1, j+1, i+1, 4];
-                    v[k-1, j+1, i+1, 3] = v[k-1, j+1, i+1, 3]/ tmat[3, 3];
-                    v[k-1, j+1, i+1, 2] = v[k-1, j+1, i+1, 2] -tmat[3, 2] * v[k-1, j+1, i+1, 3] - tmat[4, 2] * 
-                                                                       v[k-1, j+1, i+1, 4];
-                    v[k-1, j+1, i+1, 2] = v[k-1, j+1, i+1, 2] /tmat[2, 2];
-                    v[k-1, j+1, i+1, 1] = v[k-1, j+1, i+1, 1]- tmat[2, 1] * v[k-1, j+1, i+1, 2]-tmat[3, 1]*
-                                                                       v[k-1, j+1, i+1, 3]-tmat[4, 1]*
-                                                                       v[k-1, j+1, i+1, 4];
-                    v[k-1, j+1, i+1, 1] = v[k-1, j+1, i+1, 1] /tmat[1, 1];
-                    v[k-1, j+1, i+1, 0] = v[k-1, j+1, i+1, 0] -tmat[1, 0] * v[k-1, j+1, i+1, 1]-
-                                                           tmat[2, 0] * v[k-1, j+1, i+1, 2]-
-                                                           tmat[3, 0] * v[k-1, j+1, i+1, 3]-
-                                                           tmat[4, 0] * v[k-1, j+1, i+1, 4];
-                    v[k-1, j+1, i+1, 0] = v[k-1, j+1, i+1, 0] /tmat[0, 0];
+                    rsd[k-1, j+1, i+1, 4] = rsd[k-1, j+1, i+1, 4]/ tmat[4, 4];
+                    rsd[k-1, j+1, i+1, 3] = rsd[k-1, j+1, i+1, 3]- tmat[4, 3] * rsd[k-1, j+1, i+1, 4];
+                    rsd[k-1, j+1, i+1, 3] = rsd[k-1, j+1, i+1, 3]/ tmat[3, 3];
+                    rsd[k-1, j+1, i+1, 2] = rsd[k-1, j+1, i+1, 2] -tmat[3, 2] * rsd[k-1, j+1, i+1, 3] - tmat[4, 2] * 
+                                                                       rsd[k-1, j+1, i+1, 4];
+                    rsd[k-1, j+1, i+1, 2] = rsd[k-1, j+1, i+1, 2] /tmat[2, 2];
+                    rsd[k-1, j+1, i+1, 1] = rsd[k-1, j+1, i+1, 1]- tmat[2, 1] * rsd[k-1, j+1, i+1, 2]-tmat[3, 1]*
+                                                                       rsd[k-1, j+1, i+1, 3]-tmat[4, 1]*
+                                                                       rsd[k-1, j+1, i+1, 4];
+                    rsd[k-1, j+1, i+1, 1] = rsd[k-1, j+1, i+1, 1] /tmat[1, 1];
+                    rsd[k-1, j+1, i+1, 0] = rsd[k-1, j+1, i+1, 0] -tmat[1, 0] * rsd[k-1, j+1, i+1, 1]-
+                                                           tmat[2, 0] * rsd[k-1, j+1, i+1, 2]-
+                                                           tmat[3, 0] * rsd[k-1, j+1, i+1, 3]-
+                                                           tmat[4, 0] * rsd[k-1, j+1, i+1, 4];
+                    rsd[k-1, j+1, i+1, 0] = rsd[k-1, j+1, i+1, 0] /tmat[0, 0];
 
                 }
             }
@@ -1871,7 +1873,7 @@ namespace NPB {
             //   send data to east and south
             //---------------------------------------------------------------------
             iex = 2;
-            exchange1(v, iex, k);
+            exchange1(rsd, iex, k);
         }
         // end blts.f
         // Exchange_1.f NSEW
@@ -2374,17 +2376,16 @@ namespace NPB {
         }
         // end jacu.f
         // buts.f
-        public void buts(int ldmx, int ldmy, int ldmz, int nx, int ny, int nz, int k, double omega, double[, , ,] v, double[, ,] tv, 
-                         double[, , ,] d, double[, , ,] xud, double[, , ,] yud, double[, , ,] zud, 
-                         int ist, int iend, int jst, int jend, int nx0, int ny0, int ipt, int jpt) {
+        public void buts(int k, double omega, double[, ,] tv, double[, , ,] d, double[, , ,] udx, double[, , ,] udy, double[, , ,] udz) {
+        //public void buts(int k){
             //---------------------------------------------------------------------
             //   compute the regular-sparse, block upper triangular solution:
-            //                     v <-- [ U-inv ] * v
+            //                     rsd <-- [ U-inv ] * rsd
             //---------------------------------------------------------------------
             //  input parameters
             //---------------------------------------------------------------------
             //int ldmx, ldmy, ldmz, nx, ny, nz, k; double  omega;
-            //double  v[ 5, -1:ldmx+2, -1:ldmy+2, *], tv[5, ldmx, ldmy], 
+            //double  rsd[ 5, -1:ldmx+2, -1:ldmy+2, *], tv[5, ldmx, ldmy], 
             //        d[ 5, 5, ldmx, ldmy], udx[ 5, 5, ldmx, ldmy], udy[ 5, 5, ldmx, ldmy], udz[ 5, 5, ldmx, ldmy ];
             //int ist, iend,jst, jend,nx0, ny0,ipt, jpt;
             //---------------------------------------------------------------------
@@ -2393,11 +2394,14 @@ namespace NPB {
             int i, j, m, iex;
             double tmp, tmp1;
             double[,] tmat = new double[5, 5];//tmat[5,5] 
+            //int ldmx = isiz1;
+            //int ldmy = isiz2;
+            //int ldmz = isiz3;
             //---------------------------------------------------------------------
             //   receive data from south and east
             //---------------------------------------------------------------------
             iex = 1;
-            exchange1(v, iex, k);
+            exchange1(rsd, iex, k);
             //Debug 
             //if ((isiz1 + 2) != (ldmx + 2) || (isiz2 + 2) != (ldmy + 2)) {
             //    throw new ArgumentException("Look this code: vetor v");
@@ -2407,11 +2411,11 @@ namespace NPB {
                 for(i = iend; i>= ist; i--) { //for(i = iend, ist, -1;
                     for(m = 1; m<= 5; m++) {//tv[ m, i, j ] = 
                         tv[j, i, m] = 
-                                         omega * (  zud[j-1, i-1, 0, m-1] * v[k, j+1, i+1, 0]
-                                                  + zud[j-1, i-1, 1, m-1] * v[k, j+1, i+1, 1]
-                                                  + zud[j-1, i-1, 2, m-1] * v[k, j+1, i+1, 2]
-                                                  + zud[j-1, i-1, 3, m-1] * v[k, j+1, i+1, 3]
-                                                  + zud[j-1, i-1, 4, m-1] * v[k, j+1, i+1, 4]);
+                                         omega * (  udz[j-1, i-1, 0, m-1] * rsd[k, j+1, i+1, 0]
+                                                  + udz[j-1, i-1, 1, m-1] * rsd[k, j+1, i+1, 1]
+                                                  + udz[j-1, i-1, 2, m-1] * rsd[k, j+1, i+1, 2]
+                                                  + udz[j-1, i-1, 3, m-1] * rsd[k, j+1, i+1, 3]
+                                                  + udz[j-1, i-1, 4, m-1] * rsd[k, j+1, i+1, 4]);
                     }
                 }
             }
@@ -2419,16 +2423,16 @@ namespace NPB {
                 for(i = iend; i>=ist; i--) { //for(i = iend,ist,-1;
                     for(m = 1; m<= 5; m++) {
                         tv[j, i, m] = tv[j, i, m]
-                                            + omega * ( yud[j-1, i-1, 0, m-1] * v[k-1, j+2, i+1, 0]
-                                                      + xud[j-1, i-1, 0, m-1] * v[k-1, j+1, i+2, 0]
-                                                      + yud[j-1, i-1, 1, m-1] * v[k-1, j+2, i+1, 1]
-                                                      + xud[j-1, i-1, 1, m-1] * v[k-1, j+1, i+2, 1]
-                                                      + yud[j-1, i-1, 2, m-1] * v[k-1, j+2, i+1, 2]
-                                                      + xud[j-1, i-1, 2, m-1] * v[k-1, j+1, i+2, 2]
-                                                      + yud[j-1, i-1, 3, m-1] * v[k-1, j+2, i+1, 3]
-                                                      + xud[j-1, i-1, 3, m-1] * v[k-1, j+1, i+2, 3]
-                                                      + yud[j-1, i-1, 4, m-1] * v[k-1, j+2, i+1, 4]
-                                                      + xud[j-1, i-1, 4, m-1] * v[k-1, j+1, i+2, 4]);
+                                            + omega * ( udy[j-1, i-1, 0, m-1] * rsd[k-1, j+2, i+1, 0]
+                                                      + udx[j-1, i-1, 0, m-1] * rsd[k-1, j+1, i+2, 0]
+                                                      + udy[j-1, i-1, 1, m-1] * rsd[k-1, j+2, i+1, 1]
+                                                      + udx[j-1, i-1, 1, m-1] * rsd[k-1, j+1, i+2, 1]
+                                                      + udy[j-1, i-1, 2, m-1] * rsd[k-1, j+2, i+1, 2]
+                                                      + udx[j-1, i-1, 2, m-1] * rsd[k-1, j+1, i+2, 2]
+                                                      + udy[j-1, i-1, 3, m-1] * rsd[k-1, j+2, i+1, 3]
+                                                      + udx[j-1, i-1, 3, m-1] * rsd[k-1, j+1, i+2, 3]
+                                                      + udy[j-1, i-1, 4, m-1] * rsd[k-1, j+2, i+1, 4]
+                                                      + udx[j-1, i-1, 4, m-1] * rsd[k-1, j+1, i+2, 4]);
                     }
                     //---------------------------------------------------------------------
                     //   diagonal block inversion
@@ -2523,18 +2527,18 @@ namespace NPB {
                                            - tmat[4, 0]*tv[j, i, 5];
                     tv[j, i, 1] = tv[j, i, 1] /tmat[0, 0];
 
-                    v[k-1, j+1, i+1, 0] = v[k-1, j+1, i+1, 0] - tv[j, i, 1];
-                    v[k-1, j+1, i+1, 1] = v[k-1, j+1, i+1, 1] - tv[j, i, 2];
-                    v[k-1, j+1, i+1, 2] = v[k-1, j+1, i+1, 2] - tv[j, i, 3];
-                    v[k-1, j+1, i+1, 3] = v[k-1, j+1, i+1, 3] - tv[j, i, 4];
-                    v[k-1, j+1, i+1, 4] = v[k-1, j+1, i+1, 4] - tv[j, i, 5];
+                    rsd[k-1, j+1, i+1, 0] = rsd[k-1, j+1, i+1, 0] - tv[j, i, 1];
+                    rsd[k-1, j+1, i+1, 1] = rsd[k-1, j+1, i+1, 1] - tv[j, i, 2];
+                    rsd[k-1, j+1, i+1, 2] = rsd[k-1, j+1, i+1, 2] - tv[j, i, 3];
+                    rsd[k-1, j+1, i+1, 3] = rsd[k-1, j+1, i+1, 3] - tv[j, i, 4];
+                    rsd[k-1, j+1, i+1, 4] = rsd[k-1, j+1, i+1, 4] - tv[j, i, 5];
                 }
             }
             //---------------------------------------------------------------------
             //   send data to north and west
             //---------------------------------------------------------------------
             iex = 3;
-            exchange1(v, iex, k);
+            exchange1(rsd, iex, k);
         }
         // end buts.f
         //end ssor.f
