@@ -1134,7 +1134,7 @@ namespace NPB {
                     //---------------------------------------------------------------------
                     //   perform the lower triangular solution
                     //---------------------------------------------------------------------
-                    blts(k, omega, a, b, c, d);
+                    blts(k, omega, a, b, c);
                 }
                 for(k=nz-1; k>= 2; k--) { //for(k = nz - 1, 2, -1;
                     //---------------------------------------------------------------------
@@ -1144,7 +1144,7 @@ namespace NPB {
                     //---------------------------------------------------------------------
                     //   perform the upper triangular solution
                     //---------------------------------------------------------------------
-                    buts(k, omega, d, a, b, c);
+                    buts(k, omega, a, b, c);
                     //buts(k);
                 }
                 //---------------------------------------------------------------------
@@ -1714,7 +1714,7 @@ namespace NPB {
         }
         //end jacld.f
         // blts.f
-        public void blts(int k, double omega, double[, , ,] ldz, double[, , ,] ldy, double[, , ,] ldx, double[, , ,] d) {
+        public void blts(int k, double omega, double[, , ,] ldz, double[, , ,] ldy, double[, , ,] ldx) {
             //---------------------------------------------------------------------
             //   compute the regular-sparse, block lower triangular solution:
             //                     rsd <-- [ L-inv ] * rsd
@@ -2376,7 +2376,7 @@ namespace NPB {
         }
         // end jacu.f
         // buts.f
-        public void buts(int k, double omega, double[, , ,] d, double[, , ,] udx, double[, , ,] udy, double[, , ,] udz) {
+        public void buts(int k, double omega, double[, , ,] udx, double[, , ,] udy, double[, , ,] udz) {
         //public void buts(int k){
             //---------------------------------------------------------------------
             //   compute the regular-sparse, block upper triangular solution:
