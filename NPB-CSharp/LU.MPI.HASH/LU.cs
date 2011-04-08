@@ -1064,7 +1064,7 @@ namespace NPB {
             int istep;
             double  tmp;
             double[] delunm = new double[5];//delunm[5];
-            double[,,] tv = new double[isiz2+1, isiz1+1, 5+1];//tv[5,isiz1,isiz2];
+            //tv[5,isiz1,isiz2];
             double[] tolrsd = {1.0E-08, 1.0E-08, 1.0E-08, 1.0E-08, 1.0E-08};
             double omega=1.2d;
             double[] rsdnm  = new double[5];
@@ -1144,7 +1144,7 @@ namespace NPB {
                     //---------------------------------------------------------------------
                     //   perform the upper triangular solution
                     //---------------------------------------------------------------------
-                    buts(k, omega, tv, d, a, b, c);
+                    buts(k, omega, d, a, b, c);
                     //buts(k);
                 }
                 //---------------------------------------------------------------------
@@ -2376,7 +2376,7 @@ namespace NPB {
         }
         // end jacu.f
         // buts.f
-        public void buts(int k, double omega, double[, ,] tv, double[, , ,] d, double[, , ,] udx, double[, , ,] udy, double[, , ,] udz) {
+        public void buts(int k, double omega, double[, , ,] d, double[, , ,] udx, double[, , ,] udy, double[, , ,] udz) {
         //public void buts(int k){
             //---------------------------------------------------------------------
             //   compute the regular-sparse, block upper triangular solution:
@@ -2394,6 +2394,7 @@ namespace NPB {
             int i, j, m, iex;
             double tmp, tmp1;
             double[,] tmat = new double[5, 5];//tmat[5,5] 
+            double[,,] tv = new double[isiz2, isiz1, 5];
             //int ldmx = isiz1;
             //int ldmy = isiz2;
             //int ldmz = isiz3;
@@ -2410,7 +2411,7 @@ namespace NPB {
             for(j = jend; j>= jst; j--) { //for(j = jend, jst, -1;
                 for(i = iend; i>= ist; i--) { //for(i = iend, ist, -1;
                     for(m = 1; m<= 5; m++) {//tv[ m, i, j ] = 
-                        tv[j, i, m] = 
+                        tv[j-1, i-1, m-1] = 
                                          omega * (  udz[j-1, i-1, 0, m-1] * rsd[k, j+1, i+1, 0]
                                                   + udz[j-1, i-1, 1, m-1] * rsd[k, j+1, i+1, 1]
                                                   + udz[j-1, i-1, 2, m-1] * rsd[k, j+1, i+1, 2]
@@ -2422,7 +2423,7 @@ namespace NPB {
             for(j = jend; j>=jst; j--) {   //for(j = jend,jst,-1;
                 for(i = iend; i>=ist; i--) { //for(i = iend,ist,-1;
                     for(m = 1; m<= 5; m++) {
-                        tv[j, i, m] = tv[j, i, m]
+                        tv[j-1, i-1, m-1] = tv[j-1, i-1, m-1]
                                             + omega * ( udy[j-1, i-1, 0, m-1] * rsd[k-1, j+2, i+1, 0]
                                                       + udx[j-1, i-1, 0, m-1] * rsd[k-1, j+1, i+2, 0]
                                                       + udy[j-1, i-1, 1, m-1] * rsd[k-1, j+2, i+1, 1]
@@ -2451,87 +2452,81 @@ namespace NPB {
                     tmat[2, 1] =  tmat[2, 1] - tmp * tmat[2, 0];
                     tmat[3, 1] =  tmat[3, 1] - tmp * tmat[3, 0];
                     tmat[4, 1] =  tmat[4, 1] - tmp * tmat[4, 0];
-                    tv[j, i, 2] = tv[j, i, 2]- tv[j, i, 1] * tmp;
+                    tv[j-1, i-1, 1] = tv[j-1, i-1, 1]- tv[j-1, i-1, 0] * tmp;
 
                     tmp = tmp1 * tmat[0, 2];
                     tmat[1, 2] =  tmat[1, 2] - tmp * tmat[1, 0];
                     tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 0];
                     tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 0];
                     tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 0];
-                    tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 1] * tmp;
+                    tv[j-1, i-1, 2] = tv[j-1, i-1, 2] - tv[j-1, i-1, 0] * tmp;
 
                     tmp = tmp1 * tmat[0, 3];
                     tmat[1, 3] =  tmat[1, 3] - tmp * tmat[1, 0];
                     tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 0];
                     tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 0];
                     tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 0];
-                    tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 1] * tmp;
+                    tv[j-1, i-1, 3] = tv[j-1, i-1, 3] - tv[j-1, i-1, 0] * tmp;
 
                     tmp = tmp1 * tmat[0, 4];
                     tmat[1, 4] =  tmat[1, 4] - tmp * tmat[1, 0];
                     tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 0];
                     tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 0];
                     tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 0];
-                    tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 1] * tmp;
+                    tv[j-1, i-1, 4] = tv[j-1, i-1, 4] - tv[j-1, i-1, 0] * tmp;
 
                     tmp1 = 1.0d /tmat[1, 1];
                     tmp = tmp1 * tmat[1, 2];
                     tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 1];
                     tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 1];
                     tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 1];
-                    tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 2] * tmp;
+                    tv[j-1, i-1, 2] = tv[j-1, i-1, 2] - tv[j-1, i-1, 1] * tmp;
 
                     tmp = tmp1 * tmat[1, 3];
                     tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 1];
                     tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 1];
                     tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 1];
-                    tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 2] * tmp;
+                    tv[j-1, i-1, 3] = tv[j-1, i-1, 3] - tv[j-1, i-1, 1] * tmp;
 
                     tmp = tmp1 * tmat[1, 4];
                     tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 1];
                     tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 1];
                     tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 1];
-                    tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 2] * tmp;
+                    tv[j-1, i-1, 4] = tv[j-1, i-1, 4] - tv[j-1, i-1, 1] * tmp;
 
                     tmp1 = 1.0d /tmat[2, 2];
                     tmp = tmp1 * tmat[2, 3];
                     tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 2];
                     tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 2];
-                    tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 3] * tmp;
+                    tv[j-1, i-1, 3] = tv[j-1, i-1, 3] - tv[j-1, i-1, 2] * tmp;
 
                     tmp = tmp1 * tmat[2, 4];
                     tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 2];
                     tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 2];
-                    tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 3] * tmp;
+                    tv[j-1, i-1, 4] = tv[j-1, i-1, 4] - tv[j-1, i-1, 2] * tmp;
 
                     tmp1 = 1.0d /tmat[3, 3];
                     tmp = tmp1 * tmat[3, 4];
                     tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 3];
-                    tv[j, i, 5] = tv[j, i, 5] - tv[j, i, 4] * tmp;
+                    tv[j-1, i-1, 4] = tv[j-1, i-1, 4] - tv[j-1, i-1, 3] * tmp;
                     //---------------------------------------------------------------------
                     //   back substitution
                     //---------------------------------------------------------------------
-                    tv[j, i, 5] = tv[j, i, 5]/ tmat[4, 4];
-                    tv[j, i, 4] = tv[j, i, 4]- tmat[4, 3] * tv[j, i, 5];
-                    tv[j, i, 4] = tv[j, i, 4]/ tmat[3, 3];
-                    tv[j, i, 3] = tv[j, i, 3]- tmat[3, 2] * tv[j, i, 4]
-                                           - tmat[4, 2] * tv[j, i, 5];
-                    tv[j, i, 3] = tv[j, i, 3]/ tmat[2, 2];
-                    tv[j, i, 2] = tv[j, i, 2]- tmat[2, 1] * tv[j, i, 3]
-                                           - tmat[3, 1] * tv[j, i, 4]
-                                           - tmat[4, 1] * tv[j, i, 5];
-                    tv[j, i, 2] = tv[j, i, 2]/ tmat[1, 1];
-                    tv[j, i, 1] = tv[j, i, 1]- tmat[1, 0]*tv[j, i, 2]
-                                           - tmat[2, 0]*tv[j, i, 3]
-                                           - tmat[3, 0]*tv[j, i, 4]
-                                           - tmat[4, 0]*tv[j, i, 5];
-                    tv[j, i, 1] = tv[j, i, 1] /tmat[0, 0];
+                    tv[j-1, i-1, 4] = tv[j-1, i-1, 4]/tmat[4,4];
+                    tv[j-1, i-1, 3] = tv[j-1, i-1, 3]-tmat[4,3]*tv[j-1, i-1, 4];
+                    tv[j-1, i-1, 3] = tv[j-1, i-1, 3]/tmat[3,3];
+                    tv[j-1, i-1, 2] = tv[j-1, i-1, 2]-tmat[3,2]*tv[j-1, i-1, 3]-tmat[4, 2]*tv[j-1, i-1, 4];
+                    tv[j-1, i-1, 2] = tv[j-1, i-1, 2]/tmat[2,2];
+                    tv[j-1, i-1, 1] = tv[j-1, i-1, 1]-tmat[2,1]*tv[j-1, i-1, 2]-tmat[3, 1]*tv[j-1, i-1, 3]-tmat[4, 1]*tv[j-1, i-1, 4];
+                    tv[j-1, i-1, 1] = tv[j-1, i-1, 1]/tmat[1,1];
+                    tv[j-1, i-1, 0] = tv[j-1, i-1, 0]-tmat[1,0]*tv[j-1, i-1, 1]-tmat[2, 0]*tv[j-1, i-1, 2]-tmat[3, 0]*tv[j-1, i-1, 3] - tmat[4, 0]*tv[j-1, i-1, 4];
+                    tv[j-1, i-1, 0] = tv[j-1, i-1, 0]/tmat[0,0];
 
-                    rsd[k-1, j+1, i+1, 0] = rsd[k-1, j+1, i+1, 0] - tv[j, i, 1];
-                    rsd[k-1, j+1, i+1, 1] = rsd[k-1, j+1, i+1, 1] - tv[j, i, 2];
-                    rsd[k-1, j+1, i+1, 2] = rsd[k-1, j+1, i+1, 2] - tv[j, i, 3];
-                    rsd[k-1, j+1, i+1, 3] = rsd[k-1, j+1, i+1, 3] - tv[j, i, 4];
-                    rsd[k-1, j+1, i+1, 4] = rsd[k-1, j+1, i+1, 4] - tv[j, i, 5];
+                    rsd[k-1, j+1, i+1, 0] = rsd[k-1, j+1, i+1, 0] - tv[j-1, i-1, 0];
+                    rsd[k-1, j+1, i+1, 1] = rsd[k-1, j+1, i+1, 1] - tv[j-1, i-1, 1];
+                    rsd[k-1, j+1, i+1, 2] = rsd[k-1, j+1, i+1, 2] - tv[j-1, i-1, 2];
+                    rsd[k-1, j+1, i+1, 3] = rsd[k-1, j+1, i+1, 3] - tv[j-1, i-1, 3];
+                    rsd[k-1, j+1, i+1, 4] = rsd[k-1, j+1, i+1, 4] - tv[j-1, i-1, 4];
                 }
             }
             //---------------------------------------------------------------------
@@ -2539,7 +2534,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             iex = 3;
             exchange1(rsd, iex, k);
-        }
+        }//tv tv[
         // end buts.f
         //end ssor.f
         //error.f
