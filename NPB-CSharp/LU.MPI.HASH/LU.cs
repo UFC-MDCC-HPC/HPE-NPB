@@ -1509,22 +1509,8 @@ namespace NPB {
             //---------------------------------------------------------------------
             //  input parameters
             //---------------------------------------------------------------------
-            //int ldx, ldy, ldz;
-            //int nx0, ny0, nz0;
-            //int ist, iend;
-            //int jst, jend;
-            //double  v[5,-1:ldx+2,-1:ldy+2,*], sum[5];
-
-            //debug
-            //if ((isiz1 + 2) != (ldx + 2) || (isiz2 + 2) != (ldy + 2)) {
-            //throw new ArgumentException("Look this code: vetor v");
-            //}
-
             int i, j, k, m;
-            double[] dummy = new double[5];//dummy[5];
-
-            //int IERROR;
-
+            double[] dummy = new double[5];
             for(m = 0; m< 5; m++) {
                 dummy[m] = 0.0d;
             }
@@ -1532,7 +1518,7 @@ namespace NPB {
                 for(j = jst; j<= jend; j++) {
                     for(i = ist; i<= iend; i++) {
                         for(m = 0; m< 5; m++) {
-                            dummy[m] = dummy[m] + v[k-1, j+1, i+1, m] * v[k-1, j+1, i+1, m];  //dummy[m] = dummy[m] + v[m,i,j,k] * v[m,i,j,k];
+                            dummy[m] = dummy[m] + v[k-1, j+1, i+1, m] * v[k-1, j+1, i+1, m];
                         }
                     }
                 }
@@ -1541,11 +1527,10 @@ namespace NPB {
             //   compute the global sum of individual contributions to dot product.
             //---------------------------------------------------------------------
             worldcomm.Allreduce<double>(dummy, MPI.Operation<double>.Add, ref sum);//call MPI_ALLREDUCE[ dummy,sum,5,dp_type,MPI_SUM,MPI_COMM_WORLD,IERROR ]
-
             for(m = 0; m< 5; m++) {
                 sum[m] = Math.Sqrt(sum[m]/((nx0-2)*(ny0-2)*(nz0-2))); //sum[m] = sqrt(sum[m]/((nx0-2)*(ny0-2)*(nz0-2)));
             }
-        }//sum  dummy
+        }
         //end l2norm.f
         //jacld.f
         public void jacld(int k) {
