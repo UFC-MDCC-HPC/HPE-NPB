@@ -1100,7 +1100,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   compute the L2 norms of newton iteration residuals
             //---------------------------------------------------------------------
-            l2norm(isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, rsdnm);
+            l2norm(rsd, rsdnm);
             worldcomm.Barrier(); //call MPI_BARRIER[ MPI_COMM_WORLD, IERROR ]
             timer.resetTimer(1); //call timer_clear[1]
             timer.start(1);      //call timer_start[1]
@@ -1162,7 +1162,7 @@ namespace NPB {
                 //   compute the max-norms of newton iteration corrections
                 //---------------------------------------------------------------------
                 if(mod(istep, inorm) == 0) {
-                    l2norm(isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, delunm);
+                    l2norm(rsd, delunm);
                 }
                 //---------------------------------------------------------------------
                 //   compute the steady-state residuals
@@ -1172,7 +1172,7 @@ namespace NPB {
                 //   compute the max-norms of newton iteration residuals
                 //---------------------------------------------------------------------
                 if((mod(istep, inorm)== 0) || (istep==itmax)) {
-                    l2norm(isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, rsdnm);
+                    l2norm(rsd, rsdnm);
                 }
                 //---------------------------------------------------------------------
                 //   check the newton-iteration residuals against the tolerance levels
@@ -1502,7 +1502,7 @@ namespace NPB {
         }
         //end rhs.f
         //l2norm.f
-        public void l2norm(int ldx, int ldy, int ldz, int nx0, int ny0, int nz0, int ist, int iend, int jst, int jend, double[, , ,] v, double[] sum) {
+        public void l2norm(double[, , ,] v, double[] sum) {
             //---------------------------------------------------------------------
             //   to compute the l2-norm of vector v.
             //---------------------------------------------------------------------
