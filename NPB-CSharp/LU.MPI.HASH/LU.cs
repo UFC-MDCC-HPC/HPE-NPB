@@ -805,11 +805,11 @@ namespace NPB {
                     }
                 }
             }
-            for(k = 4; k<= nz - 3; k++) {
+            for(k = 3; k<= nz - 4; k++) {
                 for(j = jst; j<= jend; j++) {
                     for(i = ist; i<= iend; i++) {
                         for(m = 0; m< 5; m++) {
-                            frct[k-1, j+1, i+1, m]=frct[k-1, j+1, i+1, m]-dsspm*(rsd[k-3, j+1, i+1, m]-4.0d*rsd[k-2, j+1, i+1, m]+6.0d*rsd[k-1, j+1, i+1, m]-4.0d*rsd[k, j+1, i+1, m]+rsd[k+1, j+1, i+1, m]);
+                            frct[k, j+1, i+1, m]=frct[k, j+1, i+1, m]-dsspm*(rsd[k-2, j+1, i+1, m]-4.0d*rsd[k-1, j+1, i+1, m]+6.0d*rsd[k, j+1, i+1, m]-4.0d*rsd[k+1, j+1, i+1, m]+rsd[k+2, j+1, i+1, m]);
                         }
                     }
                 }
