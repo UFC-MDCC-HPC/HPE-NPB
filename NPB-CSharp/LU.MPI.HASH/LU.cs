@@ -565,17 +565,17 @@ namespace NPB {
                 ist1 = 4;
             if(south==-1)
                 iend1 = nx - 3;
-            for(k = 2; k<= nz - 1; k++) {
+            for(k = 1; k<= nz - 2; k++) {
                 for(j = jst; j<= jend; j++) {
                     for(i = L1; i<= L2; i++) {
-                        flux[k-1, j, i, 0] = rsd[k-1, j+1, i+1, 1]; //flux[1,i,j,k] = rsd[2,i,j,k];
-                        u21           = rsd[k-1, j+1, i+1, 1]/rsd[k-1, j+1, i+1, 0]; //u21 = rsd[2,i,j,k] / rsd[1,i,j,k];
+                        flux[k, j, i, 0] = rsd[k, j+1, i+1, 1]; //flux[1,i,j,k] = rsd[2,i,j,k];
+                        u21           = rsd[k, j+1, i+1, 1]/rsd[k, j+1, i+1, 0]; //u21 = rsd[2,i,j,k] / rsd[1,i,j,k];
                         //c -- q = 0.50d*(rsd[2,i,j,k]*rsd[2,i,j,k] + rsd[3,i,j,k]*rsd[3,i,j,k] + rsd[4,i,j,k]*rsd[4,i,j,k])/rsd[1,i,j,k];
-                        q=0.50d*(rsd[k-1, j+1, i+1, 1]*rsd[k-1, j+1, i+1, 1]+rsd[k-1, j+1, i+1, 2]*rsd[k-1, j+1, i+1, 2]+rsd[k-1, j+1, i+1, 3]*rsd[k-1, j+1, i+1, 3])/rsd[k-1, j+1, i+1, 0];
-                        flux[k-1, j, i, 1] =     rsd[k-1, j+1, i+1, 1]*u21 + c2*(rsd[k-1, j+1, i+1, 4] - q);//flux[2,i,j,k]=rsd[2,i,j,k]*u21+c2*(rsd[5,i,j,k]-q);
-                        flux[k-1, j, i, 2] =     rsd[k-1, j+1, i+1, 2] * u21;                          //flux[3,i,j,k]=rsd[3,i,j,k] * u21;
-                        flux[k-1, j, i, 3] =     rsd[k-1, j+1, i+1, 3] * u21;                          //flux[4,i,j,k]=rsd[4,i,j,k] * u21;
-                        flux[k-1, j, i, 4] = (c1*rsd[k-1, j+1, i+1, 4] - c2*q)*u21;                    //flux[5,i,j,k]=(c1*rsd[5,i,j,k] - c2*q)*u21;
+                        q=0.50d*(rsd[k, j+1, i+1, 1]*rsd[k, j+1, i+1, 1]+rsd[k, j+1, i+1, 2]*rsd[k, j+1, i+1, 2]+rsd[k, j+1, i+1, 3]*rsd[k, j+1, i+1, 3])/rsd[k, j+1, i+1, 0];
+                        flux[k, j, i, 1] =     rsd[k, j+1, i+1, 1]*u21 + c2*(rsd[k, j+1, i+1, 4] - q);//flux[2,i,j,k]=rsd[2,i,j,k]*u21+c2*(rsd[5,i,j,k]-q);
+                        flux[k, j, i, 2] =     rsd[k, j+1, i+1, 2] * u21;                          //flux[3,i,j,k]=rsd[3,i,j,k] * u21;
+                        flux[k, j, i, 3] =     rsd[k, j+1, i+1, 3] * u21;                          //flux[4,i,j,k]=rsd[4,i,j,k] * u21;
+                        flux[k, j, i, 4] = (c1*rsd[k, j+1, i+1, 4] - c2*q)*u21;                    //flux[5,i,j,k]=(c1*rsd[5,i,j,k] - c2*q)*u21;
                     }
                 }
             }
