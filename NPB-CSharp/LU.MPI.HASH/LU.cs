@@ -660,17 +660,17 @@ namespace NPB {
                 jst1 = 4;
             if(east==-1)
                 jend1 = ny - 3;
-            for(k = 2; k<= nz - 1; k++) {
+            for(k = 1; k<= nz - 2; k++) {
                 for(j = L1; j<= L2; j++) {
                     for(i = ist; i<= iend; i++) {
-                        flux[k-1, j, i, 0] = rsd[k-1, j+1, i+1, 2];
-                        u31 = rsd[k-1, j+1, i+1, 2] / rsd[k-1, j+1, i+1, 0];
-                        q          = 0.50d*(rsd[k-1, j+1, i+1, 1]*rsd[k-1, j+1, i+1, 1]+rsd[k-1, j+1, i+1, 2]*rsd[k-1, j+1, i+1, 2]
-                                        +rsd[k-1, j+1, i+1, 3]*rsd[k-1, j+1, i+1, 3])/rsd[k-1, j+1, i+1, 0];
-                        flux[k-1, j, i, 1] =     rsd[k-1, j+1, i+1, 1]*u31;
-                        flux[k-1, j, i, 2] =     rsd[k-1, j+1, i+1, 2]*u31+c2*(rsd[k-1, j+1, i+1, 4]-q);
-                        flux[k-1, j, i, 3] =     rsd[k-1, j+1, i+1, 3]*u31;
-                        flux[k-1, j, i, 4] = (c1*rsd[k-1, j+1, i+1, 4]-c2*q)*u31;
+                        flux[k, j, i, 0] = rsd[k, j+1, i+1, 2];
+                        u31 = rsd[k, j+1, i+1, 2] / rsd[k, j+1, i+1, 0];
+                        q          = 0.50d*(rsd[k, j+1, i+1, 1]*rsd[k, j+1, i+1, 1]+rsd[k, j+1, i+1, 2]*rsd[k, j+1, i+1, 2]
+                                        +rsd[k, j+1, i+1, 3]*rsd[k, j+1, i+1, 3])/rsd[k, j+1, i+1, 0];
+                        flux[k, j, i, 1] =     rsd[k, j+1, i+1, 1]*u31;
+                        flux[k, j, i, 2] =     rsd[k, j+1, i+1, 2]*u31+c2*(rsd[k, j+1, i+1, 4]-q);
+                        flux[k, j, i, 3] =     rsd[k, j+1, i+1, 3]*u31;
+                        flux[k, j, i, 4] = (c1*rsd[k, j+1, i+1, 4]-c2*q)*u31;
                     }
                 }
             }
