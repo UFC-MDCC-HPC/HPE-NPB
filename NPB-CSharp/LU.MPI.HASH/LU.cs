@@ -783,14 +783,14 @@ namespace NPB {
                     }
                 }
             }
-            for(k = 2; k<= nz - 1; k++) {
+            for(k = 1; k<= nz - 2; k++) {
                 for(j = jst; j<= jend; j++) {
                     for(i = ist; i<= iend; i++) {
-                        frct[k-1, j+1, i+1, 0] = frct[k-1, j+1, i+1, 0]+dz1*tz1*(rsd[k, j+1, i+1, 0]-2.0d*rsd[k-1, j+1, i+1, 0]+rsd[k-2, j+1, i+1, 0]);
-                        frct[k-1, j+1, i+1, 1] = frct[k-1, j+1, i+1, 1]+tz3*c3*c4*(flux[k, j, i, 1]-flux[k-1, j, i, 1])+dz2*tz1*(rsd[k, j+1, i+1, 1]-2.0d*rsd[k-1, j+1, i+1, 1]+rsd[k-2, j+1, i+1, 1]);
-                        frct[k-1, j+1, i+1, 2] = frct[k-1, j+1, i+1, 2]+tz3*c3*c4*(flux[k, j, i, 2]-flux[k-1, j, i, 2])+dz3*tz1*(rsd[k, j+1, i+1, 2]-2.0d*rsd[k-1, j+1, i+1, 2]+rsd[k-2, j+1, i+1, 2]);
-                        frct[k-1, j+1, i+1, 3] = frct[k-1, j+1, i+1, 3]+tz3*c3*c4*(flux[k, j, i, 3]-flux[k-1, j, i, 3])+dz4*tz1*(rsd[k, j+1, i+1, 3]-2.0d*rsd[k-1, j+1, i+1, 3]+rsd[k-2, j+1, i+1, 3]);
-                        frct[k-1, j+1, i+1, 4] = frct[k-1, j+1, i+1, 4]+tz3*c3*c4*(flux[k, j, i, 4]-flux[k-1, j, i, 4])+dz5*tz1*(rsd[k, j+1, i+1, 4]-2.0d*rsd[k-1, j+1, i+1, 4]+rsd[k-2, j+1, i+1, 4]);
+                        frct[k, j+1, i+1, 0] = frct[k, j+1, i+1, 0]+dz1*tz1*(rsd[k+1, j+1, i+1, 0]-2.0d*rsd[k, j+1, i+1, 0]+rsd[k-1, j+1, i+1, 0]);
+                        frct[k, j+1, i+1, 1] = frct[k, j+1, i+1, 1]+tz3*c3*c4*(flux[k+1, j, i, 1]-flux[k, j, i, 1])+dz2*tz1*(rsd[k+1, j+1, i+1, 1]-2.0d*rsd[k, j+1, i+1, 1]+rsd[k-1, j+1, i+1, 1]);
+                        frct[k, j+1, i+1, 2] = frct[k, j+1, i+1, 2]+tz3*c3*c4*(flux[k+1, j, i, 2]-flux[k, j, i, 2])+dz3*tz1*(rsd[k+1, j+1, i+1, 2]-2.0d*rsd[k, j+1, i+1, 2]+rsd[k-1, j+1, i+1, 2]);
+                        frct[k, j+1, i+1, 3] = frct[k, j+1, i+1, 3]+tz3*c3*c4*(flux[k+1, j, i, 3]-flux[k, j, i, 3])+dz4*tz1*(rsd[k+1, j+1, i+1, 3]-2.0d*rsd[k, j+1, i+1, 3]+rsd[k-1, j+1, i+1, 3]);
+                        frct[k, j+1, i+1, 4] = frct[k, j+1, i+1, 4]+tz3*c3*c4*(flux[k+1, j, i, 4]-flux[k, j, i, 4])+dz5*tz1*(rsd[k+1, j+1, i+1, 4]-2.0d*rsd[k, j+1, i+1, 4]+rsd[k-1, j+1, i+1, 4]);
                     }
                 }
             }
