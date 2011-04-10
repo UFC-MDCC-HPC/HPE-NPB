@@ -800,8 +800,8 @@ namespace NPB {
             for(j = jst; j<= jend; j++) {
                 for(i = ist; i<= iend; i++) {
                     for(m = 0; m< 5; m++) {
-                        frct[-1+2, j+1, i+1, m] = frct[-1+2, j+1, i+1, m]-dsspm*(+5.0d*rsd[-1+2, j+1, i+1, m]-4.0d*rsd[-1+3, j+1, i+1, m]+rsd[-1+4, j+1, i+1, m]);
-                        frct[-1+3, j+1, i+1, m] = frct[-1+3, j+1, i+1, m]-dsspm*(-4.0d*rsd[-1+2, j+1, i+1, m]+6.0d*rsd[-1+3, j+1, i+1, m]-4.0d*rsd[-1+4, j+1, i+1, m]+rsd[-1+5, j+1, i+1, m]);
+                        frct[1, j+1, i+1, m] = frct[1, j+1, i+1, m]-dsspm*(+5.0d*rsd[1, j+1, i+1, m]-4.0d*rsd[2, j+1, i+1, m]+rsd[3, j+1, i+1, m]);
+                        frct[2, j+1, i+1, m] = frct[2, j+1, i+1, m]-dsspm*(-4.0d*rsd[1, j+1, i+1, m]+6.0d*rsd[2, j+1, i+1, m]-4.0d*rsd[3, j+1, i+1, m]+rsd[4, j+1, i+1, m]);
                     }
                 }
             }
@@ -817,8 +817,8 @@ namespace NPB {
             for(j = jst; j<= jend; j++) {
                 for(i = ist; i<= iend; i++) {
                     for(m = 0; m< 5; m++) {
-                        frct[-1+nz-2, j+1, i+1, m]=frct[-1+nz-2, j+1, i+1, m]-dsspm*(rsd[-1+nz-4, j+1, i+1, m]- 4.0d*rsd[-1+nz-3, j+1, i+1, m]+6.0d*rsd[-1+nz-2, j+1, i+1, m]-4.0d*rsd[-1+nz-1, j+1, i+1, m]);
-                        frct[-1+nz-1, j+1, i+1, m]=frct[-1+nz-1, j+1, i+1, m]-dsspm*(rsd[-1+nz-3, j+1, i+1, m]- 4.0d*rsd[-1+nz-2, j+1, i+1, m]+5.0d*rsd[-1+nz-1, j+1, i+1, m]);
+                        frct[nz-3, j+1, i+1, m]=frct[nz-3, j+1, i+1, m]-dsspm*(rsd[nz-5, j+1, i+1, m]- 4.0d*rsd[nz-4, j+1, i+1, m]+6.0d*rsd[nz-3, j+1, i+1, m]-4.0d*rsd[nz-2, j+1, i+1, m]);
+                        frct[nz-2, j+1, i+1, m]=frct[nz-2, j+1, i+1, m]-dsspm*(rsd[nz-4, j+1, i+1, m]- 4.0d*rsd[nz-3, j+1, i+1, m]+5.0d*rsd[nz-2, j+1, i+1, m]);
                     }
                 }
             }
