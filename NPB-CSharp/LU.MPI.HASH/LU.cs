@@ -579,59 +579,59 @@ namespace NPB {
                     }
                 }
             }
-            for(k = 2; k<= nz - 1; k++) {
+            for(k = 1; k<= nz - 2; k++) {
                 for(j = jst; j<= jend; j++) {
                     for(i = ist; i<= iend; i++) {
                         for(m = 0; m< 5; m++) { //frct[m,i,j,k] =  frct[m,i,j,k] - tx2 * (flux[m,i+1,j,k] - flux[m,i-1,j,k]);
-                            frct[k-1, j+1, i+1, m] =  frct[k-1, j+1, i+1, m] - tx2 * (flux[k-1, j, i+1, m] - flux[k-1, j, i-1, m]);
+                            frct[k, j+1, i+1, m] =  frct[k, j+1, i+1, m] - tx2 * (flux[k, j, i+1, m] - flux[k, j, i-1, m]);
                         }
                     }
                     for(i = ist; i<= L2; i++) {
-                        tmp   = 1.0d/rsd[k-1, j+1, i+1, 0];
-                        u21i = tmp * rsd[k-1, j+1, i+1, 1];
-                        u31i = tmp * rsd[k-1, j+1, i+1, 2];
-                        u41i = tmp * rsd[k-1, j+1, i+1, 3];
-                        u51i = tmp * rsd[k-1, j+1, i+1, 4];
-                        tmp   = 1.0d/rsd[k-1, j+1, i, 0];
-                        u21im1 = tmp*rsd[k-1, j+1, i, 1];
-                        u31im1 = tmp*rsd[k-1, j+1, i, 2];
-                        u41im1 = tmp*rsd[k-1, j+1, i, 3];
-                        u51im1 = tmp*rsd[k-1, j+1, i, 4];
+                        tmp   = 1.0d/rsd[k, j+1, i+1, 0];
+                        u21i = tmp * rsd[k, j+1, i+1, 1];
+                        u31i = tmp * rsd[k, j+1, i+1, 2];
+                        u41i = tmp * rsd[k, j+1, i+1, 3];
+                        u51i = tmp * rsd[k, j+1, i+1, 4];
+                        tmp   = 1.0d/rsd[k, j+1, i, 0];
+                        u21im1 = tmp*rsd[k, j+1, i, 1];
+                        u31im1 = tmp*rsd[k, j+1, i, 2];
+                        u41im1 = tmp*rsd[k, j+1, i, 3];
+                        u51im1 = tmp*rsd[k, j+1, i, 4];
 
-                        flux[k-1, j, i, 1] = (4.0d/3.0d)*tx3*(u21i - u21im1);
-                        flux[k-1, j, i, 2] = tx3 * (u31i - u31im1);
-                        flux[k-1, j, i, 3] = tx3 * (u41i - u41im1);
-                        flux[k-1, j, i, 4] = 0.50d*(1.0d-c1*c5)*tx3*
+                        flux[k, j, i, 1] = (4.0d/3.0d)*tx3*(u21i - u21im1);
+                        flux[k, j, i, 2] = tx3 * (u31i - u31im1);
+                        flux[k, j, i, 3] = tx3 * (u41i - u41im1);
+                        flux[k, j, i, 4] = 0.50d*(1.0d-c1*c5)*tx3*
                          ((pow2(u21i)+pow2(u31i)+pow2(u41i))
                          -(pow2(u21im1)+pow2(u31im1)+pow2(u41im1)))
                          + (1.0d/6.0d)*tx3*(pow2(u21i) - pow2(u21im1))+c1*c5*tx3*(u51i-u51im1);
                     }
                     for(i = ist; i<= iend; i++) {
-                        frct[k-1, j+1, i+1, 0] = frct[k-1, j+1, i+1, 0]+dx1*tx1*(rsd[k-1, j+1, i, 0]-2.0d*rsd[k-1, j+1, i+1, 0]+rsd[k-1, j+1, i+2, 0]);
-                        frct[k-1, j+1, i+1, 1] = frct[k-1, j+1, i+1, 1]+tx3*c3*c4*(flux[k-1, j, i+1, 1]-flux[k-1, j, i, 1])+dx2*tx1*(rsd[k-1, j+1, i, 1]-2.0d*rsd[k-1, j+1, i+1, 1]+rsd[k-1, j+1, i+2, 1]);
-                        frct[k-1, j+1, i+1, 2] = frct[k-1, j+1, i+1, 2]+tx3*c3*c4*(flux[k-1, j, i+1, 2]-flux[k-1, j, i, 2])+dx3*tx1*(rsd[k-1, j+1, i, 2]-2.0d*rsd[k-1, j+1, i+1, 2]+rsd[k-1, j+1, i+2, 2]);
-                        frct[k-1, j+1, i+1, 3] = frct[k-1, j+1, i+1, 3]+tx3*c3*c4*(flux[k-1, j, i+1, 3]-flux[k-1, j, i, 3])+dx4*tx1*(rsd[k-1, j+1, i, 3]-2.0d*rsd[k-1, j+1, i+1, 3]+rsd[k-1, j+1, i+2, 3]);
-                        frct[k-1, j+1, i+1, 4] = frct[k-1, j+1, i+1, 4]+tx3*c3*c4*(flux[k-1, j, i+1, 4]-flux[k-1, j, i, 4])+dx5*tx1*(rsd[k-1, j+1, i, 4]-2.0d*rsd[k-1, j+1, i+1, 4]+rsd[k-1, j+1, i+2, 4]);
+                        frct[k, j+1, i+1, 0] = frct[k, j+1, i+1, 0]+dx1*tx1*(rsd[k, j+1, i, 0]-2.0d*rsd[k, j+1, i+1, 0]+rsd[k, j+1, i+2, 0]);
+                        frct[k, j+1, i+1, 1] = frct[k, j+1, i+1, 1]+tx3*c3*c4*(flux[k, j, i+1, 1]-flux[k, j, i, 1])+dx2*tx1*(rsd[k, j+1, i, 1]-2.0d*rsd[k, j+1, i+1, 1]+rsd[k, j+1, i+2, 1]);
+                        frct[k, j+1, i+1, 2] = frct[k, j+1, i+1, 2]+tx3*c3*c4*(flux[k, j, i+1, 2]-flux[k, j, i, 2])+dx3*tx1*(rsd[k, j+1, i, 2]-2.0d*rsd[k, j+1, i+1, 2]+rsd[k, j+1, i+2, 2]);
+                        frct[k, j+1, i+1, 3] = frct[k, j+1, i+1, 3]+tx3*c3*c4*(flux[k, j, i+1, 3]-flux[k, j, i, 3])+dx4*tx1*(rsd[k, j+1, i, 3]-2.0d*rsd[k, j+1, i+1, 3]+rsd[k, j+1, i+2, 3]);
+                        frct[k, j+1, i+1, 4] = frct[k, j+1, i+1, 4]+tx3*c3*c4*(flux[k, j, i+1, 4]-flux[k, j, i, 4])+dx5*tx1*(rsd[k, j+1, i, 4]-2.0d*rsd[k, j+1, i+1, 4]+rsd[k, j+1, i+2, 4]);
                     }
                     //---------------------------------------------------------------------
                     //   Fourth-order dissipation
                     //---------------------------------------------------------------------
                     if(north==-1) {
                         for(m = 0; m< 5; m++) {
-                            frct[k-1, j+1, 3, m] = frct[k-1, j+1, 3, m]-dsspm*(+5.0d*rsd[k-1, j+1, 3, m]-4.0d*rsd[k-1, j+1, 4, m]+rsd[k-1, j+1, 5, m]);
-                            frct[k-1, j+1, 4, m] = frct[k-1, j+1, 4, m]-dsspm*(-4.0d*rsd[k-1, j+1, 3, m]+6.0d*rsd[k-1, j+1, 4, m]-4.0d*rsd[k-1, j+1, 5, m]+rsd[k-1, j+1, 6, m]);
+                            frct[k, j+1, 3, m] = frct[k, j+1, 3, m]-dsspm*(+5.0d*rsd[k, j+1, 3, m]-4.0d*rsd[k, j+1, 4, m]+rsd[k, j+1, 5, m]);
+                            frct[k, j+1, 4, m] = frct[k, j+1, 4, m]-dsspm*(-4.0d*rsd[k, j+1, 3, m]+6.0d*rsd[k, j+1, 4, m]-4.0d*rsd[k, j+1, 5, m]+rsd[k, j+1, 6, m]);
                         }
                     }
                     for(i = ist1; i<=iend1; i++) {
                         for(m = 0; m< 5; m++) {
-                            frct[k-1, j+1, i+1, m] = frct[k-1, j+1, i+1, m]-dsspm*(rsd[k-1, j+1, i-1, m]-
-                            4.0d*rsd[k-1, j+1, i, m]+6.0d*rsd[k-1, j+1, i+1, m]-4.0d*rsd[k-1, j+1, i+2, m]+rsd[k-1, j+1, i+3, m]);
+                            frct[k, j+1, i+1, m] = frct[k, j+1, i+1, m]-dsspm*(rsd[k, j+1, i-1, m]-
+                            4.0d*rsd[k, j+1, i, m]+6.0d*rsd[k, j+1, i+1, m]-4.0d*rsd[k, j+1, i+2, m]+rsd[k, j+1, i+3, m]);
                         }
                     }
                     if(south==-1) {
                         for(m = 0; m< 5; m++) {
-                            frct[k-1, j+1, nx-1, m] = frct[k-1, j+1, nx-1, m]-dsspm*(rsd[k-1, j+1, nx-3, m]-4.0d*rsd[k-1, j+1, nx-2, m]+6.0d*rsd[k-1, j+1, nx-1, m]-4.0d*rsd[k-1, j+1, nx, m]);
-                            frct[k-1, j+1, nx, m]   = frct[k-1, j+1, nx, m]  -dsspm*(rsd[k-1, j+1, nx-2, m]-4.0d*rsd[k-1, j+1, nx-1, m]+5.0d*rsd[k-1, j+1, nx, m]);
+                            frct[k, j+1, nx-1, m] = frct[k, j+1, nx-1, m]-dsspm*(rsd[k, j+1, nx-3, m]-4.0d*rsd[k, j+1, nx-2, m]+6.0d*rsd[k, j+1, nx-1, m]-4.0d*rsd[k, j+1, nx, m]);
+                            frct[k, j+1, nx, m]   = frct[k, j+1, nx, m]  -dsspm*(rsd[k, j+1, nx-2, m]-4.0d*rsd[k, j+1, nx-1, m]+5.0d*rsd[k, j+1, nx, m]);
                         }
                     }
                 }
