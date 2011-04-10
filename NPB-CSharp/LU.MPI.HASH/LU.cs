@@ -1118,10 +1118,10 @@ namespace NPB {
                 //   perform SSOR iteration
                 //---------------------------------------------------------------------
                 for(k = 1; k< nz - 1; k++) {
-                    for(j = jst; j<= jend; j++) {
-                        for(i = ist; i<= iend; i++) {
+                    for(j = jst+1; j<= jend+1; j++) {
+                        for(i = ist+1; i<= iend+1; i++) {
                             for(m = 0; m< 5; m++) {
-                                rsd[k, j+1, i+1, m] = dt * rsd[k, j+1, i+1, m];   //rsd[m, i, j, k] = dt * rsd[m, i, j, k];
+                                rsd[k, j, i, m] = dt * rsd[k, j, i, m];   //rsd[m, i, j, k] = dt * rsd[m, i, j, k];
                             }
                         }
                     }
@@ -1150,10 +1150,10 @@ namespace NPB {
                 //   update the variables
                 //---------------------------------------------------------------------
                 for(k = 1; k< nz-1; k++) {
-                    for(j = jst; j<= jend; j++) {
-                        for(i = ist; i<= iend; i++) {
+                    for(j = jst+1; j<= jend+1; j++) {
+                        for(i = ist+1; i<= iend+1; i++) {
                             for(m = 0; m< 5; m++) {     //u[ m, i, j, k ] = u[ m, i, j, k ] + tmp * rsd[ m, i, j, k ];
-                                u[k, j+1, i+1, m] = u[k, j+1, i+1, m] + tmp * rsd[k, j+1, i+1, m];
+                                u[k, j, i, m] = u[k, j, i, m] + tmp * rsd[k, j, i, m];
                             }
                         }
                     }
