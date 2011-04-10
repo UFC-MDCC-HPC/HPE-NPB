@@ -739,47 +739,47 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   zeta-direction flux differences
             //---------------------------------------------------------------------
-            for(k = 1; k<= nz; k++) {
+            for(k = 0; k< nz; k++) {
                 for(j = jst; j<= jend; j++) {
                     for(i = ist; i<= iend; i++) {
-                        flux[k-1, j, i, 0] = rsd[k-1, j+1, i+1, 3];      //flux[1,i,j,k] = rsd[4,i,j,k];
-                        u41 = rsd[k-1, j+1, i+1, 3] / rsd[k-1, j+1, i+1, 0]; //u41 = rsd[4,i,j,k] / rsd[1,i,j,k];
-                        q = 0.50d*(rsd[k-1, j+1, i+1, 1]*rsd[k-1, j+1, i+1, 1]+rsd[k-1, j+1, i+1, 2]*rsd[k-1, j+1, i+1, 2]+rsd[k-1, j+1, i+1, 3]*rsd[k-1, j+1, i+1, 3])/rsd[k-1, j+1, i+1, 0];
-                        flux[k-1, j, i, 1] =rsd[k-1, j+1, i+1, 1] * u41;
-                        flux[k-1, j, i, 2] =rsd[k-1, j+1, i+1, 2] * u41;
-                        flux[k-1, j, i, 3] =rsd[k-1, j+1, i+1, 3] * u41 + c2*(rsd[k-1, j+1, i+1, 4] - q);
-                        flux[k-1, j, i, 4] =(c1*rsd[k-1, j+1, i+1, 4]-c2*q)*u41;
+                        flux[k, j, i, 0] = rsd[k, j+1, i+1, 3];      //flux[1,i,j,k] = rsd[4,i,j,k];
+                        u41 = rsd[k, j+1, i+1, 3] / rsd[k, j+1, i+1, 0]; //u41 = rsd[4,i,j,k] / rsd[1,i,j,k];
+                        q = 0.50d*(rsd[k, j+1, i+1, 1]*rsd[k, j+1, i+1, 1]+rsd[k, j+1, i+1, 2]*rsd[k, j+1, i+1, 2]+rsd[k, j+1, i+1, 3]*rsd[k, j+1, i+1, 3])/rsd[k, j+1, i+1, 0];
+                        flux[k, j, i, 1] =rsd[k, j+1, i+1, 1] * u41;
+                        flux[k, j, i, 2] =rsd[k, j+1, i+1, 2] * u41;
+                        flux[k, j, i, 3] =rsd[k, j+1, i+1, 3] * u41 + c2*(rsd[k, j+1, i+1, 4] - q);
+                        flux[k, j, i, 4] =(c1*rsd[k, j+1, i+1, 4]-c2*q)*u41;
                     }
                 }
             }
-            for(k = 2; k<= nz - 1; k++) {
+            for(k = 1; k<= nz - 2; k++) {
                 for(j = jst; j<= jend; j++) {
                     for(i = ist; i<= iend; i++) {
                         for(m = 0; m< 5; m++) {
-                            frct[k-1, j+1, i+1, m] =  frct[k-1, j+1, i+1, m] - tz2 * (flux[k, j, i, m] - flux[k-2, j, i, m]);
+                            frct[k, j+1, i+1, m] =  frct[k, j+1, i+1, m] - tz2 * (flux[k+1, j, i, m] - flux[k-1, j, i, m]);
                         }
                     }
                 }
             }
-            for(k = 2; k<= nz; k++) {
+            for(k = 1; k< nz; k++) {
                 for(j = jst; j<= jend; j++) {
                     for(i = ist; i<= iend; i++) {
+                        tmp = 1.0d / rsd[k, j+1, i+1, 0];
+                        u21k = tmp * rsd[k, j+1, i+1, 1];
+                        u31k = tmp * rsd[k, j+1, i+1, 2];
+                        u41k = tmp * rsd[k, j+1, i+1, 3];
+                        u51k = tmp * rsd[k, j+1, i+1, 4];
+
                         tmp = 1.0d / rsd[k-1, j+1, i+1, 0];
-                        u21k = tmp * rsd[k-1, j+1, i+1, 1];
-                        u31k = tmp * rsd[k-1, j+1, i+1, 2];
-                        u41k = tmp * rsd[k-1, j+1, i+1, 3];
-                        u51k = tmp * rsd[k-1, j+1, i+1, 4];
+                        u21km1 = tmp*rsd[k-1, j+1, i+1, 1];
+                        u31km1 = tmp*rsd[k-1, j+1, i+1, 2];
+                        u41km1 = tmp*rsd[k-1, j+1, i+1, 3];
+                        u51km1 = tmp*rsd[k-1, j+1, i+1, 4];
 
-                        tmp = 1.0d / rsd[k-2, j+1, i+1, 0];
-                        u21km1 = tmp*rsd[k-2, j+1, i+1, 1];
-                        u31km1 = tmp*rsd[k-2, j+1, i+1, 2];
-                        u41km1 = tmp*rsd[k-2, j+1, i+1, 3];
-                        u51km1 = tmp*rsd[k-2, j+1, i+1, 4];
-
-                        flux[k-1, j, i, 1] = tz3 * (u21k - u21km1);
-                        flux[k-1, j, i, 2] = tz3 * (u31k - u31km1);
-                        flux[k-1, j, i, 3] = (4.0d/3.0d) * tz3 * (u41k - u41km1);
-                        flux[k-1, j, i, 4] = 0.50d*(1.0d-c1*c5)*tz3*((pow2(u21k)+pow2(u31k)+pow2(u41k))-(pow2(u21km1)+pow2(u31km1)+pow2(u41km1)))+(1.0d/6.0d)*tz3*(pow2(u41k)-pow2(u41km1))+c1*c5*tz3*(u51k-u51km1);
+                        flux[k, j, i, 1] = tz3 * (u21k - u21km1);
+                        flux[k, j, i, 2] = tz3 * (u31k - u31km1);
+                        flux[k, j, i, 3] = (4.0d/3.0d) * tz3 * (u41k - u41km1);
+                        flux[k, j, i, 4] = 0.50d*(1.0d-c1*c5)*tz3*((pow2(u21k)+pow2(u31k)+pow2(u41k))-(pow2(u21km1)+pow2(u31km1)+pow2(u41km1)))+(1.0d/6.0d)*tz3*(pow2(u41k)-pow2(u41km1))+c1*c5*tz3*(u51k-u51km1);
                     }
                 }
             }
