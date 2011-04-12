@@ -156,7 +156,7 @@ namespace NPB {
             if (timers_enabled) timer.stop(T_fft);
 
             
-            for (iter = 1; iter <= niter; iter++) {
+            for (int iter = 1; iter <= niter; iter++) {
                 if (timers_enabled) timer.start(T_evolve);
                 evolve(u0, u1, twiddle, dims[1,1], dims[2,1], dims[3,1]);
                 if (timers_enabled) timer.stop(T_evolve);
@@ -172,7 +172,7 @@ namespace NPB {
             int verified = verify(nx, ny, nz, niter);
             timer.stop(T_total);
             if (np != np_min) verified = 0;
-            total_time = timer.readTimer(T_total); //total_time = timer_read(t_total);
+            double total_time = timer.readTimer(T_total), mflops; //total_time = timer_read(t_total);
 
             if (total_time != 0) {
                 mflops = 0.000001*ntotal_f * (14.8157+7.19641*Math.Log(ntotal_f) +  (5.23518+7.21113*Math.Log(ntotal_f))*niter)/total_time;
@@ -202,8 +202,6 @@ namespace NPB {
         public void setup() {
             int i, fstatus=0; 
             debug = false;
-
-            dc_type = 1275072546;
 
             if (node == 0) {
                 Console.WriteLine(" NAS Parallel Benchmarks "+ "3.3" +" -- FT Benchmark ");
