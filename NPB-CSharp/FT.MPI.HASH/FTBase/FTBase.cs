@@ -22,7 +22,7 @@ namespace NPB {
             protected static int fftblock, fftblockpad;
             protected static int node, me1, me2;
             // Declared in block MPI: protected int commslice1, commslice2;
-            protected static int[,] dims = new int[3+1, 3+1];
+            protected static int[,] dims = new int[3, 3];
             protected static int[] xstart = new int[3];
             protected static int[] ystart = new int[3];
             protected static int[] zstart = new int[3];
