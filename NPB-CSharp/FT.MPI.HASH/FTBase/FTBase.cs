@@ -20,7 +20,7 @@ namespace NPB {
             protected int fftblock_default=16, fftblockpad_default=18;
             protected int transblock=32, transblockpad=34;
             protected static int fftblock, fftblockpad;
-            protected static int me, me1, me2;
+            protected static int node, me1, me2;
             // Declared in block MPI: protected int commslice1, commslice2;
             protected static int[,] dims = new int[3+sizeArrayAdd, 3+sizeArrayAdd];
             protected static int[] xstart = new int[3+sizeArrayAdd];
@@ -83,7 +83,7 @@ namespace NPB {
         //enf.f
 
         //Support
-            protected int npDebug=0, root=0;
+            protected int root=0;
             public static String BMName = "FT";
         //endSupport
 
@@ -152,8 +152,8 @@ namespace NPB {
             string[] args = System.Environment.GetCommandLineArgs();
             mpi = new MPI.Environment(ref args);
             worldcomm = MPI.Communicator.world;
-            np = worldcomm.Size + npDebug;
-            me = worldcomm.Rank;
+            np = worldcomm.Size;
+            node = worldcomm.Rank;
             np_min = np;
             ntdivnp = ((nx*ny)/np_min)*nz;
         }

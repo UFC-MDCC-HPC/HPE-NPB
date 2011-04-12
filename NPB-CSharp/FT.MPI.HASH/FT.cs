@@ -64,6 +64,7 @@ ARGUMENTS, MAY BREAK DOWN IF EXP_1 DOES NOT CONTAIN A LARGE POWER OF TWO.
 */
 using System;
 using System.IO;
+using NPB3_0_JAV.BMInOut;
 
 namespace NPB {
     public class FT:FTBase {
@@ -178,22 +179,21 @@ namespace NPB {
             } else {
                 mflops = 0.0;
             }
-            if (me == 0) {
-                IO.print_results(BMName, CLSS, nx, ny, nz, niter, np_min, np, total_time, mflops, "floating point", verified, npbversion);
-                //BMResults results = new BMResults(BMName,
-                //                        CLASS,
-                //                        nx0,
-                //                        ny0,
-                //                        nz0,
-                //                        itmax,
-                //                        maxtime,
-                //                        mflops,
-                //                        "floating point",
-                //                        verified,
-                //                        true,
-                //                        num,
-                //                        -1);
-                //results.print();
+            if (node == 0) {
+                BMResults results = new BMResults(BMName,
+                                        CLSS,
+                                        nx,
+                                        ny,
+                                        nz,
+                                        niter,
+                                        total_time,
+                                        mflops,
+                                        "floating point",
+                                        verified,
+                                        true,
+                                        np,
+                                        -1);
+                results.print();
             }
             if (timers_enabled) print_timers();
             mpi.Dispose();
@@ -209,7 +209,7 @@ namespace NPB {
                 dc_type = 1275070494; //MPI_COMPLEX;
             }
 
-            if (me == 0) {
+            if (node == 0) {
                 Console.WriteLine(" NAS Parallel Benchmarks "+ npbversion +" -- FT Benchmark ");
                 try {
                     Console.Write("Trying Read from input file inputft.data: ");
@@ -379,8 +379,8 @@ namespace NPB {
             //c Processor coords are zero-based. 
             //c---------------------------------------------------------------------
 
-            me2 = (int) mod(me, np2);  // goes from 0...np2-1
-            me1 = me/np2;        // goes from 0...np1-1
+            me2 = (int) mod(node, np2);  // goes from 0...np2-1
+            me1 = node/np2;        // goes from 0...np1-1
 
             //c---------------------------------------------------------------------
             //c Communicators for rows/columns of processor grid. 
@@ -394,7 +394,7 @@ namespace NPB {
 
             if (timers_enabled) synchup();
 
-            if (debug) Console.WriteLine("proc coords: " + me +" "+ me1 +" "+ me2);
+            if (debug) Console.WriteLine("proc coords: " + node +" "+ me1 +" "+ me2);
 
             //c---------------------------------------------------------------------
             //c Determine which section of the grid is owned by this
@@ -1569,7 +1569,7 @@ namespace NPB {
             allchk_Real = worldcomm.Reduce<double>(chk_Real, MPI.Operation<double>.Add,root);
             allchk_Imag = worldcomm.Reduce<double>(chk_Imag, MPI.Operation<double>.Add,root);
 
-            if (me == 0) {
+            if (node == 0) {
                 Console.WriteLine(" T = " + i + "  Checksum = (" + allchk_Real + ") (" + allchk_Imag + ")");//+1P2D22.12);
             }
             if (i > 0) {
@@ -1584,7 +1584,7 @@ namespace NPB {
             double err, epsilon;
             double[,] csum_ref = new double[25,2]; //     double complex csum_ref(25);
             char Class = 'U';
-            if (me != 0) return 0;
+            if (node != 0) return 0;
             epsilon = 0.000000000001;//epsilon = 1.0D-12;
             int verified = 0;
             if (d1 == 64 && d2 == 64 && d3 == 64 && nt == 6) {
@@ -1886,7 +1886,7 @@ namespace NPB {
             tstrings[13]=" transpose2_fin "; 
             tstrings[14]="           sync ";
 
-            if (me != 0) return;
+            if (node != 0) return;
             for (i = 1; i <= T_max; i++) {
                 if (timer.readTimer(i) != 0.0) {
                     Console.WriteLine(" timer "+ i + tstrings[i-1] + timer.readTimer(i));
