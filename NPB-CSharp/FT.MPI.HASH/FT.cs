@@ -396,7 +396,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
             if (layout_type == layout_0D) {
 
-                for (i = 1; i <= 3; i++) {
+                for (i = 0; i < 3; i++) {
                     xstart[i] = 1;
                     xend[i]   = nx;
                     ystart[i] = 1;
@@ -406,6 +406,13 @@ namespace NPB {
                 }
 
             } else if (layout_type == layout_1D) {
+                xstart[0] = 1;
+                xend[0]   = nx;
+                ystart[0] = 1;
+                yend[0]   = ny;
+                zstart[0] = 1 + me2 * nz/np2;
+                zend[0]   = (me2+1) * nz/np2;
+
                 xstart[1] = 1;
                 xend[1]   = nx;
                 ystart[1] = 1;
@@ -415,41 +422,34 @@ namespace NPB {
 
                 xstart[2] = 1;
                 xend[2]   = nx;
-                ystart[2] = 1;
-                yend[2]   = ny;
-                zstart[2] = 1 + me2 * nz/np2;
-                zend[2]   = (me2+1) * nz/np2;
-
-                xstart[3] = 1;
-                xend[3]   = nx;
-                ystart[3] = 1 + me2 * ny/np2;
-                yend[3]   = (me2+1) * ny/np2;
-                zstart[3] = 1;
-                zend[3] = nz;
+                ystart[2] = 1 + me2 * ny/np2;
+                yend[2]   = (me2+1) * ny/np2;
+                zstart[2] = 1;
+                zend[2] = nz;
 
             }
             else if (layout_type == layout_2D) {
 
-                xstart[1] = 1;
-                xend[1]   = nx;
-                ystart[1] = 1 + me1 * ny/np1;
-                yend[1]   = (me1+1) * ny/np1;
-                zstart[1] = 1 + me2 * nz/np2;
-                zend[1]   = (me2+1) * nz/np2;
+                xstart[0] = 1;
+                xend[0]   = nx;
+                ystart[0] = 1 + me1 * ny/np1;
+                yend[0]   = (me1+1) * ny/np1;
+                zstart[0] = 1 + me2 * nz/np2;
+                zend[0]   = (me2+1) * nz/np2;
 
-                xstart[2] = 1 + me1 * nx/np1;
-                xend[2]   = (me1+1)*nx/np1;
-                ystart[2] = 1;
-                yend[2]   = ny;
-                zstart[2] = zstart[1];
-                zend[2]   = zend[1];
+                xstart[1] = 1 + me1 * nx/np1;
+                xend[1]   = (me1+1)*nx/np1;
+                ystart[1] = 1;
+                yend[1]   = ny;
+                zstart[1] = zstart[0];
+                zend[1]   = zend[0];
 
-                xstart[3] = xstart[2];
-                xend[3]   = xend[2];
-                ystart[3] = 1 + me2 *ny/np2;
-                yend[3]   = (me2+1)*ny/np2;
-                zstart[3] = 1;
-                zend[3] = nz;
+                xstart[2] = xstart[1];
+                xend[2]   = xend[1];
+                ystart[2] = 1 + me2 *ny/np2;
+                yend[2]   = (me2+1)*ny/np2;
+                zstart[2] = 1;
+                zend[2] = nz;
             }
 
             //c---------------------------------------------------------------------
@@ -508,13 +508,13 @@ namespace NPB {
             if (layout_type == layout_0D) { //xyz layout
                 int size1 = dims[1, 3]; int size2 = dims[2, 3]; int size3 = dims[3, 3];
                 for (i = 1; i <= size1; i++) {
-                    ii =  (int) mod(i+xstart[3]-2+nx/2, nx) - nx/2;
+                    ii =  (int) mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
                     for (j = 1; j <= size2; j++) {
-                        jj = (int) mod(j+ystart[3]-2+ny/2, ny) - ny/2;
+                        jj = (int) mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj * jj + ii2;
                         for (k = 1; k <= size3; k++) {
-                            kk = (int) mod(k+zstart[3]-2+nz/2, nz) - nz/2;
+                            kk = (int) mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((k-1)*d2+(j-1))*d1+(i-1));//twiddle[k, j, i]
                             twiddle[idx] = Math.Exp(ap * (double)(kk * kk + ij2));
                         }
@@ -523,13 +523,13 @@ namespace NPB {
             } else if (layout_type == layout_1D) { // zxy layout 
                 int size1 = dims[2, 3]; int size2 = dims[3, 3]; int size3 = dims[1, 3];
                 for (i = 1; i <= size1; i++) {
-                    ii =  (int) mod(i+xstart[3]-2+nx/2, nx) - nx/2;
+                    ii =  (int) mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
                     for (j = 1; j <= size2; j++) {
-                        jj = (int) mod(j+ystart[3]-2+ny/2, ny) - ny/2;
+                        jj = (int) mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj*jj+ii2;
                         for (k = 1; k <= size3; k++) {
-                            kk = (int) mod(k+zstart[3]-2+nz/2, nz) - nz/2;
+                            kk = (int) mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((j-1)*d2+(i-1))*d1+(k-1)); //twiddle[j, i, k] 
                             twiddle[idx] = Math.Exp(ap * (double)(kk * kk + ij2));
                         }
@@ -539,13 +539,13 @@ namespace NPB {
             else if (layout_type == layout_2D) { // zxy layout
                 int size1 = dims[2, 3]; int size2 = dims[3, 3]; int size3 = dims[1, 3];
                 for (i = 1; i <= size1; i++) {
-                    ii =  (int) mod(i+xstart[3]-2+nx/2, nx) - nx/2;
+                    ii =  (int) mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
                     for (j = 1; j <= size2; j++) {
-                        jj = (int) mod(j+ystart[3]-2+ny/2, ny) - ny/2;
+                        jj = (int) mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj*jj+ii2;
                         for (k = 1; k <= size3; k++) {
-                            kk = (int) mod(k+zstart[3]-2+nz/2, nz) - nz/2;
+                            kk = (int) mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((j-1)*d2+(i-1))*d1+(k-1)); // twiddle[j,i,k]
                             twiddle[idx] = Math.Exp(ap * (double)(kk*kk+ij2));
                         }
@@ -579,7 +579,7 @@ namespace NPB {
             //c Jump to the starting element for our first plane.
             //c---------------------------------------------------------------------
 
-            an = ipow46(a, 2*nx, (zstart[1]-1)*ny + (ystart[1]-1));
+            an = ipow46(a, 2*nx, (zstart[0]-1)*ny + (ystart[0]-1));
             dummy = randlcGet(ref start, ref an);
             an = ipow46(a, 2*nx, ny);
 
@@ -1541,15 +1541,15 @@ namespace NPB {
             int i1, i2, i3, idx=0;
             for (j = 1; j <= 1024; j++) {
                 q = (int) mod(j, nx)+1;
-                if (q >= xstart[1] && q <= xend[1]) {
+                if (q >= xstart[0] && q <= xend[0]) {
                     r = (int) mod(3*j,ny)+1; 
-                    if (r >= ystart[1] && r <= yend[1]) {
+                    if (r >= ystart[0] && r <= yend[0]) {
                         s = (int) mod(5*j,nz)+1; 
-                        if (s >= zstart[1] && s <= zend[1]) {               //chk=chk+u11(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1);
+                        if (s >= zstart[0] && s <= zend[0]) {               //chk=chk+u11(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1);
                             //C#     :     double complex u11[d3, d2, d1];
-                            i1 = s-zstart[1];
-                            i2 = r-ystart[1];
-                            i3 = q-xstart[1];
+                            i1 = s-zstart[0];
+                            i2 = r-ystart[0];
+                            i3 = q-xstart[0];
                             idx = ((i1*d2+i2)*d1+i3)*2;
                             chk_Real=chk_Real+Point.getValue(u11,idx+REAL); //u11[i1, i2, i3];
                             chk_Imag=chk_Imag+Point.getValue(u11,idx+IMAG); //u11[i1, i2, i3];

@@ -23,12 +23,12 @@ namespace NPB {
             protected static int node, me1, me2;
             // Declared in block MPI: protected int commslice1, commslice2;
             protected static int[,] dims = new int[3+1, 3+1];
-            protected static int[] xstart = new int[3+1];
-            protected static int[] ystart = new int[3+1];
-            protected static int[] zstart = new int[3+1];
-            protected static int[] xend = new int[3+1];
-            protected static int[] yend = new int[3+1];
-            protected static int[] zend = new int[3+1];
+            protected static int[] xstart = new int[3];
+            protected static int[] ystart = new int[3];
+            protected static int[] zstart = new int[3];
+            protected static int[] xend = new int[3];
+            protected static int[] yend = new int[3];
+            protected static int[] zend = new int[3];
             protected int T_total = 1, T_setup = 2, T_fft = 3, T_evolve = 4, T_checksum = 5, T_fftlow = 6, 
                           T_fftcopy = 7, T_transpose = 8, T_transxzloc = 9, T_transxzglo = 10, T_transxzfin = 11, 
                           T_transxyloc = 12, T_transxyglo = 13, T_transxyfin = 14,  T_synch = 15, T_max = 15;
