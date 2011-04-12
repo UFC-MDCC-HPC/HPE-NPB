@@ -33,7 +33,7 @@ namespace NPB {
                           T_fftcopy = 7, T_transpose = 8, T_transxzloc = 9, T_transxzglo = 10, T_transxzfin = 11, 
                           T_transxyloc = 12, T_transxyglo = 13, T_transxyfin = 14,  T_synch = 15, T_max = 15;
         protected bool timers_enabled = false;
-        protected double timer_read;
+        //protected double timer_read;
         protected int ilog2;
         protected double randlc;
         protected static bool debug, debugsynch, debugX=true;
