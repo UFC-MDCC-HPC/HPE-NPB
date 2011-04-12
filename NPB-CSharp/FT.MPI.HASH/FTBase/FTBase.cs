@@ -9,8 +9,8 @@ namespace NPB {
         //npbparams.h
             protected int nx, ny, nz, maxdim, niter_default, ntdivnp, np_min;
             protected double ntotal_f;
-            protected bool convertdouble;
-            protected string compiletime, npbversion, cs1, cs2, cs3, cs4, cs5, cs6, cs7;
+            //protected bool convertdouble;
+            protected string cs1, cs2, cs3, cs4, cs5, cs6, cs7;//compiletime, npbversion, 
         //end.h
 
         //global.h
@@ -93,16 +93,12 @@ namespace NPB {
 
         public FTBase(char c){
             this.CLSS = c;
-            string dayOfCompile="28 April 2010";
             switch (this.CLSS) {
                 case ('S'):
                     nx=ny=nz=64;
                     niter_default=6;
                     maxdim=64;
                     ntotal_f=(double)(nx*ny*nz);
-                    convertdouble = false;
-                    compiletime = dayOfCompile;
-                    npbversion="3.3";
                     break;
                 case ('W'):
                     nx=ny=128;
@@ -110,9 +106,6 @@ namespace NPB {
                     niter_default=6;
                     maxdim = 128;
                     ntotal_f = (double)(nx * ny * nz);
-                    convertdouble = false;
-                    compiletime = dayOfCompile;
-                    npbversion = "3.3";
                     break;     
                 case ('A'):
                     nx=256;
@@ -121,9 +114,6 @@ namespace NPB {
                     niter_default=6;
                     maxdim = 256;
                     ntotal_f = (double)(nx * ny * nz);
-                    convertdouble = false;
-                    compiletime = dayOfCompile;
-                    npbversion = "3.3";
                     break;      
                 case ('B'):
                     nx=512;
@@ -131,18 +121,12 @@ namespace NPB {
                     niter_default=20;
                     maxdim = 512;
                     ntotal_f = (double)(nx * ny * nz);
-                    convertdouble = false;
-                    compiletime = dayOfCompile;
-                    npbversion = "3.3";
                     break;
                 case ('C'):
                     nx=ny=nz=512;
                     niter_default=20;
                     maxdim = 512;
                     ntotal_f = (double)(nx * ny * nz);
-                    convertdouble = false;
-                    compiletime = dayOfCompile;
-                    npbversion = "3.3";
                     break;
             }
             mpi_start();

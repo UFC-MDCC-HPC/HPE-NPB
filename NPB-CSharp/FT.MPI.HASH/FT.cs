@@ -203,14 +203,10 @@ namespace NPB {
             int i, fstatus=0; 
             debug = false;
 
-            if (!convertdouble) {
-                dc_type = 1275072546; //MPI_DOUBLE_COMPLEX;
-            } else {
-                dc_type = 1275070494; //MPI_COMPLEX;
-            }
+            dc_type = 1275072546;
 
             if (node == 0) {
-                Console.WriteLine(" NAS Parallel Benchmarks "+ npbversion +" -- FT Benchmark ");
+                Console.WriteLine(" NAS Parallel Benchmarks "+ "3.3" +" -- FT Benchmark ");
                 try {
                     Console.Write("Trying Read from input file inputft.data: ");
                     int[] conf = {1,1,2};
