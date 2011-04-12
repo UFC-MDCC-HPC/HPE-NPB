@@ -105,27 +105,6 @@ namespace NPB {
 
         }
 
-        public void startBigArrays() {
-            try {
-                //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)
-                u1 = new double[dims[2, 0], dims[1, 0], dims[0, 0], 2];
-                u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
-                u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
-                u = new double[nx, 2];
-                sums = new double[niter_default+2, 2];
-                // twiddle(ntdivnp)
-                twiddle = new double[ntdivnp];
-            }
-            catch {
-                Console.WriteLine("");
-                Console.WriteLine(" OutOfMemoryException: Memory error!");
-                Console.WriteLine("");
-                worldcomm.Abort(0);
-                mpi.Dispose();
-                Environment.Exit(0);
-            }
-        }
-
         public void runBenchMark() {
             for(i = 1; i <= T_max; i++) {
                 timer.resetTimer(i);
@@ -378,7 +357,6 @@ namespace NPB {
                 dims[0, 2] = nz;
                 dims[1, 2] = nx;
                 dims[2, 2] = ny;
-
             }
 
             for(i = 0; i < 3; i++) {
@@ -504,6 +482,27 @@ namespace NPB {
 
             if(fftblock != fftblock_default)
                 fftblockpad = fftblock + 3;
+        }
+
+        public void startBigArrays() {
+            try {
+                //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)
+                u1 = new double[dims[2, 0], dims[1, 0], dims[0, 0], 2];
+                u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
+                u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
+                u = new double[nx, 2];
+                sums = new double[niter_default+2, 2];
+                // twiddle(ntdivnp)
+                twiddle = new double[ntdivnp];
+            }
+            catch {
+                Console.WriteLine("");
+                Console.WriteLine(" OutOfMemoryException: Memory error!");
+                Console.WriteLine("");
+                worldcomm.Abort(0);
+                mpi.Dispose();
+                Environment.Exit(0);
+            }
         }
 
         public void synchup() {
