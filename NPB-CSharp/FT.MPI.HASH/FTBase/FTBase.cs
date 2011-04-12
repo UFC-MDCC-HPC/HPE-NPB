@@ -74,7 +74,7 @@ namespace NPB {
             protected int iter;
             protected double total_time, mflops;
             //protected bool verified;
-            protected char clss; 
+            protected char CLSS; 
         //end.f
 
         //timer.f
@@ -92,9 +92,9 @@ namespace NPB {
       //***************************************************************************************************************/
 
         public FTBase(char c){
-            this.clss = c;
+            this.CLSS = c;
             string dayOfCompile="28 April 2010";
-            switch (this.clss) {
+            switch (this.CLSS) {
                 case ('S'):
                     nx=ny=nz=64;
                     niter_default=6;
@@ -144,42 +144,6 @@ namespace NPB {
                     compiletime = dayOfCompile;
                     npbversion = "3.3";
                     break;
-                //case ('K'):
-                //    nx = ny = nz = 64;
-                //    niter_default = 6;
-                //    maxdim = 64;
-                //    ntotal_f = (double)(nx * ny * nz);
-                //    convertdouble = false;
-                //    compiletime = dayOfCompile;
-                //    npbversion = "3.3";
-                //    npDebug = 3;
-                //    this.clss = 'S';
-                //    break;
-                //case ('I'):
-                //    nx = 512;
-                //    ny = nz = 256;
-                //    niter_default = 20;
-                //    maxdim = 512;
-                //    ntotal_f = (double)(nx * ny * nz);
-                //    convertdouble = false;
-                //    compiletime = dayOfCompile;
-                //    npbversion = "3.3";
-                //    npDebug = 3;
-                //    this.clss = 'B';
-                //    break;
-                //case ('T'):
-                //    nx = 256;
-                //    ny = 256;
-                //    nz = 128;
-                //    niter_default = 6;
-                //    maxdim = 256;
-                //    ntotal_f = (double)(nx * ny * nz);
-                //    convertdouble = false;
-                //    compiletime = dayOfCompile;
-                //    npbversion = "3.3";
-                //    npDebug = 3;
-                //    this.clss = 'A';
-                //    break; 
             }
             mpi_start();
         }

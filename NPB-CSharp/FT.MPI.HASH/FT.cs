@@ -88,8 +88,8 @@ namespace NPB {
                 paramClass = IO.CLASS;
             }
             else {
-                paramClass = 'S';  //DEBUG: CHANGE TO [K=(S and 4 PROCESSORS)] OR [S=(S and 1 PROCESSOR)]
-            }                      //DEBUG: OR [T=(A and 4 PROCESSORS)] OR [I=(B and 4 PROCESSORS)]
+                paramClass = 'S';
+            }                      
 
             try {
                 ft = new FT(paramClass);
@@ -179,7 +179,21 @@ namespace NPB {
                 mflops = 0.0;
             }
             if (me == 0) {
-                IO.print_results(BMName, clss, nx, ny, nz, niter, np_min, np, total_time, mflops, "floating point", verified, npbversion);
+                IO.print_results(BMName, CLSS, nx, ny, nz, niter, np_min, np, total_time, mflops, "floating point", verified, npbversion);
+                //BMResults results = new BMResults(BMName,
+                //                        CLASS,
+                //                        nx0,
+                //                        ny0,
+                //                        nz0,
+                //                        itmax,
+                //                        maxtime,
+                //                        mflops,
+                //                        "floating point",
+                //                        verified,
+                //                        true,
+                //                        num,
+                //                        -1);
+                //results.print();
             }
             if (timers_enabled) print_timers();
             mpi.Dispose();
