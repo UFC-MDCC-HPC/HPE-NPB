@@ -67,9 +67,10 @@ using System.IO;
 using NPB3_0_JAV.BMInOut;
 
 namespace NPB {
-    public class FT:FTBase {
+    public class FT: FTBase {
 
-        public FT(char c):base(c){}
+        public FT(char c) : base(c) {
+        }
 
         static void Main(String[] argv) {
 
@@ -79,23 +80,23 @@ namespace NPB {
             try {
                 string param = argv[0];
             }
-            catch (Exception) {
+            catch(Exception) {
                 argv = new String[1];
                 argv[0] = "CLASS=S"; // CLASS DEFAULT, IF USER NOT TYPE CLASS=S IN COMMAND-LINE ARGUMENT
             }
             char paramClass;
-            if (!FTBase.debug) {
+            if(!FTBase.debug) {
                 IO.parseCmdLineArgs(argv);
                 paramClass = IO.CLASS;
             }
             else {
                 paramClass = 'S';
-            }                      
+            }
 
             try {
                 ft = new FT(paramClass);
             }
-            catch (OutOfMemoryException e) {
+            catch(OutOfMemoryException e) {
                 Console.WriteLine(e.ToString());
                 Environment.Exit(0);
             }
@@ -114,7 +115,8 @@ namespace NPB {
                 sums = new double[niter_default+2, 2];
                 // twiddle(ntdivnp)
                 twiddle = new double[ntdivnp];
-            } catch {
+            }
+            catch {
                 Console.WriteLine("");
                 Console.WriteLine(" OutOfMemoryException: Memory error!");
                 Console.WriteLine("");
@@ -125,12 +127,12 @@ namespace NPB {
         }
 
         public void runBenchMark() {
-            for (i = 1; i <= T_max; i++) {
+            for(i = 1; i <= T_max; i++) {
                 timer.resetTimer(i);
             }
             setup();
             startBigArrays();
-            compute_indexmap(twiddle, dims[0,2], dims[1,2], dims[2,2]);
+            compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
             compute_initial_conditions(u1, dims[0, 0], dims[1, 0], dims[2, 0]);
             fft_init(dims[0, 0]);  //control u
             fft(1, u1, u0); // fft(1, u1, u0);
@@ -138,48 +140,63 @@ namespace NPB {
             //c Start over from the beginning. Note that all operations must
             //c be timed, in contrast to other benchmarks. 
             //c---------------------------------------------------------------------
-            for (i = 1; i <= T_max; i++) timer.resetTimer(i);
-            worldcomm.Barrier(); 
+            for(i = 1; i <= T_max; i++)
+                timer.resetTimer(i);
+            worldcomm.Barrier();
 
             timer.start(T_total);
-            if (timers_enabled) timer.start(T_setup);
+            if(timers_enabled)
+                timer.start(T_setup);
 
-            compute_indexmap(twiddle, dims[0,2], dims[1,2], dims[2,2]);
-            compute_initial_conditions(u1, dims[0,0], dims[1,0], dims[2,0]);
-            fft_init(dims[0,0]);
+            compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
+            compute_initial_conditions(u1, dims[0, 0], dims[1, 0], dims[2, 0]);
+            fft_init(dims[0, 0]);
 
-            if (timers_enabled) synchup();
-            if (timers_enabled) timer.stop(T_setup);
+            if(timers_enabled)
+                synchup();
+            if(timers_enabled)
+                timer.stop(T_setup);
 
-            if (timers_enabled) timer.start(T_fft);
+            if(timers_enabled)
+                timer.start(T_fft);
             fft(1, u1, u0);
-            if (timers_enabled) timer.stop(T_fft);
+            if(timers_enabled)
+                timer.stop(T_fft);
 
-            
-            for (int iter = 1; iter <= niter; iter++) {
-                if (timers_enabled) timer.start(T_evolve);
-                evolve(u0, u1, twiddle, dims[0,0], dims[1,0], dims[2,0]);
-                if (timers_enabled) timer.stop(T_evolve);
-                if (timers_enabled) timer.start(T_fft);
+
+            for(int iter = 1; iter <= niter; iter++) {
+                if(timers_enabled)
+                    timer.start(T_evolve);
+                evolve(u0, u1, twiddle, dims[0, 0], dims[1, 0], dims[2, 0]);
+                if(timers_enabled)
+                    timer.stop(T_evolve);
+                if(timers_enabled)
+                    timer.start(T_fft);
                 fft(-1, u1, u2);
-                if (timers_enabled) timer.stop(T_fft);
-                if (timers_enabled) synchup();
-                if (timers_enabled) timer.start(T_checksum);
-                checksum(iter, u2, dims[0,0], dims[1,0], dims[2,0]);
-                if (timers_enabled) timer.stop(T_checksum);
+                if(timers_enabled)
+                    timer.stop(T_fft);
+                if(timers_enabled)
+                    synchup();
+                if(timers_enabled)
+                    timer.start(T_checksum);
+                checksum(iter, u2, dims[0, 0], dims[1, 0], dims[2, 0]);
+                if(timers_enabled)
+                    timer.stop(T_checksum);
             }
 
             int verified = verify(nx, ny, nz, niter);
             timer.stop(T_total);
-            if (np != np_min) verified = 0;
+            if(np != np_min)
+                verified = 0;
             double total_time = timer.readTimer(T_total), mflops; //total_time = timer_read(t_total);
 
-            if (total_time != 0) {
+            if(total_time != 0) {
                 mflops = 0.000001*ntotal_f * (14.8157+7.19641*Math.Log(ntotal_f) +  (5.23518+7.21113*Math.Log(ntotal_f))*niter)/total_time;
-            } else {
+            }
+            else {
                 mflops = 0.0;
             }
-            if (node == 0) {
+            if(node == 0) {
                 BMResults results = new BMResults(BMName,
                                         CLSS,
                                         nx,
@@ -195,23 +212,24 @@ namespace NPB {
                                         -1);
                 results.print();
             }
-            if (timers_enabled) print_timers();
+            if(timers_enabled)
+                print_timers();
             mpi.Dispose();
         }
 
         public void setup() {
-            int i, fstatus=0; 
+            int i, fstatus=0;
             debug = false;
 
-            if (node == 0) {
+            if(node == 0) {
                 Console.WriteLine(" NAS Parallel Benchmarks "+ "3.3" +" -- FT Benchmark ");
                 try {
                     Console.Write("Trying Read from input file inputft.data: ");
-                    int[] conf = {1,1,2};
-                    string[] vetTemp = IO.readFileData("inputft.data",conf);
-                    niter = int.Parse(vetTemp[0]); 
-                    layout_type = int.Parse(vetTemp[1]); 
-                    np1 = int.Parse(vetTemp[2]); 
+                    int[] conf = { 1, 1, 2 };
+                    string[] vetTemp = IO.readFileData("inputft.data", conf);
+                    niter = int.Parse(vetTemp[0]);
+                    layout_type = int.Parse(vetTemp[1]);
+                    np1 = int.Parse(vetTemp[2]);
                     np2 = int.Parse(vetTemp[3]);
                 }
                 catch /*(System.IO.FileNotFoundException e)*/ {
@@ -220,7 +238,7 @@ namespace NPB {
                     //Console.WriteLine(e.ToString());
                 }
 
-                if (fstatus == 0) {
+                if(fstatus == 0) {
                     Console.WriteLine("inputft.data found");
 
                     //c---------------------------------------------------------------------
@@ -230,7 +248,7 @@ namespace NPB {
                     //c 1. product of processor grid dims must equal number of processors
                     //c---------------------------------------------------------------------
 
-                    if (np1 * np2 != np) {
+                    if(np1 * np2 != np) {
                         Console.WriteLine(" np1 and np2 given in input file are not valid.");
                         Console.WriteLine("Product is "+ np1*np2+" and should be "+np);
                         mpi.Dispose();
@@ -241,7 +259,7 @@ namespace NPB {
                     //c 2. layout type must be valid
                     //c---------------------------------------------------------------------
 
-                    if (layout_type != layout_0D && layout_type != layout_1D && layout_type != layout_2D) {
+                    if(layout_type != layout_0D && layout_type != layout_1D && layout_type != layout_2D) {
                         Console.WriteLine(" Layout type specified in inputft.data is invalid ");
                         mpi.Dispose();
                         Environment.Exit(0);
@@ -251,7 +269,7 @@ namespace NPB {
                     //c 3. 0D layout must be 1x1 grid
                     //c---------------------------------------------------------------------
 
-                    if (layout_type == layout_0D && (np1 != 1 || np2 != 1)) {
+                    if(layout_type == layout_0D && (np1 != 1 || np2 != 1)) {
                         Console.WriteLine(" For 0D layout, both np1 and np2 must be 1 ");
                         mpi.Dispose();
                         Environment.Exit(0);
@@ -260,21 +278,21 @@ namespace NPB {
                     //c 4. 1D layout must be 1xN grid
                     //c---------------------------------------------------------------------
 
-                    if (layout_type == layout_1D && np1 != 1) {
+                    if(layout_type == layout_1D && np1 != 1) {
                         Console.WriteLine(" For 1D layout, np1 must be 1 ");
                         mpi.Dispose();
                         Environment.Exit(0);
                     }
                 }
                 else {
-                    Console.WriteLine(" No input file inputft.data. Using compiled defaults"); 
+                    Console.WriteLine(" No input file inputft.data. Using compiled defaults");
                     niter = niter_default;
-                    if (np == 1) {
+                    if(np == 1) {
                         np1 = 1;
                         np2 = 1;
                         layout_type = layout_0D;
                     }
-                    else if (np <= nz) {
+                    else if(np <= nz) {
                         np1 = 1;
                         np2 = np;
                         layout_type = layout_1D;
@@ -286,7 +304,7 @@ namespace NPB {
                     }
                 }
 
-                if (np < np_min) {
+                if(np < np_min) {
                     Console.WriteLine(" Error: Compiled for "+ np_min + " processors. ");
                     Console.WriteLine(" Only "+ np + " processors found ");
                     mpi.Dispose();
@@ -296,11 +314,12 @@ namespace NPB {
                 Console.WriteLine(" Iterations: "+ niter);
                 Console.WriteLine(" Number of processes : "+ np);
                 Console.WriteLine(" Processor array     : "+np1+"x"+np2);
-                if (np != np_min) Console.WriteLine(" WARNING: compiled for "+np_min+" processes. Will not verify. ");
-                if (layout_type == layout_0D) {
+                if(np != np_min)
+                    Console.WriteLine(" WARNING: compiled for "+np_min+" processes. Will not verify. ");
+                if(layout_type == layout_0D) {
                     Console.WriteLine(" Layout type: OD");
                 }
-                else if (layout_type == layout_1D) {
+                else if(layout_type == layout_1D) {
                     Console.WriteLine(" Layout type: 1D");
                 }
                 else {
@@ -317,23 +336,24 @@ namespace NPB {
             worldcomm.Broadcast<int>(ref np2, root);
             worldcomm.Broadcast<int>(ref layout_type, root);
 
-            if (np1 == 1 && np2 == 1) {
+            if(np1 == 1 && np2 == 1) {
                 layout_type = layout_0D;
             }
-            else if (np1 == 1) {
+            else if(np1 == 1) {
                 layout_type = layout_1D;
             }
             else {
                 layout_type = layout_2D;
             }
 
-            if (layout_type == layout_0D) {
-                for (i = 0; i < 3; i++) {
+            if(layout_type == layout_0D) {
+                for(i = 0; i < 3; i++) {
                     dims[0, i] = nx;
                     dims[1, i] = ny;
                     dims[2, i] = nz;
                 }
-            } else if (layout_type == layout_1D) {
+            }
+            else if(layout_type == layout_1D) {
                 dims[0, 0] = nx;
                 dims[1, 0] = ny;
                 dims[2, 0] = nz;
@@ -346,22 +366,22 @@ namespace NPB {
                 dims[1, 2] = nx;
                 dims[2, 2] = ny;
             }
-            else if (layout_type == layout_2D) {
-                    dims[0, 0] = nx;
-                    dims[1, 0] = ny;
-                    dims[2, 0] = nz;
+            else if(layout_type == layout_2D) {
+                dims[0, 0] = nx;
+                dims[1, 0] = ny;
+                dims[2, 0] = nz;
 
-                    dims[0, 1] = ny;
-                    dims[1, 1] = nx;
-                    dims[2, 1] = nz;
+                dims[0, 1] = ny;
+                dims[1, 1] = nx;
+                dims[2, 1] = nz;
 
-                    dims[0, 2] = nz;
-                    dims[1, 2] = nx;
-                    dims[2, 2] = ny;
+                dims[0, 2] = nz;
+                dims[1, 2] = nx;
+                dims[2, 2] = ny;
 
             }
 
-            for (i = 0; i < 3; i++) {
+            for(i = 0; i < 3; i++) {
                 dims[1, i] = dims[1, i] / np1;
                 dims[2, i] = dims[2, i] / np2;
             }
@@ -373,7 +393,7 @@ namespace NPB {
             //c Processor coords are zero-based. 
             //c---------------------------------------------------------------------
 
-            me2 = (int) mod(node, np2);  // goes from 0...np2-1
+            me2 = (int)mod(node, np2);  // goes from 0...np2-1
             me1 = node/np2;        // goes from 0...np1-1
 
             //c---------------------------------------------------------------------
@@ -383,20 +403,22 @@ namespace NPB {
             //c mpi_comm_split(comm, color, key, ...)
             //c---------------------------------------------------------------------
 
-            commslice1=(MPI.Intracommunicator)worldcomm.Split(me1,me2);//MPI_Comm_split(MPI_COMM_WORLD,me1,me2,commslice1,ierr)
-            commslice2=(MPI.Intracommunicator)worldcomm.Split(me2,me1);//MPI_Comm_split(MPI_COMM_WORLD,me2,me1,commslice2,ierr)
+            commslice1=(MPI.Intracommunicator)worldcomm.Split(me1, me2);//MPI_Comm_split(MPI_COMM_WORLD,me1,me2,commslice1,ierr)
+            commslice2=(MPI.Intracommunicator)worldcomm.Split(me2, me1);//MPI_Comm_split(MPI_COMM_WORLD,me2,me1,commslice2,ierr)
 
-            if (timers_enabled) synchup();
+            if(timers_enabled)
+                synchup();
 
-            if (debug) Console.WriteLine("proc coords: " + node +" "+ me1 +" "+ me2);
+            if(debug)
+                Console.WriteLine("proc coords: " + node +" "+ me1 +" "+ me2);
 
             //c---------------------------------------------------------------------
             //c Determine which section of the grid is owned by this
             //c processor. 
             //c---------------------------------------------------------------------
-            if (layout_type == layout_0D) {
+            if(layout_type == layout_0D) {
 
-                for (i = 0; i < 3; i++) {
+                for(i = 0; i < 3; i++) {
                     xstart[i] = 1;
                     xend[i]   = nx;
                     ystart[i] = 1;
@@ -405,7 +427,8 @@ namespace NPB {
                     zend[i]   = nz;
                 }
 
-            } else if (layout_type == layout_1D) {
+            }
+            else if(layout_type == layout_1D) {
                 xstart[0] = 1;
                 xend[0]   = nx;
                 ystart[0] = 1;
@@ -428,7 +451,7 @@ namespace NPB {
                 zend[2] = nz;
 
             }
-            else if (layout_type == layout_2D) {
+            else if(layout_type == layout_2D) {
 
                 xstart[0] = 1;
                 xend[0]   = nx;
@@ -470,16 +493,20 @@ namespace NPB {
             fftblock = fftblock_default;
             fftblockpad = fftblockpad_default;
 
-            if (layout_type == layout_2D) {
-                if (dims[1, 0] < fftblock) fftblock = dims[1, 0];
-                if (dims[1, 1] < fftblock) fftblock = dims[1, 1];
-                if (dims[1, 2] < fftblock) fftblock = dims[1, 2];
+            if(layout_type == layout_2D) {
+                if(dims[1, 0] < fftblock)
+                    fftblock = dims[1, 0];
+                if(dims[1, 1] < fftblock)
+                    fftblock = dims[1, 1];
+                if(dims[1, 2] < fftblock)
+                    fftblock = dims[1, 2];
             }
 
-            if (fftblock != fftblock_default) fftblockpad = fftblock + 3;
+            if(fftblock != fftblock_default)
+                fftblockpad = fftblock + 3;
         }
 
-        public void synchup(){
+        public void synchup() {
             timer.start(T_synch);
             worldcomm.Barrier();
             timer.stop(T_synch);
@@ -487,7 +514,7 @@ namespace NPB {
 
         public void compute_indexmap(double[] twiddle, int d1, int d2, int d3) {
             int i, j, k, ii, ii2, jj, ij2, kk;
-            double ap; 
+            double ap;
             //Fortran: twiddle(d1, d2, d3)
             //C#     : twiddle[d3, d2, d1]
 
@@ -505,47 +532,54 @@ namespace NPB {
             ap = -4.0 * alpha * pi * pi;
 
             int idx;
-            if (layout_type == layout_0D) { //xyz layout
-                int size1 = dims[0, 2]; int size2 = dims[1, 2]; int size3 = dims[2, 2];
-                for (i = 1; i <= size1; i++) {
-                    ii =  (int) mod(i+xstart[2]-2+nx/2, nx) - nx/2;
+            if(layout_type == layout_0D) { //xyz layout
+                int size1 = dims[0, 2];
+                int size2 = dims[1, 2];
+                int size3 = dims[2, 2];
+                for(i = 1; i <= size1; i++) {
+                    ii =  (int)mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
-                    for (j = 1; j <= size2; j++) {
-                        jj = (int) mod(j+ystart[2]-2+ny/2, ny) - ny/2;
+                    for(j = 1; j <= size2; j++) {
+                        jj = (int)mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj * jj + ii2;
-                        for (k = 1; k <= size3; k++) {
-                            kk = (int) mod(k+zstart[2]-2+nz/2, nz) - nz/2;
+                        for(k = 1; k <= size3; k++) {
+                            kk = (int)mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((k-1)*d2+(j-1))*d1+(i-1));//twiddle[k, j, i]
                             twiddle[idx] = Math.Exp(ap * (double)(kk * kk + ij2));
                         }
                     }
                 }
-            } else if (layout_type == layout_1D) { // zxy layout 
-                int size1 = dims[1, 2]; int size2 = dims[2, 2]; int size3 = dims[0, 2];
-                for (i = 1; i <= size1; i++) {
-                    ii =  (int) mod(i+xstart[2]-2+nx/2, nx) - nx/2;
+            }
+            else if(layout_type == layout_1D) { // zxy layout 
+                int size1 = dims[1, 2];
+                int size2 = dims[2, 2];
+                int size3 = dims[0, 2];
+                for(i = 1; i <= size1; i++) {
+                    ii =  (int)mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
-                    for (j = 1; j <= size2; j++) {
-                        jj = (int) mod(j+ystart[2]-2+ny/2, ny) - ny/2;
+                    for(j = 1; j <= size2; j++) {
+                        jj = (int)mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj*jj+ii2;
-                        for (k = 1; k <= size3; k++) {
-                            kk = (int) mod(k+zstart[2]-2+nz/2, nz) - nz/2;
+                        for(k = 1; k <= size3; k++) {
+                            kk = (int)mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((j-1)*d2+(i-1))*d1+(k-1)); //twiddle[j, i, k] 
                             twiddle[idx] = Math.Exp(ap * (double)(kk * kk + ij2));
                         }
                     }
                 }
             }
-            else if (layout_type == layout_2D) { // zxy layout
-                int size1 = dims[1, 2]; int size2 = dims[2, 2]; int size3 = dims[0, 2];
-                for (i = 1; i <= size1; i++) {
-                    ii =  (int) mod(i+xstart[2]-2+nx/2, nx) - nx/2;
+            else if(layout_type == layout_2D) { // zxy layout
+                int size1 = dims[1, 2];
+                int size2 = dims[2, 2];
+                int size3 = dims[0, 2];
+                for(i = 1; i <= size1; i++) {
+                    ii =  (int)mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
-                    for (j = 1; j <= size2; j++) {
-                        jj = (int) mod(j+ystart[2]-2+ny/2, ny) - ny/2;
+                    for(j = 1; j <= size2; j++) {
+                        jj = (int)mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj*jj+ii2;
-                        for (k = 1; k <= size3; k++) {
-                            kk = (int) mod(k+zstart[2]-2+nz/2, nz) - nz/2;
+                        for(k = 1; k <= size3; k++) {
+                            kk = (int)mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((j-1)*d2+(i-1))*d1+(k-1)); // twiddle[j,i,k]
                             twiddle[idx] = Math.Exp(ap * (double)(kk*kk+ij2));
                         }
@@ -557,7 +591,7 @@ namespace NPB {
             }
         }
 
-        public void compute_initial_conditions(double[,,,] u0, int d1, int d2, int d3) {
+        public void compute_initial_conditions(double[, , ,] u0, int d1, int d2, int d3) {
             int k;
             double x0, start, an, dummy;
 
@@ -586,11 +620,12 @@ namespace NPB {
             //c---------------------------------------------------------------------
             //c Go through by z planes filling in one square at a time.
             //c---------------------------------------------------------------------
-            for (k = 1; k <= dims[2, 0]; k++) { // nz/np2;
+            for(k = 1; k <= dims[2, 0]; k++) { // nz/np2;
                 x0 = start;
                 //call vranlc(2*nx*dims(2, 1), x0, a, u0(1, 1, k)) : call native
                 vranlc(2 * nx * dims[1, 0], x0, a, u0, k); //(1, 1, k));
-                if (k != dims[2, 0]) dummy = randlcGet(ref start, ref an);
+                if(k != dims[2, 0])
+                    dummy = randlcGet(ref start, ref an);
             }
         }
 
@@ -611,29 +646,32 @@ namespace NPB {
             //c   a^n = a*a^(n-1)       if n odd
             //c---------------------------------------------------------------------
             result = 1;
-            if (exp_2 == 0 || exp_1 == 0) return result;
+            if(exp_2 == 0 || exp_1 == 0)
+                return result;
             q = a;
             r = 1;
             n = exp_1;
             two_pow = true;
 
-            while (two_pow) {
+            while(two_pow) {
                 n2 = n/2;
-                if (n2 * 2 == n) {
+                if(n2 * 2 == n) {
                     dummy = randlcGet(ref q, ref q);
                     n = n2;
-                } else {
+                }
+                else {
                     n = n * exp_2;
                     two_pow = false;
                 }
             }
 
-            while (n > 1) {
+            while(n > 1) {
                 n2 = n/2;
-                if (n2 * 2 == n) {
+                if(n2 * 2 == n) {
                     dummy = randlcGet(ref q, ref q);
                     n = n2;
-                } else {
+                }
+                else {
                     dummy = randlcGet(ref r, ref q);
                     n = n-1;
                 }
@@ -642,7 +680,7 @@ namespace NPB {
             result = r;
             return result;
         }
-        
+
         public double randlcGet(ref double x, ref double a) {
             //c---------------------------------------------------------------------
             //c
@@ -678,7 +716,7 @@ namespace NPB {
             //c   Break A into two parts such that A = 2^23 * A1 + A2.
             //c---------------------------------------------------------------------
             t1 = r23 * a;
-            a1 = (int) (t1);
+            a1 = (int)(t1);
             a2 = a - t23 * a1;
 
             //c---------------------------------------------------------------------
@@ -687,20 +725,20 @@ namespace NPB {
             //c   X = 2^23 * Z + A2 * X2  (mod 2^46).
             //c---------------------------------------------------------------------
             t1 = r23 * x;
-            x1 = (int) (t1);
+            x1 = (int)(t1);
             x2 = x - t23 * x1;
 
 
             t1 = a1 * x2 + a2 * x1;
-            t2 = (int) (r23 * t1);
+            t2 = (int)(r23 * t1);
             z = t1 - t23 * t2;
             t3 = t23 * z + a2 * x2;
-            t4 = (int) (r46 * t3);
+            t4 = (int)(r46 * t3);
             x = t3 - t46 * t4;
             return (r46*x);
         }
 
-        public void vranlc(int n, double x, double a, double[,,,] y, int k) {
+        public void vranlc(int n, double x, double a, double[, , ,] y, int k) {
             //     c---------------------------------------------------------------------
             //     c   This routine generates N uniform pseudorandom double precision numbers in
             //     c   the range (0, 1) by using the linear congruential generator
@@ -724,10 +762,10 @@ namespace NPB {
             //     c---------------------------------------------------------------------
             double r23, r46, t23, t46;
             int nv;
-            r23 = Math.Pow(2.0,(-23)); 
+            r23 = Math.Pow(2.0, (-23));
             r46 = r23 * r23;
-            t23 = Math.Pow(2.0,23); 
-            t46 = t23 * t23; 
+            t23 = Math.Pow(2.0, 23);
+            t46 = t23 * t23;
             nv = 64;
             double[] xv = new double[nv];
             double t1, t2, t3, t4, an, a1=0, a2=0, x1, x2, yy;
@@ -736,16 +774,16 @@ namespace NPB {
             //     c     Compute the first NV elements of the sequence using RANDLC.
             //     c---------------------------------------------------------------------
             t1 = x;
-            n1 = (int) min(n, nv);
+            n1 = (int)min(n, nv);
 
-            for (i = 1; i <= n1; i++) {
+            for(i = 1; i <= n1; i++) {
                 xv[i-1] = t46 * randlcGet(ref t1, ref a);
             }
 
             //     c---------------------------------------------------------------------
             //     c     It is not necessary to compute AN, A1 or A2 unless N is greater than NV.
             //     c---------------------------------------------------------------------
-            if (n > nv) {
+            if(n > nv) {
 
                 //c---------------------------------------------------------------------
                 //c     Compute AN = AA ^ NV (mod 2^46) using successive calls to RANDLC.
@@ -753,7 +791,7 @@ namespace NPB {
                 t1 = a;
                 t2 = r46 * a;
 
-                for (i = 1; i <= nv - 1; i++) {
+                for(i = 1; i <= nv - 1; i++) {
                     t2 = randlcGet(ref t1, ref a);
                 }
 
@@ -763,53 +801,55 @@ namespace NPB {
                 //c     Break AN into two parts such that AN = 2^23 * A1 + A2.
                 //c---------------------------------------------------------------------
                 t1 = r23 * an;
-                a1 = (int) (t1);
+                a1 = (int)(t1);
                 a2 = an - t23 * a1;
             }
 
             //     c---------------------------------------------------------------------
             //     c     Compute N pseudorandom results in batches of size NV.
             //     c---------------------------------------------------------------------
-            for (j = 0; j <= n - 1; j = j + nv) {
-                n1 = (int) min(nv, n - j);
+            for(j = 0; j <= n - 1; j = j + nv) {
+                n1 = (int)min(nv, n - j);
 
                 //c---------------------------------------------------------------------
                 //c     Compute up to NV results based on the current seed vector XV.
                 //c---------------------------------------------------------------------
                 int idx;
                 int d3 = dims[2, 0], d2 = dims[1, 0], d1 = dims[0, 0];
-                for (i = 1; i <= n1; i++) { //y(i+j) = r46 * xv(i)
+                for(i = 1; i <= n1; i++) { //y(i+j) = r46 * xv(i)
                     idx = (i + j - 1) + (2 * nx * dims[1, 0] * (k - 1));
                     //y[idx] = r46 * xv[i - 1];
-                    Point.setValue(y,idx,r46*xv[i-1]);  //u0[d3, d2, d1]
+                    Point.setValue(y, idx, r46*xv[i-1]);  //u0[d3, d2, d1]
                 }
                 //c---------------------------------------------------------------------
                 //c     If this is the last pass through the 140 loop, it is not necessary to
                 //c     update the XV vector.
                 //c---------------------------------------------------------------------
-                if (j + n1 == n) goto goto150;
+                if(j + n1 == n)
+                    goto goto150;
 
                 //c---------------------------------------------------------------------
                 //c     Update the XV vector by multiplying each element by AN (mod 2^46).
                 //c---------------------------------------------------------------------
-                for (i = 1; i <= nv; i++) {
+                for(i = 1; i <= nv; i++) {
                     t1 = r23 * xv[i-1];
-                    x1 = (int) (t1);
+                    x1 = (int)(t1);
                     x2 = xv[i-1] - t23 * x1;
                     t1 = a1 * x2 + a2 * x1;
-                    t2 = (int) (r23 * t1);
+                    t2 = (int)(r23 * t1);
                     yy = t1 - t23 * t2;
                     t3 = t23 * yy + a2 * x2;
-                    t4 = (int) (r46 * t3);
+                    t4 = (int)(r46 * t3);
                     xv[i-1] = t3 - t46 * t4;
                 }
             }
 
             //     c---------------------------------------------------------------------
-            //     c     Save the last seed in X so that subsequent calls to VRANLC will generate
-            //     c     a continuous sequence.
-            //     c---------------------------------------------------------------------
-            goto150:  x = xv[n1-1];
+        //     c     Save the last seed in X so that subsequent calls to VRANLC will generate
+        //     c     a continuous sequence.
+        //     c---------------------------------------------------------------------
+        goto150:
+            x = xv[n1-1];
         }
 
         public void fft_init(int n) {
@@ -826,19 +866,19 @@ namespace NPB {
 
             nu = n;
             m = ilog2Get(n);
-            u[0,0] = m; // u(1)
-            u[0,1] = 0.0;
+            u[0, 0] = m; // u(1)
+            u[0, 1] = 0.0;
             ku = 2;
             ln = 1;
             int idx;
-            for (j = 1; j <= m; j++) {
+            for(j = 1; j <= m; j++) {
                 t = pi / ln;
-                for (i = 0; i <= ln - 1; i++) {
+                for(i = 0; i <= ln - 1; i++) {
                     ti = i * t;
                     //u[i+ku] = dcmplx (cos (ti), sin(ti));
                     idx = (i+ku)-1;
-                    u[idx,REAL] = Math.Cos(ti);  //u[i+ku]
-                    u[idx,IMAG] = Math.Sin(ti);  //u[i+ku]
+                    u[idx, REAL] = Math.Cos(ti);  //u[i+ku]
+                    u[idx, IMAG] = Math.Sin(ti);  //u[i+ku]
                 }
                 ku = ku + ln;
                 ln = 2 * ln;
@@ -847,19 +887,19 @@ namespace NPB {
 
         public int ilog2Get(int n) {
             int nn, lg;
-            if (n == 1) {
+            if(n == 1) {
                 return 0;
             }
             lg = 1;
             nn = 2;
-            while (nn < n) {
+            while(nn < n) {
                 nn = nn * 2;
                 lg = lg + 1;
             }
             return lg;
         }
-        
-        public void fft(int dir, double[,,,] x1, double[,,,] x2) {
+
+        public void fft(int dir, double[, , ,] x1, double[, , ,] x2) {
             //double complex x1(ntdivnp), x2(ntdivnp)
             //double complex scratch(fftblockpad_default*maxdim*2) !scratch equal y in cfftsX
             //c---------------------------------------------------------------------
@@ -871,97 +911,117 @@ namespace NPB {
             //c       xin/xout must be different
             //c---------------------------------------------------------------------
 
-            if (dir == 1) {
-                if (layout_type == layout_0D) {
-                    cffts1(1, dims[0,0], dims[1,0], dims[2,0], x1, x1, (new double[2, dims[0,0], fftblockpad,2]));  
-                    cffts2(1, dims[0,1], dims[1,1], dims[2,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
-                    cffts3(1, dims[0,2], dims[1,2], dims[2,2], x1, x2, (new double[2, dims[2,2], fftblockpad,2]));
-                } else if (layout_type == layout_1D) { 
-                    cffts1(1, dims[0,0], dims[1,0], dims[2,0], x1, x1, (new double[2, dims[0,0], fftblockpad,2]));
-                    cffts2(1, dims[0,1], dims[1,1], dims[2,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
-                    if (timers_enabled) timer.start(T_transpose);
-                    transpose_xy_z(2, 3, x1, x2);
-                    if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(1, dims[0,2], dims[1,2], dims[2,2], x2, x2, (new double[2, dims[0,2], fftblockpad,2]));
+            if(dir == 1) {
+                if(layout_type == layout_0D) {
+                    cffts1(1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts2(1, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    cffts3(1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x2, (new double[2, dims[2, 2], fftblockpad, 2]));
                 }
-                else if (layout_type == layout_2D) {
-                    cffts1(1, dims[0,0], dims[1,0], dims[2,0], x1, x1, (new double[2, dims[0,0], fftblockpad,2]));
-                    if (timers_enabled) timer.start(T_transpose);
+                else if(layout_type == layout_1D) {
+                    cffts1(1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts2(1, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    if(timers_enabled)
+                        timer.start(T_transpose);
+                    transpose_xy_z(2, 3, x1, x2);
+                    if(timers_enabled)
+                        timer.stop(T_transpose);
+                    cffts1(1, dims[0, 2], dims[1, 2], dims[2, 2], x2, x2, (new double[2, dims[0, 2], fftblockpad, 2]));
+                }
+                else if(layout_type == layout_2D) {
+                    cffts1(1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    if(timers_enabled)
+                        timer.start(T_transpose);
                     transpose_x_y(1, 2, x1, x2);
-                    if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(1, dims[0,1], dims[1,1], dims[2,1], x2, x2, (new double[2, dims[0,1], fftblockpad,2]));
-                    if (timers_enabled) timer.start(T_transpose);
+                    if(timers_enabled)
+                        timer.stop(T_transpose);
+                    cffts1(1, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2, (new double[2, dims[0, 1], fftblockpad, 2]));
+                    if(timers_enabled)
+                        timer.start(T_transpose);
                     transpose_x_z(2, 3, x2, x1);
-                    if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(1, dims[0,2], dims[1,2], dims[2,2], x1, x2, (new double[2, dims[0,2], fftblockpad,2]));
+                    if(timers_enabled)
+                        timer.stop(T_transpose);
+                    cffts1(1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x2, (new double[2, dims[0, 2], fftblockpad, 2]));
                 }
             }
             else {
-                if (layout_type == layout_0D) {
-                    cffts3(-1, dims[0,2], dims[1,2], dims[2,2], x1, x1, (new double[2, dims[2,2], fftblockpad,2]));
-                    cffts2(-1, dims[0,1], dims[1,1], dims[2,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
-                    cffts1(-1, dims[0,0], dims[1,0], dims[2,0], x1, x2, (new double[2, dims[0,0], fftblockpad,2]));
-                } else if (layout_type == layout_1D) {
-                    cffts1(-1, dims[0,2], dims[1,2], dims[2,2], x1, x1, (new double[2, dims[0,2], fftblockpad,2]));
-                    if (timers_enabled) timer.start(T_transpose);
-                    transpose_x_yz(3, 2, x1, x2);
-                    if (timers_enabled) timer.stop(T_transpose);
-                    cffts2(-1, dims[0,1], dims[1,1], dims[2,1], x2, x2, (new double[2, dims[1,1], fftblockpad,2]));
-                    cffts1(-1, dims[0,0], dims[1,0], dims[2,0], x2, x2, (new double[2, dims[0,0], fftblockpad,2]));
+                if(layout_type == layout_0D) {
+                    cffts3(-1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1, (new double[2, dims[2, 2], fftblockpad, 2]));
+                    cffts2(-1, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    cffts1(-1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x2, (new double[2, dims[0, 0], fftblockpad, 2]));
                 }
-                else if (layout_type == layout_2D) {
-                    cffts1(-1, dims[0,2], dims[1,2], dims[2,2], x1, x1, (new double[2, dims[0,2], fftblockpad,2]));
-                    if (timers_enabled) timer.start(T_transpose);
+                else if(layout_type == layout_1D) {
+                    cffts1(-1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    if(timers_enabled)
+                        timer.start(T_transpose);
+                    transpose_x_yz(3, 2, x1, x2);
+                    if(timers_enabled)
+                        timer.stop(T_transpose);
+                    cffts2(-1, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    cffts1(-1, dims[0, 0], dims[1, 0], dims[2, 0], x2, x2, (new double[2, dims[0, 0], fftblockpad, 2]));
+                }
+                else if(layout_type == layout_2D) {
+                    cffts1(-1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    if(timers_enabled)
+                        timer.start(T_transpose);
                     transpose_x_z(3, 2, x1, x2);
-                    if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(-1, dims[0,1], dims[1,1], dims[2,1], x2, x2, (new double[2, dims[0,1], fftblockpad,2]));
-                    if (timers_enabled) timer.start(T_transpose);
+                    if(timers_enabled)
+                        timer.stop(T_transpose);
+                    cffts1(-1, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2, (new double[2, dims[0, 1], fftblockpad, 2]));
+                    if(timers_enabled)
+                        timer.start(T_transpose);
                     transpose_x_y(2, 1, x2, x1);
-                    if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(-1, dims[0,0], dims[1,0], dims[2,0], x1, x2, (new double[2, dims[0,0], fftblockpad,2]));
+                    if(timers_enabled)
+                        timer.stop(T_transpose);
+                    cffts1(-1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x2, (new double[2, dims[0, 0], fftblockpad, 2]));
                 }
             }
         }
 
-        public void cffts1(int iis, int d1, int d2, int d3, double[,,,] x, double[,,,] xout, double[,,,] y) {
+        public void cffts1(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
             int logd1;
             //Fortran
-              //double complex x(d1,d2,d3);
-              //double complex xout(d1,d2,d3);
-              //double complex y(fftblockpad, d1, 2) ;
+            //double complex x(d1,d2,d3);
+            //double complex xout(d1,d2,d3);
+            //double complex y(fftblockpad, d1, 2) ;
             //C#
-              //y   [2, d1, fftblockpad]
-              //x   [d3,d2,d1];
-              //xout[d3,d2,d1];
+            //y   [2, d1, fftblockpad]
+            //x   [d3,d2,d1];
+            //xout[d3,d2,d1];
 
             int i, j, k, jj, iin, io;
             logd1 = ilog2Get(d1);
-            for (k = 0; k < d3; k++) {
-                for (jj = 0; jj <= (d2-fftblock); jj = jj + fftblock) {
-                    if (timers_enabled) timer.start(T_fftcopy);
-                    for (j = 0; j < fftblock; j++) {
-                        for (i = 0; i < d1; i++) {//y(j,i,1) = x(i,j+jj,k)
-                            io = ((k*d2+(j+jj))*d1+i)*2; 
-                            y[0,i,j,REAL] = Point.getValue(x,io+REAL); //y[1,i,j,real] = x[k,j+jj,i,real]
-                            y[0,i,j,IMAG] = Point.getValue(x,io+IMAG);
+            for(k = 0; k < d3; k++) {
+                for(jj = 0; jj <= (d2-fftblock); jj = jj + fftblock) {
+                    if(timers_enabled)
+                        timer.start(T_fftcopy);
+                    for(j = 0; j < fftblock; j++) {
+                        for(i = 0; i < d1; i++) {//y(j,i,1) = x(i,j+jj,k)
+                            io = ((k*d2+(j+jj))*d1+i)*2;
+                            y[0, i, j, REAL] = Point.getValue(x, io+REAL); //y[1,i,j,real] = x[k,j+jj,i,real]
+                            y[0, i, j, IMAG] = Point.getValue(x, io+IMAG);
                         }
                     }
-                    if (timers_enabled) timer.stop(T_fftcopy);
-                    if (timers_enabled) timer.start(T_fftlow);
+                    if(timers_enabled)
+                        timer.stop(T_fftcopy);
+                    if(timers_enabled)
+                        timer.start(T_fftlow);
                     cfftz(iis, logd1, d1, y, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
-                    if (timers_enabled) timer.stop(T_fftlow);
+                    if(timers_enabled)
+                        timer.stop(T_fftlow);
 
-                    if (timers_enabled) timer.start(T_fftcopy);
+                    if(timers_enabled)
+                        timer.start(T_fftcopy);
 
-                    for (j = 0; j < fftblock; j++) {
-                        for (i = 0; i < d1; i++) {
+                    for(j = 0; j < fftblock; j++) {
+                        for(i = 0; i < d1; i++) {
                             iin   = ((0*d1+i)*fftblockpad+j)*2;
                             io  = (((k*d2+(j+jj))*d1+i)*2);
-                            Point.setAddress(y,iin+REAL,xout,io+REAL);
-                            Point.setAddress(y,iin+IMAG,xout,io+IMAG);
+                            Point.setAddress(y, iin+REAL, xout, io+REAL);
+                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
                         }
                     }
-                    if (timers_enabled) timer.stop(T_fftcopy);
+                    if(timers_enabled)
+                        timer.stop(T_fftcopy);
                 }
             }
         }
@@ -977,32 +1037,38 @@ namespace NPB {
 
             int i, j, k, ii, io, iin;
             logd2 = ilog2Get(d2);
-            for (k = 0; k < d3; k++) {
-                for (ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
-                    if (timers_enabled) timer.start(T_fftcopy);
-                    for (j = 0; j < d2; j++) {
-                        for (i = 0; i < fftblock; i++) {
+            for(k = 0; k < d3; k++) {
+                for(ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
+                    if(timers_enabled)
+                        timer.start(T_fftcopy);
+                    for(j = 0; j < d2; j++) {
+                        for(i = 0; i < fftblock; i++) {
                             iin = ((k*d2+j)*d1+(i+ii))*2;
-                            y[0,j,i,REAL] = Point.getValue(x,iin+REAL);
-                            y[0,j,i,IMAG] = Point.getValue(x,iin+IMAG);
+                            y[0, j, i, REAL] = Point.getValue(x, iin+REAL);
+                            y[0, j, i, IMAG] = Point.getValue(x, iin+IMAG);
                         }
                     }
-                    if (timers_enabled) timer.stop(T_fftcopy);
+                    if(timers_enabled)
+                        timer.stop(T_fftcopy);
 
-                    if (timers_enabled) timer.start(T_fftlow);
-                    cfftz (iis, logd2, d2, y, y); //y(1, 1, 2));
-                    if (timers_enabled) timer.stop(T_fftlow);
+                    if(timers_enabled)
+                        timer.start(T_fftlow);
+                    cfftz(iis, logd2, d2, y, y); //y(1, 1, 2));
+                    if(timers_enabled)
+                        timer.stop(T_fftlow);
 
-                    if (timers_enabled) timer.start(T_fftcopy);
-                    for (j = 0; j < d2; j++) {
-                        for (i = 0; i < fftblock; i++) {
+                    if(timers_enabled)
+                        timer.start(T_fftcopy);
+                    for(j = 0; j < d2; j++) {
+                        for(i = 0; i < fftblock; i++) {
                             iin = ((0*d2+j)*fftblockpad+i)*2;
                             io = ((k * d2 + j) * d1 + (i + ii)) * 2;
-                            Point.setAddress(y,iin+REAL,xout,io+REAL);
-                            Point.setAddress(y,iin+IMAG,xout,io+IMAG);
+                            Point.setAddress(y, iin+REAL, xout, io+REAL);
+                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
                         }
                     }
-                    if (timers_enabled) timer.stop(T_fftcopy);
+                    if(timers_enabled)
+                        timer.stop(T_fftcopy);
                 }
             }
         }
@@ -1020,37 +1086,43 @@ namespace NPB {
 
             logd3 = ilog2Get(d3);
 
-            for (j = 0; j < d2; j++) {
-                for (ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
-                    if (timers_enabled) timer.start(T_fftcopy);
-                    for (k = 0; k < d3; k++) {
-                        for (i = 0; i < fftblock; i++) {
+            for(j = 0; j < d2; j++) {
+                for(ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
+                    if(timers_enabled)
+                        timer.start(T_fftcopy);
+                    for(k = 0; k < d3; k++) {
+                        for(i = 0; i < fftblock; i++) {
                             iin = ((k*d2+j)*d1+(i+ii))*2;
-                            y[0,k,i,REAL] = Point.getValue(x,iin+REAL);
-                            y[0,k,i,IMAG] = Point.getValue(x,iin+IMAG);
+                            y[0, k, i, REAL] = Point.getValue(x, iin+REAL);
+                            y[0, k, i, IMAG] = Point.getValue(x, iin+IMAG);
                         }
                     }
-                    if (timers_enabled) timer.stop(T_fftcopy);
+                    if(timers_enabled)
+                        timer.stop(T_fftcopy);
 
-                    if (timers_enabled) timer.start(T_fftlow);
-                    cfftz (iis, logd3, d3, y, y); //y(1, 1, 2));
-                    if (timers_enabled) timer.stop(T_fftlow);
+                    if(timers_enabled)
+                        timer.start(T_fftlow);
+                    cfftz(iis, logd3, d3, y, y); //y(1, 1, 2));
+                    if(timers_enabled)
+                        timer.stop(T_fftlow);
 
-                    if (timers_enabled) timer.start(T_fftcopy);
-                    for (k = 0; k < d3; k++) {
-                        for (i = 0; i < fftblock; i++) {
+                    if(timers_enabled)
+                        timer.start(T_fftcopy);
+                    for(k = 0; k < d3; k++) {
+                        for(i = 0; i < fftblock; i++) {
                             iin = ((0*d3+k)*fftblockpad+i)*2;
                             io  = (((k*d2+j)*d1+(i+ii))*2);
-                            Point.setAddress(y,iin+REAL,xout,io+REAL);
-                            Point.setAddress(y,iin+IMAG,xout,io+IMAG);
+                            Point.setAddress(y, iin+REAL, xout, io+REAL);
+                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
                         }
                     }
-                    if (timers_enabled) timer.stop(T_fftcopy);
+                    if(timers_enabled)
+                        timer.stop(T_fftcopy);
                 }
             }
         }
-        
-        public void cfftz(int iis, int m, int n, double[,,,] x, double[,,,] y) {
+
+        public void cfftz(int iis, int m, int n, double[, , ,] x, double[, , ,] y) {
             //c---------------------------------------------------------------------
             //c   Computes NY N-point complex-to-complex FFTs of X using an algorithm due
             //c   to Swarztrauber.  X is both the input and the output array, while Y is a 
@@ -1065,31 +1137,33 @@ namespace NPB {
             //c---------------------------------------------------------------------
             //c   Check if input parameters are invalid.
             //c---------------------------------------------------------------------
-            mx = (int) u[0,0]; //mx = u(1);
-            if ((iis != 1 && iis != -1) || m < 1 || m > mx) {
+            mx = (int)u[0, 0]; //mx = u(1);
+            if((iis != 1 && iis != -1) || m < 1 || m > mx) {
                 Console.WriteLine("CFFTZ: Either U has not been initialized, or else one of the input parameters iis invalid " + iis + " " + m + " " + mx);
             }
             //c---------------------------------------------------------------------
             //c   Perform one variant of the Stockham FFT.
             //c---------------------------------------------------------------------
-            for (l = 1; l <= m; l = l + 2) {
+            for(l = 1; l <= m; l = l + 2) {
                 fftz2(iis, l, m, n, fftblock, fftblockpad, u, x, y, 0, 1);
-                if (l == m) goto Desvio160;
+                if(l == m)
+                    goto Desvio160;
                 fftz2(iis, l + 1, m, n, fftblock, fftblockpad, u, y, x, 1, 0);
             }
             goto Desvio180;
-            //c---------------------------------------------------------------------
-            //c   Copy Y to X.
-            //c---------------------------------------------------------------------
-            Desvio160: { 
-                for (j = 0; j < n; j++) {
-                    for (i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
-                        x[0, j, i, REAL] = y[1,j, i, REAL];
-                        x[0, j, i, IMAG] = y[1,j, i, IMAG];
+        //c---------------------------------------------------------------------
+        //c   Copy Y to X.
+        //c---------------------------------------------------------------------
+        Desvio160: {
+                for(j = 0; j < n; j++) {
+                    for(i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
+                        x[0, j, i, REAL] = y[1, j, i, REAL];
+                        x[0, j, i, IMAG] = y[1, j, i, IMAG];
                     }
                 }
             }
-            Desvio180: { } 
+        Desvio180: {
+            }
         }
 
         public void fftz2(int iis, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] x, double[, , ,] y, int xoffstSrc, int xoffstOut) { //u=u x=ytemp y = ytemp
@@ -1107,24 +1181,25 @@ namespace NPB {
             //c---------------------------------------------------------------------
 
             n1 = n / 2;
-            lk = (int) Math.Pow(2 , (l - 1));
-            li = (int) Math.Pow(2 , (m - l));
+            lk = (int)Math.Pow(2, (l - 1));
+            li = (int)Math.Pow(2, (m - l));
             lj = 2 * lk;
             ku = li;// +1;
 
-            int idxu; 
-            for (i = 0; i <= li - 1; i++) {
+            int idxu;
+            for(i = 0; i <= li - 1; i++) {
                 i11 = i * lk + 1;
                 i12 = i11 + n1;
                 i21 = i * lj + 1;
                 i22 = i21 + lk;
 
-                idxu = ku+i; 
+                idxu = ku+i;
                 u1[REAL] = u[(idxu), REAL];
-                if (iis >= 1) {
+                if(iis >= 1) {
                     //    u1 = u(ku+i);
                     u1[1] = u[idxu, IMAG];
-                } else {
+                }
+                else {
                     //    u1 = dconjg (u(ku+i));
                     u1[1] = -1*u[idxu, IMAG];
                 }
@@ -1132,8 +1207,8 @@ namespace NPB {
                 //  c---------------------------------------------------------------------
                 //  c   This loop is vectorizable.
                 //  c---------------------------------------------------------------------
-                for (k = 0; k <= lk - 1; k++) {
-                    for (j = 1; j <= ny; j++) {
+                for(k = 0; k <= lk - 1; k++) {
+                    for(j = 1; j <= ny; j++) {
                         x11[REAL] = x[xoffstSrc, i11 + k - 1, j - 1, REAL]; //x11[0] = x[j,i11+k];
                         x11[IMAG] = x[xoffstSrc, i11 + k - 1, j - 1, IMAG];
                         x21[REAL] = x[xoffstSrc, i12 + k - 1, j - 1, REAL]; //x21 = x(j,i12+k);
@@ -1146,7 +1221,7 @@ namespace NPB {
                 }
             }
         }
-        
+
         public void transpose_x_y(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {  // x1, x2); x1=u1 x2 = u0
             /*  double complex xin(ntdivnp), xout(ntdivnp)
                 ---------------------------------------------------------------------
@@ -1159,9 +1234,9 @@ namespace NPB {
                 --------------------------------------------------------------------- */
             //imprimir4(xin, 0, "xin");
 
-            transpose_x_y_local(dims[0,l1-1],dims[1,l1-1],dims[2,l1-1],xin, xout);
+            transpose_x_y_local(dims[0, l1-1], dims[1, l1-1], dims[2, l1-1], xin, xout);
 
-            transpose_x_y_global(dims[0,l1-1],dims[1,l1-1],dims[2,l1-1], xout, xin); 
+            transpose_x_y_global(dims[0, l1-1], dims[1, l1-1], dims[2, l1-1], xout, xin);
 
             transpose_x_y_finish(dims[0, l2-1], dims[1, l2-1], dims[2, l2-1], xin, xout);
 
@@ -1173,12 +1248,14 @@ namespace NPB {
             //integer d1, d2, d3
             //double complex uxin(d1, d2, d3)  ===> [d3, d2, d1]       
             //double complex uxout(d2, d3, d1) ===> [d1, d3, d2]
-            if (timers_enabled) timer.start(T_transxyloc);
-            if (timers_enabled) timer.start(T_transxzloc);
+            if(timers_enabled)
+                timer.start(T_transxyloc);
+            if(timers_enabled)
+                timer.start(T_transxzloc);
             int i, j, k, ii, io;
-            for (k = 0; k < d3; k++) { //k=1 <= d3        
-                for (i = 0; i < d1; i++) { //i=1 <= d1 
-                    for (j = 0; j < d2; j++) { // j=1 <= d2                     //xout(j,k,i)    =    xin(i,j,k); 
+            for(k = 0; k < d3; k++) { //k=1 <= d3        
+                for(i = 0; i < d1; i++) { //i=1 <= d1 
+                    for(j = 0; j < d2; j++) { // j=1 <= d2                     //xout(j,k,i)    =    xin(i,j,k); 
                         ii = ((k*d2+j)*d1+i)*2;
                         io = ((i*d3+k)*d2+j)*2;
                         //uxout[i, k, j, REAL] = uxin[k, j, i, REAL];
@@ -1188,7 +1265,8 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer.stop(T_transxyloc);
+            if(timers_enabled)
+                timer.stop(T_transxyloc);
         }
 
         public void transpose_x_y_global(int d1, int d2, int d3, double[, , ,] uxin, double[, , ,] uxout) {
@@ -1197,67 +1275,73 @@ namespace NPB {
                ---------------------------------------------------------------------
                double complex uxin(d2,d3,d1)
                double complex uxout(d2,d3,d1) ! not real layout but right size      */
-            if (timers_enabled) synchup();
+            if(timers_enabled)
+                synchup();
             /* ---------------------------------------------------------------------
                do transpose among all processes with same 1-coord (me1)
                --------------------------------------------------------------------- */
-            if (timers_enabled) timer.start(T_transxyglo);
+            if(timers_enabled)
+                timer.start(T_transxyglo);
             double[] src       = new double[d1*d2*d3*2];
-            double[] dst       = new double[d1*d2*d3*2]; 
+            double[] dst       = new double[d1*d2*d3*2];
             Point.setVetor(uxin, src);
             commslice2.AlltoallFlattened<double>(src, d1*d2*d3*2/np1, ref dst);
             Point.setVetor(dst, uxout);
-            if (timers_enabled) timer.stop(T_transxyglo);
+            if(timers_enabled)
+                timer.stop(T_transxyglo);
         }
 
         public void transpose_x_y_finish(int d1, int d2, int d3, double[, , ,] uxin, double[, , ,] uxout) {
             //Fortran
-              //double complex xin(d1/np1, d3, d2, 0:np1-1); 
-              //double complex xout(d1,d2,d3);
+            //double complex xin(d1/np1, d3, d2, 0:np1-1); 
+            //double complex xout(d1,d2,d3);
             //C#
-              //uxin [np1, d2, d3, d1/np1, 2]; 
-              //uxout[d3    , d2, d1,   2, 0];
+            //uxin [np1, d2, d3, d1/np1, 2]; 
+            //uxout[d3    , d2, d1,   2, 0];
 
             int i, j, k, p, ioff;
 
-            if (timers_enabled) timer.start(T_transxyfin);
+            if(timers_enabled)
+                timer.start(T_transxyfin);
             int io=0, ii=0;
-            for (p = 0; p <= (np1-1); p++) {
+            for(p = 0; p <= (np1-1); p++) {
                 ioff = p*d1/np1;
-                for (k = 0; k < d3; k++) {
-                    for (j = 0; j < d2; j++) {
-                        for (i = 0; i < (d1/np1); i++) { //io = ((((k-1)*size3+(j-1))*size4*np1+(i+ioff-1))) *2;  //uxout[k,j,i+ioff] ii  = ((((p)*size2+(j-1))*size4+(k-1))*size3+(i-1))*2; //uxin[p,j,k,i]
-                            ii  = (((p*d2+j)*d3+k)*(d1/np1)+i)*2; 
-                            io  = ((k*d2+j)*d1+i+ioff)*2;  
+                for(k = 0; k < d3; k++) {
+                    for(j = 0; j < d2; j++) {
+                        for(i = 0; i < (d1/np1); i++) { //io = ((((k-1)*size3+(j-1))*size4*np1+(i+ioff-1))) *2;  //uxout[k,j,i+ioff] ii  = ((((p)*size2+(j-1))*size4+(k-1))*size3+(i-1))*2; //uxin[p,j,k,i]
+                            ii  = (((p*d2+j)*d3+k)*(d1/np1)+i)*2;
+                            io  = ((k*d2+j)*d1+i+ioff)*2;
                             Point.setAddress(uxin, ii+REAL, uxout, io+REAL);    //xout(i+ioff,j,k) = xin(i,k,j,p);
                             Point.setAddress(uxin, ii+IMAG, uxout, io+IMAG);
                         }
                     }
                 }
             }
-            if (timers_enabled) timer.stop(T_transxyfin);
+            if(timers_enabled)
+                timer.stop(T_transxyfin);
         }
 
         public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
-            transpose2_local(dims[0,l1-1]*dims[1, l1-1],dims[2, l1-1], xin, xout);
+            transpose2_local(dims[0, l1-1]*dims[1, l1-1], dims[2, l1-1], xin, xout);
             transpose2_global(xout, xin);
-            transpose2_finish(dims[0,l1-1]*dims[1, l1-1],dims[2, l1-1], xin, xout);
+            transpose2_finish(dims[0, l1-1]*dims[1, l1-1], dims[2, l1-1], xin, xout);
         }
 
         public void transpose2_local(int n1, int n2, double[, , ,] uxin, double[, , ,] uxout) {
             //Fortran
-              //double complex xin(n1, n2), xout(n2, n1)
-              //double complex z(transblockpad, transblock)
+            //double complex xin(n1, n2), xout(n2, n1)
+            //double complex z(transblockpad, transblock)
             //C#
-              //xin [n2,n1]
-              //xout[n1,n2]
-              //z[transblock, transblockpad]
+            //xin [n2,n1]
+            //xout[n1,n2]
+            //z[transblock, transblockpad]
 
             double[,,] z = new double[transblockpad, transblock, 2];
             int i, j, ii, jj, iin, io;
 
-            if (timers_enabled) timer.start(T_transxzloc);
+            if(timers_enabled)
+                timer.start(T_transxzloc);
 
             //  c---------------------------------------------------------------------
             //  c If possible, block the transpose for cache memory systems. 
@@ -1266,10 +1350,10 @@ namespace NPB {
             //  c from 14 seconds to 5.2 seconds on 8 nodes class A.
             //  c---------------------------------------------------------------------
 
-            if (n1 < transblock || n2 < transblock) {
-                if (n1 >= n2) {
-                    for (j = 0; j < n2; j++) {
-                        for (i = 0; i < n1; i++) {
+            if(n1 < transblock || n2 < transblock) {
+                if(n1 >= n2) {
+                    for(j = 0; j < n2; j++) {
+                        for(i = 0; i < n1; i++) {
                             //uxout[i, j] = uxin[j, i];                 //xout(j, i) = xin(i, j);
                             iin = (j * n1 + i)*2;
                             io = (i * n2 + j)*2;
@@ -1279,8 +1363,8 @@ namespace NPB {
                     }
                 }
                 else {
-                    for (i = 0; i < n1; i++) {
-                        for (j = 0; j < n2; j++) {                   //xout(j, i) = xin(i, j);
+                    for(i = 0; i < n1; i++) {
+                        for(j = 0; j < n2; j++) {                   //xout(j, i) = xin(i, j);
                             iin = (j * n1 + i)*2;
                             io = (i * n2 + j)*2;
                             Point.setAddress(uxin, iin+REAL, uxout, io+REAL);
@@ -1290,13 +1374,13 @@ namespace NPB {
                 }
             }
             else {
-                for (j = 0; j <= n2 - 1; j = j + transblock) {
-                    for (i = 0; i <= n1 - 1; i = i + transblock) {
+                for(j = 0; j <= n2 - 1; j = j + transblock) {
+                    for(i = 0; i <= n1 - 1; i = i + transblock) {
                         //c---------------------------------------------------------------------
                         //c Note: compiler should be able to take j+jj out of inner loop
                         //c---------------------------------------------------------------------
-                        for (jj = 0; jj < transblock; jj++) {
-                            for (ii = 0; ii < transblock; ii++) { //z(jj,ii) = xin(i+ii, j+jj);
+                        for(jj = 0; jj < transblock; jj++) {
+                            for(ii = 0; ii < transblock; ii++) { //z(jj,ii) = xin(i+ii, j+jj);
                                 iin = ((j+jj)*n1+(i+ii))*2;      //xin[j+jj, i+ii];
                                 io = ((ii)*transblockpad+jj)*2; //z[ii,jj]
                                 Point.setAddress(uxin, iin + REAL, z, io + REAL);
@@ -1304,8 +1388,8 @@ namespace NPB {
 
                             }
                         }
-                        for (ii = 0; ii < transblock; ii++) {
-                            for (jj = 0; jj < transblock; jj++) {//xout(j+jj, i+ii) = z(jj,ii);
+                        for(ii = 0; ii < transblock; ii++) {
+                            for(jj = 0; jj < transblock; jj++) {//xout(j+jj, i+ii) = z(jj,ii);
                                 iin = (ii*transblockpad+jj)*2;  //z[ii,jj];
                                 io = ((i+ii)*n2+(j+jj))*2;//xout[i+ii, j+jj]
                                 Point.setAddress(z, iin + REAL, uxout, io + REAL);
@@ -1317,7 +1401,8 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer.stop(T_transxzloc);
+            if(timers_enabled)
+                timer.stop(T_transxzloc);
 
         }
 
@@ -1326,30 +1411,34 @@ namespace NPB {
             // double complex xout(ntdivnp) 
             double[] src = new double[ntdivnp*2];
             double[] dst = new double[ntdivnp*2];
-            if (timers_enabled) synchup();
-            if (timers_enabled) timer.start(T_transxzglo);
+            if(timers_enabled)
+                synchup();
+            if(timers_enabled)
+                timer.start(T_transxzglo);
             Point.setVetor(uxin, src);
             commslice1.AlltoallFlattened<double>(src, ntdivnp * 2 / np, ref dst);
             Point.setVetor(dst, uxout);
             // call mpi_alltoall(xin, ntdivnp/np, dc_type, xout, ntdivnp/np, dc_type, commslice1, ierr);
-            if (timers_enabled) timer.stop(T_transxzglo);
+            if(timers_enabled)
+                timer.stop(T_transxzglo);
 
         }
 
         public void transpose2_finish(int n1, int n2, double[, , ,] uxin, double[, , ,] uxout) {
             //Fortran
-              //double complex xin(n2, n1/np2, 0:np2-1), 
-              //               xout(n2*np2, n1/np2)
+            //double complex xin(n2, n1/np2, 0:np2-1), 
+            //               xout(n2*np2, n1/np2)
             //C#
-              //uxin  [   np2, n1/np2, n2] 
-              //uxout [n1/np2, n2*np2    ]
+            //uxin  [   np2, n1/np2, n2] 
+            //uxout [n1/np2, n2*np2    ]
 
             int i, j, p, ioff, ii, io;
-            if (timers_enabled) timer.start(T_transxzfin);
-            for (p = 0; p <= np2 - 1; p++) {
+            if(timers_enabled)
+                timer.start(T_transxzfin);
+            for(p = 0; p <= np2 - 1; p++) {
                 ioff = p*n2;
-                for (j = 0; j < n1 / np2; j++) {
-                    for (i = 0; i < n2; i++) { //xout(i+ioff, j) = xin(i, j, p);
+                for(j = 0; j < n1 / np2; j++) {
+                    for(i = 0; i < n2; i++) { //xout(i+ioff, j) = xin(i, j, p);
                         ii = ((p*(n1/np2)+j)*n2+i)*2; //uxin[p, j, i]
                         io = (j*n2*np2+(i+ioff))*2; //uxout[j, i+ioff]
                         Point.setAddress(uxin, ii+REAL, uxout, io+REAL);
@@ -1357,56 +1446,63 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer.stop(T_transxzfin);
+            if(timers_enabled)
+                timer.stop(T_transxzfin);
 
         }
 
         public void transpose_x_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp);
 
-            transpose_x_z_local( dims[0,l1-1],dims[1,l1-1],dims[2,l1-1], xin, xout);
-            transpose_x_z_global(dims[0,l1-1],dims[1,l1-1],dims[2,l1-1], xout, xin);
-            transpose_x_z_finish(dims[0,l2-1],dims[1,l2-1],dims[2,l2-1], xin, xout);
+            transpose_x_z_local(dims[0, l1-1], dims[1, l1-1], dims[2, l1-1], xin, xout);
+            transpose_x_z_global(dims[0, l1-1], dims[1, l1-1], dims[2, l1-1], xout, xin);
+            transpose_x_z_finish(dims[0, l2-1], dims[1, l2-1], dims[2, l2-1], xin, xout);
         }
 
         public void transpose_x_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
-                //double complex xin(d1,d2,d3)
-                //double complex xout(d3,d2,d1)
-                //double complex buf(transblockpad, maxdim)
+            //double complex xin(d1,d2,d3)
+            //double complex xout(d3,d2,d1)
+            //double complex buf(transblockpad, maxdim)
             //C#
-                //xin [d3,d2,d1]
-                //xout[d1,d2,d3]
+            //xin [d3,d2,d1]
+            //xout[d1,d2,d3]
             double[,,] buf = new double[maxdim, transblockpad, 2];
             int block1, block3;
             int i, j, k, kk, ii, i1, k1;
-            if (timers_enabled) timer.start(T_transxzloc);
-            if (timers_enabled) timer.start(T_transxzloc);
-            if (d1 < 32) goto G100;
+            if(timers_enabled)
+                timer.start(T_transxzloc);
+            if(timers_enabled)
+                timer.start(T_transxzloc);
+            if(d1 < 32)
+                goto G100;
             block3 = d3;
-            if (block3 == 1)  goto G100;
-            if (block3 > transblock) block3 = transblock;
+            if(block3 == 1)
+                goto G100;
+            if(block3 > transblock)
+                block3 = transblock;
             block1 = d1;
-            if (block1*block3 > transblock*transblock) block1 = transblock*transblock/block3;
+            if(block1*block3 > transblock*transblock)
+                block1 = transblock*transblock/block3;
             /*---------------------------------------------------------------------
               blocked transpose
               ---------------------------------------------------------------------*/
             int iin = 0, io = 0;
-            for (j = 0; j < d2; j++) {
-                for (kk = 0; kk <= d3 - block3; kk = kk + block3) {
-                    for (ii = 0; ii <= d1 - block1; ii = ii + block1) {
-                        for (k = 0; k < block3; k++) {
+            for(j = 0; j < d2; j++) {
+                for(kk = 0; kk <= d3 - block3; kk = kk + block3) {
+                    for(ii = 0; ii <= d1 - block1; ii = ii + block1) {
+                        for(k = 0; k < block3; k++) {
                             k1 = k + kk;
-                            for (i = 0; i < block1; i++) {                                 //buf(k, i) = xin(i+ii, j, k1);
+                            for(i = 0; i < block1; i++) {                                 //buf(k, i) = xin(i+ii, j, k1);
                                 iin = ((k1*d2+j)*d1+(i+ii))*2; //xin[k1, j, i+ii];
                                 io  = (i*transblockpad+k)*2;   //buf[i, k]
                                 Point.setAddress(xin, iin + REAL, buf, io + REAL);
                                 Point.setAddress(xin, iin + IMAG, buf, io + IMAG);
                             }
                         }
-                        for (i = 0; i < block1; i++) {
+                        for(i = 0; i < block1; i++) {
                             i1 = i + ii;
-                            for (k = 0; k < block3; k++) {                                 //xout(k+kk, j, i1) = buf(k, i);
+                            for(k = 0; k < block3; k++) {                                 //xout(k+kk, j, i1) = buf(k, i);
                                 iin = (i*transblockpad+k)*2; //buf[i, k];
                                 io  = ((i1*d2+j)*d3+(k+kk))*2;//xout[i1, j, k+kk]
                                 Point.setAddress(buf, iin + REAL, xout, io + REAL);
@@ -1417,13 +1513,13 @@ namespace NPB {
                 }
             }
             goto G200;
-            //---------------------------------------------------------------------
-            // basic transpose
-            //---------------------------------------------------------------------
-            G100:  //continue;
-            for (j = 0; j < d2; j++) {
-                for (k = 0; k < d3; k++) {
-                    for (i = 0; i < d1; i++) {                                             //xout(k, j, i) = xin(i, j, k);
+        //---------------------------------------------------------------------
+        // basic transpose
+        //---------------------------------------------------------------------
+        G100:  //continue;
+            for(j = 0; j < d2; j++) {
+                for(k = 0; k < d3; k++) {
+                    for(i = 0; i < d1; i++) {                                             //xout(k, j, i) = xin(i, j, k);
                         iin = ((k*d2+j)*d1+i)*2; //xin[k, j, i];
                         io  = ((i*d2+j)*d3+k)*2; //xout[i, j, k]
                         Point.setAddress(xin, iin + REAL, xout, io + REAL);
@@ -1431,49 +1527,54 @@ namespace NPB {
                     }
                 }
             }
-            //---------------------------------------------------------------------
-            // all done
-            //---------------------------------------------------------------------
-            G200: //continue;
-            if (timers_enabled) timer.stop(T_transxzloc);
+        //---------------------------------------------------------------------
+        // all done
+        //---------------------------------------------------------------------
+        G200: //continue;
+            if(timers_enabled)
+                timer.stop(T_transxzloc);
         }
 
         public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
-                //double complex xin(d3,d2,d1);
-                //double complex xout(d3,d2,d1) ! not real layout, but right size;
+            //double complex xin(d3,d2,d1);
+            //double complex xout(d3,d2,d1) ! not real layout, but right size;
             //C#
-                //xin[d1,d2,d3];
-                //xout[d1,d2,d3]
-            if (timers_enabled) synchup();
+            //xin[d1,d2,d3];
+            //xout[d1,d2,d3]
+            if(timers_enabled)
+                synchup();
             //---------------------------------------------------------------------
             // do transpose among all  processes with same 1-coord (me1)
             //---------------------------------------------------------------------
-            if (timers_enabled) timer.start(T_transxzglo);
+            if(timers_enabled)
+                timer.start(T_transxzglo);
             double[] src = new double[ntdivnp * 2];
             double[] dst = new double[ntdivnp * 2];
             Point.setVetor(xin, src);
             commslice1.AlltoallFlattened<double>(src, d1*d2*d3*2/np2, ref dst);
             Point.setVetor(dst, xout);
             //call mpi_alltoall(xin, d1*d2*d3/np2, dc_type,xout, d1*d2*d3/np2, dc_type,commslice1, ierr);
-            if (timers_enabled) timer.stop(T_transxzglo);
+            if(timers_enabled)
+                timer.stop(T_transxzglo);
         }
 
         public void transpose_x_z_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
-                //double complex xin(d1/np2, d2, d3, 0:np2-1)
-                //double complex xout(d1,d2,d3)
+            //double complex xin(d1/np2, d2, d3, 0:np2-1)
+            //double complex xout(d1,d2,d3)
             //C#
-                //xin  [np2, d3, d2, d1/np2]
-                //xout [d3,d2,d1]
+            //xin  [np2, d3, d2, d1/np2]
+            //xout [d3,d2,d1]
             int i, j, k, p, ioff, iin, io;
 
-            if (timers_enabled) timer.start(T_transxzfin);
-            for (p = 0; p <= np2 - 1; p++) {
+            if(timers_enabled)
+                timer.start(T_transxzfin);
+            for(p = 0; p <= np2 - 1; p++) {
                 ioff = p*d1/np2;
-                for (k = 0; k < d3; k++) {
-                    for (j = 0; j < d2; j++) {
-                        for (i = 0; i < d1 / np2; i++) {                                   //xout(i+ioff, j, k) = xin(i, j, k, p);
+                for(k = 0; k < d3; k++) {
+                    for(j = 0; j < d2; j++) {
+                        for(i = 0; i < d1 / np2; i++) {                                   //xout(i+ioff, j, k) = xin(i, j, k, p);
                             iin = (((p*d3+k)*d2+j)*(d1/np2)+i)*2; //xin[p, k, j, i];
                             io  = ((k*d2+j)*d1+(i+ioff))*2; //xout[k, j, i+ioff]
                             Point.setAddress(xin, iin + REAL, xout, io + REAL);
@@ -1482,14 +1583,15 @@ namespace NPB {
                     }
                 }
             }
-            if (timers_enabled) timer.stop(T_transxzfin);
+            if(timers_enabled)
+                timer.stop(T_transxzfin);
         }
 
         public void transpose_x_yz(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
-            transpose2_local(dims[0,l1-1],dims[1, l1-1]*dims[2, l1-1], xin, xout);
+            transpose2_local(dims[0, l1-1], dims[1, l1-1]*dims[2, l1-1], xin, xout);
             transpose2_global(xout, xin);
-            transpose2_finish(dims[0,l1-1],dims[1, l1-1]*dims[2, l1-1], xin, xout);
+            transpose2_finish(dims[0, l1-1], dims[1, l1-1]*dims[2, l1-1], xin, xout);
 
         }
 
@@ -1498,19 +1600,19 @@ namespace NPB {
             //  c evolve u0 -> u1 (t time steps) in fourier space
             //  c---------------------------------------------------------------------
             //Fortran:
-                //double complex u00(d1,d2,d3)
-                //double complex u11(d1,d2,d3)
-                //double precision twiddle1(d1,d2,d3)
+            //double complex u00(d1,d2,d3)
+            //double complex u11(d1,d2,d3)
+            //double precision twiddle1(d1,d2,d3)
             //C#:
-                //double complex u00[d3,d2,d1]
-                //double complex u11[d3,d2,d1]
-                //double precision twiddle1[d3,d2,d1]
+            //double complex u00[d3,d2,d1]
+            //double complex u11[d3,d2,d1]
+            //double precision twiddle1[d3,d2,d1]
 
             int i, j, k, idx, idy;
             double re, im, tw;
-            for (k = 0; k < d3; k++) {
-                for (j = 0; j < d2; j++) {
-                    for (i = 0; i < d1; i++) {                  //u00(i,j,k) = u00(i,j,k)*(twiddle1(i,j,k)); u11(i,j,k) = u00(i,j,k);
+            for(k = 0; k < d3; k++) {
+                for(j = 0; j < d2; j++) {
+                    for(i = 0; i < d1; i++) {                  //u00(i,j,k) = u00(i,j,k)*(twiddle1(i,j,k)); u11(i,j,k) = u00(i,j,k);
                         //u00[k,j,i] = u00[k,j,i]*(twiddle1[k,j,i]);
                         //u11[k,j,i] = u00[k,j,i];
                         idx = ((k*d2+j)*d1+i);
@@ -1539,20 +1641,20 @@ namespace NPB {
             chk_Imag = 0.0;
 
             int i1, i2, i3, idx=0;
-            for (j = 1; j <= 1024; j++) {
-                q = (int) mod(j, nx)+1;
-                if (q >= xstart[0] && q <= xend[0]) {
-                    r = (int) mod(3*j,ny)+1; 
-                    if (r >= ystart[0] && r <= yend[0]) {
-                        s = (int) mod(5*j,nz)+1; 
-                        if (s >= zstart[0] && s <= zend[0]) {               //chk=chk+u11(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1);
+            for(j = 1; j <= 1024; j++) {
+                q = (int)mod(j, nx)+1;
+                if(q >= xstart[0] && q <= xend[0]) {
+                    r = (int)mod(3*j, ny)+1;
+                    if(r >= ystart[0] && r <= yend[0]) {
+                        s = (int)mod(5*j, nz)+1;
+                        if(s >= zstart[0] && s <= zend[0]) {               //chk=chk+u11(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1);
                             //C#     :     double complex u11[d3, d2, d1];
                             i1 = s-zstart[0];
                             i2 = r-ystart[0];
                             i3 = q-xstart[0];
                             idx = ((i1*d2+i2)*d1+i3)*2;
-                            chk_Real=chk_Real+Point.getValue(u11,idx+REAL); //u11[i1, i2, i3];
-                            chk_Imag=chk_Imag+Point.getValue(u11,idx+IMAG); //u11[i1, i2, i3];
+                            chk_Real=chk_Real+Point.getValue(u11, idx+REAL); //u11[i1, i2, i3];
+                            chk_Imag=chk_Imag+Point.getValue(u11, idx+IMAG); //u11[i1, i2, i3];
                         }
                     }
                 }
@@ -1560,15 +1662,15 @@ namespace NPB {
             chk_Real = chk_Real/ntotal_f;
             chk_Imag = chk_Imag/ntotal_f;
 
-            allchk_Real = worldcomm.Reduce<double>(chk_Real, MPI.Operation<double>.Add,root);
-            allchk_Imag = worldcomm.Reduce<double>(chk_Imag, MPI.Operation<double>.Add,root);
+            allchk_Real = worldcomm.Reduce<double>(chk_Real, MPI.Operation<double>.Add, root);
+            allchk_Imag = worldcomm.Reduce<double>(chk_Imag, MPI.Operation<double>.Add, root);
 
-            if (node == 0) {
+            if(node == 0) {
                 Console.WriteLine(" T = " + i + "  Checksum = (" + allchk_Real + ") (" + allchk_Imag + ")");//+1P2D22.12);
             }
-            if (i > 0) {
-                sums[i,REAL] = allchk_Real;
-                sums[i,IMAG] = allchk_Imag;
+            if(i > 0) {
+                sums[i, REAL] = allchk_Real;
+                sums[i, IMAG] = allchk_Imag;
             }
 
         }
@@ -1576,12 +1678,13 @@ namespace NPB {
         public int verify(int d1, int d2, int d3, int nt) {
             int i;
             double err, epsilon;
-            double[,] csum_ref = new double[25,2]; //     double complex csum_ref(25);
+            double[,] csum_ref = new double[25, 2]; //     double complex csum_ref(25);
             char Class = 'U';
-            if (node != 0) return 0;
+            if(node != 0)
+                return 0;
             epsilon = 0.000000000001;//epsilon = 1.0D-12;
             int verified = 0;
-            if (d1 == 64 && d2 == 64 && d3 == 64 && nt == 6) {
+            if(d1 == 64 && d2 == 64 && d3 == 64 && nt == 6) {
                 Class = 'S';
                 csum_ref[0, REAL] = 554.6087004964;
                 csum_ref[1, REAL] = 554.6385409189;
@@ -1598,7 +1701,7 @@ namespace NPB {
                 csum_ref[5, IMAG] = 493.2597244941;
 
             }
-            else if (d1 == 128 && d2 == 128 && d3 == 32 && nt == 6) {
+            else if(d1 == 128 && d2 == 128 && d3 == 32 && nt == 6) {
                 Class = 'W';
                 csum_ref[0, REAL] = 567.3612178944;
                 csum_ref[1, REAL] = 563.1436885271;
@@ -1615,7 +1718,7 @@ namespace NPB {
                 csum_ref[5, IMAG] = 523.9212247086;
 
             }
-            else if (d1 == 256 && d2 == 256 && d3 == 128 && nt == 6) {
+            else if(d1 == 256 && d2 == 256 && d3 == 128 && nt == 6) {
                 Class = 'A';
                 csum_ref[0, REAL] = 504.6735008193;
                 csum_ref[1, REAL] = 505.9412319734;
@@ -1631,7 +1734,7 @@ namespace NPB {
                 csum_ref[4, IMAG] = 510.4914655194;
                 csum_ref[5, IMAG] = 510.7917842803;
             }
-            else if (d1 == 512 && d2 == 256 && d3 == 256 && nt == 20) {
+            else if(d1 == 512 && d2 == 256 && d3 == 256 && nt == 20) {
                 Class = 'B';
                 csum_ref[0, REAL] = 517.7643571579;
                 csum_ref[1, REAL] = 515.4521291263;
@@ -1675,7 +1778,7 @@ namespace NPB {
                 csum_ref[18, IMAG] = 511.5415130407;
                 csum_ref[19, IMAG] = 511.5744692211;
             }
-            else if (d1 == 512 && d2 == 512 && d3 == 512 && nt == 20) {
+            else if(d1 == 512 && d2 == 512 && d3 == 512 && nt == 20) {
                 Class = 'C';
                 csum_ref[0, REAL] = 519.5078707457;
                 csum_ref[1, REAL] = 515.5422171134;
@@ -1719,7 +1822,7 @@ namespace NPB {
                 csum_ref[18, IMAG] = 512.3435588985;
                 csum_ref[19, IMAG] = 512.3465164008;
             }
-            else if (d1 == 2048 && d2 == 1024 && d3 == 1024 && nt == 25) {
+            else if(d1 == 2048 && d2 == 1024 && d3 == 1024 && nt == 25) {
                 Class = 'D';
                 csum_ref[0, REAL] = (512.2230065252);
                 csum_ref[1, REAL] = (512.0463975765);
@@ -1731,21 +1834,21 @@ namespace NPB {
                 csum_ref[7, REAL] = (511.8842385057);
                 csum_ref[8, REAL] = (511.8769435632);
                 csum_ref[9, REAL] = (511.8718203448);
-                csum_ref[10,REAL] = (511.8683569061);
-                csum_ref[11,REAL] = (511.8661708593);
-                csum_ref[12,REAL] = (511.8649768950);
-                csum_ref[13,REAL] = (511.8645605626);
-                csum_ref[14,REAL] = (511.8647586618);
-                csum_ref[15,REAL] = (511.8654451572);
-                csum_ref[16,REAL] = (511.8665212451);
-                csum_ref[17,REAL] = (511.8679083821);
-                csum_ref[18,REAL] = (511.8695433664);
-                csum_ref[19,REAL] = (511.8713748264);
-                csum_ref[20,REAL] = (511.8733606701);
-                csum_ref[21,REAL] = (511.8754661974);
-                csum_ref[22,REAL] = (511.8776626738);
-                csum_ref[23,REAL] = (511.8799262314);
-                csum_ref[24,REAL] = (511.8822370068);
+                csum_ref[10, REAL] = (511.8683569061);
+                csum_ref[11, REAL] = (511.8661708593);
+                csum_ref[12, REAL] = (511.8649768950);
+                csum_ref[13, REAL] = (511.8645605626);
+                csum_ref[14, REAL] = (511.8647586618);
+                csum_ref[15, REAL] = (511.8654451572);
+                csum_ref[16, REAL] = (511.8665212451);
+                csum_ref[17, REAL] = (511.8679083821);
+                csum_ref[18, REAL] = (511.8695433664);
+                csum_ref[19, REAL] = (511.8713748264);
+                csum_ref[20, REAL] = (511.8733606701);
+                csum_ref[21, REAL] = (511.8754661974);
+                csum_ref[22, REAL] = (511.8776626738);
+                csum_ref[23, REAL] = (511.8799262314);
+                csum_ref[24, REAL] = (511.8822370068);
 
                 csum_ref[0, IMAG] = (511.8534037109);
                 csum_ref[1, IMAG] = (511.7061181082);
@@ -1757,24 +1860,24 @@ namespace NPB {
                 csum_ref[7, IMAG] = (511.8451629348);
                 csum_ref[8, IMAG] = (511.8649119387);
                 csum_ref[9, IMAG] = (511.8820803844);
-                csum_ref[10,IMAG] = (511.8969781011);
-                csum_ref[11,IMAG] = (511.9098918835);
-                csum_ref[12,IMAG] = (511.9210777066);
-                csum_ref[13,IMAG] = (511.9307604484);
-                csum_ref[14,IMAG] = (511.9391362671);
-                csum_ref[15,IMAG] = (511.9463757241);
-                csum_ref[16,IMAG] = (511.9526269238);
-                csum_ref[17,IMAG] = (511.9580184108);
-                csum_ref[18,IMAG] = (511.9626617538);
-                csum_ref[19,IMAG] = (511.9666538138);
-                csum_ref[20,IMAG] = (511.9700787219);
-                csum_ref[21,IMAG] = (511.9730095953);
-                csum_ref[22,IMAG] = (511.9755100241);
-                csum_ref[23,IMAG] = (511.9776353561);
-                csum_ref[24,IMAG] = (511.9794338060);
+                csum_ref[10, IMAG] = (511.8969781011);
+                csum_ref[11, IMAG] = (511.9098918835);
+                csum_ref[12, IMAG] = (511.9210777066);
+                csum_ref[13, IMAG] = (511.9307604484);
+                csum_ref[14, IMAG] = (511.9391362671);
+                csum_ref[15, IMAG] = (511.9463757241);
+                csum_ref[16, IMAG] = (511.9526269238);
+                csum_ref[17, IMAG] = (511.9580184108);
+                csum_ref[18, IMAG] = (511.9626617538);
+                csum_ref[19, IMAG] = (511.9666538138);
+                csum_ref[20, IMAG] = (511.9700787219);
+                csum_ref[21, IMAG] = (511.9730095953);
+                csum_ref[22, IMAG] = (511.9755100241);
+                csum_ref[23, IMAG] = (511.9776353561);
+                csum_ref[24, IMAG] = (511.9794338060);
 
             }
-            else if (d1 == 4096 && d2 == 2048 && d3 == 2048 && nt == 25) {
+            else if(d1 == 4096 && d2 == 2048 && d3 == 2048 && nt == 25) {
                 Class = 'E';
                 csum_ref[0, REAL] = 512.1601045346;
                 csum_ref[1, REAL] = 512.0905403678;
@@ -1786,21 +1889,21 @@ namespace NPB {
                 csum_ref[7, REAL] = 512.0131225172;
                 csum_ref[8, REAL] = 512.0104767108;
                 csum_ref[9, REAL] = 512.0085127969;
-                csum_ref[10,REAL] = 512.0069224127;
-                csum_ref[11,REAL] = 512.0055158164;
-                csum_ref[12,REAL] = 512.0041820159;
-                csum_ref[13,REAL] = 512.0028605402;
-                csum_ref[14,REAL] = 512.0015223011;
-                csum_ref[15,REAL] = 512.0001570022;
-                csum_ref[16,REAL] = 511.9987650555;
-                csum_ref[17,REAL] = 511.9973525091;
-                csum_ref[18,REAL] = 511.9959279472;
-                csum_ref[19,REAL] = 511.9945006558;
-                csum_ref[20,REAL] = 511.9930795911;
-                csum_ref[21,REAL] = 511.9916728462;
-                csum_ref[22,REAL] = 511.9902874185;
-                csum_ref[23,REAL] = 511.9889291565;
-                csum_ref[24,REAL] = 511.9876028049;
+                csum_ref[10, REAL] = 512.0069224127;
+                csum_ref[11, REAL] = 512.0055158164;
+                csum_ref[12, REAL] = 512.0041820159;
+                csum_ref[13, REAL] = 512.0028605402;
+                csum_ref[14, REAL] = 512.0015223011;
+                csum_ref[15, REAL] = 512.0001570022;
+                csum_ref[16, REAL] = 511.9987650555;
+                csum_ref[17, REAL] = 511.9973525091;
+                csum_ref[18, REAL] = 511.9959279472;
+                csum_ref[19, REAL] = 511.9945006558;
+                csum_ref[20, REAL] = 511.9930795911;
+                csum_ref[21, REAL] = 511.9916728462;
+                csum_ref[22, REAL] = 511.9902874185;
+                csum_ref[23, REAL] = 511.9889291565;
+                csum_ref[24, REAL] = 511.9876028049;
 
                 csum_ref[0, IMAG] = 511.7395998266;
                 csum_ref[1, IMAG] = 511.8614716182;
@@ -1812,26 +1915,26 @@ namespace NPB {
                 csum_ref[7, IMAG] = 511.9979364402;
                 csum_ref[8, IMAG] = 512.0077674092;
                 csum_ref[9, IMAG] = 512.0159443121;
-                csum_ref[10,IMAG] = 512.0227453670;
-                csum_ref[11,IMAG] = 512.0284096041;
-                csum_ref[12,IMAG] = 512.0331373793;
-                csum_ref[13,IMAG] = 512.0370938679;
-                csum_ref[14,IMAG] = 512.0404138831;
-                csum_ref[15,IMAG] = 512.0432068837;
-                csum_ref[16,IMAG] = 512.0455615860;
-                csum_ref[17,IMAG] = 512.0475499442;
-                csum_ref[18,IMAG] = 512.0492304629;
-                csum_ref[19,IMAG] = 512.0506508902;
-                csum_ref[20,IMAG] = 512.0518503782;
-                csum_ref[21,IMAG] = 512.0528612016;
-                csum_ref[22,IMAG] = 512.0537101195;
-                csum_ref[23,IMAG] = 512.0544194514;
-                csum_ref[24,IMAG] = 512.0550079284;
+                csum_ref[10, IMAG] = 512.0227453670;
+                csum_ref[11, IMAG] = 512.0284096041;
+                csum_ref[12, IMAG] = 512.0331373793;
+                csum_ref[13, IMAG] = 512.0370938679;
+                csum_ref[14, IMAG] = 512.0404138831;
+                csum_ref[15, IMAG] = 512.0432068837;
+                csum_ref[16, IMAG] = 512.0455615860;
+                csum_ref[17, IMAG] = 512.0475499442;
+                csum_ref[18, IMAG] = 512.0492304629;
+                csum_ref[19, IMAG] = 512.0506508902;
+                csum_ref[20, IMAG] = 512.0518503782;
+                csum_ref[21, IMAG] = 512.0528612016;
+                csum_ref[22, IMAG] = 512.0537101195;
+                csum_ref[23, IMAG] = 512.0544194514;
+                csum_ref[24, IMAG] = 512.0550079284;
 
             }
             double a, b, c, d, r1, r2;
-            if (Class != 'U') {
-                for (i = 1; i <= nt; i++) {
+            if(Class != 'U') {
+                for(i = 1; i <= nt; i++) {
                     a = sums[i, REAL] - csum_ref[i - 1, REAL];
                     b = sums[i, IMAG] - csum_ref[i - 1, IMAG];
                     c = csum_ref[i - 1, REAL];
@@ -1839,21 +1942,23 @@ namespace NPB {
                     r1 = ((a * c + b * d) / ((c * c) + (d * d))) * ((a * c + b * d) / ((c * c) + (d * d)));
                     r2 = ((c * b - a * d) / (c * c + d * d)) * ((c * b - a * d) / (c * c + d * d));
                     err = Math.Sqrt(r1 + r2);
-                    if (!(err <= epsilon)) goto Go100;
+                    if(!(err <= epsilon))
+                        goto Go100;
                 }
                 verified = 1;
             }
-            Go100:
-            if (worldcomm.Size != np) {
+        Go100:
+            if(worldcomm.Size != np) {
                 Console.WriteLine(" Warning: benchmark was compiled for "+np+" processors");
                 Console.WriteLine(" Must be run on this many processors for official verification");
                 Console.WriteLine(" so memory access is repeatable");
                 verified = 0;
             }
-            if (Class != 'U') {
-                if (verified==1) {
+            if(Class != 'U') {
+                if(verified==1) {
                     Console.WriteLine(" Result verification successful");
-                } else {
+                }
+                else {
                     Console.WriteLine(" Result verification failed");
                 }
             }
@@ -1864,25 +1969,26 @@ namespace NPB {
         public void print_timers() {
             int i;
             string[] tstrings = new string[T_max];
-            tstrings[0]="          total "; 
-            tstrings[1]="          setup "; 
-            tstrings[2]="            fft "; 
-            tstrings[3]="         evolve "; 
-            tstrings[4]="       checksum "; 
-            tstrings[5]="         fftlow "; 
+            tstrings[0]="          total ";
+            tstrings[1]="          setup ";
+            tstrings[2]="            fft ";
+            tstrings[3]="         evolve ";
+            tstrings[4]="       checksum ";
+            tstrings[5]="         fftlow ";
             tstrings[6]="        fftcopy ";
             tstrings[7]="      transpose ";
-            tstrings[8]=" transpose1_loc "; 
+            tstrings[8]=" transpose1_loc ";
             tstrings[9]=" transpose1_glo ";
             tstrings[10]=" transpose1_fin ";
-            tstrings[11]=" transpose2_loc "; 
+            tstrings[11]=" transpose2_loc ";
             tstrings[12]=" transpose2_glo ";
-            tstrings[13]=" transpose2_fin "; 
+            tstrings[13]=" transpose2_fin ";
             tstrings[14]="           sync ";
 
-            if (node != 0) return;
-            for (i = 1; i <= T_max; i++) {
-                if (timer.readTimer(i) != 0.0) {
+            if(node != 0)
+                return;
+            for(i = 1; i <= T_max; i++) {
+                if(timer.readTimer(i) != 0.0) {
                     Console.WriteLine(" timer "+ i + tstrings[i-1] + timer.readTimer(i));
                 }
             }
