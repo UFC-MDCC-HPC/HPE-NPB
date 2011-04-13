@@ -1124,7 +1124,7 @@ namespace NPB {
             //c   Perform one variant of the Stockham FFT.
             //c---------------------------------------------------------------------
             for(l = 1; l <= m; l = l + 2) {
-                fftz2(dir, l, m, n, fftblock, fftblockpad, u, y, y, 0, 1);
+                fftz2(dir, l, m, n, fftblock, fftblockpad, u, y, 0, 1);
                 if(l == m) {
                     for(j = 0; j < n; j++) {
                         for(i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
@@ -1134,11 +1134,11 @@ namespace NPB {
                     }
                     return;
                 }
-                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, y, 1, 0);
+                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, 1, 0);
             }
         }
 
-        public void fftz2(int dir, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] x, double[, , ,] y, int xoffstSrc, int xoffstOut) { //u=u x=ytemp y = ytemp
+        public void fftz2(int dir, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] y, int xoffstSrc, int xoffstOut) { //u=u x=ytemp y = ytemp
             //c---------------------------------------------------------------------
             //c   Performs the L-th iteration of the second variant of the Stockham FFT.
             //c---------------------------------------------------------------------
@@ -1179,10 +1179,10 @@ namespace NPB {
                 //  c---------------------------------------------------------------------
                 for(k = 0; k <= lk - 1; k++) {
                     for(j = 0; j < ny; j++) {
-                        x11[REAL] = x[xoffstSrc, i11 + k - 1, j, REAL]; //x11[0] = x[j,i11+k];
-                        x11[IMAG] = x[xoffstSrc, i11 + k - 1, j, IMAG];
-                        x21[REAL] = x[xoffstSrc, i12 + k - 1, j, REAL]; //x21 = x(j,i12+k);
-                        x21[IMAG] = x[xoffstSrc, i12 + k - 1, j, IMAG];
+                        x11[REAL] = y[xoffstSrc, i11 + k - 1, j, REAL]; //x11[0] = x[j,i11+k];
+                        x11[IMAG] = y[xoffstSrc, i11 + k - 1, j, IMAG];
+                        x21[REAL] = y[xoffstSrc, i12 + k - 1, j, REAL]; //x21 = x(j,i12+k);
+                        x21[IMAG] = y[xoffstSrc, i12 + k - 1, j, IMAG];
                         y[xoffstOut, i21 + k - 1, j, REAL] = x11[REAL] + x21[REAL]; //y(j,i21+k) = x11 + x21;
                         y[xoffstOut, i21 + k - 1, j, IMAG] = x11[IMAG] + x21[IMAG];
                         y[xoffstOut, i22 + k - 1, j, REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]); //y(j,i22+k) = u1 * (x11 - x21);
