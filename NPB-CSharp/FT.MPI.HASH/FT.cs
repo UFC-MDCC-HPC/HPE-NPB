@@ -122,7 +122,6 @@ namespace NPB {
             for(i = 1; i <= T_max; i++)
                 timer.resetTimer(i);
             worldcomm.Barrier();
-
             timer.start(T_total);
             if(timers_enabled)
                 timer.start(T_setup);
@@ -165,9 +164,8 @@ namespace NPB {
 
             int verified = verify(nx, ny, nz, niter);
             timer.stop(T_total);
-            if(np != np_min)
-                verified = 0;
             double total_time = timer.readTimer(T_total), mflops; //total_time = timer_read(t_total);
+            double ntotal_f=(double)(nx*ny*nz);
 
             if(total_time != 0) {
                 mflops = 0.000001*ntotal_f * (14.8157+7.19641*Math.Log(ntotal_f) +  (5.23518+7.21113*Math.Log(ntotal_f))*niter)/total_time;
@@ -283,18 +281,10 @@ namespace NPB {
                     }
                 }
 
-                if(np < np_min) {
-                    Console.WriteLine(" Error: Compiled for "+ np_min + " processors. ");
-                    Console.WriteLine(" Only "+ np + " processors found ");
-                    mpi.Dispose();
-                    Environment.Exit(0);
-                }
                 Console.WriteLine(" Size: " + nx + "x" + ny + "x" + nz);
                 Console.WriteLine(" Iterations: "+ niter);
                 Console.WriteLine(" Number of processes : "+ np);
                 Console.WriteLine(" Processor array     : "+np1+"x"+np2);
-                if(np != np_min)
-                    Console.WriteLine(" WARNING: compiled for "+np_min+" processes. Will not verify. ");
                 if(layout_type == layout_0D) {
                     Console.WriteLine(" Layout type: OD");
                 }
@@ -386,9 +376,6 @@ namespace NPB {
 
             if(timers_enabled)
                 synchup();
-
-            if(debug)
-                Console.WriteLine("proc coords: " + node +" "+ me1 +" "+ me2);
 
             //c---------------------------------------------------------------------
             //c Determine which section of the grid is owned by this
@@ -486,22 +473,15 @@ namespace NPB {
 
         public void startBigArrays() {
             try {
-                //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)
-                u1 = new double[dims[2, 0], dims[1, 0], dims[0, 0], 2];
-                u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
-                u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
-                u = new double[nx, 2];
-                sums = new double[niter_default+2, 2];
-                // twiddle(ntdivnp)
-                twiddle = new double[ntdivnp];
+                u1 = new double[dims[2, 0], dims[1, 0], dims[0, 0], 2];//complex u0(ntdivnp)
+                u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];//complex u1(ntdivnp)
+                u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];//complex u2(ntdivnp)
+                u = new double[nx, 2];//double complex u(nx)
+                sums = new double[niter_default+1, 2];                
+                twiddle = new double[ntdivnp];// twiddle(ntdivnp)
             }
             catch {
-                Console.WriteLine("");
-                Console.WriteLine(" OutOfMemoryException: Memory error!");
-                Console.WriteLine("");
-                worldcomm.Abort(0);
-                mpi.Dispose();
-                Environment.Exit(0);
+                throw new ArgumentOutOfRangeException("ArgumentOutOfRangeException");
             }
         }
 
@@ -1658,8 +1638,8 @@ namespace NPB {
                     }
                 }
             }
-            chk_Real = chk_Real/ntotal_f;
-            chk_Imag = chk_Imag/ntotal_f;
+            chk_Real = chk_Real/((double)(nx*ny*nz));
+            chk_Imag = chk_Imag/((double)(nx*ny*nz));
 
             allchk_Real = worldcomm.Reduce<double>(chk_Real, MPI.Operation<double>.Add, root);
             allchk_Imag = worldcomm.Reduce<double>(chk_Imag, MPI.Operation<double>.Add, root);
