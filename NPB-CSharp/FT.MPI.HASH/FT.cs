@@ -1174,11 +1174,11 @@ namespace NPB {
                 u1[REAL] = u[(ku+i), REAL];
                 if(dir >= 1) {
                     //    u1 = u(ku+i);
-                    u1[1] = u[ku+i, IMAG];
+                    u1[IMAG] = u[ku+i, IMAG];
                 }
                 else {
                     //    u1 = dconjg (u(ku+i));
-                    u1[1] = -1*u[ku+i, IMAG];
+                    u1[IMAG] = -1*u[ku+i, IMAG];
                 }
 
                 //  c---------------------------------------------------------------------
