@@ -141,8 +141,8 @@ namespace NPB {
             if(timers_enabled)
                 timer.stop(T_fft);
 
-            double[,] sums = new double[niter+1, 2];
-            for(int iter = 1; iter <= niter; iter++) {
+            double[] sums = new double[(niter)*2];
+            for(int iter = 0; iter < niter; iter++) {
                 if(timers_enabled)
                     timer.start(T_evolve);
                 evolve(u0, u1, twiddle, dims[0, 0], dims[1, 0], dims[2, 0]);
@@ -1618,7 +1618,7 @@ namespace NPB {
 
         }
 
-        public void checksum(int i, double[,] sums, double[, , ,] u11) {
+        public void checksum(int iter, double[] sums, double[, , ,] u11) {
             //Fortran:     double complex u1(d1, d2, d3);
             //C#     :     double complex u1[d3, d2, d1];
             int j, q,r,s;
@@ -1657,15 +1657,15 @@ namespace NPB {
             allchk_Imag = worldcomm.Reduce<double>(chk_Imag, MPI.Operation<double>.Add, root);
 
             if(node == 0) {
-                Console.WriteLine(" T = " + i + "  Checksum = (" + allchk_Real + ") (" + allchk_Imag + ")");//+1P2D22.12);
+                Console.WriteLine(" T = " + (iter+1) + "  Checksum = (" + allchk_Real + ") (" + allchk_Imag + ")");//+1P2D22.12);
             }
-            if(i > 0) {
-                sums[i, REAL] = allchk_Real;
-                sums[i, IMAG] = allchk_Imag;
+            if(iter >= 0) {
+                sums[iter*2+REAL] = allchk_Real;
+                sums[iter*2+IMAG] = allchk_Imag;
             }
         }
 
-        public int verify(int niter, double[,] sums) {
+        public int verify(int niter, double[] sums) {
             int i;
             double err, epsilon;
             double[,] csum_ref = new double[25, 2]; //     double complex csum_ref(25);
@@ -1924,11 +1924,11 @@ namespace NPB {
             }
             double a, b, c, d, r1, r2;
             if(Class != 'U') {
-                for(i = 1; i <= niter; i++) {
-                    a = sums[i, REAL] - csum_ref[i - 1, REAL];
-                    b = sums[i, IMAG] - csum_ref[i - 1, IMAG];
-                    c = csum_ref[i - 1, REAL];
-                    d = csum_ref[i - 1, IMAG];
+                for(i = 0; i < niter; i++) {
+                    a = sums[i*2+REAL] - csum_ref[i, REAL];
+                    b = sums[i*2+IMAG] - csum_ref[i, IMAG];
+                    c = csum_ref[i, REAL];
+                    d = csum_ref[i, IMAG];
                     r1 = ((a * c + b * d) / ((c * c) + (d * d))) * ((a * c + b * d) / ((c * c) + (d * d)));
                     r2 = ((c * b - a * d) / (c * c + d * d)) * ((c * b - a * d) / (c * c + d * d));
                     err = Math.Sqrt(r1 + r2);
