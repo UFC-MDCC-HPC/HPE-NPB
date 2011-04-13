@@ -29,7 +29,7 @@ namespace NPB {
         protected static int REAL=0,IMAG=1;
 
         protected static double[,] u;           //complex u(nx);
-        protected static double[,] sums;        //complex sums(0:niter_default)
+        //protected static double[,] sums;        //complex sums(0:niter_default)
         //end.h
 
         //MPI

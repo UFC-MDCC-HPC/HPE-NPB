@@ -141,7 +141,7 @@ namespace NPB {
             if(timers_enabled)
                 timer.stop(T_fft);
 
-
+            double[,] sums = new double[niter+1, 2];
             for(int iter = 1; iter <= niter; iter++) {
                 if(timers_enabled)
                     timer.start(T_evolve);
@@ -157,12 +157,12 @@ namespace NPB {
                     synchup();
                 if(timers_enabled)
                     timer.start(T_checksum);
-                checksum(iter, u2, dims[0, 0], dims[1, 0], dims[2, 0]);
+                checksum(iter, sums, u2, dims[0, 0], dims[1, 0], dims[2, 0]);
                 if(timers_enabled)
                     timer.stop(T_checksum);
             }
 
-            int verified = verify(nx, ny, nz, niter);
+            int verified = verify(niter, sums);
             timer.stop(T_total);
             double total_time = timer.readTimer(T_total), mflops; //total_time = timer_read(t_total);
             double ntotal_f=(double)(nx*ny*nz);
@@ -479,7 +479,7 @@ namespace NPB {
                 u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];//complex u1(ntdivnp)
                 u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];//complex u2(ntdivnp)
                 u = new double[nx, 2];//double complex u(nx)
-                sums = new double[niter_default+1, 2];
+                //sums = new double[niter+1, 2];
                 twiddle = new double[ntdivnp];// twiddle(ntdivnp)
             }
             catch {
@@ -1618,7 +1618,7 @@ namespace NPB {
 
         }
 
-        public void checksum(int i, double[, , ,] u11, int d1, int d2, int d3) {
+        public void checksum(int i, double[,] sums, double[, , ,] u11, int d1, int d2, int d3) {
             //Fortran:     double complex u1(d1, d2, d3);
             //C#     :     double complex u1[d3, d2, d1];
             int j, q,r,s;
@@ -1660,10 +1660,9 @@ namespace NPB {
                 sums[i, REAL] = allchk_Real;
                 sums[i, IMAG] = allchk_Imag;
             }
-
         }
 
-        public int verify(int d1, int d2, int d3, int nt) {
+        public int verify(int niter, double[,] sums) {
             int i;
             double err, epsilon;
             double[,] csum_ref = new double[25, 2]; //     double complex csum_ref(25);
@@ -1672,7 +1671,7 @@ namespace NPB {
                 return 0;
             epsilon = 0.000000000001;//epsilon = 1.0D-12;
             int verified = 0;
-            if(d1 == 64 && d2 == 64 && d3 == 64 && nt == 6) {
+            if(nx == 64 && ny == 64 && nz == 64 && niter == 6) {
                 Class = 'S';
                 csum_ref[0, REAL] = 554.6087004964;
                 csum_ref[1, REAL] = 554.6385409189;
@@ -1689,7 +1688,7 @@ namespace NPB {
                 csum_ref[5, IMAG] = 493.2597244941;
 
             }
-            else if(d1 == 128 && d2 == 128 && d3 == 32 && nt == 6) {
+            else if(nx == 128 && ny == 128 && nz == 32 && niter == 6) {
                 Class = 'W';
                 csum_ref[0, REAL] = 567.3612178944;
                 csum_ref[1, REAL] = 563.1436885271;
@@ -1706,7 +1705,7 @@ namespace NPB {
                 csum_ref[5, IMAG] = 523.9212247086;
 
             }
-            else if(d1 == 256 && d2 == 256 && d3 == 128 && nt == 6) {
+            else if(nx == 256 && ny == 256 && nz == 128 && niter == 6) {
                 Class = 'A';
                 csum_ref[0, REAL] = 504.6735008193;
                 csum_ref[1, REAL] = 505.9412319734;
@@ -1722,7 +1721,7 @@ namespace NPB {
                 csum_ref[4, IMAG] = 510.4914655194;
                 csum_ref[5, IMAG] = 510.7917842803;
             }
-            else if(d1 == 512 && d2 == 256 && d3 == 256 && nt == 20) {
+            else if(nx == 512 && ny == 256 && nz == 256 && niter == 20) {
                 Class = 'B';
                 csum_ref[0, REAL] = 517.7643571579;
                 csum_ref[1, REAL] = 515.4521291263;
@@ -1766,7 +1765,7 @@ namespace NPB {
                 csum_ref[18, IMAG] = 511.5415130407;
                 csum_ref[19, IMAG] = 511.5744692211;
             }
-            else if(d1 == 512 && d2 == 512 && d3 == 512 && nt == 20) {
+            else if(nx == 512 && ny == 512 && nz == 512 && niter == 20) {
                 Class = 'C';
                 csum_ref[0, REAL] = 519.5078707457;
                 csum_ref[1, REAL] = 515.5422171134;
@@ -1810,7 +1809,7 @@ namespace NPB {
                 csum_ref[18, IMAG] = 512.3435588985;
                 csum_ref[19, IMAG] = 512.3465164008;
             }
-            else if(d1 == 2048 && d2 == 1024 && d3 == 1024 && nt == 25) {
+            else if(nx == 2048 && ny == 1024 && nz == 1024 && niter == 25) {
                 Class = 'D';
                 csum_ref[0, REAL] = (512.2230065252);
                 csum_ref[1, REAL] = (512.0463975765);
@@ -1865,7 +1864,7 @@ namespace NPB {
                 csum_ref[24, IMAG] = (511.9794338060);
 
             }
-            else if(d1 == 4096 && d2 == 2048 && d3 == 2048 && nt == 25) {
+            else if(nx == 4096 && ny == 2048 && nz == 2048 && niter == 25) {
                 Class = 'E';
                 csum_ref[0, REAL] = 512.1601045346;
                 csum_ref[1, REAL] = 512.0905403678;
@@ -1922,7 +1921,7 @@ namespace NPB {
             }
             double a, b, c, d, r1, r2;
             if(Class != 'U') {
-                for(i = 1; i <= nt; i++) {
+                for(i = 1; i <= niter; i++) {
                     a = sums[i, REAL] - csum_ref[i - 1, REAL];
                     b = sums[i, IMAG] - csum_ref[i - 1, IMAG];
                     c = csum_ref[i - 1, REAL];
