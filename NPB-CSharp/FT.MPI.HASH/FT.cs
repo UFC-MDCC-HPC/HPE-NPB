@@ -982,7 +982,7 @@ namespace NPB {
                         timer.stop(T_fftcopy);
                     if(timers_enabled)
                         timer.start(T_fftlow);
-                    cfftz(dir, logd1, d1, y, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
+                    cfftz(dir, logd1, d1, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
                     if(timers_enabled)
                         timer.stop(T_fftlow);
 
@@ -1031,7 +1031,7 @@ namespace NPB {
 
                     if(timers_enabled)
                         timer.start(T_fftlow);
-                    cfftz(dir, logd2, d2, y, y); //y(1, 1, 2));
+                    cfftz(dir, logd2, d2, y); //y(1, 1, 2));
                     if(timers_enabled)
                         timer.stop(T_fftlow);
 
@@ -1081,7 +1081,7 @@ namespace NPB {
 
                     if(timers_enabled)
                         timer.start(T_fftlow);
-                    cfftz(dir, logd3, d3, y, y); //y(1, 1, 2));
+                    cfftz(dir, logd3, d3, y); //y(1, 1, 2));
                     if(timers_enabled)
                         timer.stop(T_fftlow);
 
@@ -1101,7 +1101,7 @@ namespace NPB {
             }
         }
 
-        public void cfftz(int dir, int m, int n, double[, , ,] x, double[, , ,] y) {
+        public void cfftz(int dir, int m, int n, double[, , ,] y) {
             //c---------------------------------------------------------------------
             //c   Computes NY N-point complex-to-complex FFTs of X using an algorithm due
             //c   to Swarztrauber.  X is both the input and the output array, while Y is a 
@@ -1124,17 +1124,17 @@ namespace NPB {
             //c   Perform one variant of the Stockham FFT.
             //c---------------------------------------------------------------------
             for(l = 1; l <= m; l = l + 2) {
-                fftz2(dir, l, m, n, fftblock, fftblockpad, u, x, y, 0, 1);
+                fftz2(dir, l, m, n, fftblock, fftblockpad, u, y, y, 0, 1);
                 if(l == m) {
                     for(j = 0; j < n; j++) {
                         for(i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
-                            x[0, j, i, REAL] = y[1, j, i, REAL];
-                            x[0, j, i, IMAG] = y[1, j, i, IMAG];
+                            y[0, j, i, REAL] = y[1, j, i, REAL];
+                            y[0, j, i, IMAG] = y[1, j, i, IMAG];
                         }
                     }
                     return;
                 }
-                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, x, 1, 0);
+                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, y, 1, 0);
             }
         }
 
