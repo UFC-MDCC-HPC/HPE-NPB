@@ -157,7 +157,7 @@ namespace NPB {
                     synchup();
                 if(timers_enabled)
                     timer.start(T_checksum);
-                checksum(iter, sums, u2, dims[0, 0], dims[1, 0], dims[2, 0]);
+                checksum(iter, sums, u2);
                 if(timers_enabled)
                     timer.stop(T_checksum);
             }
@@ -1618,12 +1618,15 @@ namespace NPB {
 
         }
 
-        public void checksum(int i, double[,] sums, double[, , ,] u11, int d1, int d2, int d3) {
+        public void checksum(int i, double[,] sums, double[, , ,] u11) {
             //Fortran:     double complex u1(d1, d2, d3);
             //C#     :     double complex u1[d3, d2, d1];
             int j, q,r,s;
             double chk_Real, chk_Imag;
             double allchk_Real=0, allchk_Imag=0;   //double complex chk,allchk;
+            int d1 = dims[0, 0];
+            int d2 = dims[1, 0];
+            int d3 = dims[2, 0];
 
             chk_Real = 0.0;
             chk_Imag = 0.0;
