@@ -1156,7 +1156,7 @@ namespace NPB {
             lk = (int)Math.Pow(2, (l - 1));
             li = (int)Math.Pow(2, (m - l));
             lj = 2 * lk;
-            ku = li;// +1;
+            ku = li;
 
             for(i = 0; i <= li - 1; i++) {
                 i11 = i * lk;
@@ -1166,12 +1166,10 @@ namespace NPB {
 
                 ureal = u[(ku+i), REAL];
                 if(dir >= 1) {
-                    //    u1 = u(ku+i);
-                    uimg = u[ku+i, IMAG];
+                    uimg = u[ku+i, IMAG];   //u1 = u(ku+i);
                 }
                 else {
-                    //    u1 = dconjg (u(ku+i));
-                    uimg = -1*u[ku+i, IMAG];
+                    uimg = -1*u[ku+i, IMAG];//u1 = dconjg (u(ku+i));
                 }
 
                 //  c---------------------------------------------------------------------
