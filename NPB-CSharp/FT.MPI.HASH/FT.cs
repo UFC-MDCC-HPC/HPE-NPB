@@ -897,63 +897,63 @@ namespace NPB {
 
             if(dir == 1) {
                 if(layout_type == layout_0D) {
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1, (new double[2, dims[0, 0], fftblockpad, 2]));
-                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1, (new double[2, dims[1, 1], fftblockpad, 2]));
-                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u02, (new double[2, dims[2, 2], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1);
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1);
+                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u02);
                 }
                 else if(layout_type == layout_1D) {
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1, (new double[2, dims[0, 0], fftblockpad, 2]));
-                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1);
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1);
                     if(timers_enabled) timer.start(T_transpose);
                     transpose_xy_z(2, 3, u1, u02);
                     if(timers_enabled) timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u02, u02, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u02, u02);
                 }
                 else if(layout_type == layout_2D) {
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1);
                     if(timers_enabled)
                         timer.start(T_transpose);
                     transpose_x_y(1, 2, u1, u02);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02, (new double[2, dims[0, 1], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02);
                     if(timers_enabled)
                         timer.start(T_transpose);
                     transpose_x_z(2, 3, u02, u1);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u02, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u02);
                 }
             }
             else {
                 if(layout_type == layout_0D) {
-                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1, (new double[2, dims[2, 2], fftblockpad, 2]));
-                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1, (new double[2, dims[1, 1], fftblockpad, 2]));
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u02, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1);
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u02);
                 }
                 else if(layout_type == layout_1D) {
-                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1);
                     if(timers_enabled) timer.start(T_transpose);
                     transpose_x_yz(3, 2, u1, u02);
                     if(timers_enabled) timer.stop(T_transpose);
-                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02, (new double[2, dims[1, 1], fftblockpad, 2]));
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u02, u02, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u02, u02);
                 }
                 else if(layout_type == layout_2D) {
-                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1);
                     if(timers_enabled) timer.start(T_transpose);
                     transpose_x_z(3, 2, u1, u02);
                     if(timers_enabled) timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02, (new double[2, dims[0, 1], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02);
                     if(timers_enabled) timer.start(T_transpose);
                     transpose_x_y(2, 1, u02, u1);
                     if(timers_enabled) timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u02, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u02);
                 }
             }
         }
 
-        public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
+        public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
             int logd1;
             //Fortran
             //double complex x(d1,d2,d3);
@@ -963,6 +963,7 @@ namespace NPB {
             //y   [2, d1, fftblockpad]
             //x   [d3,d2,d1];
             //xout[d3,d2,d1];
+            double[,,,] y = (new double[2, d1, fftblockpad, 2]);
 
             int i, j, k, jj, iin, io;
             logd1 = ilog2Get(d1);
@@ -1002,7 +1003,7 @@ namespace NPB {
             }
         }
 
-        public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
+        public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
             int logd2;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1010,6 +1011,7 @@ namespace NPB {
             //C#:  x   [d3,d2,d1];
             //     xout[d3,d2,d1];
             //     y   [2, d2, fftblockpad];
+            double[,,,] y = (new double[2, d2, fftblockpad, 2]);
 
             int i, j, k, ii, io, iin;
             logd2 = ilog2Get(d2);
@@ -1049,7 +1051,7 @@ namespace NPB {
             }
         }
 
-        public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
+        public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
             int logd3;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1059,6 +1061,7 @@ namespace NPB {
             //     y    [2, d3, fftblockpad]; 
 
             int i, j, k, ii, iin, io;
+            double[,,,] y = (new double[2, d3, fftblockpad, 2]);
 
             logd3 = ilog2Get(d3);
 
