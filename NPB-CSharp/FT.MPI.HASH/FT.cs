@@ -1124,7 +1124,7 @@ namespace NPB {
             //c   Perform one variant of the Stockham FFT.
             //c---------------------------------------------------------------------
             for(l = 1; l <= m; l = l + 2) {
-                fftz2(dir, l, m, n, fftblock, fftblockpad, u, y, 0, 1);
+                fftz2(dir, l, m, n, u, y, 0, 1);
                 if(l == m) {
                     for(j = 0; j < n; j++) {
                         for(i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
@@ -1134,11 +1134,11 @@ namespace NPB {
                     }
                     return;
                 }
-                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, 1, 0);
+                fftz2(dir, l + 1, m, n, u, y, 1, 0);
             }
         }
 
-        public void fftz2(int dir, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] y, int iread, int iwrite) { //u=u x=ytemp y = ytemp
+        public void fftz2(int dir, int l, int m, int n, double[,] u, double[, , ,] y, int iread, int iwrite) { //u=u x=ytemp y = ytemp
             //c---------------------------------------------------------------------
             //c   Performs the L-th iteration of the second variant of the Stockham FFT.
             //c---------------------------------------------------------------------
@@ -1176,7 +1176,7 @@ namespace NPB {
                 //  c   This loop is vectorizable.
                 //  c---------------------------------------------------------------------
                 for(k = 0; k <= lk - 1; k++) {
-                    for(j = 0; j < ny; j++) {
+                    for(j = 0; j < fftblock; j++) {
                         x11_r = y[iread, i11 + k, j, REAL]; //x11[0] = x[j,i11+k];
                         x11_i = y[iread, i11 + k, j, IMAG];
                         x21_r = y[iread, i12 + k, j, REAL]; //x21 = x(j,i12+k);
