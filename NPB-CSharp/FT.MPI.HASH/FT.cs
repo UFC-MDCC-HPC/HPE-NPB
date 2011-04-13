@@ -883,11 +883,11 @@ namespace NPB {
             return lg;
         }
 
-        public void fft(int dir, double[, , ,] x1, double[, , ,] x2) {
-            //double complex x1(ntdivnp), x2(ntdivnp)
+        public void fft(int dir, double[, , ,] u1, double[, , ,] u02) {
+            //double complex u1(ntdivnp), u02(ntdivnp)
             //double complex scratch(fftblockpad_default*maxdim*2) !scratch equal y in cfftsX
             //c---------------------------------------------------------------------
-            //c note: args x1, x2 must be different arrays
+            //c note: args u1, u02 must be different arrays
             //c note: args for cfftsx are (direction, layout, xin, xout, scratch)
             //c       xin/xout may be the same and it can be somewhat faster
             //c       if they are
@@ -897,66 +897,58 @@ namespace NPB {
 
             if(dir == 1) {
                 if(layout_type == layout_0D) {
-                    cffts1(1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1, (new double[2, dims[0, 0], fftblockpad, 2]));
-                    cffts2(1, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1, (new double[2, dims[1, 1], fftblockpad, 2]));
-                    cffts3(1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x2, (new double[2, dims[2, 2], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u02, (new double[2, dims[2, 2], fftblockpad, 2]));
                 }
                 else if(layout_type == layout_1D) {
-                    cffts1(1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1, (new double[2, dims[0, 0], fftblockpad, 2]));
-                    cffts2(1, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1, (new double[2, dims[1, 1], fftblockpad, 2]));
-                    if(timers_enabled)
-                        timer.start(T_transpose);
-                    transpose_xy_z(2, 3, x1, x2);
-                    if(timers_enabled)
-                        timer.stop(T_transpose);
-                    cffts1(1, dims[0, 2], dims[1, 2], dims[2, 2], x2, x2, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    if(timers_enabled) timer.start(T_transpose);
+                    transpose_xy_z(2, 3, u1, u02);
+                    if(timers_enabled) timer.stop(T_transpose);
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u02, u02, (new double[2, dims[0, 2], fftblockpad, 2]));
                 }
                 else if(layout_type == layout_2D) {
-                    cffts1(1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1, (new double[2, dims[0, 0], fftblockpad, 2]));
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_x_y(1, 2, x1, x2);
+                    transpose_x_y(1, 2, u1, u02);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(1, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2, (new double[2, dims[0, 1], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02, (new double[2, dims[0, 1], fftblockpad, 2]));
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_x_z(2, 3, x2, x1);
+                    transpose_x_z(2, 3, u02, u1);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x2, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u02, (new double[2, dims[0, 2], fftblockpad, 2]));
                 }
             }
             else {
                 if(layout_type == layout_0D) {
-                    cffts3(-1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1, (new double[2, dims[2, 2], fftblockpad, 2]));
-                    cffts2(-1, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1, (new double[2, dims[1, 1], fftblockpad, 2]));
-                    cffts1(-1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x2, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1, (new double[2, dims[2, 2], fftblockpad, 2]));
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u02, (new double[2, dims[0, 0], fftblockpad, 2]));
                 }
                 else if(layout_type == layout_1D) {
-                    cffts1(-1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1, (new double[2, dims[0, 2], fftblockpad, 2]));
-                    if(timers_enabled)
-                        timer.start(T_transpose);
-                    transpose_x_yz(3, 2, x1, x2);
-                    if(timers_enabled)
-                        timer.stop(T_transpose);
-                    cffts2(-1, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2, (new double[2, dims[1, 1], fftblockpad, 2]));
-                    cffts1(-1, dims[0, 0], dims[1, 0], dims[2, 0], x2, x2, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    if(timers_enabled) timer.start(T_transpose);
+                    transpose_x_yz(3, 2, u1, u02);
+                    if(timers_enabled) timer.stop(T_transpose);
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02, (new double[2, dims[1, 1], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u02, u02, (new double[2, dims[0, 0], fftblockpad, 2]));
                 }
                 else if(layout_type == layout_2D) {
-                    cffts1(-1, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1, (new double[2, dims[0, 2], fftblockpad, 2]));
-                    if(timers_enabled)
-                        timer.start(T_transpose);
-                    transpose_x_z(3, 2, x1, x2);
-                    if(timers_enabled)
-                        timer.stop(T_transpose);
-                    cffts1(-1, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2, (new double[2, dims[0, 1], fftblockpad, 2]));
-                    if(timers_enabled)
-                        timer.start(T_transpose);
-                    transpose_x_y(2, 1, x2, x1);
-                    if(timers_enabled)
-                        timer.stop(T_transpose);
-                    cffts1(-1, dims[0, 0], dims[1, 0], dims[2, 0], x1, x2, (new double[2, dims[0, 0], fftblockpad, 2]));
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1, (new double[2, dims[0, 2], fftblockpad, 2]));
+                    if(timers_enabled) timer.start(T_transpose);
+                    transpose_x_z(3, 2, u1, u02);
+                    if(timers_enabled) timer.stop(T_transpose);
+                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02, (new double[2, dims[0, 1], fftblockpad, 2]));
+                    if(timers_enabled) timer.start(T_transpose);
+                    transpose_x_y(2, 1, u02, u1);
+                    if(timers_enabled) timer.stop(T_transpose);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u02, (new double[2, dims[0, 0], fftblockpad, 2]));
                 }
             }
         }
