@@ -75,7 +75,7 @@ namespace NPB {
         static void Main(String[] argv) {
 
             FT ft = null;
-            FTBase.debug = false;
+            bool debug = false;
 
             try {
                 string param = argv[0];
@@ -85,7 +85,7 @@ namespace NPB {
                 argv[0] = "CLASS=S"; // CLASS DEFAULT, IF USER NOT TYPE CLASS=S IN COMMAND-LINE ARGUMENT
             }
             char paramClass;
-            if(!FTBase.debug) {
+            if(!debug) {
                 IO.parseCmdLineArgs(argv);
                 paramClass = IO.CLASS;
             }
@@ -106,10 +106,10 @@ namespace NPB {
         }
 
         public void runBenchMark() {
-            for(i = 1; i <= T_max; i++) {
+            for(int i = 1; i <= T_max; i++) {
                 timer.resetTimer(i);
             }
-            setup();
+            int niter = blocksConfig();
             startBigArrays();
             compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
             compute_initial_conditions(u1, dims[0, 0], dims[1, 0], dims[2, 0]);
@@ -119,7 +119,7 @@ namespace NPB {
             //c Start over from the beginning. Note that all operations must
             //c be timed, in contrast to other benchmarks. 
             //c---------------------------------------------------------------------
-            for(i = 1; i <= T_max; i++)
+            for(int i = 1; i <= T_max; i++)
                 timer.resetTimer(i);
             worldcomm.Barrier();
             timer.start(T_total);
@@ -194,9 +194,10 @@ namespace NPB {
             mpi.Dispose();
         }
 
-        public void setup() {
+        public int blocksConfig() {
             int i, fstatus=0;
-            debug = false;
+            int fftblock_default=16, fftblockpad_default=18;
+            int niter = 0;
 
             if(node == 0) {
                 Console.WriteLine(" NAS Parallel Benchmarks "+ "3.3" +" -- FT Benchmark ");
@@ -469,6 +470,7 @@ namespace NPB {
 
             if(fftblock != fftblock_default)
                 fftblockpad = fftblock + 3;
+            return niter;
         }
 
         public void startBigArrays() {
@@ -477,7 +479,7 @@ namespace NPB {
                 u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];//complex u1(ntdivnp)
                 u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];//complex u2(ntdivnp)
                 u = new double[nx, 2];//double complex u(nx)
-                sums = new double[niter_default+1, 2];                
+                sums = new double[niter_default+1, 2];
                 twiddle = new double[ntdivnp];// twiddle(ntdivnp)
             }
             catch {
@@ -494,6 +496,7 @@ namespace NPB {
         public void compute_indexmap(double[] twiddle, int d1, int d2, int d3) {
             int i, j, k, ii, ii2, jj, ij2, kk;
             double ap;
+            const double pi = Math.PI, alpha=.000001;
             //Fortran: twiddle(d1, d2, d3)
             //C#     : twiddle[d3, d2, d1]
 
@@ -573,6 +576,7 @@ namespace NPB {
         public void compute_initial_conditions(double[, , ,] u0, int d1, int d2, int d3) {
             int k;
             double x0, start, an, dummy;
+            const double seed = 314159265, a = 1220703125;
 
             //c---------------------------------------------------------------------
             //c 0-D and 1-D layouts are easy because each processor gets a contiguous
@@ -837,6 +841,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
             int m,nu,ku,i,j,ln;
             double t, ti;
+            const double pi = Math.PI;
 
             //c---------------------------------------------------------------------
             //c   Initialize the U array with sines and cosines in a manner that permits
@@ -1315,6 +1320,8 @@ namespace NPB {
             //xin [n2,n1]
             //xout[n1,n2]
             //z[transblock, transblockpad]
+            const int transblock=32;
+            const int transblockpad=34;
 
             double[,,] z = new double[transblockpad, transblock, 2];
             int i, j, ii, jj, iin, io;
@@ -1446,6 +1453,8 @@ namespace NPB {
             //C#
             //xin [d3,d2,d1]
             //xout[d1,d2,d3]
+            const int transblock=32;
+            const int transblockpad=34;
             double[,,] buf = new double[maxdim, transblockpad, 2];
             int block1, block3;
             int i, j, k, kk, ii, i1, k1;
