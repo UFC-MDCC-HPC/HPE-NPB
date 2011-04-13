@@ -953,7 +953,7 @@ namespace NPB {
             }
         }
 
-        public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+        public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] uin, double[, , ,] uout) {
             int logd1;
             //Fortran
             //double complex x(d1,d2,d3);
@@ -974,8 +974,8 @@ namespace NPB {
                     for(j = 0; j < fftblock; j++) {
                         for(i = 0; i < d1; i++) {//y(j,i,1) = x(i,j+jj,k)
                             io = ((k*d2+(j+jj))*d1+i)*2;
-                            y[0, i, j, REAL] = Point.getValue(x, io+REAL); //y[1,i,j,real] = x[k,j+jj,i,real]
-                            y[0, i, j, IMAG] = Point.getValue(x, io+IMAG);
+                            y[0, i, j, REAL] = Point.getValue(uin, io+REAL); //y[1,i,j,real] = x[k,j+jj,i,real]
+                            y[0, i, j, IMAG] = Point.getValue(uin, io+IMAG);
                         }
                     }
                     if(timers_enabled)
@@ -993,8 +993,8 @@ namespace NPB {
                         for(i = 0; i < d1; i++) {
                             iin   = ((0*d1+i)*fftblockpad+j)*2;
                             io  = (((k*d2+(j+jj))*d1+i)*2);
-                            Point.setAddress(y, iin+REAL, xout, io+REAL);
-                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            Point.setAddress(y, iin+REAL, uout, io+REAL);
+                            Point.setAddress(y, iin+IMAG, uout, io+IMAG);
                         }
                     }
                     if(timers_enabled)
@@ -1003,7 +1003,7 @@ namespace NPB {
             }
         }
 
-        public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+        public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] uin, double[, , ,] uout) {
             int logd2;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1022,8 +1022,8 @@ namespace NPB {
                     for(j = 0; j < d2; j++) {
                         for(i = 0; i < fftblock; i++) {
                             iin = ((k*d2+j)*d1+(i+ii))*2;
-                            y[0, j, i, REAL] = Point.getValue(x, iin+REAL);
-                            y[0, j, i, IMAG] = Point.getValue(x, iin+IMAG);
+                            y[0, j, i, REAL] = Point.getValue(uin, iin+REAL);
+                            y[0, j, i, IMAG] = Point.getValue(uin, iin+IMAG);
                         }
                     }
                     if(timers_enabled)
@@ -1041,8 +1041,8 @@ namespace NPB {
                         for(i = 0; i < fftblock; i++) {
                             iin = ((0*d2+j)*fftblockpad+i)*2;
                             io = ((k * d2 + j) * d1 + (i + ii)) * 2;
-                            Point.setAddress(y, iin+REAL, xout, io+REAL);
-                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            Point.setAddress(y, iin+REAL, uout, io+REAL);
+                            Point.setAddress(y, iin+IMAG, uout, io+IMAG);
                         }
                     }
                     if(timers_enabled)
@@ -1051,7 +1051,7 @@ namespace NPB {
             }
         }
 
-        public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+        public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] uin, double[, , ,] uout) {
             int logd3;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1072,8 +1072,8 @@ namespace NPB {
                     for(k = 0; k < d3; k++) {
                         for(i = 0; i < fftblock; i++) {
                             iin = ((k*d2+j)*d1+(i+ii))*2;
-                            y[0, k, i, REAL] = Point.getValue(x, iin+REAL);
-                            y[0, k, i, IMAG] = Point.getValue(x, iin+IMAG);
+                            y[0, k, i, REAL] = Point.getValue(uin, iin+REAL);
+                            y[0, k, i, IMAG] = Point.getValue(uin, iin+IMAG);
                         }
                     }
                     if(timers_enabled)
@@ -1091,8 +1091,8 @@ namespace NPB {
                         for(i = 0; i < fftblock; i++) {
                             iin = ((0*d3+k)*fftblockpad+i)*2;
                             io  = (((k*d2+j)*d1+(i+ii))*2);
-                            Point.setAddress(y, iin+REAL, xout, io+REAL);
-                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            Point.setAddress(y, iin+REAL, uout, io+REAL);
+                            Point.setAddress(y, iin+IMAG, uout, io+IMAG);
                         }
                     }
                     if(timers_enabled)
@@ -1165,37 +1165,35 @@ namespace NPB {
             lj = 2 * lk;
             ku = li;// +1;
 
-            int idxu;
             for(i = 0; i <= li - 1; i++) {
                 i11 = i * lk + 1;
                 i12 = i11 + n1;
                 i21 = i * lj + 1;
                 i22 = i21 + lk;
 
-                idxu = ku+i;
-                u1[REAL] = u[(idxu), REAL];
+                u1[REAL] = u[(ku+i), REAL];
                 if(dir >= 1) {
                     //    u1 = u(ku+i);
-                    u1[1] = u[idxu, IMAG];
+                    u1[1] = u[ku+i, IMAG];
                 }
                 else {
                     //    u1 = dconjg (u(ku+i));
-                    u1[1] = -1*u[idxu, IMAG];
+                    u1[1] = -1*u[ku+i, IMAG];
                 }
 
                 //  c---------------------------------------------------------------------
                 //  c   This loop is vectorizable.
                 //  c---------------------------------------------------------------------
                 for(k = 0; k <= lk - 1; k++) {
-                    for(j = 1; j <= ny; j++) {
-                        x11[REAL] = x[xoffstSrc, i11 + k - 1, j - 1, REAL]; //x11[0] = x[j,i11+k];
-                        x11[IMAG] = x[xoffstSrc, i11 + k - 1, j - 1, IMAG];
-                        x21[REAL] = x[xoffstSrc, i12 + k - 1, j - 1, REAL]; //x21 = x(j,i12+k);
-                        x21[IMAG] = x[xoffstSrc, i12 + k - 1, j - 1, IMAG];
-                        y[xoffstOut, i21 + k - 1, j - 1, REAL] = x11[REAL] + x21[REAL]; //y(j,i21+k) = x11 + x21;
-                        y[xoffstOut, i21 + k - 1, j - 1, IMAG] = x11[IMAG] + x21[IMAG];
-                        y[xoffstOut, i22 + k - 1, j - 1, REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]); //y(j,i22+k) = u1 * (x11 - x21);
-                        y[xoffstOut, i22 + k - 1, j - 1, IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                    for(j = 0; j < ny; j++) {
+                        x11[REAL] = x[xoffstSrc, i11 + k - 1, j, REAL]; //x11[0] = x[j,i11+k];
+                        x11[IMAG] = x[xoffstSrc, i11 + k - 1, j, IMAG];
+                        x21[REAL] = x[xoffstSrc, i12 + k - 1, j, REAL]; //x21 = x(j,i12+k);
+                        x21[IMAG] = x[xoffstSrc, i12 + k - 1, j, IMAG];
+                        y[xoffstOut, i21 + k - 1, j, REAL] = x11[REAL] + x21[REAL]; //y(j,i21+k) = x11 + x21;
+                        y[xoffstOut, i21 + k - 1, j, IMAG] = x11[IMAG] + x21[IMAG];
+                        y[xoffstOut, i22 + k - 1, j, REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]); //y(j,i22+k) = u1 * (x11 - x21);
+                        y[xoffstOut, i22 + k - 1, j, IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                     }
                 }
             }
