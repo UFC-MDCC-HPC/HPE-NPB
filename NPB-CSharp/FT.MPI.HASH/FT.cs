@@ -888,11 +888,11 @@ namespace NPB {
             //double complex scratch(fftblockpad_default*maxdim*2) !scratch equal y in cfftsX
             //c---------------------------------------------------------------------
             //c note: args u1, u02 must be different arrays
-            //c note: args for cfftsx are (direction, layout, xin, xout, scratch)
-            //c       xin/xout may be the same and it can be somewhat faster
+            //c note: args for cfftsx are (direction, layout, uin, uout, scratch)
+            //c       uin/uout may be the same and it can be somewhat faster
             //c       if they are
-            //c note: args for transpose are (layout1, layout2, xin, xout)
-            //c       xin/xout must be different
+            //c note: args for transpose are (layout1, layout2, uin, uout)
+            //c       uin/uout must be different
             //c---------------------------------------------------------------------
 
             if(dir == 1) {
