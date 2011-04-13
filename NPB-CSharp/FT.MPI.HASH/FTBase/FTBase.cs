@@ -9,7 +9,7 @@ namespace NPB {
         //npbparams.h
         protected int nx, ny, nz, niter_default, maxdim, ntdivnp;//, np_min;
         //protected double ntotal_f;
-        protected string cs1, cs2, cs3, cs4, cs5, cs6, cs7;//compiletime, npbversion, 
+        //protected string cs1, cs2, cs3, cs4, cs5, cs6, cs7;//compiletime, npbversion, 
         //end.h
 
         //global.h
