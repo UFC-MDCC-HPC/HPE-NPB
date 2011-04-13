@@ -1125,23 +1125,16 @@ namespace NPB {
             //c---------------------------------------------------------------------
             for(l = 1; l <= m; l = l + 2) {
                 fftz2(dir, l, m, n, fftblock, fftblockpad, u, x, y, 0, 1);
-                if(l == m)
-                    goto Desvio160;
-                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, x, 1, 0);
-            }
-            goto Desvio180;
-            //c---------------------------------------------------------------------
-            //c   Copy Y to X.
-            //c---------------------------------------------------------------------
-            Desvio160: {
-                for(j = 0; j < n; j++) {
-                    for(i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
-                        x[0, j, i, REAL] = y[1, j, i, REAL];
-                        x[0, j, i, IMAG] = y[1, j, i, IMAG];
+                if(l == m) {
+                    for(j = 0; j < n; j++) {
+                        for(i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
+                            x[0, j, i, REAL] = y[1, j, i, REAL];
+                            x[0, j, i, IMAG] = y[1, j, i, IMAG];
+                        }
                     }
+                    return;
                 }
-            }
-            Desvio180: {
+                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, x, 1, 0);
             }
         }
 
