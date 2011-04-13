@@ -953,7 +953,7 @@ namespace NPB {
             }
         }
 
-        public void cffts1(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
+        public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
             int logd1;
             //Fortran
             //double complex x(d1,d2,d3);
@@ -981,7 +981,7 @@ namespace NPB {
                         timer.stop(T_fftcopy);
                     if(timers_enabled)
                         timer.start(T_fftlow);
-                    cfftz(iis, logd1, d1, y, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
+                    cfftz(dir, logd1, d1, y, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
                     if(timers_enabled)
                         timer.stop(T_fftlow);
 
@@ -1002,7 +1002,7 @@ namespace NPB {
             }
         }
 
-        public void cffts2(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
+        public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
             int logd2;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1029,7 +1029,7 @@ namespace NPB {
 
                     if(timers_enabled)
                         timer.start(T_fftlow);
-                    cfftz(iis, logd2, d2, y, y); //y(1, 1, 2));
+                    cfftz(dir, logd2, d2, y, y); //y(1, 1, 2));
                     if(timers_enabled)
                         timer.stop(T_fftlow);
 
@@ -1049,7 +1049,7 @@ namespace NPB {
             }
         }
 
-        public void cffts3(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
+        public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
             int logd3;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1078,7 +1078,7 @@ namespace NPB {
 
                     if(timers_enabled)
                         timer.start(T_fftlow);
-                    cfftz(iis, logd3, d3, y, y); //y(1, 1, 2));
+                    cfftz(dir, logd3, d3, y, y); //y(1, 1, 2));
                     if(timers_enabled)
                         timer.stop(T_fftlow);
 
@@ -1098,7 +1098,7 @@ namespace NPB {
             }
         }
 
-        public void cfftz(int iis, int m, int n, double[, , ,] x, double[, , ,] y) {
+        public void cfftz(int dir, int m, int n, double[, , ,] x, double[, , ,] y) {
             //c---------------------------------------------------------------------
             //c   Computes NY N-point complex-to-complex FFTs of X using an algorithm due
             //c   to Swarztrauber.  X is both the input and the output array, while Y is a 
@@ -1114,17 +1114,17 @@ namespace NPB {
             //c   Check if input parameters are invalid.
             //c---------------------------------------------------------------------
             mx = (int)u[0, 0]; //mx = u(1);
-            if((iis != 1 && iis != -1) || m < 1 || m > mx) {
-                Console.WriteLine("CFFTZ: Either U has not been initialized, or else one of the input parameters iis invalid " + iis + " " + m + " " + mx);
+            if((dir != 1 && dir != -1) || m < 1 || m > mx) {
+                Console.WriteLine("CFFTZ: Either U has not been initialized, or else one of the input parameters iis invalid " + dir + " " + m + " " + mx);
             }
             //c---------------------------------------------------------------------
             //c   Perform one variant of the Stockham FFT.
             //c---------------------------------------------------------------------
             for(l = 1; l <= m; l = l + 2) {
-                fftz2(iis, l, m, n, fftblock, fftblockpad, u, x, y, 0, 1);
+                fftz2(dir, l, m, n, fftblock, fftblockpad, u, x, y, 0, 1);
                 if(l == m)
                     goto Desvio160;
-                fftz2(iis, l + 1, m, n, fftblock, fftblockpad, u, y, x, 1, 0);
+                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, x, 1, 0);
             }
             goto Desvio180;
         //c---------------------------------------------------------------------
@@ -1142,7 +1142,7 @@ namespace NPB {
             }
         }
 
-        public void fftz2(int iis, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] x, double[, , ,] y, int xoffstSrc, int xoffstOut) { //u=u x=ytemp y = ytemp
+        public void fftz2(int dir, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] x, double[, , ,] y, int xoffstSrc, int xoffstOut) { //u=u x=ytemp y = ytemp
             //c---------------------------------------------------------------------
             //c   Performs the L-th iteration of the second variant of the Stockham FFT.
             //c---------------------------------------------------------------------
@@ -1171,7 +1171,7 @@ namespace NPB {
 
                 idxu = ku+i;
                 u1[REAL] = u[(idxu), REAL];
-                if(iis >= 1) {
+                if(dir >= 1) {
                     //    u1 = u(ku+i);
                     u1[1] = u[idxu, IMAG];
                 }
