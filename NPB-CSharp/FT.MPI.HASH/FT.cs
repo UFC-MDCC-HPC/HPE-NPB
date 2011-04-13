@@ -76,7 +76,6 @@ namespace NPB {
 
             FT ft = null;
             bool debug = false;
-
             try {
                 string param = argv[0];
             }
@@ -1165,6 +1164,7 @@ namespace NPB {
                 i22 = i21 + lk;
 
                 ureal = u[(ku+i), REAL];
+
                 if(dir >= 1) {
                     uimg = u[ku+i, IMAG];   //u1 = u(ku+i);
                 }
