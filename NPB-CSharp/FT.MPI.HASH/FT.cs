@@ -1085,36 +1085,34 @@ namespace NPB {
             lj = 2 * lk;
             ku = li;// +1;
 
-            int idxu; 
             for (i = 0; i <= li - 1; i++) {
                 i11 = i * lk + 1;
                 i12 = i11 + n1;
                 i21 = i * lj + 1;
                 i22 = i21 + lk;
 
-                idxu = ku+i; 
-                u1[REAL] = u[(idxu), REAL];
+                u1[REAL] = u[(ku+i), REAL];
                 if (dir >= 1) {
                     //    u1 = u(ku+i);
-                    u1[1] = u[idxu, IMAG];
+                    u1[1] = u[ku+i, IMAG];
                 } else {
                     //    u1 = dconjg (u(ku+i));
-                    u1[1] = -1*u[idxu, IMAG];
+                    u1[1] = -1*u[ku+i, IMAG];
                 }
 
                 //  c---------------------------------------------------------------------
                 //  c   This loop is vectorizable.
                 //  c---------------------------------------------------------------------
                 for (k = 0; k <= lk - 1; k++) {
-                    for (j = 1; j <= ny; j++) {
-                        x11[REAL] = y[iread, i11 + k - 1, j - 1, REAL]; //x11[0] = x[j,i11+k];
-                        x11[IMAG] = y[iread, i11 + k - 1, j - 1, IMAG];
-                        x21[REAL] = y[iread, i12 + k - 1, j - 1, REAL]; //x21 = x(j,i12+k);
-                        x21[IMAG] = y[iread, i12 + k - 1, j - 1, IMAG];
-                        y[iwrite, i21 + k - 1, j - 1, REAL] = x11[REAL] + x21[REAL]; //y(j,i21+k) = x11 + x21;
-                        y[iwrite, i21 + k - 1, j - 1, IMAG] = x11[IMAG] + x21[IMAG];
-                        y[iwrite, i22 + k - 1, j - 1, REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]); //y(j,i22+k) = u1 * (x11 - x21);
-                        y[iwrite, i22 + k - 1, j - 1, IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                    for (j = 0; j < ny; j++) {
+                        x11[REAL] = y[iread, i11 + k - 1, j, REAL]; //x11[0] = x[j,i11+k];
+                        x11[IMAG] = y[iread, i11 + k - 1, j, IMAG];
+                        x21[REAL] = y[iread, i12 + k - 1, j, REAL]; //x21 = x(j,i12+k);
+                        x21[IMAG] = y[iread, i12 + k - 1, j, IMAG];
+                        y[iwrite, i21 + k - 1, j, REAL] = x11[REAL] + x21[REAL]; //y(j,i21+k) = x11 + x21;
+                        y[iwrite, i21 + k - 1, j, IMAG] = x11[IMAG] + x21[IMAG];
+                        y[iwrite, i22 + k - 1, j, REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]); //y(j,i22+k) = u1 * (x11 - x21);
+                        y[iwrite, i22 + k - 1, j, IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                     }
                 }
             }
