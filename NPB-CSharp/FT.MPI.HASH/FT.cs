@@ -1086,9 +1086,9 @@ namespace NPB {
             ku = li;// +1;
 
             for (i = 0; i <= li - 1; i++) {
-                i11 = i * lk + 1;
+                i11 = i * lk;
                 i12 = i11 + n1;
-                i21 = i * lj + 1;
+                i21 = i * lj;
                 i22 = i21 + lk;
 
                 u1[REAL] = u[(ku+i), REAL];
@@ -1105,14 +1105,14 @@ namespace NPB {
                 //  c---------------------------------------------------------------------
                 for (k = 0; k <= lk - 1; k++) {
                     for (j = 0; j < ny; j++) {
-                        x11[REAL] = y[iread, i11 + k - 1, j, REAL]; //x11[0] = x[j,i11+k];
-                        x11[IMAG] = y[iread, i11 + k - 1, j, IMAG];
-                        x21[REAL] = y[iread, i12 + k - 1, j, REAL]; //x21 = x(j,i12+k);
-                        x21[IMAG] = y[iread, i12 + k - 1, j, IMAG];
-                        y[iwrite, i21 + k - 1, j, REAL] = x11[REAL] + x21[REAL]; //y(j,i21+k) = x11 + x21;
-                        y[iwrite, i21 + k - 1, j, IMAG] = x11[IMAG] + x21[IMAG];
-                        y[iwrite, i22 + k - 1, j, REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]); //y(j,i22+k) = u1 * (x11 - x21);
-                        y[iwrite, i22 + k - 1, j, IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                        x11[REAL] = y[iread, i11 + k, j, REAL]; //x11[0] = x[j,i11+k];
+                        x11[IMAG] = y[iread, i11 + k, j, IMAG];
+                        x21[REAL] = y[iread, i12 + k, j, REAL]; //x21 = x(j,i12+k);
+                        x21[IMAG] = y[iread, i12 + k, j, IMAG];
+                        y[iwrite, i21 + k, j, REAL] = x11[REAL] + x21[REAL]; //y(j,i21+k) = x11 + x21;
+                        y[iwrite, i21 + k, j, IMAG] = x11[IMAG] + x21[IMAG];
+                        y[iwrite, i22 + k, j, REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]); //y(j,i22+k) = u1 * (x11 - x21);
+                        y[iwrite, i22 + k, j, IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                     }
                 }
             }
