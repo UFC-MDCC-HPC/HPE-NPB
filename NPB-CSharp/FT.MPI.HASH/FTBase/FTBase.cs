@@ -7,7 +7,6 @@ namespace NPB {
         //******************************************** Attributes *******************************************************/
         //npbparams.h
         protected int nx, ny, nz, maxdim, niter_default, ntdivnp;
-        protected bool convertdouble = false;
         //end.h
 
         //global.h
@@ -25,13 +24,13 @@ namespace NPB {
         //end constant
         protected static int fftblock, fftblockpad;
         protected static int node, me1, me2;
-        protected static int[,] dims = new int[3+1, 3+1];
-        protected static int[] xstart = new int[3+1];
-        protected static int[] ystart = new int[3+1];
-        protected static int[] zstart = new int[3+1];
-        protected static int[] xend = new int[3+1];
-        protected static int[] yend = new int[3+1];
-        protected static int[] zend = new int[3+1];
+        protected static int[,] dims = new int[3, 3];
+        protected static int[] xstart = new int[3];
+        protected static int[] ystart = new int[3];
+        protected static int[] zstart = new int[3];
+        protected static int[] xend = new int[3];
+        protected static int[] yend = new int[3];
+        protected static int[] zend = new int[3];
         protected bool timers_enabled = false;
 
         protected static double[,] u;           //complex u(nx);
