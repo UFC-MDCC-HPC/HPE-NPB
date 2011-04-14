@@ -73,7 +73,7 @@ namespace NPB {
         static void Main(String[] argv) {
 
             FT ft = null;
-            FTBase.debug = false;
+            bool debug = false;
 
             try {
                 string param = argv[0];
@@ -83,7 +83,7 @@ namespace NPB {
                 argv[0] = "CLASS=S"; // CLASS DEFAULT, IF USER NOT TYPE CLASS=S IN COMMAND-LINE ARGUMENT
             }
             char paramClass;
-            if (!FTBase.debug) {
+            if (!debug) {
                 IO.parseCmdLineArgs(argv);
                 paramClass = IO.CLASS;
             }
@@ -110,7 +110,6 @@ namespace NPB {
                 u0 = new double[dims[2, 1], dims[3, 1], dims[1, 1], 2];
                 u2 = new double[dims[2, 1], dims[3, 1], dims[1, 1], 2];
                 u = new double[nx, 2];
-                sums = new double[niter_default+2, 2];
                 // twiddle(ntdivnp)
                 twiddle = new double[ntdivnp];
             } catch {
@@ -124,7 +123,7 @@ namespace NPB {
         }
 
         public void runBenchMark() {
-            for (i = 1; i <= T_max; i++) {
+            for (int i = 1; i <= T_max; i++) {
                 timer.resetTimer(i);
             }
             setup();
@@ -137,7 +136,7 @@ namespace NPB {
             //c Start over from the beginning. Note that all operations must
             //c be timed, in contrast to other benchmarks. 
             //c---------------------------------------------------------------------
-            for (i = 1; i <= T_max; i++) timer.resetTimer(i);
+            for (int i = 1; i <= T_max; i++) timer.resetTimer(i);
             worldcomm.Barrier(); 
 
             timer.start(T_total);
@@ -154,8 +153,8 @@ namespace NPB {
             fft(1, u1, u0);
             if (timers_enabled) timer.stop(T_fft);
 
-            
-            for (iter = 1; iter <= niter; iter++) {
+            double[] sums = new double[niter_default*2];
+            for (int iter = 0; iter < niter; iter++) {
                 if (timers_enabled) timer.start(T_evolve);
                 evolve(u0, u1, twiddle, dims[1,1], dims[2,1], dims[3,1]);
                 if (timers_enabled) timer.stop(T_evolve);
@@ -164,39 +163,32 @@ namespace NPB {
                 if (timers_enabled) timer.stop(T_fft);
                 if (timers_enabled) synchup();
                 if (timers_enabled) timer.start(T_checksum);
-                checksum(iter, u2, dims[1,1], dims[2,1], dims[3,1]);
+                checksum(iter, sums, u2, dims[1,1], dims[2,1], dims[3,1]);
                 if (timers_enabled) timer.stop(T_checksum);
             }
 
-            int verified = verify(nx, ny, nz, niter);
+            int verified = verify(nx, ny, nz, niter, sums);
             timer.stop(T_total);
-            if (np != np_min) verified = 0;
-            total_time = timer.readTimer(T_total); //total_time = timer_read(t_total);
+            double total_time = timer.readTimer(T_total); //total_time = timer_read(t_total);
 
+            double ntotal_f = (double)(nx*ny*nz);
+            double mflops=0.0;
             if (total_time != 0) {
                 mflops = 0.000001*ntotal_f * (14.8157+7.19641*Math.Log(ntotal_f) +  (5.23518+7.21113*Math.Log(ntotal_f))*niter)/total_time;
             } else {
                 mflops = 0.0;
             }
-            if (me == 0) {
-                IO.print_results(BMName, clss, nx, ny, nz, niter, np_min, np, total_time, mflops, "floating point", verified, npbversion);
+            if (node == 0) {
+                IO.print_results(BMName, CLSS, nx, ny, nz, niter, np, np, total_time, mflops, "floating point", verified, "3.3");
             }
             if (timers_enabled) print_timers();
             mpi.Dispose();
         }
 
         public void setup() {
-            int i, fstatus=0; 
-            debug = false;
-
-            if (!convertdouble) {
-                dc_type = 1275072546; //MPI_DOUBLE_COMPLEX;
-            } else {
-                dc_type = 1275070494; //MPI_COMPLEX;
-            }
-
-            if (me == 0) {
-                Console.WriteLine(" NAS Parallel Benchmarks "+ npbversion +" -- FT Benchmark ");
+            int i, fstatus=0;
+            if (node == 0) {
+                Console.WriteLine(" NAS Parallel Benchmarks "+ "3.3" +" -- FT Benchmark ");
                 try {
                     Console.Write("Trying Read from input file inputft.data: ");
                     int[] conf = {1,1,2};
@@ -278,17 +270,10 @@ namespace NPB {
                     }
                 }
 
-                if (np < np_min) {
-                    Console.WriteLine(" Error: Compiled for "+ np_min + " processors. ");
-                    Console.WriteLine(" Only "+ np + " processors found ");
-                    mpi.Dispose();
-                    Environment.Exit(0);
-                }
                 Console.WriteLine(" Size: " + nx + "x" + ny + "x" + nz);
                 Console.WriteLine(" Iterations: "+ niter);
                 Console.WriteLine(" Number of processes : "+ np);
                 Console.WriteLine(" Processor array     : "+np1+"x"+np2);
-                if (np != np_min) Console.WriteLine(" WARNING: compiled for "+np_min+" processes. Will not verify. ");
                 if (layout_type == layout_0D) {
                     Console.WriteLine(" Layout type: OD");
                 }
@@ -365,8 +350,8 @@ namespace NPB {
             //c Processor coords are zero-based. 
             //c---------------------------------------------------------------------
 
-            me2 = (int) mod(me, np2);  // goes from 0...np2-1
-            me1 = me/np2;        // goes from 0...np1-1
+            me2 = (int) mod(node, np2);  // goes from 0...np2-1
+            me1 = node/np2;        // goes from 0...np1-1
 
             //c---------------------------------------------------------------------
             //c Communicators for rows/columns of processor grid. 
@@ -379,8 +364,6 @@ namespace NPB {
             commslice2=(MPI.Intracommunicator)worldcomm.Split(me2,me1);//MPI_Comm_split(MPI_COMM_WORLD,me2,me1,commslice2,ierr)
 
             if (timers_enabled) synchup();
-
-            if (debug) Console.WriteLine("proc coords: " + me +" "+ me1 +" "+ me2);
 
             //c---------------------------------------------------------------------
             //c Determine which section of the grid is owned by this
@@ -865,57 +848,57 @@ namespace NPB {
 
             if (dir == 1) {
                 if (layout_type == layout_0D) {
-                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));  
-                    cffts2(1, dims[1,2], dims[2,2], dims[3,2], x1, x1, (new double[2, dims[2,2], fftblockpad,2]));
-                    cffts3(1, dims[1,3], dims[2,3], dims[3,3], x1, x2, (new double[2, dims[3,3], fftblockpad,2]));
+                    cffts1(dir, dims[1,1], dims[2,1], dims[3,1], x1, x1);  
+                    cffts2(dir, dims[1,2], dims[2,2], dims[3,2], x1, x1);
+                    cffts3(dir, dims[1,3], dims[2,3], dims[3,3], x1, x2);
                 } else if (layout_type == layout_1D) { 
-                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
-                    cffts2(1, dims[1,2], dims[2,2], dims[3,2], x1, x1, (new double[2, dims[2,2], fftblockpad,2]));
+                    cffts1(dir, dims[1,1], dims[2,1], dims[3,1], x1, x1);
+                    cffts2(dir, dims[1,2], dims[2,2], dims[3,2], x1, x1);
                     if (timers_enabled) timer.start(T_transpose);
                     transpose_xy_z(2, 3, x1, x2);
                     if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(1, dims[1,3], dims[2,3], dims[3,3], x2, x2, (new double[2, dims[1,3], fftblockpad,2]));
+                    cffts1(dir, dims[1,3], dims[2,3], dims[3,3], x2, x2);
                 }
                 else if (layout_type == layout_2D) {
-                    cffts1(1, dims[1,1], dims[2,1], dims[3,1], x1, x1, (new double[2, dims[1,1], fftblockpad,2]));
+                    cffts1(dir, dims[1,1], dims[2,1], dims[3,1], x1, x1);
                     if (timers_enabled) timer.start(T_transpose);
                     transpose_x_y(1, 2, x1, x2);
                     if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[1,2], fftblockpad,2]));
+                    cffts1(dir, dims[1,2], dims[2,2], dims[3,2], x2, x2);
                     if (timers_enabled) timer.start(T_transpose);
                     transpose_x_z(2, 3, x2, x1);
                     if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(1, dims[1,3], dims[2,3], dims[3,3], x1, x2, (new double[2, dims[1,3], fftblockpad,2]));
+                    cffts1(dir, dims[1,3], dims[2,3], dims[3,3], x1, x2);
                 }
             }
             else {
                 if (layout_type == layout_0D) {
-                    cffts3(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, (new double[2, dims[3,3], fftblockpad,2]));
-                    cffts2(-1, dims[1,2], dims[2,2], dims[3,2], x1, x1, (new double[2, dims[2,2], fftblockpad,2]));
-                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x1, x2, (new double[2, dims[1,1], fftblockpad,2]));
+                    cffts3(dir, dims[1,3], dims[2,3], dims[3,3], x1, x1);
+                    cffts2(dir, dims[1,2], dims[2,2], dims[3,2], x1, x1);
+                    cffts1(dir, dims[1,1], dims[2,1], dims[3,1], x1, x2);
                 } else if (layout_type == layout_1D) {
-                    cffts1(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, (new double[2, dims[1,3], fftblockpad,2]));
+                    cffts1(dir, dims[1,3], dims[2,3], dims[3,3], x1, x1);
                     if (timers_enabled) timer.start(T_transpose);
                     transpose_x_yz(3, 2, x1, x2);
                     if (timers_enabled) timer.stop(T_transpose);
-                    cffts2(-1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[2,2], fftblockpad,2]));
-                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x2, x2, (new double[2, dims[1,1], fftblockpad,2]));
+                    cffts2(dir, dims[1,2], dims[2,2], dims[3,2], x2, x2);
+                    cffts1(dir, dims[1,1], dims[2,1], dims[3,1], x2, x2);
                 }
                 else if (layout_type == layout_2D) {
-                    cffts1(-1, dims[1,3], dims[2,3], dims[3,3], x1, x1, (new double[2, dims[1,3], fftblockpad,2]));
+                    cffts1(dir, dims[1,3], dims[2,3], dims[3,3], x1, x1);
                     if (timers_enabled) timer.start(T_transpose);
                     transpose_x_z(3, 2, x1, x2);
                     if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(-1, dims[1,2], dims[2,2], dims[3,2], x2, x2, (new double[2, dims[1,2], fftblockpad,2]));
+                    cffts1(dir, dims[1,2], dims[2,2], dims[3,2], x2, x2);
                     if (timers_enabled) timer.start(T_transpose);
                     transpose_x_y(2, 1, x2, x1);
                     if (timers_enabled) timer.stop(T_transpose);
-                    cffts1(-1, dims[1,1], dims[2,1], dims[3,1], x1, x2, (new double[2, dims[1,1], fftblockpad,2]));
+                    cffts1(dir, dims[1,1], dims[2,1], dims[3,1], x1, x2);
                 }
             }
         }
 
-        public void cffts1(int iis, int d1, int d2, int d3, double[,,,] x, double[,,,] xout, double[,,,] y) {
+        public void cffts1(int dir, int d1, int d2, int d3, double[,,,] x, double[,,,] xout) {
             int logd1;
             //Fortran
               //double complex x(d1,d2,d3);
@@ -925,6 +908,7 @@ namespace NPB {
               //y   [2, d1, fftblockpad]
               //x   [d3,d2,d1];
               //xout[d3,d2,d1];
+            double[,,,] y = new double[2, d1, fftblockpad, 2];
 
             int i, j, k, jj, iin, io;
             logd1 = ilog2Get(d1);
@@ -940,7 +924,7 @@ namespace NPB {
                     }
                     if (timers_enabled) timer.stop(T_fftcopy);
                     if (timers_enabled) timer.start(T_fftlow);
-                    cfftz(iis, logd1, d1, y, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
+                    cfftz(dir, logd1, d1, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
                     if (timers_enabled) timer.stop(T_fftlow);
 
                     if (timers_enabled) timer.start(T_fftcopy);
@@ -958,7 +942,7 @@ namespace NPB {
             }
         }
 
-        public void cffts2(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
+        public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
             int logd2;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -966,6 +950,7 @@ namespace NPB {
             //C#:  x   [d3,d2,d1];
             //     xout[d3,d2,d1];
             //     y   [2, d2, fftblockpad];
+            double[,,,] y = new double[2, d2, fftblockpad, 2];
 
             int i, j, k, ii, io, iin;
             logd2 = ilog2Get(d2);
@@ -982,7 +967,7 @@ namespace NPB {
                     if (timers_enabled) timer.stop(T_fftcopy);
 
                     if (timers_enabled) timer.start(T_fftlow);
-                    cfftz (iis, logd2, d2, y, y); //y(1, 1, 2));
+                    cfftz (dir, logd2, d2, y); //y(1, 1, 2));
                     if (timers_enabled) timer.stop(T_fftlow);
 
                     if (timers_enabled) timer.start(T_fftcopy);
@@ -999,7 +984,7 @@ namespace NPB {
             }
         }
 
-        public void cffts3(int iis, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout, double[, , ,] y) {
+        public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
             int logd3;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1007,6 +992,7 @@ namespace NPB {
             //C#:  x    [d3,d2,d1];
             //     xout [d3,d2,d1];
             //     y    [2, d3, fftblockpad]; 
+            double[,,,] y = new double[2, d3, fftblockpad, 2];
 
             int i, j, k, ii, iin, io;
 
@@ -1025,7 +1011,7 @@ namespace NPB {
                     if (timers_enabled) timer.stop(T_fftcopy);
 
                     if (timers_enabled) timer.start(T_fftlow);
-                    cfftz (iis, logd3, d3, y, y); //y(1, 1, 2));
+                    cfftz (dir, logd3, d3, y); //y(1, 1, 2));
                     if (timers_enabled) timer.stop(T_fftlow);
 
                     if (timers_enabled) timer.start(T_fftcopy);
@@ -1042,7 +1028,7 @@ namespace NPB {
             }
         }
         
-        public void cfftz(int iis, int m, int n, double[,,,] x, double[,,,] y) {
+        public void cfftz(int dir, int m, int n, double[,,,] y) {
             //c---------------------------------------------------------------------
             //c   Computes NY N-point complex-to-complex FFTs of X using an algorithm due
             //c   to Swarztrauber.  X is both the input and the output array, while Y is a 
@@ -1058,33 +1044,28 @@ namespace NPB {
             //c   Check if input parameters are invalid.
             //c---------------------------------------------------------------------
             mx = (int) u[0,0]; //mx = u(1);
-            if ((iis != 1 && iis != -1) || m < 1 || m > mx) {
-                Console.WriteLine("CFFTZ: Either U has not been initialized, or else one of the input parameters iis invalid " + iis + " " + m + " " + mx);
+            if ((dir != 1 && dir != -1) || m < 1 || m > mx) {
+                Console.WriteLine("CFFTZ: Either U has not been initialized, or else one of the input parameters iis invalid " + dir + " " + m + " " + mx);
             }
             //c---------------------------------------------------------------------
             //c   Perform one variant of the Stockham FFT.
             //c---------------------------------------------------------------------
             for (l = 1; l <= m; l = l + 2) {
-                fftz2(iis, l, m, n, fftblock, fftblockpad, u, x, y, 0, 1);
-                if (l == m) goto Desvio160;
-                fftz2(iis, l + 1, m, n, fftblock, fftblockpad, u, y, x, 1, 0);
-            }
-            goto Desvio180;
-            //c---------------------------------------------------------------------
-            //c   Copy Y to X.
-            //c---------------------------------------------------------------------
-            Desvio160: { 
-                for (j = 0; j < n; j++) {
-                    for (i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
-                        x[0, j, i, REAL] = y[1,j, i, REAL];
-                        x[0, j, i, IMAG] = y[1,j, i, IMAG];
+                fftz2(dir, l, m, n, fftblock, fftblockpad, u, y, 0, 1);
+                if(l == m) {
+                    for(j = 0; j < n; j++) {
+                        for(i = 0; i < fftblock; i++) { //x(i,j) = y(i,j);   //C#: dimension x[n,fftblockpad], y[n,fftblockpad];
+                            y[0, j, i, REAL] = y[1, j, i, REAL];
+                            y[0, j, i, IMAG] = y[1, j, i, IMAG];
+                        }
                     }
+                    return;
                 }
+                fftz2(dir, l + 1, m, n, fftblock, fftblockpad, u, y, 1, 0);
             }
-            Desvio180: { } 
         }
 
-        public void fftz2(int iis, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] x, double[, , ,] y, int xoffstSrc, int xoffstOut) { //u=u x=ytemp y = ytemp
+        public void fftz2(int dir, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] y, int xoffstSrc, int xoffstOut) { //u=u x=ytemp y = ytemp
             //c---------------------------------------------------------------------
             //c   Performs the L-th iteration of the second variant of the Stockham FFT.
             //c---------------------------------------------------------------------
@@ -1113,7 +1094,7 @@ namespace NPB {
 
                 idxu = ku+i; 
                 u1[REAL] = u[(idxu), REAL];
-                if (iis >= 1) {
+                if (dir >= 1) {
                     //    u1 = u(ku+i);
                     u1[1] = u[idxu, IMAG];
                 } else {
@@ -1126,10 +1107,10 @@ namespace NPB {
                 //  c---------------------------------------------------------------------
                 for (k = 0; k <= lk - 1; k++) {
                     for (j = 1; j <= ny; j++) {
-                        x11[REAL] = x[xoffstSrc, i11 + k - 1, j - 1, REAL]; //x11[0] = x[j,i11+k];
-                        x11[IMAG] = x[xoffstSrc, i11 + k - 1, j - 1, IMAG];
-                        x21[REAL] = x[xoffstSrc, i12 + k - 1, j - 1, REAL]; //x21 = x(j,i12+k);
-                        x21[IMAG] = x[xoffstSrc, i12 + k - 1, j - 1, IMAG];
+                        x11[REAL] = y[xoffstSrc, i11 + k - 1, j - 1, REAL]; //x11[0] = x[j,i11+k];
+                        x11[IMAG] = y[xoffstSrc, i11 + k - 1, j - 1, IMAG];
+                        x21[REAL] = y[xoffstSrc, i12 + k - 1, j - 1, REAL]; //x21 = x(j,i12+k);
+                        x21[IMAG] = y[xoffstSrc, i12 + k - 1, j - 1, IMAG];
                         y[xoffstOut, i21 + k - 1, j - 1, REAL] = x11[REAL] + x21[REAL]; //y(j,i21+k) = x11 + x21;
                         y[xoffstOut, i21 + k - 1, j - 1, IMAG] = x11[IMAG] + x21[IMAG];
                         y[xoffstOut, i22 + k - 1, j - 1, REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]); //y(j,i22+k) = u1 * (x11 - x21);
@@ -1520,7 +1501,7 @@ namespace NPB {
 
         }
 
-        public void checksum(int i, double[, , ,] u11, int d1, int d2, int d3) {
+        public void checksum(int iter, double[] sums, double[, , ,] u11, int d1, int d2, int d3) {
             //Fortran:     double complex u1(d1, d2, d3);
             //C#     :     double complex u1[d3, d2, d1];
             int j, q,r,s;
@@ -1549,28 +1530,28 @@ namespace NPB {
                     }
                 }
             }
-            chk_Real = chk_Real/ntotal_f;
-            chk_Imag = chk_Imag/ntotal_f;
+            chk_Real = chk_Real/((double)(nx*ny*nz));
+            chk_Imag = chk_Imag/((double)(nx*ny*nz));
 
             allchk_Real = worldcomm.Reduce<double>(chk_Real, MPI.Operation<double>.Add,root);
             allchk_Imag = worldcomm.Reduce<double>(chk_Imag, MPI.Operation<double>.Add,root);
 
-            if (me == 0) {
-                Console.WriteLine(" T = " + i + "  Checksum = (" + allchk_Real + ") (" + allchk_Imag + ")");//+1P2D22.12);
+            if (node == 0) {
+                Console.WriteLine(" T = " + iter + "  Checksum = (" + allchk_Real + ") (" + allchk_Imag + ")");//+1P2D22.12);
             }
-            if (i > 0) {
-                sums[i,REAL] = allchk_Real;
-                sums[i,IMAG] = allchk_Imag;
+            if (iter >= 0) {
+                sums[iter*2+REAL] = allchk_Real;
+                sums[iter*2+IMAG] = allchk_Imag;
             }
 
         }
 
-        public int verify(int d1, int d2, int d3, int nt) {
+        public int verify(int d1, int d2, int d3, int nt, double[] sums) {
             int i;
             double err, epsilon;
             double[,] csum_ref = new double[25,2]; //     double complex csum_ref(25);
             char Class = 'U';
-            if (me != 0) return 0;
+            if (node != 0) return 0;
             epsilon = 0.000000000001;//epsilon = 1.0D-12;
             int verified = 0;
             if (d1 == 64 && d2 == 64 && d3 == 64 && nt == 6) {
@@ -1823,11 +1804,11 @@ namespace NPB {
             }
             double a, b, c, d, r1, r2;
             if (Class != 'U') {
-                for (i = 1; i <= nt; i++) {
-                    a = sums[i, REAL] - csum_ref[i - 1, REAL];
-                    b = sums[i, IMAG] - csum_ref[i - 1, IMAG];
-                    c = csum_ref[i - 1, REAL];
-                    d = csum_ref[i - 1, IMAG];
+                for (i = 0; i < nt; i++) {
+                    a = sums[i*2+REAL] - csum_ref[i, REAL];
+                    b = sums[i*2+IMAG] - csum_ref[i, IMAG];
+                    c = csum_ref[i, REAL];
+                    d = csum_ref[i, IMAG];
                     r1 = ((a * c + b * d) / ((c * c) + (d * d))) * ((a * c + b * d) / ((c * c) + (d * d)));
                     r2 = ((c * b - a * d) / (c * c + d * d)) * ((c * b - a * d) / (c * c + d * d));
                     err = Math.Sqrt(r1 + r2);
@@ -1872,7 +1853,7 @@ namespace NPB {
             tstrings[13]=" transpose2_fin "; 
             tstrings[14]="           sync ";
 
-            if (me != 0) return;
+            if (node != 0) return;
             for (i = 1; i <= T_max; i++) {
                 if (timer.readTimer(i) != 0.0) {
                     Console.WriteLine(" timer "+ i + tstrings[i-1] + timer.readTimer(i));
