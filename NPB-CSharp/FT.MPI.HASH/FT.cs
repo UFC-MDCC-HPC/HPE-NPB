@@ -542,7 +542,7 @@ namespace NPB {
             }
         }
 
-        public void compute_initial_conditions(double[, , ,] u0) {
+        public void compute_initial_conditions(double[, , ,] u1) {
             int k;
             double x0, start, an, dummy;
             //c---------------------------------------------------------------------
@@ -564,7 +564,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
 
             an = ipow46(a, 2*nx, (zstart[0]-1)*ny + (ystart[0]-1));
-            dummy = randlcGet(ref start, ref an);
+            dummy = randlcGet(ref start, an);
             an = ipow46(a, 2*nx, ny);
 
             //c---------------------------------------------------------------------
@@ -573,9 +573,9 @@ namespace NPB {
             for(k = 1; k <= dims[2, 0]; k++) { // nz/np2;
                 x0 = start;
                 //call vranlc(2*nx*dims(2, 1), x0, a, u0(1, 1, k)) : call native
-                vranlc(2 * nx * dims[1, 0], x0, a, u0, k); //(1, 1, k));
+                vranlc(2 * nx * dims[1, 0], x0, a, u1, k); //(1, 1, k));
                 if(k != dims[2, 0])
-                    dummy = randlcGet(ref start, ref an);
+                    dummy = randlcGet(ref start, an);
             }
         }
 
@@ -606,7 +606,7 @@ namespace NPB {
             while(two_pow) {
                 n2 = n/2;
                 if(n2 * 2 == n) {
-                    dummy = randlcGet(ref q, ref q);
+                    dummy = randlcGet(ref q, q);
                     n = n2;
                 }
                 else {
@@ -618,20 +618,20 @@ namespace NPB {
             while(n > 1) {
                 n2 = n/2;
                 if(n2 * 2 == n) {
-                    dummy = randlcGet(ref q, ref q);
+                    dummy = randlcGet(ref q, q);
                     n = n2;
                 }
                 else {
-                    dummy = randlcGet(ref r, ref q);
+                    dummy = randlcGet(ref r, q);
                     n = n-1;
                 }
             }
-            dummy = randlcGet(ref r, ref q);
+            dummy = randlcGet(ref r, q);
             result = r;
             return result;
         }
 
-        public double randlcGet(ref double x, ref double a) {
+        public double randlcGet(ref double x, double a) {
             //c---------------------------------------------------------------------
             //c
             //c   This routine returns a uniform pseudorandom double precision number in the
@@ -688,7 +688,7 @@ namespace NPB {
             return (r46*x);
         }
 
-        public void vranlc(int n, double x, double a, double[, , ,] y, int k) {
+        public void vranlc(int n, double x, double a, double[, , ,] u1, int k) {
             //     c---------------------------------------------------------------------
             //     c   This routine generates N uniform pseudorandom double precision numbers in
             //     c   the range (0, 1) by using the linear congruential generator
@@ -727,7 +727,7 @@ namespace NPB {
             n1 = (int)min(n, nv);
 
             for(i = 1; i <= n1; i++) {
-                xv[i-1] = t46 * randlcGet(ref t1, ref a);
+                xv[i-1] = t46 * randlcGet(ref t1, a);
             }
 
             //     c---------------------------------------------------------------------
@@ -742,7 +742,7 @@ namespace NPB {
                 t2 = r46 * a;
 
                 for(i = 1; i <= nv - 1; i++) {
-                    t2 = randlcGet(ref t1, ref a);
+                    t2 = randlcGet(ref t1, a);
                 }
 
                 an = t46 * t2;
@@ -769,7 +769,7 @@ namespace NPB {
                 for(i = 1; i <= n1; i++) { //y(i+j) = r46 * xv(i)
                     idx = (i + j - 1) + (2 * nx * dims[1, 0] * (k - 1));
                     //y[idx] = r46 * xv[i - 1];
-                    Point.setValue(y, idx, r46*xv[i-1]);  //u0[d3, d2, d1]
+                    Point.setValue(u1, idx, r46*xv[i-1]);  //u0[d3, d2, d1]
                 }
                 //c---------------------------------------------------------------------
                 //c     If this is the last pass through the 140 loop, it is not necessary to
@@ -849,11 +849,11 @@ namespace NPB {
             return lg;
         }
 
-        public void fft(int dir, double[, , ,] x1, double[, , ,] x2) {
-            //double complex x1(ntdivnp), x2(ntdivnp)
+        public void fft(int dir, double[, , ,] u1, double[, , ,] u02) {
+            //double complex u1(ntdivnp), u02(ntdivnp)
             //double complex scratch(fftblockpad_default*maxdim*2) !scratch equal y in cfftsX
             //c---------------------------------------------------------------------
-            //c note: args x1, x2 must be different arrays
+            //c note: args u1, u02 must be different arrays
             //c note: args for cfftsx are (direction, layout, xin, xout, scratch)
             //c       xin/xout may be the same and it can be somewhat faster
             //c       if they are
@@ -863,66 +863,66 @@ namespace NPB {
 
             if(dir == 1) {
                 if(layout_type == layout_0D) {
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1);
-                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1);
-                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], x1, x2);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1);
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1);
+                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u02);
                 }
                 else if(layout_type == layout_1D) {
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1);
-                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1);
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1);
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_xy_z(1, x1, x2);
+                    transpose_xy_z(1, u1, u02);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], x2, x2);
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u02, u02);
                 }
                 else if(layout_type == layout_2D) {
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], x1, x1);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u1);
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_x_y(0, 1, x1, x2);
+                    transpose_x_y(0, 1, u1, u02);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2);
+                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02);
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_x_z(1, 2, x2, x1);
+                    transpose_x_z(1, 2, u02, u1);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], x1, x2);
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u02);
                 }
             }
             else {
                 if(layout_type == layout_0D) {
-                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1);
-                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], x1, x1);
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], x1, x2);
+                    cffts3(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1);
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u02);
                 }
                 else if(layout_type == layout_1D) {
-                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1);
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1);
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_x_yz(2, x1, x2);
+                    transpose_x_yz(2, u1, u02);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2);
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], x2, x2);
+                    cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u02, u02);
                 }
                 else if(layout_type == layout_2D) {
-                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], x1, x1);
+                    cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1);
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_x_z(2, 1, x1, x2);
+                    transpose_x_z(2, 1, u1, u02);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], x2, x2);
+                    cffts1(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02);
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_x_y(1, 0, x2, x1);
+                    transpose_x_y(1, 0, u02, u1);
                     if(timers_enabled)
                         timer.stop(T_transpose);
-                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], x1, x2);
+                    cffts1(dir, dims[0, 0], dims[1, 0], dims[2, 0], u1, u02);
                 }
             }
         }
@@ -1539,7 +1539,7 @@ namespace NPB {
 
         }
 
-        public void evolve(double[, , ,] u00, double[, , ,] u11, double[] twiddle1, int d1, int d2, int d3) {
+        public void evolve(double[, , ,] u0, double[, , ,] u1, double[] twiddle, int d1, int d2, int d3) {
             //  c---------------------------------------------------------------------
             //  c evolve u0 -> u1 (t time steps) in fourier space
             //  c---------------------------------------------------------------------
@@ -1561,20 +1561,20 @@ namespace NPB {
                         //u11[k,j,i] = u00[k,j,i];
                         idx = ((k*d2+j)*d1+i);
                         idy = idx * 2;
-                        tw = twiddle1[idx];
-                        re = Point.getValue(u00, idy + REAL)*tw;
-                        im = Point.getValue(u00, idy + IMAG)*tw;
-                        Point.setValue(u00, idy + REAL, re);
-                        Point.setValue(u00, idy + IMAG, im);
-                        Point.setValue(u11, idy + REAL, re);
-                        Point.setValue(u11, idy + IMAG, im);
+                        tw = twiddle[idx];
+                        re = Point.getValue(u0, idy + REAL)*tw;
+                        im = Point.getValue(u0, idy + IMAG)*tw;
+                        Point.setValue(u0, idy + REAL, re);
+                        Point.setValue(u0, idy + IMAG, im);
+                        Point.setValue(u1, idy + REAL, re);
+                        Point.setValue(u1, idy + IMAG, im);
                     }
                 }
             }
 
         }
 
-        public void checksum(int iter, double[] sums, double[, , ,] u11, int d1, int d2, int d3) {
+        public void checksum(int iter, double[] sums, double[, , ,] u2, int d1, int d2, int d3) {
             //Fortran:     double complex u1(d1, d2, d3);
             //C#     :     double complex u1[d3, d2, d1];
             int j, q,r,s;
@@ -1597,8 +1597,8 @@ namespace NPB {
                             i2 = r-ystart[0];
                             i3 = q-xstart[0];
                             idx = ((i1*d2+i2)*d1+i3)*2;
-                            chk_Real=chk_Real+Point.getValue(u11, idx+REAL); //u11[i1, i2, i3];
-                            chk_Imag=chk_Imag+Point.getValue(u11, idx+IMAG); //u11[i1, i2, i3];
+                            chk_Real=chk_Real+Point.getValue(u2, idx+REAL); //u11[i1, i2, i3];
+                            chk_Imag=chk_Imag+Point.getValue(u2, idx+IMAG); //u11[i1, i2, i3];
                         }
                     }
                 }
