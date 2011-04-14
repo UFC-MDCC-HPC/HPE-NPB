@@ -130,7 +130,7 @@ namespace NPB {
             }
             blocksConfig();
             startBigArrays();
-            compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
+            compute_indexmap(twiddle);
             compute_initial_conditions(u1, dims[0, 0], dims[1, 0], dims[2, 0]);
             fft_init(dims[0, 0]);  //control u
             fft(1, u1, u0); // fft(1, u1, u0);
@@ -146,7 +146,7 @@ namespace NPB {
             if(timers_enabled)
                 timer.start(T_setup);
 
-            compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
+            compute_indexmap(twiddle);
             compute_initial_conditions(u1, dims[0, 0], dims[1, 0], dims[2, 0]);
             fft_init(dims[0, 0]);
 
@@ -484,7 +484,7 @@ namespace NPB {
             timer.stop(T_synch);
         }
 
-        public void compute_indexmap(double[] twiddle, int d1, int d2, int d3) {
+        public void compute_indexmap(double[] twiddle) {
             int i, j, k, ii, ii2, jj, ij2, kk;
             double ap;
             //Fortran: twiddle(d1, d2, d3)
@@ -500,21 +500,21 @@ namespace NPB {
             //c The following magic formula does the trick:
             //c mod(i-1+n/2, n) - n/2
             //c---------------------------------------------------------------------
+            int d1 = dims[0, 2];
+            int d2 = dims[1, 2];
+            int d3 = dims[2, 2];
 
             ap = -4.0 * alpha * pi * pi;
 
             int idx;
             if(layout_type == layout_0D) { //xyz layout
-                int size1 = dims[0, 2];
-                int size2 = dims[1, 2];
-                int size3 = dims[2, 2];
-                for(i = 1; i <= size1; i++) {
+                for(i = 1; i <= d1; i++) {
                     ii =  (int)mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
-                    for(j = 1; j <= size2; j++) {
+                    for(j = 1; j <= d2; j++) {
                         jj = (int)mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj * jj + ii2;
-                        for(k = 1; k <= size3; k++) {
+                        for(k = 1; k <= d3; k++) {
                             kk = (int)mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((k-1)*d2+(j-1))*d1+(i-1));//twiddle[k, j, i]
                             twiddle[idx] = Math.Exp(ap * (double)(kk * kk + ij2));
@@ -523,16 +523,13 @@ namespace NPB {
                 }
             }
             else if(layout_type == layout_1D) { // zxy layout 
-                int size1 = dims[1, 2];
-                int size2 = dims[2, 2];
-                int size3 = dims[0, 2];
-                for(i = 1; i <= size1; i++) {
+                for(i = 1; i <= d2; i++) {
                     ii =  (int)mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
-                    for(j = 1; j <= size2; j++) {
+                    for(j = 1; j <= d3; j++) {
                         jj = (int)mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj*jj+ii2;
-                        for(k = 1; k <= size3; k++) {
+                        for(k = 1; k <= d1; k++) {
                             kk = (int)mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((j-1)*d2+(i-1))*d1+(k-1)); //twiddle[j, i, k] 
                             twiddle[idx] = Math.Exp(ap * (double)(kk * kk + ij2));
@@ -541,16 +538,13 @@ namespace NPB {
                 }
             }
             else if(layout_type == layout_2D) { // zxy layout
-                int size1 = dims[1, 2];
-                int size2 = dims[2, 2];
-                int size3 = dims[0, 2];
-                for(i = 1; i <= size1; i++) {
+                for(i = 1; i <= d2; i++) {
                     ii =  (int)mod(i+xstart[2]-2+nx/2, nx) - nx/2;
                     ii2 = ii*ii;
-                    for(j = 1; j <= size2; j++) {
+                    for(j = 1; j <= d3; j++) {
                         jj = (int)mod(j+ystart[2]-2+ny/2, ny) - ny/2;
                         ij2 = jj*jj+ii2;
-                        for(k = 1; k <= size3; k++) {
+                        for(k = 1; k <= d1; k++) {
                             kk = (int)mod(k+zstart[2]-2+nz/2, nz) - nz/2;
                             idx = (((j-1)*d2+(i-1))*d1+(k-1)); // twiddle[j,i,k]
                             twiddle[idx] = Math.Exp(ap * (double)(kk*kk+ij2));
