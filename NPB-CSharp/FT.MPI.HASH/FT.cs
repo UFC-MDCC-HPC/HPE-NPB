@@ -125,9 +125,7 @@ namespace NPB {
         }
 
         public void runBenchMark() {
-            for(int i = 1; i <= T_max; i++) {
-                timer.resetTimer(i);
-            }
+            for(int i = 1; i <= T_max; i++) timer.resetTimer(i);
             blocksConfig();
             startBigArrays();
             compute_indexmap(twiddle);
@@ -138,48 +136,35 @@ namespace NPB {
             //c Start over from the beginning. Note that all operations must
             //c be timed, in contrast to other benchmarks. 
             //c---------------------------------------------------------------------
-            for(int i = 1; i <= T_max; i++)
-                timer.resetTimer(i);
+            for(int i = 1; i <= T_max; i++) timer.resetTimer(i);
             worldcomm.Barrier();
 
             timer.start(T_total);
-            if(timers_enabled)
-                timer.start(T_setup);
+            if(timers_enabled) timer.start(T_setup);
 
             compute_indexmap(twiddle);
             compute_initial_conditions(u1);
             fft_init(dims[0, 0]);
 
-            if(timers_enabled)
-                synchup();
-            if(timers_enabled)
-                timer.stop(T_setup);
+            if(timers_enabled) synchup();
+            if(timers_enabled) timer.stop(T_setup);
 
-            if(timers_enabled)
-                timer.start(T_fft);
+            if(timers_enabled) timer.start(T_fft);
             fft(1, u1, u0);
-            if(timers_enabled)
-                timer.stop(T_fft);
+            if(timers_enabled) timer.stop(T_fft);
 
             double[] sums = new double[niter_default*2];
             for(int iter = 0; iter < niter; iter++) {
-                if(timers_enabled)
-                    timer.start(T_evolve);
+                if(timers_enabled) timer.start(T_evolve);
                 evolve(u0, u1, twiddle, dims[0, 0], dims[1, 0], dims[2, 0]);
-                if(timers_enabled)
-                    timer.stop(T_evolve);
-                if(timers_enabled)
-                    timer.start(T_fft);
+                if(timers_enabled) timer.stop(T_evolve);
+                if(timers_enabled) timer.start(T_fft);
                 fft(-1, u1, u2);
-                if(timers_enabled)
-                    timer.stop(T_fft);
-                if(timers_enabled)
-                    synchup();
-                if(timers_enabled)
-                    timer.start(T_checksum);
+                if(timers_enabled) timer.stop(T_fft);
+                if(timers_enabled) synchup();
+                if(timers_enabled) timer.start(T_checksum);
                 checksum(iter, sums, u2, dims[0, 0], dims[1, 0], dims[2, 0]);
-                if(timers_enabled)
-                    timer.stop(T_checksum);
+                if(timers_enabled) timer.stop(T_checksum);
             }
 
             int verified = verify(nx, ny, nz, niter, sums);
