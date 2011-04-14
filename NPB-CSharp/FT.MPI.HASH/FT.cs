@@ -131,7 +131,7 @@ namespace NPB {
             blocksConfig();
             startBigArrays();
             compute_indexmap(twiddle);
-            compute_initial_conditions(u1, dims[0, 0], dims[1, 0], dims[2, 0]);
+            compute_initial_conditions(u1);
             fft_init(dims[0, 0]);  //control u
             fft(1, u1, u0); // fft(1, u1, u0);
             //c---------------------------------------------------------------------
@@ -147,7 +147,7 @@ namespace NPB {
                 timer.start(T_setup);
 
             compute_indexmap(twiddle);
-            compute_initial_conditions(u1, dims[0, 0], dims[1, 0], dims[2, 0]);
+            compute_initial_conditions(u1);
             fft_init(dims[0, 0]);
 
             if(timers_enabled)
@@ -557,10 +557,9 @@ namespace NPB {
             }
         }
 
-        public void compute_initial_conditions(double[, , ,] u0, int d1, int d2, int d3) {
+        public void compute_initial_conditions(double[, , ,] u0) {
             int k;
             double x0, start, an, dummy;
-
             //c---------------------------------------------------------------------
             //c 0-D and 1-D layouts are easy because each processor gets a contiguous
             //c chunk of the array, in the Fortran ordering sense. 
