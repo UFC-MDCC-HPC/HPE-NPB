@@ -872,7 +872,7 @@ namespace NPB {
                     cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u1, u1);
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_xy_z(1, u1, u02);
+                    transpose_xy_z(1, 2, u1, u02);
                     if(timers_enabled)
                         timer.stop(T_transpose);
                     cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u02, u02);
@@ -903,7 +903,7 @@ namespace NPB {
                     cffts1(dir, dims[0, 2], dims[1, 2], dims[2, 2], u1, u1);
                     if(timers_enabled)
                         timer.start(T_transpose);
-                    transpose_x_yz(2, u1, u02);
+                    transpose_x_yz(2, 1, u1, u02);
                     if(timers_enabled)
                         timer.stop(T_transpose);
                     cffts2(dir, dims[0, 1], dims[1, 1], dims[2, 1], u02, u02);
@@ -1265,7 +1265,7 @@ namespace NPB {
                 timer.stop(T_transxyfin);
         }
 
-        public void transpose_xy_z(int l1, double[, , ,] xin, double[, , ,] xout) {
+        public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
             transpose2_local(dims[0, l1]*dims[1, l1], dims[2, l1], xin, xout);
             transpose2_global(xout, xin);
@@ -1531,12 +1531,11 @@ namespace NPB {
                 timer.stop(T_transxzfin);
         }
 
-        public void transpose_x_yz(int l1, double[, , ,] xin, double[, , ,] xout) {
+        public void transpose_x_yz(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
             transpose2_local(dims[0, l1], dims[1, l1]*dims[2, l1], xin, xout);
             transpose2_global(xout, xin);
             transpose2_finish(dims[0, l1], dims[1, l1]*dims[2, l1], xin, xout);
-
         }
 
         public void evolve(double[, , ,] u0, double[, , ,] u1, double[] twiddle, int d1, int d2, int d3) {
