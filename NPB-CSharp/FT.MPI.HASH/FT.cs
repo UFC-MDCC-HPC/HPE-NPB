@@ -815,7 +815,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
 
             nu = n;
-            m = ilog2Get(n);
+            m = ilog2(n);
             u[0, 0] = m; // u(1)
             u[0, 1] = 0.0;
             ku = 2;
@@ -835,7 +835,7 @@ namespace NPB {
             }
         }
 
-        public int ilog2Get(int n) {
+        public int ilog2(int n) {
             int nn, lg;
             if(n == 1) {
                 return 0;
@@ -940,7 +940,7 @@ namespace NPB {
             double[,,,] y = new double[2, d1, fftblockpad, 2];
 
             int i, j, k, jj, iin, io;
-            logd1 = ilog2Get(d1);
+            logd1 = ilog2(d1);
             for(k = 0; k < d3; k++) {
                 for(jj = 0; jj <= (d2-fftblock); jj = jj + fftblock) {
                     if(timers_enabled)
@@ -988,7 +988,7 @@ namespace NPB {
             double[,,,] y = new double[2, d2, fftblockpad, 2];
 
             int i, j, k, ii, io, iin;
-            logd2 = ilog2Get(d2);
+            logd2 = ilog2(d2);
             for(k = 0; k < d3; k++) {
                 for(ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
                     if(timers_enabled)
@@ -1037,7 +1037,7 @@ namespace NPB {
 
             int i, j, k, ii, iin, io;
 
-            logd3 = ilog2Get(d3);
+            logd3 = ilog2(d3);
 
             for(j = 0; j < d2; j++) {
                 for(ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
@@ -1186,7 +1186,7 @@ namespace NPB {
 
         }
 
-        public void transpose_x_y_local(int d1, int d2, int d3, double[, , ,] uxin, double[, , ,] uxout) {
+        public void transpose_x_y_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //implicit none
             //include 'global.h'
             //integer d1, d2, d3
@@ -1204,8 +1204,8 @@ namespace NPB {
                         io = ((i*d3+k)*d2+j)*2;
                         //uxout[i, k, j, REAL] = uxin[k, j, i, REAL];
                         //uxout[i, k, j, IMAG] = uxin[k, j, i, IMAG];
-                        Point.setAddress(uxin, ii+REAL, uxout, io+REAL);
-                        Point.setAddress(uxin, ii+IMAG, uxout, io+IMAG);
+                        Point.setAddress(xin, ii+REAL, xout, io+REAL);
+                        Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
                     }
                 }
             }
@@ -1213,7 +1213,7 @@ namespace NPB {
                 timer.stop(T_transxyloc);
         }
 
-        public void transpose_x_y_global(int d1, int d2, int d3, double[, , ,] uxin, double[, , ,] uxout) {
+        public void transpose_x_y_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             /* ---------------------------------------------------------------------
                array is in form (ny/np1, nz/np2, nx)
                ---------------------------------------------------------------------
@@ -1228,14 +1228,14 @@ namespace NPB {
                 timer.start(T_transxyglo);
             double[] src       = new double[d1*d2*d3*2];
             double[] dst       = new double[d1*d2*d3*2];
-            Point.setVetor(uxin, src);
+            Point.setVetor(xin, src);
             commslice2.AlltoallFlattened<double>(src, d1*d2*d3*2/np1, ref dst);
-            Point.setVetor(dst, uxout);
+            Point.setVetor(dst, xout);
             if(timers_enabled)
                 timer.stop(T_transxyglo);
         }
 
-        public void transpose_x_y_finish(int d1, int d2, int d3, double[, , ,] uxin, double[, , ,] uxout) {
+        public void transpose_x_y_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(d1/np1, d3, d2, 0:np1-1); 
             //double complex xout(d1,d2,d3);
@@ -1255,8 +1255,8 @@ namespace NPB {
                         for(i = 0; i < (d1/np1); i++) { //io = ((((k-1)*size3+(j-1))*size4*np1+(i+ioff-1))) *2;  //uxout[k,j,i+ioff] ii  = ((((p)*size2+(j-1))*size4+(k-1))*size3+(i-1))*2; //uxin[p,j,k,i]
                             ii  = (((p*d2+j)*d3+k)*(d1/np1)+i)*2;
                             io  = ((k*d2+j)*d1+i+ioff)*2;
-                            Point.setAddress(uxin, ii+REAL, uxout, io+REAL);    //xout(i+ioff,j,k) = xin(i,k,j,p);
-                            Point.setAddress(uxin, ii+IMAG, uxout, io+IMAG);
+                            Point.setAddress(xin, ii+REAL, xout, io+REAL);    //xout(i+ioff,j,k) = xin(i,k,j,p);
+                            Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
                         }
                     }
                 }
@@ -1272,7 +1272,7 @@ namespace NPB {
             transpose2_finish(dims[0, l1]*dims[1, l1], dims[2, l1], xin, xout);
         }
 
-        public void transpose2_local(int n1, int n2, double[, , ,] uxin, double[, , ,] uxout) {
+        public void transpose2_local(int n1, int n2, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(n1, n2), xout(n2, n1)
             //double complex z(transblockpad, transblock)
@@ -1301,8 +1301,8 @@ namespace NPB {
                             //uxout[i, j] = uxin[j, i];                 //xout(j, i) = xin(i, j);
                             iin = (j * n1 + i)*2;
                             io = (i * n2 + j)*2;
-                            Point.setAddress(uxin, iin+REAL, uxout, io+REAL);
-                            Point.setAddress(uxin, iin+IMAG, uxout, io+IMAG);
+                            Point.setAddress(xin, iin+REAL, xout, io+REAL);
+                            Point.setAddress(xin, iin+IMAG, xout, io+IMAG);
                         }
                     }
                 }
@@ -1311,8 +1311,8 @@ namespace NPB {
                         for(j = 0; j < n2; j++) {                   //xout(j, i) = xin(i, j);
                             iin = (j * n1 + i)*2;
                             io = (i * n2 + j)*2;
-                            Point.setAddress(uxin, iin+REAL, uxout, io+REAL);
-                            Point.setAddress(uxin, iin+IMAG, uxout, io+IMAG);
+                            Point.setAddress(xin, iin+REAL, xout, io+REAL);
+                            Point.setAddress(xin, iin+IMAG, xout, io+IMAG);
                         }
                     }
                 }
@@ -1327,8 +1327,8 @@ namespace NPB {
                             for(ii = 0; ii < transblock; ii++) { //z(jj,ii) = xin(i+ii, j+jj);
                                 iin = ((j+jj)*n1+(i+ii))*2;      //xin[j+jj, i+ii];
                                 io = ((ii)*transblockpad+jj)*2; //z[ii,jj]
-                                Point.setAddress(uxin, iin + REAL, z, io + REAL);
-                                Point.setAddress(uxin, iin + IMAG, z, io + IMAG);
+                                Point.setAddress(xin, iin + REAL, z, io + REAL);
+                                Point.setAddress(xin, iin + IMAG, z, io + IMAG);
 
                             }
                         }
@@ -1336,8 +1336,8 @@ namespace NPB {
                             for(jj = 0; jj < transblock; jj++) {//xout(j+jj, i+ii) = z(jj,ii);
                                 iin = (ii*transblockpad+jj)*2;  //z[ii,jj];
                                 io = ((i+ii)*n2+(j+jj))*2;//xout[i+ii, j+jj]
-                                Point.setAddress(z, iin + REAL, uxout, io + REAL);
-                                Point.setAddress(z, iin + IMAG, uxout, io + IMAG);
+                                Point.setAddress(z, iin + REAL, xout, io + REAL);
+                                Point.setAddress(z, iin + IMAG, xout, io + IMAG);
 
                             }
                         }
@@ -1350,7 +1350,7 @@ namespace NPB {
 
         }
 
-        public void transpose2_global(double[, , ,] uxin, double[, , ,] uxout) {
+        public void transpose2_global(double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
             double[] src = new double[ntdivnp*2];
@@ -1359,16 +1359,16 @@ namespace NPB {
                 synchup();
             if(timers_enabled)
                 timer.start(T_transxzglo);
-            Point.setVetor(uxin, src);
+            Point.setVetor(xin, src);
             commslice1.AlltoallFlattened<double>(src, ntdivnp * 2 / np, ref dst);
-            Point.setVetor(dst, uxout);
+            Point.setVetor(dst, xout);
             // call mpi_alltoall(xin, ntdivnp/np, dc_type, xout, ntdivnp/np, dc_type, commslice1, ierr);
             if(timers_enabled)
                 timer.stop(T_transxzglo);
 
         }
 
-        public void transpose2_finish(int n1, int n2, double[, , ,] uxin, double[, , ,] uxout) {
+        public void transpose2_finish(int n1, int n2, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(n2, n1/np2, 0:np2-1), 
             //               xout(n2*np2, n1/np2)
@@ -1385,8 +1385,8 @@ namespace NPB {
                     for(i = 0; i < n2; i++) { //xout(i+ioff, j) = xin(i, j, p);
                         ii = ((p*(n1/np2)+j)*n2+i)*2; //uxin[p, j, i]
                         io = (j*n2*np2+(i+ioff))*2; //uxout[j, i+ioff]
-                        Point.setAddress(uxin, ii+REAL, uxout, io+REAL);
-                        Point.setAddress(uxin, ii+IMAG, uxout, io+IMAG);
+                        Point.setAddress(xin, ii+REAL, xout, io+REAL);
+                        Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
                     }
                 }
             }
