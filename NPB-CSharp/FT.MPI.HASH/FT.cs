@@ -689,27 +689,27 @@ namespace NPB {
         }
 
         public void vranlc(int n, double x, double a, double[, , ,] u1, int k) {
-            //     c---------------------------------------------------------------------
-            //     c   This routine generates N uniform pseudorandom double precision numbers in
-            //     c   the range (0, 1) by using the linear congruential generator
-            //     c   
-            //     c   x_{k+1} = a x_k  (mod 2^46)
-            //     c   
-            //     c   where 0 < x_k < 2^46 and 0 < a < 2^46.  This scheme generates 2^44 numbers
-            //     c   before repeating.  The argument A is the same as 'a' in the above formula,
-            //     c   and X is the same as x_0.  A and X must be odd double precision integers
-            //     c   in the range (1, 2^46).  The N results are placed in Y and are normalized
-            //     c   to be between 0 and 1.  X is updated to contain the new seed, so that
-            //     c   subsequent calls to RANDLC using the same arguments will generate a
-            //     c   continuous sequence.
-            //     c   
-            //     c   This routine generates the output sequence in batches of length NV, for
-            //     c   convenience on vector computers.  This routine should produce the same
-            //     c   results on any computer with at least 48 mantissa bits in double precision
-            //     c   floating point data.  On Cray systems, double precision should be disabled.
-            //     c   
-            //     c   David H. Bailey    August 30, 1990
-            //     c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   This routine generates N uniform pseudorandom double precision numbers in
+            //   the range (0, 1) by using the linear congruential generator
+            //   
+            //   x_{k+1} = a x_k  (mod 2^46)
+            //   
+            //   where 0 < x_k < 2^46 and 0 < a < 2^46.  This scheme generates 2^44 numbers
+            //   before repeating.  The argument A is the same as 'a' in the above formula,
+            //   and X is the same as x_0.  A and X must be odd double precision integers
+            //   in the range (1, 2^46).  The N results are placed in Y and are normalized
+            //   to be between 0 and 1.  X is updated to contain the new seed, so that
+            //   subsequent calls to RANDLC using the same arguments will generate a
+            //   continuous sequence.
+            //   
+            //   This routine generates the output sequence in batches of length NV, for
+            //   convenience on vector computers.  This routine should produce the same
+            //   results on any computer with at least 48 mantissa bits in double precision
+            //   floating point data.  On Cray systems, double precision should be disabled.
+            //   
+            //   David H. Bailey    August 30, 1990
+            //---------------------------------------------------------------------
             double r23, r46, t23, t46;
             int nv;
             r23 = Math.Pow(2.0, (-23));
@@ -720,68 +720,60 @@ namespace NPB {
             double[] xv = new double[nv];
             double t1, t2, t3, t4, an, a1=0, a2=0, x1, x2, yy;
             int n1, i, j;
-            //     c---------------------------------------------------------------------
-            //     c     Compute the first NV elements of the sequence using RANDLC.
-            //     c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //     Compute the first NV elements of the sequence using RANDLC.
+            //---------------------------------------------------------------------
             t1 = x;
             n1 = (int)min(n, nv);
-
             for(i = 1; i <= n1; i++) {
                 xv[i-1] = t46 * randlcGet(ref t1, a);
             }
-
-            //     c---------------------------------------------------------------------
-            //     c     It is not necessary to compute AN, A1 or A2 unless N is greater than NV.
-            //     c---------------------------------------------------------------------
+            // ---------------------------------------------------------------------
+            // It is not necessary to compute AN, A1 or A2 unless N is greater than NV.
+            // ---------------------------------------------------------------------
             if(n > nv) {
-
-                //c---------------------------------------------------------------------
-                //c     Compute AN = AA ^ NV (mod 2^46) using successive calls to RANDLC.
-                //c---------------------------------------------------------------------
+                //---------------------------------------------------------------------
+                //     Compute AN = AA ^ NV (mod 2^46) using successive calls to RANDLC.
+                //---------------------------------------------------------------------
                 t1 = a;
                 t2 = r46 * a;
 
                 for(i = 1; i <= nv - 1; i++) {
                     t2 = randlcGet(ref t1, a);
                 }
-
                 an = t46 * t2;
-
-                //c---------------------------------------------------------------------
-                //c     Break AN into two parts such that AN = 2^23 * A1 + A2.
-                //c---------------------------------------------------------------------
+                //---------------------------------------------------------------------
+                //     Break AN into two parts such that AN = 2^23 * A1 + A2.
+                //---------------------------------------------------------------------
                 t1 = r23 * an;
                 a1 = (int)(t1);
                 a2 = an - t23 * a1;
             }
-
-            //     c---------------------------------------------------------------------
-            //     c     Compute N pseudorandom results in batches of size NV.
-            //     c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //     Compute N pseudorandom results in batches of size NV.
+            //---------------------------------------------------------------------
             for(j = 0; j <= n - 1; j = j + nv) {
                 n1 = (int)min(nv, n - j);
-
-                //c---------------------------------------------------------------------
-                //c     Compute up to NV results based on the current seed vector XV.
-                //c---------------------------------------------------------------------
+                //---------------------------------------------------------------------
+                //     Compute up to NV results based on the current seed vector XV.
+                //---------------------------------------------------------------------
                 int idx;
                 int d1 = dims[2, 0], d2 = dims[1, 0], d3 = dims[0, 0];
                 for(i = 0; i < n1; i++) { //y(i+j) = r46 * xv(i)
                     idx = (i + j) + (2 * nx * dims[1, 0] * k);                    
                     Point.setValue(u1, idx, r46*xv[i]);  //u0[d3, d2, d1] //y[idx] = r46 * xv[i];
                 }
-                //c---------------------------------------------------------------------
-                //c     If this is the last pass through the 140 loop, it is not necessary to
-                //c     update the XV vector.
-                //c---------------------------------------------------------------------
+                //---------------------------------------------------------------------
+                //     If this is the last pass through the 140 loop, it is not necessary to
+                //     update the XV vector.
+                //---------------------------------------------------------------------
                 if(j + n1 == n) {
                     x = xv[n1-1];
                     return;
                 }
-
-                //c---------------------------------------------------------------------
-                //c     Update the XV vector by multiplying each element by AN (mod 2^46).
-                //c---------------------------------------------------------------------
+                //---------------------------------------------------------------------
+                //     Update the XV vector by multiplying each element by AN (mod 2^46).
+                //---------------------------------------------------------------------
                 for(i = 0; i < nv; i++) {
                     t1 = r23 * xv[i];
                     x1 = (int)(t1);
@@ -794,11 +786,10 @@ namespace NPB {
                     xv[i] = t3 - t46 * t4;
                 }
             }
-
-            //     c---------------------------------------------------------------------
-        //     c     Save the last seed in X so that subsequent calls to VRANLC will generate
-        //     c     a continuous sequence.
-        //     c---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //     Save the last seed in X so that subsequent calls to VRANLC will generate
+            //     a continuous sequence.
+            //---------------------------------------------------------------------
         }
 
         public void fft_init(int n) {
