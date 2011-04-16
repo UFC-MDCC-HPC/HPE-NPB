@@ -775,8 +775,10 @@ namespace NPB {
                 //c     If this is the last pass through the 140 loop, it is not necessary to
                 //c     update the XV vector.
                 //c---------------------------------------------------------------------
-                if(j + n1 == n)
-                    goto goto150;
+                if(j + n1 == n) {
+                    x = xv[n1-1];
+                    return;
+                }
 
                 //c---------------------------------------------------------------------
                 //c     Update the XV vector by multiplying each element by AN (mod 2^46).
@@ -798,8 +800,6 @@ namespace NPB {
         //     c     Save the last seed in X so that subsequent calls to VRANLC will generate
         //     c     a continuous sequence.
         //     c---------------------------------------------------------------------
-        goto150:
-            x = xv[n1-1];
         }
 
         public void fft_init(int n) {
