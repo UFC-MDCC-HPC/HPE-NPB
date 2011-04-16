@@ -781,16 +781,16 @@ namespace NPB {
                 //c---------------------------------------------------------------------
                 //c     Update the XV vector by multiplying each element by AN (mod 2^46).
                 //c---------------------------------------------------------------------
-                for(i = 1; i <= nv; i++) {
-                    t1 = r23 * xv[i-1];
+                for(i = 0; i < nv; i++) {
+                    t1 = r23 * xv[i];
                     x1 = (int)(t1);
-                    x2 = xv[i-1] - t23 * x1;
+                    x2 = xv[i] - t23 * x1;
                     t1 = a1 * x2 + a2 * x1;
                     t2 = (int)(r23 * t1);
                     yy = t1 - t23 * t2;
                     t3 = t23 * yy + a2 * x2;
                     t4 = (int)(r46 * t3);
-                    xv[i-1] = t3 - t46 * t4;
+                    xv[i] = t3 - t46 * t4;
                 }
             }
 
