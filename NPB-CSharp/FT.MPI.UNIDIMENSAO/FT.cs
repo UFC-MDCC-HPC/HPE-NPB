@@ -570,7 +570,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
             //c Go through by z planes filling in one square at a time.
             //c---------------------------------------------------------------------
-            for(k = 1; k <= dims[2, 0]; k++) { // nz/np2;
+            for(k = 0; k < dims[2, 0]; k++) { // nz/np2;
                 x0 = start;
                 //call vranlc(2*nx*dims(2, 1), x0, a, u0(1, 1, k)) : call native
                 vranlc(2 * nx * dims[1, 0], x0, a, u1, k); //(1, 1, k));
@@ -767,7 +767,7 @@ namespace NPB {
                 int idx;
                 int d3 = dims[2, 0], d2 = dims[1, 0], d1 = dims[0, 0];
                 for(i = 0; i < n1; i++) { //y(i+j) = r46 * xv(i)
-                    idx = (i + j) + (2 * nx * dims[1, 0] * (k - 1));
+                    idx = (i+j)+(2*nx*dims[1, 0]*k);
                     //y[idx] = r46 * xv[i - 1];
                     u1[idx] = r46*xv[i];  //u0[d3, d2, d1]
                 }
