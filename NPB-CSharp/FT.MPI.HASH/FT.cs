@@ -758,10 +758,20 @@ namespace NPB {
                 //     Compute up to NV results based on the current seed vector XV.
                 //---------------------------------------------------------------------
                 int idx;
-                int d1 = dims[2, 0], d2 = dims[1, 0], d3 = dims[0, 0];
+                int d1 = dims[2, 0], d2 = dims[1, 0], d3 = dims[0, 0], d4 = 2;
                 for(i = 0; i < n1; i++) { //y(i+j) = r46 * xv(i)
                     idx = (i + j) + (2 * nx * dims[1, 0] * k);//idx=(i+j)+(2*nx*dims[1,0]*k); 
                     Point.setValue(u1, idx, r46*xv[i]);  //u0[d3, d2, d1] //y[idx] = r46 * xv[i];
+                    //int s1 = d2*d3*d4;
+                    //int s2 = d3*d4;
+                    //int m1 = (int)mod(idx, s1);
+                    //int m2 = (int)mod(m1, s2);
+
+                    //int ii = (int) idx/s1;
+                    //int jj = (int) m1/s2;
+                    //int kk = (int) m2/d4;
+                    //int tt = (int) mod(m2,d4);
+                    //u1[ii, jj, kk, tt] = r46*xv[i];
                 }
                 //---------------------------------------------------------------------
                 //     If this is the last pass through the 140 loop, it is not necessary to
