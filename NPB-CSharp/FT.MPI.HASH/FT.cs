@@ -104,30 +104,11 @@ namespace NPB {
 
         }
 
-        public void startBigArrays() {
-            try {
-                //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)
-                u1 = new double[dims[2, 0], dims[1, 0], dims[0, 0], 2];
-                u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
-                u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
-                u = new double[nx, 2];
-                // twiddle(ntdivnp)
-                twiddle = new double[ntdivnp];
-            }
-            catch {
-                Console.WriteLine("");
-                Console.WriteLine(" OutOfMemoryException: Memory error!");
-                Console.WriteLine("");
-                worldcomm.Abort(0);
-                mpi.Dispose();
-                Environment.Exit(0);
-            }
-        }
-
         public void runBenchMark() {
             for(int i = 1; i <= T_max; i++) timer.resetTimer(i);
-            blocksConfig();
-            startBigArrays();
+            initialConfig();
+            problemDefination();
+            blocksInfo();
             compute_indexmap(twiddle);
             compute_initial_conditions(u1);
             fft_init(dims[0, 0]);  //control u
@@ -187,8 +168,8 @@ namespace NPB {
             mpi.Dispose();
         }
 
-        public void blocksConfig() {
-            int i, fstatus=0;
+        public void initialConfig() {
+            int fstatus=0;
             if(node == 0) {
                 Console.WriteLine(" NAS Parallel Benchmarks "+ "3.3" +" -- FT Benchmark ");
                 try {
@@ -294,7 +275,10 @@ namespace NPB {
             worldcomm.Broadcast<int>(ref np1, root);   //call MPI_BCAST(np1, 3, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
             worldcomm.Broadcast<int>(ref niter, root); //call MPI_BCAST(niter, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
             worldcomm.Broadcast<int>(ref np2, root);
-            worldcomm.Broadcast<int>(ref layout_type, root);
+            //worldcomm.Broadcast<int>(ref layout_type, root);
+        }
+
+        public void problemDefination() {
 
             if(np1 == 1 && np2 == 1) {
                 layout_type = layout_0D;
@@ -307,7 +291,7 @@ namespace NPB {
             }
 
             if(layout_type == layout_0D) {
-                for(i = 0; i < 3; i++) {
+                for(int i = 0; i < 3; i++) {
                     dims[0, i] = nx;
                     dims[1, i] = ny;
                     dims[2, i] = nz;
@@ -340,12 +324,26 @@ namespace NPB {
                 dims[2, 2] = ny;
 
             }
+            //for(i = 0; i < 3; i++) {
+            //    dims[1, i] = dims[1, i] / np1;
+            //    dims[2, i] = dims[2, i] / np2;
+            //}
+            dims[1, 0] = dims[1, 0] / np1;
+            dims[2, 0] = dims[2, 0] / np2;
+            dims[1, 1] = dims[1, 1] / np1;
+            dims[2, 1] = dims[2, 1] / np2;
+            dims[1, 2] = dims[1, 2] / np1;
+            dims[2, 2] = dims[2, 2] / np2;
 
-            for(i = 0; i < 3; i++) {
-                dims[1, i] = dims[1, i] / np1;
-                dims[2, i] = dims[2, i] / np2;
-            }
-
+            //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)
+            u1 = new double[dims[2, 0], dims[1, 0], dims[0, 0], 2];
+            u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
+            u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
+            u = new double[nx, 2];
+            // twiddle(ntdivnp)
+            twiddle = new double[ntdivnp];
+        }
+        public void blocksInfo(){
             //c---------------------------------------------------------------------
             //c Determine processor coordinates of this processor
             //c Processor grid is np1xnp2. 
@@ -375,7 +373,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
             if(layout_type == layout_0D) {
 
-                for(i = 0; i < 3; i++) {
+                for(int i = 0; i < 3; i++) {
                     xstart[i] = 1;
                     xend[i]   = nx;
                     ystart[i] = 1;
@@ -450,13 +448,24 @@ namespace NPB {
             fftblock = fftblock_default;
             fftblockpad = fftblockpad_default;
 
+            int dim1 = ny/np1;
+            int dim2 = nx/np1;
+            int dim3 = nx/np1;
+            //if(layout_type == layout_2D) {
+            //    if(dims[1, 0] < fftblock)
+            //        fftblock = dims[1, 0];
+            //    if(dims[1, 1] < fftblock)
+            //        fftblock = dims[1, 1];
+            //    if(dims[1, 2] < fftblock)
+            //        fftblock = dims[1, 2];
+            //}
             if(layout_type == layout_2D) {
-                if(dims[1, 0] < fftblock)
-                    fftblock = dims[1, 0];
-                if(dims[1, 1] < fftblock)
-                    fftblock = dims[1, 1];
-                if(dims[1, 2] < fftblock)
-                    fftblock = dims[1, 2];
+                if(dim1 < fftblock)
+                    fftblock = dim1;
+                if(dim2 < fftblock)
+                    fftblock = dim2;
+                if(dim3 < fftblock)
+                    fftblock = dim3;
             }
 
             if(fftblock != fftblock_default)
