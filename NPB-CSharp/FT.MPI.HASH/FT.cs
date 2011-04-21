@@ -109,6 +109,8 @@ namespace NPB {
             initialConfig();
             problemDefination();
             blocksInfo();
+            if(timers_enabled)
+                synchup();
             compute_indexmap(twiddle);
             compute_initial_conditions(u1);
             fft_init(dims[0, 0]);  //control u
@@ -276,10 +278,6 @@ namespace NPB {
             worldcomm.Broadcast<int>(ref niter, root); //call MPI_BCAST(niter, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
             worldcomm.Broadcast<int>(ref np2, root);
             //worldcomm.Broadcast<int>(ref layout_type, root);
-        }
-
-        public void problemDefination() {
-
             if(np1 == 1 && np2 == 1) {
                 layout_type = layout_0D;
             }
@@ -289,7 +287,9 @@ namespace NPB {
             else {
                 layout_type = layout_2D;
             }
+        }
 
+        public void problemDefination() {
             if(layout_type == layout_0D) {
                 for(int i = 0; i < 3; i++) {
                     dims[0, i] = nx;
@@ -343,7 +343,7 @@ namespace NPB {
             // twiddle(ntdivnp)
             twiddle = new double[ntdivnp];
         }
-        public void blocksInfo(){
+        public void blocksInfo() {
             //c---------------------------------------------------------------------
             //c Determine processor coordinates of this processor
             //c Processor grid is np1xnp2. 
@@ -364,8 +364,8 @@ namespace NPB {
             commslice1=(MPI.Intracommunicator)worldcomm.Split(me1, me2);//MPI_Comm_split(MPI_COMM_WORLD,me1,me2,commslice1,ierr)
             commslice2=(MPI.Intracommunicator)worldcomm.Split(me2, me1);//MPI_Comm_split(MPI_COMM_WORLD,me2,me1,commslice2,ierr)
 
-            if(timers_enabled)
-                synchup();
+            //if(timers_enabled)
+            //    synchup();
 
             //c---------------------------------------------------------------------
             //c Determine which section of the grid is owned by this
@@ -481,6 +481,7 @@ namespace NPB {
         public void compute_indexmap(double[] twiddle) {
             int i, j, k, ii, ii2, jj, ij2, kk;
             double ap;
+            double alpha=.000001, pi = Math.PI;
             //Fortran: twiddle(d1, d2, d3)
             //C#     : twiddle[d3, d2, d1]
 
@@ -554,6 +555,7 @@ namespace NPB {
         public void compute_initial_conditions(double[, , ,] u1) {
             int k;
             double x0, start, an, dummy;
+            double seed = 314159265, a = 1220703125;
             //c---------------------------------------------------------------------
             //c 0-D and 1-D layouts are easy because each processor gets a contiguous
             //c chunk of the array, in the Fortran ordering sense. 
@@ -817,6 +819,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
             int m,nu,ku,i,j,ln;
             double t, ti;
+            double pi = Math.PI;
 
             //c---------------------------------------------------------------------
             //c   Initialize the U array with sines and cosines in a manner that permits

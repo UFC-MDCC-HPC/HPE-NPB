@@ -6,34 +6,34 @@ namespace NPB {
 
         //******************************************** Attributes *******************************************************/
         //npbparams.h
-        protected int nx, ny, nz, maxdim, niter_default, ntdivnp;
+        protected int nx, ny, nz, maxdim, niter_default, ntdivnp;//
         //end.h
 
         //global.h
-        protected static int np1, np2, np;
-        protected static int layout_type;
+        protected static int np1, np2, np;//
+        protected static int layout_type;//
         //constant
-        protected int layout_0D = 0, layout_1D = 1, layout_2D = 2;
+        protected int layout_0D = 0, layout_1D = 1, layout_2D = 2;//
         protected int fftblock_default=16, fftblockpad_default=18;
         protected int transblock=32, transblockpad=34;
         protected int T_total = 1, T_setup = 2, T_fft = 3, T_evolve = 4, T_checksum = 5, T_fftlow = 6, 
                           T_fftcopy = 7, T_transpose = 8, T_transxzloc = 9, T_transxzglo = 10, T_transxzfin = 11, 
                           T_transxyloc = 12, T_transxyglo = 13, T_transxyfin = 14,  T_synch = 15, T_max = 15;
-        protected double seed = 314159265, a = 1220703125, pi = Math.PI, alpha=.000001;
+        //protected double seed = 314159265, a = 1220703125, pi = Math.PI, alpha=.000001;
         protected static int REAL=0,IMAG=1;
         //end constant
-        protected static int fftblock, fftblockpad;
-        protected static int node, me1, me2;
+        protected static int fftblock, fftblockpad;//blocks
+        protected static int node, me1, me2;//blocks
         protected static int[,] dims = new int[3, 3];
-        protected static int[] xstart = new int[3];
-        protected static int[] ystart = new int[3];
-        protected static int[] zstart = new int[3];
-        protected static int[] xend = new int[3];
-        protected static int[] yend = new int[3];
-        protected static int[] zend = new int[3];
-        protected bool timers_enabled = false;
+        protected static int[] xstart = new int[3];//blocks
+        protected static int[] ystart = new int[3];//blocks
+        protected static int[] zstart = new int[3];//blocks
+        protected static int[] xend = new int[3];//blocks
+        protected static int[] yend = new int[3];//blocks
+        protected static int[] zend = new int[3];//blocks
+        protected bool timers_enabled = false;//
 
-        protected static double[,] u;           //complex u(nx);
+        protected static double[,] u;           //complex u(nx);//
         protected static int niter;
         //end.h
 
