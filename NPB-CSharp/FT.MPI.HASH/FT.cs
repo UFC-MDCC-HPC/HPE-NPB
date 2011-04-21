@@ -343,6 +343,7 @@ namespace NPB {
             // twiddle(ntdivnp)
             twiddle = new double[ntdivnp];
         }
+
         public void blocksInfo() {
             //c---------------------------------------------------------------------
             //c Determine processor coordinates of this processor
