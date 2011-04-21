@@ -336,7 +336,7 @@ namespace NPB {
             dims[2, 2] = dims[2, 2] / np2;
 
             //complex u0(ntdivnp), u1(ntdivnp), u2(ntdivnp)
-            u1 = new double[dims[2, 0], dims[1, 0], dims[0, 0], 2];
+            u1 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];//u1 = new double[dims[2, 0], dims[1, 0], dims[0, 0], 2];
             u0 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
             u2 = new double[dims[1, 0], dims[2, 0], dims[0, 0], 2];
             u = new double[nx, 2];
