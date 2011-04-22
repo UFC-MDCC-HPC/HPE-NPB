@@ -1786,7 +1786,7 @@ namespace NPB {
         public void checksum(int iter, double[] sums, double[, , ,] u2, int d1, int d2, int d3) {
             //Fortran:     double complex u1(d1, d2, d3);
             //C#     :     double complex u1[d3, d2, d1];
-            int j, q,r,s, m1,m2,_i,_j,_k, i1,i2,i3;
+            int j, q,r,s, m1,m2,_i,_j,_k;
             double chk_Real, chk_Imag;
             double allchk_Real=0, allchk_Imag=0;   //double complex chk,allchk;
 
@@ -1802,10 +1802,7 @@ namespace NPB {
                         s = (int)mod(5*j, nz)+1;
                         if(s >= zstart[0] && s <= zend[0]) {               //chk=chk+u11(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1);
                             //C#     :     double complex u11[d3, d2, d1]; //chk=chk+u1(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1)
-                            i1 = s-zstart[0];
-                            i2 = r-ystart[0];
-                            i3 = q-xstart[0];
-                            idx = ((i1*d2+i2)*d1+i3)*2;
+                            idx = (((s-zstart[0])*d2+(r-ystart[0]))*d1+(q-xstart[0]))*2;
                             m1 = (idx % size1);
                             m2 = (m1 % size2);
                             _i = idx/size1;
