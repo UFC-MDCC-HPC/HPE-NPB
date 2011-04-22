@@ -1644,7 +1644,7 @@ namespace NPB {
 
         }
 
-        public void transpose_xy_z_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_xy_z_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {//Ok
             //Fortran
             //double complex xin(n2, n1/np2, 0:np2-1), 
             //               xout(n2*np2, n1/np2)
@@ -1687,7 +1687,7 @@ namespace NPB {
 
         }
 
-        public void transpose_x_yz_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_yz_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) { //ok
             //Fortran
             //double complex xin(n2, n1/np2, 0:np2-1), 
             //               xout(n2*np2, n1/np2)
