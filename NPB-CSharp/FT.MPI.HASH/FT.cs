@@ -1359,12 +1359,12 @@ namespace NPB {
 
         public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
-            transpose2_local(dims[0, l1]*dims[1, l1], dims[2, l1], xin, xout);
-            transpose2_global(xout, xin);
-            transpose2_finish(dims[0, l1]*dims[1, l1], dims[2, l1], xin, xout);
+            transpose_xy_z_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
+            transpose_xy_z_global(xout, xin);
+            transpose_xy_z_finish(dims[0, l1],dims[1, l1], dims[2, l1], xin, xout);
         }
 
-        public void transpose2_local(int n1, int n2, double[, , ,] xin, double[, , ,] xout) {
+        public void transpose_xy_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(n1, n2), xout(n2, n1)
             //double complex z(transblockpad, transblock)
@@ -1376,6 +1376,8 @@ namespace NPB {
             double[,,] z = new double[transblockpad, transblock, 2];
             int i, j, ii, jj, iin, io;
             int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
+            int n1 = d1*d2;
+            int n2 = d3;
 
             if(timers_enabled)
                 timer.start(T_transxzloc);
@@ -1484,7 +1486,129 @@ namespace NPB {
 
         }
 
-        public void transpose2_global(double[, , ,] xin, double[, , ,] xout) {
+        public void transpose_x_yz_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+            //Fortran
+            //double complex xin(n1, n2), xout(n2, n1)
+            //double complex z(transblockpad, transblock)
+            //C#
+            //xin [n2,n1]
+            //xout[n1,n2]
+            //z[transblock, transblockpad]
+
+            double[,,] z = new double[transblockpad, transblock, 2];
+            int i, j, ii, jj, iin, io;
+            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
+            int n1 = d1;
+            int n2 = d2*d3;
+
+            if(timers_enabled)
+                timer.start(T_transxzloc);
+
+            //  c---------------------------------------------------------------------
+            //  c If possible, block the transpose for cache memory systems. 
+            //  c How much does this help? Example: R8000 Power Challenge (90 MHz)
+            //  c Blocked version decreases time spend in this routine 
+            //  c from 14 seconds to 5.2 seconds on 8 nodes class A.
+            //  c---------------------------------------------------------------------
+
+            if(n1 < transblock || n2 < transblock) {
+                if(n1 >= n2) {
+                    for(j = 0; j < n2; j++) {
+                        for(i = 0; i < n1; i++) {
+                            //uxout[i, j] = uxin[j, i];                 //xout(j, i) = xin(i, j);
+                            iin = (j * n1 + i)*2;
+                            io = (i * n2 + j)*2;
+                            //Point.setAddress(xin, iin+REAL, xout, io+REAL);
+                            //Point.setAddress(xin, iin+IMAG, xout, io+IMAG);
+                            m1 = (iin % size1);
+                            m2 = (m1 % size2);
+                            _i = iin/size1;
+                            _j = m1/size2;
+                            _k = m2/2;
+
+                            om1 = (io % size1);
+                            om2 = (om1 % size2);
+                            o_i = io/size1;
+                            o_j = om1/size2;
+                            o_k = om2/2;
+
+                            xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                            xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
+                        }
+                    }
+                }
+                else {
+                    for(i = 0; i < n1; i++) {
+                        for(j = 0; j < n2; j++) {                   //xout(j, i) = xin(i, j);
+                            iin = (j * n1 + i)*2;
+                            io = (i * n2 + j)*2;
+                            //Point.setAddress(xin, iin+REAL, xout, io+REAL);
+                            //Point.setAddress(xin, iin+IMAG, xout, io+IMAG);
+                            m1 = (iin % size1);
+                            m2 = (m1 % size2);
+                            _i = iin/size1;
+                            _j = m1/size2;
+                            _k = m2/2;
+
+                            om1 = (io % size1);
+                            om2 = (om1 % size2);
+                            o_i = io/size1;
+                            o_j = om1/size2;
+                            o_k = om2/2;
+
+                            xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                            xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
+                        }
+                    }
+                }
+            }
+            else {
+                for(j = 0; j <= n2 - 1; j = j + transblock) {
+                    for(i = 0; i <= n1 - 1; i = i + transblock) {
+                        //c---------------------------------------------------------------------
+                        //c Note: compiler should be able to take j+jj out of inner loop
+                        //c---------------------------------------------------------------------
+                        for(jj = 0; jj < transblock; jj++) {
+                            for(ii = 0; ii < transblock; ii++) { //z(jj,ii) = xin(i+ii, j+jj);
+                                iin = ((j+jj)*n1+(i+ii))*2;      //xin[j+jj, i+ii];
+                                //io = ((ii)*transblockpad+jj)*2; //z[ii,jj]
+                                //Point.setAddress(xin, iin + REAL, z, io + REAL);
+                                //Point.setAddress(xin, iin + IMAG, z, io + IMAG);
+                                m1 = (iin % size1);
+                                m2 = (m1 % size2);
+                                _i = iin/size1;
+                                _j = m1/size2;
+                                _k = m2/2;
+
+                                z[ii, jj, REAL] = xin[_i, _j, _k, REAL];
+                                z[ii, jj, IMAG] = xin[_i, _j, _k, IMAG];
+                            }
+                        }
+                        for(ii = 0; ii < transblock; ii++) {
+                            for(jj = 0; jj < transblock; jj++) {//xout(j+jj, i+ii) = z(jj,ii);
+                                //iin = (ii*transblockpad+jj)*2;  //z[ii,jj];
+                                io = ((i+ii)*n2+(j+jj))*2;//xout[i+ii, j+jj]
+                                //Point.setAddress(z, iin + REAL, xout, io + REAL);
+                                //Point.setAddress(z, iin + IMAG, xout, io + IMAG);
+                                m1 = (io % size1);
+                                m2 = (m1 % size2);
+                                _i = io/size1;
+                                _j = m1/size2;
+                                _k = m2/2;
+                                xout[_i, _j, _k, REAL] = z[ii, jj, REAL];
+                                xout[_i, _j, _k, IMAG] = z[ii, jj, IMAG];
+                            }
+                        }
+
+                    }
+                }
+            }
+            if(timers_enabled)
+                timer.stop(T_transxzloc);
+
+        }
+
+        public void transpose_xy_z_global(double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
             double[] src = new double[ntdivnp*2];
@@ -1502,7 +1626,25 @@ namespace NPB {
 
         }
 
-        public void transpose2_finish(int n1, int n2, double[, , ,] xin, double[, , ,] xout) {
+        public void transpose_x_yz_global(double[, , ,] xin, double[, , ,] xout) {
+            // double complex xin(ntdivnp)
+            // double complex xout(ntdivnp) 
+            double[] src = new double[ntdivnp*2];
+            double[] dst = new double[ntdivnp*2];
+            if(timers_enabled)
+                synchup();
+            if(timers_enabled)
+                timer.start(T_transxzglo);
+            setVetor(xin, src);
+            commslice1.AlltoallFlattened<double>(src, ntdivnp * 2 / np, ref dst);
+            setVetor(dst, xout);
+            // call mpi_alltoall(xin, ntdivnp/np, dc_type, xout, ntdivnp/np, dc_type, commslice1, ierr);
+            if(timers_enabled)
+                timer.stop(T_transxzglo);
+
+        }
+
+        public void transpose_xy_z_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(n2, n1/np2, 0:np2-1), 
             //               xout(n2*np2, n1/np2)
@@ -1510,7 +1652,51 @@ namespace NPB {
             //uxin  [   np2, n1/np2, n2] 
             //uxout [n1/np2, n2*np2    ]
             int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
+            int n1 = d1*d2;
+            int n2 = d3;
+            int i, j, p, ioff, ii, io;
+            if(timers_enabled)
+                timer.start(T_transxzfin);
+            for(p = 0; p <= np2 - 1; p++) {
+                ioff = p*n2;
+                for(j = 0; j < n1 / np2; j++) {
+                    for(i = 0; i < n2; i++) { //xout(i+ioff, j) = xin(i, j, p);
+                        ii = ((p*(n1/np2)+j)*n2+i)*2; //uxin[p, j, i]
+                        io = (j*n2*np2+(i+ioff))*2; //uxout[j, i+ioff]
+                        //Point.setAddress(xin, ii+REAL, xout, io+REAL);
+                        //Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
+                        m1 = (ii % size1);
+                        m2 = (m1 % size2);
+                        _i = ii/size1;
+                        _j = m1/size2;
+                        _k = m2/2;
 
+                        om1 = (io % size1);
+                        om2 = (om1 % size2);
+                        o_i = io/size1;
+                        o_j = om1/size2;
+                        o_k = om2/2;
+
+                        xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                        xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
+                    }
+                }
+            }
+            if(timers_enabled)
+                timer.stop(T_transxzfin);
+
+        }
+
+        public void transpose_x_yz_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+            //Fortran
+            //double complex xin(n2, n1/np2, 0:np2-1), 
+            //               xout(n2*np2, n1/np2)
+            //C#
+            //uxin  [   np2, n1/np2, n2] 
+            //uxout [n1/np2, n2*np2    ]
+            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
+            int n1 = d1;
+            int n2 = d2*d3;
             int i, j, p, ioff, ii, io;
             if(timers_enabled)
                 timer.start(T_transxzfin);
@@ -1729,9 +1915,9 @@ namespace NPB {
 
         public void transpose_x_yz(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
-            transpose2_local(dims[0, l1], dims[1, l1]*dims[2, l1], xin, xout);
-            transpose2_global(xout, xin);
-            transpose2_finish(dims[0, l1], dims[1, l1]*dims[2, l1], xin, xout);
+            transpose_x_yz_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
+            transpose_x_yz_global(xout, xin);
+            transpose_x_yz_finish(dims[0, l1], dims[1, l1],dims[2, l1], xin, xout);
         }
 
         public void evolve(double[, , ,] u0, double[, , ,] u1, double[] twiddle, int d1, int d2, int d3) {
