@@ -10,7 +10,7 @@ namespace NPB {
         //end.h
 
         //global.h
-        protected static int np1, np2, np;//
+        protected static int np1, np2, np, size1, size2;//
         protected static int layout_type;//
         //constant
         protected int layout_0D = 0, layout_1D = 1, layout_2D = 2;//

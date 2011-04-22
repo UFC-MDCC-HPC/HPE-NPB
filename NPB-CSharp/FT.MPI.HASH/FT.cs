@@ -471,6 +471,8 @@ namespace NPB {
 
             if(fftblock != fftblock_default)
                 fftblockpad = fftblock + 3;
+            size1 = ((int)(nz/np2))*nx*2;
+            size2 = nx*2;
         }
 
         public void synchup() {
@@ -769,21 +771,18 @@ namespace NPB {
                 //---------------------------------------------------------------------
                 //     Compute up to NV results based on the current seed vector XV.
                 //---------------------------------------------------------------------
-                int idx;
-                int d1 = dims[2, 0], d2 = dims[1, 0], d3 = dims[0, 0], d4 = 2;
+                int io;
                 for(i = 0; i < n1; i++) { //y(i+j) = r46 * xv(i)
-                    idx = (i + j) + (2 * nx * dims[1, 0] * k);//idx=(i+j)+(2*nx*dims[1,0]*k); 
-                    Point.setValue(u1, idx, r46*xv[i]);  //u0[d3, d2, d1] //y[idx] = r46 * xv[i];
-                    //int s1 = d2*d3*d4;
-                    //int s2 = d3*d4;
-                    //int m1 = (int)mod(idx, s1);
-                    //int m2 = (int)mod(m1, s2);
+                    io = (i + j) + (2 * nx * dims[1, 0] * k);//idx=(i+j)+(2*nx*dims[1,0]*k); 
+                    //Point.setValue(u1, idx, r46*xv[i]);  //u0[d3, d2, d1] //y[idx] = r46 * xv[i];
+                    int m1 = (io % size1);
+                    int m2 = (m1 % size2);
+                    int _i = io/size1;
+                    int _j = m1/size2;
+                    int _k = m2/2;
+                    int _t = (m2 % 2);
 
-                    //int ii = (int) idx/s1;
-                    //int jj = (int) m1/s2;
-                    //int kk = (int) m2/d4;
-                    //int tt = (int) mod(m2,d4);
-                    //u1[ii, jj, kk, tt] = r46*xv[i];
+                    u1[_i, _j, _k, _t] = r46*xv[i];
                 }
                 //---------------------------------------------------------------------
                 //     If this is the last pass through the 140 loop, it is not necessary to
@@ -952,7 +951,7 @@ namespace NPB {
             //xout[d3,d2,d1];
             double[,,,] y = new double[2, d1, fftblockpad, 2];
 
-            int i, j, k, jj, iin, io;
+            int i, j, k, jj, io;
             logd1 = ilog2(d1);
             for(k = 0; k < d3; k++) {
                 for(jj = 0; jj <= (d2-fftblock); jj = jj + fftblock) {
@@ -961,8 +960,16 @@ namespace NPB {
                     for(j = 0; j < fftblock; j++) {
                         for(i = 0; i < d1; i++) {//y(j,i,1) = x(i,j+jj,k)
                             io = ((k*d2+(j+jj))*d1+i)*2;
-                            y[0, i, j, REAL] = Point.getValue(x, io+REAL); //y[1,i,j,real] = x[k,j+jj,i,real]
-                            y[0, i, j, IMAG] = Point.getValue(x, io+IMAG);
+                            //y[0, i, j, REAL] = Point.getValue(x, io+REAL); //y[1,i,j,real] = x[k,j+jj,i,real]
+                            //y[0, i, j, IMAG] = Point.getValue(x, io+IMAG);
+                            int m1 = (io % size1);
+                            int m2 = (m1 % size2);
+                            int _i = io/size1;
+                            int _j = m1/size2;
+                            int _k = m2/2;
+                            //int _t = (int)(m2 % dm4);
+                            y[0, i, j, REAL] = x[_i, _j, _k, REAL];
+                            y[0, i, j, IMAG] = x[_i, _j, _k, IMAG];
                         }
                     }
                     if(timers_enabled)
@@ -978,10 +985,18 @@ namespace NPB {
 
                     for(j = 0; j < fftblock; j++) {
                         for(i = 0; i < d1; i++) {
-                            iin   = ((0*d1+i)*fftblockpad+j)*2;
+                            //iin   = ((0*d1+i)*fftblockpad+j)*2;
                             io  = (((k*d2+(j+jj))*d1+i)*2);
-                            Point.setAddress(y, iin+REAL, xout, io+REAL);
-                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            //Point.setAddress(y, iin+REAL, xout, io+REAL);
+                            //Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            int m1 = (io % size1);
+                            int m2 = (m1 % size2);
+                            int _i = io/size1;
+                            int _j = m1/size2;
+                            int _k = m2/2;
+                            //int _t = (int)(m2 % dm4);
+                            xout[_i, _j, _k, REAL] = y[0, i, j, REAL];//xout(i,j+jj,k) = y(j,i,1)
+                            xout[_i, _j, _k, IMAG] = y[0, i, j, IMAG];
                         }
                     }
                     if(timers_enabled)
@@ -1000,7 +1015,7 @@ namespace NPB {
             //     y   [2, d2, fftblockpad];
             double[,,,] y = new double[2, d2, fftblockpad, 2];
 
-            int i, j, k, ii, io, iin;
+            int i, j, k, ii, io;
             logd2 = ilog2(d2);
             for(k = 0; k < d3; k++) {
                 for(ii = 0; ii <= d1 - fftblock; ii = ii + fftblock) {
@@ -1008,9 +1023,17 @@ namespace NPB {
                         timer.start(T_fftcopy);
                     for(j = 0; j < d2; j++) {
                         for(i = 0; i < fftblock; i++) {
-                            iin = ((k*d2+j)*d1+(i+ii))*2;
-                            y[0, j, i, REAL] = Point.getValue(x, iin+REAL);
-                            y[0, j, i, IMAG] = Point.getValue(x, iin+IMAG);
+                            io = ((k*d2+j)*d1+(i+ii))*2;
+                            //y[0, j, i, REAL] = Point.getValue(x, io+REAL);
+                            //y[0, j, i, IMAG] = Point.getValue(x, io+IMAG);
+                            int m1 = (io % size1);
+                            int m2 = (m1 % size2);
+                            int _i = io/size1;
+                            int _j = m1/size2;
+                            int _k = m2/2;
+                            //int _t = (int)(m2 % dm4);
+                            y[0, j, i, REAL] = x[_i, _j, _k, REAL];
+                            y[0, j, i, IMAG] = x[_i, _j, _k, IMAG];
                         }
                     }
                     if(timers_enabled)
@@ -1026,10 +1049,18 @@ namespace NPB {
                         timer.start(T_fftcopy);
                     for(j = 0; j < d2; j++) {
                         for(i = 0; i < fftblock; i++) {
-                            iin = ((0*d2+j)*fftblockpad+i)*2;
+                            //iin = ((0*d2+j)*fftblockpad+i)*2;
                             io = ((k * d2 + j) * d1 + (i + ii)) * 2;
-                            Point.setAddress(y, iin+REAL, xout, io+REAL);
-                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            //Point.setAddress(y, iin+REAL, xout, io+REAL);
+                            //Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            int m1 = (io % size1);
+                            int m2 = (m1 % size2);
+                            int _i = io/size1;
+                            int _j = m1/size2;
+                            int _k = m2/2;
+                            //int _t = (int)(m2 % dm4);
+                            xout[_i, _j, _k, REAL] = y[0, j, i, REAL];
+                            xout[_i, _j, _k, IMAG] = y[0, j, i, IMAG];
                         }
                     }
                     if(timers_enabled)
@@ -1048,7 +1079,7 @@ namespace NPB {
             //     y    [2, d3, fftblockpad]; 
             double[,,,] y = new double[2, d3, fftblockpad, 2];
 
-            int i, j, k, ii, iin, io;
+            int i, j, k, ii, io;
 
             logd3 = ilog2(d3);
 
@@ -1058,9 +1089,17 @@ namespace NPB {
                         timer.start(T_fftcopy);
                     for(k = 0; k < d3; k++) {
                         for(i = 0; i < fftblock; i++) {
-                            iin = ((k*d2+j)*d1+(i+ii))*2;
-                            y[0, k, i, REAL] = Point.getValue(x, iin+REAL);
-                            y[0, k, i, IMAG] = Point.getValue(x, iin+IMAG);
+                            io = ((k*d2+j)*d1+(i+ii))*2;
+                            //y[0, k, i, REAL] = Point.getValue(x, io+REAL);
+                            //y[0, k, i, IMAG] = Point.getValue(x, io+IMAG);
+                            int m1 = (io % size1);
+                            int m2 = (m1 % size2);
+                            int _i = io/size1;
+                            int _j = m1/size2;
+                            int _k = m2/2;
+                            //int _t = (int)(m2 % dm4);
+                            y[0, k, i, REAL] = x[_i, _j, _k, REAL];
+                            y[0, k, i, IMAG] = x[_i, _j, _k, IMAG];
                         }
                     }
                     if(timers_enabled)
@@ -1076,10 +1115,18 @@ namespace NPB {
                         timer.start(T_fftcopy);
                     for(k = 0; k < d3; k++) {
                         for(i = 0; i < fftblock; i++) {
-                            iin = ((0*d3+k)*fftblockpad+i)*2;
+                            //iin = ((0*d3+k)*fftblockpad+i)*2;
                             io  = (((k*d2+j)*d1+(i+ii))*2);
-                            Point.setAddress(y, iin+REAL, xout, io+REAL);
-                            Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            //Point.setAddress(y, iin+REAL, xout, io+REAL);
+                            //Point.setAddress(y, iin+IMAG, xout, io+IMAG);
+                            int m1 = (io % size1);
+                            int m2 = (m1 % size2);
+                            int _i = io/size1;
+                            int _j = m1/size2;
+                            int _k = m2/2;
+                            //int _t = (int)(m2 % dm4);
+                            xout[_i, _j, _k, REAL] = y[0, k, i, REAL];
+                            xout[_i, _j, _k, IMAG] = y[0, k, i, IMAG];
                         }
                     }
                     if(timers_enabled)
@@ -1205,6 +1252,8 @@ namespace NPB {
             //integer d1, d2, d3
             //double complex uxin(d1, d2, d3)  ===> [d3, d2, d1]       
             //double complex uxout(d2, d3, d1) ===> [d1, d3, d2]
+            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
+
             if(timers_enabled)
                 timer.start(T_transxyloc);
             if(timers_enabled)
@@ -1215,10 +1264,25 @@ namespace NPB {
                     for(j = 0; j < d2; j++) { // j=1 <= d2                     //xout(j,k,i)    =    xin(i,j,k); 
                         ii = ((k*d2+j)*d1+i)*2;
                         io = ((i*d3+k)*d2+j)*2;
-                        //uxout[i, k, j, REAL] = uxin[k, j, i, REAL];
-                        //uxout[i, k, j, IMAG] = uxin[k, j, i, IMAG];
-                        Point.setAddress(xin, ii+REAL, xout, io+REAL);
-                        Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
+                        //Point.setAddress(xin, ii+REAL, xout, io+REAL);
+                        //Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
+                        //xout[i, k, j, REAL] = xin[k, j, i, REAL];
+                        //xout[i, k, j, IMAG] = xin[k, j, i, IMAG];
+
+                        m1 = (ii % size1);
+                        m2 = (m1 % size2);
+                        _i = ii/size1;
+                        _j = m1/size2;
+                        _k = m2/2;
+
+                        om1 = (io % size1);
+                        om2 = (om1 % size2);
+                        o_i = io/size1;
+                        o_j = om1/size2;
+                        o_k = om2/2;
+
+                        xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                        xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
                     }
                 }
             }
@@ -1241,9 +1305,9 @@ namespace NPB {
                 timer.start(T_transxyglo);
             double[] src       = new double[d1*d2*d3*2];
             double[] dst       = new double[d1*d2*d3*2];
-            Point.setVetor(xin, src);
+            setVetor(xin, src);
             commslice2.AlltoallFlattened<double>(src, d1*d2*d3*2/np1, ref dst);
-            Point.setVetor(dst, xout);
+            setVetor(dst, xout);
             if(timers_enabled)
                 timer.stop(T_transxyglo);
         }
@@ -1257,6 +1321,7 @@ namespace NPB {
             //uxout[d3    , d2, d1,   2, 0];
 
             int i, j, k, p, ioff;
+            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
 
             if(timers_enabled)
                 timer.start(T_transxyfin);
@@ -1268,8 +1333,22 @@ namespace NPB {
                         for(i = 0; i < (d1/np1); i++) { //io = ((((k-1)*size3+(j-1))*size4*np1+(i+ioff-1))) *2;  //uxout[k,j,i+ioff] ii  = ((((p)*size2+(j-1))*size4+(k-1))*size3+(i-1))*2; //uxin[p,j,k,i]
                             ii  = (((p*d2+j)*d3+k)*(d1/np1)+i)*2;
                             io  = ((k*d2+j)*d1+i+ioff)*2;
-                            Point.setAddress(xin, ii+REAL, xout, io+REAL);    //xout(i+ioff,j,k) = xin(i,k,j,p);
-                            Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
+                            //Point.setAddress(xin, ii+REAL, xout, io+REAL);    //xout(i+ioff,j,k) = xin(i,k,j,p);
+                            //Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
+                            m1 = (ii % size1);
+                            m2 = (m1 % size2);
+                            _i = ii/size1;
+                            _j = m1/size2;
+                            _k = m2/2;
+
+                            om1 = (io % size1);
+                            om2 = (om1 % size2);
+                            o_i = io/size1;
+                            o_j = om1/size2;
+                            o_k = om2/2;
+
+                            xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                            xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
                         }
                     }
                 }
@@ -1296,6 +1375,7 @@ namespace NPB {
 
             double[,,] z = new double[transblockpad, transblock, 2];
             int i, j, ii, jj, iin, io;
+            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
 
             if(timers_enabled)
                 timer.start(T_transxzloc);
@@ -1314,8 +1394,22 @@ namespace NPB {
                             //uxout[i, j] = uxin[j, i];                 //xout(j, i) = xin(i, j);
                             iin = (j * n1 + i)*2;
                             io = (i * n2 + j)*2;
-                            Point.setAddress(xin, iin+REAL, xout, io+REAL);
-                            Point.setAddress(xin, iin+IMAG, xout, io+IMAG);
+                            //Point.setAddress(xin, iin+REAL, xout, io+REAL);
+                            //Point.setAddress(xin, iin+IMAG, xout, io+IMAG);
+                            m1 = (iin % size1);
+                            m2 = (m1 % size2);
+                            _i = iin/size1;
+                            _j = m1/size2;
+                            _k = m2/2;
+
+                            om1 = (io % size1);
+                            om2 = (om1 % size2);
+                            o_i = io/size1;
+                            o_j = om1/size2;
+                            o_k = om2/2;
+
+                            xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                            xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
                         }
                     }
                 }
@@ -1324,8 +1418,22 @@ namespace NPB {
                         for(j = 0; j < n2; j++) {                   //xout(j, i) = xin(i, j);
                             iin = (j * n1 + i)*2;
                             io = (i * n2 + j)*2;
-                            Point.setAddress(xin, iin+REAL, xout, io+REAL);
-                            Point.setAddress(xin, iin+IMAG, xout, io+IMAG);
+                            //Point.setAddress(xin, iin+REAL, xout, io+REAL);
+                            //Point.setAddress(xin, iin+IMAG, xout, io+IMAG);
+                            m1 = (iin % size1);
+                            m2 = (m1 % size2);
+                            _i = iin/size1;
+                            _j = m1/size2;
+                            _k = m2/2;
+
+                            om1 = (io % size1);
+                            om2 = (om1 % size2);
+                            o_i = io/size1;
+                            o_j = om1/size2;
+                            o_k = om2/2;
+
+                            xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                            xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
                         }
                     }
                 }
@@ -1339,19 +1447,32 @@ namespace NPB {
                         for(jj = 0; jj < transblock; jj++) {
                             for(ii = 0; ii < transblock; ii++) { //z(jj,ii) = xin(i+ii, j+jj);
                                 iin = ((j+jj)*n1+(i+ii))*2;      //xin[j+jj, i+ii];
-                                io = ((ii)*transblockpad+jj)*2; //z[ii,jj]
-                                Point.setAddress(xin, iin + REAL, z, io + REAL);
-                                Point.setAddress(xin, iin + IMAG, z, io + IMAG);
+                                //io = ((ii)*transblockpad+jj)*2; //z[ii,jj]
+                                //Point.setAddress(xin, iin + REAL, z, io + REAL);
+                                //Point.setAddress(xin, iin + IMAG, z, io + IMAG);
+                                m1 = (iin % size1);
+                                m2 = (m1 % size2);
+                                _i = iin/size1;
+                                _j = m1/size2;
+                                _k = m2/2;
 
+                                z[ii,jj,REAL] = xin[_i, _j, _k, REAL];
+                                z[ii,jj,IMAG] = xin[_i, _j, _k, IMAG];
                             }
                         }
                         for(ii = 0; ii < transblock; ii++) {
                             for(jj = 0; jj < transblock; jj++) {//xout(j+jj, i+ii) = z(jj,ii);
-                                iin = (ii*transblockpad+jj)*2;  //z[ii,jj];
+                                //iin = (ii*transblockpad+jj)*2;  //z[ii,jj];
                                 io = ((i+ii)*n2+(j+jj))*2;//xout[i+ii, j+jj]
-                                Point.setAddress(z, iin + REAL, xout, io + REAL);
-                                Point.setAddress(z, iin + IMAG, xout, io + IMAG);
-
+                                //Point.setAddress(z, iin + REAL, xout, io + REAL);
+                                //Point.setAddress(z, iin + IMAG, xout, io + IMAG);
+                                m1 = (io % size1);
+                                m2 = (m1 % size2);
+                                _i = io/size1;
+                                _j = m1/size2;
+                                _k = m2/2;
+                                xout[_i, _j, _k, REAL] = z[ii, jj, REAL];
+                                xout[_i, _j, _k, IMAG] = z[ii, jj, IMAG];
                             }
                         }
 
@@ -1372,9 +1493,9 @@ namespace NPB {
                 synchup();
             if(timers_enabled)
                 timer.start(T_transxzglo);
-            Point.setVetor(xin, src);
+            setVetor(xin, src);
             commslice1.AlltoallFlattened<double>(src, ntdivnp * 2 / np, ref dst);
-            Point.setVetor(dst, xout);
+            setVetor(dst, xout);
             // call mpi_alltoall(xin, ntdivnp/np, dc_type, xout, ntdivnp/np, dc_type, commslice1, ierr);
             if(timers_enabled)
                 timer.stop(T_transxzglo);
@@ -1388,6 +1509,7 @@ namespace NPB {
             //C#
             //uxin  [   np2, n1/np2, n2] 
             //uxout [n1/np2, n2*np2    ]
+            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
 
             int i, j, p, ioff, ii, io;
             if(timers_enabled)
@@ -1398,8 +1520,22 @@ namespace NPB {
                     for(i = 0; i < n2; i++) { //xout(i+ioff, j) = xin(i, j, p);
                         ii = ((p*(n1/np2)+j)*n2+i)*2; //uxin[p, j, i]
                         io = (j*n2*np2+(i+ioff))*2; //uxout[j, i+ioff]
-                        Point.setAddress(xin, ii+REAL, xout, io+REAL);
-                        Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
+                        //Point.setAddress(xin, ii+REAL, xout, io+REAL);
+                        //Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
+                        m1 = (ii % size1);
+                        m2 = (m1 % size2);
+                        _i = ii/size1;
+                        _j = m1/size2;
+                        _k = m2/2;
+
+                        om1 = (io % size1);
+                        om2 = (om1 % size2);
+                        o_i = io/size1;
+                        o_j = om1/size2;
+                        o_k = om2/2;
+
+                        xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                        xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
                     }
                 }
             }
@@ -1427,6 +1563,8 @@ namespace NPB {
             double[,,] buf = new double[maxdim, transblockpad, 2];
             int block1, block3;
             int i, j, k, kk, ii, i1, k1;
+            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
+
             if(timers_enabled)
                 timer.start(T_transxzloc);
             if(timers_enabled)
@@ -1452,18 +1590,34 @@ namespace NPB {
                             k1 = k + kk;
                             for(i = 0; i < block1; i++) {                                 //buf(k, i) = xin(i+ii, j, k1);
                                 iin = ((k1*d2+j)*d1+(i+ii))*2; //xin[k1, j, i+ii];
-                                io  = (i*transblockpad+k)*2;   //buf[i, k]
-                                Point.setAddress(xin, iin + REAL, buf, io + REAL);
-                                Point.setAddress(xin, iin + IMAG, buf, io + IMAG);
+                                //io  = (i*transblockpad+k)*2;   //buf[i, k]
+                                //Point.setAddress(xin, iin + REAL, buf, io + REAL);
+                                //Point.setAddress(xin, iin + IMAG, buf, io + IMAG);
+                                m1 = (iin % size1);
+                                m2 = (m1 % size2);
+                                _i = iin/size1;
+                                _j = m1/size2;
+                                _k = m2/2;
+
+                                buf[i, k, REAL] = xin[_i, _j, _k, REAL];
+                                buf[i, k, IMAG] = xin[_i, _j, _k, IMAG];
                             }
                         }
                         for(i = 0; i < block1; i++) {
                             i1 = i + ii;
                             for(k = 0; k < block3; k++) {                                 //xout(k+kk, j, i1) = buf(k, i);
-                                iin = (i*transblockpad+k)*2; //buf[i, k];
+                                //iin = (i*transblockpad+k)*2; //buf[i, k];
                                 io  = ((i1*d2+j)*d3+(k+kk))*2;//xout[i1, j, k+kk]
-                                Point.setAddress(buf, iin + REAL, xout, io + REAL);
-                                Point.setAddress(buf, iin + IMAG, xout, io + IMAG);
+                                //Point.setAddress(buf, iin + REAL, xout, io + REAL);
+                                //Point.setAddress(buf, iin + IMAG, xout, io + IMAG);
+                                m1 = (io % size1);
+                                m2 = (m1 % size2);
+                                _i = io/size1;
+                                _j = m1/size2;
+                                _k = m2/2;
+
+                                xout[_i, _j, _k, REAL] = buf[i, k, REAL];
+                                xout[_i, _j, _k, IMAG] = buf[i, k, IMAG];
                             }
                         }
                     }
@@ -1479,8 +1633,22 @@ namespace NPB {
                     for(i = 0; i < d1; i++) {                                             //xout(k, j, i) = xin(i, j, k);
                         iin = ((k*d2+j)*d1+i)*2; //xin[k, j, i];
                         io  = ((i*d2+j)*d3+k)*2; //xout[i, j, k]
-                        Point.setAddress(xin, iin + REAL, xout, io + REAL);
-                        Point.setAddress(xin, iin + IMAG, xout, io + IMAG);
+                        //Point.setAddress(xin, iin + REAL, xout, io + REAL);
+                        //Point.setAddress(xin, iin + IMAG, xout, io + IMAG);
+                        m1 = (iin % size1);
+                        m2 = (m1 % size2);
+                        _i = iin/size1;
+                        _j = m1/size2;
+                        _k = m2/2;
+
+                        om1 = (io % size1);
+                        om2 = (om1 % size2);
+                        o_i = io/size1;
+                        o_j = om1/size2;
+                        o_k = om2/2;
+
+                        xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                        xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
                     }
                 }
             }
@@ -1508,9 +1676,9 @@ namespace NPB {
                 timer.start(T_transxzglo);
             double[] src = new double[ntdivnp * 2];
             double[] dst = new double[ntdivnp * 2];
-            Point.setVetor(xin, src);
+            setVetor(xin, src);
             commslice1.AlltoallFlattened<double>(src, d1*d2*d3*2/np2, ref dst);
-            Point.setVetor(dst, xout);
+            setVetor(dst, xout);
             //call mpi_alltoall(xin, d1*d2*d3/np2, dc_type,xout, d1*d2*d3/np2, dc_type,commslice1, ierr);
             if(timers_enabled)
                 timer.stop(T_transxzglo);
@@ -1524,6 +1692,7 @@ namespace NPB {
             //xin  [np2, d3, d2, d1/np2]
             //xout [d3,d2,d1]
             int i, j, k, p, ioff, iin, io;
+            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
 
             if(timers_enabled)
                 timer.start(T_transxzfin);
@@ -1534,8 +1703,22 @@ namespace NPB {
                         for(i = 0; i < d1 / np2; i++) {                                   //xout(i+ioff, j, k) = xin(i, j, k, p);
                             iin = (((p*d3+k)*d2+j)*(d1/np2)+i)*2; //xin[p, k, j, i];
                             io  = ((k*d2+j)*d1+(i+ioff))*2; //xout[k, j, i+ioff]
-                            Point.setAddress(xin, iin + REAL, xout, io + REAL);
-                            Point.setAddress(xin, iin + IMAG, xout, io + IMAG);
+                            //Point.setAddress(xin, iin + REAL, xout, io + REAL);
+                            //Point.setAddress(xin, iin + IMAG, xout, io + IMAG);
+                            m1 = (iin % size1);
+                            m2 = (m1 % size2);
+                            _i = iin/size1;
+                            _j = m1/size2;
+                            _k = m2/2;
+
+                            om1 = (io % size1);
+                            om2 = (om1 % size2);
+                            o_i = io/size1;
+                            o_j = om1/size2;
+                            o_k = om2/2;
+
+                            xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                            xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
                         }
                     }
                 }
@@ -1564,7 +1747,7 @@ namespace NPB {
             //double complex u11[d3,d2,d1]
             //double precision twiddle1[d3,d2,d1]
 
-            int i, j, k, idx, idy;
+            int i, j, k, idx, idy, m1, m2, _i, _j, _k;
             double re, im, tw;
             for(k = 0; k < d3; k++) {
                 for(j = 0; j < d2; j++) {
@@ -1574,12 +1757,26 @@ namespace NPB {
                         idx = ((k*d2+j)*d1+i);
                         idy = idx * 2;
                         tw = twiddle[idx];
-                        re = Point.getValue(u0, idy + REAL)*tw;
-                        im = Point.getValue(u0, idy + IMAG)*tw;
-                        Point.setValue(u0, idy + REAL, re);
-                        Point.setValue(u0, idy + IMAG, im);
-                        Point.setValue(u1, idy + REAL, re);
-                        Point.setValue(u1, idy + IMAG, im);
+
+                        m1 = (idy % size1);
+                        m2 = (m1 % size2);
+                        _i = idy/size1;
+                        _j = m1/size2;
+                        _k = m2/2;
+
+                        re = u0[_i,_j,_k,REAL]*tw;
+                        im = u0[_i,_j,_k,IMAG]*tw;
+                        u0[_i,_j,_k,REAL] = re;
+                        u0[_i,_j,_k,IMAG] = im;
+                        u1[_i,_j,_k,REAL] = re;
+                        u1[_i,_j,_k,IMAG] = im;
+
+                        //re = Point.getValue(u0, idy + REAL)*tw;
+                        //im = Point.getValue(u0, idy + IMAG)*tw;
+                        //Point.setValue(u0, idy + REAL, re);
+                        //Point.setValue(u0, idy + IMAG, im);
+                        //Point.setValue(u1, idy + REAL, re);
+                        //Point.setValue(u1, idy + IMAG, im);
                     }
                 }
             }
@@ -1589,14 +1786,14 @@ namespace NPB {
         public void checksum(int iter, double[] sums, double[, , ,] u2, int d1, int d2, int d3) {
             //Fortran:     double complex u1(d1, d2, d3);
             //C#     :     double complex u1[d3, d2, d1];
-            int j, q,r,s;
+            int j, q,r,s, m1,m2,_i,_j,_k, i1,i2,i3;
             double chk_Real, chk_Imag;
             double allchk_Real=0, allchk_Imag=0;   //double complex chk,allchk;
 
             chk_Real = 0.0;
             chk_Imag = 0.0;
 
-            int i1, i2, i3, idx=0;
+            int idx=0;
             for(j = 1; j <= 1024; j++) {
                 q = (int)mod(j, nx)+1;
                 if(q >= xstart[0] && q <= xend[0]) {
@@ -1604,13 +1801,18 @@ namespace NPB {
                     if(r >= ystart[0] && r <= yend[0]) {
                         s = (int)mod(5*j, nz)+1;
                         if(s >= zstart[0] && s <= zend[0]) {               //chk=chk+u11(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1);
-                            //C#     :     double complex u11[d3, d2, d1];
+                            //C#     :     double complex u11[d3, d2, d1]; //chk=chk+u1(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1)
                             i1 = s-zstart[0];
                             i2 = r-ystart[0];
                             i3 = q-xstart[0];
                             idx = ((i1*d2+i2)*d1+i3)*2;
-                            chk_Real=chk_Real+Point.getValue(u2, idx+REAL); //u11[i1, i2, i3];
-                            chk_Imag=chk_Imag+Point.getValue(u2, idx+IMAG); //u11[i1, i2, i3];
+                            m1 = (idx % size1);
+                            m2 = (m1 % size2);
+                            _i = idx/size1;
+                            _j = m1/size2;
+                            _k = m2/2;
+                            chk_Real=chk_Real+u2[_i,_j,_k,REAL]; //u11[i1, i2, i3];//chk_Real=chk_Real+Point.getValue(u2, idx+REAL); //u11[i1, i2, i3];
+                            chk_Imag=chk_Imag+u2[_i,_j,_k,IMAG]; //u11[i1, i2, i3];//chk_Imag=chk_Imag+Point.getValue(u2, idx+IMAG); //u11[i1, i2, i3];
                         }
                     }
                 }
@@ -1940,6 +2142,42 @@ namespace NPB {
                 if(timer.readTimer(i) != 0.0) {
                     Console.WriteLine(" timer "+ i + tstrings[i-1] + timer.readTimer(i));
                 }
+            }
+        }
+
+        public static unsafe void setVetor(double[, , ,] s, double[] d) {
+            int size = s.Length;
+            if(size == d.Length) {
+                fixed(double* ps = s, pd = d) {
+                    double* p1 = ps;
+                    double* p2 = pd;
+                    for(int n = 0; n < size/2; n++) {
+                        *((decimal*)p2) = *((decimal*)p1);
+                        p2 += 2;
+                        p1 += 2;
+                    }
+                }
+            }
+            else {
+                throw new IndexOutOfRangeException();
+            }
+        }
+
+        public static unsafe void setVetor(double[] s, double[, , ,] d) {
+            int size = s.Length;
+            if(size == d.Length) {
+                fixed(double* ps = s, pd = d) {
+                    double* p1 = ps;
+                    double* p2 = pd;
+                    for(int n = 0; n < size / 2; n++) {
+                        *((decimal*)p2) = *((decimal*)p1);
+                        p2 += 2;
+                        p1 += 2;
+                    }
+                }
+            }
+            else {
+                throw new IndexOutOfRangeException();
             }
         }
     }
