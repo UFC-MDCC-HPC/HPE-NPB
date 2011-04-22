@@ -1747,36 +1747,22 @@ namespace NPB {
             //double complex u11[d3,d2,d1]
             //double precision twiddle1[d3,d2,d1]
 
-            int i, j, k, idx, idy, m1, m2, _i, _j, _k;
-            double re, im, tw;
+            int i, j, k, idx, m1, m2, _i, _j, _k;
             for(k = 0; k < d3; k++) {
                 for(j = 0; j < d2; j++) {
-                    for(i = 0; i < d1; i++) {                  //u00(i,j,k) = u00(i,j,k)*(twiddle1(i,j,k)); u11(i,j,k) = u00(i,j,k);
-                        //u00[k,j,i] = u00[k,j,i]*(twiddle1[k,j,i]);
-                        //u11[k,j,i] = u00[k,j,i];
+                    for(i = 0; i < d1; i++) {//u00(i,j,k) = u00(i,j,k)*(twiddle1(i,j,k)); u11(i,j,k) = u00(i,j,k);//u00[k,j,i] = u00[k,j,i]*(twiddle1[k,j,i]);//u11[k,j,i] = u00[k,j,i];
                         idx = ((k*d2+j)*d1+i);
-                        idy = idx * 2;
-                        tw = twiddle[idx];
 
-                        m1 = (idy % size1);
+                        m1 = (idx*2 % size1);
                         m2 = (m1 % size2);
-                        _i = idy/size1;
+                        _i = idx*2/size1;
                         _j = m1/size2;
                         _k = m2/2;
 
-                        re = u0[_i,_j,_k,REAL]*tw;
-                        im = u0[_i,_j,_k,IMAG]*tw;
-                        u0[_i,_j,_k,REAL] = re;
-                        u0[_i,_j,_k,IMAG] = im;
-                        u1[_i,_j,_k,REAL] = re;
-                        u1[_i,_j,_k,IMAG] = im;
-
-                        //re = Point.getValue(u0, idy + REAL)*tw;
-                        //im = Point.getValue(u0, idy + IMAG)*tw;
-                        //Point.setValue(u0, idy + REAL, re);
-                        //Point.setValue(u0, idy + IMAG, im);
-                        //Point.setValue(u1, idy + REAL, re);
-                        //Point.setValue(u1, idy + IMAG, im);
+                        u0[_i,_j,_k,REAL] = u0[_i,_j,_k,REAL]*twiddle[idx];
+                        u0[_i,_j,_k,IMAG] = u0[_i,_j,_k,IMAG]*twiddle[idx];
+                        u1[_i,_j,_k,REAL] = u0[_i,_j,_k,REAL];
+                        u1[_i,_j,_k,IMAG] = u0[_i,_j,_k,IMAG];
                     }
                 }
             }
@@ -1800,8 +1786,8 @@ namespace NPB {
                     r = (int)mod(3*j, ny)+1;
                     if(r >= ystart[0] && r <= yend[0]) {
                         s = (int)mod(5*j, nz)+1;
-                        if(s >= zstart[0] && s <= zend[0]) {               //chk=chk+u11(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1);
-                            //C#     :     double complex u11[d3, d2, d1]; //chk=chk+u1(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1)
+                        if(s >= zstart[0] && s <= zend[0]) {//chk=chk+u11(q-xstart(1)+1,r-ystart(1)+1,s-zstart(1)+1);
+                            //C#     :     double complex u11[d3, d2, d1];
                             idx = (((s-zstart[0])*d2+(r-ystart[0]))*d1+(q-xstart[0]))*2;
                             m1 = (idx % size1);
                             m2 = (m1 % size2);
