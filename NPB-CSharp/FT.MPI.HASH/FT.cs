@@ -1618,7 +1618,7 @@ namespace NPB {
             //if(timers_enabled)
             //    timer.start(T_transxzglo);
             setVetor(xin, src);
-            commslice1.AlltoallFlattened<double>(src, d1*d2*d3*2 / np, ref dst);//ntdivnp*2
+            commslice1.AlltoallFlattened<double>(src, (d1*d2*d3*2)/np, ref dst);//ntdivnp*2
             setVetor(dst, xout);
             // call mpi_alltoall(xin, ntdivnp/np, dc_type, xout, ntdivnp/np, dc_type, commslice1, ierr);
             //if(timers_enabled)
