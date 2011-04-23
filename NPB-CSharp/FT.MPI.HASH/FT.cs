@@ -1290,7 +1290,7 @@ namespace NPB {
             //    timer.stop(T_transxyloc);
         }
 
-        public void transpose_x_y_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_y_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             /* ---------------------------------------------------------------------
                array is in form (ny/np1, nz/np2, nx)
                ---------------------------------------------------------------------
@@ -1303,10 +1303,11 @@ namespace NPB {
                --------------------------------------------------------------------- */
             //if(timers_enabled)
             //    timer.start(T_transxyglo);
-            double[] src       = new double[d1*d2*d3*2];
-            double[] dst       = new double[d1*d2*d3*2];
+            int size = d1*d2*d3*2;
+            double[] src       = new double[size];
+            double[] dst       = new double[size];
             setVetor(xin, src);
-            commslice2.AlltoallFlattened<double>(src, d1*d2*d3*2/np1, ref dst);
+            commslice2.AlltoallFlattened<double>(src, size/np1, ref dst);
             setVetor(dst, xout);
             //if(timers_enabled)
             //    timer.stop(T_transxyglo);
