@@ -1608,7 +1608,7 @@ namespace NPB {
 
         }
 
-/******/public void transpose_xy_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_xy_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
             double[] src = new double[d1*d2*d3*2];//ntdivnp*2
@@ -1626,7 +1626,7 @@ namespace NPB {
 
         }
 
-        public void transpose_x_yz_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/******/public void transpose_x_yz_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
             double[] src = new double[d1*d2*d3*2];//ntdivnp*2
