@@ -1312,7 +1312,7 @@ namespace NPB {
             //    timer.stop(T_transxyglo);
         }
 
-        public void transpose_x_y_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_y_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(d1/np1, d3, d2, 0:np1-1); 
             //double complex xout(d1,d2,d3);
