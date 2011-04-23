@@ -1360,7 +1360,7 @@ namespace NPB {
         public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
             transpose_xy_z_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
-            transpose_xy_z_global(xout, xin);
+            transpose_xy_z_global(0,0,0,xout, xin);
             transpose_xy_z_finish(dims[0, l1],dims[1, l1], dims[2, l1], xin, xout);
         }
 
@@ -1608,7 +1608,7 @@ namespace NPB {
 
         }
 
-        public void transpose_xy_z_global(double[, , ,] xin, double[, , ,] xout) {
+        public void transpose_xy_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
             double[] src = new double[ntdivnp*2];
@@ -1626,7 +1626,7 @@ namespace NPB {
 
         }
 
-        public void transpose_x_yz_global(double[, , ,] xin, double[, , ,] xout) {
+        public void transpose_x_yz_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
             double[] src = new double[ntdivnp*2];
@@ -1916,7 +1916,7 @@ namespace NPB {
         public void transpose_x_yz(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
             transpose_x_yz_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
-            transpose_x_yz_global(xout, xin);
+            transpose_x_yz_global(0,0,0,xout, xin);
             transpose_x_yz_finish(dims[0, l1], dims[1, l1],dims[2, l1], xin, xout);
         }
 
