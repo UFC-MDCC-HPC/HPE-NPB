@@ -1303,11 +1303,10 @@ namespace NPB {
                --------------------------------------------------------------------- */
             //if(timers_enabled)
             //    timer.start(T_transxyglo);
-            int size = d1*d2*d3*2;
-            double[] src       = new double[size];
-            double[] dst       = new double[size];
+            double[] src       = new double[d1*d2*d3*2];
+            double[] dst       = new double[d1*d2*d3*2];
             setVetor(xin, src);
-            commslice2.AlltoallFlattened<double>(src, size/np1, ref dst);
+            commslice2.AlltoallFlattened<double>(src, d1*d2*d3*2/np1, ref dst);
             setVetor(dst, xout);
             //if(timers_enabled)
             //    timer.stop(T_transxyglo);
