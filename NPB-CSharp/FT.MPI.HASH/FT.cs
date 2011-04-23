@@ -1608,7 +1608,7 @@ namespace NPB {
 
         }
 
-        public void transpose_xy_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/******/public void transpose_xy_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
             double[] src = new double[ntdivnp*2];
