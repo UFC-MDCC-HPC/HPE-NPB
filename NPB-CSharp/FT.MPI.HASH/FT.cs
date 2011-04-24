@@ -1846,7 +1846,7 @@ namespace NPB {
             //    timer.stop(T_transxzloc);
         }
 
-/******/public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(d3,d2,d1);
             //double complex xout(d3,d2,d1) ! not real layout, but right size;
