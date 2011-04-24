@@ -1626,7 +1626,7 @@ namespace NPB {
 
         }
 
-/******/public void transpose_x_yz_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_yz_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
             double[] src = new double[d1*d2*d3*2];//ntdivnp*2
@@ -1846,7 +1846,7 @@ namespace NPB {
             //    timer.stop(T_transxzloc);
         }
 
-        public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/******/public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(d3,d2,d1);
             //double complex xout(d3,d2,d1) ! not real layout, but right size;
@@ -1860,8 +1860,8 @@ namespace NPB {
             //---------------------------------------------------------------------
             //if(timers_enabled)
             //    timer.start(T_transxzglo);
-            double[] src = new double[ntdivnp * 2];
-            double[] dst = new double[ntdivnp * 2];
+            double[] src = new double[d1*d2*d3*2];
+            double[] dst = new double[d1*d2*d3*2];
             setVetor(xin, src);
             commslice1.AlltoallFlattened<double>(src, d1*d2*d3*2/np2, ref dst);
             setVetor(dst, xout);
