@@ -1246,7 +1246,7 @@ namespace NPB {
 
         }
 
-        public void transpose_x_y_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_y_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //implicit none
             //include 'global.h'
             //integer d1, d2, d3
@@ -1364,7 +1364,7 @@ namespace NPB {
             transpose_xy_z_finish(dims[0, l1],dims[1, l1], dims[2, l1], xin, xout);
         }
 
-        public void transpose_xy_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_xy_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(n1, n2), xout(n2, n1)
             //double complex z(transblockpad, transblock)
@@ -1486,7 +1486,7 @@ namespace NPB {
 
         }
 
-        public void transpose_x_yz_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_yz_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(n1, n2), xout(n2, n1)
             //double complex z(transblockpad, transblock)
@@ -1738,7 +1738,7 @@ namespace NPB {
             transpose_x_z_finish(dims[0, l2], dims[1, l2], dims[2, l2], xin, xout);
         }
 
-        public void transpose_x_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/******/public void transpose_x_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(d1,d2,d3)
             //double complex xout(d3,d2,d1)
