@@ -551,7 +551,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange1(rsd, iex);
+            exchange3(rsd, iex);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -647,7 +647,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange1(rsd, iex);
+            exchange3(rsd, iex);
             L1 = 0;
             if(west==-1)
                 L1 = 1;
@@ -824,119 +824,109 @@ namespace NPB {
             }
         }
         //Exchange_3.f
-        public void TempExchangeNSEW(double[, , ,] g, int iex) {
+        public void exchange3(double[, , ,] g, int iex) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
+            MPI.Request ShiftToSouth;
+            MPI.Request ShiftToNorth;
+            MPI.Request ShiftToEast;
+            MPI.Request ShiftToWest;
             int i, j, k0;
             int ipos1, ipos2;
             int bsize = 10*ny*nz;
             int size2 = bsize / 5;
-            MPI.Request mid;// = new MPI.Request[1];
-            double[] buf1 = new double[bsize];
-            double[] buf  = new double[bsize];
+            double[] buf1;
+            buf1 = new double[bsize];
+            double[] buf;
+            buf = new double[bsize];
 
             if(iex==0) {
-                //---------------------------------------------------------------------
-                //   communicate in the south and north directions
-                //---------------------------------------------------------------------
                 if(north!=-1) {
-                    mid = worldcomm.ImmediateReceive<double>(north, from_n, buf1); //call MPI_IRECV[ buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_n, MPI_COMM_WORLD, mid, IERROR ];
-                    mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    ShiftToSouth = worldcomm.ImmediateReceive<double>(north, from_n, buf1);
+                    ShiftToSouth.Wait();
                 }
-                //---------------------------------------------------------------------
-                //   send south
-                //---------------------------------------------------------------------
                 if(south!=-1) {
                     for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
-                            ipos1 = (k0-1)*ny+j - 1;  //ipos1 = (k-1)*ny+j;
-                            ipos2 = ipos1 + ny*nz;               //ipos2 = ipos1 + ny*nz;
-                            buf[0*size2+ipos1] = g[k0-1, j+1, nx, 0];  //buf[1,ipos1] = g[1,nx-1,j,k];
-                            buf[1*size2+ipos1] = g[k0-1, j+1, nx, 1];  //buf[2,ipos1] = g[2,nx-1,j,k];
-                            buf[2*size2+ipos1] = g[k0-1, j+1, nx, 2];  //buf[3,ipos1] = g[3,nx-1,j,k];
-                            buf[3*size2+ipos1] = g[k0-1, j+1, nx, 3];  //buf[4,ipos1] = g[4,nx-1,j,k]; 
-                            buf[4*size2+ipos1] = g[k0-1, j+1, nx, 4];  //buf[5,ipos1] = g[5,nx-1,j,k];
+                            ipos1 = (k0-1)*ny+j - 1;
+                            ipos2 = ipos1 + ny*nz;
+                            buf[0*size2+ipos1] = g[k0-1, j+1, nx, 0];
+                            buf[1*size2+ipos1] = g[k0-1, j+1, nx, 1];
+                            buf[2*size2+ipos1] = g[k0-1, j+1, nx, 2];
+                            buf[3*size2+ipos1] = g[k0-1, j+1, nx, 3];
+                            buf[4*size2+ipos1] = g[k0-1, j+1, nx, 4];
 
-                            buf[0*size2+ipos2] = g[k0-1, j+1, nx+1, 0];    //buf[1,ipos2] = g[1,nx,j,k];
-                            buf[1*size2+ipos2] = g[k0-1, j+1, nx+1, 1];    //buf[2,ipos2] = g[2,nx,j,k];
-                            buf[2*size2+ipos2] = g[k0-1, j+1, nx+1, 2];    //buf[3,ipos2] = g[3,nx,j,k];
-                            buf[3*size2+ipos2] = g[k0-1, j+1, nx+1, 3];    //buf[4,ipos2] = g[4,nx,j,k];
-                            buf[4*size2+ipos2] = g[k0-1, j+1, nx+1, 4];    //buf[5,ipos2] = g[5,nx,j,k];
+                            buf[0*size2+ipos2] = g[k0-1, j+1, nx+1, 0];
+                            buf[1*size2+ipos2] = g[k0-1, j+1, nx+1, 1];
+                            buf[2*size2+ipos2] = g[k0-1, j+1, nx+1, 2];
+                            buf[3*size2+ipos2] = g[k0-1, j+1, nx+1, 3];
+                            buf[4*size2+ipos2] = g[k0-1, j+1, nx+1, 4];
                         }
                     }
-                    worldcomm.Send<double>(buf, south, from_n); //call MPI_SEND[ buf, 10*ny*nz, dp_type, south, from_n, MPI_COMM_WORLD, IERROR ];
+                    //ShiftToSouth = 
+                    worldcomm.Send<double>(buf, south, from_n);
                 }
-                //---------------------------------------------------------------------
-                //   receive from north
-                //---------------------------------------------------------------------
                 if(north!=-1) {
-                    
                     for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
-                            ipos1 = (k0-1)*ny + j - 1;     //ipos1 = (k-1)*ny + j;
-                            ipos2 = ipos1 + ny*nz;                 //ipos2 = ipos1 + ny*nz; 
-                            g[k0-1, j+1, 0, 0] = buf1[0*size2+ipos1];     //g[1,-1,j,k] = buf1[1,ipos1];       
-                            g[k0-1, j+1, 0, 1] = buf1[1*size2+ipos1];     //g[2,-1,j,k] = buf1[2,ipos1];
-                            g[k0-1, j+1, 0, 2] = buf1[2*size2+ipos1];     //g[3,-1,j,k] = buf1[3,ipos1];
-                            g[k0-1, j+1, 0, 3] = buf1[3*size2+ipos1];     //g[4,-1,j,k] = buf1[4,ipos1];
-                            g[k0-1, j+1, 0, 4] = buf1[4*size2+ipos1];     //g[5,-1,j,k] = buf1[5,ipos1];
+                            ipos1 = (k0-1)*ny + j - 1;
+                            ipos2 = ipos1 + ny*nz;
+                            g[k0-1, j+1, 0, 0] = buf1[0*size2+ipos1];
+                            g[k0-1, j+1, 0, 1] = buf1[1*size2+ipos1];
+                            g[k0-1, j+1, 0, 2] = buf1[2*size2+ipos1];
+                            g[k0-1, j+1, 0, 3] = buf1[3*size2+ipos1];
+                            g[k0-1, j+1, 0, 4] = buf1[4*size2+ipos1];
 
-                            g[k0-1, j+1, 1, 0] = buf1[0*size2+ipos2];      //g[1,0,j,k] = buf1[1,ipos2];
-                            g[k0-1, j+1, 1, 1] = buf1[1*size2+ipos2];      //g[2,0,j,k] = buf1[2,ipos2];
-                            g[k0-1, j+1, 1, 2] = buf1[2*size2+ipos2];      //g[3,0,j,k] = buf1[3,ipos2]; 
-                            g[k0-1, j+1, 1, 3] = buf1[3*size2+ipos2];      //g[4,0,j,k] = buf1[4,ipos2];
-                            g[k0-1, j+1, 1, 4] = buf1[4*size2+ipos2];      //g[5,0,j,k] = buf1[5,ipos2];
+                            g[k0-1, j+1, 1, 0] = buf1[0*size2+ipos2];
+                            g[k0-1, j+1, 1, 1] = buf1[1*size2+ipos2];
+                            g[k0-1, j+1, 1, 2] = buf1[2*size2+ipos2];
+                            g[k0-1, j+1, 1, 3] = buf1[3*size2+ipos2];
+                            g[k0-1, j+1, 1, 4] = buf1[4*size2+ipos2];
                         }
                     }
                 }
                 if(south!=-1) {
-                    mid = worldcomm.ImmediateReceive<double>(south, from_s, buf1); //call MPI_IRECV[buf1, 10*ny*nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, mid, IERROR];
-                    mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    ShiftToNorth = worldcomm.ImmediateReceive<double>(south, from_s, buf1);
+                    ShiftToNorth.Wait();
                 }
-                //---------------------------------------------------------------------
-                //   send north
-                //---------------------------------------------------------------------
                 if(north!=-1) {
                     for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
-                            ipos1 = (k0-1)*ny + j - 1;          //ipos1 = (k-1)*ny + j;
-                            ipos2 = ipos1 + ny*nz;              //ipos2 = ipos1 + ny*nz;
-                            buf[0*size2+ipos1] = g[k0-1, j+1, 3, 0];  //buf[1,ipos1] = g[1,2,j,k];
-                            buf[1*size2+ipos1] = g[k0-1, j+1, 3, 1];  //buf[2,ipos1] = g[2,2,j,k];
-                            buf[2*size2+ipos1] = g[k0-1, j+1, 3, 2];  //buf[3,ipos1] = g[3,2,j,k];
-                            buf[3*size2+ipos1] = g[k0-1, j+1, 3, 3];  //buf[4,ipos1] = g[4,2,j,k];
-                            buf[4*size2+ipos1] = g[k0-1, j+1, 3, 4];  //buf[5,ipos1] = g[5,2,j,k];
+                            ipos1 = (k0-1)*ny + j - 1;
+                            ipos2 = ipos1 + ny*nz;
+                            buf[0*size2+ipos1] = g[k0-1, j+1, 3, 0];
+                            buf[1*size2+ipos1] = g[k0-1, j+1, 3, 1];
+                            buf[2*size2+ipos1] = g[k0-1, j+1, 3, 2];
+                            buf[3*size2+ipos1] = g[k0-1, j+1, 3, 3];
+                            buf[4*size2+ipos1] = g[k0-1, j+1, 3, 4];
 
-                            buf[0*size2+ipos2] = g[k0-1, j+1, 2, 0];  //buf[1,ipos2] = g[1,1,j,k];
-                            buf[1*size2+ipos2] = g[k0-1, j+1, 2, 1];  //buf[2,ipos2] = g[2,1,j,k];
-                            buf[2*size2+ipos2] = g[k0-1, j+1, 2, 2];  //buf[3,ipos2] = g[3,1,j,k];
-                            buf[3*size2+ipos2] = g[k0-1, j+1, 2, 3];  //buf[4,ipos2] = g[4,1,j,k];
-                            buf[4*size2+ipos2] = g[k0-1, j+1, 2, 4];  //buf[5,ipos2] = g[5,1,j,k];
+                            buf[0*size2+ipos2] = g[k0-1, j+1, 2, 0];
+                            buf[1*size2+ipos2] = g[k0-1, j+1, 2, 1];
+                            buf[2*size2+ipos2] = g[k0-1, j+1, 2, 2];
+                            buf[3*size2+ipos2] = g[k0-1, j+1, 2, 3];
+                            buf[4*size2+ipos2] = g[k0-1, j+1, 2, 4];
                         }
                     }
-                    worldcomm.Send<double>(buf, north, from_s); //call MPI_SEND[ buf, 10*ny*nz, dp_type, north, from_s, MPI_COMM_WORLD, IERROR ];
+                    //ShiftToNorth = 
+                    worldcomm.Send<double>(buf, north, from_s);
                 }
-                //---------------------------------------------------------------------
-                //   receive from south
-                //---------------------------------------------------------------------
                 if(south!=-1) {
-                    
                     for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
-                            ipos1 = (k0-1)*ny + j - 1; //ipos1 = (k-1)*ny + j;
-                            ipos2 = ipos1 + ny*nz;                  //ipos2 = ipos1 + ny*nz;
-                            g[k0-1, j+1, nx+3, 0]  = buf1[0*size2+ipos1]; //g[1,nx+2,j,k]  = buf1[1,ipos1];
-                            g[k0-1, j+1, nx+3, 1]  = buf1[1*size2+ipos1]; //g[2,nx+2,j,k]  = buf1[2,ipos1];
-                            g[k0-1, j+1, nx+3, 2]  = buf1[2*size2+ipos1]; //g[3,nx+2,j,k]  = buf1[3,ipos1];
-                            g[k0-1, j+1, nx+3, 3]  = buf1[3*size2+ipos1]; //g[4,nx+2,j,k]  = buf1[4,ipos1];
-                            g[k0-1, j+1, nx+3, 4]  = buf1[4*size2+ipos1]; //g[5,nx+2,j,k]  = buf1[5,ipos1];
+                            ipos1 = (k0-1)*ny + j - 1;
+                            ipos2 = ipos1 + ny*nz;
+                            g[k0-1, j+1, nx+3, 0]  = buf1[0*size2+ipos1];
+                            g[k0-1, j+1, nx+3, 1]  = buf1[1*size2+ipos1];
+                            g[k0-1, j+1, nx+3, 2]  = buf1[2*size2+ipos1];
+                            g[k0-1, j+1, nx+3, 3]  = buf1[3*size2+ipos1];
+                            g[k0-1, j+1, nx+3, 4]  = buf1[4*size2+ipos1];
 
-                            g[k0-1, j+1, nx+2, 0] = buf1[0*size2+ipos2];  //g[1,nx+1,j,k] = buf1[1,ipos2];
-                            g[k0-1, j+1, nx+2, 1] = buf1[1*size2+ipos2];  //g[2,nx+1,j,k] = buf1[2,ipos2];
-                            g[k0-1, j+1, nx+2, 2] = buf1[2*size2+ipos2];  //g[3,nx+1,j,k] = buf1[3,ipos2];
-                            g[k0-1, j+1, nx+2, 3] = buf1[3*size2+ipos2];  //g[4,nx+1,j,k] = buf1[4,ipos2];
-                            g[k0-1, j+1, nx+2, 4] = buf1[4*size2+ipos2];  //g[5,nx+1,j,k] = buf1[5,ipos2];
+                            g[k0-1, j+1, nx+2, 0] = buf1[0*size2+ipos2];
+                            g[k0-1, j+1, nx+2, 1] = buf1[1*size2+ipos2];
+                            g[k0-1, j+1, nx+2, 2] = buf1[2*size2+ipos2];
+                            g[k0-1, j+1, nx+2, 3] = buf1[3*size2+ipos2];
+                            g[k0-1, j+1, nx+2, 4] = buf1[4*size2+ipos2];
                         }
                     }
                 }
@@ -946,106 +936,91 @@ namespace NPB {
                 size2 = bsize/5;
                 buf1 = new double[bsize];
                 buf  = new double[bsize];
-                //---------------------------------------------------------------------
-                //   communicate in the east and west directions
-                //---------------------------------------------------------------------
                 if(west!=-1) {
-                    mid = worldcomm.ImmediateReceive<double>(west, from_w, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_w, MPI_COMM_WORLD, mid, IERROR ];
-                    mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    ShiftToEast = worldcomm.ImmediateReceive<double>(west, from_w, buf1);
+                    ShiftToEast.Wait();
                 }
-                //---------------------------------------------------------------------
-                //   send east
-                //---------------------------------------------------------------------
                 if(east!=-1) {
                     for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
-                            ipos1 = (k0-1)*nx+i - 1;         //ipos1 = (k-1)*nx+i;
-                            ipos2 = ipos1+nx*nz;                  //ipos2 = ipos1+nx*nz;
-                            buf[0*size2+ipos1] = g[k0-1, ny, i+1, 0];   //buf[1,ipos1] = g[1,i,ny-1,k];
-                            buf[1*size2+ipos1] = g[k0-1, ny, i+1, 1];   //buf[2,ipos1] = g[2,i,ny-1,k];
-                            buf[2*size2+ipos1] = g[k0-1, ny, i+1, 2];   //buf[3,ipos1] = g[3,i,ny-1,k];
-                            buf[3*size2+ipos1] = g[k0-1, ny, i+1, 3];   //buf[4,ipos1] = g[4,i,ny-1,k];
-                            buf[4*size2+ipos1] = g[k0-1, ny, i+1, 4];   //buf[5,ipos1] = g[5,i,ny-1,k];
+                            ipos1 = (k0-1)*nx+i - 1;
+                            ipos2 = ipos1+nx*nz;
+                            buf[0*size2+ipos1] = g[k0-1, ny, i+1, 0];
+                            buf[1*size2+ipos1] = g[k0-1, ny, i+1, 1];
+                            buf[2*size2+ipos1] = g[k0-1, ny, i+1, 2];
+                            buf[3*size2+ipos1] = g[k0-1, ny, i+1, 3];
+                            buf[4*size2+ipos1] = g[k0-1, ny, i+1, 4];
 
-                            buf[0*size2+ipos2] = g[k0-1, ny+1, i+1, 0];     //buf[1,ipos2] = g[1,i,ny,k];
-                            buf[1*size2+ipos2] = g[k0-1, ny+1, i+1, 1];     //buf[2,ipos2] = g[2,i,ny,k];
-                            buf[2*size2+ipos2] = g[k0-1, ny+1, i+1, 2];     //buf[3,ipos2] = g[3,i,ny,k];
-                            buf[3*size2+ipos2] = g[k0-1, ny+1, i+1, 3];     //buf[4,ipos2] = g[4,i,ny,k];
-                            buf[4*size2+ipos2] = g[k0-1, ny+1, i+1, 4];     //buf[5,ipos2] = g[5,i,ny,k];
+                            buf[0*size2+ipos2] = g[k0-1, ny+1, i+1, 0];
+                            buf[1*size2+ipos2] = g[k0-1, ny+1, i+1, 1];
+                            buf[2*size2+ipos2] = g[k0-1, ny+1, i+1, 2];
+                            buf[3*size2+ipos2] = g[k0-1, ny+1, i+1, 3];
+                            buf[4*size2+ipos2] = g[k0-1, ny+1, i+1, 4];
                         }
                     }
-                    worldcomm.Send<double>(buf, east, from_w); //call MPI_SEND[ buf, 10*nx*nz, dp_type, east, from_w, MPI_COMM_WORLD, IERROR ];
+                    //ShiftToEast = 
+                    worldcomm.Send<double>(buf, east, from_w);
                 }
-                //---------------------------------------------------------------------
-                //   receive from west
-                //---------------------------------------------------------------------
                 if(west!=-1) {
-                    
                     for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
-                            ipos1 = (k0-1)*nx + i - 1;           //ipos1 = (k-1)*nx + i;
-                            ipos2 = ipos1 + nx*nz;                 //ipos2 = ipos1 + nx*nz;
-                            g[k0-1, 0, i+1, 0] = buf1[0*size2+ipos1];    //g[1,i,-1,k] = buf1[1,ipos1];
-                            g[k0-1, 0, i+1, 1] = buf1[1*size2+ipos1];    //g[2,i,-1,k] = buf1[2,ipos1];
-                            g[k0-1, 0, i+1, 2] = buf1[2*size2+ipos1];    //g[3,i,-1,k] = buf1[3,ipos1];
-                            g[k0-1, 0, i+1, 3] = buf1[3*size2+ipos1];    //g[4,i,-1,k] = buf1[4,ipos1];
-                            g[k0-1, 0, i+1, 4] = buf1[4*size2+ipos1];    //g[5,i,-1,k] = buf1[5,ipos1];
+                            ipos1 = (k0-1)*nx + i - 1;
+                            ipos2 = ipos1 + nx*nz;
+                            g[k0-1, 0, i+1, 0] = buf1[0*size2+ipos1];
+                            g[k0-1, 0, i+1, 1] = buf1[1*size2+ipos1];
+                            g[k0-1, 0, i+1, 2] = buf1[2*size2+ipos1];
+                            g[k0-1, 0, i+1, 3] = buf1[3*size2+ipos1];
+                            g[k0-1, 0, i+1, 4] = buf1[4*size2+ipos1];
 
-                            g[k0-1, 1, i+1, 0] = buf1[0*size2+ipos2];     //g[1,i,0,k] = buf1[1,ipos2];
-                            g[k0-1, 1, i+1, 1] = buf1[1*size2+ipos2];     //g[2,i,0,k] = buf1[2,ipos2];
-                            g[k0-1, 1, i+1, 2] = buf1[2*size2+ipos2];     //g[3,i,0,k] = buf1[3,ipos2];
-                            g[k0-1, 1, i+1, 3] = buf1[3*size2+ipos2];     //g[4,i,0,k] = buf1[4,ipos2];
-                            g[k0-1, 1, i+1, 4] = buf1[4*size2+ipos2];     //g[5,i,0,k] = buf1[5,ipos2];
+                            g[k0-1, 1, i+1, 0] = buf1[0*size2+ipos2];
+                            g[k0-1, 1, i+1, 1] = buf1[1*size2+ipos2];
+                            g[k0-1, 1, i+1, 2] = buf1[2*size2+ipos2];
+                            g[k0-1, 1, i+1, 3] = buf1[3*size2+ipos2];
+                            g[k0-1, 1, i+1, 4] = buf1[4*size2+ipos2];
                         }
                     }
                 }
                 if(east!=-1) {
-                    mid = worldcomm.ImmediateReceive<double>(east, from_e, buf1); //call MPI_IRECV[ buf1, 10*nx*nz, dp_type, MPI_ANY_SOURCE, from_e, MPI_COMM_WORLD, mid, IERROR ];
-                    mid.Wait(); //call MPI_WAIT[ mid, STATUS, IERROR ];
+                    ShiftToWest = worldcomm.ImmediateReceive<double>(east, from_e, buf1);
+                    ShiftToWest.Wait();
                 }
-                //---------------------------------------------------------------------
-                //   send west
-                //---------------------------------------------------------------------
                 if(west!=-1) {
                     for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
-                            ipos1 = (k0-1)*nx + i - 1;          //ipos1 = (k-1)*nx + i;
-                            ipos2 = ipos1 + nx*nz;              //ipos2 = ipos1 + nx*nz;
-                            buf[0*size2+ipos1] = g[k0-1, 3, i+1, 0];  //buf[1,ipos1] = g[1,i,2,k];
-                            buf[1*size2+ipos1] = g[k0-1, 3, i+1, 1];  //buf[2,ipos1] = g[2,i,2,k];
-                            buf[2*size2+ipos1] = g[k0-1, 3, i+1, 2];  //buf[3,ipos1] = g[3,i,2,k];
-                            buf[3*size2+ipos1] = g[k0-1, 3, i+1, 3];  //buf[4,ipos1] = g[4,i,2,k];
-                            buf[4*size2+ipos1] = g[k0-1, 3, i+1, 4];  //buf[5,ipos1] = g[5,i,2,k];
+                            ipos1 = (k0-1)*nx + i - 1;
+                            ipos2 = ipos1 + nx*nz;
+                            buf[0*size2+ipos1] = g[k0-1, 3, i+1, 0];
+                            buf[1*size2+ipos1] = g[k0-1, 3, i+1, 1];
+                            buf[2*size2+ipos1] = g[k0-1, 3, i+1, 2];
+                            buf[3*size2+ipos1] = g[k0-1, 3, i+1, 3];
+                            buf[4*size2+ipos1] = g[k0-1, 3, i+1, 4];
 
-                            buf[0*size2+ipos2] = g[k0-1, 2, i+1, 0];  //buf[1,ipos2] = g[1,i,1,k];
-                            buf[1*size2+ipos2] = g[k0-1, 2, i+1, 1];  //buf[2,ipos2] = g[2,i,1,k];
-                            buf[2*size2+ipos2] = g[k0-1, 2, i+1, 2];  //buf[3,ipos2] = g[3,i,1,k];
-                            buf[3*size2+ipos2] = g[k0-1, 2, i+1, 3];  //buf[4,ipos2] = g[4,i,1,k];
-                            buf[4*size2+ipos2] = g[k0-1, 2, i+1, 4];  //buf[5,ipos2] = g[5,i,1,k];
+                            buf[0*size2+ipos2] = g[k0-1, 2, i+1, 0];
+                            buf[1*size2+ipos2] = g[k0-1, 2, i+1, 1];
+                            buf[2*size2+ipos2] = g[k0-1, 2, i+1, 2];
+                            buf[3*size2+ipos2] = g[k0-1, 2, i+1, 3];
+                            buf[4*size2+ipos2] = g[k0-1, 2, i+1, 4];
                         }
                     }
-                    worldcomm.Send<double>(buf, west, from_e); //call MPI_SEND[buf, 10*nx*nz, dp_type, west, from_e, MPI_COMM_WORLD, IERROR ];
+                    //ShiftToWest = 
+                    worldcomm.Send<double>(buf, west, from_e);
                 }
-                //---------------------------------------------------------------------
-                //   receive from east
-                //---------------------------------------------------------------------
                 if(east!=-1) {
-                    
                     for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
-                            ipos1 = (k0-1)*nx + i - 1;              //ipos1 = (k-1)*nx + i;
-                            ipos2 = ipos1 + nx*nz;                  //ipos2 = ipos1 + nx*nz;
-                            g[k0-1, ny+3, i+1, 0]  = buf1[0*size2+ipos1]; //g[1,i,ny+2,k]  = buf1[1,ipos1];
-                            g[k0-1, ny+3, i+1, 1]  = buf1[1*size2+ipos1]; //g[2,i,ny+2,k]  = buf1[2,ipos1];
-                            g[k0-1, ny+3, i+1, 2]  = buf1[2*size2+ipos1]; //g[3,i,ny+2,k]  = buf1[3,ipos1];
-                            g[k0-1, ny+3, i+1, 3]  = buf1[3*size2+ipos1]; //g[4,i,ny+2,k]  = buf1[4,ipos1];
-                            g[k0-1, ny+3, i+1, 4]  = buf1[4*size2+ipos1]; //g[5,i,ny+2,k]  = buf1[5,ipos1];
+                            ipos1 = (k0-1)*nx + i - 1;
+                            ipos2 = ipos1 + nx*nz;
+                            g[k0-1, ny+3, i+1, 0]  = buf1[0*size2+ipos1];
+                            g[k0-1, ny+3, i+1, 1]  = buf1[1*size2+ipos1];
+                            g[k0-1, ny+3, i+1, 2]  = buf1[2*size2+ipos1];
+                            g[k0-1, ny+3, i+1, 3]  = buf1[3*size2+ipos1];
+                            g[k0-1, ny+3, i+1, 4]  = buf1[4*size2+ipos1];
 
-                            g[k0-1, ny+2, i+1, 0] = buf1[0*size2+ipos2];  //g[1,i,ny+1,k] = buf1[1,ipos2];
-                            g[k0-1, ny+2, i+1, 1] = buf1[1*size2+ipos2];  //g[2,i,ny+1,k] = buf1[2,ipos2];
-                            g[k0-1, ny+2, i+1, 2] = buf1[2*size2+ipos2];  //g[3,i,ny+1,k] = buf1[3,ipos2];
-                            g[k0-1, ny+2, i+1, 3] = buf1[3*size2+ipos2];  //g[4,i,ny+1,k] = buf1[4,ipos2];
-                            g[k0-1, ny+2, i+1, 4] = buf1[4*size2+ipos2];  //g[5,i,ny+1,k] = buf1[5,ipos2];
+                            g[k0-1, ny+2, i+1, 0] = buf1[0*size2+ipos2];
+                            g[k0-1, ny+2, i+1, 1] = buf1[1*size2+ipos2];
+                            g[k0-1, ny+2, i+1, 2] = buf1[2*size2+ipos2];
+                            g[k0-1, ny+2, i+1, 3] = buf1[3*size2+ipos2];
+                            g[k0-1, ny+2, i+1, 4] = buf1[4*size2+ipos2];
                         }
                     }
                 }
@@ -1227,7 +1202,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange1(u, iex);
+            exchange3(u, iex);
             L1 = 0;
             if(north==-1)
                 L1 = 1;
@@ -1318,7 +1293,7 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   communicate and receive/send two rows of data
             //---------------------------------------------------------------------
-            exchange1(u, iex);
+            exchange3(u, iex);
 
             L1 = 0;
             if(west==-1)
@@ -1861,9 +1836,6 @@ namespace NPB {
         }
         // end blts.f
         // Exchange_1.f NSEW
-        public void exchange1(double[, , ,] g, int iex) {
-            exchange1(g, iex, -1);
-        }
         public void exchange1(double[, , ,] g, int iex, int k) {
             MPI.Request ShiftToSouth;
             MPI.Request ShiftToNorth;
@@ -1997,201 +1969,6 @@ namespace NPB {
                         }
                         //ShiftToWest = 
                         worldcomm.Send<double>(dum, west, from_e);
-                    }
-                }
-            }
-            else {
-                int i, j, k0;
-                int ipos1, ipos2;
-                int bsize = 10*ny*nz;
-                int size2 = bsize / 5;
-                double[] buf1;
-                buf1 = new double[bsize];
-                double[] buf;
-                buf = new double[bsize];
-
-                if(iex==0) {
-                    if(north!=-1) {
-                        ShiftToSouth = worldcomm.ImmediateReceive<double>(north, from_n, buf1);
-                        ShiftToSouth.Wait();
-                    }
-                    if(south!=-1) {
-                        for(k0 = 1; k0<=nz; k0++) {
-                            for(j = 1; j<=ny; j++) {
-                                ipos1 = (k0-1)*ny+j - 1;
-                                ipos2 = ipos1 + ny*nz;
-                                buf[0*size2+ipos1] = g[k0-1, j+1, nx, 0];
-                                buf[1*size2+ipos1] = g[k0-1, j+1, nx, 1];
-                                buf[2*size2+ipos1] = g[k0-1, j+1, nx, 2];
-                                buf[3*size2+ipos1] = g[k0-1, j+1, nx, 3];
-                                buf[4*size2+ipos1] = g[k0-1, j+1, nx, 4];
-
-                                buf[0*size2+ipos2] = g[k0-1, j+1, nx+1, 0];
-                                buf[1*size2+ipos2] = g[k0-1, j+1, nx+1, 1];
-                                buf[2*size2+ipos2] = g[k0-1, j+1, nx+1, 2];
-                                buf[3*size2+ipos2] = g[k0-1, j+1, nx+1, 3];
-                                buf[4*size2+ipos2] = g[k0-1, j+1, nx+1, 4];
-                            }
-                        }
-                        //ShiftToSouth = 
-                        worldcomm.Send<double>(buf, south, from_n);
-                    }
-                    if(north!=-1) {
-                        for(k0 = 1; k0<=nz; k0++) {
-                            for(j = 1; j<=ny; j++) {
-                                ipos1 = (k0-1)*ny + j - 1;
-                                ipos2 = ipos1 + ny*nz;
-                                g[k0-1, j+1, 0, 0] = buf1[0*size2+ipos1];
-                                g[k0-1, j+1, 0, 1] = buf1[1*size2+ipos1];
-                                g[k0-1, j+1, 0, 2] = buf1[2*size2+ipos1];
-                                g[k0-1, j+1, 0, 3] = buf1[3*size2+ipos1];
-                                g[k0-1, j+1, 0, 4] = buf1[4*size2+ipos1];
-
-                                g[k0-1, j+1, 1, 0] = buf1[0*size2+ipos2];
-                                g[k0-1, j+1, 1, 1] = buf1[1*size2+ipos2];
-                                g[k0-1, j+1, 1, 2] = buf1[2*size2+ipos2];
-                                g[k0-1, j+1, 1, 3] = buf1[3*size2+ipos2];
-                                g[k0-1, j+1, 1, 4] = buf1[4*size2+ipos2];
-                            }
-                        }
-                    }
-                    if(south!=-1) {
-                        ShiftToNorth = worldcomm.ImmediateReceive<double>(south, from_s, buf1);
-                        ShiftToNorth.Wait();
-                    }
-                    if(north!=-1) {
-                        for(k0 = 1; k0<=nz; k0++) {
-                            for(j = 1; j<=ny; j++) {
-                                ipos1 = (k0-1)*ny + j - 1;
-                                ipos2 = ipos1 + ny*nz;
-                                buf[0*size2+ipos1] = g[k0-1, j+1, 3, 0];
-                                buf[1*size2+ipos1] = g[k0-1, j+1, 3, 1];
-                                buf[2*size2+ipos1] = g[k0-1, j+1, 3, 2];
-                                buf[3*size2+ipos1] = g[k0-1, j+1, 3, 3];
-                                buf[4*size2+ipos1] = g[k0-1, j+1, 3, 4];
-
-                                buf[0*size2+ipos2] = g[k0-1, j+1, 2, 0];
-                                buf[1*size2+ipos2] = g[k0-1, j+1, 2, 1];
-                                buf[2*size2+ipos2] = g[k0-1, j+1, 2, 2];
-                                buf[3*size2+ipos2] = g[k0-1, j+1, 2, 3];
-                                buf[4*size2+ipos2] = g[k0-1, j+1, 2, 4];
-                            }
-                        }
-                        //ShiftToNorth = 
-                        worldcomm.Send<double>(buf, north, from_s);
-                    }
-                    if(south!=-1) {
-                        for(k0 = 1; k0<=nz; k0++) {
-                            for(j = 1; j<=ny; j++) {
-                                ipos1 = (k0-1)*ny + j - 1;
-                                ipos2 = ipos1 + ny*nz;
-                                g[k0-1, j+1, nx+3, 0]  = buf1[0*size2+ipos1];
-                                g[k0-1, j+1, nx+3, 1]  = buf1[1*size2+ipos1];
-                                g[k0-1, j+1, nx+3, 2]  = buf1[2*size2+ipos1];
-                                g[k0-1, j+1, nx+3, 3]  = buf1[3*size2+ipos1];
-                                g[k0-1, j+1, nx+3, 4]  = buf1[4*size2+ipos1];
-
-                                g[k0-1, j+1, nx+2, 0] = buf1[0*size2+ipos2];
-                                g[k0-1, j+1, nx+2, 1] = buf1[1*size2+ipos2];
-                                g[k0-1, j+1, nx+2, 2] = buf1[2*size2+ipos2];
-                                g[k0-1, j+1, nx+2, 3] = buf1[3*size2+ipos2];
-                                g[k0-1, j+1, nx+2, 4] = buf1[4*size2+ipos2];
-                            }
-                        }
-                    }
-                }
-                else {
-                    bsize = 10*nx*nz;
-                    size2 = bsize/5;
-                    buf1 = new double[bsize];
-                    buf  = new double[bsize];
-                    if(west!=-1) {
-                        ShiftToEast = worldcomm.ImmediateReceive<double>(west, from_w, buf1);
-                        ShiftToEast.Wait();
-                    }
-                    if(east!=-1) {
-                        for(k0 = 1; k0<=nz; k0++) {
-                            for(i = 1; i<=nx; i++) {
-                                ipos1 = (k0-1)*nx+i - 1;
-                                ipos2 = ipos1+nx*nz;
-                                buf[0*size2+ipos1] = g[k0-1, ny, i+1, 0];
-                                buf[1*size2+ipos1] = g[k0-1, ny, i+1, 1];
-                                buf[2*size2+ipos1] = g[k0-1, ny, i+1, 2];
-                                buf[3*size2+ipos1] = g[k0-1, ny, i+1, 3];
-                                buf[4*size2+ipos1] = g[k0-1, ny, i+1, 4];
-
-                                buf[0*size2+ipos2] = g[k0-1, ny+1, i+1, 0];
-                                buf[1*size2+ipos2] = g[k0-1, ny+1, i+1, 1];
-                                buf[2*size2+ipos2] = g[k0-1, ny+1, i+1, 2];
-                                buf[3*size2+ipos2] = g[k0-1, ny+1, i+1, 3];
-                                buf[4*size2+ipos2] = g[k0-1, ny+1, i+1, 4];
-                            }
-                        }
-                        //ShiftToEast = 
-                        worldcomm.Send<double>(buf, east, from_w);
-                    }
-                    if(west!=-1) {
-                        for(k0 = 1; k0<=nz; k0++) {
-                            for(i = 1; i<=nx; i++) {
-                                ipos1 = (k0-1)*nx + i - 1;
-                                ipos2 = ipos1 + nx*nz;
-                                g[k0-1, 0, i+1, 0] = buf1[0*size2+ipos1];
-                                g[k0-1, 0, i+1, 1] = buf1[1*size2+ipos1];
-                                g[k0-1, 0, i+1, 2] = buf1[2*size2+ipos1];
-                                g[k0-1, 0, i+1, 3] = buf1[3*size2+ipos1];
-                                g[k0-1, 0, i+1, 4] = buf1[4*size2+ipos1];
-
-                                g[k0-1, 1, i+1, 0] = buf1[0*size2+ipos2];
-                                g[k0-1, 1, i+1, 1] = buf1[1*size2+ipos2];
-                                g[k0-1, 1, i+1, 2] = buf1[2*size2+ipos2];
-                                g[k0-1, 1, i+1, 3] = buf1[3*size2+ipos2];
-                                g[k0-1, 1, i+1, 4] = buf1[4*size2+ipos2];
-                            }
-                        }
-                    }
-                    if(east!=-1) {
-                        ShiftToWest = worldcomm.ImmediateReceive<double>(east, from_e, buf1);
-                        ShiftToWest.Wait();
-                    }
-                    if(west!=-1) {
-                        for(k0 = 1; k0<=nz; k0++) {
-                            for(i = 1; i<=nx; i++) {
-                                ipos1 = (k0-1)*nx + i - 1;
-                                ipos2 = ipos1 + nx*nz;
-                                buf[0*size2+ipos1] = g[k0-1, 3, i+1, 0];
-                                buf[1*size2+ipos1] = g[k0-1, 3, i+1, 1];
-                                buf[2*size2+ipos1] = g[k0-1, 3, i+1, 2];
-                                buf[3*size2+ipos1] = g[k0-1, 3, i+1, 3];
-                                buf[4*size2+ipos1] = g[k0-1, 3, i+1, 4];
-
-                                buf[0*size2+ipos2] = g[k0-1, 2, i+1, 0];
-                                buf[1*size2+ipos2] = g[k0-1, 2, i+1, 1];
-                                buf[2*size2+ipos2] = g[k0-1, 2, i+1, 2];
-                                buf[3*size2+ipos2] = g[k0-1, 2, i+1, 3];
-                                buf[4*size2+ipos2] = g[k0-1, 2, i+1, 4];
-                            }
-                        }
-                        //ShiftToWest = 
-                        worldcomm.Send<double>(buf, west, from_e);
-                    }
-                    if(east!=-1) {
-                        for(k0 = 1; k0<=nz; k0++) {
-                            for(i = 1; i<=nx; i++) {
-                                ipos1 = (k0-1)*nx + i - 1;
-                                ipos2 = ipos1 + nx*nz;
-                                g[k0-1, ny+3, i+1, 0]  = buf1[0*size2+ipos1];
-                                g[k0-1, ny+3, i+1, 1]  = buf1[1*size2+ipos1];
-                                g[k0-1, ny+3, i+1, 2]  = buf1[2*size2+ipos1];
-                                g[k0-1, ny+3, i+1, 3]  = buf1[3*size2+ipos1];
-                                g[k0-1, ny+3, i+1, 4]  = buf1[4*size2+ipos1];
-
-                                g[k0-1, ny+2, i+1, 0] = buf1[0*size2+ipos2];
-                                g[k0-1, ny+2, i+1, 1] = buf1[1*size2+ipos2];
-                                g[k0-1, ny+2, i+1, 2] = buf1[2*size2+ipos2];
-                                g[k0-1, ny+2, i+1, 3] = buf1[3*size2+ipos2];
-                                g[k0-1, ny+2, i+1, 4] = buf1[4*size2+ipos2];
-                            }
-                        }
                     }
                 }
             }
@@ -2731,10 +2508,10 @@ namespace NPB {
             //  communicate in i direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                exchange(phi1, ibeg, ifin1, from_s);
+                exchange_5(phi1, ibeg, ifin1);
             }
             if(ind2==1) {
-                exchange(phi2, ibeg, ifin1, from_s);
+                exchange_5(phi2, ibeg, ifin1);
             }
             frc2 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2799,10 +2576,10 @@ namespace NPB {
             //  communicate in j direction
             //---------------------------------------------------------------------
             if(ind1==1) {
-                exchange(phi1, jbeg, jfin1, from_e);
+                exchange_6(phi1, jbeg, jfin1);
             }
             if(ind2==1) {
-                exchange(phi2, jbeg, jfin1, from_e);
+                exchange_6(phi2, jbeg, jfin1);
             }
             frc3 = 0.0d;
             for(k = ki1; k<= ki2-1; k++) {
@@ -2910,7 +2687,53 @@ namespace NPB {
         }
         //end exchange_4.f
         // exchange_5.f
-        public void exchange(double[,] g, int beg, int fin1, int _from) {
+        public void exchange_5(double[,] g, int ibeg, int ifin1) {
+            //---------------------------------------------------------------------
+            //   compute the right hand side based on exact solution
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
+            //double  g[0:isiz2+1,0:isiz3+1];
+            //int ibeg, ifin1;
+            //---------------------------------------------------------------------
+            //  local variables
+            //---------------------------------------------------------------------
+            int k;
+            //double[] dum = new double[1025]; //dum[1024]
+            //int msgid1
+            //int STATUS[MPI_STATUS_SIZE]
+            //int IERROR
+            //---------------------------------------------------------------------
+            //   communicate in the south and north directions
+            //---------------------------------------------------------------------
+            //---------------------------------------------------------------------
+            //   receive from south
+            //---------------------------------------------------------------------
+            if(ifin1==nx) {
+                MPI.Request msgid1;// = new MPI.Request[1];
+                double[] dum = new double[nz];
+                //call MPI_IRECV[ dum, nz, dp_type, MPI_ANY_SOURCE, from_s, MPI_COMM_WORLD, msgid1, IERROR ];
+                msgid1 = worldcomm.ImmediateReceive<double>(south, from_s, dum);
+                msgid1.Wait();    //call MPI_WAIT[ msgid1, STATUS, IERROR ]
+                for(k = 1; k<=nz; k++) {
+                    g[k, nx+1] = dum[k-1];  //g[nx+1,k] = dum[k];
+                }
+            }
+            //---------------------------------------------------------------------
+            //   send north
+            //---------------------------------------------------------------------
+            if(ibeg==1) {
+                double[] dum = new double[nz];
+                for(k = 1; k<=nz; k++) {
+                    dum[k-1] = g[k, 1];  //dum[k] = g[1,k];
+                }
+                //call MPI_SEND[ dum, nz, dp_type, north, from_s, MPI_COMM_WORLD, IERROR ];
+                worldcomm.Send<double>(dum, north, from_s);
+            }
+        }
+        //end exchange_5.f
+
+        public void exchangeAborted(double[,] g, int beg, int fin1, int _from) {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
@@ -3000,8 +2823,52 @@ namespace NPB {
                 }
             }
         }
-        //end exchange_5.f
+
         // exchange_6.f
+        public void exchange_6(double[,] g, int jbeg, int jfin1) {
+            //---------------------------------------------------------------------
+            //   compute the right hand side based on exact solution
+            //---------------------------------------------------------------------
+            //  input parameters
+            //---------------------------------------------------------------------
+            //double  g[0:isiz2+1,0:isiz3+1]
+            //int jbeg, jfin1
+            //---------------------------------------------------------------------
+            //  local parameters
+            //---------------------------------------------------------------------
+            int k = 0;
+            //double[] dum = new double[1025]; //dum[1024]
+            //int msgid3
+            //int STATUS[MPI_STATUS_SIZE]
+            //int IERROR
+            //---------------------------------------------------------------------
+            //   communicate in the east and west directions
+            //---------------------------------------------------------------------
+            //   receive from east
+            //---------------------------------------------------------------------
+            if(jfin1==ny) {
+                double[] dum = new double[nz];
+                MPI.Request msgid3;// = new MPI.Request[1];
+                //call MPI_IRECV[ dum, nz,dp_type,MPI_ANY_SOURCE,from_e,MPI_COMM_WORLD,msgid3,IERROR ];
+                msgid3 = worldcomm.ImmediateReceive<double>(east, from_e, dum);
+                msgid3.Wait(); //call MPI_WAIT[ msgid3, STATUS, IERROR ]
+
+                for(k = 1; k<=nz; k++) {
+                    g[k, ny+1] = dum[k-1];  //g[ny+1,k] = dum[k];
+                }
+            }
+            //---------------------------------------------------------------------
+            //   send west
+            //---------------------------------------------------------------------
+            if(jbeg==1) {
+                double[] dum = new double[nz];
+                for(k = 1; k<=nz; k++) {
+                    dum[k-1] = g[k, 1];  //dum[k] = g[1,k];
+                }
+                //call MPI_SEND[ dum, nz, dp_type, west, from_e, MPI_COMM_WORLD, IERROR ];
+                worldcomm.Send<double>(dum, west, from_e);
+            }
+        }
         // end exchange_6.f
         //end pintgr.f
         // verify.f
