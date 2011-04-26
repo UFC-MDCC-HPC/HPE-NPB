@@ -1226,7 +1226,7 @@ namespace NPB {
             }
         }
 
-        public void transpose_x_y(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {  // x1, x2); x1=u1 x2 = u0
+/**/    public void transpose_x_y(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {  // x1, x2); x1=u1 x2 = u0
             /*  double complex xin(ntdivnp), xout(ntdivnp)
                 ---------------------------------------------------------------------
                  xy transpose is a little tricky, since we don't want
@@ -1236,8 +1236,6 @@ namespace NPB {
                  (ny/np1, nz/np2, nx) -> ((ny/np1*nz/np2)*np1, nx/np1) (global)
                  then local finish. 
                 --------------------------------------------------------------------- */
-            //imprimir4(xin, 0, "xin");
-
             transpose_x_y_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
 
             transpose_x_y_global(dims[0, l1], dims[1, l1], dims[2, l1], xout, xin);
@@ -1357,7 +1355,7 @@ namespace NPB {
             //    timer.stop(T_transxyfin);
         }
 
-        public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
             transpose_xy_z_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
             transpose_xy_z_global(dims[1, 0], dims[2, 0], dims[0, 0], xout, xin);
@@ -1730,7 +1728,7 @@ namespace NPB {
 
         }
 
-        public void transpose_x_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp);
 
             transpose_x_z_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
@@ -1738,7 +1736,7 @@ namespace NPB {
             transpose_x_z_finish(dims[0, l2], dims[1, l2], dims[2, l2], xin, xout);
         }
 
-/******/public void transpose_x_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(d1,d2,d3)
             //double complex xout(d3,d2,d1)
@@ -1809,41 +1807,42 @@ namespace NPB {
                     }
                 }
             }
-            goto G200;
-        //---------------------------------------------------------------------
-        // basic transpose
-        //---------------------------------------------------------------------
-        G100:  //continue;
-            for(j = 0; j < d2; j++) {
-                for(k = 0; k < d3; k++) {
-                    for(i = 0; i < d1; i++) {                                             //xout(k, j, i) = xin(i, j, k);
-                        iin = ((k*d2+j)*d1+i)*2; //xin[k, j, i];
-                        io  = ((i*d2+j)*d3+k)*2; //xout[i, j, k]
-                        //Point.setAddress(xin, iin + REAL, xout, io + REAL);
-                        //Point.setAddress(xin, iin + IMAG, xout, io + IMAG);
-                        m1 = (iin % size1);
-                        m2 = (m1 % size2);
-                        _i = iin/size1;
-                        _j = m1/size2;
-                        _k = m2/2;
+            return;
+            //---------------------------------------------------------------------
+            // basic transpose
+            //---------------------------------------------------------------------
+            G100: { //continue;
+                for(j = 0; j < d2; j++) {
+                    for(k = 0; k < d3; k++) {
+                        for(i = 0; i < d1; i++) {                                             //xout(k, j, i) = xin(i, j, k);
+                            iin = ((k*d2+j)*d1+i)*2; //xin[k, j, i];
+                            io  = ((i*d2+j)*d3+k)*2; //xout[i, j, k]
+                            //Point.setAddress(xin, iin + REAL, xout, io + REAL);
+                            //Point.setAddress(xin, iin + IMAG, xout, io + IMAG);
+                            m1 = (iin % size1);
+                            m2 = (m1 % size2);
+                            _i = iin/size1;
+                            _j = m1/size2;
+                            _k = m2/2;
 
-                        om1 = (io % size1);
-                        om2 = (om1 % size2);
-                        o_i = io/size1;
-                        o_j = om1/size2;
-                        o_k = om2/2;
+                            om1 = (io % size1);
+                            om2 = (om1 % size2);
+                            o_i = io/size1;
+                            o_j = om1/size2;
+                            o_k = om2/2;
 
-                        xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
-                        xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
+                            xout[o_i, o_j, o_k, REAL] = xin[_i, _j, _k, REAL];
+                            xout[o_i, o_j, o_k, IMAG] = xin[_i, _j, _k, IMAG];
+                        }
                     }
                 }
             }
-        //---------------------------------------------------------------------
-        // all done
-        //---------------------------------------------------------------------
-        G200:{} //continue;
-            //if(timers_enabled)
-            //    timer.stop(T_transxzloc);
+            //---------------------------------------------------------------------
+            // all done
+            //---------------------------------------------------------------------
+            //G200:{} //continue;
+                //if(timers_enabled)
+                //    timer.stop(T_transxzloc);
         }
 
 /**/    public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
@@ -1913,7 +1912,7 @@ namespace NPB {
             //    timer.stop(T_transxzfin);
         }
 
-        public void transpose_x_yz(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
+/**/    public void transpose_x_yz(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
             //double complex xin(ntdivnp), xout(ntdivnp)
             transpose_x_yz_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
             transpose_x_yz_global(dims[1, 0], dims[2, 0], dims[0, 0], xout, xin);
