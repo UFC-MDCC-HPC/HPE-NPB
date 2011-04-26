@@ -2001,7 +2001,7 @@ namespace NPB {
 
         }
 
-        public int verify(int d1, int d2, int d3, int nt, double[] sums) {
+/**/    public int verify(int d1, int d2, int d3, int nt, double[] sums) {
             int i;
             double err, epsilon;
             double[] csum_ref = new double[25*2]; //     double complex csum_ref(25); even=Real odd=Imag
@@ -2261,12 +2261,13 @@ namespace NPB {
                     r1 = ((a * c + b * d) / ((c * c) + (d * d))) * ((a * c + b * d) / ((c * c) + (d * d)));
                     r2 = ((c * b - a * d) / (c * c + d * d)) * ((c * b - a * d) / (c * c + d * d));
                     err = Math.Sqrt(r1 + r2);
-                    if(!(err <= epsilon))
+                    if(!(err <= epsilon)) {
                         goto Go100;
+                    }
                 }
                 verified = 1;
             }
-        Go100:
+            Go100:
             if(worldcomm.Size != np) {
                 Console.WriteLine(" Warning: benchmark was compiled for "+np+" processors");
                 Console.WriteLine(" Must be run on this many processors for official verification");
