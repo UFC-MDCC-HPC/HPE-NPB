@@ -1,0 +1,65 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AA0A1170-0E02-4253-97B3-63E68C62FBD3}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SP</RootNamespace>
+    <AssemblyName>SP</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <StartupObject>NPB3_0_JAV.SP</StartupObject>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NPB3_0_JAV\SP.java" />
+    <Compile Include="Properties\AssemblyInfo.jsl" />
+    <Compile Include="NPB3_0_JAV\SPThreads\RHSAdder.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\RHSCompute.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\SPBase.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\TXInverse.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\XSolver.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\YSolver.java" />
+    <Compile Include="NPB3_0_JAV\SPThreads\ZSolver.java" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BMInOut\BMInOut.vjsproj">
+      <Project>{303EB8C8-79DA-4821-85D2-C5A189B7D0D3}</Project>
+      <Name>BMInOut</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Timer\Timer.vjsproj">
+      <Project>{6252FC67-77E7-43B0-8062-0882A6D8B733}</Project>
+      <Name>Timer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualJSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
