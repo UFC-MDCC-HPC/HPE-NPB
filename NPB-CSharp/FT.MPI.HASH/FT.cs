@@ -810,7 +810,7 @@ namespace NPB {
             //---------------------------------------------------------------------
         }
 
-        public void fft_init(int n) {
+/**/    public void fft_init(int n) {
             //c---------------------------------------------------------------------
             //c compute the roots-of-unity array that will be used for subsequent FFTs. 
             //c---------------------------------------------------------------------
@@ -1169,7 +1169,7 @@ namespace NPB {
             }
         }
 
-        public void fftz2(int dir, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] y, int iread, int iwrite) { //u=u x=ytemp y = ytemp
+/**/    public void fftz2(int dir, int l, int m, int n, int ny, int ny1, double[,] u, double[, , ,] y, int iread, int iwrite) { //u=u x=ytemp y = ytemp
             //c---------------------------------------------------------------------
             //c   Performs the L-th iteration of the second variant of the Stockham FFT.
             //c---------------------------------------------------------------------
