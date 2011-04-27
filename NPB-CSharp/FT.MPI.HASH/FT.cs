@@ -1132,7 +1132,7 @@ namespace NPB {
             }
         }
 
-        public void cfftz(int dir, int m, int n, double[, , ,] y) {
+/******/public void cfftz(int dir, int m, int n, double[, , ,] y) {
             //c---------------------------------------------------------------------
             //c   Computes NY N-point complex-to-complex FFTs of X using an algorithm due
             //c   to Swarztrauber.  X is both the input and the output array, while Y is a 
