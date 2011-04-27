@@ -111,7 +111,7 @@ namespace NPB {
             blocksInfo();
             if(timers_enabled)
                 synchup();
-            compute_indexmap(twiddle);
+            compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
             compute_initial_conditions(u1);
             fft_init(dims[0, 0]);  //control u
             fft(1, u1, u0); // fft(1, u1, u0);
@@ -125,7 +125,7 @@ namespace NPB {
             timer.start(T_total);
             if(timers_enabled) timer.start(T_setup);
 
-            compute_indexmap(twiddle);
+            compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
             compute_initial_conditions(u1);
             fft_init(dims[0, 0]);
 
@@ -481,7 +481,7 @@ namespace NPB {
             timer.stop(T_synch);
         }
 
-        public void compute_indexmap(double[] twiddle) {
+/**/    public void compute_indexmap(double[] twiddle, int d1, int d2, int d3) {
             int i, j, k, ii, ii2, jj, ij2, kk;
             double ap;
             double alpha=.000001, pi = Math.PI;
@@ -498,9 +498,6 @@ namespace NPB {
             //c The following magic formula does the trick:
             //c mod(i-1+n/2, n) - n/2
             //c---------------------------------------------------------------------
-            int d1 = dims[0, 2];
-            int d2 = dims[1, 2];
-            int d3 = dims[2, 2];
 
             ap = -4.0 * alpha * pi * pi;
 
@@ -555,7 +552,7 @@ namespace NPB {
             }
         }
 
-        public void compute_initial_conditions(double[, , ,] u1) {
+/**/    public void compute_initial_conditions(double[, , ,] u1) {
             int k;
             double x0, start, an, dummy;
             double seed = 314159265, a = 1220703125;
@@ -578,7 +575,7 @@ namespace NPB {
             //c---------------------------------------------------------------------
 
             an = ipow46(a, 2*nx, (zstart[0]-1)*ny + (ystart[0]-1));
-            dummy = randlcGet(ref start, an);
+            dummy = randlc(ref start, an);
             an = ipow46(a, 2*nx, ny);
 
             //c---------------------------------------------------------------------
@@ -589,7 +586,7 @@ namespace NPB {
                 //call vranlc(2*nx*dims(2, 1), x0, a, u0(1, 1, k)) : call native
                 vranlc(2 * nx * dims[1, 0], x0, a, u1, k); //(1, 1, k));
                 if((k+1) != dims[2, 0])
-                    dummy = randlcGet(ref start, an);
+                    dummy = randlc(ref start, an);
             }
         }
 
@@ -620,7 +617,7 @@ namespace NPB {
             while(two_pow) {
                 n2 = n/2;
                 if(n2 * 2 == n) {
-                    dummy = randlcGet(ref q, q);
+                    dummy = randlc(ref q, q);
                     n = n2;
                 }
                 else {
@@ -632,20 +629,20 @@ namespace NPB {
             while(n > 1) {
                 n2 = n/2;
                 if(n2 * 2 == n) {
-                    dummy = randlcGet(ref q, q);
+                    dummy = randlc(ref q, q);
                     n = n2;
                 }
                 else {
-                    dummy = randlcGet(ref r, q);
+                    dummy = randlc(ref r, q);
                     n = n-1;
                 }
             }
-            dummy = randlcGet(ref r, q);
+            dummy = randlc(ref r, q);
             result = r;
             return result;
         }
 
-        public double randlcGet(ref double x, double a) {
+        public double randlc(ref double x, double a) {
             //c---------------------------------------------------------------------
             //c
             //c   This routine returns a uniform pseudorandom double precision number in the
@@ -740,7 +737,7 @@ namespace NPB {
             t1 = x;
             n1 = (int)min(n, nv);
             for(i = 1; i <= n1; i++) {
-                xv[i-1] = t46 * randlcGet(ref t1, a);
+                xv[i-1] = t46 * randlc(ref t1, a);
             }
             // ---------------------------------------------------------------------
             // It is not necessary to compute AN, A1 or A2 unless N is greater than NV.
@@ -753,7 +750,7 @@ namespace NPB {
                 t2 = r46 * a;
 
                 for(i = 1; i <= nv - 1; i++) {
-                    t2 = randlcGet(ref t1, a);
+                    t2 = randlc(ref t1, a);
                 }
                 an = t46 * t2;
                 //---------------------------------------------------------------------
@@ -1919,7 +1916,7 @@ namespace NPB {
             transpose_x_yz_finish(dims[0, l1], dims[1, l1],dims[2, l1], xin, xout);
         }
 
-        public void evolve(double[, , ,] u0, double[, , ,] u1, double[] twiddle, int d1, int d2, int d3) {
+/**/    public void evolve(double[, , ,] u0, double[, , ,] u1, double[] twiddle, int d1, int d2, int d3) {
             //  c---------------------------------------------------------------------
             //  c evolve u0 -> u1 (t time steps) in fourier space
             //  c---------------------------------------------------------------------
