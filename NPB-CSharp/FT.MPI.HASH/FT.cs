@@ -1954,7 +1954,7 @@ namespace NPB {
 
         }
 
-        public void checksum(int iter, double[] sums, double[, , ,] u2, int d1, int d2, int d3) {
+/**/    public void checksum(int iter, double[] sums, double[, , ,] u2, int d1, int d2, int d3) {
             //Fortran:     double complex u1(d1, d2, d3);
             //C#     :     double complex u1[d3, d2, d1];
             int j, q,r,s, m1,m2,_i,_j,_k;
