@@ -122,8 +122,7 @@ public class RHSAdder extends SPBase{
       for(j=1;j<=ny2;j++){
 	for(i=1;i<=nx2;i++){
 	  for(m=0;m<=4;m++){
-	    u[m+i*isize1+j*jsize1+k*ksize1] = u[m+i*isize1+j*jsize1+k*ksize1] + 
-	      rhs[m+i*isize1+j*jsize1+k*ksize1];
+	      u[m][i][j][k] = u[m][i][j][k] + rhs[m][i][j][k];
 	  }
 	}
       }

@@ -56,7 +56,7 @@ public class SPBase extends Thread
 	protected int niter_default = 0;
 	protected double dt_default = 0.0;
 
-	protected double u[], rhs[], forcing[];
+	protected double u[][][][], rhs[][][][], forcing[];
 	protected int isize1, jsize1, ksize1;
 
 	protected double us[], vs[], ws[], qs[],
@@ -345,11 +345,11 @@ public class SPBase extends Thread
 			{
 				for (i = 0; i < grid_points[0]; i++)
 				{
-					u[0 + i * isize1 + j * jsize1 + k * ksize1] = 1.0;
-					u[1 + i * isize1 + j * jsize1 + k * ksize1] = 0.0;
-					u[2 + i * isize1 + j * jsize1 + k * ksize1] = 0.0;
-					u[3 + i * isize1 + j * jsize1 + k * ksize1] = 0.0;
-					u[4 + i * isize1 + j * jsize1 + k * ksize1] = 1.0;
+					u[0][i][j][k] = 1.0;
+					u[1][i][j][k] = 0.0;
+					u[2][i][j][k] = 0.0;
+					u[3][i][j][k] = 0.0;
+					u[4][i][j][k] = 1.0;
 				}
 			}
 		}
@@ -425,7 +425,7 @@ public class SPBase extends Thread
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -445,7 +445,7 @@ public class SPBase extends Thread
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -465,7 +465,7 @@ public class SPBase extends Thread
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -485,7 +485,7 @@ public class SPBase extends Thread
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -505,7 +505,7 @@ public class SPBase extends Thread
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -525,7 +525,7 @@ public class SPBase extends Thread
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[m + i * isize1 + j * jsize1 + k * ksize1] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}

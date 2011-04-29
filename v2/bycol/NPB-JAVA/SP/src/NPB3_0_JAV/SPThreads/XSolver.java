@@ -229,23 +229,23 @@ public class XSolver extends SPBase{
                 lhs[3+i*jsize4]  = fac1*lhs[3+i*jsize4];
                 lhs[4+i*jsize4]  = fac1*lhs[4+i*jsize4];
                 for(m=0;m<=2;m++){
-                   rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                   rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
                 }
                 lhs[2+i1*jsize4] = lhs[2+i1*jsize4] -
                                lhs[1+i1*jsize4]*lhs[3+i*jsize4];
                 lhs[3+i1*jsize4] = lhs[3+i1*jsize4] -
                                lhs[1+i1*jsize4]*lhs[4+i*jsize4];
                 for(m=0;m<=2;m++){
-                   rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                               lhs[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                   rhs[m][i1][j][k] = rhs[m][i1][j][k] -
+                               lhs[1+i1*jsize4]*rhs[m][i][j][k];
                 }
                 lhs[1+i2*jsize4] = lhs[1+i2*jsize4] -
                                lhs[0+i2*jsize4]*lhs[3+i*jsize4];
                 lhs[2+i2*jsize4] = lhs[2+i2*jsize4] -
                                lhs[0+i2*jsize4]*lhs[4+i*jsize4];
                 for(m=0;m<=2;m++){
-                   rhs[m+i2*isize1+j*jsize1+k*ksize1] = rhs[m+i2*isize1+j*jsize1+k*ksize1] -
-                               lhs[0+i2*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                   rhs[m][i2][j][k] = rhs[m][i2][j][k] -
+                               lhs[0+i2*jsize4]*rhs[m][i][j][k];
                 }
              }
 
@@ -261,22 +261,22 @@ public class XSolver extends SPBase{
              lhs[3+i*jsize4]  = fac1*lhs[3+i*jsize4];
              lhs[4+i*jsize4]  = fac1*lhs[4+i*jsize4];
              for(m=0;m<=2;m++){
-                rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
              }
              lhs[2+i1*jsize4] = lhs[2+i1*jsize4] -
                             lhs[1+i1*jsize4]*lhs[3+i*jsize4];
              lhs[3+i1*jsize4] = lhs[3+i1*jsize4] -
                             lhs[1+i1*jsize4]*lhs[4+i*jsize4];
              for(m=0;m<=2;m++){
-                rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                            lhs[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i1][j][k] = rhs[m][i1][j][k] -
+                            lhs[1+i1*jsize4]*rhs[m][i][j][k];
              }
 //---------------------------------------------------------------------
 //            scale the last row immediately 
 //---------------------------------------------------------------------
              fac2             = 1./lhs[2+i1*jsize4];
              for(m=0;m<=2;m++){
-                rhs[m+i1*isize1+j*jsize1+k*ksize1] = fac2*rhs[m+i1*isize1+j*jsize1+k*ksize1];
+                rhs[m][i1][j][k] = fac2*rhs[m][i1][j][k];
              }
 
 //---------------------------------------------------------------------
@@ -290,36 +290,36 @@ public class XSolver extends SPBase{
                 fac1       = 1./lhsp[2+i*jsize4];
                 lhsp[3+i*jsize4]  = fac1*lhsp[3+i*jsize4];
                 lhsp[4+i*jsize4]  = fac1*lhsp[4+i*jsize4];
-                rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
                 lhsp[2+i1*jsize4] = lhsp[2+i1*jsize4] -
                               lhsp[1+i1*jsize4]*lhsp[3+i*jsize4];
                 lhsp[3+i1*jsize4] = lhsp[3+i1*jsize4] -
                               lhsp[1+i1*jsize4]*lhsp[4+i*jsize4];
-                rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                              lhsp[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i1][j][k] = rhs[m][i1][j][k] -
+                              lhsp[1+i1*jsize4]*rhs[m][i][j][k];
                 lhsp[1+i2*jsize4] = lhsp[1+i2*jsize4] -
                               lhsp[0+i2*jsize4]*lhsp[3+i*jsize4];
                 lhsp[2+i2*jsize4] = lhsp[2+i2*jsize4] -
                               lhsp[0+i2*jsize4]*lhsp[4+i*jsize4];
-                rhs[m+i2*isize1+j*jsize1+k*ksize1] = rhs[m+i2*isize1+j*jsize1+k*ksize1] -
-                              lhsp[0+i2*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i2][j][k] = rhs[m][i2][j][k] -
+                              lhsp[0+i2*jsize4]*rhs[m][i][j][k];
 		m = 4;
                 fac1       = 1./lhsm[2+i*jsize4];
                 lhsm[3+i*jsize4]  = fac1*lhsm[3+i*jsize4];
                 lhsm[4+i*jsize4]  = fac1*lhsm[4+i*jsize4];
-                rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
                 lhsm[2+i1*jsize4] = lhsm[2+i1*jsize4] -
                               lhsm[1+i1*jsize4]*lhsm[3+i*jsize4];
                 lhsm[3+i1*jsize4] = lhsm[3+i1*jsize4] -
                               lhsm[1+i1*jsize4]*lhsm[4+i*jsize4];
-                rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                              lhsm[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i1][j][k] = rhs[m][i1][j][k] -
+                              lhsm[1+i1*jsize4]*rhs[m][i][j][k];
                 lhsm[1+i2*jsize4] = lhsm[1+i2*jsize4] -
                               lhsm[0+i2*jsize4]*lhsm[3+i*jsize4];
                 lhsm[2+i2*jsize4] = lhsm[2+i2*jsize4] -
                               lhsm[0+i2*jsize4]*lhsm[4+i*jsize4];
-                rhs[m+i2*isize1+j*jsize1+k*ksize1] = rhs[m+i2*isize1+j*jsize1+k*ksize1] -
-                              lhsm[0+i2*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i2][j][k] = rhs[m][i2][j][k] -
+                              lhsm[0+i2*jsize4]*rhs[m][i][j][k];
              }
 
 //---------------------------------------------------------------------
@@ -331,29 +331,29 @@ public class XSolver extends SPBase{
              fac1       = 1./lhsp[2+i*jsize4];
              lhsp[3+i*jsize4]  = fac1*lhsp[3+i*jsize4];
              lhsp[4+i*jsize4]  = fac1*lhsp[4+i*jsize4];
-             rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
+             rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
              lhsp[2+i1*jsize4] = lhsp[2+i1*jsize4] -
                             lhsp[1+i1*jsize4]*lhsp[3+i*jsize4];
              lhsp[3+i1*jsize4] = lhsp[3+i1*jsize4] -
                             lhsp[1+i1*jsize4]*lhsp[4+i*jsize4];
-             rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                            lhsp[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+             rhs[m][i1][j][k] = rhs[m][i1][j][k] -
+                            lhsp[1+i1*jsize4]*rhs[m][i][j][k];
 	     m = 4;
              fac1       = 1./lhsm[2+i*jsize4];
              lhsm[3+i*jsize4]  = fac1*lhsm[3+i*jsize4];
              lhsm[4+i*jsize4]  = fac1*lhsm[4+i*jsize4];
-             rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
+             rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
              lhsm[2+i1*jsize4] = lhsm[2+i1*jsize4] -
                             lhsm[1+i1*jsize4]*lhsm[3+i*jsize4];
              lhsm[3+i1*jsize4] = lhsm[3+i1*jsize4] -
                             lhsm[1+i1*jsize4]*lhsm[4+i*jsize4];
-             rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                            lhsm[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+             rhs[m][i1][j][k] = rhs[m][i1][j][k] -
+                            lhsm[1+i1*jsize4]*rhs[m][i][j][k];
 //---------------------------------------------------------------------
 //               Scale the last row immediately
 //---------------------------------------------------------------------
-             rhs[3+i1*isize1+j*jsize1+k*ksize1] = rhs[3+i1*isize1+j*jsize1+k*ksize1]/lhsp[2+i1*jsize4];
-             rhs[4+i1*isize1+j*jsize1+k*ksize1] = rhs[4+i1*isize1+j*jsize1+k*ksize1]/lhsm[2+i1*jsize4];
+             rhs[3][i1][j][k] = rhs[3][i1][j][k]/lhsp[2+i1*jsize4];
+             rhs[4][i1][j][k] = rhs[4][i1][j][k]/lhsm[2+i1*jsize4];
 
 //---------------------------------------------------------------------
 //                         BACKSUBSTITUTION 
@@ -362,14 +362,14 @@ public class XSolver extends SPBase{
              i  = grid_points[0]-2;
              i1 = grid_points[0]-1;
              for(m=0;m<=2;m++){
-                rhs[m+i*isize1+j*jsize1+k*ksize1] = rhs[m+i*isize1+j*jsize1+k*ksize1] -
-                                   lhs[3+i*jsize4]*rhs[m+i1*isize1+j*jsize1+k*ksize1];
+                rhs[m][i][j][k] = rhs[m][i][j][k] -
+                                   lhs[3+i*jsize4]*rhs[m][i1][j][k];
              }
 
-             rhs[3+i*isize1+j*jsize1+k*ksize1] = rhs[3+i*isize1+j*jsize1+k*ksize1] -
-                                lhsp[3+i*jsize4]*rhs[3+i1*isize1+j*jsize1+k*ksize1];
-             rhs[4+i*isize1+j*jsize1+k*ksize1] = rhs[4+i*isize1+j*jsize1+k*ksize1] -
-                                lhsm[3+i*jsize4]*rhs[4+i1*isize1+j*jsize1+k*ksize1];
+             rhs[3][i][j][k] = rhs[3][i][j][k] -
+                                lhsp[3+i*jsize4]*rhs[3][i1][j][k];
+             rhs[4][i][j][k] = rhs[4][i][j][k] -
+                                lhsm[3+i*jsize4]*rhs[4][i1][j][k];
 		
 //---------------------------------------------------------------------
 //      The first three factors
@@ -379,19 +379,19 @@ public class XSolver extends SPBase{
                 i2 = i  + 2;
 
                 for(m=0;m<=2;m++){
-                   rhs[m+i*isize1+j*jsize1+k*ksize1] = rhs[m+i*isize1+j*jsize1+k*ksize1] - 
-                                lhs[3+i*jsize4]*rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                                lhs[4+i*jsize4]*rhs[m+i2*isize1+j*jsize1+k*ksize1];
+                   rhs[m][i][j][k] = rhs[m][i][j][k] - 
+                                lhs[3+i*jsize4]*rhs[m][i1][j][k] -
+                                lhs[4+i*jsize4]*rhs[m][i2][j][k];
                 }
 //---------------------------------------------------------------------
 //      And the remaining two
 //---------------------------------------------------------------------
-                rhs[3+i*isize1+j*jsize1+k*ksize1] = rhs[3+i*isize1+j*jsize1+k*ksize1] - 
-                                lhsp[3+i*jsize4]*rhs[3+i1*isize1+j*jsize1+k*ksize1] -
-                                lhsp[4+i*jsize4]*rhs[3+i2*isize1+j*jsize1+k*ksize1];
-                rhs[4+i*isize1+j*jsize1+k*ksize1] = rhs[4+i*isize1+j*jsize1+k*ksize1] - 
-                                lhsm[3+i*jsize4]*rhs[4+i1*isize1+j*jsize1+k*ksize1] -
-                                lhsm[4+i*jsize4]*rhs[4+i2*isize1+j*jsize1+k*ksize1];
+                rhs[3][i][j][k] = rhs[3][i][j][k] - 
+                                lhsp[3+i*jsize4]*rhs[3][i1][j][k] -
+                                lhsp[4+i*jsize4]*rhs[3][i2][j][k];
+                rhs[4][i][j][k] = rhs[4][i][j][k] - 
+                                lhsm[3+i*jsize4]*rhs[4][i1][j][k] -
+                                lhsm[4+i*jsize4]*rhs[4][i2][j][k];
              }
           }
        }
@@ -403,20 +403,20 @@ public class XSolver extends SPBase{
           for(j=1;j<=ny2;j++){
              for(i=1;i<=nx2;i++){
 
-                r1 = rhs[0+i*isize1+j*jsize1+k*ksize1];
-                r2 = rhs[1+i*isize1+j*jsize1+k*ksize1];
-                r3 = rhs[2+i*isize1+j*jsize1+k*ksize1];
-                r4 = rhs[3+i*isize1+j*jsize1+k*ksize1];
-                r5 = rhs[4+i*isize1+j*jsize1+k*ksize1];
+                r1 = rhs[0][i][j][k];
+                r2 = rhs[1][i][j][k];
+                r3 = rhs[2][i][j][k];
+                r4 = rhs[3][i][j][k];
+                r5 = rhs[4][i][j][k];
                
                 t1 = bt * r3;
                 t2 = 0.5 * ( r4 + r5 );
 
-                rhs[0+i*isize1+j*jsize1+k*ksize1] = -r2;
-                rhs[1+i*isize1+j*jsize1+k*ksize1] =  r1;
-                rhs[2+i*isize1+j*jsize1+k*ksize1] = bt * ( r4 - r5 );
-                rhs[3+i*isize1+j*jsize1+k*ksize1] = -t1 + t2;
-                rhs[4+i*isize1+j*jsize1+k*ksize1] =  t1 + t2;
+                rhs[0][i][j][k] = -r2;
+                rhs[1][i][j][k] =  r1;
+                rhs[2][i][j][k] = bt * ( r4 - r5 );
+                rhs[3][i][j][k] = -t1 + t2;
+                rhs[4][i][j][k] =  t1 + t2;
              }    
           }
        }

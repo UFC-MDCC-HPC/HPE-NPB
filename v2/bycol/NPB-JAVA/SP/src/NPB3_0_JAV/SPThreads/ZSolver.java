@@ -221,11 +221,11 @@ public class ZSolver extends SPBase{
 //---------------------------------------------------------------------
 
              for(k=0;k<=nz2+1;k++){
-	        rtmp[0+k*5] = rhs[0+i*isize1+j*jsize1+k*ksize1];
-	        rtmp[1+k*5] = rhs[1+i*isize1+j*jsize1+k*ksize1];
-	        rtmp[2+k*5] = rhs[2+i*isize1+j*jsize1+k*ksize1];
-	        rtmp[3+k*5] = rhs[3+i*isize1+j*jsize1+k*ksize1];
-	        rtmp[4+k*5] = rhs[4+i*isize1+j*jsize1+k*ksize1];
+	        rtmp[0+k*5] = rhs[0][i][j][k];
+	        rtmp[1+k*5] = rhs[1][i][j][k];
+	        rtmp[2+k*5] = rhs[2][i][j][k];
+	        rtmp[3+k*5] = rhs[3][i][j][k];
+	        rtmp[4+k*5] = rhs[4][i][j][k];
 	     }
 
 //---------------------------------------------------------------------
@@ -412,11 +412,11 @@ public class ZSolver extends SPBase{
 //      Store result
 //---------------------------------------------------------------------
              for(k=0;k<=nz2+1;k++){
-	        rhs[0+i*isize1+j*jsize1+k*ksize1] = rtmp[0+k*5];
-	        rhs[1+i*isize1+j*jsize1+k*ksize1] = rtmp[1+k*5];
-	        rhs[2+i*isize1+j*jsize1+k*ksize1] = rtmp[2+k*5];
-	        rhs[3+i*isize1+j*jsize1+k*ksize1] = rtmp[3+k*5];
-	        rhs[4+i*isize1+j*jsize1+k*ksize1] = rtmp[4+k*5];
+	        rhs[0][i][j][k] = rtmp[0+k*5];
+	        rhs[1][i][j][k] = rtmp[1+k*5];
+	        rhs[2][i][j][k] = rtmp[2+k*5];
+	        rhs[3][i][j][k] = rtmp[3+k*5];
+	        rhs[4][i][j][k] = rtmp[4+k*5];
 	     }
           }
        }
@@ -435,24 +435,24 @@ public class ZSolver extends SPBase{
 
                 ac2u = ac*ac;
 
-                r1 = rhs[0+i*isize1+j*jsize1+k*ksize1];
-                r2 = rhs[1+i*isize1+j*jsize1+k*ksize1];
-                r3 = rhs[2+i*isize1+j*jsize1+k*ksize1];
-                r4 = rhs[3+i*isize1+j*jsize1+k*ksize1];
-                r5 = rhs[4+i*isize1+j*jsize1+k*ksize1]      ;
+                r1 = rhs[0][i][j][k];
+                r2 = rhs[1][i][j][k];
+                r3 = rhs[2][i][j][k];
+                r4 = rhs[3][i][j][k];
+                r5 = rhs[4][i][j][k]      ;
 
-                uzik1 = u[0+i*isize1+j*jsize1+k*ksize1];
+                uzik1 = u[0][i][j][k];
                 btuz  = bt * uzik1;
 
                 t1 = btuz/ac * (r4 + r5);
                 t2 = r3 + t1;
                 t3 = btuz * (r4 - r5);
 
-                rhs[0+i*isize1+j*jsize1+k*ksize1] = t2;
-                rhs[1+i*isize1+j*jsize1+k*ksize1] = -uzik1*r2 + xvel*t2;
-                rhs[2+i*isize1+j*jsize1+k*ksize1] =  uzik1*r1 + yvel*t2;
-                rhs[3+i*isize1+j*jsize1+k*ksize1] =  zvel*t2  + t3;
-                rhs[4+i*isize1+j*jsize1+k*ksize1] =  uzik1*(-xvel*r2 + yvel*r1) +
+                rhs[0][i][j][k] = t2;
+                rhs[1][i][j][k] = -uzik1*r2 + xvel*t2;
+                rhs[2][i][j][k] =  uzik1*r1 + yvel*t2;
+                rhs[3][i][j][k] =  zvel*t2  + t3;
+                rhs[4][i][j][k] =  uzik1*(-xvel*r2 + yvel*r1) +
                           qs[i+j*jsize2+k*ksize2]*t2 + c2iv*ac2u*t1 + zvel*t3;
 
              }

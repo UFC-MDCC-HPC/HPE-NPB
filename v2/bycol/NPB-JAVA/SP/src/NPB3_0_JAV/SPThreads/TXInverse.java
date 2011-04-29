@@ -132,22 +132,22 @@ public class TXInverse extends SPBase{
                 ac = speed[i+j*jsize2+k*ksize2];
                 ac2inv = 1.0 / ( ac*ac );
 
-                r1 = rhs[0+i*isize1+j*jsize1+k*ksize1];
-                r2 = rhs[1+i*isize1+j*jsize1+k*ksize1];
-                r3 = rhs[2+i*isize1+j*jsize1+k*ksize1];
-                r4 = rhs[3+i*isize1+j*jsize1+k*ksize1];
-                r5 = rhs[4+i*isize1+j*jsize1+k*ksize1];
+                r1 = rhs[0][i][j][k];
+                r2 = rhs[1][i][j][k];
+                r3 = rhs[2][i][j][k];
+                r4 = rhs[3][i][j][k];
+                r5 = rhs[4][i][j][k];
 
                 t1 = c2 * ac2inv * ( qs[i+j*jsize2+k*ksize2]*r1 - uu*r2  - 
                         vv*r3 - ww*r4 + r5 );
                 t2 = bt * ru1 * ( uu * r1 - r2 );
                 t3 = ( bt * ru1 * ac ) * t1;
 
-                rhs[0+i*isize1+j*jsize1+k*ksize1] = r1 - t1;
-                rhs[1+i*isize1+j*jsize1+k*ksize1] = - ru1 * ( ww*r1 - r4 );
-                rhs[2+i*isize1+j*jsize1+k*ksize1] =   ru1 * ( vv*r1 - r3 );
-                rhs[3+i*isize1+j*jsize1+k*ksize1] = - t2 + t3;
-                rhs[4+i*isize1+j*jsize1+k*ksize1] =   t2 + t3;
+                rhs[0][i][j][k] = r1 - t1;
+                rhs[1][i][j][k] = - ru1 * ( ww*r1 - r4 );
+                rhs[2][i][j][k] =   ru1 * ( vv*r1 - r3 );
+                rhs[3][i][j][k] = - t2 + t3;
+                rhs[4][i][j][k] =   t2 + t3;
 
              }
           }
