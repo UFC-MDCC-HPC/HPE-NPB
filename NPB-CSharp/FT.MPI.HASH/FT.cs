@@ -858,7 +858,7 @@ namespace NPB {
             return lg;
         }
 
-        public void fft(int dir, double[, , ,] u1, double[, , ,] u02) {
+/******/public void fft(int dir, double[, , ,] u1, double[, , ,] u02) {
             //double complex u1(ntdivnp), u02(ntdivnp)
             //double complex scratch(fftblockpad_default*maxdim*2) !scratch equal y in cfftsX
             //c---------------------------------------------------------------------
@@ -936,7 +936,7 @@ namespace NPB {
             }
         }
 
-        public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+/**/    public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
             int logd1;
             //Fortran
             //double complex x(d1,d2,d3);
@@ -973,7 +973,7 @@ namespace NPB {
                     //    timer.stop(T_fftcopy);
                     //if(timers_enabled)
                     //    timer.start(T_fftlow);
-                    Swarztrauber_cfftz(dir, logd1, d1, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
+                    swarztrauber_cfftz(dir, logd1, d1, y); //cfftz (iis, logd1, d1, y, y(1,1,2)); 
                     //if(timers_enabled)
                     //    timer.stop(T_fftlow);
 
@@ -1002,7 +1002,7 @@ namespace NPB {
             }
         }
 
-        public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+/**/    public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
             int logd2;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1038,7 +1038,7 @@ namespace NPB {
 
                     //if(timers_enabled)
                     //    timer.start(T_fftlow);
-                    Swarztrauber_cfftz(dir, logd2, d2, y); //y(1, 1, 2));
+                    swarztrauber_cfftz(dir, logd2, d2, y); //y(1, 1, 2));
                     //if(timers_enabled)
                     //    timer.stop(T_fftlow);
 
@@ -1066,7 +1066,7 @@ namespace NPB {
             }
         }
 
-/******/public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+/**/    public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
             int logd3;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1104,7 +1104,7 @@ namespace NPB {
 
                     //if(timers_enabled)
                     //    timer.start(T_fftlow);
-                    Swarztrauber_cfftz(dir, logd3, d3, y); //y(1, 1, 2));
+                    swarztrauber_cfftz(dir, logd3, d3, y); //y(1, 1, 2));
                     //if(timers_enabled)
                     //    timer.stop(T_fftlow);
 
@@ -1132,7 +1132,7 @@ namespace NPB {
             }
         }
 
-/**/    public void Swarztrauber_cfftz(int dir, int m, int n, double[, , ,] y) {
+/**/    public void swarztrauber_cfftz(int dir, int m, int n, double[, , ,] y) {
             //c---------------------------------------------------------------------
             //c   Computes NY N-point complex-to-complex FFTs of X using an algorithm due
             //c   to Swarztrauber.  X is both the input and the output array, while Y is a 
