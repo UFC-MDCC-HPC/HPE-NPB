@@ -34,7 +34,7 @@ namespace NPB {
         protected bool timers_enabled = false;//
 
         protected static double[,] u;           //complex u(nx);//
-        protected static int niter;
+        //protected static int niter;
         //end.h
 
         //MPI

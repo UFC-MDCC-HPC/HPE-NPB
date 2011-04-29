@@ -108,11 +108,11 @@ namespace NPB {
 
         public void runBenchMark() {
             for(int i = 1; i <= T_max; i++) timer.resetTimer(i);
-            initialConfig();
+            int niter = initialConfig();
             problemDefination();
             blocksInfo();
-            if(timers_enabled)
-                synchup();
+            //if(timers_enabled)
+            //    synchup();
             compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
             compute_initial_conditions(u1);
             fft_init(dims[0, 0]);  //control u
@@ -125,34 +125,34 @@ namespace NPB {
             worldcomm.Barrier();
 
             timer.start(T_total);
-            if(timers_enabled) timer.start(T_setup);
+            //if(timers_enabled) timer.start(T_setup);
 
             compute_indexmap(twiddle, dims[0, 2], dims[1, 2], dims[2, 2]);
             compute_initial_conditions(u1);
             fft_init(dims[0, 0]);
 
-            if(timers_enabled) synchup();
-            if(timers_enabled) timer.stop(T_setup);
+            //if(timers_enabled) synchup();
+            //if(timers_enabled) timer.stop(T_setup);
 
-            if(timers_enabled) timer.start(T_fft);
+            //if(timers_enabled) timer.start(T_fft);
             fft(1, u1, u0);
-            if(timers_enabled) timer.stop(T_fft);
+            //if(timers_enabled) timer.stop(T_fft);
 
             double[] sums = new double[niter_default*2];
             for(int iter = 0; iter < niter; iter++) {
-                if(timers_enabled) timer.start(T_evolve);
+                //if(timers_enabled) timer.start(T_evolve);
                 evolve(u0, u1, twiddle, dims[0, 0], dims[1, 0], dims[2, 0]);
-                if(timers_enabled) timer.stop(T_evolve);
-                if(timers_enabled) timer.start(T_fft);
+                //if(timers_enabled) timer.stop(T_evolve);
+                //if(timers_enabled) timer.start(T_fft);
                 fft(-1, u1, u2);
-                if(timers_enabled) timer.stop(T_fft);
-                if(timers_enabled) synchup();
-                if(timers_enabled) timer.start(T_checksum);
+                //if(timers_enabled) timer.stop(T_fft);
+                //if(timers_enabled) synchup();
+                //if(timers_enabled) timer.start(T_checksum);
                 checksum(iter, sums, u2, dims[0, 0], dims[1, 0], dims[2, 0]);
-                if(timers_enabled) timer.stop(T_checksum);
+                //if(timers_enabled) timer.stop(T_checksum);
             }
 
-            int verified = verify(nx, ny, nz, niter, sums);
+            int verified = verify(niter, sums);
             timer.stop(T_total);
             double total_time = timer.readTimer(T_total); //total_time = timer_read(t_total);
 
@@ -181,13 +181,12 @@ namespace NPB {
                                         -1);
                 results.print();
             }
-            if(timers_enabled)
-                print_timers();
+            //if(timers_enabled) print_timers();
             mpi.Dispose();
         }
 
-        public void initialConfig() {
-            int fstatus=0;
+        public int initialConfig() {
+            int fstatus=0, niter=0;
             if(node == 0) {
                 Console.WriteLine(" NAS Parallel Benchmarks "+ "3.3" +" -- FT Benchmark ");
                 try {
@@ -303,6 +302,7 @@ namespace NPB {
             else {
                 layout_type = layout_2D;
             }
+            return niter;
         }
 
         public void problemDefination() {
@@ -2016,11 +2016,12 @@ namespace NPB {
 
         }
 
-/**/    public int verify(int d1, int d2, int d3, int nt, double[] sums) {
+/**/    public int verify(int nt, double[] sums) {
             int i;
             double err, epsilon;
             double[] csum_ref = new double[25*2]; //     double complex csum_ref(25); even=Real odd=Imag
             char Class = 'U';
+            int d1 = nx, d2=ny, d3=nz;
             if(node != 0)
                 return 0;
             epsilon = 0.000000000001;//epsilon = 1.0D-12;
