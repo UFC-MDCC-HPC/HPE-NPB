@@ -64,6 +64,8 @@ ARGUMENTS, MAY BREAK DOWN IF EXP_1 DOES NOT CONTAIN A LARGE POWER OF TWO.
 */
 using System;
 using System.IO;
+using NPB3_0_JAV.BMInOut;
+using MPI;
 
 namespace NPB {
     public class FT: FTBase {
@@ -97,7 +99,7 @@ namespace NPB {
             }
             catch(OutOfMemoryException e) {
                 Console.WriteLine(e.ToString());
-                Environment.Exit(0);
+                System.Environment.Exit(0);
             }
 
             ft.runBenchMark();
@@ -163,7 +165,21 @@ namespace NPB {
                 mflops = 0.0;
             }
             if(node == 0) {
-                IO.print_results(BMName, CLSS, nx, ny, nz, niter, np, np, total_time, mflops, "floating point", verified, "3.3");
+                //IO.print_results(BMName, CLSS, nx, ny, nz, niter, np, np, total_time, mflops, "floating point", verified, "3.3");
+                BMResults results = new BMResults(BMName,
+                                        CLSS,
+                                        nx,
+                                        ny,
+                                        nz,
+                                        niter,
+                                        total_time,
+                                        mflops,
+                                        "floating point",
+                                        verified,
+                                        true,
+                                        np,
+                                        -1);
+                results.print();
             }
             if(timers_enabled)
                 print_timers();
@@ -203,7 +219,7 @@ namespace NPB {
                         Console.WriteLine(" np1 and np2 given in input file are not valid.");
                         Console.WriteLine("Product is "+ np1*np2+" and should be "+np);
                         mpi.Dispose();
-                        Environment.Exit(0);
+                        System.Environment.Exit(0);
                     }
 
                     //c---------------------------------------------------------------------
@@ -213,7 +229,7 @@ namespace NPB {
                     if(layout_type != layout_0D && layout_type != layout_1D && layout_type != layout_2D) {
                         Console.WriteLine(" Layout type specified in inputft.data is invalid ");
                         mpi.Dispose();
-                        Environment.Exit(0);
+                        System.Environment.Exit(0);
                     }
 
                     //c---------------------------------------------------------------------
@@ -223,7 +239,7 @@ namespace NPB {
                     if(layout_type == layout_0D && (np1 != 1 || np2 != 1)) {
                         Console.WriteLine(" For 0D layout, both np1 and np2 must be 1 ");
                         mpi.Dispose();
-                        Environment.Exit(0);
+                        System.Environment.Exit(0);
                     }
                     //c---------------------------------------------------------------------
                     //c 4. 1D layout must be 1xN grid
@@ -232,7 +248,7 @@ namespace NPB {
                     if(layout_type == layout_1D && np1 != 1) {
                         Console.WriteLine(" For 1D layout, np1 must be 1 ");
                         mpi.Dispose();
-                        Environment.Exit(0);
+                        System.Environment.Exit(0);
                     }
                 }
                 else {
