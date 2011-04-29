@@ -858,7 +858,7 @@ namespace NPB {
             return lg;
         }
 
-/******/public void fft(int dir, double[, , ,] u1, double[, , ,] u02) {
+/**/    public void fft(int dir, double[, , ,] u1, double[, , ,] u02) {
             //double complex u1(ntdivnp), u02(ntdivnp)
             //double complex scratch(fftblockpad_default*maxdim*2) !scratch equal y in cfftsX
             //c---------------------------------------------------------------------
