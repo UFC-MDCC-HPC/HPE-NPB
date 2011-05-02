@@ -2546,7 +2546,7 @@ public class SP : SPBase
 							lhsm[k1][1] * rtmp[m + k * 5];
 					lhsm[k2][1] = lhsm[k2][1] -
 							lhsm[k2][0] * lhsm[k][3];
-					lhsm[k1][2] = lhsm[k1][2] -
+					lhsm[k2][2] = lhsm[k2][2] -
 							lhsm[k2][0] * lhsm[k][4];
 					rtmp[m + k2 * 5] = rtmp[m + k2 * 5] -
 							lhsm[k2][0] * rtmp[m + k * 5];
