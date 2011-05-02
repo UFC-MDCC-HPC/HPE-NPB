@@ -160,12 +160,12 @@ public class SPBase /* : Thread*/
         speed = new double[KMAX, JMAX + 1, IMAX + 1];
 		square = new double[KMAX, JMAX + 1, IMAX + 1];
 
-		ue = new double[5,problem_size];
-		buf = new double[5,problem_size];
+		ue = new double[problem_size,5];
+		buf = new double[problem_size,5];
 
-		lhs = new double[5,problem_size+1];
-		lhsp = new double[5,problem_size+1];
-		lhsm = new double[5,problem_size+1];
+		lhs = new double[problem_size+1,5];
+		lhsp = new double[problem_size+1,5];
+		lhsm = new double[problem_size+1,5];
 
 		cv = new double[problem_size];
 		rhon = new double[problem_size];
@@ -219,9 +219,9 @@ public class SPBase /* : Thread*/
 		{
 			for (int n = 0; n <= 4; n++)
 			{
-				lhs[n,i] = 0.0;
-				lhsp[n,i] = 0.0;
-				lhsm[n,i] = 0.0;
+				lhs[i,n] = 0.0;
+				lhsp[i,n] = 0.0;
+				lhsm[i,n] = 0.0;
 			}
 		}
 		//---------------------------------------------------------------------
@@ -230,9 +230,9 @@ public class SPBase /* : Thread*/
 		//---------------------------------------------------------------------
 		for (int i = 0; i <= size; i += size)
 		{
-			lhs[2,i] = 1.0;
-			lhsp[2,i] = 1.0;
-			lhsm[2,i] = 1.0;
+			lhs[i,2] = 1.0;
+			lhsp[i,2] = 1.0;
+			lhsm[i,2] = 1.0;
 		}
 	}
 

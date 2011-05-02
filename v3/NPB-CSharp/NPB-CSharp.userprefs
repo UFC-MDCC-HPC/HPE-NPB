@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SP/SP.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SP/SPThreads/SPBase.cs">
     <Files>
-      <File FileName="SP/SP.cs" Line="54" Column="18" />
+      <File FileName="SP/SP.cs" Line="2163" Column="12" />
+      <File FileName="SP/SPThreads/SPBase.cs" Line="235" Column="6" />
+      <File FileName="../../v2/byrow/NPB-CSharp/SP/SP.cs" Line="2229" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
