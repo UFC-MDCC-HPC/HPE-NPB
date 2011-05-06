@@ -144,8 +144,8 @@ public class XSolver extends SPBase{
 //      first fill the lhs for the u-eigenvalue                   
 //---------------------------------------------------------------------
              for(i=0;i<=grid_points[0]-1;i++){
-                ru1 = c3c4*rho_i[i+j*jsize2+k*ksize2];
-                cv[i] = us[i+j*jsize2+k*ksize2];
+                ru1 = c3c4*rho_i[i][j][k];
+                cv[i] = us[i][j][k];
                 rhon[i] = dmax1(dx2+con43*ru1, 
                                 dx5+c1c5*ru1,
                                 dxmax+ru1,
@@ -154,11 +154,11 @@ public class XSolver extends SPBase{
 
               lhsinit(grid_points[0]-1);
              for(i=1;i<=nx2;i++){
-                lhs[0+i*jsize4] =   0.0;
-                lhs[1+i*jsize4] = - dttx2 * cv[(i-1)] - dttx1 * rhon[i-1];
-                lhs[2+i*jsize4] =   1.0 + c2dttx1 * rhon[i];
-                lhs[3+i*jsize4] =   dttx2 * cv[i+1] - dttx1 * rhon[i+1];
-                lhs[4+i*jsize4] =   0.0;
+                lhs[0][i] =   0.0;
+                lhs[1][i] = - dttx2 * cv[(i-1)] - dttx1 * rhon[i-1];
+                lhs[2][i] =   1.0 + c2dttx1 * rhon[i];
+                lhs[3][i] =   dttx2 * cv[i+1] - dttx1 * rhon[i+1];
+                lhs[4][i] =   0.0;
              }
 
 //---------------------------------------------------------------------
@@ -166,52 +166,81 @@ public class XSolver extends SPBase{
 //---------------------------------------------------------------------
 
              i = 1;
-             lhs[2+i*jsize4] = lhs[2+i*jsize4] + comz5;
-             lhs[3+i*jsize4] = lhs[3+i*jsize4] - comz4;
-             lhs[4+i*jsize4] = lhs[4+i*jsize4] + comz1;
+             lhs[2][i] = 
+            	 lhs[2][i] + comz5;
+             lhs[3][i] = 
+            	 lhs[3][i] - comz4;
+             lhs[4][i] = 
+            	 lhs[4][i] + comz1;
   
-             lhs[1+(i+1)*jsize4] = lhs[1+(i+1)*jsize4] - comz4;
-             lhs[2+(i+1)*jsize4] = lhs[2+(i+1)*jsize4] + comz6;
-             lhs[3+(i+1)*jsize4] = lhs[3+(i+1)*jsize4] - comz4;
-             lhs[4+(i+1)*jsize4] = lhs[4+(i+1)*jsize4] + comz1;
+             lhs[1][(i+1)] = 
+            	 lhs[1][(i+1)] - comz4;
+             lhs[2][(i+1)] = 
+            	 lhs[2][(i+1)] + comz6;
+             lhs[3][(i+1)] = 
+            	 lhs[3][(i+1)] - comz4;
+             lhs[4][(i+1)] = 
+            	 lhs[4][(i+1)] + comz1;
 
              for(i=3;i<=grid_points[0]-4;i++){
-                lhs[0+i*jsize4] = lhs[0+i*jsize4] + comz1;
-                lhs[1+i*jsize4] = lhs[1+i*jsize4] - comz4;
-                lhs[2+i*jsize4] = lhs[2+i*jsize4] + comz6;
-                lhs[3+i*jsize4] = lhs[3+i*jsize4] - comz4;
-                lhs[4+i*jsize4] = lhs[4+i*jsize4] + comz1;
+                lhs[0][i] =
+                	lhs[0][i] + comz1;
+                lhs[1][i] =
+                	lhs[1][i] - comz4;
+                lhs[2][i] =
+                	lhs[2][i] + comz6;
+                lhs[3][i] =
+                	lhs[3][i] - comz4;
+                lhs[4][i] =
+                	lhs[4][i] + comz1;
              }
 
              i = grid_points[0]-3;
-             lhs[0+i*jsize4] = lhs[0+i*jsize4] + comz1;
-             lhs[1+i*jsize4] = lhs[1+i*jsize4] - comz4;
-             lhs[2+i*jsize4] = lhs[2+i*jsize4] + comz6;
-             lhs[3+i*jsize4] = lhs[3+i*jsize4] - comz4;
+             lhs[0][i] = 
+            	 lhs[0][i] + comz1;
+             lhs[1][i] =
+            	 lhs[1][i] - comz4;
+             lhs[2][i] =
+            	 lhs[2][i] + comz6;
+             lhs[3][i] =
+            	 lhs[3][i] - comz4;
 
-             lhs[0+(i+1)*jsize4] = lhs[0+(i+1)*jsize4] + comz1;
-             lhs[1+(i+1)*jsize4] = lhs[1+(i+1)*jsize4] - comz4;
-             lhs[2+(i+1)*jsize4] = lhs[2+(i+1)*jsize4] + comz5;
+             lhs[0][(i+1)] = 
+            	 lhs[0][(i+1)] + comz1;
+             lhs[1][(i+1)] = 
+            	 lhs[1][(i+1)] - comz4;
+             lhs[2][(i+1)] = 
+            	 lhs[2][(i+1)] + comz5;
 
 //---------------------------------------------------------------------
 //      subsequently, fill the other factors (u+c), (u-c) by adding to 
 //      the first  
 //---------------------------------------------------------------------
              for(i=1;i<=nx2;i++){
-                lhsp[0+i*jsize4] = lhs[0+i*jsize4];
-                lhsp[1+i*jsize4] = lhs[1+i*jsize4] - 
-                                  dttx2 * speed[(i-1)+j*jsize2+k*ksize2];
-                lhsp[2+i*jsize4] = lhs[2+i*jsize4];
-                lhsp[3+i*jsize4] = lhs[3+i*jsize4] + 
-                                  dttx2 * speed[i+1+j*jsize2+k*ksize2];
-                lhsp[4+i*jsize4] = lhs[4+i*jsize4];
-                lhsm[0+i*jsize4] = lhs[0+i*jsize4];
-                lhsm[1+i*jsize4] = lhs[1+i*jsize4] + 
-                                  dttx2 * speed[i-1+j*jsize2+k*ksize2];
-                lhsm[2+i*jsize4] = lhs[2+i*jsize4];
-                lhsm[3+i*jsize4] = lhs[3+i*jsize4] - 
-                                  dttx2 * speed[i+1+j*jsize2+k*ksize2];
-                lhsm[4+i*jsize4] = lhs[4+i*jsize4];
+                lhsp[0][i] = 
+                	lhs[0][i];
+                lhsp[1][i] = 
+                	lhs[1][i] - 
+                                  dttx2 * speed[(i-1)][j][k];
+                lhsp[2][i] =
+                	lhs[2][i];
+                lhsp[3][i] = 
+                	lhs[3][i] + 
+                                  dttx2 * speed[i+1][j][k];
+                lhsp[4][i] = 
+                	lhs[4][i];
+                lhsm[0][i] = 
+                	lhs[0][i];
+                lhsm[1][i] = 
+                	lhs[1][i] + 
+                                  dttx2 * speed[i-1][j][k];
+                lhsm[2][i] = 
+                	lhs[2][i];
+                lhsm[3][i] = 
+                	lhs[3][i] - 
+                                  dttx2 * speed[(i+1)][j][k];
+                lhsm[4][i] = 
+                	lhs[4][i];
              }
 
 //---------------------------------------------------------------------
@@ -225,27 +254,42 @@ public class XSolver extends SPBase{
              for(i=0;i<=grid_points[0]-3;i++){
                 i1 = i  + 1;
                 i2 = i  + 2;
-                fac1      = 1./lhs[2+i*jsize4];
-                lhs[3+i*jsize4]  = fac1*lhs[3+i*jsize4];
-                lhs[4+i*jsize4]  = fac1*lhs[4+i*jsize4];
+                fac1      = 1./lhs[2][i];
+                lhs[3][i]  = 
+                	fac1*lhs[3][i];
+                lhs[4][i]  = 
+                	fac1*lhs[4][i];
                 for(m=0;m<=2;m++){
-                   rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                   rhs[m][i][j][k] = 
+                	   fac1*rhs[m][i][j][k];
                 }
-                lhs[2+i1*jsize4] = lhs[2+i1*jsize4] -
-                               lhs[1+i1*jsize4]*lhs[3+i*jsize4];
-                lhs[3+i1*jsize4] = lhs[3+i1*jsize4] -
-                               lhs[1+i1*jsize4]*lhs[4+i*jsize4];
+                lhs[2][i1] = 
+                	lhs[2][i1] -
+                               lhs[1][i1]*
+                               lhs[3][i];
+                lhs[3][i1] = 
+                	lhs[3][i1] -
+                               lhs[1][i1]*
+                               lhs[4][i];
                 for(m=0;m<=2;m++){
-                   rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                               lhs[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                   rhs[m][i1][j][k] = 
+                	   rhs[m][i1][j][k] -
+                               lhs[1][i1]*
+                               rhs[m][i][j][k];
                 }
-                lhs[1+i2*jsize4] = lhs[1+i2*jsize4] -
-                               lhs[0+i2*jsize4]*lhs[3+i*jsize4];
-                lhs[2+i2*jsize4] = lhs[2+i2*jsize4] -
-                               lhs[0+i2*jsize4]*lhs[4+i*jsize4];
+                lhs[1][i2] = 
+                	lhs[1][i2] -
+                               lhs[0][i2]*
+                               lhs[3][i];
+                lhs[2][i2] = 
+                	lhs[2][i2] -
+                               lhs[0][i2]*
+                               lhs[4][i];
                 for(m=0;m<=2;m++){
-                   rhs[m+i2*isize1+j*jsize1+k*ksize1] = rhs[m+i2*isize1+j*jsize1+k*ksize1] -
-                               lhs[0+i2*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                   rhs[m][i2][j][k] = 
+                	   rhs[m][i2][j][k] -
+                               lhs[0][i2]*
+                               rhs[m][i][j][k];
                 }
              }
 
@@ -257,26 +301,36 @@ public class XSolver extends SPBase{
 
              i  = grid_points[0]-2;
              i1 = grid_points[0]-1;
-             fac1      = 1./lhs[2+i*jsize4];
-             lhs[3+i*jsize4]  = fac1*lhs[3+i*jsize4];
-             lhs[4+i*jsize4]  = fac1*lhs[4+i*jsize4];
+             fac1      = 1./lhs[2][i];
+             lhs[3][i]  =
+            	 fac1*lhs[3][i];
+             lhs[4][i]  = 
+            	 fac1*lhs[4][i];
              for(m=0;m<=2;m++){
-                rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i][j][k] = 
+                	fac1*rhs[m][i][j][k];
              }
-             lhs[2+i1*jsize4] = lhs[2+i1*jsize4] -
-                            lhs[1+i1*jsize4]*lhs[3+i*jsize4];
-             lhs[3+i1*jsize4] = lhs[3+i1*jsize4] -
-                            lhs[1+i1*jsize4]*lhs[4+i*jsize4];
+             lhs[2][i1] = 
+            	 lhs[2][i1] -
+                            lhs[1][i1]*
+                            lhs[3][i];
+             lhs[3][i1] = 
+            	 lhs[3][i1] -
+                            lhs[1][i1]*
+                            lhs[4][i];
              for(m=0;m<=2;m++){
-                rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                            lhs[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                rhs[m][i1][j][k] = 
+                	rhs[m][i1][j][k] -
+                            lhs[1][i1]*
+                            rhs[m][i][j][k];
              }
 //---------------------------------------------------------------------
 //            scale the last row immediately 
 //---------------------------------------------------------------------
-             fac2             = 1./lhs[2+i1*jsize4];
+             fac2             = 1./lhs[2][i1];
              for(m=0;m<=2;m++){
-                rhs[m+i1*isize1+j*jsize1+k*ksize1] = fac2*rhs[m+i1*isize1+j*jsize1+k*ksize1];
+                rhs[m][i1][j][k] = 
+                	fac2*rhs[m][i1][j][k];
              }
 
 //---------------------------------------------------------------------
@@ -287,39 +341,68 @@ public class XSolver extends SPBase{
                 i1 = i  + 1;
                 i2 = i  + 2;
 		m = 3;
-                fac1       = 1./lhsp[2+i*jsize4];
-                lhsp[3+i*jsize4]  = fac1*lhsp[3+i*jsize4];
-                lhsp[4+i*jsize4]  = fac1*lhsp[4+i*jsize4];
-                rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
-                lhsp[2+i1*jsize4] = lhsp[2+i1*jsize4] -
-                              lhsp[1+i1*jsize4]*lhsp[3+i*jsize4];
-                lhsp[3+i1*jsize4] = lhsp[3+i1*jsize4] -
-                              lhsp[1+i1*jsize4]*lhsp[4+i*jsize4];
-                rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                              lhsp[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
-                lhsp[1+i2*jsize4] = lhsp[1+i2*jsize4] -
-                              lhsp[0+i2*jsize4]*lhsp[3+i*jsize4];
-                lhsp[2+i2*jsize4] = lhsp[2+i2*jsize4] -
-                              lhsp[0+i2*jsize4]*lhsp[4+i*jsize4];
-                rhs[m+i2*isize1+j*jsize1+k*ksize1] = rhs[m+i2*isize1+j*jsize1+k*ksize1] -
-                              lhsp[0+i2*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                fac1       = 1./lhsp[2][i];
+                lhsp[3][i]  = 
+                	fac1*lhsp[3][i];
+                lhsp[4][i]  = 
+                	fac1*lhsp[4][i];
+                rhs[m][i][j][k] = 
+                	fac1*rhs[m][i][j][k];
+                lhsp[2][i1] = 
+                	lhsp[2][i1] -
+                              lhsp[1][i1]*
+                              lhsp[3][i];
+                lhsp[3][i1] = 
+                	lhsp[3][i1] -
+                              lhsp[1][i1]*
+                              lhsp[4][i];
+                rhs[m][i1][j][k] = 
+                	rhs[m][i1][j][k] -
+                              lhsp[1][i1]*
+                              rhs[m][i][j][k];
+                lhsp[1][i2] = 
+                	lhsp[1][i2] -
+                              lhsp[0][i2]*
+                              lhsp[3][i];
+                lhsp[2][i2] = 
+                	lhsp[2][i2] -
+                              lhsp[0][i2]*
+                              lhsp[4][i];
+                rhs[m][i2][j][k] = 
+                	rhs[m][i2][j][k] -
+                              lhsp[0][i2]*
+                              rhs[m][i][j][k];
 		m = 4;
-                fac1       = 1./lhsm[2+i*jsize4];
-                lhsm[3+i*jsize4]  = fac1*lhsm[3+i*jsize4];
-                lhsm[4+i*jsize4]  = fac1*lhsm[4+i*jsize4];
-                rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
-                lhsm[2+i1*jsize4] = lhsm[2+i1*jsize4] -
-                              lhsm[1+i1*jsize4]*lhsm[3+i*jsize4];
-                lhsm[3+i1*jsize4] = lhsm[3+i1*jsize4] -
-                              lhsm[1+i1*jsize4]*lhsm[4+i*jsize4];
-                rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                              lhsm[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
-                lhsm[1+i2*jsize4] = lhsm[1+i2*jsize4] -
-                              lhsm[0+i2*jsize4]*lhsm[3+i*jsize4];
-                lhsm[2+i2*jsize4] = lhsm[2+i2*jsize4] -
-                              lhsm[0+i2*jsize4]*lhsm[4+i*jsize4];
-                rhs[m+i2*isize1+j*jsize1+k*ksize1] = rhs[m+i2*isize1+j*jsize1+k*ksize1] -
-                              lhsm[0+i2*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+                fac1       = 1./lhsm[2][i];
+                lhsm[3][i]  = 
+                	fac1*lhsm[3][i];
+                lhsm[4][i]  = 
+                	fac1*lhsm[4][i];
+                rhs[m][i][j][k] = 
+                	fac1*rhs[m][i][j][k];
+                lhsm[2][i1] = 
+                	lhsm[2][i1] -
+                              lhsm[1][i1]*lhsm[3][i];
+                lhsm[3][i1] = 
+                	lhsm[3][i1] -
+                              lhsm[1][i1]*
+                              lhsm[4][i];
+                rhs[m][i1][j][k] = 
+                	rhs[m][i1][j][k] -
+                              lhsm[1][i1]*
+                              rhs[m][i][j][k];
+                lhsm[1][i2] = 
+                	lhsm[1][i2] -
+                              lhsm[0][i2]*
+                              lhsm[3][i];
+                lhsm[2][i2] = 
+                	lhsm[2][i2] -
+                              lhsm[0][i2]*
+                              lhsm[4][i];
+                rhs[m][i2][j][k] = 
+                	rhs[m][i2][j][k] -
+                              lhsm[0][i2]*
+                              rhs[m][i][j][k];
              }
 
 //---------------------------------------------------------------------
@@ -328,32 +411,52 @@ public class XSolver extends SPBase{
              i  = grid_points[0]-2;
              i1 = grid_points[0]-1;
 	     m = 3;
-             fac1       = 1./lhsp[2+i*jsize4];
-             lhsp[3+i*jsize4]  = fac1*lhsp[3+i*jsize4];
-             lhsp[4+i*jsize4]  = fac1*lhsp[4+i*jsize4];
-             rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
-             lhsp[2+i1*jsize4] = lhsp[2+i1*jsize4] -
-                            lhsp[1+i1*jsize4]*lhsp[3+i*jsize4];
-             lhsp[3+i1*jsize4] = lhsp[3+i1*jsize4] -
-                            lhsp[1+i1*jsize4]*lhsp[4+i*jsize4];
-             rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                            lhsp[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+             fac1       = 1./lhsp[2][i];
+             lhsp[3][i]  = 
+            	 fac1*lhsp[3][i];
+             lhsp[4][i]  =
+            	 fac1*lhsp[4][i];
+             rhs[m][i][j][k] = 
+            	 fac1*rhs[m][i][j][k];
+             lhsp[2][i1] = 
+            	 lhsp[2][i1] -
+                            lhsp[1][i1]*
+                            lhsp[3][i];
+             lhsp[3][i1] = 
+            	 lhsp[3][i1] -
+                            lhsp[1][i1]*
+                            lhsp[4][i];
+             rhs[m][i1][j][k] = 
+            	 rhs[m][i1][j][k] -
+                            lhsp[1][i1]*
+                            rhs[m][i][j][k];
 	     m = 4;
-             fac1       = 1./lhsm[2+i*jsize4];
-             lhsm[3+i*jsize4]  = fac1*lhsm[3+i*jsize4];
-             lhsm[4+i*jsize4]  = fac1*lhsm[4+i*jsize4];
-             rhs[m+i*isize1+j*jsize1+k*ksize1] = fac1*rhs[m+i*isize1+j*jsize1+k*ksize1];
-             lhsm[2+i1*jsize4] = lhsm[2+i1*jsize4] -
-                            lhsm[1+i1*jsize4]*lhsm[3+i*jsize4];
-             lhsm[3+i1*jsize4] = lhsm[3+i1*jsize4] -
-                            lhsm[1+i1*jsize4]*lhsm[4+i*jsize4];
-             rhs[m+i1*isize1+j*jsize1+k*ksize1] = rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                            lhsm[1+i1*jsize4]*rhs[m+i*isize1+j*jsize1+k*ksize1];
+             fac1       = 1./lhsm[2][i];
+             lhsm[3][i]  = 
+            	 fac1*lhsm[3][i];
+             lhsm[4][i]  = 
+            	 fac1*lhsm[4][i];
+             rhs[m][i][j][k] = 
+            	 fac1*rhs[m][i][j][k];
+             lhsm[2][i1] = 
+            	 lhsm[2][i1] -
+                            lhsm[1][i1]*
+                            lhsm[3][i];
+             lhsm[3][i1] = 
+            	 lhsm[3][i1] -
+                            lhsm[1][i1]*lhsm[4][i];
+             rhs[m][i1][j][k] =
+            	 rhs[m][i1][j][k] -
+                            lhsm[1][i1]*
+                            rhs[m][i][j][k];
 //---------------------------------------------------------------------
 //               Scale the last row immediately
 //---------------------------------------------------------------------
-             rhs[3+i1*isize1+j*jsize1+k*ksize1] = rhs[3+i1*isize1+j*jsize1+k*ksize1]/lhsp[2+i1*jsize4];
-             rhs[4+i1*isize1+j*jsize1+k*ksize1] = rhs[4+i1*isize1+j*jsize1+k*ksize1]/lhsm[2+i1*jsize4];
+             rhs[3][i1][j][k] = 
+            	 rhs[3][i1][j][k]/
+            	 lhsp[2][i1];
+             rhs[4][i1][j][k] = 
+            	 rhs[4][i1][j][k]/lhsm[2][i1];
 
 //---------------------------------------------------------------------
 //                         BACKSUBSTITUTION 
@@ -362,14 +465,20 @@ public class XSolver extends SPBase{
              i  = grid_points[0]-2;
              i1 = grid_points[0]-1;
              for(m=0;m<=2;m++){
-                rhs[m+i*isize1+j*jsize1+k*ksize1] = rhs[m+i*isize1+j*jsize1+k*ksize1] -
-                                   lhs[3+i*jsize4]*rhs[m+i1*isize1+j*jsize1+k*ksize1];
+                rhs[m][i][j][k] = 
+                	rhs[m][i][j][k] -
+                                   lhs[3][i]*
+                                   rhs[m][i1][j][k];
              }
 
-             rhs[3+i*isize1+j*jsize1+k*ksize1] = rhs[3+i*isize1+j*jsize1+k*ksize1] -
-                                lhsp[3+i*jsize4]*rhs[3+i1*isize1+j*jsize1+k*ksize1];
-             rhs[4+i*isize1+j*jsize1+k*ksize1] = rhs[4+i*isize1+j*jsize1+k*ksize1] -
-                                lhsm[3+i*jsize4]*rhs[4+i1*isize1+j*jsize1+k*ksize1];
+             rhs[3][i][j][k] = 
+            	 rhs[3][i][j][k] -
+                                lhsp[3][i]*
+                                rhs[3][i1][j][k];
+             rhs[4][i][j][k] = 
+            	 rhs[4][i][j][k] -
+                                lhsm[3][i]*
+                                rhs[4][i1][j][k];
 		
 //---------------------------------------------------------------------
 //      The first three factors
@@ -379,19 +488,28 @@ public class XSolver extends SPBase{
                 i2 = i  + 2;
 
                 for(m=0;m<=2;m++){
-                   rhs[m+i*isize1+j*jsize1+k*ksize1] = rhs[m+i*isize1+j*jsize1+k*ksize1] - 
-                                lhs[3+i*jsize4]*rhs[m+i1*isize1+j*jsize1+k*ksize1] -
-                                lhs[4+i*jsize4]*rhs[m+i2*isize1+j*jsize1+k*ksize1];
+                   rhs[m][i][j][k] = 
+                	   rhs[m][i][j][k] - 
+                                lhs[3][i]*
+                                rhs[m][i1][j][k] -
+                                lhs[4][i]*
+                                rhs[m][i2][j][k];
                 }
 //---------------------------------------------------------------------
 //      And the remaining two
 //---------------------------------------------------------------------
-                rhs[3+i*isize1+j*jsize1+k*ksize1] = rhs[3+i*isize1+j*jsize1+k*ksize1] - 
-                                lhsp[3+i*jsize4]*rhs[3+i1*isize1+j*jsize1+k*ksize1] -
-                                lhsp[4+i*jsize4]*rhs[3+i2*isize1+j*jsize1+k*ksize1];
-                rhs[4+i*isize1+j*jsize1+k*ksize1] = rhs[4+i*isize1+j*jsize1+k*ksize1] - 
-                                lhsm[3+i*jsize4]*rhs[4+i1*isize1+j*jsize1+k*ksize1] -
-                                lhsm[4+i*jsize4]*rhs[4+i2*isize1+j*jsize1+k*ksize1];
+                rhs[3][i][j][k] = 
+                	rhs[3][i][j][k] - 
+                                lhsp[3][i]*
+                                rhs[3][i1][j][k] -
+                                lhsp[4][i]*
+                                rhs[3][i2][j][k];
+                rhs[4][i][j][k] = 
+                	rhs[4][i][j][k] - 
+                                lhsm[3][i]*
+                                rhs[4][i1][j][k] -
+                                lhsm[4][i]*
+                                rhs[4][i2][j][k];
              }
           }
        }
@@ -403,20 +521,20 @@ public class XSolver extends SPBase{
           for(j=1;j<=ny2;j++){
              for(i=1;i<=nx2;i++){
 
-                r1 = rhs[0+i*isize1+j*jsize1+k*ksize1];
-                r2 = rhs[1+i*isize1+j*jsize1+k*ksize1];
-                r3 = rhs[2+i*isize1+j*jsize1+k*ksize1];
-                r4 = rhs[3+i*isize1+j*jsize1+k*ksize1];
-                r5 = rhs[4+i*isize1+j*jsize1+k*ksize1];
+                r1 = rhs[0][i][j][k];
+                r2 = rhs[1][i][j][k];
+                r3 = rhs[2][i][j][k];
+                r4 = rhs[3][i][j][k];
+                r5 = rhs[4][i][j][k];
                
                 t1 = bt * r3;
                 t2 = 0.5 * ( r4 + r5 );
 
-                rhs[0+i*isize1+j*jsize1+k*ksize1] = -r2;
-                rhs[1+i*isize1+j*jsize1+k*ksize1] =  r1;
-                rhs[2+i*isize1+j*jsize1+k*ksize1] = bt * ( r4 - r5 );
-                rhs[3+i*isize1+j*jsize1+k*ksize1] = -t1 + t2;
-                rhs[4+i*isize1+j*jsize1+k*ksize1] =  t1 + t2;
+                rhs[0][i][j][k] = -r2;
+                rhs[1][i][j][k] =  r1;
+                rhs[2][i][j][k] = bt * ( r4 - r5 );
+                rhs[3][i][j][k] = -t1 + t2;
+                rhs[4][i][j][k] =  t1 + t2;
              }    
           }
        }
@@ -434,9 +552,9 @@ public class XSolver extends SPBase{
 //---------------------------------------------------------------------
        for(i=0;i<=size;i+=size){
           for(n=0;n<=4;n++){
-             lhs[n+i*jsize4] = 0.0;
-             lhsp[n+i*jsize4] = 0.0;
-             lhsm[n+i*jsize4] = 0.0;
+             lhs[n][i] = 0.0;
+             lhsp[n][i] = 0.0;
+             lhsm[n][i] = 0.0;
           }
        }
 
@@ -445,9 +563,9 @@ public class XSolver extends SPBase{
 //      convenient
 //---------------------------------------------------------------------
        for(i=0;i<=size;i+=size){
-          lhs[2+i*jsize4] = 1.0;
-          lhsp[2+i*jsize4] = 1.0;
-          lhsm[2+i*jsize4] = 1.0;
+          lhs[2][i] = 1.0;
+          lhsp[2][i] = 1.0;
+          lhsm[2][i] = 1.0;
        }
   }
 }
