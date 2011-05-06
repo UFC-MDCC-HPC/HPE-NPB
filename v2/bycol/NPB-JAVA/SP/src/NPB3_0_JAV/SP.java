@@ -664,14 +664,14 @@ public class SP extends SPBase {
 						buf[j][m] = dtpp * dtemp[m];
 					}
 
-					cuf[j] = buf[j + 2 * jsize3] * buf[j + 2 * jsize3];
-					buf[j + 0 * jsize3] = cuf[j] + buf[j + 1 * jsize3]
-							* buf[j + 1 * jsize3] + buf[j + 3 * jsize3]
-							* buf[j + 3 * jsize3];
-					q[j] = 0.5 * (buf[j + 1 * jsize3] * ue[j + 1 * jsize3]
-							+ buf[j + 2 * jsize3] * ue[j + 2 * jsize3] + buf[j
+					cuf[j] = buf[j ][ 2 ] * buf[j ][ 2 ];
+					buf[j ][ 0 ] = cuf[j] + buf[j ][ 1 ]
+							* buf[j ][ 1 ] + buf[j ][ 3 ]
+							* buf[j ][ 3 ];
+					q[j] = 0.5 * (buf[j ][ 1 ] * ue[j ][ 1 ]
+							+ buf[j ][ 2 ] * ue[j ][ 2 ] + buf[j
 							+ 3 * jsize3]
-							* ue[j + 3 * jsize3]);
+							* ue[j ][ 3 ]);
 				}
 
 				for (j = 1; j <= grid_points[1] - 2; j++) {
@@ -1028,7 +1028,7 @@ public class SP extends SPBase {
 					// ---------------------------------------------------------------------
 					aux = c1c2
 							* rho_inv
-							* (u[4 + i * isize1 + j * jsize1 + k * ksize1] - square[i
+							* (u[4 ][ i ][ j ][ k ] - square[i
 									+ j * jsize2 + k * ksize2]);
 					speed[i + j * jsize2 + k * ksize2] = Math.sqrt(aux);
 				}
@@ -1236,7 +1236,7 @@ public class SP extends SPBase {
 							+ yycon4
 							* (vp1 * vp1 - 2.0 * vijk * vijk + vm1 * vm1)
 							+ yycon5
-							* (u[4 + i * isize1 + (j + 1) * jsize1 + k * ksize1]
+							* (u[4 ][ i ][ (j + 1) ][ k ]
 									* rho_i[i + (j + 1) * jsize2 + k * ksize2]
 									- 2.0
 									* u[4 + i * isize1 + j * jsize1 + k
@@ -1319,7 +1319,7 @@ public class SP extends SPBase {
 				for (m = 0; m <= 4; m++) {
 					rhs[m][i][j][k] = rhs[m][i][j][k]
 							- dssp
-							* (u[m + i * isize1 + (j - 2) * jsize1 + k * ksize1]
+							* (u[m ][ i ][ (j - 2) ][ k ]
 									- 4.0
 									* u[m + i * isize1 + (j - 1) * jsize1 + k
 											* ksize1] + 6.0 * u[m][i][j][k] - 4.0 * u[m
@@ -1337,7 +1337,7 @@ public class SP extends SPBase {
 				for (m = 0; m <= 4; m++) {
 					rhs[m][i][j][k] = rhs[m][i][j][k]
 							- dssp
-							* (u[m + i * isize1 + (j - 2) * jsize1 + k * ksize1]
+							* (u[m ][ i ][ (j - 2) ][ k ]
 									- 4.
 									* u[m + i * isize1 + (j - 1) * jsize1 + k
 											* ksize1] + 5. * u[m][i][j][k]);
@@ -1359,26 +1359,26 @@ public class SP extends SPBase {
 					wp1 = ws[i + j * jsize2 + (k + 1) * ksize2];
 					wm1 = ws[i + j * jsize2 + (k - 1) * ksize2];
 
-					rhs[0 + i * isize1 + j * jsize1 + k * ksize1] = rhs[0 + i
+					rhs[0 ][ i ][ j ][ k ] = rhs[0 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							+ dz1tz1
-							* (u[0 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[0 ][ i ][ j ][ (k + 1) ]
 									- 2.0
 									* u[0 + i * isize1 + j * jsize1 + k
 											* ksize1] + u[0 + i * isize1 + j
 									* jsize1 + (k - 1) * ksize1])
 							- tz2
-							* (u[3 + i * isize1 + j * jsize1 + (k + 1) * ksize1] - u[3
+							* (u[3 ][ i ][ j ][ (k + 1) ] - u[3
 									+ i
 									* isize1
 									+ j
 									* jsize1
 									+ (k - 1)
 									* ksize1]);
-					rhs[1 + i * isize1 + j * jsize1 + k * ksize1] = rhs[1 + i
+					rhs[1 ][ i ][ j ][ k ] = rhs[1 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							+ dz2tz1
-							* (u[1 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[1 ][ i ][ j ][ (k + 1) ]
 									- 2.0
 									* u[1 + i * isize1 + j * jsize1 + k
 											* ksize1] + u[1 + i * isize1 + j
@@ -1388,14 +1388,14 @@ public class SP extends SPBase {
 									* us[i + j * jsize2 + k * ksize2] + us[i
 									+ j * jsize2 + (k - 1) * ksize2])
 							- tz2
-							* (u[1 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[1 ][ i ][ j ][ (k + 1) ]
 									* wp1 - u[1 + i * isize1 + j * jsize1
 									+ (k - 1) * ksize1]
 									* wm1);
-					rhs[2 + i * isize1 + j * jsize1 + k * ksize1] = rhs[2 + i
+					rhs[2 ][ i ][ j ][ k ] = rhs[2 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							+ dz3tz1
-							* (u[2 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[2 ][ i ][ j ][ (k + 1) ]
 									- 2.0
 									* u[2 + i * isize1 + j * jsize1 + k
 											* ksize1] + u[2 + i * isize1 + j
@@ -1405,14 +1405,14 @@ public class SP extends SPBase {
 									* vs[i + j * jsize2 + k * ksize2] + vs[i
 									+ j * jsize2 + (k - 1) * ksize2])
 							- tz2
-							* (u[2 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[2 ][ i ][ j ][ (k + 1) ]
 									* wp1 - u[2 + i * isize1 + j * jsize1
 									+ (k - 1) * ksize1]
 									* wm1);
-					rhs[3 + i * isize1 + j * jsize1 + k * ksize1] = rhs[3 + i
+					rhs[3 ][ i ][ j ][ k ] = rhs[3 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							+ dz4tz1
-							* (u[3 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[3 ][ i ][ j ][ (k + 1) ]
 									- 2.0
 									* u[3 + i * isize1 + j * jsize1 + k
 											* ksize1] + u[3 + i * isize1 + j
@@ -1421,7 +1421,7 @@ public class SP extends SPBase {
 							* con43
 							* (wp1 - 2.0 * wijk + wm1)
 							- tz2
-							* (u[3 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[3 ][ i ][ j ][ (k + 1) ]
 									* wp1
 									- u[3 + i * isize1 + j * jsize1 + (k - 1)
 											* ksize1] * wm1 + (u[4 + i * isize1
@@ -1431,10 +1431,10 @@ public class SP extends SPBase {
 											* ksize1] + square[i + j * jsize2
 									+ (k - 1) * ksize2])
 									* c2);
-					rhs[4 + i * isize1 + j * jsize1 + k * ksize1] = rhs[4 + i
+					rhs[4 ][ i ][ j ][ k ] = rhs[4 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							+ dz5tz1
-							* (u[4 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[4 ][ i ][ j ][ (k + 1) ]
 									- 2.0
 									* u[4 + i * isize1 + j * jsize1 + k
 											* ksize1] + u[4 + i * isize1 + j
@@ -1446,7 +1446,7 @@ public class SP extends SPBase {
 							+ zzcon4
 							* (wp1 * wp1 - 2.0 * wijk * wijk + wm1 * wm1)
 							+ zzcon5
-							* (u[4 + i * isize1 + j * jsize1 + (k + 1) * ksize1]
+							* (u[4 ][ i ][ j ][ (k + 1) ]
 									* rho_i[i + j * jsize2 + (k + 1) * ksize2]
 									- 2.0
 									* u[4 + i * isize1 + j * jsize1 + k
@@ -1537,7 +1537,7 @@ public class SP extends SPBase {
 				for (m = 0; m <= 4; m++) {
 					rhs[m][i][j][k] = rhs[m][i][j][k]
 							- dssp
-							* (u[m + i * isize1 + j * jsize1 + (k - 2) * ksize1]
+							* (u[m ][ i ][ j ][ (k - 2) ]
 									- 4.0
 									* u[m + i * isize1 + j * jsize1 + (k - 1)
 											* ksize1] + 6.0 * u[m][i][j][k] - 4.0 * u[m
@@ -1557,7 +1557,7 @@ public class SP extends SPBase {
 				for (m = 0; m <= 4; m++) {
 					rhs[m][i][j][k] = rhs[m][i][j][k]
 							- dssp
-							* (u[m + i * isize1 + j * jsize1 + (k - 2) * ksize1]
+							* (u[m ][ i ][ j ][ (k - 2) ]
 									- 4.
 									* u[m + i * isize1 + j * jsize1 + (k - 1)
 											* ksize1] + 5. * u[m][i][j][k]);
@@ -1593,11 +1593,11 @@ public class SP extends SPBase {
 					ac = speed[i + j * jsize2 + k * ksize2];
 					ac2inv = 1.0 / (ac * ac);
 
-					r1 = rhs[0 + i * isize1 + j * jsize1 + k * ksize1];
-					r2 = rhs[1 + i * isize1 + j * jsize1 + k * ksize1];
-					r3 = rhs[2 + i * isize1 + j * jsize1 + k * ksize1];
-					r4 = rhs[3 + i * isize1 + j * jsize1 + k * ksize1];
-					r5 = rhs[4 + i * isize1 + j * jsize1 + k * ksize1];
+					r1 = rhs[0 ][ i ][ j ][ k ];
+					r2 = rhs[1 ][ i ][ j ][ k ];
+					r3 = rhs[2 ][ i ][ j ][ k ];
+					r4 = rhs[3 ][ i ][ j ][ k ];
+					r5 = rhs[4 ][ i ][ j ][ k ];
 
 					t1 = c2
 							* ac2inv
@@ -1606,13 +1606,13 @@ public class SP extends SPBase {
 					t2 = bt * ru1 * (uu * r1 - r2);
 					t3 = (bt * ru1 * ac) * t1;
 
-					rhs[0 + i * isize1 + j * jsize1 + k * ksize1] = r1 - t1;
-					rhs[1 + i * isize1 + j * jsize1 + k * ksize1] = -ru1
+					rhs[0 ][ i ][ j ][ k ] = r1 - t1;
+					rhs[1 ][ i ][ j ][ k ] = -ru1
 							* (ww * r1 - r4);
-					rhs[2 + i * isize1 + j * jsize1 + k * ksize1] = ru1
+					rhs[2 ][ i ][ j ][ k ] = ru1
 							* (vv * r1 - r3);
-					rhs[3 + i * isize1 + j * jsize1 + k * ksize1] = -t2 + t3;
-					rhs[4 + i * isize1 + j * jsize1 + k * ksize1] = t2 + t3;
+					rhs[3 ][ i ][ j ][ k ] = -t2 + t3;
+					rhs[4 ][ i ][ j ][ k ] = t2 + t3;
 
 				}
 			}
@@ -1634,27 +1634,27 @@ public class SP extends SPBase {
 
 					ac2u = ac * ac;
 
-					r1 = rhs[0 + i * isize1 + j * jsize1 + k * ksize1];
-					r2 = rhs[1 + i * isize1 + j * jsize1 + k * ksize1];
-					r3 = rhs[2 + i * isize1 + j * jsize1 + k * ksize1];
-					r4 = rhs[3 + i * isize1 + j * jsize1 + k * ksize1];
-					r5 = rhs[4 + i * isize1 + j * jsize1 + k * ksize1];
+					r1 = rhs[0 ][ i ][ j ][ k ];
+					r2 = rhs[1 ][ i ][ j ][ k ];
+					r3 = rhs[2 ][ i ][ j ][ k ];
+					r4 = rhs[3 ][ i ][ j ][ k ];
+					r5 = rhs[4 ][ i ][ j ][ k ];
 
-					uzik1 = u[0 + i * isize1 + j * jsize1 + k * ksize1];
+					uzik1 = u[0 ][ i ][ j ][ k ];
 					btuz = bt * uzik1;
 
 					t1 = btuz / ac * (r4 + r5);
 					t2 = r3 + t1;
 					t3 = btuz * (r4 - r5);
 
-					rhs[0 + i * isize1 + j * jsize1 + k * ksize1] = t2;
-					rhs[1 + i * isize1 + j * jsize1 + k * ksize1] = -uzik1 * r2
+					rhs[0 ][ i ][ j ][ k ] = t2;
+					rhs[1 ][ i ][ j ][ k ] = -uzik1 * r2
 							+ xvel * t2;
-					rhs[2 + i * isize1 + j * jsize1 + k * ksize1] = uzik1 * r1
+					rhs[2 ][ i ][ j ][ k ] = uzik1 * r1
 							+ yvel * t2;
-					rhs[3 + i * isize1 + j * jsize1 + k * ksize1] = zvel * t2
+					rhs[3 ][ i ][ j ][ k ] = zvel * t2
 							+ t3;
-					rhs[4 + i * isize1 + j * jsize1 + k * ksize1] = uzik1
+					rhs[4 ][ i ][ j ][ k ] = uzik1
 							* (-xvel * r2 + yvel * r1)
 							+ qs[i + j * jsize2 + k * ksize2] * t2 + c2iv
 							* ac2u * t1 + zvel * t3;
@@ -1988,7 +1988,7 @@ public class SP extends SPBase {
 					lhs[3 + i1 * jsize4] = lhs[3 + i1 * jsize4]
 							- lhs[1 + i1 * jsize4] * lhs[4 + i * jsize4];
 					for (m = 0; m <= 2; m++) {
-						rhs[m + i1 * isize1 + j * jsize1 + k * ksize1] = rhs[m
+						rhs[m ][ i1 ][ j ][ k ] = rhs[m
 								+ i1 * isize1 + j * jsize1 + k * ksize1]
 								- lhs[1 + i1 * jsize4] * rhs[m][i][j][k];
 					}
@@ -1997,7 +1997,7 @@ public class SP extends SPBase {
 					lhs[2 + i2 * jsize4] = lhs[2 + i2 * jsize4]
 							- lhs[0 + i2 * jsize4] * lhs[4 + i * jsize4];
 					for (m = 0; m <= 2; m++) {
-						rhs[m + i2 * isize1 + j * jsize1 + k * ksize1] = rhs[m
+						rhs[m ][ i2 ][ j ][ k ] = rhs[m
 								+ i2 * isize1 + j * jsize1 + k * ksize1]
 								- lhs[0 + i2 * jsize4] * rhs[m][i][j][k];
 					}
@@ -2022,7 +2022,7 @@ public class SP extends SPBase {
 				lhs[3 + i1 * jsize4] = lhs[3 + i1 * jsize4]
 						- lhs[1 + i1 * jsize4] * lhs[4 + i * jsize4];
 				for (m = 0; m <= 2; m++) {
-					rhs[m + i1 * isize1 + j * jsize1 + k * ksize1] = rhs[m + i1
+					rhs[m ][ i1 ][ j ][ k ] = rhs[m + i1
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhs[1 + i1 * jsize4] * rhs[m][i][j][k];
 				}
@@ -2031,8 +2031,8 @@ public class SP extends SPBase {
 				// ---------------------------------------------------------------------
 				fac2 = 1. / lhs[2 + i1 * jsize4];
 				for (m = 0; m <= 2; m++) {
-					rhs[m + i1 * isize1 + j * jsize1 + k * ksize1] = fac2
-							* rhs[m + i1 * isize1 + j * jsize1 + k * ksize1];
+					rhs[m ][ i1 ][ j ][ k ] = fac2
+							* rhs[m ][ i1 ][ j ][ k ];
 				}
 
 				// ---------------------------------------------------------------------
@@ -2051,14 +2051,14 @@ public class SP extends SPBase {
 							- lhsp[1 + i1 * jsize4] * lhsp[3 + i * jsize4];
 					lhsp[3 + i1 * jsize4] = lhsp[3 + i1 * jsize4]
 							- lhsp[1 + i1 * jsize4] * lhsp[4 + i * jsize4];
-					rhs[m + i1 * isize1 + j * jsize1 + k * ksize1] = rhs[m + i1
+					rhs[m ][ i1 ][ j ][ k ] = rhs[m + i1
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhsp[1 + i1 * jsize4] * rhs[m][i][j][k];
 					lhsp[1 + i2 * jsize4] = lhsp[1 + i2 * jsize4]
 							- lhsp[0 + i2 * jsize4] * lhsp[3 + i * jsize4];
 					lhsp[2 + i2 * jsize4] = lhsp[2 + i2 * jsize4]
 							- lhsp[0 + i2 * jsize4] * lhsp[4 + i * jsize4];
-					rhs[m + i2 * isize1 + j * jsize1 + k * ksize1] = rhs[m + i2
+					rhs[m ][ i2 ][ j ][ k ] = rhs[m + i2
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhsp[0 + i2 * jsize4] * rhs[m][i][j][k];
 					m = 4;
@@ -2070,14 +2070,14 @@ public class SP extends SPBase {
 							- lhsm[1 + i1 * jsize4] * lhsm[3 + i * jsize4];
 					lhsm[3 + i1 * jsize4] = lhsm[3 + i1 * jsize4]
 							- lhsm[1 + i1 * jsize4] * lhsm[4 + i * jsize4];
-					rhs[m + i1 * isize1 + j * jsize1 + k * ksize1] = rhs[m + i1
+					rhs[m ][ i1 ][ j ][ k ] = rhs[m + i1
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhsm[1 + i1 * jsize4] * rhs[m][i][j][k];
 					lhsm[1 + i2 * jsize4] = lhsm[1 + i2 * jsize4]
 							- lhsm[0 + i2 * jsize4] * lhsm[3 + i * jsize4];
 					lhsm[2 + i2 * jsize4] = lhsm[2 + i2 * jsize4]
 							- lhsm[0 + i2 * jsize4] * lhsm[4 + i * jsize4];
-					rhs[m + i2 * isize1 + j * jsize1 + k * ksize1] = rhs[m + i2
+					rhs[m ][ i2 ][ j ][ k ] = rhs[m + i2
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhsm[0 + i2 * jsize4] * rhs[m][i][j][k];
 				}
@@ -2096,7 +2096,7 @@ public class SP extends SPBase {
 						- lhsp[1 + i1 * jsize4] * lhsp[3 + i * jsize4];
 				lhsp[3 + i1 * jsize4] = lhsp[3 + i1 * jsize4]
 						- lhsp[1 + i1 * jsize4] * lhsp[4 + i * jsize4];
-				rhs[m + i1 * isize1 + j * jsize1 + k * ksize1] = rhs[m + i1
+				rhs[m ][ i1 ][ j ][ k ] = rhs[m + i1
 						* isize1 + j * jsize1 + k * ksize1]
 						- lhsp[1 + i1 * jsize4] * rhs[m][i][j][k];
 				m = 4;
@@ -2108,16 +2108,16 @@ public class SP extends SPBase {
 						- lhsm[1 + i1 * jsize4] * lhsm[3 + i * jsize4];
 				lhsm[3 + i1 * jsize4] = lhsm[3 + i1 * jsize4]
 						- lhsm[1 + i1 * jsize4] * lhsm[4 + i * jsize4];
-				rhs[m + i1 * isize1 + j * jsize1 + k * ksize1] = rhs[m + i1
+				rhs[m ][ i1 ][ j ][ k ] = rhs[m + i1
 						* isize1 + j * jsize1 + k * ksize1]
 						- lhsm[1 + i1 * jsize4] * rhs[m][i][j][k];
 				// ---------------------------------------------------------------------
 				// Scale the last row immediately
 				// ---------------------------------------------------------------------
-				rhs[3 + i1 * isize1 + j * jsize1 + k * ksize1] = rhs[3 + i1
+				rhs[3 ][ i1 ][ j ][ k ] = rhs[3 + i1
 						* isize1 + j * jsize1 + k * ksize1]
 						/ lhsp[2 + i1 * jsize4];
-				rhs[4 + i1 * isize1 + j * jsize1 + k * ksize1] = rhs[4 + i1
+				rhs[4 ][ i1 ][ j ][ k ] = rhs[4 + i1
 						* isize1 + j * jsize1 + k * ksize1]
 						/ lhsm[2 + i1 * jsize4];
 
@@ -2129,17 +2129,17 @@ public class SP extends SPBase {
 				i1 = grid_points[0] - 1;
 				for (m = 0; m <= 2; m++) {
 					rhs[m][i][j][k] = rhs[m][i][j][k] - lhs[3 + i * jsize4]
-							* rhs[m + i1 * isize1 + j * jsize1 + k * ksize1];
+							* rhs[m ][ i1 ][ j ][ k ];
 				}
 
-				rhs[3 + i * isize1 + j * jsize1 + k * ksize1] = rhs[3 + i
+				rhs[3 ][ i ][ j ][ k ] = rhs[3 + i
 						* isize1 + j * jsize1 + k * ksize1]
 						- lhsp[3 + i * jsize4]
-						* rhs[3 + i1 * isize1 + j * jsize1 + k * ksize1];
-				rhs[4 + i * isize1 + j * jsize1 + k * ksize1] = rhs[4 + i
+						* rhs[3 ][ i1 ][ j ][ k ];
+				rhs[4 ][ i ][ j ][ k ] = rhs[4 + i
 						* isize1 + j * jsize1 + k * ksize1]
 						- lhsm[3 + i * jsize4]
-						* rhs[4 + i1 * isize1 + j * jsize1 + k * ksize1];
+						* rhs[4 ][ i1 ][ j ][ k ];
 
 				// ---------------------------------------------------------------------
 				// The first three factors
@@ -2151,25 +2151,25 @@ public class SP extends SPBase {
 					for (m = 0; m <= 2; m++) {
 						rhs[m][i][j][k] = rhs[m][i][j][k]
 								- lhs[3 + i * jsize4]
-								* rhs[m + i1 * isize1 + j * jsize1 + k * ksize1]
+								* rhs[m ][ i1 ][ j ][ k ]
 								- lhs[4 + i * jsize4]
-								* rhs[m + i2 * isize1 + j * jsize1 + k * ksize1];
+								* rhs[m ][ i2 ][ j ][ k ];
 					}
 					// ---------------------------------------------------------------------
 					// And the remaining two
 					// ---------------------------------------------------------------------
-					rhs[3 + i * isize1 + j * jsize1 + k * ksize1] = rhs[3 + i
+					rhs[3 ][ i ][ j ][ k ] = rhs[3 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhsp[3 + i * jsize4]
-							* rhs[3 + i1 * isize1 + j * jsize1 + k * ksize1]
+							* rhs[3 ][ i1 ][ j ][ k ]
 							- lhsp[4 + i * jsize4]
-							* rhs[3 + i2 * isize1 + j * jsize1 + k * ksize1];
-					rhs[4 + i * isize1 + j * jsize1 + k * ksize1] = rhs[4 + i
+							* rhs[3 ][ i2 ][ j ][ k ];
+					rhs[4 ][ i ][ j ][ k ] = rhs[4 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhsm[3 + i * jsize4]
-							* rhs[4 + i1 * isize1 + j * jsize1 + k * ksize1]
+							* rhs[4 ][ i1 ][ j ][ k ]
 							- lhsm[4 + i * jsize4]
-							* rhs[4 + i2 * isize1 + j * jsize1 + k * ksize1];
+							* rhs[4 ][ i2 ][ j ][ k ];
 				}
 			}
 		}
@@ -2300,7 +2300,7 @@ public class SP extends SPBase {
 					lhs[3 + j1 * jsize4] = lhs[3 + j1 * jsize4]
 							- lhs[1 + j1 * jsize4] * lhs[4 + j * jsize4];
 					for (m = 0; m <= 2; m++) {
-						rhs[m + i * isize1 + j1 * jsize1 + k * ksize1] = rhs[m
+						rhs[m ][ i ][ j1 ][ k ] = rhs[m
 								+ i * isize1 + j1 * jsize1 + k * ksize1]
 								- lhs[1 + j1 * jsize4] * rhs[m][i][j][k];
 					}
@@ -2309,7 +2309,7 @@ public class SP extends SPBase {
 					lhs[2 + j2 * jsize4] = lhs[2 + j2 * jsize4]
 							- lhs[0 + j2 * jsize4] * lhs[4 + j * jsize4];
 					for (m = 0; m <= 2; m++) {
-						rhs[m + i * isize1 + j2 * jsize1 + k * ksize1] = rhs[m
+						rhs[m ][ i ][ j2 ][ k ] = rhs[m
 								+ i * isize1 + j2 * jsize1 + k * ksize1]
 								- lhs[0 + j2 * jsize4] * rhs[m][i][j][k];
 					}
@@ -2334,7 +2334,7 @@ public class SP extends SPBase {
 				lhs[3 + j1 * jsize4] = lhs[3 + j1 * jsize4]
 						- lhs[1 + j1 * jsize4] * lhs[4 + j * jsize4];
 				for (m = 0; m <= 2; m++) {
-					rhs[m + i * isize1 + j1 * jsize1 + k * ksize1] = rhs[m + i
+					rhs[m ][ i ][ j1 ][ k ] = rhs[m + i
 							* isize1 + j1 * jsize1 + k * ksize1]
 							- lhs[1 + j1 * jsize4] * rhs[m][i][j][k];
 				}
@@ -2343,8 +2343,8 @@ public class SP extends SPBase {
 				// ---------------------------------------------------------------------
 				fac2 = 1. / lhs[2 + j1 * jsize4];
 				for (m = 0; m <= 2; m++) {
-					rhs[m + i * isize1 + j1 * jsize1 + k * ksize1] = fac2
-							* rhs[m + i * isize1 + j1 * jsize1 + k * ksize1];
+					rhs[m ][ i ][ j1 ][ k ] = fac2
+							* rhs[m ][ i ][ j1 ][ k ];
 				}
 
 				// ---------------------------------------------------------------------
@@ -2362,14 +2362,14 @@ public class SP extends SPBase {
 							- lhsp[1 + j1 * jsize4] * lhsp[3 + j * jsize4];
 					lhsp[3 + j1 * jsize4] = lhsp[3 + j1 * jsize4]
 							- lhsp[1 + j1 * jsize4] * lhsp[4 + j * jsize4];
-					rhs[m + i * isize1 + j1 * jsize1 + k * ksize1] = rhs[m + i
+					rhs[m ][ i ][ j1 ][ k ] = rhs[m + i
 							* isize1 + j1 * jsize1 + k * ksize1]
 							- lhsp[1 + j1 * jsize4] * rhs[m][i][j][k];
 					lhsp[1 + j2 * jsize4] = lhsp[1 + j2 * jsize4]
 							- lhsp[0 + j2 * jsize4] * lhsp[3 + j * jsize4];
 					lhsp[2 + j2 * jsize4] = lhsp[2 + j2 * jsize4]
 							- lhsp[0 + j2 * jsize4] * lhsp[4 + j * jsize4];
-					rhs[m + i * isize1 + j2 * jsize1 + k * ksize1] = rhs[m + i
+					rhs[m ][ i ][ j2 ][ k ] = rhs[m + i
 							* isize1 + j2 * jsize1 + k * ksize1]
 							- lhsp[0 + j2 * jsize4] * rhs[m][i][j][k];
 					m = 4;
@@ -2381,14 +2381,14 @@ public class SP extends SPBase {
 							- lhsm[1 + j1 * jsize4] * lhsm[3 + j * jsize4];
 					lhsm[3 + j1 * jsize4] = lhsm[3 + j1 * jsize4]
 							- lhsm[1 + j1 * jsize4] * lhsm[4 + j * jsize4];
-					rhs[m + i * isize1 + j1 * jsize1 + k * ksize1] = rhs[m + i
+					rhs[m ][ i ][ j1 ][ k ] = rhs[m + i
 							* isize1 + j1 * jsize1 + k * ksize1]
 							- lhsm[1 + j1 * jsize4] * rhs[m][i][j][k];
 					lhsm[1 + j2 * jsize4] = lhsm[1 + j2 * jsize4]
 							- lhsm[0 + j2 * jsize4] * lhsm[3 + j * jsize4];
 					lhsm[2 + j2 * jsize4] = lhsm[2 + j2 * jsize4]
 							- lhsm[0 + j2 * jsize4] * lhsm[4 + j * jsize4];
-					rhs[m + i * isize1 + j2 * jsize1 + k * ksize1] = rhs[m + i
+					rhs[m ][ i ][ j2 ][ k ] = rhs[m + i
 							* isize1 + j2 * jsize1 + k * ksize1]
 							- lhsm[0 + j2 * jsize4] * rhs[m][i][j][k];
 				}
@@ -2407,7 +2407,7 @@ public class SP extends SPBase {
 						- lhsp[1 + j1 * jsize4] * lhsp[3 + j * jsize4];
 				lhsp[3 + j1 * jsize4] = lhsp[3 + j1 * jsize4]
 						- lhsp[1 + j1 * jsize4] * lhsp[4 + j * jsize4];
-				rhs[m + i * isize1 + j1 * jsize1 + k * ksize1] = rhs[m + i
+				rhs[m ][ i ][ j1 ][ k ] = rhs[m + i
 						* isize1 + j1 * jsize1 + k * ksize1]
 						- lhsp[1 + j1 * jsize4] * rhs[m][i][j][k];
 				m = 4;
@@ -2419,16 +2419,16 @@ public class SP extends SPBase {
 						- lhsm[1 + j1 * jsize4] * lhsm[3 + j * jsize4];
 				lhsm[3 + j1 * jsize4] = lhsm[3 + j1 * jsize4]
 						- lhsm[1 + j1 * jsize4] * lhsm[4 + j * jsize4];
-				rhs[m + i * isize1 + j1 * jsize1 + k * ksize1] = rhs[m + i
+				rhs[m ][ i ][ j1 ][ k ] = rhs[m + i
 						* isize1 + j1 * jsize1 + k * ksize1]
 						- lhsm[1 + j1 * jsize4] * rhs[m][i][j][k];
 				// ---------------------------------------------------------------------
 				// Scale the last row immediately
 				// ---------------------------------------------------------------------
-				rhs[3 + i * isize1 + j1 * jsize1 + k * ksize1] = rhs[3 + i
+				rhs[3 ][ i ][ j1 ][ k ] = rhs[3 + i
 						* isize1 + j1 * jsize1 + k * ksize1]
 						/ lhsp[2 + j1 * jsize4];
-				rhs[4 + i * isize1 + j1 * jsize1 + k * ksize1] = rhs[4 + i
+				rhs[4 ][ i ][ j1 ][ k ] = rhs[4 + i
 						* isize1 + j1 * jsize1 + k * ksize1]
 						/ lhsm[2 + j1 * jsize4];
 
@@ -2440,17 +2440,17 @@ public class SP extends SPBase {
 				j1 = grid_points[1] - 1;
 				for (m = 0; m <= 2; m++) {
 					rhs[m][i][j][k] = rhs[m][i][j][k] - lhs[3 + j * jsize4]
-							* rhs[m + i * isize1 + j1 * jsize1 + k * ksize1];
+							* rhs[m ][ i ][ j1 ][ k ];
 				}
 
-				rhs[3 + i * isize1 + j * jsize1 + k * ksize1] = rhs[3 + i
+				rhs[3 ][ i ][ j ][ k ] = rhs[3 + i
 						* isize1 + j * jsize1 + k * ksize1]
 						- lhsp[3 + j * jsize4]
-						* rhs[3 + i * isize1 + j1 * jsize1 + k * ksize1];
-				rhs[4 + i * isize1 + j * jsize1 + k * ksize1] = rhs[4 + i
+						* rhs[3 ][ i ][ j1 ][ k ];
+				rhs[4 ][ i ][ j ][ k ] = rhs[4 + i
 						* isize1 + j * jsize1 + k * ksize1]
 						- lhsm[3 + j * jsize4]
-						* rhs[4 + i * isize1 + j1 * jsize1 + k * ksize1];
+						* rhs[4 ][ i ][ j1 ][ k ];
 
 				// ---------------------------------------------------------------------
 				// The first three factors
@@ -2461,26 +2461,26 @@ public class SP extends SPBase {
 					for (m = 0; m <= 2; m++) {
 						rhs[m][i][j][k] = rhs[m][i][j][k]
 								- lhs[3 + j * jsize4]
-								* rhs[m + i * isize1 + j1 * jsize1 + k * ksize1]
+								* rhs[m ][ i ][ j1 ][ k ]
 								- lhs[4 + j * jsize4]
-								* rhs[m + i * isize1 + j2 * jsize1 + k * ksize1];
+								* rhs[m ][ i ][ j2 ][ k ];
 					}
 
 					// ---------------------------------------------------------------------
 					// And the remaining two
 					// ---------------------------------------------------------------------
-					rhs[3 + i * isize1 + j * jsize1 + k * ksize1] = rhs[3 + i
+					rhs[3 ][ i ][ j ][ k ] = rhs[3 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhsp[3 + j * jsize4]
-							* rhs[3 + i * isize1 + j1 * jsize1 + k * ksize1]
+							* rhs[3 ][ i ][ j1 ][ k ]
 							- lhsp[4 + j * jsize4]
-							* rhs[3 + i * isize1 + j2 * jsize1 + k * ksize1];
-					rhs[4 + i * isize1 + j * jsize1 + k * ksize1] = rhs[4 + i
+							* rhs[3 ][ i ][ j2 ][ k ];
+					rhs[4 ][ i ][ j ][ k ] = rhs[4 + i
 							* isize1 + j * jsize1 + k * ksize1]
 							- lhsm[3 + j * jsize4]
-							* rhs[4 + i * isize1 + j1 * jsize1 + k * ksize1]
+							* rhs[4 ][ i ][ j1 ][ k ]
 							- lhsm[4 + j * jsize4]
-							* rhs[4 + i * isize1 + j2 * jsize1 + k * ksize1];
+							* rhs[4 ][ i ][ j2 ][ k ];
 				}
 			}
 		}
@@ -2787,11 +2787,16 @@ public class SP extends SPBase {
 				// Store result
 				// ---------------------------------------------------------------------
 				for (k = 0; k <= nz2 + 1; k++) {
-					rhs[0 + i * isize1 + j * jsize1 + k * ksize1] = rtmp[0 + k * 5];
-					rhs[1 + i * isize1 + j * jsize1 + k * ksize1] = rtmp[1 + k * 5];
-					rhs[2 + i * isize1 + j * jsize1 + k * ksize1] = rtmp[2 + k * 5];
-					rhs[3 + i * isize1 + j * jsize1 + k * ksize1] = rtmp[3 + k * 5];
-					rhs[4 + i * isize1 + j * jsize1 + k * ksize1] = rtmp[4 + k * 5];
+					rhs[0 ][ i ][ j ][ k ] = 
+						rtmp[0 + k * 5];
+					rhs[1 ][ i ][ j ][ k ] = 
+						rtmp[1 + k * 5];
+					rhs[2 ][ i ][ j ][ k ] =
+						rtmp[2 + k * 5];
+					rhs[3 ][ i ][ j ][ k ] = 
+						rtmp[3 + k * 5];
+					rhs[4 ][ i ][ j ][ k ] =
+						rtmp[4 + k * 5];
 				}
 
 			}
