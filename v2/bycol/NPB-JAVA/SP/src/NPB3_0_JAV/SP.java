@@ -2175,7 +2175,7 @@ public class SP extends SPBase {
 
 	public void z_solve() {
 		int i, j, k, n, k1, k2, m;
-		double ru1, fac1, fac2, rtmp[] = new double[5][(KMAX + 1)];
+		double ru1, fac1, fac2, rtmp[][] = new double[5][(KMAX + 1)];
 
 		// ---------------------------------------------------------------------
 		// ---------------------------------------------------------------------
