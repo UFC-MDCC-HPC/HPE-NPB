@@ -59,8 +59,8 @@ public class SPBase extends Thread
 	protected double u[][][][], rhs[][][][], forcing[];
 	protected int isize1, jsize1, ksize1;
 
-	protected double us[], vs[], ws[], qs[],
-					 rho_i[], speed[], square[][][];
+	protected double us[][][], vs[][][], ws[][][], qs[][][],
+					 rho_i[][][], speed[][][], square[][][];
 	protected int jsize2, ksize2;
 
 	protected double ue[][], buf[][];
