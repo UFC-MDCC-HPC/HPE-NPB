@@ -53,7 +53,7 @@ public class XSolver extends SPBase {
 	int lower_bound;
 	int upper_bound;
 	int state = 1;
-	double lhs[], lhsm[], lhsp[], cv[], rhon[];
+	double lhs[][], lhsm[][], lhsp[][], cv[], rhon[];
 
 	public XSolver(SP sp, int low, int high) {
 		Init(sp);
