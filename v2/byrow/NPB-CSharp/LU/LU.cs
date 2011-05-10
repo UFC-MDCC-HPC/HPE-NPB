@@ -78,6 +78,7 @@ namespace NPB3_0_JAV{
 			try{ 
 				lu = new LU(CLSS, np);
 			} catch(OutOfMemoryException e){
+				Console.WriteLine(e.Message);
 				BMArgs.outOfMemoryMessage();
 				Environment.Exit(0);
 			}      
@@ -225,24 +226,23 @@ namespace NPB3_0_JAV{
 
 		public void blts(int ldmx, int ldmy, int ldmz, int nx, int ny, int nz, 
 		                 int k, double omega, 
-		                 double[,,,] v, double[,,] tv, double[,,,] ldz, double[,,,] ldy, 
-		                 double[,,,] ldx, double[,,,] d, 
+		                 double[][][][] v, double[][][] tv, double[][][][] ldz, double[][][][] ldy, 
+		                 double[][][][] ldx, double[][][][] d, 
 		                 int ist, int iend, int jst, int jend, int nx0, int ny0){
 			int i, j, m;
-			int iex;
 			double  tmp, tmp1;
-			double[,]  tmat = new double[5,5];
+			double[][]  tmat = instantiate_jagged_array_2(5, 5);
 
 			for(j = jst-1; j <= jend-1; j++){
 				for(i = ist-1; i <= iend-1; i++){
 					for(m = 0; m <= 4; m++){
 
-						tv[j,i,m] =  v[k,j,i,m]
-						- omega * (  ldz[j, i, 0, m] * v[k-1, j, i, 0]
-						           + ldz[j, i, 1, m] * v[k-1, j, i, 1]
-						           + ldz[j, i, 2, m] * v[k-1, j, i, 2]
-						           + ldz[j, i, 3, m] * v[k-1, j, i, 3]
-						           + ldz[j, i, 4, m] * v[k-1, j, i, 4]  );
+						tv[j][i][m] =  v[k][j][i][m]
+						- omega * (  ldz[j][ i][ 0][ m] * v[k-1][ j][ i][ 0]
+						           + ldz[j][ i][ 1][ m] * v[k-1][ j][ i][ 1]
+						           + ldz[j][ i][ 2][ m] * v[k-1][ j][ i][ 2]
+						           + ldz[j][ i][ 3][ m] * v[k-1][ j][ i][ 3]
+						           + ldz[j][ i][ 4][ m] * v[k-1][ j][ i][ 4]  );
 					}
 				}
 			}
@@ -251,17 +251,17 @@ namespace NPB3_0_JAV{
 				for(i=ist-1;i<=iend-1;i++){
 					for(m=0;m<=4;m++){
 
-						tv[j, i, m] =  tv[j, i , m]
-						- omega * (  ldy[j, i, 0, m] * v[k, j-1, i, 0]
-						           + ldx[j, i, 0, m] * v[k, j, i-1, 0]
-						           + ldy[j, i, 1, m] * v[k, j-1, i, 1]
-						           + ldx[j, i, 1, m] * v[k, j, i-1, 1]
-						           + ldy[j, i, 2, m] * v[k, j-1, i, 2]
-						           + ldx[j, i, 2, m] * v[k, j, i-1, 2]
-						           + ldy[j, i, 3, m] * v[k, j-1, i, 3]
-						           + ldx[j, i, 3, m] * v[k, j, i-1, 3]
-						           + ldy[j, i, 4, m] * v[k, j-1, i, 4]
-						           + ldx[j, i, 4, m] * v[k, j, i-1, 4] );
+						tv[j][ i][ m] =  tv[j][ i ][ m]
+						- omega * (  ldy[j][ i][ 0][ m] * v[k][ j-1][ i][ 0]
+						           + ldx[j][ i][ 0][ m] * v[k][ j][ i-1][ 0]
+						           + ldy[j][ i][ 1][ m] * v[k][ j-1][ i][ 1]
+						           + ldx[j][ i][ 1][ m] * v[k][ j][ i-1][ 1]
+						           + ldy[j][ i][ 2][ m] * v[k][ j-1][ i][ 2]
+						           + ldx[j][ i][ 2][ m] * v[k][ j][ i-1][ 2]
+						           + ldy[j][ i][ 3][ m] * v[k][ j-1][ i][ 3]
+						           + ldx[j][ i][ 3][ m] * v[k][ j][ i-1][ 3]
+						           + ldy[j][ i][ 4][ m] * v[k][ j-1][ i][ 4]
+						           + ldx[j][ i][ 4][ m] * v[k][ j][ i-1][ 4] );
 					}
        
 //---------------------------------------------------------------------
@@ -270,172 +270,172 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
             
 					for(m=0;m<=4;m++){
-						tmat[0, m] = d[j, i, 0, m];
-						tmat[1, m] = d[j, i, 1, m];
-						tmat[2, m] = d[j, i, 2, m];
-						tmat[3, m] = d[j, i, 3, m];
-						tmat[4, m] = d[j, i, 4, m];
+						tmat[0][ m] = d[j][ i][ 0][ m];
+						tmat[1][ m] = d[j][ i][ 1][ m];
+						tmat[2][ m] = d[j][ i][ 2][ m];
+						tmat[3][ m] = d[j][ i][ 3][ m];
+						tmat[4][ m] = d[j][ i][ 4][ m];
 					}
 
-					tmp1 = 1.0 / tmat[0, 0];
-					tmp = tmp1 * tmat[0, 1];
-					tmat[1, 1] =  tmat[1, 1]
-					- tmp * tmat[1, 0];
-					tmat[2, 1] =  tmat[2, 1]
-					- tmp * tmat[2, 0];
-					tmat[3, 1] =  tmat[3, 1]
-					- tmp * tmat[3, 0];
-					tmat[4, 1] =  tmat[4, 1]
-					- tmp * tmat[4, 0];
-					tv[j, i, 1] = tv[j, i, 1]
-					- tv[j, i, 0] * tmp;
+					tmp1 = 1.0 / tmat[0][ 0];
+					tmp = tmp1 * tmat[0][ 1];
+					tmat[1][ 1] =  tmat[1][ 1]
+					- tmp * tmat[1][ 0];
+					tmat[2][ 1] =  tmat[2][ 1]
+					- tmp * tmat[2][ 0];
+					tmat[3][ 1] =  tmat[3][ 1]
+					- tmp * tmat[3][ 0];
+					tmat[4][ 1] =  tmat[4][ 1]
+					- tmp * tmat[4][ 0];
+					tv[j][ i][ 1] = tv[j][ i][ 1]
+					- tv[j][ i][ 0] * tmp;
 
-					tmp = tmp1 * tmat[0, 2];
-					tmat[1, 2] =  tmat[1, 2]
-					- tmp * tmat[1, 0];
-					tmat[2, 2] =  tmat[2, 2]
-					- tmp * tmat[2, 0];
-					tmat[3, 2] =  tmat[3, 2]
-					- tmp * tmat[3, 0];
-					tmat[4, 2] =  tmat[4, 2]
-					- tmp * tmat[4, 0];
-					tv[j, i, 2] = tv[j, i, 2]
-					- tv[j, i, 0] * tmp;
+					tmp = tmp1 * tmat[0][ 2];
+					tmat[1][ 2] =  tmat[1][ 2]
+					- tmp * tmat[1][ 0];
+					tmat[2][ 2] =  tmat[2][ 2]
+					- tmp * tmat[2][ 0];
+					tmat[3][ 2] =  tmat[3][ 2]
+					- tmp * tmat[3][ 0];
+					tmat[4][ 2] =  tmat[4][ 2]
+					- tmp * tmat[4][ 0];
+					tv[j][ i][ 2] = tv[j][ i][ 2]
+					- tv[j][ i][ 0] * tmp;
 
-					tmp = tmp1 * tmat[0, 3];
-					tmat[1, 3] =  tmat[1, 3]
-					- tmp * tmat[1, 0];
-					tmat[2, 3] =  tmat[2, 3]
-					- tmp * tmat[2, 0];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 0];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 0];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 0] * tmp;
+					tmp = tmp1 * tmat[0][ 3];
+					tmat[1][ 3] =  tmat[1][ 3]
+					- tmp * tmat[1][ 0];
+					tmat[2][ 3] =  tmat[2][ 3]
+					- tmp * tmat[2][ 0];
+					tmat[3][ 3] =  tmat[3][ 3]
+					- tmp * tmat[3][ 0];
+					tmat[4][ 3] =  tmat[4][ 3]
+					- tmp * tmat[4][ 0];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					- tv[j][ i][ 0] * tmp;
 
-					tmp = tmp1 * tmat[0, 4];
-					tmat[1, 4] =  tmat[1, 4]
-					- tmp * tmat[1, 0];
-					tmat[2, 4] =  tmat[2, 4]
-					- tmp * tmat[2, 0];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 0];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 0];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 0] * tmp;
+					tmp = tmp1 * tmat[0][ 4];
+					tmat[1][ 4] =  tmat[1][ 4]
+					- tmp * tmat[1][ 0];
+					tmat[2][ 4] =  tmat[2][ 4]
+					- tmp * tmat[2][ 0];
+					tmat[3][ 4] =  tmat[3][ 4]
+					- tmp * tmat[3][ 0];
+					tmat[4][ 4] =  tmat[4][ 4]
+					- tmp * tmat[4][ 0];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					- tv[j][ i][ 0] * tmp;
 
-					tmp1 = 1.0 / tmat[1, 1];
-					tmp = tmp1 * tmat[1, 2];
-					tmat[2, 2] =  tmat[2, 2]
-					- tmp * tmat[2, 1];
-					tmat[3, 2] =  tmat[3, 2]
-					- tmp * tmat[3, 1];
-					tmat[4, 2] =  tmat[4, 2]
-					- tmp * tmat[4, 1];
-					tv[j, i, 2] = tv[j, i, 2]
-					- tv[j, i, 1] * tmp;
+					tmp1 = 1.0 / tmat[1][ 1];
+					tmp = tmp1 * tmat[1][ 2];
+					tmat[2][ 2] =  tmat[2][ 2]
+					- tmp * tmat[2][ 1];
+					tmat[3][ 2] =  tmat[3][ 2]
+					- tmp * tmat[3][ 1];
+					tmat[4][ 2] =  tmat[4][ 2]
+					- tmp * tmat[4][ 1];
+					tv[j][ i][ 2] = tv[j][ i][ 2]
+					- tv[j][ i][ 1] * tmp;
 
-					tmp = tmp1 * tmat[1, 3];
-					tmat[2, 3] =  tmat[2, 3]
-					- tmp * tmat[2, 1];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 1];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 1];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 1] * tmp;
+					tmp = tmp1 * tmat[1][ 3];
+					tmat[2][ 3] =  tmat[2][ 3]
+					- tmp * tmat[2][ 1];
+					tmat[3][ 3] =  tmat[3][ 3]
+					- tmp * tmat[3][ 1];
+					tmat[4][ 3] =  tmat[4][ 3]
+					- tmp * tmat[4][ 1];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					- tv[j][ i][ 1] * tmp;
 
-					tmp = tmp1 * tmat[1, 4];
-					tmat[2, 4] =  tmat[2, 4]
-					- tmp * tmat[2, 1];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 1];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 1];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 1] * tmp;
+					tmp = tmp1 * tmat[1][ 4];
+					tmat[2][ 4] =  tmat[2][ 4]
+					- tmp * tmat[2][ 1];
+					tmat[3][ 4] =  tmat[3][ 4]
+					- tmp * tmat[3][ 1];
+					tmat[4][ 4] =  tmat[4][ 4]
+					- tmp * tmat[4][ 1];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					- tv[j][ i][ 1] * tmp;
 
-					tmp1 = 1.0 / tmat[2, 2];
-					tmp = tmp1 * tmat[2, 3];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 2];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 2];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 2] * tmp;
+					tmp1 = 1.0 / tmat[2][ 2];
+					tmp = tmp1 * tmat[2][ 3];
+					tmat[3][ 3] =  tmat[3][ 3]
+					- tmp * tmat[3][ 2];
+					tmat[4][ 3] =  tmat[4][ 3]
+					- tmp * tmat[4][ 2];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					- tv[j][ i][ 2] * tmp;
 
-					tmp = tmp1 * tmat[2, 4];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 2];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 2];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 2] * tmp;
+					tmp = tmp1 * tmat[2][ 4];
+					tmat[3][ 4] =  tmat[3][ 4]
+					- tmp * tmat[3][ 2];
+					tmat[4][ 4] =  tmat[4][ 4]
+					- tmp * tmat[4][ 2];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					- tv[j][ i][ 2] * tmp;
 
-					tmp1 = 1.0 / tmat[3, 3];
-					tmp = tmp1 * tmat[3, 4];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 3];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 3] * tmp;
+					tmp1 = 1.0 / tmat[3][ 3];
+					tmp = tmp1 * tmat[3][ 4];
+					tmat[4][ 4] =  tmat[4][ 4]
+					- tmp * tmat[4][ 3];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					- tv[j][ i][ 3] * tmp;
 
 //---------------------------------------------------------------------
 //   back substitution
 //---------------------------------------------------------------------
             
-					v[k, j, i, 4] = tv[j, i, 4]
-					/ tmat[4, 4];
+					v[k][ j][ i][ 4] = tv[j][ i][ 4]
+					/ tmat[4][ 4];
 
-					tv[j, i, 3] = tv[j, i, 3]
-					- tmat[4, 3] * v[k, j, i, 4];
-					v[k, j, i, 3] = tv[j, i, 3]
-					/ tmat[3, 3];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					- tmat[4][ 3] * v[k][ j][ i][ 4];
+					v[k][ j][ i][ 3] = tv[j][ i][ 3]
+					/ tmat[3][ 3];
 
-					tv[j, i, 2] = tv[j, i, 2]
-					- tmat[3, 2] * v[k, j, i, 3]
-					- tmat[4, 2] * v[k, j, i, 4];
-					v[k, j, i, 2] = tv[j, i, 2]
-					/ tmat[2, 2];
+					tv[j][ i][ 2] = tv[j][ i][ 2]
+					- tmat[3][ 2] * v[k][ j][ i][ 3]
+					- tmat[4][ 2] * v[k][ j][ i][ 4];
+					v[k][ j][ i][ 2] = tv[j][ i][ 2]
+					/ tmat[2][ 2];
 
-					tv[j, i, 1] = tv[j, i, 1]
-					- tmat[2, 1] * v[k, j, i, 2]
-					- tmat[3, 1] * v[k, j, i, 3]
-					- tmat[4, 1] * v[k, j, i, 4];
-					v[k, j, i, 1] = tv[j, i, 1]
-					/ tmat[1, 1];
+					tv[j][ i][ 1] = tv[j][ i][ 1]
+					- tmat[2][ 1] * v[k][ j][ i][ 2]
+					- tmat[3][ 1] * v[k][ j][ i][ 3]
+					- tmat[4][ 1] * v[k][ j][ i][ 4];
+					v[k][ j][ i][ 1] = tv[j][ i][ 1]
+					/ tmat[1][ 1];
 
-					tv[j, i, 0] = tv[j, i, 0]
-					- tmat[1, 0] * v[k, j, i, 1]
-					- tmat[2, 0] * v[k, j, i, 2]
-					- tmat[3, 0] * v[k, j, i, 3]
-					- tmat[4, 0] * v[k, j, i, 4];
-					v[k, j, i, 0] = tv[j, i, 0]
-					/ tmat[0, 0];
+					tv[j][ i][ 0] = tv[j][ i][ 0]
+					- tmat[1][ 0] * v[k][ j][ i][ 1]
+					- tmat[2][ 0] * v[k][ j][ i][ 2]
+					- tmat[3][ 0] * v[k][ j][ i][ 3]
+					- tmat[4][ 0] * v[k][ j][ i][ 4];
+					v[k][ j][ i][ 0] = tv[j][ i][ 0]
+					/ tmat[0][ 0];
 				}
 			}
 		}
 
 		public void buts(int ldmx, int ldmy, int ldmz, int nx, int ny, int nz, 
 		                 int k, double omega, 
-		                 double[,,,] v, double[,,] tv, double[,,,] d, double[,,,] udx, 
-		                 double[,,,] udy, double[,,,] udz, 
+		                 double[][][][] v, double[][][] tv, double[][][][] d, double[][][][] udx, 
+		                 double[][][][] udy, double[][][][] udz, 
 		                 int ist, int iend, int jst, int jend, int nx0, int ny0){
 			int i, j, m;
 			double  tmp, tmp1;
-			double[,]  tmat =  new double[5,5];
+			double[][]  tmat =  instantiate_jagged_array_2(5, 5);
 
 
 			for(j=jend-1;j>=jst-1;j--){
 				for(i=iend-1;i>=ist-1;i--){
 					for(m=0;m<=4;m++){
-						tv[j, i, m] = 
-							omega * (  udz[j, i, 0, m] * v[k+1, j, i, 0]
-							         + udz[j, i, 1, m] * v[k+1, j, i, 1]
-							         + udz[j, i, 2, m] * v[k+1, j, i, 2]
-							         + udz[j, i, 3, m] * v[k+1, j, i, 3]
-							         + udz[j, i, 4, m] * v[k+1, j, i, 4] );
+						tv[j][ i][ m] = 
+							omega * (  udz[j][ i][ 0][ m] * v[k+1][ j][ i][ 0]
+							         + udz[j][ i][ 1][ m] * v[k+1][ j][ i][ 1]
+							         + udz[j][ i][ 2][ m] * v[k+1][ j][ i][ 2]
+							         + udz[j][ i][ 3][ m] * v[k+1][ j][ i][ 3]
+							         + udz[j][ i][ 4][ m] * v[k+1][ j][ i][ 4] );
 					}
 				}
 			}
@@ -444,17 +444,17 @@ namespace NPB3_0_JAV{
 			for(j=jend-1;j>=jst-1;j--){
 				for(i=iend-1;i>=ist-1;i--){
 					for(m=0;m<=4;m++){
-						tv[j, i, m] = tv[j, i, m]
-						+ omega * ( udy[j, i, 0, m] * v[k, j+1, i, 0]
-						           + udx[j, i, 0, m] * v[k, j, i+1, 0]
-						           + udy[j, i, 1, m] * v[k, j+1, i, 1]
-						           + udx[j, i, 1, m] * v[k, j, i+1, 1]
-						           + udy[j, i, 2, m] * v[k, j+1, i, 2]
-						           + udx[j, i, 2, m] * v[k, j, i+1, 2]
-						           + udy[j, i, 3, m] * v[k, j+1, i, 3]
-						           + udx[j, i, 3, m] * v[k, j, i+1, 3]
-						           + udy[j, i, 4, m] * v[k, j+1, i, 4]
-						           + udx[j, i, 4, m] * v[k, j, i+1, 4] );
+						tv[j][ i][ m] = tv[j][ i][ m]
+						+ omega * ( udy[j][ i][ 0][ m] * v[k][ j+1][ i][ 0]
+						           + udx[j][ i][ 0][ m] * v[k][ j][ i+1][ 0]
+						           + udy[j][ i][ 1][ m] * v[k][ j+1][ i][ 1]
+						           + udx[j][ i][ 1][ m] * v[k][ j][ i+1][ 1]
+						           + udy[j][ i][ 2][ m] * v[k][ j+1][ i][ 2]
+						           + udx[j][ i][ 2][ m] * v[k][ j][ i+1][ 2]
+						           + udy[j][ i][ 3][ m] * v[k][ j+1][ i][ 3]
+						           + udx[j][ i][ 3][ m] * v[k][ j][ i+1][ 3]
+						           + udy[j][ i][ 4][ m] * v[k][ j+1][ i][ 4]
+						           + udx[j][ i][ 4][ m] * v[k][ j][ i+1][ 4] );
 					}
 
 //---------------------------------------------------------------------
@@ -462,159 +462,159 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
             
 					for(m=0;m<=4;m++){
-						tmat[0, m] = d[j, i, 0, m];
-						tmat[1, m] = d[j, i, 1, m];
-						tmat[2, m] = d[j, i, 2, m];
-						tmat[3, m] = d[j, i, 3, m];
-						tmat[4, m] = d[j, i, 4, m];
+						tmat[0][ m] = d[j][ i][ 0][ m];
+						tmat[1][ m] = d[j][ i][ 1][ m];
+						tmat[2][ m] = d[j][ i][ 2][ m];
+						tmat[3][ m] = d[j][ i][ 3][ m];
+						tmat[4][ m] = d[j][ i][ 4][ m];
 					}
 
-					tmp1 = 1.0 / tmat[0, 0];
-					tmp = tmp1 * tmat[0, 1];
-					tmat[1, 1] =  tmat[1, 1]
-					- tmp * tmat[1, 0];
-					tmat[2, 1] =  tmat[2, 1]
-					- tmp * tmat[2, 0];
-					tmat[3, 1] =  tmat[3, 1]
-					- tmp * tmat[3, 0];
-					tmat[4, 1] =  tmat[4, 1]
-					- tmp * tmat[4, 0];
-					tv[j, i, 1] = tv[j, i, 1]
-					- tv[j, i, 0] * tmp;
+					tmp1 = 1.0 / tmat[0][ 0];
+					tmp = tmp1 * tmat[0][ 1];
+					tmat[1][ 1] =  tmat[1][ 1]
+					- tmp * tmat[1][ 0];
+					tmat[2][ 1] =  tmat[2][ 1]
+					- tmp * tmat[2][ 0];
+					tmat[3][ 1] =  tmat[3][ 1]
+					- tmp * tmat[3][ 0];
+					tmat[4][ 1] =  tmat[4][ 1]
+					- tmp * tmat[4][ 0];
+					tv[j][ i][ 1] = tv[j][ i][ 1]
+					- tv[j][ i][ 0] * tmp;
 
-					tmp = tmp1 * tmat[0, 2];
-					tmat[1, 2] =  tmat[1, 2]
-					- tmp * tmat[1, 0];
-					tmat[2, 2] =  tmat[2, 2]
-					- tmp * tmat[2, 0];
-					tmat[3, 2] =  tmat[3, 2]
-					- tmp * tmat[3, 0];
-					tmat[4, 2] =  tmat[4, 2]
-					- tmp * tmat[4, 0];
-					tv[j, i, 2] = tv[j, i, 2]
-					- tv[j, i, 0] * tmp;
+					tmp = tmp1 * tmat[0][ 2];
+					tmat[1][ 2] =  tmat[1][ 2]
+					- tmp * tmat[1][ 0];
+					tmat[2][ 2] =  tmat[2][ 2]
+					- tmp * tmat[2][ 0];
+					tmat[3][ 2] =  tmat[3][ 2]
+					- tmp * tmat[3][ 0];
+					tmat[4][ 2] =  tmat[4][ 2]
+					- tmp * tmat[4][ 0];
+					tv[j][ i][ 2] = tv[j][ i][ 2]
+					- tv[j][ i][ 0] * tmp;
 
-					tmp = tmp1 * tmat[0, 3];
-					tmat[1, 3] =  tmat[1, 3]
-					- tmp * tmat[1, 0];
-					tmat[2, 3] =  tmat[2, 3]
-					- tmp * tmat[2, 0];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 0];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 0];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 0] * tmp;
+					tmp = tmp1 * tmat[0][ 3];
+					tmat[1][ 3] =  tmat[1][ 3]
+					- tmp * tmat[1][ 0];
+					tmat[2][ 3] =  tmat[2][ 3]
+					- tmp * tmat[2][ 0];
+					tmat[3][ 3] =  tmat[3][ 3]
+					- tmp * tmat[3][ 0];
+					tmat[4][ 3] =  tmat[4][ 3]
+					- tmp * tmat[4][ 0];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					- tv[j][ i][ 0] * tmp;
 
-					tmp = tmp1 * tmat[0, 4];
-					tmat[1, 4] =  tmat[1, 4]
-					- tmp * tmat[1, 0];
-					tmat[2, 4] =  tmat[2, 4]
-					- tmp * tmat[2, 0];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 0];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 0];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 0] * tmp;
+					tmp = tmp1 * tmat[0][ 4];
+					tmat[1][ 4] =  tmat[1][ 4]
+					- tmp * tmat[1][ 0];
+					tmat[2][ 4] =  tmat[2][ 4]
+					- tmp * tmat[2][ 0];
+					tmat[3][ 4] =  tmat[3][ 4]
+					- tmp * tmat[3][ 0];
+					tmat[4][ 4] =  tmat[4][ 4]
+					- tmp * tmat[4][ 0];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					- tv[j][ i][ 0] * tmp;
 
-					tmp1 = 1.0 / tmat[1, 1];
-					tmp = tmp1 * tmat[1, 2];
-					tmat[2, 2] =  tmat[2, 2]
-					- tmp * tmat[2, 1];
-					tmat[3, 2] =  tmat[3, 2]
-					- tmp * tmat[3, 1];
-					tmat[4, 2] =  tmat[4, 2]
-					- tmp * tmat[4, 1];
-					tv[j, i, 2] = tv[j, i, 2]
-					- tv[j, i, 1] * tmp;
+					tmp1 = 1.0 / tmat[1][ 1];
+					tmp = tmp1 * tmat[1][ 2];
+					tmat[2][ 2] =  tmat[2][ 2]
+					- tmp * tmat[2][ 1];
+					tmat[3][ 2] =  tmat[3][ 2]
+					- tmp * tmat[3][ 1];
+					tmat[4][ 2] =  tmat[4][ 2]
+					- tmp * tmat[4][ 1];
+					tv[j][ i][ 2] = tv[j][ i][ 2]
+					- tv[j][ i][ 1] * tmp;
 
-					tmp = tmp1 * tmat[1, 3];
-					tmat[2, 3] =  tmat[2, 3]
-					- tmp * tmat[2, 1];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 3];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 1];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 1] * tmp;
+					tmp = tmp1 * tmat[1][ 3];
+					tmat[2][ 3] =  tmat[2][ 3]
+					- tmp * tmat[2][ 1];
+					tmat[3][ 3] =  tmat[3][ 3]
+					- tmp * tmat[3][ 3];
+					tmat[4][ 3] =  tmat[4][ 3]
+					- tmp * tmat[4][ 1];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					- tv[j][ i][ 1] * tmp;
 
-					tmp = tmp1 * tmat[1, 4];
-					tmat[2, 4] =  tmat[2, 4]
-					- tmp * tmat[2, 1];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 1];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 1];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 1] * tmp;
+					tmp = tmp1 * tmat[1][ 4];
+					tmat[2][ 4] =  tmat[2][ 4]
+					- tmp * tmat[2][ 1];
+					tmat[3][ 4] =  tmat[3][ 4]
+					- tmp * tmat[3][ 1];
+					tmat[4][ 4] =  tmat[4][ 4]
+					- tmp * tmat[4][ 1];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					- tv[j][ i][ 1] * tmp;
 
-					tmp1 = 1.0 / tmat[2, 2];
-					tmp = tmp1 * tmat[2, 3];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 2];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 2];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 2] * tmp;
+					tmp1 = 1.0 / tmat[2][ 2];
+					tmp = tmp1 * tmat[2][ 3];
+					tmat[3][ 3] =  tmat[3][ 3]
+					- tmp * tmat[3][ 2];
+					tmat[4][ 3] =  tmat[4][ 3]
+					- tmp * tmat[4][ 2];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					- tv[j][ i][ 2] * tmp;
 
-					tmp = tmp1 * tmat[2, 4];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 2];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 2];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 2] * tmp;
+					tmp = tmp1 * tmat[2][ 4];
+					tmat[3][ 4] =  tmat[3][ 4]
+					- tmp * tmat[3][ 2];
+					tmat[4][ 4] =  tmat[4][ 4]
+					- tmp * tmat[4][ 2];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					- tv[j][ i][ 2] * tmp;
 
-					tmp1 = 1.0 / tmat[3, 3];
-					tmp = tmp1 * tmat[3, 4];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 3];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 3] * tmp;
+					tmp1 = 1.0 / tmat[3][ 3];
+					tmp = tmp1 * tmat[3][ 4];
+					tmat[4][ 4] =  tmat[4][ 4]
+					- tmp * tmat[4][ 3];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					- tv[j][ i][ 3] * tmp;
 
 //---------------------------------------------------------------------
 //   back substitution
 //---------------------------------------------------------------------
-					tv[j, i, 4] = tv[j, i, 4]
-					/ tmat[4, 4];
+					tv[j][ i][ 4] = tv[j][ i][ 4]
+					/ tmat[4][ 4];
 
-					tv[j, i, 3] = tv[j, i, 3]
-					- tmat[4, 3] * tv[j, i, 4];
-					tv[j, i, 3] = tv[j, i, 3]
-					/ tmat[3, 3];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					- tmat[4][ 3] * tv[j][ i][ 4];
+					tv[j][ i][ 3] = tv[j][ i][ 3]
+					/ tmat[3][ 3];
 
-					tv[j, i, 2] = tv[j, i, 2]
-					- tmat[3, 2] * tv[j, i, 3]
-					- tmat[4, 2] * tv[j, i, 4];
-					tv[j, i, 2] = tv[j, i, 2]
-					/ tmat[2, 2];
+					tv[j][ i][ 2] = tv[j][ i][ 2]
+					- tmat[3][ 2] * tv[j][ i][ 3]
+					- tmat[4][ 2] * tv[j][ i][ 4];
+					tv[j][ i][ 2] = tv[j][ i][ 2]
+					/ tmat[2][ 2];
 
-					tv[j, i, 1] = tv[j, i, 1]
-					- tmat[2, 1] * tv[j, i, 2]
-					- tmat[3, 1] * tv[j, i, 3]
-					- tmat[4, 1] * tv[j, i, 4];
-					tv[j, i, 1] = tv[j, i, 1]
-					/ tmat[1, 1];
+					tv[j][ i][ 1] = tv[j][ i][ 1]
+					- tmat[2][ 1] * tv[j][ i][ 2]
+					- tmat[3][ 1] * tv[j][ i][ 3]
+					- tmat[4][ 1] * tv[j][ i][ 4];
+					tv[j][ i][ 1] = tv[j][ i][ 1]
+					/ tmat[1][ 1];
 
-					tv[j, i, 0] = tv[j, i, 0]
-					- tmat[1, 0] * tv[j, i, 1]
-					- tmat[2, 0] * tv[j, i, 2]
-					- tmat[3, 0] * tv[j, i, 3]
-					- tmat[4, 0] * tv[j, i, 4];
-					tv[j, i, 0] = tv[j, i, 0]
-					/ tmat[0, 0];
+					tv[j][ i][ 0] = tv[j][ i][ 0]
+					- tmat[1][ 0] * tv[j][ i][ 1]
+					- tmat[2][ 0] * tv[j][ i][ 2]
+					- tmat[3][ 0] * tv[j][ i][ 3]
+					- tmat[4][ 0] * tv[j][ i][ 4];
+					tv[j][ i][ 0] = tv[j][ i][ 0]
+					/ tmat[0][ 0];
 
-					v[k,j , i, 0] = v[k,j , i, 0] 
-					- tv[j, i, 0];
-					v[k, j, i, 1] = v[k, j, i, 1] 
-					- tv[j, i, 1];
-					v[k, j, i, 2] = v[k, j, i, 2] 
-					- tv[j, i, 2];
-					v[k, j, i, 3] = v[k, j, i, 3] 
-					- tv[j, i, 3];
-					v[k, j, i, 4] = v[k, j, i, 4] 
-					- tv[j, i, 4];	    
+					v[k][j ][ i][ 0] = v[k][j ][ i][ 0] 
+					- tv[j][ i][ 0];
+					v[k][ j][ i][ 1] = v[k][ j][ i][ 1] 
+					- tv[j][ i][ 1];
+					v[k][ j][ i][ 2] = v[k][ j][ i][ 2] 
+					- tv[j][ i][ 2];
+					v[k][ j][ i][ 3] = v[k][ j][ i][ 3] 
+					- tv[j][ i][ 3];
+					v[k][ j][ i][ 4] = v[k][ j][ i][ 4] 
+					- tv[j][ i][ 4];	    
 				}
 			}
 		}
@@ -681,7 +681,7 @@ namespace NPB3_0_JAV{
          for(j=0;j<=ny-1;j++){
             for(i=0;i<=nx-1;i++){
                for(m=0;m<=4;m++){
-                  frct[k, j, i, m ] = 0.0;
+                  frct[k][ j][ i][ m ] = 0.0;
                }
             }
          }
@@ -694,19 +694,19 @@ namespace NPB3_0_JAV{
             for(i=0;i<=nx-1;i++){
                xi = (double) i/(nx0-1);
                for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] =  ce[0,m]
-                       + (ce[1,m]
-                       + (ce[4,m]
-                       + (ce[7,m]
-                       +  ce[10,m] * xi) * xi) * xi) * xi
-                       + (ce[2,m]
-                       + (ce[5,m]
-                       + (ce[8,m]
-                       +  ce[11,m] * eta) * eta) * eta) * eta
-                       + (ce[3,m]
-                       + (ce[6,m]
-                       + (ce[9,m]
-                       +  ce[12,m] * zeta) * zeta) * zeta) * zeta;
+                  rsd[k][ j][ i][ m] =  ce[0][m]
+                       + (ce[1][m]
+                       + (ce[4][m]
+                       + (ce[7][m]
+                       +  ce[10][m] * xi) * xi) * xi) * xi
+                       + (ce[2][m]
+                       + (ce[5][m]
+                       + (ce[8][m]
+                       +  ce[11][m] * eta) * eta) * eta) * eta
+                       + (ce[3][m]
+                       + (ce[6][m]
+                       + (ce[9][m]
+                       +  ce[12][m] * zeta) * zeta) * zeta) * zeta;
               }
             }
          }
@@ -719,45 +719,45 @@ namespace NPB3_0_JAV{
       for(k=1;k<=nz - 2;k++){
          for(j=jst-1;j<=jend-1;j++){
             for(i=0;i<=nx-1;i++){
-               flux[i,0] = rsd[k, j, i, 1];
-               u21 = rsd[k, j, i, 1] / rsd[k, j, i, 0];
-               q = 0.50 * (  rsd[k, j, i, 1] * rsd[k, j, i, 1]
-                               + rsd[k, j, i, 2] * rsd[k, j, i, 2]
-                               + rsd[k, j, i, 3] * rsd[k, j, i, 3] )
-                            / rsd[k, j, i, 0];
-               flux[i, 1] = rsd[k, j, i, 1] * u21 + c2 * 
-                               ( rsd[k, j, i, 4] - q );
-               flux[i, 2] = rsd[k, j, i, 2] * u21;
-               flux[i, 3] = rsd[k, j, i, 3] * u21;
-               flux[i, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u21;
+               flux[i][0] = rsd[k][ j][ i][ 1];
+               u21 = rsd[k][ j][ i][ 1] / rsd[k][ j][ i][ 0];
+               q = 0.50 * (  rsd[k][ j][ i][ 1] * rsd[k][ j][ i][ 1]
+                               + rsd[k][ j][ i][ 2] * rsd[k][ j][ i][ 2]
+                               + rsd[k][ j][ i][ 3] * rsd[k][ j][ i][ 3] )
+                            / rsd[k][ j][ i][ 0];
+               flux[i][ 1] = rsd[k][ j][ i][ 1] * u21 + c2 * 
+                               ( rsd[k][ j][ i][ 4] - q );
+               flux[i][ 2] = rsd[k][ j][ i][ 2] * u21;
+               flux[i][ 3] = rsd[k][ j][ i][ 3] * u21;
+               flux[i][ 4] = ( c1 * rsd[k][ j][ i][ 4] - c2 * q ) * u21;
             }
 
             for(i=ist-1;i<=iend-1;i++){
                for(m=0;m<=4;m++){
-                  frct[k, j, i, m] =  frct[k, j, i, m]
-                         - tx2 * ( flux[i+1, m] - flux[i-1, m] );
+                  frct[k][ j][ i][ m] =  frct[k][ j][ i][ m]
+                         - tx2 * ( flux[i+1][ m] - flux[i-1][ m] );
                }
             }
             for(i=ist-1;i<=nx-1;i++){
-               tmp = 1.0 / rsd[k, j, i, 0];
+               tmp = 1.0 / rsd[k][ j][ i][ 0];
 
-               u21i = tmp * rsd[k, j, i, 1];
-               u31i = tmp * rsd[k, j, i, 2];
-               u41i = tmp * rsd[k, j, i, 3];
-               u51i = tmp * rsd[k, j, i, 4];
+               u21i = tmp * rsd[k][ j][ i][ 1];
+               u31i = tmp * rsd[k][ j][ i][ 2];
+               u41i = tmp * rsd[k][ j][ i][ 3];
+               u51i = tmp * rsd[k][ j][ i][ 4];
 
-               tmp = 1.0 / rsd[k, j, i-1,0];
+               tmp = 1.0 / rsd[k][ j][ i-1][0];
 
-               u21im1 = tmp * rsd[k, j, i-1, 1];
-               u31im1 = tmp * rsd[k, j, i-1, 2];
-               u41im1 = tmp * rsd[k, j, i-1, 3];
-               u51im1 = tmp * rsd[k, j, i-1, 4];
+               u21im1 = tmp * rsd[k][ j][ i-1][ 1];
+               u31im1 = tmp * rsd[k][ j][ i-1][ 2];
+               u41im1 = tmp * rsd[k][ j][ i-1][ 3];
+               u51im1 = tmp * rsd[k][ j][ i-1][ 4];
 
-               flux[i,1] = (4.0/3.0) * tx3 * 
+               flux[i][1] = (4.0/3.0) * tx3 * 
                               ( u21i - u21im1 );
-               flux[i,2] = tx3 * ( u31i - u31im1 );
-               flux[i,3] = tx3 * ( u41i - u41im1 );
-               flux[i,4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[i][2] = tx3 * ( u31i - u31im1 );
+               flux[i][3] = tx3 * ( u41i - u41im1 );
+               flux[i][4] = 0.50 * ( 1.0 - c1*c5 )
                     * tx3 * ( ( Math.Pow(u21i,2) + Math.Pow(u31i,2) + Math.Pow(u41i,2) )
                             - ( Math.Pow(u21im1,2) + Math.Pow(u31im1,2) + Math.Pow(u41im1,2) ) )
                     + (1.0/6.0)
@@ -766,30 +766,30 @@ namespace NPB3_0_JAV{
             }
 
             for(i=ist-1;i<=iend-1;i++){
-               frct[k, j, i, 0] = frct[k, j, i, 0]
-                    + dx1 * tx1 * (            rsd[k, j, i-1, 0]
-                                   - 2.0 * rsd[k, j, i, 0]
-                                   +           rsd[k, j, i+1, 0] );
-               frct[k, j, i, 1] = frct[k, j, i, 1]
-                 + tx3 * c3 * c4 * ( flux[i+1, 1] - flux[i, 1] )
-                    + dx2 * tx1 * (            rsd[k, j, i-1, 1]
-                                   - 2.0 * rsd[k, j, i, 1]
-                                   +           rsd[k, j, i+1, 1] );
-               frct[k, j, i, 2] = frct[k, j, i, 2]
-                 + tx3 * c3 * c4 * ( flux[i+1, 2] - flux[i, 2] )
-                    + dx3 * tx1 * (            rsd[k, j, i-1, 2]
-                                   - 2.0 * rsd[k, j, i, 2]
-                                   +           rsd[k, j, i+1, 2] );
-               frct[k, j, i, 3] = frct[k, j, i, 3]
-                  + tx3 * c3 * c4 * ( flux[i+1, 3] - flux[i, 3] )
-                    + dx4 * tx1 * (            rsd[k, j, i-1, 3]
-                                   - 2.0 * rsd[k, j, i, 3]
-                                   +           rsd[k, j, i+1, 3] );
-               frct[k, j, i, 4] = frct[k, j, i, 4]
-                 + tx3 * c3 * c4 * ( flux[i+1, 4] - flux[i, 4] )
-                    + dx5 * tx1 * (            rsd[k, j, i-1, 4]
-                                   - 2.0 * rsd[k, j, i, 4]
-                                   +           rsd[k, j, i+1, 4] );
+               frct[k][ j][ i][ 0] = frct[k][ j][ i][ 0]
+                    + dx1 * tx1 * (            rsd[k][ j][ i-1][ 0]
+                                   - 2.0 * rsd[k][ j][ i][ 0]
+                                   +           rsd[k][ j][ i+1][ 0] );
+               frct[k][ j][ i][ 1] = frct[k][ j][ i][ 1]
+                 + tx3 * c3 * c4 * ( flux[i+1][ 1] - flux[i][ 1] )
+                    + dx2 * tx1 * (            rsd[k][ j][ i-1][ 1]
+                                   - 2.0 * rsd[k][ j][ i][ 1]
+                                   +           rsd[k][ j][ i+1][ 1] );
+               frct[k][ j][ i][ 2] = frct[k][ j][ i][ 2]
+                 + tx3 * c3 * c4 * ( flux[i+1][ 2] - flux[i][ 2] )
+                    + dx3 * tx1 * (            rsd[k][ j][ i-1][ 2]
+                                   - 2.0 * rsd[k][ j][ i][ 2]
+                                   +           rsd[k][ j][ i+1][ 2] );
+               frct[k][ j][ i][ 3] = frct[k][ j][ i][ 3]
+                  + tx3 * c3 * c4 * ( flux[i+1][ 3] - flux[i][ 3] )
+                    + dx4 * tx1 * (            rsd[k][ j][ i-1][ 3]
+                                   - 2.0 * rsd[k][ j][ i][ 3]
+                                   +           rsd[k][ j][ i+1][ 3] );
+               frct[k][ j][ i][ 4] = frct[k][ j][ i][ 4]
+                 + tx3 * c3 * c4 * ( flux[i+1][ 4] - flux[i][ 4] )
+                    + dx5 * tx1 * (            rsd[k][ j][ i-1][ 4]
+                                   - 2.0 * rsd[k][ j][ i][ 4]
+                                   +           rsd[k][ j][ i+1][ 4] );
             }
 					
 					
@@ -799,38 +799,38 @@ namespace NPB3_0_JAV{
 //   Fourth-order dissipation
 //---------------------------------------------------------------------
             for(m=0;m<=4;m++){
-               frct[k, j, 1, m] = frct[k, j, 1, m]
-                 - dssp * ( + 5.0 * rsd[k, j, 1, m]
-                             - 4.0 * rsd[k, j, 2, m]
-                             +           rsd[k, j, 3, m] );
-               frct[k, j, 2, m] = frct[k, j, 2, m]
-                 - dssp * ( - 4.0 * rsd[k, j, 1, m]
-                             + 6.0 * rsd[k, j, 2, m]
-                             - 4.0 * rsd[k, j, 3, m]
-                             +           rsd[k, j, 4, m] );
+               frct[k][ j][ 1][ m] = frct[k][ j][ 1][ m]
+                 - dssp * ( + 5.0 * rsd[k][ j][ 1][ m]
+                             - 4.0 * rsd[k][ j][ 2][ m]
+                             +           rsd[k][ j][ 3][ m] );
+               frct[k][ j][ 2][ m] = frct[k][ j][ 2][ m]
+                 - dssp * ( - 4.0 * rsd[k][ j][ 1][ m]
+                             + 6.0 * rsd[k][ j][ 2][ m]
+                             - 4.0 * rsd[k][ j][ 3][ m]
+                             +           rsd[k][ j][ 4][ m] );
             }
 
             for(i=3;i<=nx - 4;i++){
                for(m=0;m<=4;m++){
-                  frct[k, j, i, m] = frct[k, j, i, m]
-                    - dssp * (            rsd[k, j, i-2, m]
-                               - 4.0 * rsd[k, j, i-1, m]
-                               + 6.0 * rsd[k, j, i, m]
-                               - 4.0 * rsd[k, j, i+1, m]
-                               +           rsd[k, j, i+2, m] );
+                  frct[k][ j][ i][ m] = frct[k][ j][ i][ m]
+                    - dssp * (            rsd[k][ j][ i-2][ m]
+                               - 4.0 * rsd[k][ j][ i-1][ m]
+                               + 6.0 * rsd[k][ j][ i][ m]
+                               - 4.0 * rsd[k][ j][ i+1][ m]
+                               +           rsd[k][ j][ i+2][ m] );
                }
             }
 
             for(m=0;m<=4;m++){
-               frct[k, j, nx-3, m] = frct[k, j, nx-3, m]
-                 - dssp * (             rsd[k, j, nx-5, m]
-                             - 4.0 * rsd[k, j, nx-4, m]
-                             + 6.0 * rsd[k, j, nx-3, m]
-                             - 4.0 * rsd[k, j, nx-2, m]  );
-               frct[k, j, nx-2, m] = frct[k, j, nx-2, m]
-                 - dssp * (             rsd[k, j, nx-4, m]
-                             - 4.0 * rsd[k, j, nx-3, m]
-                             + 5.0 * rsd[k, j, nx-2, m] );
+               frct[k][ j][ nx-3][ m] = frct[k][ j][ nx-3][ m]
+                 - dssp * (             rsd[k][ j][ nx-5][ m]
+                             - 4.0 * rsd[k][ j][ nx-4][ m]
+                             + 6.0 * rsd[k][ j][ nx-3][ m]
+                             - 4.0 * rsd[k][ j][ nx-2][ m]  );
+               frct[k][ j][ nx-2][ m] = frct[k][ j][ nx-2][ m]
+                 - dssp * (             rsd[k][ j][ nx-4][ m]
+                             - 4.0 * rsd[k][ j][ nx-3][ m]
+                             + 5.0 * rsd[k][ j][ nx-2][ m] );
             }
          }
       }
@@ -842,46 +842,46 @@ namespace NPB3_0_JAV{
       for(k=1;k<=nz - 2;k++){
          for(i=ist-1;i<=iend-1;i++){
             for(j=0;j<=ny-1;j++){
-               flux[j, 0] = rsd[k, j, i, 2];
-               u31 = rsd[k, j, i, 2] / rsd[k, j, i, 0];
-               q = 0.50 * (  rsd[k, j, i, 1] * rsd[k, j, i, 1]
-                               + rsd[k, j, i, 2] * rsd[k, j, i, 2]
-                               + rsd[k, j, i, 3] * rsd[k, j, i, 3] )
-                            / rsd[k, j, i, 0];
-               flux[j, 1] = rsd[k, j, i, 1] * u31 ;
-               flux[j, 2] = rsd[k, j, i, 2] * u31 + c2 * 
-                             ( rsd[k, j, i, 4] - q );
-               flux[j, 3] = rsd[k, j, i, 3] * u31;
-               flux[j, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u31;
+               flux[j][ 0] = rsd[k][ j][ i][ 2];
+               u31 = rsd[k][ j][ i][ 2] / rsd[k][ j][ i][ 0];
+               q = 0.50 * (  rsd[k][ j][ i][ 1] * rsd[k][ j][ i][ 1]
+                               + rsd[k][ j][ i][ 2] * rsd[k][ j][ i][ 2]
+                               + rsd[k][ j][ i][ 3] * rsd[k][ j][ i][ 3] )
+                            / rsd[k][ j][ i][ 0];
+               flux[j][ 1] = rsd[k][ j][ i][ 1] * u31 ;
+               flux[j][ 2] = rsd[k][ j][ i][ 2] * u31 + c2 * 
+                             ( rsd[k][ j][ i][ 4] - q );
+               flux[j][ 3] = rsd[k][ j][ i][ 3] * u31;
+               flux[j][ 4] = ( c1 * rsd[k][ j][ i][ 4] - c2 * q ) * u31;
             }
 
             for(j=jst-1;j<=jend-1;j++){
                for(m=0;m<=4;m++){
-                  frct[k, j, i, m] =  frct[k, j, i, m]
-                       - ty2 * ( flux[j+1,m] - flux[j-1,m] );
+                  frct[k][ j][ i][ m] =  frct[k][ j][ i][ m]
+                       - ty2 * ( flux[j+1][m] - flux[j-1][m] );
                }
             }
 
             for(j=jst-1;j<=ny-1;j++){
-               tmp = 1.0 / rsd[k, j, i, 0];
+               tmp = 1.0 / rsd[k][ j][ i][ 0];
 
-               u21j = tmp * rsd[k, j, i, 1];
-               u31j = tmp * rsd[k, j, i, 2];
-               u41j = tmp * rsd[k, j, i, 3];
-               u51j = tmp * rsd[k, j, i, 4];
+               u21j = tmp * rsd[k][ j][ i][ 1];
+               u31j = tmp * rsd[k][ j][ i][ 2];
+               u41j = tmp * rsd[k][ j][ i][ 3];
+               u51j = tmp * rsd[k][ j][ i][ 4];
 
-               tmp = 1.0 / rsd[k, j-1, i, 0];
+               tmp = 1.0 / rsd[k][ j-1][ i][ 0];
 
-               u21jm1 = tmp * rsd[k, j-1, i, 1];
-               u31jm1 = tmp * rsd[k, j-1, i, 2];
-               u41jm1 = tmp * rsd[k, j-1, i, 3];
-               u51jm1 = tmp * rsd[k, j-1, i, 4];
+               u21jm1 = tmp * rsd[k][ j-1][ i][ 1];
+               u31jm1 = tmp * rsd[k][ j-1][ i][ 2];
+               u41jm1 = tmp * rsd[k][ j-1][ i][ 3];
+               u51jm1 = tmp * rsd[k][ j-1][ i][ 4];
 
-               flux[j, 1] = ty3 * ( u21j - u21jm1 );
-               flux[j, 2] = (4.0/3.0) * ty3 * 
+               flux[j][ 1] = ty3 * ( u21j - u21jm1 );
+               flux[j][ 2] = (4.0/3.0) * ty3 * 
                              ( u31j - u31jm1 );
-               flux[j, 3] = ty3 * ( u41j - u41jm1 );
-               flux[j, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[j][ 3] = ty3 * ( u41j - u41jm1 );
+               flux[j][ 4] = 0.50 * ( 1.0 - c1*c5 )
                     * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
                             - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
                     + (1.0/6.0)
@@ -890,68 +890,68 @@ namespace NPB3_0_JAV{
             }
 
             for(j=jst-1;j<=jend-1;j++){
-               frct[k, j, i, 0] = frct[k, j, i, 0]
-                    + dy1 * ty1 * (            rsd[k, j-1, i, 0]
-                                   - 2.0 * rsd[k, j, i, 0]
-                                   +           rsd[k, j+1, i, 0] );
-               frct[k, j, i, 1] = frct[k, j, i, 1]
-                + ty3 * c3 * c4 * ( flux[j+1, 1] - flux[j, 1] )
-                    + dy2 * ty1 * (            rsd[k, j-1, i, 1]
-                                   - 2.0 * rsd[k, j, i, 1]
-                                   +           rsd[k, j+1, i, 1] );
-               frct[k, j, i, 2] = frct[k, j, i, 2]
-                + ty3 * c3 * c4 * ( flux[j+1, 2] - flux[j, 2] )
-                    + dy3 * ty1 * (            rsd[k, j-1, i, 2]
-                                   - 2.0 * rsd[k, j, i, 2]
-                                   +           rsd[k, j+1, i, 2] );
-               frct[k, j, i, 3] = frct[k, j, i, 3]
-                + ty3 * c3 * c4 * ( flux[j+1, 3] - flux[j, 3] )
-                    + dy4 * ty1 * (            rsd[k, j-1, i, 3]
-                                   - 2.0 * rsd[k, j, i, 3]
-                                   +           rsd[k, j+1, i, 3] );
-               frct[k, j, i, 4] = frct[k, j, i, 4]
-                + ty3 * c3 * c4 * ( flux[j+1, 4] - flux[j, 4] )
-                    + dy5 * ty1 * (            rsd[k, j-1, i, 4]
-                                   - 2.0 * rsd[k, j, i, 4]
-                                   +           rsd[k, j+1, i, 4] );
+               frct[k][ j][ i][ 0] = frct[k][ j][ i][ 0]
+                    + dy1 * ty1 * (            rsd[k][ j-1][ i][ 0]
+                                   - 2.0 * rsd[k][ j][ i][ 0]
+                                   +           rsd[k][ j+1][ i][ 0] );
+               frct[k][ j][ i][ 1] = frct[k][ j][ i][ 1]
+                + ty3 * c3 * c4 * ( flux[j+1][ 1] - flux[j][ 1] )
+                    + dy2 * ty1 * (            rsd[k][ j-1][ i][ 1]
+                                   - 2.0 * rsd[k][ j][ i][ 1]
+                                   +           rsd[k][ j+1][ i][ 1] );
+               frct[k][ j][ i][ 2] = frct[k][ j][ i][ 2]
+                + ty3 * c3 * c4 * ( flux[j+1][ 2] - flux[j][ 2] )
+                    + dy3 * ty1 * (            rsd[k][ j-1][ i][ 2]
+                                   - 2.0 * rsd[k][ j][ i][ 2]
+                                   +           rsd[k][ j+1][ i][ 2] );
+               frct[k][ j][ i][ 3] = frct[k][ j][ i][ 3]
+                + ty3 * c3 * c4 * ( flux[j+1][ 3] - flux[j][ 3] )
+                    + dy4 * ty1 * (            rsd[k][ j-1][ i][ 3]
+                                   - 2.0 * rsd[k][ j][ i][ 3]
+                                   +           rsd[k][ j+1][ i][ 3] );
+               frct[k][ j][ i][ 4] = frct[k][ j][ i][ 4]
+                + ty3 * c3 * c4 * ( flux[j+1][ 4] - flux[j][ 4] )
+                    + dy5 * ty1 * (            rsd[k][ j-1][ i][ 4]
+                                   - 2.0 * rsd[k][ j][ i][ 4]
+                                   +           rsd[k][ j+1][ i][ 4] );
             }
 
 //---------------------------------------------------------------------
 //   fourth-order dissipation
 //---------------------------------------------------------------------
             for(m=0;m<=4;m++){
-               frct[k, 1, i, m] = frct[k, 1, i, m]
-                 - dssp * ( + 5.0 * rsd[k, 1, i, m]
-                             - 4.0 * rsd[k, 2, i, m]
-                             +           rsd[k, 3, i, m] );
-               frct[k, 2, i, m] = frct[k, 2, i, m]
-                 - dssp * ( - 4.0 * rsd[k, 1, i, m]
-                             + 6.0 * rsd[k, 2, i, m]
-                             - 4.0 * rsd[k, 3, i, m]
-                             +           rsd[k, 4, i, m] );
+               frct[k][ 1][ i][ m] = frct[k][ 1][ i][ m]
+                 - dssp * ( + 5.0 * rsd[k][ 1][ i][ m]
+                             - 4.0 * rsd[k][ 2][ i][ m]
+                             +           rsd[k][ 3][ i][ m] );
+               frct[k][ 2][ i][ m] = frct[k][ 2][ i][ m]
+                 - dssp * ( - 4.0 * rsd[k][ 1][ i][ m]
+                             + 6.0 * rsd[k][ 2][ i][ m]
+                             - 4.0 * rsd[k][ 3][ i][ m]
+                             +           rsd[k][ 4][ i][ m] );
             }
 
             for(j=3;j<=ny - 4;j++){
                for(m=0;m<=4;m++){
-                  frct[k, j, i, m] = frct[k, j, i, m]
-                    - dssp * (            rsd[k, j-2, i, m]
-                              - 4.0 * rsd[k, j-1, i, m]
-                              + 6.0 * rsd[k, j, i, m]
-                              - 4.0 * rsd[k, j+1, i, m]
-                              +           rsd[k, j+2, i, m] );
+                  frct[k][ j][ i][ m] = frct[k][ j][ i][ m]
+                    - dssp * (            rsd[k][ j-2][ i][ m]
+                              - 4.0 * rsd[k][ j-1][ i][ m]
+                              + 6.0 * rsd[k][ j][ i][ m]
+                              - 4.0 * rsd[k][ j+1][ i][ m]
+                              +           rsd[k][ j+2][ i][ m] );
                }
             }
 
             for(m=0;m<=4;m++){
-               frct[k, ny-3, i, m] = frct[k, ny-3, i, m]
-                 - dssp * (             rsd[k, ny-5, i, m]
-                             - 4.0 * rsd[k, ny-4, i, m]
-                             + 6.0 * rsd[k, ny-3, i, m]
-                             - 4.0 * rsd[k, ny-2, i, m]  );
-               frct[k, ny-2, i, m] = frct[k, ny-2, i, m]
-                 - dssp * (             rsd[k, ny-4, i, m]
-                             - 4.0 * rsd[k, ny-3, i, m]
-                             + 5.0 * rsd[k, ny-2, i, m]  );
+               frct[k][ ny-3][ i][ m] = frct[k][ ny-3][ i][ m]
+                 - dssp * (             rsd[k][ ny-5][ i][ m]
+                             - 4.0 * rsd[k][ ny-4][ i][ m]
+                             + 6.0 * rsd[k][ ny-3][ i][ m]
+                             - 4.0 * rsd[k][ ny-2][ i][ m]  );
+               frct[k][ ny-2][ i][ m] = frct[k][ ny-2][ i][ m]
+                 - dssp * (             rsd[k][ ny-4][ i][ m]
+                             - 4.0 * rsd[k][ ny-3][ i][ m]
+                             + 5.0 * rsd[k][ ny-2][ i][ m]  );
             }
          }
       }
@@ -962,46 +962,46 @@ namespace NPB3_0_JAV{
       for(j=jst-1;j<=jend-1;j++){
          for(i=ist-1;i<=iend-1;i++){
             for(k=0;k<=nz-1;k++){
-               flux[k, 0] = rsd[k, j, i, 3];
-               u41 = rsd[k, j, i, 3] / rsd[k, j, i, 0];
-               q = 0.50 * (  rsd[k, j, i, 1] * rsd[k, j, i, 1]
-                               + rsd[k, j, i, 2] * rsd[k, j, i, 2]
-                               + rsd[k, j, i, 3] * rsd[k, j, i, 3] )
-                            / rsd[k, j, i, 0];
-               flux[k, 1] = rsd[k, j, i, 1] * u41 ;
-               flux[k, 2] = rsd[k, j, i, 2] * u41 ;
-               flux[k, 3] = rsd[k, j, i, 3] * u41 + c2 * 
-                               ( rsd[k, j, i, 4] - q );
-               flux[k, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u41;
+               flux[k][ 0] = rsd[k][ j][ i][ 3];
+               u41 = rsd[k][ j][ i][ 3] / rsd[k][ j][ i][ 0];
+               q = 0.50 * (  rsd[k][ j][ i][ 1] * rsd[k][ j][ i][ 1]
+                               + rsd[k][ j][ i][ 2] * rsd[k][ j][ i][ 2]
+                               + rsd[k][ j][ i][ 3] * rsd[k][ j][ i][ 3] )
+                            / rsd[k][ j][ i][ 0];
+               flux[k][ 1] = rsd[k][ j][ i][ 1] * u41 ;
+               flux[k][ 2] = rsd[k][ j][ i][ 2] * u41 ;
+               flux[k][ 3] = rsd[k][ j][ i][ 3] * u41 + c2 * 
+                               ( rsd[k][ j][ i][ 4] - q );
+               flux[k][ 4] = ( c1 * rsd[k][ j][ i][ 4] - c2 * q ) * u41;
             }
 
             for(k=1;k<=nz - 2;k++){
                for(m=0;m<=4;m++){
-                  frct[k, j, i, m] =  frct[k, j, i, m]
-                        - tz2 * ( flux[k+1, m] - flux[k-1, m] );
+                  frct[k][ j][ i][ m] =  frct[k][ j][ i][ m]
+                        - tz2 * ( flux[k+1][ m] - flux[k-1][ m] );
                }
             }
 
             for(k=1;k<=nz-1;k++){
-               tmp = 1.0 / rsd[k, j, i, 0];
+               tmp = 1.0 / rsd[k][ j][ i][ 0];
 
-               u21k = tmp * rsd[k, j, i, 1];
-               u31k = tmp * rsd[k, j, i, 2];
-               u41k = tmp * rsd[k, j, i, 3];
-               u51k = tmp * rsd[k, j, i, 4];
+               u21k = tmp * rsd[k][ j][ i][ 1];
+               u31k = tmp * rsd[k][ j][ i][ 2];
+               u41k = tmp * rsd[k][ j][ i][ 3];
+               u51k = tmp * rsd[k][ j][ i][ 4];
 
-               tmp = 1.0 / rsd[k-1, j, i, 0];
+               tmp = 1.0 / rsd[k-1][ j][ i][ 0];
 
-               u21km1 = tmp * rsd[k-1, j, i, 1];
-               u31km1 = tmp * rsd[k-1, j, i, 2];
-               u41km1 = tmp * rsd[k-1, j, i, 3];
-               u51km1 = tmp * rsd[k-1, j, i, 4];
+               u21km1 = tmp * rsd[k-1][ j][ i][ 1];
+               u31km1 = tmp * rsd[k-1][ j][ i][ 2];
+               u41km1 = tmp * rsd[k-1][ j][ i][ 3];
+               u51km1 = tmp * rsd[k-1][ j][ i][ 4];
 
-               flux[k, 1] = tz3 * ( u21k - u21km1 );
-               flux[k, 2] = tz3 * ( u31k - u31km1 );
-               flux[k, 3] = (4.0/3.0) * tz3 * ( u41k 
+               flux[k][ 1] = tz3 * ( u21k - u21km1 );
+               flux[k][ 2] = tz3 * ( u31k - u31km1 );
+               flux[k][ 3] = (4.0/3.0) * tz3 * ( u41k 
                              - u41km1 );
-               flux[k, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[k][ 4] = 0.50 * ( 1.0 - c1*c5 )
                     * tz3 * ( ( Math.Pow(u21k,2) + Math.Pow(u31k,2) + Math.Pow(u41k,2) )
                             - ( Math.Pow(u21km1,2) + Math.Pow(u31km1,2) + Math.Pow(u41km1,2) ) )
                     + (1.0/6.0)
@@ -1010,68 +1010,68 @@ namespace NPB3_0_JAV{
             }
 
             for(k=1;k<=nz - 2;k++){
-               frct[k, j, i, 0] = frct[k, j, i, 0]
-                    + dz1 * tz1 * (            rsd[k+1, j, i, 0]
-                                   - 2.0 * rsd[k, j, i, 0]
-                                   +           rsd[k-1, j, i, 0] );
-               frct[k, j, i, 1] = frct[k, j, i, 1]
-                + tz3 * c3 * c4 * ( flux[k+1, 1] - flux[k, 1] )
-                    + dz2 * tz1 * (            rsd[k+1, j, i, 1]
-                                   - 2.0 * rsd[k, j, i, 1]
-                                   +           rsd[k-1, j, i, 1] );
-               frct[k, j, i, 2] = frct[k, j, i, 2]
-                + tz3 * c3 * c4 * ( flux[k+1, 2] - flux[k, 2] )
-                    + dz3 * tz1 * (            rsd[k+1, j, i, 2]
-                                   - 2.0 * rsd[k, j, i, 2]
-                                   +           rsd[k-1, j, i, 2] );
-               frct[k, j, i, 3] = frct[k, j, i, 3]
-                + tz3 * c3 * c4 * ( flux[k+1, 3] - flux[k, 3] )
-                    + dz4 * tz1 * (            rsd[k+1, j, i, 3]
-                                   - 2.0 * rsd[k, j, i, 3]
-                                   +           rsd[k-1, j, i, 3] );
-               frct[k, j, i, 4] = frct[k, j, i, 4]
-                + tz3 * c3 * c4 * ( flux[k+1, 4] - flux[k, 4] )
-                    + dz5 * tz1 * (            rsd[k+1, j, i, 4]
-                                   - 2.0 * rsd[k, j, i, 4]
-                                   +           rsd[k-1, j, i, 4] );
+               frct[k][ j][ i][ 0] = frct[k][ j][ i][ 0]
+                    + dz1 * tz1 * (            rsd[k+1][ j][ i][ 0]
+                                   - 2.0 * rsd[k][ j][ i][ 0]
+                                   +           rsd[k-1][ j][ i][ 0] );
+               frct[k][ j][ i][ 1] = frct[k][ j][ i][ 1]
+                + tz3 * c3 * c4 * ( flux[k+1][ 1] - flux[k][ 1] )
+                    + dz2 * tz1 * (            rsd[k+1][ j][ i][ 1]
+                                   - 2.0 * rsd[k][ j][ i][ 1]
+                                   +           rsd[k-1][ j][ i][ 1] );
+               frct[k][ j][ i][ 2] = frct[k][ j][ i][ 2]
+                + tz3 * c3 * c4 * ( flux[k+1][ 2] - flux[k][ 2] )
+                    + dz3 * tz1 * (            rsd[k+1][ j][ i][ 2]
+                                   - 2.0 * rsd[k][ j][ i][ 2]
+                                   +           rsd[k-1][ j][ i][ 2] );
+               frct[k][ j][ i][ 3] = frct[k][ j][ i][ 3]
+                + tz3 * c3 * c4 * ( flux[k+1][ 3] - flux[k][ 3] )
+                    + dz4 * tz1 * (            rsd[k+1][ j][ i][ 3]
+                                   - 2.0 * rsd[k][ j][ i][ 3]
+                                   +           rsd[k-1][ j][ i][ 3] );
+               frct[k][ j][ i][ 4] = frct[k][ j][ i][ 4]
+                + tz3 * c3 * c4 * ( flux[k+1][ 4] - flux[k][ 4] )
+                    + dz5 * tz1 * (            rsd[k+1][ j][ i][ 4]
+                                   - 2.0 * rsd[k][ j][ i][ 4]
+                                   +           rsd[k-1][ j][ i][ 4] );
             }
 
 //---------------------------------------------------------------------
 //   fourth-order dissipation
 //---------------------------------------------------------------------
             for(m=0;m<=4;m++){
-               frct[1, j, i, m] = frct[1, j, i, m]
-                 - dssp * ( + 5.0 * rsd[1, j, i, m]
-                             - 4.0 * rsd[2, j, i, m]
-                             +           rsd[3, j, i, m] );
-               frct[2, j, i, m] = frct[2, j, i, m]
-                 - dssp * (- 4.0 * rsd[1, j, i, m]
-                            + 6.0 * rsd[2, j, i, m]
-                            - 4.0 * rsd[3, j, i, m]
-                            +           rsd[4, j, i, m] );
+               frct[1][ j][ i][ m] = frct[1][ j][ i][ m]
+                 - dssp * ( + 5.0 * rsd[1][ j][ i][ m]
+                             - 4.0 * rsd[2][ j][ i][ m]
+                             +           rsd[3][ j][ i][ m] );
+               frct[2][ j][ i][ m] = frct[2][ j][ i][ m]
+                 - dssp * (- 4.0 * rsd[1][ j][ i][ m]
+                            + 6.0 * rsd[2][ j][ i][ m]
+                            - 4.0 * rsd[3][ j][ i][ m]
+                            +           rsd[4][ j][ i][ m] );
             }
 
             for(k=3;k<=nz - 4;k++){
                for(m=0;m<=4;m++){
-                  frct[k, j, i, m] = frct[k, j, i, m]
-                    - dssp * (           rsd[k-2, j, i, m]
-                              - 4.0 * rsd[k-1, j, i, m]
-                              + 6.0 * rsd[k, j, i, m]
-                              - 4.0 * rsd[k+1, j, i, m]
-                              +           rsd[k+2, j, i, m] );
+                  frct[k][ j][ i][ m] = frct[k][ j][ i][ m]
+                    - dssp * (           rsd[k-2][ j][ i][ m]
+                              - 4.0 * rsd[k-1][ j][ i][ m]
+                              + 6.0 * rsd[k][ j][ i][ m]
+                              - 4.0 * rsd[k+1][ j][ i][ m]
+                              +           rsd[k+2][ j][ i][ m] );
                }
             }
 
             for(m=0;m<=4;m++){
-               frct[nz-3, j, i, m] = frct[nz-3, j, i, m]
-                 - dssp * (            rsd[nz-5, j, i, m]
-                            - 4.0 * rsd[nz-4, j, i, m]
-                            + 6.0 * rsd[nz-3, j, i, m]
-                            - 4.0 * rsd[nz-2, j, i, m]  );
-               frct[nz-2, j, i, m] = frct[nz-2, j, i, m]
-                 - dssp * (             rsd[nz-4, j, i, m]
-                             - 4.0 * rsd[nz-3, j, i, m]
-                             + 5.0 * rsd[nz-2, j, i, m]  );
+               frct[nz-3][ j][ i][ m] = frct[nz-3][ j][ i][ m]
+                 - dssp * (            rsd[nz-5][ j][ i][ m]
+                            - 4.0 * rsd[nz-4][ j][ i][ m]
+                            + 6.0 * rsd[nz-3][ j][ i][ m]
+                            - 4.0 * rsd[nz-2][ j][ i][ m]  );
+               frct[nz-2][ j][ i][ m] = frct[nz-2][ j][ i][ m]
+                 - dssp * (             rsd[nz-4][ j][ i][ m]
+                             - 4.0 * rsd[nz-3][ j][ i][ m]
+                             + 5.0 * rsd[nz-2][ j][ i][ m]  );
             }
          }
       }
@@ -1091,7 +1091,7 @@ namespace NPB3_0_JAV{
 	for(i=ist-1;i<=iend-1;i++){
 	  exact( i+1, j+1, k+1, u000ijk );
 	  for(m=0;m<=4;m++){
-	    tmp = ( u000ijk[m] - u[k, j, i, m] );
+	    tmp = ( u000ijk[m] - u[k][ j][ i][ m] );
 	    errnm[m] = errnm[m] + Math.Pow(tmp,2);
 	  }
 	}
@@ -1119,84 +1119,84 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
 //   form the block daigonal
 //---------------------------------------------------------------------
-               tmp1 = rho_i[k, j, i];
+               tmp1 = rho_i[k][ j][ i];
                tmp2 = tmp1 * tmp1;
                tmp3 = tmp1 * tmp2;
 
-               d[j, i, 0, 0] =  1.0
+               d[j][ i][ 0][ 0] =  1.0
                              + dt * 2.0 * (   tx1 * dx1
                                             + ty1 * dy1
                                             + tz1 * dz1 );
-               d[j, i, 1, 0] =  0.0;
-               d[j, i, 2, 0] =  0.0;
-               d[j, i, 3, 0] =  0.0;
-               d[j, i, 4, 0] =  0.0;
+               d[j][ i][ 1][ 0] =  0.0;
+               d[j][ i][ 2][ 0] =  0.0;
+               d[j][ i][ 3][ 0] =  0.0;
+               d[j][ i][ 4][ 0] =  0.0;
 
-               d[j, i, 0, 1] = -dt * 2.0
+               d[j][ i][ 0][ 1] = -dt * 2.0
                 * (  tx1 * r43 + ty1 + tz1  )
-                * c34 * tmp2 * u[k, j, i, 1];
-               d[j, i, 1, 1] =  1.0
+                * c34 * tmp2 * u[k][ j][ i][ 1];
+               d[j][ i][ 1][ 1] =  1.0
                 + dt * 2.0 * c34 * tmp1 
                 * (  tx1 * r43 + ty1 + tz1 )
                 + dt * 2.0 * (   tx1 * dx2
                                    + ty1 * dy2
                                    + tz1 * dz2  );
-               d[j, i, 2, 1] = 0.0;
-               d[j, i, 3, 1] = 0.0;
-               d[j, i, 4, 1] = 0.0;
+               d[j][ i][ 2][ 1] = 0.0;
+               d[j][ i][ 3][ 1] = 0.0;
+               d[j][ i][ 4][ 1] = 0.0;
 
-               d[j, i, 0, 2] = -dt * 2.0
+               d[j][ i][ 0][ 2] = -dt * 2.0
                  * (  tx1 + ty1 * r43 + tz1  )
-                 * c34 * tmp2 * u[k, j, i, 2];
-               d[j, i, 1, 2] = 0.0;
-               d[j, i, 2, 2] = 1.0
+                 * c34 * tmp2 * u[k][ j][ i][ 2];
+               d[j][ i][ 1][ 2] = 0.0;
+               d[j][ i][ 2][ 2] = 1.0
                + dt * 2.0 * c34 * tmp1
                     * (  tx1 + ty1 * r43 + tz1 )
                + dt * 2.0 * (  tx1 * dx3
                                  + ty1 * dy3
                                  + tz1 * dz3 );
-               d[j, i, 3, 2] = 0.0;
-               d[j, i, 4, 2] = 0.0;
+               d[j][ i][ 3][ 2] = 0.0;
+               d[j][ i][ 4][ 2] = 0.0;
 
-               d[j, i, 0, 3] = -dt * 2.0
+               d[j][ i][ 0][ 3] = -dt * 2.0
                  * (  tx1 + ty1 + tz1 * r43  )
-                 * c34 * tmp2 * u[k, j, i, 3];
-               d[j, i, 1, 3] = 0.0;
-               d[j, i, 2, 3] = 0.0;
-               d[j, i, 3, 3] = 1.0
+                 * c34 * tmp2 * u[k][ j][ i][ 3];
+               d[j][ i][ 1][ 3] = 0.0;
+               d[j][ i][ 2][ 3] = 0.0;
+               d[j][ i][ 3][ 3] = 1.0
                + dt * 2.0 * c34 * tmp1
                     * (  tx1 + ty1 + tz1 * r43 )
                + dt * 2.0 * (  tx1 * dx4
                                  + ty1 * dy4
                                  + tz1 * dz4 );
-               d[j, i, 4, 3] = 0.0;
+               d[j][ i][ 4][ 3] = 0.0;
 
-               d[j, i, 0, 4] = -dt * 2.0
+               d[j][ i][ 0][ 4] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.Pow(u[k, j, i, 1],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( Math.Pow(u[k][ j][ i][ 1],2) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.Pow(u[k, j, i, 2],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( Math.Pow(u[k][ j][ i][ 2],2) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * ( Math.Pow(u[k, j, i, 3],2) )
+           + tz1 * ( r43*c34 - c1345 ) ) * ( Math.Pow(u[k][ j][ i][ 3],2) )
             ) * tmp3
-         + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[k, j, i, 4] );
+         + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[k][ j][ i][ 4] );
 
-               d[j, i, 1, 4] = dt * 2.0 * tmp2 * u[k, j, i, 1]
+               d[j][ i][ 1][ 4] = dt * 2.0 * tmp2 * u[k][ j][ i][ 1]
        * ( tx1 * ( r43*c34 - c1345 )
          + ty1 * (     c34 - c1345 )
          + tz1 * (     c34 - c1345 ) );
-               d[j, i, 2, 4] = dt * 2.0 * tmp2 * u[k, j, i, 2]
+               d[j][ i][ 2][ 4] = dt * 2.0 * tmp2 * u[k][ j][ i][ 2]
        * ( tx1 * ( c34 - c1345 )
          + ty1 * ( r43*c34 -c1345 )
          + tz1 * ( c34 - c1345 ) );
-               d[j, i, 3, 4] = dt * 2.0 * tmp2 * u[k, j, i, 3]
+               d[j][ i][ 3][ 4] = dt * 2.0 * tmp2 * u[k][ j][ i][ 3]
        * ( tx1 * ( c34 - c1345 )
          + ty1 * ( c34 - c1345 )
          + tz1 * ( r43*c34 - c1345 ) );
-               d[j, i, 4, 4] = 1.0
+               d[j][ i][ 4][ 4] = 1.0
          + dt * 2.0 * ( tx1  + ty1 + tz1 ) * c1345 * tmp1
          + dt * 2.0 * (  tx1 * dx5
                           +  ty1 * dy5
@@ -1205,224 +1205,224 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
 //   form the first block sub-diagonal
 //---------------------------------------------------------------------
-               tmp1 = rho_i[k-1, j, i];
+               tmp1 = rho_i[k-1][ j][ i];
                tmp2 = tmp1 * tmp1;
                tmp3 = tmp1 * tmp2;
 
-               a[j, i, 0, 0] = - dt * tz1 * dz1;
-               a[j, i, 1, 0] =   0.0;
-               a[j, i, 2, 0] =   0.0;
-               a[j, i, 3, 0] = - dt * tz2;
-               a[j, i, 4, 0] =   0.0;
+               a[j][ i][ 0][ 0] = - dt * tz1 * dz1;
+               a[j][ i][ 1][ 0] =   0.0;
+               a[j][ i][ 2][ 0] =   0.0;
+               a[j][ i][ 3][ 0] = - dt * tz2;
+               a[j][ i][ 4][ 0] =   0.0;
 
-               a[j, i, 0, 1] = - dt * tz2
-                 * ( - ( u[k-1, j, i, 1]*u[k-1, j, i, 3] ) * tmp2 )
-                 - dt * tz1 * ( - c34 * tmp2 * u[k-1, j, i, 1] );
-               a[j, i, 1, 1] = - dt * tz2 * ( u[k-1, j, i, 3] * tmp1 )
+               a[j][ i][ 0][ 1] = - dt * tz2
+                 * ( - ( u[k-1][ j][ i][ 1]*u[k-1][ j][ i][ 3] ) * tmp2 )
+                 - dt * tz1 * ( - c34 * tmp2 * u[k-1][ j][ i][ 1] );
+               a[j][ i][ 1][ 1] = - dt * tz2 * ( u[k-1][ j][ i][ 3] * tmp1 )
                  - dt * tz1 * c34 * tmp1
                  - dt * tz1 * dz2 ;
-               a[j, i, 2, 1] = 0.0;
-               a[j, i, 3, 1] = - dt * tz2 * ( u[k-1, j, i, 1] * tmp1 );
-               a[j, i, 4, 1] = 0.0;
+               a[j][ i][ 2][ 1] = 0.0;
+               a[j][ i][ 3][ 1] = - dt * tz2 * ( u[k-1][ j][ i][ 1] * tmp1 );
+               a[j][ i][ 4][ 1] = 0.0;
 
-               a[j, i, 0, 2] = - dt * tz2
-                 * ( - ( u[k-1, j, i, 2]*u[k-1, j, i, 3] ) * tmp2 )
-                 - dt * tz1 * ( - c34 * tmp2 * u[k-1, j, i, 2] );
-               a[j, i, 1, 2] = 0.0;
-               a[j, i, 2, 2] = - dt * tz2 * ( u[k-1, j, i, 3] * tmp1 )
+               a[j][ i][ 0][ 2] = - dt * tz2
+                 * ( - ( u[k-1][ j][ i][ 2]*u[k-1][ j][ i][ 3] ) * tmp2 )
+                 - dt * tz1 * ( - c34 * tmp2 * u[k-1][ j][ i][ 2] );
+               a[j][ i][ 1][ 2] = 0.0;
+               a[j][ i][ 2][ 2] = - dt * tz2 * ( u[k-1][ j][ i][ 3] * tmp1 )
                  - dt * tz1 * ( c34 * tmp1 )
                  - dt * tz1 * dz3;
-               a[j, i, 3, 2] = - dt * tz2 * ( u[k-1, j, i, 2] * tmp1 );
-               a[j, i, 4, 2] = 0.0;
+               a[j][ i][ 3][ 2] = - dt * tz2 * ( u[k-1][ j][ i][ 2] * tmp1 );
+               a[j][ i][ 4][ 2] = 0.0;
 
-               a[j, i, 0, 3] = - dt * tz2
-              * ( - Math.Pow(( u[k-1, j, i, 3] * tmp1 ),2)
-                  + c2 * qs[k-1, j, i] * tmp1 )
-              - dt * tz1 * ( - r43 * c34 * tmp2 * u[k-1, j, i, 3] );
-               a[j, i, 1, 3] = - dt * tz2
-                   * ( - c2 * ( u[k-1, j, i, 1] * tmp1 ) );
-               a[j, i, 2, 3] = - dt * tz2
-                   * ( - c2 * ( u[k-1, j, i, 2] * tmp1 ) );
-               a[j, i, 3, 3] = - dt * tz2 * ( 2.0 - c2 )
-                   * ( u[k-1, j, i, 3] * tmp1 )
+               a[j][ i][ 0][ 3] = - dt * tz2
+              * ( - Math.Pow(( u[k-1][ j][ i][ 3] * tmp1 ),2)
+                  + c2 * qs[k-1][ j][ i] * tmp1 )
+              - dt * tz1 * ( - r43 * c34 * tmp2 * u[k-1][ j][ i][ 3] );
+               a[j][ i][ 1][ 3] = - dt * tz2
+                   * ( - c2 * ( u[k-1][ j][ i][ 1] * tmp1 ) );
+               a[j][ i][ 2][ 3] = - dt * tz2
+                   * ( - c2 * ( u[k-1][ j][ i][ 2] * tmp1 ) );
+               a[j][ i][ 3][ 3] = - dt * tz2 * ( 2.0 - c2 )
+                   * ( u[k-1][ j][ i][ 3] * tmp1 )
                    - dt * tz1 * ( r43 * c34 * tmp1 )
                    - dt * tz1 * dz4;
-               a[j, i, 4, 3] = - dt * tz2 * c2;
+               a[j][ i][ 4][ 3] = - dt * tz2 * c2;
 
-               a[j, i, 0, 4] = - dt * tz2
-             * ( ( c2 * 2.0 * qs[k-1, j, i]
-             - c1 * u[k-1, j, i, 4] )
-                  * u[k-1, j, i, 3] * tmp2 )
+               a[j][ i][ 0][ 4] = - dt * tz2
+             * ( ( c2 * 2.0 * qs[k-1][ j][ i]
+             - c1 * u[k-1][ j][ i][ 4] )
+                  * u[k-1][ j][ i][ 3] * tmp2 )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k-1, j, i, 1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k-1, j, i, 2],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.Pow(u[k-1, j, i, 3],2)
-                - c1345 * tmp2 * u[k-1, j, i, 4] );
-               a[j, i, 1, 4] = - dt * tz2
-             * ( - c2 * ( u[k-1, j, i, 1]*u[k-1, j, i, 3] ) * tmp2 )
-             - dt * tz1 * ( c34 - c1345 ) * tmp2 * u[k-1, j, i, 1];
-               a[j, i, 2, 4] = - dt * tz2
-             * ( - c2 * ( u[k-1, j, i, 2]*u[k-1, j, i, 3] ) * tmp2 )
-             - dt * tz1 * ( c34 - c1345 ) * tmp2 * u[k-1, j, i, 2];
-               a[j, i, 3, 4] = - dt * tz2
-             * ( c1 * ( u[k-1, j, i, 4] * tmp1 )
+             * ( - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k-1][ j][ i][ 1],2)
+                 - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k-1][ j][ i][ 2],2)
+                 - ( r43*c34 - c1345 )* tmp3 * Math.Pow(u[k-1][ j][ i][ 3],2)
+                - c1345 * tmp2 * u[k-1][ j][ i][ 4] );
+               a[j][ i][ 1][ 4] = - dt * tz2
+             * ( - c2 * ( u[k-1][ j][ i][ 1]*u[k-1][ j][ i][ 3] ) * tmp2 )
+             - dt * tz1 * ( c34 - c1345 ) * tmp2 * u[k-1][ j][ i][ 1];
+               a[j][ i][ 2][ 4] = - dt * tz2
+             * ( - c2 * ( u[k-1][ j][ i][ 2]*u[k-1][ j][ i][ 3] ) * tmp2 )
+             - dt * tz1 * ( c34 - c1345 ) * tmp2 * u[k-1][ j][ i][ 2];
+               a[j][ i][ 3][ 4] = - dt * tz2
+             * ( c1 * ( u[k-1][ j][ i][ 4] * tmp1 )
              - c2
-             * ( qs[k-1, j, i] * tmp1
-                  + u[k-1, j, i, 3]*u[k-1, j, i, 3] * tmp2 ) )
-             - dt * tz1 * ( r43*c34 - c1345 ) * tmp2 * u[k-1, j, i, 3];
-               a[j, i, 4, 4] = - dt * tz2
-             * ( c1 * ( u[k-1, j, i, 3] * tmp1 ) )
+             * ( qs[k-1][ j][ i] * tmp1
+                  + u[k-1][ j][ i][ 3]*u[k-1][ j][ i][ 3] * tmp2 ) )
+             - dt * tz1 * ( r43*c34 - c1345 ) * tmp2 * u[k-1][ j][ i][ 3];
+               a[j][ i][ 4][ 4] = - dt * tz2
+             * ( c1 * ( u[k-1][ j][ i][ 3] * tmp1 ) )
              - dt * tz1 * c1345 * tmp1
              - dt * tz1 * dz5;
 
 //---------------------------------------------------------------------
 //   form the second block sub-diagonal
 //---------------------------------------------------------------------
-               tmp1 = rho_i[k, j-1, i];
+               tmp1 = rho_i[k][ j-1][ i];
                tmp2 = tmp1 * tmp1;
                tmp3 = tmp1 * tmp2;
 
-               b[j, i, 0, 0] = - dt * ty1 * dy1;
-               b[j, i, 1, 0] =   0.0;
-               b[j, i, 2, 0] = - dt * ty2;
-               b[j, i, 3, 0] =   0.0;
-               b[j, i, 4, 0] =   0.0;
+               b[j][ i][ 0][ 0] = - dt * ty1 * dy1;
+               b[j][ i][ 1][ 0] =   0.0;
+               b[j][ i][ 2][ 0] = - dt * ty2;
+               b[j][ i][ 3][ 0] =   0.0;
+               b[j][ i][ 4][ 0] =   0.0;
 
-               b[j, i, 0, 1] = - dt * ty2
-                 * ( - ( u[k, j-1, i, 1]*u[k, j-1, i, 2] ) * tmp2 )
-                 - dt * ty1 * ( - c34 * tmp2 * u[k, j-1, i, 1] );
-               b[j, i, 1, 1] = - dt * ty2 * ( u[k, j-1, i, 2] * tmp1 )
+               b[j][ i][ 0][ 1] = - dt * ty2
+                 * ( - ( u[k][ j-1][ i][ 1]*u[k][ j-1][ i][ 2] ) * tmp2 )
+                 - dt * ty1 * ( - c34 * tmp2 * u[k][ j-1][ i][ 1] );
+               b[j][ i][ 1][ 1] = - dt * ty2 * ( u[k][ j-1][ i][ 2] * tmp1 )
                 - dt * ty1 * ( c34 * tmp1 )
                 - dt * ty1 * dy2;
-               b[j, i, 2, 1] = - dt * ty2 * ( u[k, j-1, i, 1] * tmp1 );
-               b[j, i, 3, 1] = 0.0;
-               b[j, i, 4, 1] = 0.0;
+               b[j][ i][ 2][ 1] = - dt * ty2 * ( u[k][ j-1][ i][ 1] * tmp1 );
+               b[j][ i][ 3][ 1] = 0.0;
+               b[j][ i][ 4][ 1] = 0.0;
 
-               b[j, i, 0, 2] = - dt * ty2
-                 * ( - Math.Pow(( u[k, j-1, i, 2] * tmp1 ),2)
-             + c2 * ( qs[k, j-1, i] * tmp1 ) )
-             - dt * ty1 * ( - r43 * c34 * tmp2 * u[k, j-1, i, 2] );
-               b[j, i, 1, 2] = - dt * ty2
-                         * ( - c2 * ( u[k, j-1, i, 1] * tmp1 ) );
-               b[j, i, 2, 2] = - dt * ty2 * ( ( 2.0 - c2 )
-                         * ( u[k, j-1, i, 2] * tmp1 ) )
+               b[j][ i][ 0][ 2] = - dt * ty2
+                 * ( - Math.Pow(( u[k][ j-1][ i][ 2] * tmp1 ),2)
+             + c2 * ( qs[k][ j-1][ i] * tmp1 ) )
+             - dt * ty1 * ( - r43 * c34 * tmp2 * u[k][ j-1][ i][ 2] );
+               b[j][ i][ 1][ 2] = - dt * ty2
+                         * ( - c2 * ( u[k][ j-1][ i][ 1] * tmp1 ) );
+               b[j][ i][ 2][ 2] = - dt * ty2 * ( ( 2.0 - c2 )
+                         * ( u[k][ j-1][ i][ 2] * tmp1 ) )
              - dt * ty1 * ( r43 * c34 * tmp1 )
              - dt * ty1 * dy3;
-               b[j, i, 3, 2] = - dt * ty2
-                         * ( - c2 * ( u[k, j-1, i, 3] * tmp1 ) );
-               b[j, i, 4, 2] = - dt * ty2 * c2;
+               b[j][ i][ 3][ 2] = - dt * ty2
+                         * ( - c2 * ( u[k][ j-1][ i][ 3] * tmp1 ) );
+               b[j][ i][ 4][ 2] = - dt * ty2 * c2;
 
-               b[j, i, 0, 3] = - dt * ty2
-                    * ( - ( u[k, j-1, i, 2]*u[k, j-1, i, 3] ) * tmp2 )
-             - dt * ty1 * ( - c34 * tmp2 * u[k, j-1, i, 3] );
-               b[j, i, 1, 3] = 0.0;
-               b[j, i, 2, 3] = - dt * ty2 * ( u[k, j-1, i, 3] * tmp1 );
-               b[j, i, 3, 3] = - dt * ty2 * ( u[k, j-1, i, 2] * tmp1 )
+               b[j][ i][ 0][ 3] = - dt * ty2
+                    * ( - ( u[k][ j-1][ i][ 2]*u[k][ j-1][ i][ 3] ) * tmp2 )
+             - dt * ty1 * ( - c34 * tmp2 * u[k][ j-1][ i][ 3] );
+               b[j][ i][ 1][ 3] = 0.0;
+               b[j][ i][ 2][ 3] = - dt * ty2 * ( u[k][ j-1][ i][ 3] * tmp1 );
+               b[j][ i][ 3][ 3] = - dt * ty2 * ( u[k][ j-1][ i][ 2] * tmp1 )
                               - dt * ty1 * ( c34 * tmp1 )
                               - dt * ty1 * dy4;
-               b[j, i, 4, 3] = 0.0;
+               b[j][ i][ 4][ 3] = 0.0;
 
-               b[j, i, 0, 4] = - dt * ty2
-                * ( ( c2 * 2.0 * qs[k, j-1, i]
-                     - c1 * u[k, j-1, i, 4] )
-                * ( u[k, j-1, i, 2] * tmp2 ) )
+               b[j][ i][ 0][ 4] = - dt * ty2
+                * ( ( c2 * 2.0 * qs[k][ j-1][ i]
+                     - c1 * u[k][ j-1][ i][ 4] )
+                * ( u[k][ j-1][ i][ 2] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.Pow(u[k, j-1, i, 1],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.Pow(u[k, j-1, i, 2],2)
-                    - (     c34 - c1345 )*tmp3*Math.Pow(u[k, j-1, i, 3],2)
-                    - c1345*tmp2*u[k, j-1, i, 4] );
-               b[j, i, 1, 4] = - dt * ty2
-                * ( - c2 * ( u[k, j-1, i, 1]*u[k, j-1, i, 2] ) * tmp2 )
+                * ( - (     c34 - c1345 )*tmp3*Math.Pow(u[k][ j-1][ i][ 1],2)
+                    - ( r43*c34 - c1345 )*tmp3*Math.Pow(u[k][ j-1][ i][ 2],2)
+                    - (     c34 - c1345 )*tmp3*Math.Pow(u[k][ j-1][ i][ 3],2)
+                    - c1345*tmp2*u[k][ j-1][ i][ 4] );
+               b[j][ i][ 1][ 4] = - dt * ty2
+                * ( - c2 * ( u[k][ j-1][ i][ 1]*u[k][ j-1][ i][ 2] ) * tmp2 )
                 - dt * ty1
-                * ( c34 - c1345 ) * tmp2 * u[k, j-1, i, 1];
-               b[j, i, 2, 4] = - dt * ty2
-                * ( c1 * ( u[k, j-1, i, 4] * tmp1 )
+                * ( c34 - c1345 ) * tmp2 * u[k][ j-1][ i][ 1];
+               b[j][ i][ 2][ 4] = - dt * ty2
+                * ( c1 * ( u[k][ j-1][ i][ 4] * tmp1 )
                 - c2 
-                * ( qs[k, j-1, i] * tmp1
-                     + u[k, j-1, i, 2]*u[k, j-1, i, 2] * tmp2 ) )
+                * ( qs[k][ j-1][ i] * tmp1
+                     + u[k][ j-1][ i][ 2]*u[k][ j-1][ i][ 2] * tmp2 ) )
                 - dt * ty1
-                * ( r43*c34 - c1345 ) * tmp2 * u[k, j-1, i, 2];
-               b[j, i, 3, 4] = - dt * ty2
-                * ( - c2 * ( u[k, j-1, i, 2]*u[k, j-1, i, 3] ) * tmp2 )
-                - dt * ty1 * ( c34 - c1345 ) * tmp2 * u[k, j-1, i, 3];
-               b[j, i, 4, 4] = - dt * ty2
-                * ( c1 * ( u[k, j-1, i, 2] * tmp1 ) )
+                * ( r43*c34 - c1345 ) * tmp2 * u[k][ j-1][ i][ 2];
+               b[j][ i][ 3][ 4] = - dt * ty2
+                * ( - c2 * ( u[k][ j-1][ i][ 2]*u[k][ j-1][ i][ 3] ) * tmp2 )
+                - dt * ty1 * ( c34 - c1345 ) * tmp2 * u[k][ j-1][ i][ 3];
+               b[j][ i][ 4][ 4] = - dt * ty2
+                * ( c1 * ( u[k][ j-1][ i][ 2] * tmp1 ) )
                 - dt * ty1 * c1345 * tmp1
                 - dt * ty1 * dy5;
 	    
 //---------------------------------------------------------------------
 //   form the third block sub-diagonal
 //---------------------------------------------------------------------
-               tmp1 = rho_i[k, j, i-1];
+               tmp1 = rho_i[k][ j][ i-1];
                tmp2 = tmp1 * tmp1;
                tmp3 = tmp1 * tmp2;
 
-               c[j, i, 0, 0] = - dt * tx1 * dx1;
-               c[j, i, 1, 0] = - dt * tx2;
-               c[j, i, 2, 0] =   0.0;
-               c[j, i, 3, 0] =   0.0;
-               c[j, i, 4, 0] =   0.0;
+               c[j][ i][ 0][ 0] = - dt * tx1 * dx1;
+               c[j][ i][ 1][ 0] = - dt * tx2;
+               c[j][ i][ 2][ 0] =   0.0;
+               c[j][ i][ 3][ 0] =   0.0;
+               c[j][ i][ 4][ 0] =   0.0;
 
-               c[j, i, 0, 1] = - dt * tx2
-                * ( - Math.Pow(( u[k, j, i-1, 1] * tmp1 ),2)
-             + c2 * qs[k, j, i-1] * tmp1 )
-                - dt * tx1 * ( - r43 * c34 * tmp2 * u[k, j, i-1, 1] );
-               c[j, i, 1, 1] = - dt * tx2
-                * ( ( 2.0 - c2 ) * ( u[k, j, i-1, 1] * tmp1 ) )
+               c[j][ i][ 0][ 1] = - dt * tx2
+                * ( - Math.Pow(( u[k][ j][ i-1][ 1] * tmp1 ),2)
+             + c2 * qs[k][ j][ i-1] * tmp1 )
+                - dt * tx1 * ( - r43 * c34 * tmp2 * u[k][ j][ i-1][ 1] );
+               c[j][ i][ 1][ 1] = - dt * tx2
+                * ( ( 2.0 - c2 ) * ( u[k][ j][ i-1][ 1] * tmp1 ) )
                 - dt * tx1 * ( r43 * c34 * tmp1 )
                 - dt * tx1 * dx2;
-               c[j, i, 2, 1] = - dt * tx2
-                    * ( - c2 * ( u[k, j, i-1, 2] * tmp1 ) );
-               c[j, i, 3, 1] = - dt * tx2
-                    * ( - c2 * ( u[k, j, i-1, 3] * tmp1 ) );
-               c[j, i, 4, 1] = - dt * tx2 * c2 ;
+               c[j][ i][ 2][ 1] = - dt * tx2
+                    * ( - c2 * ( u[k][ j][ i-1][ 2] * tmp1 ) );
+               c[j][ i][ 3][ 1] = - dt * tx2
+                    * ( - c2 * ( u[k][ j][ i-1][ 3] * tmp1 ) );
+               c[j][ i][ 4][ 1] = - dt * tx2 * c2 ;
 
-               c[j, i, 0, 2] = - dt * tx2
-                    * ( - ( u[k, j, i-1, 1] * u[k, j, i-1, 2] ) * tmp2 )
-               - dt * tx1 * ( - c34 * tmp2 * u[k, j, i-1, 2] );
-               c[j, i, 1, 2] = - dt * tx2 * ( u[k, j, i-1, 2] * tmp1 );
-               c[j, i, 2, 2] = - dt * tx2 * ( u[k, j, i-1, 1] * tmp1 )
+               c[j][ i][ 0][ 2] = - dt * tx2
+                    * ( - ( u[k][ j][ i-1][ 1] * u[k][ j][ i-1][ 2] ) * tmp2 )
+               - dt * tx1 * ( - c34 * tmp2 * u[k][ j][ i-1][ 2] );
+               c[j][ i][ 1][ 2] = - dt * tx2 * ( u[k][ j][ i-1][ 2] * tmp1 );
+               c[j][ i][ 2][ 2] = - dt * tx2 * ( u[k][ j][ i-1][ 1] * tmp1 )
                 - dt * tx1 * ( c34 * tmp1 )
                 - dt * tx1 * dx3;
-               c[j, i, 3, 2] = 0.0;
-               c[j, i, 4, 2] = 0.0;
+               c[j][ i][ 3][ 2] = 0.0;
+               c[j][ i][ 4][ 2] = 0.0;
 
-               c[j, i, 0, 3] = - dt * tx2
-                * ( - ( u[k, j, i-1, 1]*u[k, j, i-1, 3] ) * tmp2 )
-                - dt * tx1 * ( - c34 * tmp2 * u[k, j, i-1, 3] );
-               c[j, i, 1, 3] = - dt * tx2 * ( u[k, j, i-1, 3] * tmp1 );
-               c[j, i, 2, 3] = 0.0;
-               c[j, i, 3, 3] = - dt * tx2 * ( u[k, j, i-1, 1] * tmp1 )
+               c[j][ i][ 0][ 3] = - dt * tx2
+                * ( - ( u[k][ j][ i-1][ 1]*u[k][ j][ i-1][ 3] ) * tmp2 )
+                - dt * tx1 * ( - c34 * tmp2 * u[k][ j][ i-1][ 3] );
+               c[j][ i][ 1][ 3] = - dt * tx2 * ( u[k][ j][ i-1][ 3] * tmp1 );
+               c[j][ i][ 2][ 3] = 0.0;
+               c[j][ i][ 3][ 3] = - dt * tx2 * ( u[k][ j][ i-1][ 1] * tmp1 )
                 - dt * tx1 * ( c34 * tmp1 )
                 - dt * tx1 * dx4;
-               c[j, i, 4, 3] = 0.0;
+               c[j][ i][ 4][ 3] = 0.0;
 
-               c[j, i, 0, 4] = - dt * tx2
-                * ( ( c2 * 2.0 * qs[k, j, i-1]
-                    - c1 * u[k, j, i-1, 4] )
-                * u[k, j, i-1, 1] * tmp2 )
+               c[j][ i][ 0][ 4] = - dt * tx2
+                * ( ( c2 * 2.0 * qs[k][ j][ i-1]
+                    - c1 * u[k][ j][ i-1][ 4] )
+                * u[k][ j][ i-1][ 1] * tmp2 )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.Pow( u[k, j, i-1, 1],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k, j, i-1, 2],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k, j, i-1, 3],2 )
-                    - c1345 * tmp2 * u[k, j, i-1, 4] );
-               c[j, i, 1, 4] = - dt * tx2
-                * ( c1 * ( u[k, j, i-1, 4] * tmp1 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i-1][ 1],2 )
+                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i-1][ 2],2 )
+                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i-1][ 3],2 )
+                    - c1345 * tmp2 * u[k][ j][ i-1][ 4] );
+               c[j][ i][ 1][ 4] = - dt * tx2
+                * ( c1 * ( u[k][ j][ i-1][ 4] * tmp1 )
                    - c2
-                   * ( u[k, j, i-1, 1]*u[k, j, i-1, 1] * tmp2
-                        + qs[k, j, i-1] * tmp1 ) )
+                   * ( u[k][ j][ i-1][ 1]*u[k][ j][ i-1][ 1] * tmp2
+                        + qs[k][ j][ i-1] * tmp1 ) )
                  - dt * tx1
-                 * ( r43*c34 - c1345 ) * tmp2 * u[k, j, i-1, 1];
-               c[j, i, 2, 4] = - dt * tx2
-                 * ( - c2 * ( u[k, j, i-1, 2]*u[k, j, i-1, 1] ) * tmp2 )
+                 * ( r43*c34 - c1345 ) * tmp2 * u[k][ j][ i-1][ 1];
+               c[j][ i][ 2][ 4] = - dt * tx2
+                 * ( - c2 * ( u[k][ j][ i-1][ 2]*u[k][ j][ i-1][ 1] ) * tmp2 )
                  - dt * tx1
-                 * (  c34 - c1345 ) * tmp2 * u[k, j, i-1, 2];
-               c[j, i, 3, 4] = - dt * tx2
-                 * ( - c2 * ( u[k, j, i-1, 3]*u[k, j, i-1, 1] ) * tmp2 )
+                 * (  c34 - c1345 ) * tmp2 * u[k][ j][ i-1][ 2];
+               c[j][ i][ 3][ 4] = - dt * tx2
+                 * ( - c2 * ( u[k][ j][ i-1][ 3]*u[k][ j][ i-1][ 1] ) * tmp2 )
                  - dt * tx1
-                 * (  c34 - c1345 ) * tmp2 * u[k, j, i-1, 3];
-               c[j, i, 4, 4] = - dt * tx2
-                 * ( c1 * ( u[k, j, i-1, 1] * tmp1 ) )
+                 * (  c34 - c1345 ) * tmp2 * u[k][ j][ i-1][ 3];
+               c[j][ i][ 4][ 4] = - dt * tx2
+                 * ( c1 * ( u[k][ j][ i-1][ 1] * tmp1 ) )
                  - dt * tx1 * c1345 * tmp1
                  - dt * tx1 * dx5;
             }
@@ -1446,84 +1446,84 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
 //   form the block daigonal
 //---------------------------------------------------------------------
-               tmp1 = rho_i[k, j, i];
+               tmp1 = rho_i[k][ j][ i];
                tmp2 = tmp1 * tmp1;
                tmp3 = tmp1 * tmp2;
 
-               d[j, i, 0, 0] =  1.0
+               d[j][ i][ 0][ 0] =  1.0
                              + dt * 2.0 * (   tx1 * dx1
                                                 + ty1 * dy1
                                                 + tz1 * dz1 );
-               d[j, i, 1, 0] =  0.0;
-               d[j, i, 2, 0] =  0.0;
-               d[j, i, 3, 0] =  0.0;
-               d[j, i, 4, 0] =  0.0;
+               d[j][ i][ 1][ 0] =  0.0;
+               d[j][ i][ 2][ 0] =  0.0;
+               d[j][ i][ 3][ 0] =  0.0;
+               d[j][ i][ 4][ 0] =  0.0;
 
-               d[j, i, 0, 1] =  dt * 2.0
+               d[j][ i][ 0][ 1] =  dt * 2.0
                  * ( - tx1 * r43 - ty1 - tz1 )
-                 * ( c34 * tmp2 * u[k, j, i, 1] );
-               d[j, i, 1, 1] =  1.0
+                 * ( c34 * tmp2 * u[k][ j][ i][ 1] );
+               d[j][ i][ 1][ 1] =  1.0
                 + dt * 2.0 * c34 * tmp1 
                 * (  tx1 * r43 + ty1 + tz1 )
                 + dt * 2.0 * (   tx1 * dx2
                                    + ty1 * dy2
                                    + tz1 * dz2  );
-               d[j, i, 2, 1] = 0.0;
-               d[j, i, 3, 1] = 0.0;
-               d[j, i, 4, 1] = 0.0;
+               d[j][ i][ 2][ 1] = 0.0;
+               d[j][ i][ 3][ 1] = 0.0;
+               d[j][ i][ 4][ 1] = 0.0;
 
-               d[j, i, 0, 2] = dt * 2.0
+               d[j][ i][ 0][ 2] = dt * 2.0
                  * ( - tx1 - ty1 * r43 - tz1 )
-                 * ( c34 * tmp2 * u[k, j, i, 2] );
-               d[j, i, 1, 2] = 0.0;
-               d[j, i, 2, 2] = 1.0
+                 * ( c34 * tmp2 * u[k][ j][ i][ 2] );
+               d[j][ i][ 1][ 2] = 0.0;
+               d[j][ i][ 2][ 2] = 1.0
                + dt * 2.0 * c34 * tmp1
                     * (  tx1 + ty1 * r43 + tz1 )
                + dt * 2.0 * (  tx1 * dx3
                                  + ty1 * dy3
                                  + tz1 * dz3 );
-               d[j, i, 3, 2] = 0.0;
-               d[j, i, 4, 2] = 0.0;
+               d[j][ i][ 3][ 2] = 0.0;
+               d[j][ i][ 4][ 2] = 0.0;
 
-               d[j, i, 0, 3] = dt * 2.0
+               d[j][ i][ 0][ 3] = dt * 2.0
                  * ( - tx1 - ty1 - tz1 * r43 )
-                 * ( c34 * tmp2 * u[k, j, i, 3] );
-               d[j, i, 1, 3] = 0.0;
-               d[j, i, 2, 3] = 0.0;
-               d[j, i, 3, 3] = 1.0
+                 * ( c34 * tmp2 * u[k][ j][ i][ 3] );
+               d[j][ i][ 1][ 3] = 0.0;
+               d[j][ i][ 2][ 3] = 0.0;
+               d[j][ i][ 3][ 3] = 1.0
                + dt * 2.0 * c34 * tmp1
                     * (  tx1 + ty1 + tz1 * r43 )
                + dt * 2.0 * (  tx1 * dx4
                                  + ty1 * dy4
                                  + tz1 * dz4 );
-               d[j, i, 4, 3] = 0.0;
+               d[j][ i][ 4][ 3] = 0.0;
 
-               d[j, i, 0, 4] = -dt * 2.0
+               d[j][ i][ 0][ 4] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * Math.Pow( u[k, j, i, 1],2)
+           + tz1 * ( c34 - c1345 ) ) * Math.Pow( u[k][ j][ i][ 1],2)
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * Math.Pow( u[k, j, i, 2],2)
+           + tz1 * ( c34 - c1345 ) ) * Math.Pow( u[k][ j][ i][ 2],2)
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * Math.Pow( u[k, j, i, 3],2)
+           + tz1 * ( r43*c34 - c1345 ) ) * Math.Pow( u[k][ j][ i][ 3],2)
             ) * tmp3
-         + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[k, j, i, 4] );
+         + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[k][ j][ i][ 4] );
 
-               d[j, i, 1, 4] = dt * 2.0
+               d[j][ i][ 1][ 4] = dt * 2.0
        * ( tx1 * ( r43*c34 - c1345 )
          + ty1 * (     c34 - c1345 )
-         + tz1 * (     c34 - c1345 ) ) * tmp2 * u[k, j, i, 1];
-               d[j, i, 2, 4] = dt * 2.0
+         + tz1 * (     c34 - c1345 ) ) * tmp2 * u[k][ j][ i][ 1];
+               d[j][ i][ 2][ 4] = dt * 2.0
        * ( tx1 * ( c34 - c1345 )
          + ty1 * ( r43*c34 -c1345 )
-         + tz1 * ( c34 - c1345 ) ) * tmp2 * u[k, j, i, 2];
-               d[j, i, 3, 4] = dt * 2.0
+         + tz1 * ( c34 - c1345 ) ) * tmp2 * u[k][ j][ i][ 2];
+               d[j][ i][ 3][ 4] = dt * 2.0
        * ( tx1 * ( c34 - c1345 )
          + ty1 * ( c34 - c1345 )
-         + tz1 * ( r43*c34 - c1345 ) ) * tmp2 * u[k, j, i, 3];
-               d[j, i, 4, 4] = 1.0
+         + tz1 * ( r43*c34 - c1345 ) ) * tmp2 * u[k][ j][ i][ 3];
+               d[j][ i][ 4][ 4] = 1.0
          + dt * 2.0 * ( tx1 + ty1 + tz1 ) * c1345 * tmp1
          + dt * 2.0 * (  tx1 * dx5
                           +  ty1 * dy5
@@ -1531,224 +1531,224 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
 //   form the first block sub-diagonal
 //---------------------------------------------------------------------
-               tmp1 = rho_i[k, j, i+1];
+               tmp1 = rho_i[k][ j][ i+1];
                tmp2 = tmp1 * tmp1;
                tmp3 = tmp1 * tmp2;
 
-               a[j, i, 0, 0] = - dt * tx1 * dx1;
-               a[j, i, 1, 0] =   dt * tx2;
-               a[j, i, 2, 0] =   0.0;
-               a[j, i, 3, 0] =   0.0;
-               a[j, i, 4, 0] =   0.0;
+               a[j][ i][ 0][ 0] = - dt * tx1 * dx1;
+               a[j][ i][ 1][ 0] =   dt * tx2;
+               a[j][ i][ 2][ 0] =   0.0;
+               a[j][ i][ 3][ 0] =   0.0;
+               a[j][ i][ 4][ 0] =   0.0;
 
-               a[j, i, 0, 1] =  dt * tx2
-                * ( - Math.Pow(( u[k, j, i+1, 1] * tmp1 ),2)
-           + c2 * qs[k, j, i+1] * tmp1 )
-                - dt * tx1 * ( - r43 * c34 * tmp2 * u[k, j, i+1, 1] );
-               a[j, i, 1, 1] =  dt * tx2
-                * ( ( 2.0 - c2 ) * ( u[k, j, i+1, 1] * tmp1 ) )
+               a[j][ i][ 0][ 1] =  dt * tx2
+                * ( - Math.Pow(( u[k][ j][ i+1][ 1] * tmp1 ),2)
+           + c2 * qs[k][ j][ i+1] * tmp1 )
+                - dt * tx1 * ( - r43 * c34 * tmp2 * u[k][ j][ i+1][ 1] );
+               a[j][ i][ 1][ 1] =  dt * tx2
+                * ( ( 2.0 - c2 ) * ( u[k][ j][ i+1][ 1] * tmp1 ) )
                 - dt * tx1 * ( r43 * c34 * tmp1 )
                 - dt * tx1 * dx2;
-               a[j, i, 2, 1] =  dt * tx2
-                    * ( - c2 * ( u[k, j, i+1, 2] * tmp1 ) );
-               a[j, i, 3, 1] =  dt * tx2
-                    * ( - c2 * ( u[k, j, i+1, 3] * tmp1 ) );
-               a[j, i, 4, 1] =  dt * tx2 * c2 ;
+               a[j][ i][ 2][ 1] =  dt * tx2
+                    * ( - c2 * ( u[k][ j][ i+1][ 2] * tmp1 ) );
+               a[j][ i][ 3][ 1] =  dt * tx2
+                    * ( - c2 * ( u[k][ j][ i+1][ 3] * tmp1 ) );
+               a[j][ i][ 4][ 1] =  dt * tx2 * c2 ;
 
-               a[j, i, 0, 2] =  dt * tx2
-                    * ( - ( u[k, j, i+1, 1] * u[k, j, i+1, 2] ) * tmp2 )
-               - dt * tx1 * ( - c34 * tmp2 * u[k, j, i+1, 2] );
-               a[j, i, 1, 2] =  dt * tx2 * ( u[k, j, i+1, 2] * tmp1 );
-               a[j, i, 2, 2] =  dt * tx2 * ( u[k, j, i+1, 1] * tmp1 )
+               a[j][ i][ 0][ 2] =  dt * tx2
+                    * ( - ( u[k][ j][ i+1][ 1] * u[k][ j][ i+1][ 2] ) * tmp2 )
+               - dt * tx1 * ( - c34 * tmp2 * u[k][ j][ i+1][ 2] );
+               a[j][ i][ 1][ 2] =  dt * tx2 * ( u[k][ j][ i+1][ 2] * tmp1 );
+               a[j][ i][ 2][ 2] =  dt * tx2 * ( u[k][ j][ i+1][ 1] * tmp1 )
                 - dt * tx1 * ( c34 * tmp1 )
                 - dt * tx1 * dx3;
-               a[j, i, 3, 2] = 0.0;
-               a[j, i, 4, 2] = 0.0;
+               a[j][ i][ 3][ 2] = 0.0;
+               a[j][ i][ 4][ 2] = 0.0;
 
-               a[j, i, 0, 3] = dt * tx2
-                * ( - ( u[k, j, i+1, 1]*u[k, j, i+1, 3] ) * tmp2 )
-                - dt * tx1 * ( - c34 * tmp2 * u[k, j, i+1, 3] );
-               a[j, i, 1, 3] = dt * tx2 * ( u[k, j, i+1, 3] * tmp1 );
-               a[j, i, 2, 3] = 0.0;
-               a[j, i, 3, 3] = dt * tx2 * ( u[k, j, i+1, 1] * tmp1 )
+               a[j][ i][ 0][ 3] = dt * tx2
+                * ( - ( u[k][ j][ i+1][ 1]*u[k][ j][ i+1][ 3] ) * tmp2 )
+                - dt * tx1 * ( - c34 * tmp2 * u[k][ j][ i+1][ 3] );
+               a[j][ i][ 1][ 3] = dt * tx2 * ( u[k][ j][ i+1][ 3] * tmp1 );
+               a[j][ i][ 2][ 3] = 0.0;
+               a[j][ i][ 3][ 3] = dt * tx2 * ( u[k][ j][ i+1][ 1] * tmp1 )
                 - dt * tx1 * ( c34 * tmp1 )
                 - dt * tx1 * dx4;
-               a[j, i, 4, 3] = 0.0;
+               a[j][ i][ 4][ 3] = 0.0;
 
-               a[j, i, 0, 4] = dt * tx2
-                * ( ( c2 * 2.0 * qs[k, j, i+1]
-                    - c1 * u[k, j, i+1, 4] )
-                * ( u[k, j, i+1, 1] * tmp2 ) )
+               a[j][ i][ 0][ 4] = dt * tx2
+                * ( ( c2 * 2.0 * qs[k][ j][ i+1]
+                    - c1 * u[k][ j][ i+1][ 4] )
+                * ( u[k][ j][ i+1][ 1] * tmp2 ) )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.Pow( u[k, j, i+1, 1],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k, j, i+1, 2],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k, j, i+1, 3],2 )
-                    - c1345 * tmp2 * u[k, j, i+1, 4] );
-               a[j, i, 1, 4] = dt * tx2
-                * ( c1 * ( u[k, j, i+1, 4] * tmp1 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i+1][ 1],2 )
+                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i+1][ 2],2 )
+                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i+1][ 3],2 )
+                    - c1345 * tmp2 * u[k][ j][ i+1][ 4] );
+               a[j][ i][ 1][ 4] = dt * tx2
+                * ( c1 * ( u[k][ j][ i+1][ 4] * tmp1 )
                    - c2
-                   * (  u[k, j, i+1, 1]*u[k, j, i+1, 1] * tmp2
-                        + qs[k, j, i+1] * tmp1 ) )
+                   * (  u[k][ j][ i+1][ 1]*u[k][ j][ i+1][ 1] * tmp2
+                        + qs[k][ j][ i+1] * tmp1 ) )
                  - dt * tx1
-                 * ( r43*c34 - c1345 ) * tmp2 * u[k, j, i+1, 1];
-               a[j, i, 2, 4] = dt * tx2
-                 * ( - c2 * ( u[k, j, i+1, 2]*u[k, j, i+1, 1] ) * tmp2 )
+                 * ( r43*c34 - c1345 ) * tmp2 * u[k][ j][ i+1][ 1];
+               a[j][ i][ 2][ 4] = dt * tx2
+                 * ( - c2 * ( u[k][ j][ i+1][ 2]*u[k][ j][ i+1][ 1] ) * tmp2 )
                  - dt * tx1
-                 * (  c34 - c1345 ) * tmp2 * u[k, j, i+1, 2];
-               a[j, i, 3, 4] = dt * tx2
-                 * ( - c2 * ( u[k, j, i+1, 3]*u[k, j, i+1, 1] ) * tmp2 )
+                 * (  c34 - c1345 ) * tmp2 * u[k][ j][ i+1][ 2];
+               a[j][ i][ 3][ 4] = dt * tx2
+                 * ( - c2 * ( u[k][ j][ i+1][ 3]*u[k][ j][ i+1][ 1] ) * tmp2 )
                  - dt * tx1
-                 * (  c34 - c1345 ) * tmp2 * u[k, j, i+1, 3];
-               a[j, i, 4, 4] = dt * tx2
-                 * ( c1 * ( u[k, j, i+1, 1] * tmp1 ) )
+                 * (  c34 - c1345 ) * tmp2 * u[k][ j][ i+1][ 3];
+               a[j][ i][ 4][ 4] = dt * tx2
+                 * ( c1 * ( u[k][ j][ i+1][ 1] * tmp1 ) )
                  - dt * tx1 * c1345 * tmp1
                  - dt * tx1 * dx5;
 
 //---------------------------------------------------------------------
 //   form the second block sub-diagonal
 //---------------------------------------------------------------------
-               tmp1 = rho_i[k, j+1, i];
+               tmp1 = rho_i[k][ j+1][ i];
                tmp2 = tmp1 * tmp1;
                tmp3 = tmp1 * tmp2;
 
-               b[j, i, 0, 0] = - dt * ty1 * dy1;
-               b[j, i, 1, 0] =   0.0;
-               b[j, i, 2, 0] =  dt * ty2;
-               b[j, i, 3, 0] =   0.0;
-               b[j, i, 4, 0] =   0.0;
+               b[j][ i][ 0][ 0] = - dt * ty1 * dy1;
+               b[j][ i][ 1][ 0] =   0.0;
+               b[j][ i][ 2][ 0] =  dt * ty2;
+               b[j][ i][ 3][ 0] =   0.0;
+               b[j][ i][ 4][ 0] =   0.0;
 
-               b[j, i, 0, 1] =  dt * ty2
-                 * ( - ( u[k, j+1, i, 1]*u[k, j+1, i, 2] ) * tmp2 )
-                 - dt * ty1 * ( - c34 * tmp2 * u[k, j+1, i, 1] );
-               b[j, i, 1, 1] =  dt * ty2 * ( u[k, j+1, i, 2] * tmp1 )
+               b[j][ i][ 0][ 1] =  dt * ty2
+                 * ( - ( u[k][ j+1][ i][ 1]*u[k][ j+1][ i][ 2] ) * tmp2 )
+                 - dt * ty1 * ( - c34 * tmp2 * u[k][ j+1][ i][ 1] );
+               b[j][ i][ 1][ 1] =  dt * ty2 * ( u[k][ j+1][ i][ 2] * tmp1 )
                 - dt * ty1 * ( c34 * tmp1 )
                 - dt * ty1 * dy2;
-               b[j, i, 2, 1] =  dt * ty2 * ( u[k, j+1, i, 1] * tmp1 );
-               b[j, i, 3, 1] = 0.0;
-               b[j, i, 4, 1] = 0.0;
+               b[j][ i][ 2][ 1] =  dt * ty2 * ( u[k][ j+1][ i][ 1] * tmp1 );
+               b[j][ i][ 3][ 1] = 0.0;
+               b[j][ i][ 4][ 1] = 0.0;
 
-               b[j, i, 0, 2] =  dt * ty2
-                 * ( - Math.Pow(( u[k, j+1, i, 2] * tmp1 ),2)
-            + c2 * ( qs[k, j+1, i] * tmp1 ) )
-             - dt * ty1 * ( - r43 * c34 * tmp2 * u[k, j+1, i, 2] );
-               b[j, i, 1, 2] =  dt * ty2
-                         * ( - c2 * ( u[k, j+1, i, 1] * tmp1 ) );
-               b[j, i, 2, 2] =  dt * ty2 * ( ( 2.0 - c2 )
-                         * ( u[k, j+1, i, 2] * tmp1 ) )
+               b[j][ i][ 0][ 2] =  dt * ty2
+                 * ( - Math.Pow(( u[k][ j+1][ i][ 2] * tmp1 ),2)
+            + c2 * ( qs[k][ j+1][ i] * tmp1 ) )
+             - dt * ty1 * ( - r43 * c34 * tmp2 * u[k][ j+1][ i][ 2] );
+               b[j][ i][ 1][ 2] =  dt * ty2
+                         * ( - c2 * ( u[k][ j+1][ i][ 1] * tmp1 ) );
+               b[j][ i][ 2][ 2] =  dt * ty2 * ( ( 2.0 - c2 )
+                         * ( u[k][ j+1][ i][ 2] * tmp1 ) )
              - dt * ty1 * ( r43 * c34 * tmp1 )
              - dt * ty1 * dy3;
-               b[j, i, 3, 2] =  dt * ty2
-                         * ( - c2 * ( u[k, j+1, i, 3] * tmp1 ) );
-               b[j, i, 4, 2] =  dt * ty2 * c2;
+               b[j][ i][ 3][ 2] =  dt * ty2
+                         * ( - c2 * ( u[k][ j+1][ i][ 3] * tmp1 ) );
+               b[j][ i][ 4][ 2] =  dt * ty2 * c2;
 
-               b[j, i, 0, 3] =  dt * ty2
-                    * ( - ( u[k, j+1, i, 2]*u[k, j+1, i, 3] ) * tmp2 )
-             - dt * ty1 * ( - c34 * tmp2 * u[k, j+1, i, 3] );
-               b[j, i, 1, 3] = 0.0;
-               b[j, i, 2, 3] =  dt * ty2 * ( u[k, j+1, i, 3] * tmp1 );
-               b[j, i, 3, 3] =  dt * ty2 * ( u[k, j+1, i, 2] * tmp1 )
+               b[j][ i][ 0][ 3] =  dt * ty2
+                    * ( - ( u[k][ j+1][ i][ 2]*u[k][ j+1][ i][ 3] ) * tmp2 )
+             - dt * ty1 * ( - c34 * tmp2 * u[k][ j+1][ i][ 3] );
+               b[j][ i][ 1][ 3] = 0.0;
+               b[j][ i][ 2][ 3] =  dt * ty2 * ( u[k][ j+1][ i][ 3] * tmp1 );
+               b[j][ i][ 3][ 3] =  dt * ty2 * ( u[k][ j+1][ i][ 2] * tmp1 )
                               - dt * ty1 * ( c34 * tmp1 )
                               - dt * ty1 * dy4;
-               b[j, i, 4, 3] = 0.0;
+               b[j][ i][ 4][ 3] = 0.0;
 
-               b[j, i, 0, 4] =  dt * ty2
-                * ( ( c2 * 2.0 * qs[k, j+1, i]
-                     - c1 * u[k, j+1, i, 4] )
-                * ( u[k, j+1, i, 2] * tmp2 ) )
+               b[j][ i][ 0][ 4] =  dt * ty2
+                * ( ( c2 * 2.0 * qs[k][ j+1][ i]
+                     - c1 * u[k][ j+1][ i][ 4] )
+                * ( u[k][ j+1][ i][ 2] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.Pow(u[k, j+1, i, 1],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.Pow(u[k, j+1, i, 2],2)
-                    - (     c34 - c1345 )*tmp3*Math.Pow(u[k, j+1, i, 3],2)
-                    - c1345*tmp2*u[k, j+1, i, 4] );
-               b[j, i, 1, 4] =  dt * ty2
-                * ( - c2 * ( u[k, j+1, i, 1]*u[k, j+1, i, 2] ) * tmp2 )
+                * ( - (     c34 - c1345 )*tmp3*Math.Pow(u[k][ j+1][ i][ 1],2)
+                    - ( r43*c34 - c1345 )*tmp3*Math.Pow(u[k][ j+1][ i][ 2],2)
+                    - (     c34 - c1345 )*tmp3*Math.Pow(u[k][ j+1][ i][ 3],2)
+                    - c1345*tmp2*u[k][ j+1][ i][ 4] );
+               b[j][ i][ 1][ 4] =  dt * ty2
+                * ( - c2 * ( u[k][ j+1][ i][ 1]*u[k][ j+1][ i][ 2] ) * tmp2 )
                 - dt * ty1
-                * ( c34 - c1345 ) * tmp2 * u[k, j+1, i, 1];
-               b[j, i, 2, 4] =  dt * ty2
-                * ( c1 * ( u[k, j+1, i, 4] * tmp1 )
+                * ( c34 - c1345 ) * tmp2 * u[k][ j+1][ i][ 1];
+               b[j][ i][ 2][ 4] =  dt * ty2
+                * ( c1 * ( u[k][ j+1][ i][ 4] * tmp1 )
                 - c2 
-                * ( qs[k, j+1, i] * tmp1
-                     + u[k, j+1, i, 2]*u[k, j+1, i, 2] * tmp2 ) )
+                * ( qs[k][ j+1][ i] * tmp1
+                     + u[k][ j+1][ i][ 2]*u[k][ j+1][ i][ 2] * tmp2 ) )
                 - dt * ty1
-                * ( r43*c34 - c1345 ) * tmp2 * u[k, j+1, i, 2];
-               b[j, i, 3, 4] =  dt * ty2
-                * ( - c2 * ( u[k, j+1, i, 2]*u[k, j+1, i, 3] ) * tmp2 )
-                - dt * ty1 * ( c34 - c1345 ) * tmp2 * u[k, j+1, i, 3];
-               b[j, i, 4, 4] =  dt * ty2
-                * ( c1 * ( u[k, j+1, i, 2] * tmp1 ) )
+                * ( r43*c34 - c1345 ) * tmp2 * u[k][ j+1][ i][ 2];
+               b[j][ i][ 3][ 4] =  dt * ty2
+                * ( - c2 * ( u[k][ j+1][ i][ 2]*u[k][ j+1][ i][ 3] ) * tmp2 )
+                - dt * ty1 * ( c34 - c1345 ) * tmp2 * u[k][ j+1][ i][ 3];
+               b[j][ i][ 4][ 4] =  dt * ty2
+                * ( c1 * ( u[k][ j+1][ i][ 2] * tmp1 ) )
                 - dt * ty1 * c1345 * tmp1
                 - dt * ty1 * dy5;
 
 //---------------------------------------------------------------------
 //   form the third block sub-diagonal
 //---------------------------------------------------------------------
-               tmp1 = rho_i[k+1, j, i];
+               tmp1 = rho_i[k+1][ j][ i];
                tmp2 = tmp1 * tmp1;
                tmp3 = tmp1 * tmp2;
 
-               c[j, i, 0, 0] = - dt * tz1 * dz1;
-               c[j, i, 1, 0] =   0.0;
-               c[j, i, 2, 0] =   0.0;
-               c[j, i, 3, 0] = dt * tz2;
-               c[j, i, 4, 0] =   0.0;
+               c[j][ i][ 0][ 0] = - dt * tz1 * dz1;
+               c[j][ i][ 1][ 0] =   0.0;
+               c[j][ i][ 2][ 0] =   0.0;
+               c[j][ i][ 3][ 0] = dt * tz2;
+               c[j][ i][ 4][ 0] =   0.0;
 
-               c[j, i, 0, 1] = dt * tz2
-                 * ( - ( u[k+1, j, i, 1]*u[k+1, j, i, 3] ) * tmp2 )
-                 - dt * tz1 * ( - c34 * tmp2 * u[k+1, j, i, 1] );
-               c[j, i, 1, 1] = dt * tz2 * ( u[k+1, j, i, 3] * tmp1 )
+               c[j][ i][ 0][ 1] = dt * tz2
+                 * ( - ( u[k+1][ j][ i][ 1]*u[k+1][ j][ i][ 3] ) * tmp2 )
+                 - dt * tz1 * ( - c34 * tmp2 * u[k+1][ j][ i][ 1] );
+               c[j][ i][ 1][ 1] = dt * tz2 * ( u[k+1][ j][ i][ 3] * tmp1 )
                  - dt * tz1 * c34 * tmp1
                  - dt * tz1 * dz2 ;
-               c[j, i, 2, 1] = 0.0;
-               c[j, i, 3, 1] = dt * tz2 * ( u[k+1, j, i, 1] * tmp1 );
-               c[j, i, 4, 1] = 0.0;
+               c[j][ i][ 2][ 1] = 0.0;
+               c[j][ i][ 3][ 1] = dt * tz2 * ( u[k+1][ j][ i][ 1] * tmp1 );
+               c[j][ i][ 4][ 1] = 0.0;
 
-               c[j, i, 0, 2] = dt * tz2
-                 * ( - ( u[k+1, j, i, 2]*u[k+1, j, i, 3] ) * tmp2 )
-                 - dt * tz1 * ( - c34 * tmp2 * u[k+1, j, i, 2] );
-               c[j, i, 1, 2] = 0.0;
-               c[j, i, 2, 2] = dt * tz2 * ( u[k+1, j, i, 3] * tmp1 )
+               c[j][ i][ 0][ 2] = dt * tz2
+                 * ( - ( u[k+1][ j][ i][ 2]*u[k+1][ j][ i][ 3] ) * tmp2 )
+                 - dt * tz1 * ( - c34 * tmp2 * u[k+1][ j][ i][ 2] );
+               c[j][ i][ 1][ 2] = 0.0;
+               c[j][ i][ 2][ 2] = dt * tz2 * ( u[k+1][ j][ i][ 3] * tmp1 )
                  - dt * tz1 * ( c34 * tmp1 )
                  - dt * tz1 * dz3;
-               c[j, i, 3, 2] = dt * tz2 * ( u[k+1, j, i, 2] * tmp1 );
-               c[j, i, 4, 2] = 0.0;
+               c[j][ i][ 3][ 2] = dt * tz2 * ( u[k+1][ j][ i][ 2] * tmp1 );
+               c[j][ i][ 4][ 2] = 0.0;
 
-               c[j, i, 0, 3] = dt * tz2
-              * ( - Math.Pow(( u[k+1, j, i, 3] * tmp1 ),2)
-                  + c2 * ( qs[k+1, j, i] * tmp1 ) )
-              - dt * tz1 * ( - r43 * c34 * tmp2 * u[k+1, j, i, 3] );
-               c[j, i, 1, 3] = dt * tz2
-                   * ( - c2 * ( u[k+1, j, i, 1] * tmp1 ) );
-               c[j, i, 2, 3] = dt * tz2
-                   * ( - c2 * ( u[k+1, j, i, 2] * tmp1 ) );
-               c[j, i, 3, 3] = dt * tz2 * ( 2.0 - c2 )
-                   * ( u[k+1, j, i, 3] * tmp1 )
+               c[j][ i][ 0][ 3] = dt * tz2
+              * ( - Math.Pow(( u[k+1][ j][ i][ 3] * tmp1 ),2)
+                  + c2 * ( qs[k+1][ j][ i] * tmp1 ) )
+              - dt * tz1 * ( - r43 * c34 * tmp2 * u[k+1][ j][ i][ 3] );
+               c[j][ i][ 1][ 3] = dt * tz2
+                   * ( - c2 * ( u[k+1][ j][ i][ 1] * tmp1 ) );
+               c[j][ i][ 2][ 3] = dt * tz2
+                   * ( - c2 * ( u[k+1][ j][ i][ 2] * tmp1 ) );
+               c[j][ i][ 3][ 3] = dt * tz2 * ( 2.0 - c2 )
+                   * ( u[k+1][ j][ i][ 3] * tmp1 )
                    - dt * tz1 * ( r43 * c34 * tmp1 )
                    - dt * tz1 * dz4;
-               c[j, i, 4, 3] = dt * tz2 * c2;
+               c[j][ i][ 4][ 3] = dt * tz2 * c2;
 
-               c[j, i, 0, 4] = dt * tz2
-           * ( ( c2 * 2.0 * qs[k+1, j, i]
-             - c1 * u[k+1, j, i, 4] )
-                  * ( u[k+1, j, i, 3] * tmp2 ) )
+               c[j][ i][ 0][ 4] = dt * tz2
+           * ( ( c2 * 2.0 * qs[k+1][ j][ i]
+             - c1 * u[k+1][ j][ i][ 4] )
+                  * ( u[k+1][ j][ i][ 3] * tmp2 ) )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k+1, j, i, 1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k+1, j, i, 2],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.Pow(u[k+1, j, i, 3],2)
-                - c1345 * tmp2 * u[k+1, j, i, 4] );
-               c[j, i, 1, 4] = dt * tz2
-             * ( - c2 * ( u[k+1, j, i, 1]*u[k+1, j, i, 3] ) * tmp2 )
-             - dt * tz1 * ( c34 - c1345 ) * tmp2 * u[k+1, j, i, 1];
-               c[j, i, 2, 4] = dt * tz2
-             * ( - c2 * ( u[k+1, j, i, 2]*u[k+1, j, i, 3] ) * tmp2 )
-             - dt * tz1 * ( c34 - c1345 ) * tmp2 * u[k+1, j, i, 2];
-               c[j, i, 3, 4] = dt * tz2
-             * ( c1 * ( u[k+1, j, i, 4] * tmp1 )
+             * ( - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k+1][ j][ i][ 1],2)
+                 - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k+1][ j][ i][ 2],2)
+                 - ( r43*c34 - c1345 )* tmp3 * Math.Pow(u[k+1][ j][ i][ 3],2)
+                - c1345 * tmp2 * u[k+1][ j][ i][ 4] );
+               c[j][ i][ 1][ 4] = dt * tz2
+             * ( - c2 * ( u[k+1][ j][ i][ 1]*u[k+1][ j][ i][ 3] ) * tmp2 )
+             - dt * tz1 * ( c34 - c1345 ) * tmp2 * u[k+1][ j][ i][ 1];
+               c[j][ i][ 2][ 4] = dt * tz2
+             * ( - c2 * ( u[k+1][ j][ i][ 2]*u[k+1][ j][ i][ 3] ) * tmp2 )
+             - dt * tz1 * ( c34 - c1345 ) * tmp2 * u[k+1][ j][ i][ 2];
+               c[j][ i][ 3][ 4] = dt * tz2
+             * ( c1 * ( u[k+1][ j][ i][ 4] * tmp1 )
              - c2
-             * ( qs[k+1, j, i] * tmp1
-                  + u[k+1, j, i, 3]*u[k+1, j, i, 3] * tmp2 ) )
-             - dt * tz1 * ( r43*c34 - c1345 ) * tmp2 * u[k+1, j, i, 3];
-               c[j, i, 4, 4] = dt * tz2
-             * ( c1 * ( u[k+1, j, i, 3] * tmp1 ) )
+             * ( qs[k+1][ j][ i] * tmp1
+                  + u[k+1][ j][ i][ 3]*u[k+1][ j][ i][ 3] * tmp2 ) )
+             - dt * tz1 * ( r43*c34 - c1345 ) * tmp2 * u[k+1][ j][ i][ 3];
+               c[j][ i][ 4][ 4] = dt * tz2
+             * ( c1 * ( u[k+1][ j][ i][ 3] * tmp1 ) )
              - dt * tz1 * c1345 * tmp1
              - dt * tz1 * dz5;
 
@@ -1758,7 +1758,7 @@ namespace NPB3_0_JAV{
   
   public void l2norm(int ldx, int ldy, int ldz, int nx0, int ny0, int nz0, 
     		     int ist, int iend, 
-        	     int jst, int jend, double[,,,] v, double[] sum){
+        	     int jst, int jend, double[][][][] v, double[] sum){
     int i, j, k, m;
 
     for(m=0;m<=4;m++){
@@ -1769,8 +1769,8 @@ namespace NPB3_0_JAV{
        for(j=jst-1;j<=jend-1;j++){
     	  for(i=ist-1;i<=iend-1;i++){
     	     for(m=0;m<=4;m++){
-    		sum[m] = sum[m] + v[k, j, i, m] 
-        			  * v[k, j, i, m];
+    		sum[m] = sum[m] + v[k][ j][ i][ m] 
+        			  * v[k][ j][ i][ m];
     	     }
     	  }
        }
@@ -1785,10 +1785,10 @@ namespace NPB3_0_JAV{
       int i, j, k;
       int ibeg, ifin, ifin1;
       int jbeg, jfin, jfin1;
-      double[,]  phi1 = new double[(isiz3+2),(isiz2+2)]; 
-      double[,]  phi2 = new double[(isiz3+2),(isiz2+2)];
+      double[][]  phi1 = instantiate_jagged_array_2(isiz3+2, isiz2+2); 
+      double[][]  phi2 = instantiate_jagged_array_2(isiz3+2, isiz2+2);
       double  frc1, frc2, frc3;
-      int isize5 = (isiz2+2);
+      //int isize5 = (isiz2+2);
 
 //---------------------------------------------------------------------
 //   set up the sub-domains for intation in each processor
@@ -1805,8 +1805,8 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
       for(i=0;i<=isiz2+1;i++){
         for(k=0;k<=isiz3+1;k++){
-          phi1[k,i] = 0;
-          phi2[k,i] = 0;
+          phi1[k][i] = 0;
+          phi2[k][i] = 0;
         }
       }
 
@@ -1815,19 +1815,19 @@ namespace NPB3_0_JAV{
 
             k = ki1-1;
 
-            phi1[j,i] = c2*(  u[k, j, i, 4]
-                 - 0.50 * (  Math.Pow(u[k, j, i, 1],2)
-                               + Math.Pow(u[k, j, i, 2],2)
-                               + Math.Pow(u[k, j, i, 3],2) )
-                              / u[k, j, i, 0] );
+            phi1[j][i] = c2*(  u[k][ j][ i][ 4]
+                 - 0.50 * (  Math.Pow(u[k][ j][ i][ 1],2)
+                               + Math.Pow(u[k][ j][ i][ 2],2)
+                               + Math.Pow(u[k][ j][ i][ 3],2) )
+                              / u[k][ j][ i][ 0] );
 
             k = ki2-1;
 
-            phi2[j,i] = c2*(  u[k, j, i, 4]
-                 - 0.50 * (  Math.Pow(u[k, j, i, 1],2)
-                               + Math.Pow(u[k, j, i, 2],2)
-                               + Math.Pow(u[k, j, i, 3],2) )
-                              / u[k, j, i, 0] );
+            phi2[j][i] = c2*(  u[k][ j][ i][ 4]
+                 - 0.50 * (  Math.Pow(u[k][ j][ i][ 1],2)
+                               + Math.Pow(u[k][ j][ i][ 2],2)
+                               + Math.Pow(u[k][ j][ i][ 3],2) )
+                              / u[k][ j][ i][ 0] );
          }
       }
 
@@ -1835,14 +1835,14 @@ namespace NPB3_0_JAV{
 
       for(j=jbeg-1;j<=jfin1-1;j++){
          for(i=ibeg-1;i<=ifin1-1;i++){
-            frc1 = frc1 + (  phi1[j,i]
-                           + phi1[j,i+1]
-                           + phi1[j+1,i]
-                           + phi1[j+1,i+1]
-                           + phi2[j,i]
-                           + phi2[j,i+1]
-                           + phi2[j+1,i]
-                           + phi2[j+1,i+1] );
+            frc1 = frc1 + (  phi1[j][i]
+                           + phi1[j][i+1]
+                           + phi1[j+1][i]
+                           + phi1[j+1][i+1]
+                           + phi2[j][i]
+                           + phi2[j][i+1]
+                           + phi2[j+1][i]
+                           + phi2[j+1][i+1] );
          }
       }
 
@@ -1853,18 +1853,18 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
       for(i=0;i<=isiz2+1;i++){
         for(k=0;k<=isiz3+1;k++){
-          phi1[k,i] = 0;
-          phi2[k,i] = 0;
+          phi1[k][i] = 0;
+          phi2[k][i] = 0;
         }
       }
       if (jbeg==ji1) {
         for(k=ki1-1;k<=ki2-1;k++){
            for(i=ibeg-1;i<=ifin-1;i++){
-              phi1[k,i] = c2*(  u[k, jbeg-1, i, 4]
-                   - 0.50 * (  Math.Pow(u[k, jbeg-1, i, 1],2)
-                                 + Math.Pow(u[k, jbeg-1, i, 2],2)
-                                 + Math.Pow(u[k, jbeg-1, i, 3],2) )
-                                / u[k, jbeg-1, i, 0] );
+              phi1[k][i] = c2*(  u[k][ jbeg-1][ i][ 4]
+                   - 0.50 * (  Math.Pow(u[k][ jbeg-1][ i][ 1],2)
+                                 + Math.Pow(u[k][ jbeg-1][ i][ 2],2)
+                                 + Math.Pow(u[k][ jbeg-1][ i][ 3],2) )
+                                / u[k][ jbeg-1][ i][ 0] );
            }
         }
       }
@@ -1872,11 +1872,11 @@ namespace NPB3_0_JAV{
       if (jfin==ji2) {
         for(k=ki1-1;k<=ki2-1;k++){
            for(i=ibeg-1;i<=ifin-1;i++){
-              phi2[k,i] = c2*(  u[k, jfin-1, i, 4]
-                   - 0.50 * (  Math.Pow(u[k, jfin-1, i, 1],2)
-                                 + Math.Pow(u[k, jfin-1, i, 2],2)
-                                 + Math.Pow(u[k, jfin-1, i, 3],2) )
-                                / u[k, jfin-1, i, 0] );
+              phi2[k][i] = c2*(  u[k][ jfin-1][ i][ 4]
+                   - 0.50 * (  Math.Pow(u[k][ jfin-1][ i][ 1],2)
+                                 + Math.Pow(u[k][ jfin-1][ i][ 2],2)
+                                 + Math.Pow(u[k][ jfin-1][ i][ 3],2) )
+                                / u[k][ jfin-1][ i][ 0] );
            }
         }
       }
@@ -1884,14 +1884,14 @@ namespace NPB3_0_JAV{
       frc2 = 0.0;
       for(k=ki1-1;k<=ki2-2;k++){
          for(i=ibeg-1;i<=ifin1-1;i++){
-            frc2 = frc2 + (  phi1[k,i]
-                           + phi1[k,i+1]
-                           + phi1[k+1,i]
-                           + phi1[k+1,i+1]
-                           + phi2[k,i]
-                           + phi2[k,i+1]
-                           + phi2[k+1,i]
-                           + phi2[k+1,i+1] );
+            frc2 = frc2 + (  phi1[k][i]
+                           + phi1[k][i+1]
+                           + phi1[k+1][i]
+                           + phi1[k+1][i+1]
+                           + phi2[k][i]
+                           + phi2[k][i+1]
+                           + phi2[k+1][i]
+                           + phi2[k+1][i+1] );
          }
       }
 
@@ -1902,18 +1902,18 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
       for(i=0;i<=isiz2+1;i++){
         for(k=0;k<=isiz3+1;k++){
-          phi1[k,i] = 0;
-          phi2[k,i] = 0;
+          phi1[k][i] = 0;
+          phi2[k][i] = 0;
         }
       }
       if (ibeg==ii1) {
         for(k=ki1-1;k<=ki2-1;k++){
            for(j=jbeg-1;j<=jfin-1;j++){
-              phi1[k,j] = c2*(  u[k, j, ibeg-1, 4]
-                   - 0.50 * ( Math.Pow(u[k, j, ibeg-1, 1],2)
-                                 + Math.Pow(u[k, j, ibeg-1, 2],2)
-                                 + Math.Pow(u[k, j, ibeg-1, 3],2) )
-                                / u[k, j, ibeg-1, 0] );
+              phi1[k][j] = c2*(  u[k][ j][ ibeg-1][ 4]
+                   - 0.50 * ( Math.Pow(u[k][ j][ ibeg-1][ 1],2)
+                                 + Math.Pow(u[k][ j][ ibeg-1][ 2],2)
+                                 + Math.Pow(u[k][ j][ ibeg-1][ 3],2) )
+                                / u[k][ j][ ibeg-1][ 0] );
            }
         }
       }
@@ -1921,11 +1921,11 @@ namespace NPB3_0_JAV{
       if (ifin==ii2) {
         for(k=ki1-1;k<=ki2-1;k++){
            for(j=jbeg-1;j<=jfin-1;j++){
-              phi2[k,j] = c2*(  u[k, j, ifin-1, 4]
-                   - 0.50 * (  Math.Pow(u[k, j, ifin-1, 1] ,2)
-                                 + Math.Pow(u[k, j, ifin-1, 2],2)
-                                 + Math.Pow(u[k, j, ifin-1, 3],2) )
-                                / u[k, j, ifin-1, 0] );
+              phi2[k][j] = c2*(  u[k][ j][ ifin-1][ 4]
+                   - 0.50 * (  Math.Pow(u[k][ j][ ifin-1][ 1] ,2)
+                                 + Math.Pow(u[k][ j][ ifin-1][ 2],2)
+                                 + Math.Pow(u[k][ j][ ifin-1][ 3],2) )
+                                / u[k][ j][ ifin-1][ 0] );
            }
         }
       }
@@ -1934,14 +1934,14 @@ namespace NPB3_0_JAV{
 
       for(k=ki1-1;k<=ki2-2;k++){
          for(j=jbeg-1;j<=jfin1-1;j++){
-            frc3 = frc3 + (  phi1[k,j]
-                           + phi1[k,j+1]
-                           + phi1[k+1,j]
-                           + phi1[k+1,j+1]
-                           + phi2[k,j]
-                           + phi2[k,j+1]
-                           + phi2[k+1,j]
-                           + phi2[k+1,j+1] );
+            frc3 = frc3 + (  phi1[k][j]
+                           + phi1[k][j+1]
+                           + phi1[k+1][j]
+                           + phi1[k+1][j+1]
+                           + phi2[k][j]
+                           + phi2[k][j+1]
+                           + phi2[k+1][j]
+                           + phi2[k+1][j+1] );
          }
       }
       frc3 = deta * dzeta * frc3;
@@ -1984,7 +1984,7 @@ namespace NPB3_0_JAV{
 	  
 	 // fis.close();
         }catch(Exception e){  
-	  Console.WriteLine("exception caught!");
+	       Console.WriteLine("exception caught! " + e.Message);
         } 
       }else{
         ipr = ipr_default;
@@ -2019,7 +2019,9 @@ namespace NPB3_0_JAV{
       Console.WriteLine("LU: Iterations="+itmax+" dt="+dt);
   }
   
-  public void rhs(){
+		
+  public void rhs()
+		{
       int i, j, k, m;
       double  q;
       double  tmp;
@@ -2035,14 +2037,14 @@ namespace NPB3_0_JAV{
          for(j=0;j<=ny-1;j++){
             for(i=0;i<=nx-1;i++){
                for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] = - frct[k, j, i, m];
+                  rsd[k][ j][ i][ m] = - frct[k][ j][ i][ m];
                }
-               tmp = 1.0 / u[k, j, i, 0];
-               rho_i[k, j, i] = tmp;
-               qs[k, j, i] = 0.50 * (  
-	                         u[k, j, i, 1] * u[k, j, i, 1]
-                               + u[k, j, i, 2] * u[k, j, i, 2]
-                               + u[k, j, i, 3] * u[k, j, i, 3] )
+               tmp = 1.0 / u[k][ j][ i][ 0];
+               rho_i[k][ j][ i] = tmp;
+               qs[k][ j][ i] = 0.50 * (  
+	                         u[k][ j][ i][ 1] * u[k][ j][ i][ 1]
+                               + u[k][ j][ i][ 2] * u[k][ j][ i][ 2]
+                               + u[k][ j][ i][ 3] * u[k][ j][ i][ 3] )
                             * tmp;
             }
          }
@@ -2055,44 +2057,44 @@ namespace NPB3_0_JAV{
       for(k=1;k<=nz - 2;k++){
          for(j=jst-1;j<=jend-1;j++){
             for(i=0;i<=nx-1;i++){
-               flux[i, 0] = u[k, j, i, 1];
-               u21 = u[k, j, i, 1] * rho_i[k, j, i];
+               flux[i][ 0] = u[k][ j][ i][ 1];
+               u21 = u[k][ j][ i][ 1] * rho_i[k][ j][ i];
 
-               q = qs[k, j, i];
+               q = qs[k][ j][ i];
 
-               flux[i, 1] = u[k, j, i, 1] * u21 + c2 * 
-                              ( u[k, j, i, 4] - q );
-               flux[i, 2] = u[k, j, i, 2] * u21;
-               flux[i, 3] = u[k, j, i, 3] * u21;
-               flux[i, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u21;
+               flux[i][ 1] = u[k][ j][ i][ 1] * u21 + c2 * 
+                              ( u[k][ j][ i][ 4] - q );
+               flux[i][ 2] = u[k][ j][ i][ 2] * u21;
+               flux[i][ 3] = u[k][ j][ i][ 3] * u21;
+               flux[i][ 4] = ( c1 * u[k][ j][ i][ 4] - c2 * q ) * u21;
             }
 
             for(i=ist-1;i<=iend-1;i++){
                for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] =  rsd[k, j, i, m]
-                       - tx2 * ( flux[i+1, m] - flux[i-1, m] );
+                  rsd[k][ j][ i][ m] =  rsd[k][ j][ i][ m]
+                       - tx2 * ( flux[i+1][ m] - flux[i-1][ m] );
                }
             }
 
             for(i=ist-1;i<=nx-1;i++){
-               tmp = rho_i[k, j, i];
+               tmp = rho_i[k][ j][ i];
 
-               u21i = tmp * u[k, j, i, 1];
-               u31i = tmp * u[k, j, i, 2];
-               u41i = tmp * u[k, j, i, 3];
-               u51i = tmp * u[k, j, i, 4];
+               u21i = tmp * u[k][ j][ i][ 1];
+               u31i = tmp * u[k][ j][ i][ 2];
+               u41i = tmp * u[k][ j][ i][ 3];
+               u51i = tmp * u[k][ j][ i][ 4];
 
-               tmp = rho_i[k, j, i-1];
+               tmp = rho_i[k][ j][ i-1];
 
-               u21im1 = tmp * u[k, j, i-1, 1];
-               u31im1 = tmp * u[k, j, i-1, 2];
-               u41im1 = tmp * u[k, j, i-1, 3];
-               u51im1 = tmp * u[k, j, i-1, 4];
+               u21im1 = tmp * u[k][ j][ i-1][ 1];
+               u31im1 = tmp * u[k][ j][ i-1][ 2];
+               u41im1 = tmp * u[k][ j][ i-1][ 3];
+               u51im1 = tmp * u[k][ j][ i-1][ 4];
 
-               flux[i, 1] = (4.0/3.0) * tx3 * (u21i-u21im1);
-               flux[i, 2] = tx3 * ( u31i - u31im1 );
-               flux[i, 3] = tx3 * ( u41i - u41im1 );
-               flux[i, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[i][ 1] = (4.0/3.0) * tx3 * (u21i-u21im1);
+               flux[i][ 2] = tx3 * ( u31i - u31im1 );
+               flux[i][ 3] = tx3 * ( u41i - u41im1 );
+               flux[i][ 4] = 0.50 * ( 1.0 - c1*c5 )
                     * tx3 * ( ( Math.Pow(u21i,2) + Math.Pow(u31i,2) + Math.Pow(u41i,2) )
                             - ( Math.Pow(u21im1,2) + Math.Pow(u31im1,2) + Math.Pow(u41im1,2) ) )
                     + (1.0/6.0)
@@ -2101,69 +2103,69 @@ namespace NPB3_0_JAV{
             }
 
             for(i=ist-1;i<=iend-1;i++){
-               rsd[k, j, i, 0] = rsd[k, j, i, 0]
-                    + dx1 * tx1 * (            u[k, j, i-1, 0]
-                                   - 2.0 * u[k, j, i, 0]
-                                   +           u[k, j, i+1, 0] );
-               rsd[k, j, i, 1] = rsd[k, j, i, 1]
-                + tx3 * c3 * c4 * ( flux[i+1, 1] - flux[i, 1] )
-                    + dx2 * tx1 * (            u[k, j, i-1, 1]
-                                   - 2.0 * u[k, j, i, 1]
-                                   +           u[k, j, i+1, 1] );
-               rsd[k, j, i, 2] = rsd[k, j, i, 2]
-                + tx3 * c3 * c4 * ( flux[i+1, 2] - flux[i, 2] )
-                    + dx3 * tx1 * (            u[k, j, i-1, 2]
-                                   - 2.0 * u[k, j, i, 2]
-                                   +           u[k, j, i+1, 2] );
-               rsd[k, j, i, 3] = rsd[k, j, i, 3]
-                + tx3 * c3 * c4 * ( flux[i+1, 3] - flux[i, 3] )
-                    + dx4 * tx1 * (            u[k, j, i-1, 3]
-                                   - 2.0 * u[k, j, i, 3]
-                                   +           u[k, j, i+1, 3] );
-               rsd[k, j, i, 4] = rsd[k, j, i, 4]
-                + tx3 * c3 * c4 * ( flux[i+1, 4] - flux[i, 4] )
-                    + dx5 * tx1 * (            u[k, j, i-1, 4]
-                                   - 2.0 * u[k, j, i, 4]
-                                   +           u[k, j, i+1, 4] );
+               rsd[k][ j][ i][ 0] = rsd[k][ j][ i][ 0]
+                    + dx1 * tx1 * (            u[k][ j][ i-1][ 0]
+                                   - 2.0 * u[k][ j][ i][ 0]
+                                   +           u[k][ j][ i+1][ 0] );
+               rsd[k][ j][ i][ 1] = rsd[k][ j][ i][ 1]
+                + tx3 * c3 * c4 * ( flux[i+1][ 1] - flux[i][ 1] )
+                    + dx2 * tx1 * (            u[k][ j][ i-1][ 1]
+                                   - 2.0 * u[k][ j][ i][ 1]
+                                   +           u[k][ j][ i+1][ 1] );
+               rsd[k][ j][ i][ 2] = rsd[k][ j][ i][ 2]
+                + tx3 * c3 * c4 * ( flux[i+1][ 2] - flux[i][ 2] )
+                    + dx3 * tx1 * (            u[k][ j][ i-1][ 2]
+                                   - 2.0 * u[k][ j][ i][ 2]
+                                   +           u[k][ j][ i+1][ 2] );
+               rsd[k][ j][ i][ 3] = rsd[k][ j][ i][ 3]
+                + tx3 * c3 * c4 * ( flux[i+1][ 3] - flux[i][ 3] )
+                    + dx4 * tx1 * (            u[k][ j][ i-1][ 3]
+                                   - 2.0 * u[k][ j][ i][ 3]
+                                   +           u[k][ j][ i+1][ 3] );
+               rsd[k][ j][ i][ 4] = rsd[k][ j][ i][ 4]
+                + tx3 * c3 * c4 * ( flux[i+1][ 4] - flux[i][ 4] )
+                    + dx5 * tx1 * (            u[k][ j][ i-1][ 4]
+                                   - 2.0 * u[k][ j][ i][ 4]
+                                   +           u[k][ j][ i+1][ 4] );
             }
 
 //---------------------------------------------------------------------
 //   Fourth-order dissipation
 //---------------------------------------------------------------------
             for(m=0;m<=4;m++){
-               rsd[k, j, 1, m] = rsd[k, j, 1, m]
-                 - dssp * ( + 5.0 * u[k, j, 1, m]
-                            - 4.0 * u[k, j, 2, m]
-                            +           u[k, j, 3, m] );
-               rsd[k, j, 2, m] = rsd[k, j, 2, m]
-                 - dssp * ( - 4.0 * u[k, j, 1, m]
-                            + 6.0 * u[k, j, 2, m]
-                            - 4.0 * u[k, j, 3, m]
-                            +           u[k, j, 4, m] );
+               rsd[k][ j][ 1][ m] = rsd[k][ j][ 1][ m]
+                 - dssp * ( + 5.0 * u[k][ j][ 1][ m]
+                            - 4.0 * u[k][ j][ 2][ m]
+                            +           u[k][ j][ 3][ m] );
+               rsd[k][ j][ 2][ m] = rsd[k][ j][ 2][ m]
+                 - dssp * ( - 4.0 * u[k][ j][ 1][ m]
+                            + 6.0 * u[k][ j][ 2][ m]
+                            - 4.0 * u[k][ j][ 3][ m]
+                            +           u[k][ j][ 4][ m] );
             }
 
             for(i=3;i<=nx - 4;i++){
                for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] = rsd[k, j, i, m]
-                    - dssp * (            u[k, j, i-2, m]
-                              - 4.0 * u[k, j, i-1, m]
-                              + 6.0 * u[k, j, i, m]
-                              - 4.0 * u[k, j, i+1, m]
-                              +           u[k, j, i+2, m] );
+                  rsd[k][ j][ i][ m] = rsd[k][ j][ i][ m]
+                    - dssp * (            u[k][ j][ i-2][ m]
+                              - 4.0 * u[k][ j][ i-1][ m]
+                              + 6.0 * u[k][ j][ i][ m]
+                              - 4.0 * u[k][ j][ i+1][ m]
+                              +           u[k][ j][ i+2][ m] );
                }
             }
 
 	    
             for(m=0;m<=4;m++){
-               rsd[k, j, nx-3, m] = rsd[k, j, nx-3, m]
-                 - dssp * (             u[k, j, nx-5, m]
-                            - 4.0 * u[k, j, nx-4, m]
-                            + 6.0 * u[k, j, nx-3, m]
-                            - 4.0 * u[k, j, nx-2, m]  );
-               rsd[k, j, nx-2, m] = rsd[k, j, nx-2, m]
-                 - dssp * (             u[k, j, nx-4, m]
-                            - 4.0 * u[k, j, nx-3, m]
-                            + 5.0 * u[k, j, nx-2, m] );
+               rsd[k][ j][ nx-3][ m] = rsd[k][ j][ nx-3][ m]
+                 - dssp * (             u[k][ j][ nx-5][ m]
+                            - 4.0 * u[k][ j][ nx-4][ m]
+                            + 6.0 * u[k][ j][ nx-3][ m]
+                            - 4.0 * u[k][ j][ nx-2][ m]  );
+               rsd[k][ j][ nx-2][ m] = rsd[k][ j][ nx-2][ m]
+                 - dssp * (             u[k][ j][ nx-4][ m]
+                            - 4.0 * u[k][ j][ nx-3][ m]
+                            + 5.0 * u[k][ j][ nx-2][ m] );
             }
 	    
          }
@@ -2178,42 +2180,42 @@ namespace NPB3_0_JAV{
       for(k=1;k<=nz - 2;k++){
          for(i=ist-1;i<=iend-1;i++){
             for(j=0;j<=ny-1;j++){
-               flux[j, 0] = u[k, j, i, 2];
-               u31 = u[k, j, i, 2] * rho_i[k, j, i];
+               flux[j][ 0] = u[k][ j][ i][ 2];
+               u31 = u[k][ j][ i][ 2] * rho_i[k][ j][ i];
 
-               q = qs[k, j, i];
+               q = qs[k][ j][ i];
 
-               flux[j, 1] = u[k, j, i, 1] * u31 ;
-               flux[j, 2] = u[k, j, i, 2] * u31 + c2 * (u[k, j, i, 4]-q);
-               flux[j, 3] = u[k, j, i, 3] * u31;
-               flux[j, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u31;
+               flux[j][ 1] = u[k][ j][ i][ 1] * u31 ;
+               flux[j][ 2] = u[k][ j][ i][ 2] * u31 + c2 * (u[k][ j][ i][ 4]-q);
+               flux[j][ 3] = u[k][ j][ i][ 3] * u31;
+               flux[j][ 4] = ( c1 * u[k][ j][ i][ 4] - c2 * q ) * u31;
             }
 
             for(j=jst-1;j<=jend-1;j++){
                for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] =  rsd[k, j, i, m]
-                         - ty2 * ( flux[j+1, m] - flux[j-1, m] );
+                  rsd[k][ j][ i][ m] =  rsd[k][ j][ i][ m]
+                         - ty2 * ( flux[j+1][ m] - flux[j-1][ m] );
                }
             }
 
             for(j=jst-1;j<=ny-1;j++){
-               tmp = rho_i[k, j, i];
+               tmp = rho_i[k][ j][ i];
 
-               u21j = tmp * u[k, j, i, 1];
-               u31j = tmp * u[k, j, i, 2];
-               u41j = tmp * u[k, j, i, 3];
-               u51j = tmp * u[k, j, i, 4];
+               u21j = tmp * u[k][ j][ i][ 1];
+               u31j = tmp * u[k][ j][ i][ 2];
+               u41j = tmp * u[k][ j][ i][ 3];
+               u51j = tmp * u[k][ j][ i][ 4];
 
-               tmp = rho_i[k, j-1, i];
-               u21jm1 = tmp * u[k, j-1, i, 1];
-               u31jm1 = tmp * u[k, j-1, i, 2];
-               u41jm1 = tmp * u[k, j-1, i, 3];
-               u51jm1 = tmp * u[k, j-1, i, 4];
+               tmp = rho_i[k][ j-1][ i];
+               u21jm1 = tmp * u[k][ j-1][ i][ 1];
+               u31jm1 = tmp * u[k][ j-1][ i][ 2];
+               u41jm1 = tmp * u[k][ j-1][ i][ 3];
+               u51jm1 = tmp * u[k][ j-1][ i][ 4];
 
-               flux[j, 1] = ty3 * ( u21j - u21jm1 );
-               flux[j, 2] = (4.0/3.0) * ty3 * (u31j-u31jm1);
-               flux[j, 3] = ty3 * ( u41j - u41jm1 );
-               flux[j, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[j][ 1] = ty3 * ( u21j - u21jm1 );
+               flux[j][ 2] = (4.0/3.0) * ty3 * (u31j-u31jm1);
+               flux[j][ 3] = ty3 * ( u41j - u41jm1 );
+               flux[j][ 4] = 0.50 * ( 1.0 - c1*c5 )
                     * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
                             - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
                     + (1.0/6.0)
@@ -2223,34 +2225,34 @@ namespace NPB3_0_JAV{
 
             for(j=jst-1;j<=jend-1;j++){
 
-               rsd[k, j, i, 0] = rsd[k, j, i, 0]
-                    + dy1 * ty1 * (            u[k, j-1, i, 0]
-                                   - 2.0 * u[k, j, i, 0]
-                                   +           u[k, j+1, i, 0] );
+               rsd[k][ j][ i][ 0] = rsd[k][ j][ i][ 0]
+                    + dy1 * ty1 * (            u[k][ j-1][ i][ 0]
+                                   - 2.0 * u[k][ j][ i][ 0]
+                                   +           u[k][ j+1][ i][ 0] );
 
-               rsd[k, j, i, 1] = rsd[k, j, i, 1]
-                + ty3 * c3 * c4 * ( flux[j+1, 1] - flux[j, 1] )
-                    + dy2 * ty1 * (            u[k, j-1, i, 1]
-                                   - 2.0 * u[k, j, i, 1]
-                                   +           u[k, j+1, i, 1] );
+               rsd[k][ j][ i][ 1] = rsd[k][ j][ i][ 1]
+                + ty3 * c3 * c4 * ( flux[j+1][ 1] - flux[j][ 1] )
+                    + dy2 * ty1 * (            u[k][ j-1][ i][ 1]
+                                   - 2.0 * u[k][ j][ i][ 1]
+                                   +           u[k][ j+1][ i][ 1] );
 
-               rsd[k, j, i, 2] = rsd[k, j, i, 2]
-                + ty3 * c3 * c4 * ( flux[j+1, 2] - flux[j, 2] )
-                    + dy3 * ty1 * (            u[k, j-1, i, 2]
-                                   - 2.0 * u[k, j, i, 2]
-                                   +           u[k, j+1, i, 2] );
+               rsd[k][ j][ i][ 2] = rsd[k][ j][ i][ 2]
+                + ty3 * c3 * c4 * ( flux[j+1][ 2] - flux[j][ 2] )
+                    + dy3 * ty1 * (            u[k][ j-1][ i][ 2]
+                                   - 2.0 * u[k][ j][ i][ 2]
+                                   +           u[k][ j+1][ i][ 2] );
 
-               rsd[k, j, i, 3] = rsd[k, j, i, 3]
-                + ty3 * c3 * c4 * ( flux[j+1, 3] - flux[j, 3] )
-                    + dy4 * ty1 * (            u[k, j-1, i, 3]
-                                   - 2.0 * u[k, j, i, 3]
-                                   +           u[k, j+1, i, 3] );
+               rsd[k][ j][ i][ 3] = rsd[k][ j][ i][ 3]
+                + ty3 * c3 * c4 * ( flux[j+1][ 3] - flux[j][ 3] )
+                    + dy4 * ty1 * (            u[k][ j-1][ i][ 3]
+                                   - 2.0 * u[k][ j][ i][ 3]
+                                   +           u[k][ j+1][ i][ 3] );
 
-               rsd[k, j, i, 4] = rsd[k, j, i, 4]
-                + ty3 * c3 * c4 * ( flux[j+1, 4] - flux[j, 4] )
-                    + dy5 * ty1 * (            u[k, j-1, i, 4]
-                                   - 2.0 * u[k, j, i, 4]
-                                   +           u[k, j+1, i, 4] );
+               rsd[k][ j][ i][ 4] = rsd[k][ j][ i][ 4]
+                + ty3 * c3 * c4 * ( flux[j+1][ 4] - flux[j][ 4] )
+                    + dy5 * ty1 * (            u[k][ j-1][ i][ 4]
+                                   - 2.0 * u[k][ j][ i][ 4]
+                                   +           u[k][ j+1][ i][ 4] );
 
             }
 
@@ -2258,38 +2260,38 @@ namespace NPB3_0_JAV{
 //   fourth-order dissipation
 //---------------------------------------------------------------------
             for(m=0;m<=4;m++){
-               rsd[k, 1, i, m] = rsd[k, 1, i, m]
-                 - dssp * ( + 5.0 * u[k, 1, i, m]
-                            - 4.0 * u[k, 2, i, m]
-                            +           u[k, 3, i, m] );
-               rsd[k, 2, i, m] = rsd[k, 2, i, m]
-                 - dssp * ( - 4.0 * u[k, 1, i, m]
-                            + 6.0 * u[k, 2, i, m]
-                            - 4.0 * u[k, 3, i, m]
-                            +           u[k, 4, i, m] );
+               rsd[k][ 1][ i][ m] = rsd[k][ 1][ i][ m]
+                 - dssp * ( + 5.0 * u[k][ 1][ i][ m]
+                            - 4.0 * u[k][ 2][ i][ m]
+                            +           u[k][ 3][ i][ m] );
+               rsd[k][ 2][ i][ m] = rsd[k][ 2][ i][ m]
+                 - dssp * ( - 4.0 * u[k][ 1][ i][ m]
+                            + 6.0 * u[k][ 2][ i][ m]
+                            - 4.0 * u[k][ 3][ i][ m]
+                            +           u[k][ 4][ i][ m] );
             }
 
             for(j=3;j<=ny - 4;j++){
                for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] = rsd[k, j, i, m]
-                    - dssp * (            u[k, j-2, i, m]
-                              - 4.0 * u[k, j-1, i, m]
-                              + 6.0 * u[k, j, i, m]
-                              - 4.0 * u[k, j+1, i, m]
-                              +           u[k, j+2, i, m] );
+                  rsd[k][ j][ i][ m] = rsd[k][ j][ i][ m]
+                    - dssp * (            u[k][ j-2][ i][ m]
+                              - 4.0 * u[k][ j-1][ i][ m]
+                              + 6.0 * u[k][ j][ i][ m]
+                              - 4.0 * u[k][ j+1][ i][ m]
+                              +           u[k][ j+2][ i][ m] );
                }
             }
 
             for(m=0;m<=4;m++){
-               rsd[k, ny-3, i, m] = rsd[k, ny-3, i, m]
-                 - dssp * (             u[k, ny-5, i, m]
-                            - 4.0 * u[k, ny-4, i, m]
-                            + 6.0 * u[k, ny-3, i, m]
-                            - 4.0 * u[k, ny-2, i, m]  );
-               rsd[k, ny-2, i, m] = rsd[k, ny-2, i, m]
-                 - dssp * (             u[k, ny-4, i, m]
-                            - 4.0 * u[k, ny-3, i, m]
-                            + 5.0 * u[k, ny-2, i, m] );
+               rsd[k][ ny-3][ i][ m] = rsd[k][ ny-3][ i][ m]
+                 - dssp * (             u[k][ ny-5][ i][ m]
+                            - 4.0 * u[k][ ny-4][ i][ m]
+                            + 6.0 * u[k][ ny-3][ i][ m]
+                            - 4.0 * u[k][ ny-2][ i][ m]  );
+               rsd[k][ ny-2][ i][ m] = rsd[k][ ny-2][ i][ m]
+                 - dssp * (             u[k][ ny-4][ i][ m]
+                            - 4.0 * u[k][ ny-3][ i][ m]
+                            + 5.0 * u[k][ ny-2][ i][ m] );
             }
 
          }
@@ -2304,43 +2306,43 @@ namespace NPB3_0_JAV{
       for(j=jst-1;j<=jend-1;j++){
          for(i=ist-1;i<=iend-1;i++){
       	    for(k=0;k<=nz-1;k++){
-               flux[k, 0] = u[k, j, i, 3];
-               u41 = u[k, j, i, 3] * rho_i[k, j, i];
+               flux[k][ 0] = u[k][ j][ i][ 3];
+               u41 = u[k][ j][ i][ 3] * rho_i[k][ j][ i];
 
-               q = qs[k, j, i];
+               q = qs[k][ j][ i];
 
-               flux[k, 1] = u[k, j, i, 1] * u41 ;
-               flux[k, 2] = u[k, j, i, 2] * u41 ;
-               flux[k, 3] = u[k, j, i, 3] * u41 + c2 * (u[k, j, i, 4]-q);
-               flux[k, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u41;
+               flux[k][ 1] = u[k][ j][ i][ 1] * u41 ;
+               flux[k][ 2] = u[k][ j][ i][ 2] * u41 ;
+               flux[k][ 3] = u[k][ j][ i][ 3] * u41 + c2 * (u[k][ j][ i][ 4]-q);
+               flux[k][ 4] = ( c1 * u[k][ j][ i][ 4] - c2 * q ) * u41;
             }
 
             for(k=1;k<=nz - 2;k++){
                for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] =  rsd[k, j, i, m]
-                      - tz2 * ( flux[k+1, m] - flux[k-1, m] );
+                  rsd[k][ j][ i][ m] =  rsd[k][ j][ i][ m]
+                      - tz2 * ( flux[k+1][ m] - flux[k-1][ m] );
                }
             }
 
             for(k=1;k<=nz-1;k++){
-               tmp = rho_i[k, j, i];
+               tmp = rho_i[k][ j][ i];
 
-               u21k = tmp * u[k, j, i, 1];
-               u31k = tmp * u[k, j, i, 2];
-               u41k = tmp * u[k, j, i, 3];
-               u51k = tmp * u[k, j, i, 4];
+               u21k = tmp * u[k][ j][ i][ 1];
+               u31k = tmp * u[k][ j][ i][ 2];
+               u41k = tmp * u[k][ j][ i][ 3];
+               u51k = tmp * u[k][ j][ i][ 4];
 
-               tmp = rho_i[k-1, j, i];
+               tmp = rho_i[k-1][ j][ i];
 
-               u21km1 = tmp * u[k-1, j, i, 1];
-               u31km1 = tmp * u[k-1, j, i, 2];
-               u41km1 = tmp * u[k-1, j, i, 3];
-               u51km1 = tmp * u[k-1, j, i, 4];
+               u21km1 = tmp * u[k-1][ j][ i][ 1];
+               u31km1 = tmp * u[k-1][ j][ i][ 2];
+               u41km1 = tmp * u[k-1][ j][ i][ 3];
+               u51km1 = tmp * u[k-1][ j][ i][ 4];
 
-               flux[k, 1] = tz3 * ( u21k - u21km1 );
-               flux[k, 2] = tz3 * ( u31k - u31km1 );
-               flux[k, 3] = (4.0/3.0) * tz3 * (u41k-u41km1);
-               flux[k, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[k][ 1] = tz3 * ( u21k - u21km1 );
+               flux[k][ 2] = tz3 * ( u31k - u31km1 );
+               flux[k][ 3] = (4.0/3.0) * tz3 * (u41k-u41km1);
+               flux[k][ 4] = 0.50 * ( 1.0 - c1*c5 )
                     * tz3 * ( (Math.Pow(u21k,2) + Math.Pow(u31k,2) +Math.Pow(u41k,2) )
                             - ( Math.Pow(u21km1,2) + Math.Pow(u31km1,2) +Math.Pow(u41km1,2) ) )
                     + (1.0/6.0)
@@ -2349,68 +2351,68 @@ namespace NPB3_0_JAV{
             }
 
             for(k=1;k<=nz - 2;k++){
-               rsd[k, j, i, 0] = rsd[k, j, i, 0]
-                    + dz1 * tz1 * (            u[k-1, j, i, 0]
-                                   - 2.0 * u[k, j, i, 0]
-                                   +           u[k+1, j, i, 0] );
-               rsd[k, j, i, 1] = rsd[k, j, i, 1]
-                + tz3 * c3 * c4 * ( flux[k+1, 1] - flux[k, 1] )
-                    + dz2 * tz1 * (            u[k-1, j, i, 1]
-                                   - 2.0 * u[k, j, i, 1]
-                                   +           u[k+1, j, i, 1] );
-               rsd[k, j, i, 2] = rsd[k, j, i, 2]
-                + tz3 * c3 * c4 * ( flux[k+1, 2] - flux[k, 2] )
-                    + dz3 * tz1 * (            u[k-1, j, i, 2]
-                                   - 2.0 * u[k, j, i, 2]
-                                   +           u[k+1, j, i, 2] );
-               rsd[k, j, i, 3] = rsd[k, j, i, 3]
-                + tz3 * c3 * c4 * ( flux[k+1, 3] - flux[k, 3] )
-                    + dz4 * tz1 * (            u[k-1, j, i, 3]
-                                   - 2.0 * u[k, j, i, 3]
-                                   +           u[k+1, j, i, 3] );
-               rsd[k, j, i, 4] = rsd[k, j, i, 4]
-                + tz3 * c3 * c4 * ( flux[k+1, 4] - flux[k, 4] )
-                    + dz5 * tz1 * (            u[k-1, j, i, 4]
-                                   - 2.0 * u[k, j, i, 4]
-                                   +           u[k+1, j, i, 4] );
+               rsd[k][ j][ i][ 0] = rsd[k][ j][ i][ 0]
+                    + dz1 * tz1 * (            u[k-1][ j][ i][ 0]
+                                   - 2.0 * u[k][ j][ i][ 0]
+                                   +           u[k+1][ j][ i][ 0] );
+               rsd[k][ j][ i][ 1] = rsd[k][ j][ i][ 1]
+                + tz3 * c3 * c4 * ( flux[k+1][ 1] - flux[k][ 1] )
+                    + dz2 * tz1 * (            u[k-1][ j][ i][ 1]
+                                   - 2.0 * u[k][ j][ i][ 1]
+                                   +           u[k+1][ j][ i][ 1] );
+               rsd[k][ j][ i][ 2] = rsd[k][ j][ i][ 2]
+                + tz3 * c3 * c4 * ( flux[k+1][ 2] - flux[k][ 2] )
+                    + dz3 * tz1 * (            u[k-1][ j][ i][ 2]
+                                   - 2.0 * u[k][ j][ i][ 2]
+                                   +           u[k+1][ j][ i][ 2] );
+               rsd[k][ j][ i][ 3] = rsd[k][ j][ i][ 3]
+                + tz3 * c3 * c4 * ( flux[k+1][ 3] - flux[k][ 3] )
+                    + dz4 * tz1 * (            u[k-1][ j][ i][ 3]
+                                   - 2.0 * u[k][ j][ i][ 3]
+                                   +           u[k+1][ j][ i][ 3] );
+               rsd[k][ j][ i][ 4] = rsd[k][ j][ i][ 4]
+                + tz3 * c3 * c4 * ( flux[k+1][ 4] - flux[k][ 4] )
+                    + dz5 * tz1 * (            u[k-1][ j][ i][ 4]
+                                   - 2.0 * u[k][ j][ i][ 4]
+                                   +           u[k+1][ j][ i][ 4] );
             }
 
 //---------------------------------------------------------------------
 //   fourth-order dissipation
 //---------------------------------------------------------------------
             for(m=0;m<=4;m++){
-               rsd[1, j, i, m] = rsd[1, j, i, m]
-                 - dssp * ( + 5.0 * u[1, j, i, m]
-                            - 4.0 * u[2, j, i, m]
-                            +           u[3, j, i, m] );
-               rsd[2, j, i, m] = rsd[2, j, i, m]
-                 - dssp * ( - 4.0 * u[1, j, i, m]
-                            + 6.0 * u[2, j, i, m]
-                            - 4.0 * u[3, j, i, m]
-                            +       u[4, j, i, m] );
+               rsd[1][ j][ i][ m] = rsd[1][ j][ i][ m]
+                 - dssp * ( + 5.0 * u[1][ j][ i][ m]
+                            - 4.0 * u[2][ j][ i][ m]
+                            +           u[3][ j][ i][ m] );
+               rsd[2][ j][ i][ m] = rsd[2][ j][ i][ m]
+                 - dssp * ( - 4.0 * u[1][ j][ i][ m]
+                            + 6.0 * u[2][ j][ i][ m]
+                            - 4.0 * u[3][ j][ i][ m]
+                            +       u[4][ j][ i][ m] );
             }
 
             for(k=3;k<=nz - 4;k++){
                for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] = rsd[k, j, i, m]
-                    - dssp * (            u[k-2, j, i, m]
-                              - 4.0 * u[k-1, j, i, m]
-                              + 6.0 * u[k, j, i, m]
-                              - 4.0 * u[k+1, j, i, m]
-                              +           u[k+2, j, i, m] );
+                  rsd[k][ j][ i][ m] = rsd[k][ j][ i][ m]
+                    - dssp * (            u[k-2][ j][ i][ m]
+                              - 4.0 * u[k-1][ j][ i][ m]
+                              + 6.0 * u[k][ j][ i][ m]
+                              - 4.0 * u[k+1][ j][ i][ m]
+                              +           u[k+2][ j][ i][ m] );
                }
             }
 
             for(m=0;m<=4;m++){
-               rsd[nz-3, j, i, m] = rsd[nz-3, j, i, m]
-                 - dssp * (             u[nz-5, j, i, m]
-                            - 4.0 * u[nz-4, j, i, m]
-                            + 6.0 * u[nz-3, j, i, m]
-                            - 4.0 * u[nz-2, j, i, m]  );
-               rsd[nz-2, j, i, m] = rsd[nz-2, j, i, m]
-                 - dssp * (             u[nz-4, j, i, m]
-                            - 4.0 * u[nz-3, j, i, m]
-                            + 5.0 * u[nz-2, j, i, m] );
+               rsd[nz-3][ j][ i][ m] = rsd[nz-3][ j][ i][ m]
+                 - dssp * (             u[nz-5][ j][ i][ m]
+                            - 4.0 * u[nz-4][ j][ i][ m]
+                            + 6.0 * u[nz-3][ j][ i][ m]
+                            - 4.0 * u[nz-2][ j][ i][ m]  );
+               rsd[nz-2][ j][ i][ m] = rsd[nz-2][ j][ i][ m]
+                 - dssp * (             u[nz-4][ j][ i][ m]
+                            - 4.0 * u[nz-3][ j][ i][ m]
+                            + 5.0 * u[nz-2][ j][ i][ m] );
             }
          }
       }
@@ -2473,8 +2475,8 @@ namespace NPB3_0_JAV{
 	    exact( i+1, j+1, 1, temp1 );
             exact( i+1, j+1, nz, temp2 );
 	    for(m=0;m<=4;m++){
-               u[0, j, i, m] = temp1[m];
-               u[nz-1, j, i, m] = temp2[m];
+               u[0][ j][ i][ m] = temp1[m];
+               u[nz-1][ j][ i][ m] = temp2[m];
            }
          }
       }
@@ -2487,8 +2489,8 @@ namespace NPB3_0_JAV{
             exact( i+1, 1, k+1, temp1 );
             exact( i+1, ny, k+1, temp2 );
 	    for(m=0;m<=4;m++){
-               u[k, 0, i, m] = temp1[m];
-               u[k, ny-1, i, m] = temp2[m];
+               u[k][ 0][ i][ m] = temp1[m];
+               u[k][ ny-1][ i][ m] = temp2[m];
 	    }
          }
       }
@@ -2500,8 +2502,8 @@ namespace NPB3_0_JAV{
              exact( 1, j+1, k+1, temp1 );
              exact( nx, j+1, k+1, temp2 );
 	    for(m=0;m<=4;m++){
-               u[k, j, 0, m] = temp1[m];
-               u[k, j, nx-1, m] = temp2[m];
+               u[k][ j][ 0][ m] = temp1[m];
+               u[k][ j][ nx-1][ m] = temp2[m];
            }
          }
       }
@@ -2538,7 +2540,7 @@ namespace NPB3_0_JAV{
     		pzeta = ( 1.0 - zeta ) * ue_ij1[m]
     				  + zeta   * ue_ijnz[m];
 
-    		u[k, j, i, m] = pxi + peta + pzeta
+    		u[k][ j][ i][ m] = pxi + peta + pzeta
     		     - pxi * peta - peta * pzeta - pzeta * pxi
     		     + pxi * peta * pzeta;
 
@@ -2552,7 +2554,7 @@ namespace NPB3_0_JAV{
     int i, j, k, m, n;
     int istep;
     double  tmp;
-    double[]  delunm = new double[5]; double[,,] tv = new double[isiz2,isiz1,5];
+    double[]  delunm = new double[5]; double[][][] tv = instantiate_jagged_array_3(isiz2, isiz1, 5);
  
 //---------------------------------------------------------------------
 //   begin pseudo-time stepping iterations
@@ -2566,10 +2568,10 @@ namespace NPB3_0_JAV{
       for(i=0;i<=isiz1-1;i++){
 	for(n=0;n<=4;n++){
 	  for(m=0;m<=4;m++){
-	    a[j, i, n ,m] = 0;
-	    b[j, i, n ,m] = 0;
-	    c[j, i, n ,m] = 0;
-	    d[j, i, n ,m] = 0;
+	    a[j][ i][ n ][m] = 0;
+	    b[j][ i][ n ][m] = 0;
+	    c[j][ i][ n ][m] = 0;
+	    d[j][ i][ n ][m] = 0;
 	  }
 	}
       }
@@ -2608,8 +2610,8 @@ namespace NPB3_0_JAV{
 	for(j=jst-1;j<=jend-1;j++){
 	  for(i=ist-1;i<=iend-1;i++){
 	    for(m=0;m<=4;m++){
-	      rsd[k, j, i, m] = 
-	                      dt * rsd[k, j, i, m];
+	      rsd[k][ j][ i][ m] = 
+	                      dt * rsd[k][ j][ i][ m];
 	    }
 	  }
 	}
@@ -2668,8 +2670,8 @@ namespace NPB3_0_JAV{
 	for(j=jst-1;j<=jend-1;j++){
 	  for(i=ist-1;i<=iend-1;i++){
 	    for(m=0;m<=4;m++){
-	      u[k, j, i, m] += 
-		   + tmp * rsd[k, j, i, m];
+	      u[k][ j][ i][ m] += 
+		   + tmp * rsd[k][ j][ i][ m];
 	    }
 	  }
 	}

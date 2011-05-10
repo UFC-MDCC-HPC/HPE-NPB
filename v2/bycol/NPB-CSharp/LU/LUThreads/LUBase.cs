@@ -98,13 +98,13 @@ public class LUBase /* : Thread*/{
 //   and l2norm are similarly padded
 //---------------------------------------------------------------------
 
-  protected double[,,,] u, rsd, frct;
+  protected double[][][][] u, rsd, frct;
   protected int isize1, jsize1, ksize1; 
 
-  protected double[,] flux; 
+  protected double[][] flux; 
   protected int isize2;
 
-  protected double[,,] qs, rho_i;
+  protected double[][][] qs, rho_i;
   protected int jsize3, ksize3;
 //---------------------------------------------------------------------
 //   output control parameters
@@ -118,13 +118,13 @@ public class LUBase /* : Thread*/{
   protected double dt, omega, frc, ttotal;
   protected double[] tolrsd = new double[5],rsdnm = new double[5], errnm = new double[5];
 
-  protected double[,,,]   a, b, c, d;
+  protected double[][][][]   a, b, c, d;
   protected int isize4, jsize4, ksize4;
 //---------------------------------------------------------------------
 //   coefficients of the exact solution
 //---------------------------------------------------------------------
-  protected static double[,] ce ={{ 
-                 2.0, 1.0, 2.0, 2.0, 5.0},
+   private double[,] ce_ = 			
+		{   {2.0, 1.0, 2.0, 2.0, 5.0},
 			{0.0, 0.0, 2.0, 2.0, 4.0},
 			{0.0, 0.0, 0.0, 0.0, 3.0},
 			{4.0, 0.0, 0.0, 0.0, 2.0},
@@ -137,7 +137,20 @@ public class LUBase /* : Thread*/{
 			{.5 , .4 , .3 , .2 , .1} ,
 			{.4 , .3 , .5 , .1 , .3} ,
 			{.3 , .5 , .4 , .3 , .2}
-  	       };
+			};
+
+   protected static double[][] ce = instantiate_jagged_array_2(13,5);
+
+   protected void init_ce() 
+   {	
+			for (int n=0; n < 13; n++) 
+			{
+				for (int m=0; m < 5; m++) 
+				{
+					ce[n][m] = ce_[n,m];
+				}	
+			}
+	}
 //---------------------------------------------------------------------
 //   timers
 //---------------------------------------------------------------------
@@ -147,9 +160,10 @@ public class LUBase /* : Thread*/{
   public bool timeron;
   public Timer timer = new Timer();
 
-  public LUBase(){}
+  public LUBase(){ init_ce(); }
 
   public LUBase(char cls, int np){
+    init_ce();
     CLASS=cls;
     num_threads = np;
    switch(cls){
@@ -180,30 +194,76 @@ public class LUBase /* : Thread*/{
       break;
     }
 
-    u = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
-    rsd = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
-    frct = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
+    u = instantiate_jagged_array_4(5, isiz1/2*2+1, isiz2/2*2+1, isiz3);
+    rsd = instantiate_jagged_array_4(5, isiz1/2*2+1, isiz2/2*2+1, isiz3);
+    frct = instantiate_jagged_array_4(5, isiz1/2*2+1, isiz2/2*2+1, isiz3);
     isize1=5;
     jsize1=5*(isiz1/2*2+1);
     ksize1=5*(isiz1/2*2+1)*(isiz2/2*2+1);
     
-    flux= new double[isiz1,5];
+    flux= instantiate_jagged_array_2(5, isiz1);
     isize2=5;
 
-    qs = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1)];
-    rho_i = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1)];
+    qs = instantiate_jagged_array_3(isiz1/2*2+1,isiz2/2*2+1,isiz3);
+    rho_i = instantiate_jagged_array_3(isiz1/2*2+1,isiz2/2*2+1,isiz3);
     jsize3 = (isiz1/2*2+1);
     ksize3 = (isiz1/2*2+1)*(isiz2/2*2+1);
 
-    a = new double[(isiz2),(isiz1/2*2+1),5,5]; 
-    b = new double[(isiz2),(isiz1/2*2+1),5,5];
-    c = new double[(isiz2),(isiz1/2*2+1),5,5]; 
-    d = new double[(isiz2),(isiz1/2*2+1),5,5];
+    a = instantiate_jagged_array_4(5, 5, isiz1/2*2+1, isiz2); 
+    b = instantiate_jagged_array_4(5, 5, isiz1/2*2+1, isiz2);
+    c = instantiate_jagged_array_4(5, 5, isiz1/2*2+1, isiz2); 
+    d = instantiate_jagged_array_4(5, 5, isiz1/2*2+1, isiz2);
 
     isize4=5;
     jsize4=5*5;
     ksize4=5*5*(isiz1/2*2+1);
   }
+		
+	public static double[][][][] instantiate_jagged_array_4(int N1, int N2, int N3, int N4)	
+	{
+	    double[][][][] r = new double[N1][][][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2][][];
+			for (int j=0; j<N2; j++) 
+			{
+				r[i][j] = new double[N3][];
+				for (int k=0; k<N3; k++) 
+				{
+					r[i][j][k] = new double[N4];
+				}
+			}
+		}
+			
+		return r;
+	}
+		
+	public static double[][][] instantiate_jagged_array_3(int N1, int N2, int N3)	
+	{
+	    double[][][] r = new double[N1][][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2][];
+			for (int j=0; j<N2; j++) 
+			{
+				r[i][j] = new double[N3];
+			}
+		}
+			
+		return r;
+	}
+		
+	public static double[][] instantiate_jagged_array_2(int N1, int N2)	
+	{
+	    double[][] r = new double[N1][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2];
+		}
+			
+		return r;
+	}
+		
   
   protected Thread master=null;
   protected int num_threads;
@@ -224,8 +284,8 @@ public class LUBase /* : Thread*/{
     int[] interval2=new int[num_threads];    
 	set_interval(num_threads, isiz1, interval1);
     set_interval(num_threads, isiz1-2, interval2);
-    int[,] partition1 = new int[interval1.Length,2];
-    int[,] partition2 = new int[interval2.Length,2];
+    int[,] partition1 = new int[interval1.Length][2];
+    int[,] partition2 = new int[interval2.Length][2];
     set_partition(0,interval1,partition1);
     set_partition(1,interval2,partition2);
    
@@ -295,19 +355,19 @@ public class LUBase /* : Thread*/{
     double zeta = (k-1) / ( nz  - 1 );
 
     for(int m=0;m<=4;m++){
-      u0[m] =  ce[0,m]
-              + (ce[1,m]
-              + (ce[4,m]
-              + (ce[7,m]
-              +  ce[10,m] * xi) * xi) * xi) * xi
-              + (ce[2,m]
-              + (ce[5,m]
-              + (ce[8,m]
-              +  ce[11,m] * eta) * eta) * eta) * eta
-              + (ce[3,m]
-              + (ce[6,m]
-              + (ce[9,m]
-              +  ce[12,m] * zeta) * zeta) * zeta) * zeta;
+      u0[m] =  ce[0][m]
+              + (ce[1][m]
+              + (ce[4][m]
+              + (ce[7][m]
+              +  ce[10][m] * xi) * xi) * xi) * xi
+              + (ce[2][m]
+              + (ce[5][m]
+              + (ce[8][m]
+              +  ce[11][m] * eta) * eta) * eta) * eta
+              + (ce[3][m]
+              + (ce[6][m]
+              + (ce[9][m]
+              +  ce[12][m] * zeta) * zeta) * zeta) * zeta;
       }
   }
   protected double max(double a, double b){

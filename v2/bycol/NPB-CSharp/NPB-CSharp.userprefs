@@ -1,9 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BT/BTThreads/BTBase.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../byrow/NPB-CSharp/FT/FTThreads/FTBase.cs">
     <Files>
-      <File FileName="BT/BT.cs" Line="52" Column="14" />
-      <File FileName="BT/BTThreads/BTBase.cs" Line="72" Column="30" />
+      <File FileName="FT/FT.cs" Line="306" Column="32" />
+      <File FileName="FT/FTThreads/FTBase.cs" Line="53" Column="34" />
+      <File FileName="../../byrow/NPB-CSharp/FT/FTThreads/FTBase.cs" Line="165" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

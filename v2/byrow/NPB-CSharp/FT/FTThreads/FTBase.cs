@@ -49,16 +49,16 @@ public class FTBase /* : Thread*/
   protected int nx, ny, nz, maxdim, niter_default;
 
   //complex arrays
-  protected double[,,] scr;
-  protected double[,,,] plane;
+  protected double[][][] scr;
+  protected double[][][][] plane;
   //protected int isize2;
   //protected int isize3, jsize3, ksize3;
   //protected int isize4, jsize4, ksize4;
 
-  protected double[,] checksum; 
-  protected double[,,,] xtr;  //isize3=2;jsize3=2*(ny+1);ksize3=2*(ny+1)*nx;
-  protected double[,,,] xnt;  //isize4=2;jsize4=2*(ny+1);ksize4=2*(ny+1)*nz;
-  protected double[,] exp1,exp2,exp3; 
+  protected double[][] checksum; 
+  protected double[][][][] xtr;  //isize3=2;jsize3=2*(ny+1);ksize3=2*(ny+1)*nx;
+  protected double[][][][] xnt;  //isize4=2;jsize4=2*(ny+1);ksize4=2*(ny+1)*nz;
+  protected double[][] exp1,exp2,exp3; 
 
   public bool timeron=false;
   public Timer timer = new Timer();
@@ -99,8 +99,8 @@ public class FTBase /* : Thread*/
       break;
     }    
     maxdim = max( nx , max( ny , nx ) );
-    scr = new double[maxdim,(maxdim+1),2];       // scr = new double[2 * (maxdim + 1) * maxdim];
-    plane = new double[1,maxdim,(maxdim+1),2];  // plane = new double[2 * (maxdim + 1) * maxdim];
+    scr = instantiate_jagged_array_3(maxdim, maxdim + 1 ,2);       // scr = new double[2 * (maxdim + 1) * maxdim];
+    plane = instantiate_jagged_array_4(1, maxdim, maxdim+1, 2);  // plane = new double[2 * (maxdim + 1) * maxdim];
     //isize2=2;
     //isize3=2;
     //jsize3=2*(ny+1);
@@ -109,25 +109,70 @@ public class FTBase /* : Thread*/
     //jsize4=2*(ny+1);
     //ksize4=2*(ny+1)*nz;
     //complex values
-    checksum = new double[niter_default,2]; //isize2=2;
+    checksum = instantiate_jagged_array_2(niter_default, 2); //isize2=2;
 
-    xtr = new double[nz,nx,(ny+1),2]; 
-    xnt = new double[nx,nz,(ny+1),2]; 
-    exp1 = new double[nx,2];
-    exp2 = new double[ny,2];
-    exp3 = new double[nz,2];
+    xtr = instantiate_jagged_array_4(nz,nx,ny+1,2); 
+    xnt = instantiate_jagged_array_4(nx,nz,ny+1,2); 
+    exp1 = instantiate_jagged_array_2(nx,2);
+    exp2 = instantiate_jagged_array_2(ny,2);
+    exp3 = instantiate_jagged_array_2(nz,2);
   }
 
-  // thread variables
+	public static double[][][][] instantiate_jagged_array_4(int N1, int N2, int N3, int N4)	
+	{
+	    double[][][][] r = new double[N1][][][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2][][];
+			for (int j=0; j<N2; j++) 
+			{
+				r[i][j] = new double[N3][];
+				for (int k=0; k<N3; k++) 
+				{
+					r[i][j][k] = new double[N4];
+				}
+			}
+		}
+			
+		return r;
+	}
+		
+	public static double[][][] instantiate_jagged_array_3(int N1, int N2, int N3)	
+	{
+	    double[][][] r = new double[N1][][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2][];
+			for (int j=0; j<N2; j++) 
+			{
+				r[i][j] = new double[N3];
+			}
+		}
+			
+		return r;
+	}
+		
+	public static double[][] instantiate_jagged_array_2(int N1, int N2)	
+	{
+	    double[][] r = new double[N1][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2];
+		}
+			
+		return r;
+	}
+
+		// thread variables
   //protected Thread master = null;
   protected int num_threads;
 
   public int max(int a, int b){if(a>b)return a; else return b;}
 
-  public void CompExp (int n, double[,] exponent){     
+  public void CompExp (int n, double[][] exponent){     
     int nu = n;
     int m = ilog2(n);
-    exponent[0,0] = m;
+    exponent[0][0] = m;
     
     double eps=1.0E-16;
     int ku = 1;
@@ -137,18 +182,18 @@ public class FTBase /* : Thread*/
         for(int i=0;i<=ln-1;i++){
 	        double ti = i * t;
             int idx = (i + ku); // obs  int idx=(i+ku)*2;
-	        exponent[idx,REAL] = Math.Cos(ti);
-            exponent[idx,IMAG] = Math.Sin(ti);
-	        if(Math.Abs(exponent[idx,REAL]) < eps) exponent[idx,REAL]=0;
-	        if(Math.Abs(exponent[idx,IMAG]) < eps) exponent[idx,IMAG]=0;
+	        exponent[idx][REAL] = Math.Cos(ti);
+            exponent[idx][IMAG] = Math.Sin(ti);
+	        if(Math.Abs(exponent[idx][REAL]) < eps) exponent[idx][REAL]=0;
+	        if(Math.Abs(exponent[idx][IMAG]) < eps) exponent[idx][IMAG]=0;
         }
         ku = ku + ln;
         ln = 2 * ln;
     }
   }
 
-  public void initial_conditions(double[,,,] u0, int d1, int d2, int d3){
-      double[,] tmp = new double[maxdim,2];
+  public void initial_conditions(double[][][][] u0, int d1, int d2, int d3){
+      double[][] tmp = instantiate_jagged_array_2(maxdim, 2);
       double[] RanStarts = new double[maxdim];
       //seed has to be init here since
       //is called 2 times 
@@ -174,10 +219,10 @@ public class FTBase /* : Thread*/
       for (int k = 0; k < d3; k++){
           double x0 = RanStarts[k];
           for (int j = 0; j < d1; j++){
-              x0 = rng.vranlc2(d2, x0, a, tmp, 0);
+              x0 = rng.vranlc2_jagged(d2, x0, a, tmp, 0);
               for (int i = 0; i < d2; i++){
-                  u0[k,i,j,REAL] = tmp[i,REAL];
-                  u0[k,i,j,IMAG] = tmp[i,IMAG];
+                  u0[k][i][j][REAL] = tmp[i][REAL];
+                  u0[k][i][j][IMAG] = tmp[i][IMAG];
               }
           }
       }
@@ -197,7 +242,7 @@ public class FTBase /* : Thread*/
 
   protected static int fftblock_default=4*4096, //Size of L1 cache on SGI O2K
                        fftblock;
-  public void Swarztrauber(int is0, int m, int len, int n, double[,,,] x, int xoffst, int xd1, double[,] exponent, double[,,] scr)
+  public void Swarztrauber(int is0, int m, int len, int n, double[][][][] x, int xoffst, int xd1, double[][] exponent, double[][][] scr)
   {
       int i, j = 0, l, mx;
       int k, n1, li, lj, lk, ku, i11, i12, i21, i22;
@@ -234,27 +279,27 @@ public class FTBase /* : Thread*/
                   i21 = i * lj;
                   i22 = i21 + lk;
 
-                  u1[REAL] = exponent[(ku+i), REAL];
+                  u1[REAL] = exponent[(ku+i)][ REAL];
                   if (is0 >= 1)
                   {
-                      u1[IMAG] = exponent[(ku+i),IMAG];
+                      u1[IMAG] = exponent[(ku+i)][IMAG];
                   }
                   else
                   {
-                      u1[IMAG] = -exponent[(ku+i),IMAG];
+                      u1[IMAG] = -exponent[(ku+i)][IMAG];
                   }
                   for (k = 0; k <= lk - 1; k++)
                   {
                       for (j = BlockStart; j <= BlockEnd; j++)
                       {
-                          x11[REAL] = x[xoffst,(i11+k),j,REAL];
-                          x11[IMAG] = x[xoffst,(i11+k),j,IMAG];
-                          x21[REAL] = x[xoffst,(i12+k),j,REAL];
-                          x21[IMAG] = x[xoffst,(i12+k),j,IMAG];
-                          scr[(i21+k),j,REAL] = x11[REAL] + x21[REAL];
-                          scr[(i21+k),j,IMAG] = x11[IMAG] + x21[IMAG];
-                          scr[(i22+k),j,REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
-                          scr[(i22+k),j,IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                          x11[REAL] = x[xoffst][(i11+k)][j][REAL];
+                          x11[IMAG] = x[xoffst][(i11+k)][j][IMAG];
+                          x21[REAL] = x[xoffst][(i12+k)][j][REAL];
+                          x21[IMAG] = x[xoffst][(i12+k)][j][IMAG];
+                          scr[(i21+k)][j][REAL] = x11[REAL] + x21[REAL];
+                          scr[(i21+k)][j][IMAG] = x11[IMAG] + x21[IMAG];
+                          scr[(i22+k)][j][REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
+                          scr[(i22+k)][j][IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                       }
                   }
               }
@@ -264,8 +309,8 @@ public class FTBase /* : Thread*/
                   {
                       for (j = BlockStart; j <= BlockEnd; j++)
                       {
-                          x[xoffst,k,j,REAL] = scr[k,j,REAL];
-                          x[xoffst,k,j,IMAG] = scr[k,j,IMAG];
+                          x[xoffst][k][j][REAL] = scr[k][j][REAL];
+                          x[xoffst][k][j][IMAG] = scr[k][j][IMAG];
                       }
                   }
               }
@@ -284,29 +329,29 @@ public class FTBase /* : Thread*/
                       i21 = i * lj;
                       i22 = i21 + lk;
 
-                      u1[REAL] = exponent[(ku+i),REAL];
+                      u1[REAL] = exponent[(ku+i)][REAL];
                       if (is0 >= 1)
                       {
-                          u1[IMAG] = exponent[(ku+i),IMAG];
+                          u1[IMAG] = exponent[(ku+i)][IMAG];
                       }
                       else
                       {
-                          u1[IMAG] = -exponent[(ku+i),IMAG];
+                          u1[IMAG] = -exponent[(ku+i)][IMAG];
                       }
                       for (k = 0; k <= lk - 1; k++)
                       {
                           for (j = BlockStart; j <= BlockEnd; j++)
                           {
-                              x11[REAL] = scr[(i11+k),j,REAL];
-                              x11[IMAG] = scr[(i11+k),j,IMAG];
+                              x11[REAL] = scr[(i11+k)][j][REAL];
+                              x11[IMAG] = scr[(i11+k)][j][IMAG];
 
-                              x21[REAL] = scr[(i12+k),j,REAL];
-                              x21[IMAG] = scr[(i12+k),j,IMAG];
+                              x21[REAL] = scr[(i12+k)][j][REAL];
+                              x21[IMAG] = scr[(i12+k)][j][IMAG];
 
-                              x[xoffst,(i21+k),j,REAL] = x11[REAL] + x21[REAL];
-                              x[xoffst,(i21+k),j,IMAG] = x11[IMAG] + x21[IMAG];
-                              x[xoffst,(i22+k),j,REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
-                              x[xoffst,(i22+k),j,IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                              x[xoffst][(i21+k)][j][REAL] = x11[REAL] + x21[REAL];
+                              x[xoffst][(i21+k)][j][IMAG] = x11[IMAG] + x21[IMAG];
+                              x[xoffst][(i22+k)][j][REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
+                              x[xoffst][(i22+k)][j][IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                           }
                       }
                   }

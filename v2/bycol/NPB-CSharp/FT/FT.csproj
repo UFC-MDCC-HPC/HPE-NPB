@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -6,7 +6,7 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2C6141C5-B36F-4B59-BFD7-84C2B634985A}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FT</RootNamespace>
     <AssemblyName>FT</AssemblyName>
@@ -15,6 +15,7 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,23 +46,15 @@
     <Compile Include="FTThreads\FTBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BMInOut\BMInOut.csproj">
+    <ProjectReference Include="..\..\..\..\common\NPB-CSharp\BMInOut\BMInOut.csproj">
       <Project>{1A1FAA2A-D1A2-4DFE-955A-3D88FD063315}</Project>
       <Name>BMInOut</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Timer\Timer.csproj">
+    <ProjectReference Include="..\..\..\..\common\NPB-CSharp\Timer\Timer.csproj">
       <Project>{344CE051-6255-4BBA-BFB3-5CF80032FF77}</Project>
       <Name>Timer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BMInOut\BMInOut.csproj">
-      <Project>{1A1FAA2A-D1A2-4DFE-955A-3D88FD063315}</Project>
-      <Name>BMInOut</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Timer\Timer.csproj">
-      <Project>{344CE051-6255-4BBA-BFB3-5CF80032FF77}</Project>
-      <Name>Timer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Random\Random.csproj">
+    <ProjectReference Include="..\..\..\..\common\NPB-CSharp\Random\Random.csproj">
       <Project>{5D439402-4268-4D59-90E2-0B7A99BE5816}</Project>
       <Name>Random</Name>
     </ProjectReference>

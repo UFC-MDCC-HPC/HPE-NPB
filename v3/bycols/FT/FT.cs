@@ -156,8 +156,8 @@ namespace NPB3_0_JAV {
                             int jj = j - ((j) / n22) * ny;
                             //xnt[REAL+j*isize4+k*jsize4+i*ksize4] = xtr[REAL+j*isize3+i*jsize3+k*ksize3] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
                             //xnt[IMAG+j*isize4+k*jsize4+i*ksize4] = xtr[IMAG+j*isize3+i*jsize3+k*ksize3] * Math.Exp((ap*(jj*jj+ik2))*(it + 1));
-                            xnt[i,k,j,REAL] = xtr[k,i,j,REAL] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
-                            xnt[i,k,j,IMAG] = xtr[k,i,j,IMAG] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
+                            xnt[REAL,j,k,i] = xtr[REAL,j,i,k] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
+                            xnt[IMAG,j,k,i] = xtr[IMAG,j,i,k] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
                         }
                     }
                 }
@@ -217,8 +217,8 @@ namespace NPB3_0_JAV {
             int isize3 = 2,
                 jsize3 = isize3 * (d1 + 1),
                 ksize3 = jsize3 * d2;
-            csum[csmffst,REAL] = 0.0;
-            csum[csmffst,IMAG] = 0.0;
+            csum[REAL,csmffst] = 0.0;
+            csum[IMAG,csmffst] = 0.0;
 
             double csumr = 0.0, csumi = 0.0;
             for (i = 1; i <= 1024; i++)
@@ -226,11 +226,11 @@ namespace NPB3_0_JAV {
                 ii = (1 * i) % d3;
                 ji = (3 * i) % d1;
                 ki = (5 * i) % d2;
-                csumr += u[ii, ki, ji, REAL]; // csumr += u[ii, ki, ji, REAL];
-                csumi += u[ii, ki, ji, IMAG]; // csumi += u[ii, ki, ji, IMAG];
+                csumr += u[ REAL, ji, ki,ii]; // csumr += u[ REAL, ji, ki,ii];
+                csumi += u[ IMAG, ji, ki,ii]; // csumi += u[ IMAG, ji, ki,ii];
             }
-            csum[csmffst, REAL] = csumr / (d1 * d2 * d3);
-            csum[csmffst, IMAG] = csumi / (d1 * d2 * d3);
+            csum[ REAL,csmffst] = csumr / (d1 * d2 * d3);
+            csum[ IMAG,csmffst] = csumi / (d1 * d2 * d3);
         }
 
         public void fftXYZ(int sign, double[,,,] x, double[,] exp1, double[,] exp2, double[,] exp3, int n1, int n2, int n3)
@@ -256,8 +256,8 @@ namespace NPB3_0_JAV {
                 {
                     for (i = 0; i < n1; i++)
                     {
-                        plane[0, i, j, REAL] = x[k, j, i, REAL];
-                        plane[0, i, j, IMAG] = x[k, j, i, IMAG];
+                        plane[ REAL, j, i,0] = x[ REAL, i, j,k];
+                        plane[ IMAG, j, i,0] = x[ IMAG, i, j,k];
                     }
                 }
                 Swarztrauber(sign, log, n2, n1, plane, 0, n2, exp1, scr);
@@ -265,8 +265,8 @@ namespace NPB3_0_JAV {
                 {
                     for (i = 0; i < n1; i++)
                     {
-                        x[k,j,i,REAL] = plane[0,i,j,REAL];
-                        x[k,j,i,IMAG] = plane[0,i,j,IMAG];
+                        x[REAL,i,j,k] = plane[REAL,j,i,0];
+                        x[IMAG,i,j,k] = plane[IMAG,j,i,0];
                     }
                 }
             }
@@ -280,8 +280,8 @@ namespace NPB3_0_JAV {
                 {
                     for (j = 0; j < n1; j++)
                     {
-                        plane[0,i,j,REAL] = x[i,k,j,REAL];
-                        plane[0,i,j,IMAG] = x[i,k,j,IMAG];
+                        plane[REAL,j,i,0] = x[REAL,j,k,i];
+                        plane[IMAG,j,i,0] = x[IMAG,j,k,i];
                     }
                 }
                 Swarztrauber(sign, log, n1, n3, plane, 0, n1, exp3, scr);
@@ -289,8 +289,8 @@ namespace NPB3_0_JAV {
                 {
                     for (j = 0; j < n1; j++)
                     {
-                        x[i,k,j,REAL] = plane[0,i,j,REAL];
-                        x[i,k,j,IMAG] = plane[0,i,j,IMAG];
+                        x[REAL,j,k,i] = plane[REAL,j,i,0];
+                        x[IMAG,j,k,i] = plane[IMAG,j,i,0];
                     }
                 }
             }
@@ -303,109 +303,109 @@ namespace NPB3_0_JAV {
         {
             int verified = -1;
             bool[] temp = new bool[niter_default];
-            double[,] cexpd = new double[21,2];
+            double[,] cexpd = new double[2,21];
             if ((n1 == 64) && (n2 == 64) && (n3 == 64) && (nt == 6)) {
                 //
                 // Class S reference values.
                 //
-                cexpd[0,REAL] = 554.6087004964;
-                cexpd[1,REAL] = 554.6385409189;
-                cexpd[2,REAL] = 554.6148406171;
-                cexpd[3,REAL] = 554.5423607415;
-                cexpd[4,REAL] = 554.4255039624;
-                cexpd[5,REAL] = 554.2683411902;
+                cexpd[REAL,0] = 554.6087004964;
+                cexpd[REAL,1] = 554.6385409189;
+                cexpd[REAL,2] = 554.6148406171;
+                cexpd[REAL,3] = 554.5423607415;
+                cexpd[REAL,4] = 554.4255039624;
+                cexpd[REAL,5] = 554.2683411902;
 
-                cexpd[0,IMAG] = 484.5363331978;
-                cexpd[1,IMAG] = 486.5304269511;
-                cexpd[2,IMAG] = 488.3910722336;
-                cexpd[3,IMAG] = 490.1273169046;
-                cexpd[4,IMAG] = 491.7475857993;
-                cexpd[5,IMAG] = 493.2597244941;
+                cexpd[IMAG,0] = 484.5363331978;
+                cexpd[IMAG,1] = 486.5304269511;
+                cexpd[IMAG,2] = 488.3910722336;
+                cexpd[IMAG,3] = 490.1273169046;
+                cexpd[IMAG,4] = 491.7475857993;
+                cexpd[IMAG,5] = 493.2597244941;
 
             }
             else if ((n1 == 128) && (n2 == 128) && (n3 == 32) && (nt == 6)) {
                 //
                 // Class W reference values.
                 //
-                cexpd[0,REAL] = 567.3612178944;
-                cexpd[1,REAL] = 563.1436885271;
-                cexpd[2,REAL] = 559.4024089970;
-                cexpd[3,REAL] = 556.0698047020;
-                cexpd[4,REAL] = 553.0898991250;
-                cexpd[5,REAL] = 550.4159734538;
+                cexpd[REAL,0] = 567.3612178944;
+                cexpd[REAL,1] = 563.1436885271;
+                cexpd[REAL,2] = 559.4024089970;
+                cexpd[REAL,3] = 556.0698047020;
+                cexpd[REAL,4] = 553.0898991250;
+                cexpd[REAL,5] = 550.4159734538;
 
-                cexpd[0,IMAG] = 529.3246849175;
-                cexpd[1,IMAG] = 528.2149986629;
-                cexpd[2,IMAG] = 527.0996558037;
-                cexpd[3,IMAG] = 526.0027904925;
-                cexpd[4,IMAG] = 524.9400845633;
-                cexpd[5,IMAG] = 523.9212247086;
+                cexpd[IMAG,0] = 529.3246849175;
+                cexpd[IMAG,1] = 528.2149986629;
+                cexpd[IMAG,2] = 527.0996558037;
+                cexpd[IMAG,3] = 526.0027904925;
+                cexpd[IMAG,4] = 524.9400845633;
+                cexpd[IMAG,5] = 523.9212247086;
                 //
             }
             else if ((n1 == 256) && (n2 == 256) && (n3 == 128) && (nt == 6)){
                 //
                 // Class A reference values.
                 //
-                cexpd[0,REAL] = 504.6735008193;
-                cexpd[1,REAL] = 505.9412319734;
-                cexpd[2,REAL] = 506.9376896287;
-                cexpd[3,REAL] = 507.7892868474;
-                cexpd[4,REAL] = 508.5233095391;
-                cexpd[5,REAL] = 509.1487099959;
+                cexpd[REAL,0] = 504.6735008193;
+                cexpd[REAL,1] = 505.9412319734;
+                cexpd[REAL,2] = 506.9376896287;
+                cexpd[REAL,3] = 507.7892868474;
+                cexpd[REAL,4] = 508.5233095391;
+                cexpd[REAL,5] = 509.1487099959;
 
-                cexpd[0,IMAG] = 511.4047905510;
-                cexpd[1,IMAG] = 509.8809666433;
-                cexpd[2,IMAG] = 509.8144042213;
-                cexpd[3,IMAG] = 510.1336130759;
-                cexpd[4,IMAG] = 510.4914655194;
-                cexpd[5,IMAG] = 510.7917842803;
+                cexpd[IMAG,0] = 511.4047905510;
+                cexpd[IMAG,1] = 509.8809666433;
+                cexpd[IMAG,2] = 509.8144042213;
+                cexpd[IMAG,3] = 510.1336130759;
+                cexpd[IMAG,4] = 510.4914655194;
+                cexpd[IMAG,5] = 510.7917842803;
                 //
             }
             else if ((n1 == 512) && (n2 == 256) && (n3 == 256) && (nt == 20)){
                 //
                 // Class B reference values.
                 //
-                cexpd[0,REAL] = 517.7643571579;
-                cexpd[1,REAL] = 515.4521291263;
-                cexpd[2,REAL] = 514.6409228649;
-                cexpd[3,REAL] = 514.2378756213;
-                cexpd[4,REAL] = 513.9626667737;
-                cexpd[5,REAL] = 513.7423460082;
-                cexpd[6,REAL] = 513.5547056878;
-                cexpd[7,REAL] = 513.3910925466;
-                cexpd[8,REAL] = 513.2470705390;
-                cexpd[9,REAL] = 513.1197729984;
-                cexpd[10,REAL] = 513.0070319283;
-                cexpd[11,REAL] = 512.9070537032;
-                cexpd[12,REAL] = 512.8182883502;
-                cexpd[13,REAL] = 512.7393733383;
-                cexpd[14,REAL] = 512.6691062020;
-                cexpd[15,REAL] = 512.6064276004;
-                cexpd[16,REAL] = 512.5504076570;
-                cexpd[17,REAL] = 512.5002331720;
-                cexpd[18,REAL] = 512.4551951846;
-                cexpd[19,REAL] = 512.4146770029;
+                cexpd[REAL,0] = 517.7643571579;
+                cexpd[REAL,1] = 515.4521291263;
+                cexpd[REAL,2] = 514.6409228649;
+                cexpd[REAL,3] = 514.2378756213;
+                cexpd[REAL,4] = 513.9626667737;
+                cexpd[REAL,5] = 513.7423460082;
+                cexpd[REAL,6] = 513.5547056878;
+                cexpd[REAL,7] = 513.3910925466;
+                cexpd[REAL,8] = 513.2470705390;
+                cexpd[REAL,9] = 513.1197729984;
+                cexpd[REAL,10] = 513.0070319283;
+                cexpd[REAL,11] = 512.9070537032;
+                cexpd[REAL,12] = 512.8182883502;
+                cexpd[REAL,13] = 512.7393733383;
+                cexpd[REAL,14] = 512.6691062020;
+                cexpd[REAL,15] = 512.6064276004;
+                cexpd[REAL,16] = 512.5504076570;
+                cexpd[REAL,17] = 512.5002331720;
+                cexpd[REAL,18] = 512.4551951846;
+                cexpd[REAL,19] = 512.4146770029;
 
-                cexpd[0,IMAG] = 507.7803458597;
-                cexpd[1,IMAG] = 508.8249431599;
-                cexpd[2,IMAG] = 509.6208912659;
-                cexpd[3,IMAG] = 510.1023387619;
-                cexpd[4,IMAG] = 510.3976610617;
-                cexpd[5,IMAG] = 510.5948019802;
-                cexpd[6,IMAG] = 510.7404165783;
-                cexpd[7,IMAG] = 510.8576573661;
-                cexpd[8,IMAG] = 510.9577278523;
-                cexpd[9,IMAG] = 511.0460304483;
-                cexpd[10,IMAG] = 511.1252433800;
-                cexpd[11,IMAG] = 511.1968077718;
-                cexpd[12,IMAG] = 511.2616233064;
-                cexpd[13,IMAG] = 511.3203605551;
-                cexpd[14,IMAG] = 511.3735928093;
-                cexpd[15,IMAG] = 511.4218460548;
-                cexpd[16,IMAG] = 511.4656139760;
-                cexpd[17,IMAG] = 511.5053595966;
-                cexpd[18,IMAG] = 511.5415130407;
-                cexpd[19,IMAG] = 511.5744692211;
+                cexpd[IMAG,0] = 507.7803458597;
+                cexpd[IMAG,1] = 508.8249431599;
+                cexpd[IMAG,2] = 509.6208912659;
+                cexpd[IMAG,3] = 510.1023387619;
+                cexpd[IMAG,4] = 510.3976610617;
+                cexpd[IMAG,5] = 510.5948019802;
+                cexpd[IMAG,6] = 510.7404165783;
+                cexpd[IMAG,7] = 510.8576573661;
+                cexpd[IMAG,8] = 510.9577278523;
+                cexpd[IMAG,9] = 511.0460304483;
+                cexpd[IMAG,10] = 511.1252433800;
+                cexpd[IMAG,11] = 511.1968077718;
+                cexpd[IMAG,12] = 511.2616233064;
+                cexpd[IMAG,13] = 511.3203605551;
+                cexpd[IMAG,14] = 511.3735928093;
+                cexpd[IMAG,15] = 511.4218460548;
+                cexpd[IMAG,16] = 511.4656139760;
+                cexpd[IMAG,17] = 511.5053595966;
+                cexpd[IMAG,18] = 511.5415130407;
+                cexpd[IMAG,19] = 511.5744692211;
                 //
             }
             else if ((n1 == 512) && (n2 == 512) &&
@@ -414,47 +414,47 @@ namespace NPB3_0_JAV {
                 //
                 // Class C reference values.
                 //
-                cexpd[0,REAL] = 519.5078707457;
-                cexpd[1,REAL] = 515.5422171134;
-                cexpd[2,REAL] = 514.4678022222;
-                cexpd[3,REAL] = 514.0150594328;
-                cexpd[4,REAL] = 513.7550426810;
-                cexpd[5,REAL] = 513.5811056728;
-                cexpd[6,REAL] = 513.4569343165;
-                cexpd[7,REAL] = 513.3651975661;
-                cexpd[8,REAL] = 513.2955192805;
-                cexpd[9,REAL] = 513.2410471738;
-                cexpd[10,REAL] = 513.1971141679;
-                cexpd[11,REAL] = 513.1605205716;
-                cexpd[12,REAL] = 513.1290734194;
-                cexpd[13,REAL] = 513.1012720314;
-                cexpd[14,REAL] = 513.0760908195;
-                cexpd[15,REAL] = 513.0528295923;
-                cexpd[16,REAL] = 513.0310107773;
-                cexpd[17,REAL] = 513.0103090133;
-                cexpd[18,REAL] = 512.9905029333;
-                cexpd[19,REAL] = 512.9714421109;
+                cexpd[REAL,0] = 519.5078707457;
+                cexpd[REAL,1] = 515.5422171134;
+                cexpd[REAL,2] = 514.4678022222;
+                cexpd[REAL,3] = 514.0150594328;
+                cexpd[REAL,4] = 513.7550426810;
+                cexpd[REAL,5] = 513.5811056728;
+                cexpd[REAL,6] = 513.4569343165;
+                cexpd[REAL,7] = 513.3651975661;
+                cexpd[REAL,8] = 513.2955192805;
+                cexpd[REAL,9] = 513.2410471738;
+                cexpd[REAL,10] = 513.1971141679;
+                cexpd[REAL,11] = 513.1605205716;
+                cexpd[REAL,12] = 513.1290734194;
+                cexpd[REAL,13] = 513.1012720314;
+                cexpd[REAL,14] = 513.0760908195;
+                cexpd[REAL,15] = 513.0528295923;
+                cexpd[REAL,16] = 513.0310107773;
+                cexpd[REAL,17] = 513.0103090133;
+                cexpd[REAL,18] = 512.9905029333;
+                cexpd[REAL,19] = 512.9714421109;
 
-                cexpd[0,IMAG] = 514.9019699238;
-                cexpd[1,IMAG] = 512.7578201997;
-                cexpd[2,IMAG] = 512.2251847514;
-                cexpd[3,IMAG] = 512.1090289018;
-                cexpd[4,IMAG] = 512.1143685824;
-                cexpd[5,IMAG] = 512.1496764568;
-                cexpd[6,IMAG]= 512.1870921893;
-                cexpd[7,IMAG] = 512.2193250322;
-                cexpd[8,IMAG] = 512.2454735794;
-                cexpd[9,IMAG] = 512.2663649603;
-                cexpd[10,IMAG] = 512.2830879827;
-                cexpd[11,IMAG] = 512.2965869718;
-                cexpd[12,IMAG] = 512.3075927445;
-                cexpd[13,IMAG] = 512.3166486553;
-                cexpd[14,IMAG] = 512.3241541685;
-                cexpd[15,IMAG] = 512.3304037599;
-                cexpd[16,IMAG] = 512.3356167976;
-                cexpd[17,IMAG] = 512.3399592211;
-                cexpd[18,IMAG] = 512.3435588985;
-                cexpd[19,IMAG] = 512.3465164008;
+                cexpd[IMAG,0] = 514.9019699238;
+                cexpd[IMAG,1] = 512.7578201997;
+                cexpd[IMAG,2] = 512.2251847514;
+                cexpd[IMAG,3] = 512.1090289018;
+                cexpd[IMAG,4] = 512.1143685824;
+                cexpd[IMAG,5] = 512.1496764568;
+                cexpd[IMAG,6]= 512.1870921893;
+                cexpd[IMAG,7] = 512.2193250322;
+                cexpd[IMAG,8] = 512.2454735794;
+                cexpd[IMAG,9] = 512.2663649603;
+                cexpd[IMAG,10] = 512.2830879827;
+                cexpd[IMAG,11] = 512.2965869718;
+                cexpd[IMAG,12] = 512.3075927445;
+                cexpd[IMAG,13] = 512.3166486553;
+                cexpd[IMAG,14] = 512.3241541685;
+                cexpd[IMAG,15] = 512.3304037599;
+                cexpd[IMAG,16] = 512.3356167976;
+                cexpd[IMAG,17] = 512.3399592211;
+                cexpd[IMAG,18] = 512.3435588985;
+                cexpd[IMAG,19] = 512.3465164008;
             }
             double epsilon = 1.0E-12;
             //
@@ -468,8 +468,8 @@ namespace NPB3_0_JAV {
             {
                 for (int it = 0; it < nt; it++)
                 {
-                    double csumr = (cksum[it,REAL] - cexpd[it,REAL]) / cexpd[it,REAL];
-                    double csumi = (cksum[it,IMAG] - cexpd[it,IMAG]) / cexpd[it,IMAG];
+                    double csumr = (cksum[REAL,it] - cexpd[REAL,it]) / cexpd[REAL,it];
+                    double csumi = (cksum[IMAG,it] - cexpd[IMAG,it]) / cexpd[IMAG,it];
                     if (Math.Abs(csumr) <= epsilon
                      || Math.Abs(csumi) <= epsilon
                    )

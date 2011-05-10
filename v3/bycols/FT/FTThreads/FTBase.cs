@@ -99,8 +99,8 @@ public class FTBase /* : Thread*/
       break;
     }    
     maxdim = max( nx , max( ny , nx ) );
-    scr = new double[maxdim,(maxdim+1),2];       // scr = new double[2 * (maxdim + 1) * maxdim];
-    plane = new double[1,maxdim,(maxdim+1),2];  // plane = new double[2 * (maxdim + 1) * maxdim];
+    scr = new double[2,(maxdim+1),maxdim];       // scr = new double[2 * (maxdim + 1) * maxdim];
+    plane = new double[2,(maxdim+1),maxdim,1];  // plane = new double[2 * (maxdim + 1) * maxdim];
     //isize2=2;
     //isize3=2;
     //jsize3=2*(ny+1);
@@ -109,13 +109,13 @@ public class FTBase /* : Thread*/
     //jsize4=2*(ny+1);
     //ksize4=2*(ny+1)*nz;
     //complex values
-    checksum = new double[niter_default,2]; //isize2=2;
+    checksum = new double[2,niter_default]; //isize2=2;
 
-    xtr = new double[nz,nx,(ny+1),2]; 
-    xnt = new double[nx,nz,(ny+1),2]; 
-    exp1 = new double[nx,2];
-    exp2 = new double[ny,2];
-    exp3 = new double[nz,2];
+    xtr = new double[2,(ny+1),nx,nz]; 
+    xnt = new double[2,(ny+1),nz,nx]; 
+    exp1 = new double[2,nx];
+    exp2 = new double[2,ny];
+    exp3 = new double[2,nz];
   }
 
   // thread variables
@@ -137,10 +137,10 @@ public class FTBase /* : Thread*/
         for(int i=0;i<=ln-1;i++){
 	        double ti = i * t;
             int idx = (i + ku); // obs  int idx=(i+ku)*2;
-	        exponent[idx,REAL] = Math.Cos(ti);
-            exponent[idx,IMAG] = Math.Sin(ti);
-	        if(Math.Abs(exponent[idx,REAL]) < eps) exponent[idx,REAL]=0;
-	        if(Math.Abs(exponent[idx,IMAG]) < eps) exponent[idx,IMAG]=0;
+	        exponent[REAL,idx] = Math.Cos(ti);
+            exponent[IMAG,idx] = Math.Sin(ti);
+	        if(Math.Abs(exponent[REAL,idx]) < eps) exponent[REAL,idx]=0;
+	        if(Math.Abs(exponent[IMAG,idx]) < eps) exponent[IMAG,idx]=0;
         }
         ku = ku + ln;
         ln = 2 * ln;
@@ -148,7 +148,7 @@ public class FTBase /* : Thread*/
   }
 
   public void initial_conditions(double[,,,] u0, int d1, int d2, int d3){
-      double[,] tmp = new double[maxdim,2];
+      double[,] tmp = new double[2,maxdim];
       double[] RanStarts = new double[maxdim];
       //seed has to be init here since
       //is called 2 times 
@@ -174,10 +174,10 @@ public class FTBase /* : Thread*/
       for (int k = 0; k < d3; k++){
           double x0 = RanStarts[k];
           for (int j = 0; j < d1; j++){
-              x0 = rng.vranlc2(d2, x0, a, tmp, 0);
+              x0 = rng.vranlc2_inv(d2, x0, a, tmp, 0);
               for (int i = 0; i < d2; i++){
-                  u0[k,i,j,REAL] = tmp[i,REAL];
-                  u0[k,i,j,IMAG] = tmp[i,IMAG];
+                  u0[REAL,j,i,k] = tmp[REAL,i];
+                  u0[IMAG,j,i,k] = tmp[IMAG,i];
               }
           }
       }
@@ -234,27 +234,27 @@ public class FTBase /* : Thread*/
                   i21 = i * lj;
                   i22 = i21 + lk;
 
-                  u1[REAL] = exponent[(ku+i), REAL];
+                  u1[REAL] = exponent[ REAL,(ku+i)];
                   if (is0 >= 1)
                   {
-                      u1[IMAG] = exponent[(ku+i),IMAG];
+                      u1[IMAG] = exponent[IMAG,(ku+i)];
                   }
                   else
                   {
-                      u1[IMAG] = -exponent[(ku+i),IMAG];
+                      u1[IMAG] = -exponent[IMAG,(ku+i)];
                   }
                   for (k = 0; k <= lk - 1; k++)
                   {
                       for (j = BlockStart; j <= BlockEnd; j++)
                       {
-                          x11[REAL] = x[xoffst,(i11+k),j,REAL];
-                          x11[IMAG] = x[xoffst,(i11+k),j,IMAG];
-                          x21[REAL] = x[xoffst,(i12+k),j,REAL];
-                          x21[IMAG] = x[xoffst,(i12+k),j,IMAG];
-                          scr[(i21+k),j,REAL] = x11[REAL] + x21[REAL];
-                          scr[(i21+k),j,IMAG] = x11[IMAG] + x21[IMAG];
-                          scr[(i22+k),j,REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
-                          scr[(i22+k),j,IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                          x11[REAL] = x[REAL,j,(i11+k),xoffst];
+                          x11[IMAG] = x[IMAG,j,(i11+k),xoffst];
+                          x21[REAL] = x[REAL,j,(i12+k),xoffst];
+                          x21[IMAG] = x[IMAG,j,(i12+k),xoffst];
+                          scr[REAL,j,(i21+k)] = x11[REAL] + x21[REAL];
+                          scr[IMAG,j,(i21+k)] = x11[IMAG] + x21[IMAG];
+                          scr[REAL,j,(i22+k)] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
+                          scr[IMAG,j,(i22+k)] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                       }
                   }
               }
@@ -264,8 +264,8 @@ public class FTBase /* : Thread*/
                   {
                       for (j = BlockStart; j <= BlockEnd; j++)
                       {
-                          x[xoffst,k,j,REAL] = scr[k,j,REAL];
-                          x[xoffst,k,j,IMAG] = scr[k,j,IMAG];
+                          x[REAL,j,k,xoffst] = scr[REAL,j,k];
+                          x[IMAG,j,k,xoffst] = scr[IMAG,j,k];
                       }
                   }
               }
@@ -284,29 +284,29 @@ public class FTBase /* : Thread*/
                       i21 = i * lj;
                       i22 = i21 + lk;
 
-                      u1[REAL] = exponent[(ku+i),REAL];
+                      u1[REAL] = exponent[REAL,(ku+i)];
                       if (is0 >= 1)
                       {
-                          u1[IMAG] = exponent[(ku+i),IMAG];
+                          u1[IMAG] = exponent[IMAG,(ku+i)];
                       }
                       else
                       {
-                          u1[IMAG] = -exponent[(ku+i),IMAG];
+                          u1[IMAG] = -exponent[IMAG,(ku+i)];
                       }
                       for (k = 0; k <= lk - 1; k++)
                       {
                           for (j = BlockStart; j <= BlockEnd; j++)
                           {
-                              x11[REAL] = scr[(i11+k),j,REAL];
-                              x11[IMAG] = scr[(i11+k),j,IMAG];
+                              x11[REAL] = scr[REAL,j,(i11+k)];
+                              x11[IMAG] = scr[IMAG,j,(i11+k)];
 
-                              x21[REAL] = scr[(i12+k),j,REAL];
-                              x21[IMAG] = scr[(i12+k),j,IMAG];
+                              x21[REAL] = scr[REAL,j,(i12+k)];
+                              x21[IMAG] = scr[IMAG,j,(i12+k)];
 
-                              x[xoffst,(i21+k),j,REAL] = x11[REAL] + x21[REAL];
-                              x[xoffst,(i21+k),j,IMAG] = x11[IMAG] + x21[IMAG];
-                              x[xoffst,(i22+k),j,REAL] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
-                              x[xoffst,(i22+k),j,IMAG] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
+                              x[REAL,j,(i21+k),xoffst] = x11[REAL] + x21[REAL];
+                              x[IMAG,j,(i21+k),xoffst] = x11[IMAG] + x21[IMAG];
+                              x[REAL,j,(i22+k),xoffst] = u1[REAL] * (x11[REAL] - x21[REAL]) - u1[IMAG] * (x11[IMAG] - x21[IMAG]);
+                              x[IMAG,j,(i22+k),xoffst] = u1[IMAG] * (x11[REAL] - x21[REAL]) + u1[REAL] * (x11[IMAG] - x21[IMAG]);
                           }
                       }
                   }

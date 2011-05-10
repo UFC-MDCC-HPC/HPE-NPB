@@ -144,7 +144,46 @@ public class Random{
     return (double) Lx;
   }
 
-  public double seed;
+  public double vranlc2_jagged(double n, double x, double a, double[][] y,int offset){ 
+    long Lx = (long)x;
+    long La = (long)a;
+
+    for(int i=0;i<n;i++){
+      Lx   = (Lx*La) & (i246m1);
+      y[i+offset][REAL] = (double)(d2m46* Lx);
+      Lx   = (Lx*La) & (i246m1);
+      y[i+offset][IMAG] = (double)(d2m46* Lx);				
+    }
+    return (double) Lx;
+  }
+		
+  public double vranlc2_jagged_inv(double n, double x, double a, double[][] y,int offset){ 
+    long Lx = (long)x;
+    long La = (long)a;
+
+    for(int i=0;i<n;i++){
+      Lx   = (Lx*La) & (i246m1);
+      y[REAL][i+offset] = (double)(d2m46* Lx);
+      Lx   = (Lx*La) & (i246m1);
+      y[IMAG][i+offset] = (double)(d2m46* Lx);				
+    }
+    return (double) Lx;
+  }
+
+public double vranlc2_inv(double n, double x, double a, double[,] y,int offset){ 
+    long Lx = (long)x;
+    long La = (long)a;
+
+    for(int i=0;i<n;i++){
+      Lx   = (Lx*La) & (i246m1);
+      y[REAL, i+offset] = (double)(d2m46* Lx);
+      Lx   = (Lx*La) & (i246m1);
+      y[IMAG, i+offset] = (double)(d2m46* Lx);				
+    }
+    return (double) Lx;
+  }
+
+public double seed;
   public double ipow46(double a, int exponent ){
       int n, n2;
       double q, r;

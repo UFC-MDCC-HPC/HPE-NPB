@@ -1,11 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SP/SP.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="FT/FT.cs">
     <Files>
-      <File FileName="SP/SP.cs" Line="1016" Column="6" />
-      <File FileName="BT/BTThreads/BTBase.cs" Line="795" Column="45" />
-      <File FileName="SP/SPThreads/SPBase.cs" Line="56" Column="45" />
-      <File FileName="BT/BT.cs" Line="2670" Column="69" />
+      <File FileName="FT/FT.cs" Line="310" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -78,6 +78,7 @@ namespace NPB3_0_JAV{
 			try{ 
 				lu = new LU(CLSS, np);
 			} catch(OutOfMemoryException e){
+				Console.WriteLine(e.Message);
 				BMArgs.outOfMemoryMessage();
 				Environment.Exit(0);
 			}      
@@ -229,7 +230,6 @@ namespace NPB3_0_JAV{
 		                 double[,,,] ldx, double[,,,] d, 
 		                 int ist, int iend, int jst, int jend, int nx0, int ny0){
 			int i, j, m;
-			int iex;
 			double  tmp, tmp1;
 			double[,]  tmat = new double[5,5];
 
@@ -1788,7 +1788,7 @@ namespace NPB3_0_JAV{
       double[,]  phi1 = new double[(isiz3+2),(isiz2+2)]; 
       double[,]  phi2 = new double[(isiz3+2),(isiz2+2)];
       double  frc1, frc2, frc3;
-      int isize5 = (isiz2+2);
+      //int isize5 = (isiz2+2);
 
 //---------------------------------------------------------------------
 //   set up the sub-domains for intation in each processor
@@ -1984,7 +1984,7 @@ namespace NPB3_0_JAV{
 	  
 	 // fis.close();
         }catch(Exception e){  
-	  Console.WriteLine("exception caught!");
+	       Console.WriteLine("exception caught! " + e.Message);
         } 
       }else{
         ipr = ipr_default;
@@ -2019,7 +2019,9 @@ namespace NPB3_0_JAV{
       Console.WriteLine("LU: Iterations="+itmax+" dt="+dt);
   }
   
-  public void rhs(){
+		
+  public void rhs()
+		{
       int i, j, k, m;
       double  q;
       double  tmp;

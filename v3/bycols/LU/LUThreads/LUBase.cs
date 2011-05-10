@@ -180,25 +180,25 @@ public class LUBase /* : Thread*/{
       break;
     }
 
-    u = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
-    rsd = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
-    frct = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
+    u = new double[5,(isiz1/2*2+1),(isiz2/2*2+1),isiz3];
+    rsd = new double[5,(isiz1/2*2+1),(isiz2/2*2+1),isiz3];
+    frct = new double[5,(isiz1/2*2+1),(isiz2/2*2+1),isiz3];
     isize1=5;
     jsize1=5*(isiz1/2*2+1);
     ksize1=5*(isiz1/2*2+1)*(isiz2/2*2+1);
     
-    flux= new double[isiz1,5];
+    flux= new double[5,isiz1];
     isize2=5;
 
-    qs = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1)];
-    rho_i = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1)];
+    qs = new double[(isiz1/2*2+1),(isiz2/2*2+1),isiz3];
+    rho_i = new double[(isiz1/2*2+1),(isiz2/2*2+1),isiz3];
     jsize3 = (isiz1/2*2+1);
     ksize3 = (isiz1/2*2+1)*(isiz2/2*2+1);
 
-    a = new double[(isiz2),(isiz1/2*2+1),5,5]; 
-    b = new double[(isiz2),(isiz1/2*2+1),5,5];
-    c = new double[(isiz2),(isiz1/2*2+1),5,5]; 
-    d = new double[(isiz2),(isiz1/2*2+1),5,5];
+    a = new double[5,5,(isiz1/2*2+1),(isiz2)]; 
+    b = new double[5,5,(isiz1/2*2+1),(isiz2)];
+    c = new double[5,5,(isiz1/2*2+1),(isiz2)]; 
+    d = new double[5,5,(isiz1/2*2+1),(isiz2)];
 
     isize4=5;
     jsize4=5*5;
