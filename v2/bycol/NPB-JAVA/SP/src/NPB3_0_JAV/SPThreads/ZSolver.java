@@ -287,8 +287,7 @@ public class ZSolver extends SPBase {
              }
 
 //---------------------------------------------------------------------
-//      do the u+c and the u-c fac
-	        	tors               
+//      do the u+c and the u-c factors               
 //---------------------------------------------------------------------
              for(k=0;k<=grid_points[2]-3;k++){
              	k1 = k  + 1;
