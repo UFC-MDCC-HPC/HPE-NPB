@@ -53,7 +53,7 @@ public class YSolver extends SPBase {
 	int lower_bound;
 	int upper_bound;
 	int state = 1;
-	double lhs[], lhsm[], lhsp[], cv[], rhoq[];
+	double lhs[][], lhsm[][], lhsp[][], cv[], rhoq[];
 
 	public YSolver(SP sp, int low, int high) {
 		Init(sp);
@@ -62,9 +62,9 @@ public class YSolver extends SPBase {
 		setPriority(Thread.MAX_PRIORITY);
 		setDaemon(true);
 		master = sp;
-		lhs = new double[5 * (problem_size + 1)];
-		lhsp = new double[5 * (problem_size + 1)];
-		lhsm = new double[5 * (problem_size + 1)];
+		lhs = new double[5][(problem_size + 1)];
+		lhsp = new double[5][(problem_size + 1)];
+		lhsm = new double[5][(problem_size + 1)];
 		cv = new double[problem_size];
 		rhoq = new double[problem_size];
 	}

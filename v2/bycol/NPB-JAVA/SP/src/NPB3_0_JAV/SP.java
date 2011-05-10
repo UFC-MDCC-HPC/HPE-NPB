@@ -1045,12 +1045,12 @@ public class SP extends SPBase {
 							+ xxcon5
 							* (u[4][(i + 1)][j][k] * rho_i[i + 1][j][k] - 2.0
 									* u[4][i][j][k] * rho_i[i][j][k] + u[4][(i - 1)][j][k]
-									* rho_i[i - 1 + j * jsize2 + k * ksize2])
+									* rho_i[i - 1][j][k])
 							- tx2
 							* ((c1 * u[4][(i + 1)][j][k] - c2
 									* square[i + 1][j][k])
 									* up1 - (c1 * u[4][(i - 1)][j][k] - c2
-									* square[i - 1 + j * jsize2 + k * ksize2])
+									* square[i - 1][j][k])
 									* um1);
 				}
 
@@ -1737,7 +1737,7 @@ public class SP extends SPBase {
 					lhsp[4][i] = lhs[4][i];
 					lhsm[0][i] = lhs[0][i];
 					lhsm[1][i] = lhs[1][i] + dttx2
-							* speed[i - 1 + j * jsize2 + k * ksize2];
+							* speed[i - 1][j][k];
 					lhsm[2][i] = lhs[2][i];
 					lhsm[3][i] = lhs[3][i] - dttx2 * speed[i + 1][j][k];
 					lhsm[4][i] = lhs[4][i];
