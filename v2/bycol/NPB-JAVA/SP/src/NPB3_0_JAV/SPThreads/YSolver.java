@@ -40,92 +40,100 @@
 !     Michael A. Frumkin					          !
 !     Mathew Schultz	   					          !
 !-------------------------------------------------------------------------!
-*/
+ */
 package NPB3_0_JAV.SPThreads;
+
 import NPB3_0_JAV.SP;
 
-public class YSolver extends SPBase{
-  public int id;
-  public boolean done = true;
+public class YSolver extends SPBase {
+	public int id;
+	public boolean done = true;
 
-  //private arrays and data
-  int lower_bound;
-  int upper_bound;
-  int state= 1;
-  double lhs[],lhsm[],lhsp[],cv[],rhoq[]; 
+	// private arrays and data
+	int lower_bound;
+	int upper_bound;
+	int state = 1;
+	double lhs[], lhsm[], lhsp[], cv[], rhoq[];
 
-  public YSolver(SP sp,int low, int high){
-    Init(sp);
-    lower_bound=low;
-    upper_bound=high;
-    setPriority(Thread.MAX_PRIORITY);
-    setDaemon(true);
-    master=sp;
-    lhs = new double[5*(problem_size+1)];
-    lhsp = new double[5*(problem_size+1)];
-    lhsm = new double[5*(problem_size+1)];    
-    cv = new double[problem_size];
-    rhoq = new double[problem_size];
-  }
-  void Init(SP sp){
-    //initialize shared data
-    IMAX=sp.IMAX;
-    JMAX=sp.JMAX; 
-    KMAX=sp.KMAX; 
-    problem_size=sp.problem_size; 
-    nx2=sp.nx2;
-    ny2=sp.ny2;
-    nz2=sp.nz2;
-    grid_points=sp.grid_points;
-    niter_default=sp.niter_default;
-    dt_default=sp.dt_default;    
-    u=sp.u;
-    rhs=sp.rhs;
-    forcing=sp.forcing;
-    isize1=sp.isize1;
-    jsize1=sp.jsize1;
-    ksize1=sp.ksize1;
-    us=sp.us;
-    vs=sp.vs;
-    ws=sp.ws;
-    qs=sp.qs;
-    rho_i=sp.rho_i;
-    speed=sp.speed;
-    square=sp.square;
-    jsize2=sp.jsize2;
-    ksize2=sp.ksize2;
-    ue=sp.ue;
-    buf=sp.buf;
-    jsize3=sp.jsize3;
-    lhs=sp.lhs;
-    lhsp=sp.lhsp;
-    lhsm=sp.lhsm;
-    jsize4=sp.jsize4;
-    cv=sp.cv;
-    rhon=sp.rhon;
-    rhos=sp.rhos;
-    rhoq=sp.rhoq;
-    cuf=sp.cuf;
-    q=sp.q;
-    ce=sp.ce;
- }
+	public YSolver(SP sp, int low, int high) {
+		Init(sp);
+		lower_bound = low;
+		upper_bound = high;
+		setPriority(Thread.MAX_PRIORITY);
+		setDaemon(true);
+		master = sp;
+		lhs = new double[5 * (problem_size + 1)];
+		lhsp = new double[5 * (problem_size + 1)];
+		lhsm = new double[5 * (problem_size + 1)];
+		cv = new double[problem_size];
+		rhoq = new double[problem_size];
+	}
 
-  public void run(){
-    for(;;){
-      synchronized(this){ 
-      while(done==true){
-	try{
-	  wait();
-	synchronized(master){ master.notify();}
-	}catch(InterruptedException ie){}
-      }
-      step();
-      synchronized(master){done=true;master.notify();}
-      }
-    }
-  }    
-  
-  public void step(){
+	void Init(SP sp) {
+		// initialize shared data
+		IMAX = sp.IMAX;
+		JMAX = sp.JMAX;
+		KMAX = sp.KMAX;
+		problem_size = sp.problem_size;
+		nx2 = sp.nx2;
+		ny2 = sp.ny2;
+		nz2 = sp.nz2;
+		grid_points = sp.grid_points;
+		niter_default = sp.niter_default;
+		dt_default = sp.dt_default;
+		u = sp.u;
+		rhs = sp.rhs;
+		forcing = sp.forcing;
+		isize1 = sp.isize1;
+		jsize1 = sp.jsize1;
+		ksize1 = sp.ksize1;
+		us = sp.us;
+		vs = sp.vs;
+		ws = sp.ws;
+		qs = sp.qs;
+		rho_i = sp.rho_i;
+		speed = sp.speed;
+		square = sp.square;
+		jsize2 = sp.jsize2;
+		ksize2 = sp.ksize2;
+		ue = sp.ue;
+		buf = sp.buf;
+		jsize3 = sp.jsize3;
+		lhs = sp.lhs;
+		lhsp = sp.lhsp;
+		lhsm = sp.lhsm;
+		jsize4 = sp.jsize4;
+		cv = sp.cv;
+		rhon = sp.rhon;
+		rhos = sp.rhos;
+		rhoq = sp.rhoq;
+		cuf = sp.cuf;
+		q = sp.q;
+		ce = sp.ce;
+	}
+
+	public void run() {
+		for (;;) {
+			synchronized (this) {
+				while (done == true) {
+					try {
+						wait();
+						synchronized (master) {
+							master.notify();
+						}
+					} catch (InterruptedException ie) {
+					}
+				}
+				step();
+				synchronized (master) {
+					done = true;
+					master.notify();
+				}
+			}
+		}
+	}
+
+	public void step(){
     int i, j, k, n, j1, j2, m;
     double ru1, fac1, fac2, r1, r2, r3, r4, r5, t1, t2;
 
@@ -167,83 +175,50 @@ public class YSolver extends SPBase{
 
              j = 1;
 
-             lhs[2][j] = 
-            	 lhs[2][j] + comz5;
-             lhs[3][j] =
-            	 lhs[3][j] - comz4;
-             lhs[4][j] =
-            	 lhs[4][j] + comz1;
+             lhs[2][j] = lhs[2][j] + comz5;
+             lhs[3][j] = lhs[3][j] - comz4;
+             lhs[4][j] = lhs[4][j] + comz1;
        
-             lhs[1][(j+1)] =
-            	 lhs[1][(j+1)] - comz4;
-             lhs[2][(j+1)] =
-            	 lhs[2][(j+1)] + comz6;
-             lhs[3][(j+1)] =
-            	 lhs[3][(j+1)] - comz4;
-             lhs[4][(j+1)] =
-            	 lhs[4][(j+1)] + comz1;
+             lhs[1][(j+1)] = lhs[1][(j+1)] - comz4;
+             lhs[2][(j+1)] = lhs[2][(j+1)] + comz6;
+             lhs[3][(j+1)] = lhs[3][(j+1)] - comz4;
+             lhs[4][(j+1)] = lhs[4][(j+1)] + comz1;
 
              for(j=3;j<=grid_points[1]-4;j++){
 
-                lhs[0][j] = 
-                	lhs[0][j] + comz1;
-                lhs[1][j] = 
-                	lhs[1][j] - comz4;
-                lhs[2][j] = 
-                	lhs[2][j] + comz6;
-                lhs[3][j] = 
-                	lhs[3][j] - comz4;
-                lhs[4][j] = 
-                	lhs[4][j] + comz1;
+                lhs[0][j] = lhs[0][j] + comz1;
+                lhs[1][j] = lhs[1][j] - comz4;
+                lhs[2][j] = lhs[2][j] + comz6;
+                lhs[3][j] = lhs[3][j] - comz4;
+                lhs[4][j] = lhs[4][j] + comz1;
              }
 
              j = grid_points[1]-3;
-             lhs[0][j] =
-            	 lhs[0][j] + comz1;
-             lhs[1][j] =
-            	 lhs[1][j] - comz4;
-             lhs[2][j] =
-            	 lhs[2][j] + comz6;
-             lhs[3][j] = 
-            	 lhs[3][j] - comz4;
+             lhs[0][j] =  lhs[0][j] + comz1;
+             lhs[1][j] =  lhs[1][j] - comz4;
+             lhs[2][j] =  lhs[2][j] + comz6;
+             lhs[3][j] =  lhs[3][j] - comz4;
 
-             lhs[0][(j+1)] =
-            	 lhs[0][(j+1)] + comz1;
-             lhs[1][(j+1)] = 
-            	 lhs[1][(j+1)] - comz4;
-             lhs[2][(j+1)] = 
-            	 lhs[2][(j+1)] + comz5;
+             lhs[0][(j+1)] = lhs[0][(j+1)] + comz1;
+             lhs[1][(j+1)] = lhs[1][(j+1)] - comz4;
+             lhs[2][(j+1)] = lhs[2][(j+1)] + comz5;
 
 //---------------------------------------------------------------------
 //      subsequently, do the other two factors                    
 //---------------------------------------------------------------------
              for(j=1;j<=grid_points[1]-2;j++){
 
-	       lhsp[0][j] =
-	    	   lhs[0][j];
-	       lhsp[1][j] =
-	    	   lhs[1][j] - 
-                                  dtty2 * speed[i][(j-1)][k];
-	       lhsp[2][j] = 
-	    	   lhs[2][j];
-	       lhsp[3][j] =
-	    	   lhs[3][j] + 
-		                  dtty2 * speed[i][(j+1)][k];
-	       lhsp[4][j] = 
-	    	   lhs[4][j];
+	       lhsp[0][j] =  lhs[0][j];
+	       lhsp[1][j] =  lhs[1][j] -  dtty2 * speed[i][(j-1)][k];
+	       lhsp[2][j] =  lhs[2][j];
+	       lhsp[3][j] =  lhs[3][j] +  dtty2 * speed[i][(j+1)][k];
+	       lhsp[4][j] =  lhs[4][j];
 
-	       lhsm[0][j] = 
-	    	   lhs[0][j];
-	       lhsm[1][j] = 
-	    	   lhs[1][j] + 
-                                  dtty2 * speed[i][(j-1)][k];
-	       lhsm[2][j] = 
-	    	   lhs[2][j];
-	       lhsm[3][j] =
-	    	   lhs[3][j] - 
-                                  dtty2 * speed[i][(j+1)][k];
-	       lhsm[4][j] =
-	    	   lhs[4][j];
+	       lhsm[0][j] =  lhs[0][j];
+	       lhsm[1][j] =  lhs[1][j] + dtty2 * speed[i][(j-1)][k];
+	       lhsm[2][j] =  lhs[2][j];
+	       lhsm[3][j] =  lhs[3][j] -  dtty2 * speed[i][(j+1)][k];
+	       lhsm[4][j] =  lhs[4][j];
 
              }
 
@@ -260,21 +235,15 @@ public class YSolver extends SPBase{
                 for(m=0;m<=2;m++){
                    rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
                 }
-                lhs[2][j1] = lhs[2][j1] -
-                               lhs[1][j1]*lhs[3][j];
-                lhs[3][j1] = lhs[3][j1] -
-                               lhs[1][j1]*lhs[4][j];
+                lhs[2][j1] = lhs[2][j1] -lhs[1][j1]*lhs[3][j];
+                lhs[3][j1] = lhs[3][j1] - lhs[1][j1]*lhs[4][j];
                 for(m=0;m<=2;m++){
-                   rhs[m][i][j1][k] = rhs[m][i][j1][k] -
-                               lhs[1][j1]*rhs[m][i][j][k];
+                   rhs[m][i][j1][k] = rhs[m][i][j1][k] - lhs[1][j1]*rhs[m][i][j][k];
                 }
-                lhs[1][j2] = lhs[1][j2] -
-                               lhs[0][j2]*lhs[3][j];
-                lhs[2][j2] = lhs[2][j2] -
-                               lhs[0][j2]*lhs[4][j];
+                lhs[1][j2] = lhs[1][j2] - lhs[0][j2]*lhs[3][j];
+                lhs[2][j2] = lhs[2][j2] -lhs[0][j2]*lhs[4][j];
                 for(m=0;m<=2;m++){
-                   rhs[m][i][j2][k] = rhs[m][i][j2][k] -
-                               lhs[0][j2]*rhs[m][i][j][k];
+                   rhs[m][i][j2][k] = rhs[m][i][j2][k] - lhs[0][j2]*rhs[m][i][j][k];
                 }
              }
 
@@ -300,8 +269,7 @@ public class YSolver extends SPBase{
              for(m=0;m<=2;m++){
                 rhs[m][i][j1][k] = 
                 	rhs[m][i][j1][k] -
-                            lhs[1][j1]*
-                            rhs[m][i][j][k];
+                            lhs[1][j1]*rhs[m][i][j][k];
              }
 //---------------------------------------------------------------------
 //            scale the last row immediately 
@@ -329,15 +297,11 @@ public class YSolver extends SPBase{
              	lhsp[3][j1] = lhsp[3][j1] -
              		    lhsp[1][j1]*lhsp[4][j];
              		rhs[m][i][j1][k] -
-             		    lhsp[1][j1]*
-             		    rhs[m][i][j][k];
-             	lhsp[1][j2] = lhsp[1][j2] -
-             		    lhsp[0][j2]*lhsp[3][j];
-             	lhsp[2][j2] = lhsp[2][j2] -
-             		    lhsp[0][j2]*lhsp[4][j];
+             		    lhsp[1][j1]*rhs[m][i][j][k];
+             	lhsp[1][j2] = lhsp[1][j2] -lhsp[0][j2]*lhsp[3][j];
+             	lhsp[2][j2] = lhsp[2][j2] - lhsp[0][j2]*lhsp[4][j];
              	rhs[m][i][j2][k] =
-             		rhs[m][i][j2][k] -
-             		    lhsp[0][j2]*rhs[m][i][j][k];
+             		rhs[m][i][j2][k] -lhsp[0][j2]*rhs[m][i][j][k];
 	     	m = 4;
              	fac1	   = 1./lhsm[2][j];
              	lhsm[3][j]  = fac1*lhsm[3][j];
@@ -347,14 +311,10 @@ public class YSolver extends SPBase{
              		    lhsm[1][j1]*lhsm[3][j];
              	lhsm[3][j1] = lhsm[3][j1] -
              		    lhsm[1][j1]*lhsm[4][j];
-             	rhs[m][i][j1][k] = rhs[m][i][j1][k] -
-             		    lhsm[1][j1]*rhs[m][i][j][k];
-             	lhsm[1][j2] = lhsm[1][j2] -
-             		    lhsm[0][j2]*lhsm[3][j];
-             	lhsm[2][j2] = lhsm[2][j2] -
-             		    lhsm[0][j2]*lhsm[4][j];
-             	rhs[m][i][j2][k] = rhs[m][i][j2][k] -
-             		    lhsm[0][j2]*rhs[m][i][j][k];
+             	rhs[m][i][j1][k] = rhs[m][i][j1][k] -lhsm[1][j1]*rhs[m][i][j][k];
+             	lhsm[1][j2] = lhsm[1][j2] -lhsm[0][j2]*lhsm[3][j];
+             	lhsm[2][j2] = lhsm[2][j2] - lhsm[0][j2]*lhsm[4][j];
+             	rhs[m][i][j2][k] = rhs[m][i][j2][k] - lhsm[0][j2]*rhs[m][i][j][k];
              }
 
 //---------------------------------------------------------------------
@@ -367,30 +327,22 @@ public class YSolver extends SPBase{
              lhsp[3][j]  = fac1*lhsp[3][j];
              lhsp[4][j]  = fac1*lhsp[4][j];
              rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
-             lhsp[2][j1] = lhsp[2][j1] -
-             		 lhsp[1][j1]*lhsp[3][j];
-             lhsp[3][j1] = lhsp[3][j1] -
-             		 lhsp[1][j1]*lhsp[4][j];
-             rhs[m][i][j1][k]   = rhs[m][i][j1][k] -
-             		 lhsp[1][j1]*rhs[m][i][j][k];
+             lhsp[2][j1] = lhsp[2][j1] - lhsp[1][j1]*lhsp[3][j];
+             lhsp[3][j1] = lhsp[3][j1] - lhsp[1][j1]*lhsp[4][j];
+             rhs[m][i][j1][k]   = rhs[m][i][j1][k] - lhsp[1][j1]*rhs[m][i][j][k];
 	     m = 4;
              fac1	= 1./lhsm[2][j];
              lhsm[3][j]  = fac1*lhsm[3][j];
              lhsm[4][j]  = fac1*lhsm[4][j];
              rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
-             lhsm[2][j1] = lhsm[2][j1] -
-             		 lhsm[1][j1]*lhsm[3][j];
-             lhsm[3][j1] = lhsm[3][j1] -
-             		 lhsm[1][j1]*lhsm[4][j];
-             rhs[m][i][j1][k]   = rhs[m][i][j1][k] -
-             		 lhsm[1][j1]*rhs[m][i][j][k];
+             lhsm[2][j1] = lhsm[2][j1] -lhsm[1][j1]*lhsm[3][j];
+             lhsm[3][j1] = lhsm[3][j1] - lhsm[1][j1]*lhsm[4][j];
+             rhs[m][i][j1][k]   = rhs[m][i][j1][k] - lhsm[1][j1]*rhs[m][i][j][k];
 //---------------------------------------------------------------------
 //               Scale the last row immediately 
 //---------------------------------------------------------------------
-             rhs[3][i][j1][k]   = rhs[3][i][j1][k]/
-             lhsp[2][j1];
-             rhs[4][i][j1][k]   = rhs[4][i][j1][k]/
-             lhsm[2][j1];
+             rhs[3][i][j1][k]   = rhs[3][i][j1][k]/lhsp[2][j1];
+             rhs[4][i][j1][k]   = rhs[4][i][j1][k]/lhsm[2][j1];
 
 //---------------------------------------------------------------------
 //                         BACKSUBSTITUTION 
@@ -399,14 +351,11 @@ public class YSolver extends SPBase{
              j  = grid_points[1]-2;
              j1 = grid_points[1]-1;
              for(m=0;m<=2;m++){
-                rhs[m][i][j][k] = rhs[m][i][j][k] -
-                                 lhs[3][j]*rhs[m][i][j1][k];
+                rhs[m][i][j][k] = rhs[m][i][j][k] - lhs[3][j]*rhs[m][i][j1][k];
              }
 
-             rhs[3][i][j][k] = rhs[3][i][j][k] -
-                                 lhsp[3][j]*rhs[3][i][j1][k];
-             rhs[4][i][j][k] = rhs[4][i][j][k] -
-                                 lhsm[3][j]*rhs[4][i][j1][k];
+             rhs[3][i][j][k] = rhs[3][i][j][k] - lhsp[3][j]*rhs[3][i][j1][k];
+             rhs[4][i][j][k] = rhs[4][i][j][k] - lhsm[3][j]*rhs[4][i][j1][k];
 
 //---------------------------------------------------------------------
 //      The first three factors
@@ -415,20 +364,15 @@ public class YSolver extends SPBase{
                 j1 = j  + 1;
                 j2 = j  + 2;
                 for(m=0;m<=2;m++){
-                   rhs[m][i][j][k] = rhs[m][i][j][k] - 
-                                lhs[3][j]*rhs[m][i][j1][k] -
-                                lhs[4][j]*rhs[m][i][j2][k];
+                   rhs[m][i][j][k] = rhs[m][i][j][k] -  lhs[3][j]*rhs[m][i][j1][k] -  lhs[4][j]*rhs[m][i][j2][k];
                 }
 
 //---------------------------------------------------------------------
 //      And the remaining two
 //---------------------------------------------------------------------
                 rhs[3][i][j][k] = rhs[3][i][j][k] - 
-                                lhsp[3][j]*rhs[3][i][j1][k] -
-                                lhsp[4][j]*rhs[3][i][j2][k];
-                rhs[4][i][j][k] = rhs[4][i][j][k] - 
-                                lhsm[3][j]*rhs[4][i][j1][k] -
-                                lhsm[4][j]*rhs[4][i][j2][k];
+                                lhsp[3][j]*rhs[3][i][j1][k] - lhsp[4][j]*rhs[3][i][j2][k];
+                rhs[4][i][j][k] = rhs[4][i][j][k] -   lhsm[3][j]*rhs[4][i][j1][k] -lhsm[4][j]*rhs[4][i][j2][k];
              }
           }
        }
@@ -463,28 +407,28 @@ public class YSolver extends SPBase{
     if(state==3)state=1;
   }
 
-  public void lhsinit(int size){
-           int i, n;
+	public void lhsinit(int size) {
+		int i, n;
 
-//---------------------------------------------------------------------
-//     zap the whole left hand side for starters
-//---------------------------------------------------------------------
-       for(i=0;i<=size;i+=size){
-          for(n=0;n<=4;n++){
-             lhs[n][i] = 0.0;
-             lhsp[n][i] = 0.0;
-             lhsm[n][i] = 0.0;
-          }
-       }
+		// ---------------------------------------------------------------------
+		// zap the whole left hand side for starters
+		// ---------------------------------------------------------------------
+		for (i = 0; i <= size; i += size) {
+			for (n = 0; n <= 4; n++) {
+				lhs[n][i] = 0.0;
+				lhsp[n][i] = 0.0;
+				lhsm[n][i] = 0.0;
+			}
+		}
 
-//---------------------------------------------------------------------
-//      next, set all diagonal values to 1. This is overkill, but 
-//      convenient
-//---------------------------------------------------------------------
-       for(i=0;i<=size;i+=size){
-          lhs[2][i] = 1.0;
-          lhsp[2][i] = 1.0;
-          lhsm[2][i] = 1.0;
-       }
-  }
+		// ---------------------------------------------------------------------
+		// next, set all diagonal values to 1. This is overkill, but
+		// convenient
+		// ---------------------------------------------------------------------
+		for (i = 0; i <= size; i += size) {
+			lhs[2][i] = 1.0;
+			lhsp[2][i] = 1.0;
+			lhsm[2][i] = 1.0;
+		}
+	}
 }

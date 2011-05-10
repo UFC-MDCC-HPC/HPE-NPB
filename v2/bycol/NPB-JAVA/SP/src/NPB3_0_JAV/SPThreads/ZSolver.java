@@ -214,15 +214,12 @@ public class ZSolver extends SPBase {
                 lhsp[1][k] = lhs[1][k] - 
                                   dttz2 * speed[i][j][(k-1)];
                 lhsp[2][k] = lhs[2][k];
-                lhsp[3][k] = lhs[3][k] + 
-                                  dttz2 * speed[i][j][(k+1)];
+                lhsp[3][k] = lhs[3][k] + dttz2 * speed[i][j][(k+1)];
                 lhsp[4][k] = lhs[4][k];
                 lhsm[0][k] = lhs[0][k];
-                lhsm[1][k] = lhs[1][k] + 
-                                  dttz2 * speed[i][j][(k-1)];
+                lhsm[1][k] = lhs[1][k] +  dttz2 * speed[i][j][(k-1)];
                 lhsm[2+k*jsize4] = lhs[2][k];
-                lhsm[3][k] = lhs[3][k] - 
-                                  dttz2 * speed[i][j][(k+1)];
+                lhsm[3][k] = lhs[3][k] -   dttz2 * speed[i][j][(k+1)];
                 lhsm[4][k] = lhs[4][k];
              }
 
@@ -251,21 +248,15 @@ public class ZSolver extends SPBase {
                 for(m=0;m<=2;m++){
                    rtmp[m][k] = fac1*rtmp[m][k];
                 }
-                lhs[2][k1] = lhs[2][k1] -
-                               lhs[1][k1]*lhs[3][k];
-                lhs[3][k1] = lhs[3][k1] -
-                               lhs[1][k1]*lhs[4][k];
+                lhs[2][k1] = lhs[2][k1] - lhs[1][k1]*lhs[3][k];
+                lhs[3][k1] = lhs[3][k1] - lhs[1][k1]*lhs[4][k];
                 for(m=0;m<=2;m++){
-                   rtmp[m][k1] = rtmp[m][k1] -
-                               lhs[1][k1]*rtmp[m][k];
+                   rtmp[m][k1] = rtmp[m][k1] - lhs[1][k1]*rtmp[m][k];
                 }
-                lhs[1][k2] = lhs[1][k2] -
-                               lhs[0][k2]*lhs[3][k];
-                lhs[2][k2] = lhs[2][k2] -
-                               lhs[0][k2]*lhs[4][k];
+                lhs[1][k2] = lhs[1][k2] -lhs[0][k2]*lhs[3][k];
+                lhs[2][k2] = lhs[2][k2] -lhs[0][k2]*lhs[4][k];
                 for(m=0;m<=2;m++){
-                   rtmp[m][k2] = rtmp[m][k2] -
-                               lhs[0][k2]*rtmp[m][k];
+                   rtmp[m][k2] = rtmp[m][k2] - lhs[0][k2]*rtmp[m][k];
                 }
              }
 
@@ -282,13 +273,10 @@ public class ZSolver extends SPBase {
              for(m=0;m<=2;m++){
                 rtmp[m][k] = fac1*rtmp[m][k];
              }
-             lhs[2][k1] = lhs[2][k1] -
-                            lhs[1][k1]*lhs[3][k];
-             lhs[3][k1] = lhs[3][k1] -
-                            lhs[1][k1]*lhs[4][k];
+             lhs[2][k1] = lhs[2][k1] - lhs[1][k1]*lhs[3][k];
+             lhs[3][k1] = lhs[3][k1] - lhs[1][k1]*lhs[4][k];
              for(m=0;m<=2;m++){
-                rtmp[m][k1] = rtmp[m][k1] -
-                            lhs[1][k1]*rtmp[m][k];
+                rtmp[m][k1] = rtmp[m][k1] - lhs[1][k1]*rtmp[m][k];
              }
 //---------------------------------------------------------------------
 //               scale the last row immediately
@@ -310,35 +298,23 @@ public class ZSolver extends SPBase {
              	lhsp[3][k]  = fac1*lhsp[3][k];
              	lhsp[4][k]  = fac1*lhsp[4][k];
              	rtmp[m][k]  = fac1*rtmp[m][k];
-             	lhsp[2][k1] = lhsp[2][k1] -
-             		    lhsp[1][k1]*lhsp[3][k];
-             	lhsp[3][k1] = lhsp[3][k1] -
-             		    lhsp[1][k1]*lhsp[4][k];
-             	rtmp[m+k1*5] = rtmp[m+k1*5] -
-             		    lhsp[1][k1]*rtmp[m][k];
-             	lhsp[1][k2] = lhsp[1][k2] -
-             		    lhsp[0][k2]*lhsp[3][k];
-             	lhsp[2][k2] = lhsp[2][k2] -
-             		    lhsp[0][k2]*lhsp[4][k];
-             	rtmp[m][k2] = rtmp[m][k2] -
-             		    lhsp[0][k2]*rtmp[m][k];
+             	lhsp[2][k1] = lhsp[2][k1] - lhsp[1][k1]*lhsp[3][k];
+             	lhsp[3][k1] = lhsp[3][k1] -lhsp[1][k1]*lhsp[4][k];
+             	rtmp[m+k1*5] = rtmp[m+k1*5] - lhsp[1][k1]*rtmp[m][k];
+             	lhsp[1][k2] = lhsp[1][k2] -lhsp[0][k2]*lhsp[3][k];
+             	lhsp[2][k2] = lhsp[2][k2] - lhsp[0][k2]*lhsp[4][k];
+             	rtmp[m][k2] = rtmp[m][k2] - lhsp[0][k2]*rtmp[m][k];
 	     	m = 4;
              	fac1	   = 1./lhsm[2][k];
              	lhsm[3][k]  = fac1*lhsm[3][k];
              	lhsm[4][k]  = fac1*lhsm[4][k];
              	rtmp[m][k]  = fac1*rtmp[m][k];
-             	lhsm[2][k1] = lhsm[2][k1] -
-             		    lhsm[1][k1]*lhsm[3][k];
-             	lhsm[3][k1] = lhsm[3][k1] -
-             		    lhsm[1][k1]*lhsm[4][k];
-             	rtmp[m][k1] = rtmp[m][k1] -
-             		    lhsm[1][k1]*rtmp[m][k];
-             	lhsm[1][k2] = lhsm[1][k2] -
-             		    lhsm[0][k2]*lhsm[3][k];
-             	lhsm[2][k2] = lhsm[2][k2] -
-             		    lhsm[0][k2]*lhsm[4][k];
-             	rtmp[m][k2] = rtmp[m][k2] -
-             		    lhsm[0][k2]*rtmp[m][k];
+             	lhsm[2][k1] = lhsm[2][k1] -lhsm[1][k1]*lhsm[3][k];
+             	lhsm[3][k1] = lhsm[3][k1] -lhsm[1][k1]*lhsm[4][k];
+             	rtmp[m][k1] = rtmp[m][k1] - lhsm[1][k1]*rtmp[m][k];
+             	lhsm[1][k2] = lhsm[1][k2] - lhsm[0][k2]*lhsm[3][k];
+             	lhsm[2][k2] = lhsm[2][k2] - lhsm[0][k2]*lhsm[4][k];
+             	rtmp[m][k2] = rtmp[m][k2] -lhsm[0][k2]*rtmp[m][k];
              }
 
 //---------------------------------------------------------------------
@@ -351,23 +327,17 @@ public class ZSolver extends SPBase {
              lhsp[3][k]  = fac1*lhsp[3][k];
              lhsp[4][k]  = fac1*lhsp[4][k];
              rtmp[m][k]  = fac1*rtmp[m][k];
-             lhsp[2][k1] = lhsp[2][k1] -
-             		 lhsp[1][k1]*lhsp[3][k];
-             lhsp[3][k1] = lhsp[3][k1] -
-             		 lhsp[1][k1]*lhsp[4][k];
-             rtmp[m][k1] = rtmp[m][k1] -
-             		 lhsp[1][k1]*rtmp[m][k];
+             lhsp[2][k1] = lhsp[2][k1] - lhsp[1][k1]*lhsp[3][k];
+             lhsp[3][k1] = lhsp[3][k1] -lhsp[1][k1]*lhsp[4][k];
+             rtmp[m][k1] = rtmp[m][k1] - lhsp[1][k1]*rtmp[m][k];
 	     m = 4;
              fac1	= 1.0/lhsm[2][k];
              lhsm[3][k]  = fac1*lhsm[3][k];
              lhsm[4][k]  = fac1*lhsm[4][k];
              rtmp[m][k]  = fac1*rtmp[m][k];
-             lhsm[2][k1] = lhsm[2][k1] -
-             		 lhsm[1][k1]*lhsm[3][k];
-             lhsm[3][k1] = lhsm[3][k1] -
-             		 lhsm[1][k1]*lhsm[4][k];
-             rtmp[m][k1] = rtmp[m][k1] -
-             		 lhsm[1][k1]*rtmp[m][k];
+             lhsm[2][k1] = lhsm[2][k1] - lhsm[1][k1]*lhsm[3][k];
+             lhsm[3][k1] = lhsm[3][k1] -lhsm[1][k1]*lhsm[4][k];
+             rtmp[m][k1] = rtmp[m][k1] - lhsm[1][k1]*rtmp[m][k];
 //---------------------------------------------------------------------
 //               Scale the last row immediately (some of this is overkill
 //               if this is the last cell)
@@ -382,14 +352,11 @@ public class ZSolver extends SPBase {
              k  = grid_points[2]-2;
              k1 = grid_points[2]-1;
              for(m=0;m<=2;m++){
-                rtmp[m][k] = rtmp[m][k] -
-                                   lhs[3][k]*rtmp[m][k1];
+                rtmp[m][k] = rtmp[m][k] -  lhs[3][k]*rtmp[m][k1];
              }
 
-             rtmp[3][k] = rtmp[3][k] -
-                                   lhsp[3][k]*rtmp[3][k1];
-             rtmp[4][k] = rtmp[4][k] -
-                                   lhsm[3][k]*rtmp[4][k1];
+             rtmp[3][k] = rtmp[3][k] -  lhsp[3][k]*rtmp[3][k1];
+             rtmp[4][k] = rtmp[4][k] -  lhsm[3][k]*rtmp[4][k1];
 
 //---------------------------------------------------------------------
 //      Whether or not this is the last processor, we always have
@@ -403,20 +370,15 @@ public class ZSolver extends SPBase {
                 k1 = k  + 1;
                 k2 = k  + 2;
                 for(m=0;m<=2;m++){
-                   rtmp[m][k] = rtmp[m][k] - 
-                                lhs[3][k]*rtmp[m][k1] -
-                                lhs[4][k]*rtmp[m][k2];
+                   rtmp[m][k] = rtmp[m][k] -  lhs[3][k]*rtmp[m][k1] - lhs[4][k]*rtmp[m][k2];
                 }
 
 //---------------------------------------------------------------------
 //      And the remaining two
 //---------------------------------------------------------------------
                 rtmp[3][k] = rtmp[3][k] - 
-                                lhsp[3][k]*rtmp[3][k1] -
-                                lhsp[4][k]*rtmp[3][k2];
-                rtmp[4][k] = rtmp[4][k] - 
-                                lhsm[3][k]*rtmp[4][k1] -
-                                lhsm[4][k]*rtmp[4][k2];
+                                lhsp[3][k]*rtmp[3][k1] - lhsp[4][k]*rtmp[3][k2];
+                rtmp[4][k] = rtmp[4][k] - lhsm[3][k]*rtmp[4][k1] - lhsm[4][k]*rtmp[4][k2];
              }
 
 //---------------------------------------------------------------------
@@ -450,7 +412,7 @@ public class ZSolver extends SPBase {
                 r2 = rhs[1][i][j][k];
                 r3 = rhs[2][i][j][k];
                 r4 = rhs[3][i][j][k];
-                r5 = rhs[4][i][j][k]      ;
+                r5 = rhs[4][i][j][k];
 
                 uzik1 = u[0][i][j][k];
                 btuz  = bt * uzik1;
