@@ -53,7 +53,7 @@ public class ZSolver extends SPBase {
 	int lower_bound;
 	int upper_bound;
 	int state = 1;
-	double lhs[], lhsm[], lhsp[], cv[], rhos[];
+	double lhs[][], lhsm[][], lhsp[][], cv[], rhos[];
 
 	public ZSolver(SP sp, int low, int high) {
 		Init(sp);
@@ -62,9 +62,9 @@ public class ZSolver extends SPBase {
 		setPriority(Thread.MAX_PRIORITY);
 		setDaemon(true);
 		master = sp;
-		lhs = new double[5 * (problem_size + 1)];
-		lhsp = new double[5 * (problem_size + 1)];
-		lhsm = new double[5 * (problem_size + 1)];
+		lhs = new double[5][(problem_size + 1)];
+		lhsp = new double[5][(problem_size + 1)];
+		lhsm = new double[5][(problem_size + 1)];
 		cv = new double[problem_size];
 		rhos = new double[problem_size];
 	}
