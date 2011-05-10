@@ -290,14 +290,10 @@ public class YSolver extends SPBase {
              	fac1	   = 1./lhsp[2][j];
              	lhsp[3][j]  = fac1*lhsp[3][j];
              	lhsp[4][j]  = fac1*lhsp[4][j];
-             	rhs[m][i][j][k] = 
-             		fac1*rhs[m][i][j][k];
-             	lhsp[2][j1] = lhsp[2][j1] -
-             		    lhsp[1][j1]*lhsp[3][j];
-             	lhsp[3][j1] = lhsp[3][j1] -
-             		    lhsp[1][j1]*lhsp[4][j];
-             		rhs[m][i][j1][k] -
-             		    lhsp[1][j1]*rhs[m][i][j][k];
+             	rhs[m][i][j][k] = fac1*rhs[m][i][j][k];
+             	lhsp[2][j1] = lhsp[2][j1] -lhsp[1][j1]*lhsp[3][j];
+             	lhsp[3][j1] = lhsp[3][j1] -  lhsp[1][j1]*lhsp[4][j];
+             		rhs[m][i][j1][k] -lhsp[1][j1]*rhs[m][i][j][k];
              	lhsp[1][j2] = lhsp[1][j2] -lhsp[0][j2]*lhsp[3][j];
              	lhsp[2][j2] = lhsp[2][j2] - lhsp[0][j2]*lhsp[4][j];
              	rhs[m][i][j2][k] =
