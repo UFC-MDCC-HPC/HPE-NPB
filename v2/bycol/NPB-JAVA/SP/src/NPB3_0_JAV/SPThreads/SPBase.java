@@ -154,19 +154,19 @@ public class SPBase extends Thread
 		isize1 = 5;
 		jsize1 = 5 * (IMAX + 1);
 		ksize1 = 5 * (IMAX + 1) * (JMAX + 1);
-		u = new double[5*(IMAX+1)*(JMAX+1)*KMAX];
-		rhs = new double[5*(IMAX+1)*(JMAX+1)*KMAX];
-		forcing = new double[5*(IMAX+1)*(JMAX+1)*KMAX];
+		u = new double[5][(IMAX+1)][(JMAX+1)][KMAX];
+		rhs = new double[5][(IMAX+1)][(JMAX+1)][KMAX];
+		forcing = new double[5][(IMAX+1)][(JMAX+1)][KMAX];
 
 		jsize2 = (IMAX + 1);
 		ksize2 = (IMAX + 1) * (JMAX + 1);
-		us = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		vs = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		ws = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		qs = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		rho_i = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		speed = new double[(IMAX+1)*(JMAX+1)*KMAX];
-		square = new double[(IMAX+1)*(JMAX+1)*KMAX];
+		us = new double[(IMAX+1)][(JMAX+1)][KMAX];
+		vs = new double[(IMAX+1)][(JMAX+1)][KMAX];
+		ws = new double[(IMAX+1)][(JMAX+1)][KMAX];
+		qs = new double[(IMAX+1)][(JMAX+1)][KMAX];
+		rho_i = new double[(IMAX+1)][(JMAX+1)][KMAX];
+		speed = new double[(IMAX+1)][(JMAX+1)][KMAX];
+		square = new double[(IMAX+1)][(JMAX+1)][KMAX];
 
 		jsize3 = problem_size;
 		ue = new double[problem_size*5];
@@ -174,9 +174,9 @@ public class SPBase extends Thread
 
 		jsize4 = 5;
 
-		lhs = new double[5*(problem_size+1)];
-		lhsp = new double[5*(problem_size+1)];
-		lhsm = new double[5*(problem_size+1)];
+		lhs = new double[5][(problem_size+1)];
+		lhsp = new double[5][(problem_size+1)];
+		lhsm = new double[5][(problem_size+1)];
 
 		cv = new double[problem_size];
 		rhon = new double[problem_size];
