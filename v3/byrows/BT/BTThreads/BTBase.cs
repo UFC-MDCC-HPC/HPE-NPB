@@ -191,8 +191,8 @@ namespace NPB3_0_JAV.BTThreads
             q = new double[problem_size + 2];
 
             jsize3 = (problem_size + 2);
-            ue = new double[ 5,(problem_size + 2)];
-            buf = new double[ 5,(problem_size + 2)];
+            ue = new double[problem_size + 2, 5];
+            buf = new double[problem_size + 2, 5];
         }
 
 
