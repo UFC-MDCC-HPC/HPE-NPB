@@ -56,7 +56,7 @@ public class SPBase extends Thread
 	protected int niter_default = 0;
 	protected double dt_default = 0.0;
 
-	protected double u[][][][], rhs[][][][], forcing[];
+	protected double u[][][][], rhs[][][][], forcing[][][][];
 	protected int isize1, jsize1, ksize1;
 
 	protected double us[][][], vs[][][], ws[][][], qs[][][],
