@@ -1012,9 +1012,8 @@ public class SP extends SPBase {
 							- tx2
 							* (u[1][(i + 1)][j][k] * up1 - u[1][(i - 1)][j][k]
 									* um1 + (u[4][(i + 1)][j][k]
-									- square[(i + 1) + j * jsize2 + k * ksize2]
-									- u[4][(i - 1)][j][k] + square[(i - 1) + j
-									* jsize2 + k * ksize2])
+									- square[(i + 1)][j][k]
+									- u[4][(i - 1)][j][k] + square[(i - 1)][j][k])
 									* c2);
 
 					rhs[2][i][j][k] = rhs[2][i][j][k]
@@ -1731,7 +1730,7 @@ public class SP extends SPBase {
 				for (i = 1; i <= nx2; i++) {
 					lhsp[0][i] = lhs[0][i];
 					lhsp[1][i] = lhs[1][i] - dttx2
-							* speed[(i - 1) + j * jsize2 + k * ksize2];
+							* speed[(i - 1)][j][k];
 					lhsp[2][i] = lhs[2][i];
 					lhsp[3][i] = lhs[3][i] + dttx2 * speed[i + 1][j][k];
 					lhsp[4][i] = lhs[4][i];
