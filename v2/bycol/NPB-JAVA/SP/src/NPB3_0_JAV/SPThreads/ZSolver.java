@@ -425,7 +425,7 @@ public class ZSolver extends SPBase {
                 rhs[2][i][j][k] =  uzik1*r1 + yvel*t2;
                 rhs[3][i][j][k] =  zvel*t2  + t3;
                 rhs[4][i][j][k] =  uzik1*(-xvel*r2 + yvel*r1) +
-                          qs[i+j*jsize2+k*ksize2]*t2 + c2iv*ac2u*t1 + zvel*t3;
+                          qs[i][j][k]*t2 + c2iv*ac2u*t1 + zvel*t3;
 
              }
           }
