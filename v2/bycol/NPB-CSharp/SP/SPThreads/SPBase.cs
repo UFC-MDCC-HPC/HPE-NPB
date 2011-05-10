@@ -58,13 +58,13 @@ public class SPBase /* : Thread*/
 	protected int niter_default = 0;
 	protected double dt_default = 0.0;
 
-	protected double[,,,] u, rhs, forcing;
+	protected double[][][][] u, rhs, forcing;
 
-	protected double[,,] us, vs, ws, qs, rho_i, speed, square;
+    protected double[][][] us, vs, ws, qs, rho_i, speed, square;		
 	
-	protected double[,] ue, buf;
+	protected double[][] ue, buf;
 
-	protected double[,] lhs, lhsp, lhsm;
+	protected double[][] lhs, lhsp, lhsm;
 
 	protected double[] cv, rhon, rhos,
 					 rhoq, cuf, q;
@@ -148,25 +148,29 @@ public class SPBase /* : Thread*/
 				break;
 		}
 
-        u = new double[KMAX,JMAX + 1,IMAX + 1,5];
-        rhs = new double[KMAX, JMAX + 1, IMAX + 1,5];
-        forcing = new double[KMAX, JMAX + 1, IMAX + 1, 5];
+        u = instantiate_jagged_array_4(5, IMAX + 1, JMAX + 1, KMAX);
+        rhs = instantiate_jagged_array_4(5, IMAX + 1, JMAX + 1, KMAX);
+        forcing = instantiate_jagged_array_4(5, IMAX + 1, JMAX + 1, KMAX);
 
-        us = new double[KMAX, JMAX + 1, IMAX + 1];
-        vs = new double[KMAX, JMAX + 1, IMAX + 1];
-        ws = new double[KMAX, JMAX + 1, IMAX + 1];
-        qs = new double[KMAX, JMAX + 1, IMAX + 1];
-        rho_i = new double[KMAX, JMAX + 1, IMAX + 1];
-        speed = new double[KMAX, JMAX + 1, IMAX + 1];
-		square = new double[KMAX, JMAX + 1, IMAX + 1];
+        us = instantiate_jagged_array_3(IMAX + 1, JMAX + 1, KMAX);
+        vs = instantiate_jagged_array_3(IMAX + 1, JMAX + 1, KMAX);
+        ws = instantiate_jagged_array_3(IMAX + 1, JMAX + 1, KMAX);
+        qs = instantiate_jagged_array_3(IMAX + 1, JMAX + 1, KMAX);
+        rho_i = instantiate_jagged_array_3(IMAX + 1, JMAX + 1, KMAX);
+        speed = instantiate_jagged_array_3(IMAX + 1, JMAX + 1, KMAX);
+		square = instantiate_jagged_array_3(IMAX + 1, JMAX + 1, KMAX);
 
-		ue = new double[5,problem_size];
-		buf = new double[5,problem_size];
+		ue = instantiate_jagged_array_2(5, problem_size);
+		buf = instantiate_jagged_array_2(5, problem_size);
 
-		lhs = new double[5,problem_size+1];
-		lhsp = new double[5,problem_size+1];
-		lhsm = new double[5,problem_size+1];
+		lhs = instantiate_jagged_array_2(5, problem_size+1);
+		lhsp = instantiate_jagged_array_2(5, problem_size+1);
+		lhsm = instantiate_jagged_array_2(5, problem_size+1);
 
+//		lhs = new double[5, problem_size+1];
+//		lhsp = new double[5, problem_size+1];
+//		lhsm = new double[5, problem_size+1];
+			
 		cv = new double[problem_size];
 		rhon = new double[problem_size];
 		rhos = new double[problem_size];
@@ -175,6 +179,51 @@ public class SPBase /* : Thread*/
 		q = new double[problem_size];
 	}
 
+	double[][][][] instantiate_jagged_array_4(int N1, int N2, int N3, int N4)	
+	{
+	    double[][][][] r = new double[N1][][][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2][][];
+			for (int j=0; j<N2; j++) 
+			{
+				r[i][j] = new double[N3][];
+				for (int k=0; k<N3; k++) 
+				{
+					r[i][j][k] = new double[N4];
+				}
+			}
+		}
+			
+		return r;
+	}
+		
+	double[][][] instantiate_jagged_array_3(int N1, int N2, int N3)	
+	{
+	    double[][][] r = new double[N1][][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2][];
+			for (int j=0; j<N2; j++) 
+			{
+				r[i][j] = new double[N3];
+			}
+		}
+			
+		return r;
+	}
+		
+	double[][] instantiate_jagged_array_2(int N1, int N2)	
+	{
+	    double[][] r = new double[N1][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2];
+		}
+			
+		return r;
+	}
+		
 	protected Thread master = null;
 	protected int num_threads;
 
@@ -219,9 +268,9 @@ public class SPBase /* : Thread*/
 		{
 			for (int n = 0; n <= 4; n++)
 			{
-				lhs[n,i] = 0.0;
-				lhsp[n,i] = 0.0;
-				lhsm[n,i] = 0.0;
+				lhs[n][i] = 0.0;
+				lhsp[n][i] = 0.0;
+				lhsm[n][i] = 0.0;
 			}
 		}
 		//---------------------------------------------------------------------
@@ -230,9 +279,9 @@ public class SPBase /* : Thread*/
 		//---------------------------------------------------------------------
 		for (int i = 0; i <= size; i += size)
 		{
-			lhs[2,i] = 1.0;
-			lhsp[2,i] = 1.0;
-			lhsm[2,i] = 1.0;
+			lhs[2][i] = 1.0;
+			lhsp[2][i] = 1.0;
+			lhsm[2][i] = 1.0;
 		}
 	}
 
@@ -255,11 +304,11 @@ public class SPBase /* : Thread*/
 			{
 				for (i = 0; i < grid_points[0]; i++)
 				{
-					u[k,j,i,0] = 1.0;
-					u[k,j,i,1] = 0.0;
-					u[k,j,i,2] = 0.0;
-					u[k,j,i,3] = 0.0;
-					u[k,j,i,4] = 1.0;
+					u[0][i][j][k] = 1.0;
+					u[1][i][j][k] = 0.0;
+					u[2][i][j][k] = 0.0;
+					u[3][i][j][k] = 0.0;
+					u[4][i][j][k] = 1.0;
 				}
 			}
 		}
@@ -300,7 +349,7 @@ public class SPBase /* : Thread*/
 						Peta = eta * Pface[m + 1 * 5 + 1 * 15] + (1.0 - eta) * Pface[m + 1 * 5 + 0 * 15];
 						Pzeta = zeta * Pface[m + 2 * 5 + 1 * 15] + (1.0 - zeta) * Pface[m + 2 * 5 + 0 * 15];
 
-						u[k,j,i,m] = Pxi + Peta + Pzeta - Pxi * Peta - Pxi * Pzeta - Peta * Pzeta + Pxi * Peta * Pzeta;
+						u[m][i][j][k] = Pxi + Peta + Pzeta - Pxi * Peta - Pxi * Pzeta - Peta * Pzeta + Pxi * Peta * Pzeta;
 					}
 				}
 			}
@@ -325,7 +374,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[k,j,i,m] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -345,7 +394,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[k,j,i,m] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -365,7 +414,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[k,j,i,m] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -385,7 +434,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[k,j,i,m] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -405,7 +454,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[k,j,i,m] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}
@@ -425,7 +474,7 @@ public class SPBase /* : Thread*/
 				exact_solution(xi, eta, zeta, temp, 0);
 				for (m = 0; m <= 4; m++)
 				{
-					u[k,j,i,m] = temp[m];
+					u[m][i][j][k] = temp[m];
 				}
 			}
 		}

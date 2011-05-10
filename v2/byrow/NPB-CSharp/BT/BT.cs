@@ -63,9 +63,9 @@ namespace NPB3_0_JAV
         public int bid = -1;
         public BMResults results;
         public bool serial = true;
-        double[,,] fjac;
-        double[,,] njac;
-        double[,,,] lhs;
+        double[][][] fjac;
+        double[][][] njac;
+        double[][][][] lhs;
 
         double tmp1;
         double tmp2;
@@ -75,9 +75,9 @@ namespace NPB3_0_JAV
         {
             //super(clss, threads);
             serial = ser;
-            fjac = new double[ (problem_size + 1), 5,5];
-            njac = new double[ (problem_size + 1), 5,5];
-            lhs = new double[ (problem_size + 1), 3, 5,5];
+            fjac =  instantiate_jagged_array_3(problem_size + 1, 5,5);
+            njac = instantiate_jagged_array_3(problem_size + 1, 5,5);
+            lhs = instantiate_jagged_array_4(problem_size + 1, 3, 5,5);
         }
 
         public static void Main(String[] argv)
@@ -94,6 +94,7 @@ namespace NPB3_0_JAV
             }
             catch (OutOfMemoryException e)
             {
+				Console.Error.WriteLine(e.Message);
                 BMArgs.outOfMemoryMessage();
                 Environment.Exit(0);
             }
@@ -352,7 +353,7 @@ namespace NPB3_0_JAV
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine("exception caught!");
+                    Console.Error.WriteLine("exception caught! " + e.Message);
                 }
             }
             else
@@ -414,7 +415,7 @@ namespace NPB3_0_JAV
                     {
                         for (m = 0; m < rms.Length; m++)
                         {
-                            add = rhs[ k, j, i,m];
+                            add = rhs[k][j][i][m];
                             rms[m] += add * add;
                         }
                     }
@@ -451,7 +452,7 @@ namespace NPB3_0_JAV
                         exact_solution(xi, eta, zeta, u_exact, 0);
                         for (m = 0; m < rms.Length; m++)
                         {
-                            add = u[ k, j, i,m] - u_exact[m];
+                            add = u[k][j][i][m] - u_exact[m];
                             rms[m] += add * add;
                         }
                     }
@@ -715,7 +716,7 @@ namespace NPB3_0_JAV
                     {
                         for (m = 0; m <= 4; m++)
                         {
-                            u[k,j,i,m] += rhs[k,j,i,m];
+                            u[k][j][i][m] += rhs[k][j][i][m];
                         }
                     }
                 }
@@ -723,367 +724,365 @@ namespace NPB3_0_JAV
             if (timeron) timer.stop(t_add);
         }
 
-        public void exact_rhs()
-        {
-            double[] dtemp = new double[5];
-            double xi, eta, zeta, dtpp;
-            int m, i, j, k, ip1, im1, jp1, jm1, km1, kp1;
+	public void exact_rhs()
+	{
+		double[] dtemp = new double[5];
+        double xi, eta, zeta, dtpp;
+		int m, i, j, k, ip1, im1, jp1, jm1, km1, kp1;
 
-            //---------------------------------------------------------------------
-            //     initialize                                  
-            //---------------------------------------------------------------------
-            for (k = 0; k <= grid_points[2] - 1; k++)
-            {
-                for (j = 0; j <= grid_points[1] - 1; j++)
-                {
-                    for (i = 0; i <= grid_points[0] - 1; i++)
-                    {
-                        for (m = 0; m <= 4; m++)
-                        {
-                            forcing[k,j,i,m] = 0.0;
-                        }
-                    }
+		//---------------------------------------------------------------------
+		//      initialize                                  
+		//---------------------------------------------------------------------
+		for (k = 0; k <= grid_points[2] - 1; k++)
+		{
+			for (j = 0; j <= grid_points[1] - 1; j++)
+			{
+				for (i = 0; i <= grid_points[0] - 1; i++)
+				{
+					for (m = 0; m <= 4; m++)
+					{
+						forcing[k][j][i][m] = 0.0;
+					}
+				}
+			}
+		}
+		//---------------------------------------------------------------------
+		//      xi-direction flux differences                      
+		//---------------------------------------------------------------------
+		for (k = 1; k <= grid_points[2] - 2; k++)
+		{
+			zeta = k * dnzm1;
+			for (j = 1; j <= grid_points[1] - 2; j++)
+			{
+				eta = j * dnym1;
+				for (i = 0; i <= grid_points[0] - 1; i++)
+				{
+					xi = i * dnxm1;
+
+					exact_solution(xi, eta, zeta, dtemp, 0);
+					for (m = 0; m <= 4; m++)
+					{
+						ue[i][m] = dtemp[m];
+					}
+
+					dtpp = 1.0 / dtemp[0];
+
+					for (m = 1; m <= 4; m++)
+					{
+						buf[i][m] = dtpp * dtemp[m];
+					}
+
+					cuf[i] = buf[i][1] * buf[i][1];
+					buf[i][0] = cuf[i] + buf[i][2] * buf[i][2] +
+										 buf[i][3] * buf[i][3];
+					q[i] = 0.5 * (buf[i][1] * ue[i][1] + buf[i][2] * ue[i][2] +
+											buf[i][3] * ue[i][3]);
+
+				}
+
+				for (i = 1; i <= grid_points[0] - 2; i++)
+				{
+					im1 = i - 1;
+					ip1 = i + 1;
+
+					forcing[k][j][i][0] = forcing[k][j][i][0] -
+									 tx2 * (ue[ip1][1] - ue[im1][1]) +
+									 dx1tx1 * (ue[ip1][0] - 2.0 * ue[i][0] + ue[im1][0]);
+
+					forcing[k][j][i][1] = forcing[k][j][i][1] - tx2 * (
+									(ue[ip1][1] * buf[ip1][1] + c2 * (ue[ip1][4] - q[ip1])) -
+									(ue[im1][1] * buf[im1][1] + c2 * (ue[im1][4] - q[im1]))) +
+									 xxcon1 * (buf[ip1][1] - 2.0 * buf[i][1] + buf[im1][1]) +
+									 dx2tx1 * (ue[ip1][1] - 2.0 * ue[i][1] + ue[im1][1]);
+
+					forcing[k][j][i][2] = forcing[k][j][i][2] - tx2 * (
+									 ue[ip1][2] * buf[ip1][1] - ue[im1][2] * buf[im1][1]) +
+									 xxcon2 * (buf[ip1][2] - 2.0 * buf[i][2] + buf[im1][2]) +
+									 dx3tx1 * (ue[ip1][2] - 2.0 * ue[i][2] + ue[im1][2]);
+
+
+					forcing[k][j][i][3] = forcing[k][j][i][3] - tx2 * (
+									 ue[ip1][3] * buf[ip1][1] - ue[im1][3] * buf[im1][1]) +
+									 xxcon2 * (buf[ip1][3] - 2.0 * buf[i][3] + buf[im1][3]) +
+									 dx4tx1 * (ue[ip1][3] - 2.0 * ue[i][3] + ue[im1][3]);
+
+					forcing[k][j][i][4] = forcing[k][j][i][4] - tx2 * (
+									 buf[ip1][1] * (c1 * ue[ip1][4] - c2 * q[ip1]) -
+									 buf[im1][1] * (c1 * ue[im1][4] - c2 * q[im1])) +
+									 0.5 * xxcon3 * (buf[ip1][0] - 2.0 * buf[i][0] +
+												   buf[im1][0]) +
+									 xxcon4 * (cuf[ip1] - 2.0 * cuf[i] + cuf[im1]) +
+									 xxcon5 * (buf[ip1][4] - 2.0 * buf[i][4] + buf[im1][4]) +
+									 dx5tx1 * (ue[ip1][4] - 2.0 * ue[i][4] + ue[im1][4]);
                 }
-            }
-            //---------------------------------------------------------------------
-            //     xi-direction flux differences                      
-            //---------------------------------------------------------------------
-            for (k = 1; k <= grid_points[2] - 2; k++)
-            {
-                zeta = k * dnzm1;
-                for (j = 1; j <= grid_points[1] - 2; j++)
-                {
-                    eta = j * dnym1;
 
-                    for (i = 0; i <= grid_points[0] - 1; i++)
-                    {
-                        xi = i * dnxm1;
+				//---------------------------------------------------------------------
+				//            Fourth-order dissipation                         
+				//---------------------------------------------------------------------
+				for (m = 0; m <= 4; m++)
+				{
+					i = 1;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+										(5.0 * ue[i][m] - 4.0 * ue[i+1][m] + ue[i+2][m]);
+					i = 2;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+									   (-4.0 * ue[i-1][m] + 6.0 * ue[i][m] -
+										 4.0 * ue[i+1][m] + ue[i+2][m]);
+				}
 
-                        exact_solution(xi, eta, zeta, dtemp, 0);
-                        for (m = 0; m <= 4; m++)
-                        {
-                            ue[m,i] = dtemp[m];
-                        }
+				for (m = 0; m <= 4; m++)
+				{
+					for (i = 3; i <= grid_points[0] - 4; i++)
+					{
+						forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+										 (ue[i-2][m] - 4.0 * ue[i-1][m] +
+										  6.0 * ue[i][m] - 4.0 * ue[i+1][m] + ue[i+2][m]);
+					}
+				}
 
-                        dtpp = 1.0 / dtemp[0];
+				for (m = 0; m <= 4; m++)
+				{
+					i = grid_points[0] - 3;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+									   (ue[i-2][m] - 4.0 * ue[i-1][m] +
+										6.0 * ue[i][m] - 4.0 * ue[i+1][m]);
+					i = grid_points[0] - 2;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+									   (ue[i-2][m] - 4.0 * ue[i-1][m] + 5.0 * ue[i][m]);
+				}
+			}
+		}
 
-                        for (m = 1; m <= 4; m++)
-                        {
-                            buf[m,i] = dtpp * dtemp[m];
-                        }
+		//---------------------------------------------------------------------
+		//  eta-direction flux differences             
+		//---------------------------------------------------------------------
+		for (k = 1; k <= grid_points[2] - 2; k++)
+		{
+			zeta = k * dnzm1;
+			for (i = 1; i <= grid_points[0] - 2; i++)
+			{
+				xi = i * dnxm1;
 
-                        cuf[i] = buf[1,i] * buf[1,i];
-                        buf[0,i] = cuf[i] + buf[2,i] * buf[2,i] +
-                                buf[3,i] * buf[3,i];
-                        q[i] = 0.5 * (buf[1,i] * ue[1,i] + buf[2,i] * ue[2,i] +
-                                buf[3,i] * ue[3,i]);
+				for (j = 0; j <= grid_points[1] - 1; j++)
+				{
+					eta = j * dnym1;
 
-                    }
+					exact_solution(xi, eta, zeta, dtemp, 0);
+					for (m = 0; m <= 4; m++)
+					{
+						ue[j][m] = dtemp[m];
+					}
+					dtpp = 1.0 / dtemp[0];
 
-                    for (i = 1; i <= grid_points[0] - 2; i++)
-                    {
-                        im1 = i - 1;
-                        ip1 = i + 1;
+					for (m = 1; m <= 4; m++)
+					{
+						buf[j][m] = dtpp * dtemp[m];
+					}
 
-                        forcing[k,j,i,0] = forcing[ k, j, i,0] -
-                                tx2 * (ue[ 1,ip1] - ue[ 1,im1]) +
-                                dx1tx1 * (ue[ 0,ip1] - 2.0 * ue[ 0,i] + ue[ 0,im1]);
+					cuf[j] = buf[j][2] * buf[j][2];
+					buf[j][0] = cuf[j] + buf[j][1] * buf[j][1] +
+							   buf[j][3] * buf[j][3];
+					q[j] = 0.5 * (buf[j][1] * ue[j][1] + buf[j][2] * ue[j][2] +
+								  buf[j][3] * ue[j][3]);
+				}
 
-                        forcing[ k, j, i,1] = forcing[ k, j, i,1] - tx2 * (
-                                (ue[ 1,ip1] * buf[ 1,ip1] + c2 * (ue[ 4,ip1] - q[ip1])) -
-                                (ue[ 1,im1] * buf[ 1,im1] + c2 * (ue[ 4,im1] - q[im1]))) +
-                                xxcon1 * (buf[ 1,ip1] - 2.0 * buf[ 1,i] + buf[ 1,im1]) +
-                                dx2tx1 * (ue[ 1,ip1] - 2.0 * ue[ 1,i] + ue[ 1,im1]);
+				for (j = 1; j <= grid_points[1] - 2; j++)
+				{
+					jm1 = j - 1;
+					jp1 = j + 1;
 
-                        forcing[ k, j, i,2] = forcing[ k, j, i,2] - tx2 * (
-                                ue[ 2,ip1] * buf[ 1,ip1] - ue[ 2,im1] * buf[ 1,im1]) +
-                                xxcon2 * (buf[ 2,ip1] - 2.0 * buf[ 2,i] + buf[ 2,im1]) +
-                                dx3tx1 * (ue[ 2,ip1] - 2.0 * ue[ 2,i] + ue[ 2,im1]);
+					forcing[k][j][i][0] = forcing[k][j][i][0] -
+						  ty2 * (ue[jp1][2] - ue[jm1][2]) +
+						  dy1ty1 * (ue[jp1][0] - 2.0 * ue[j][0] + ue[jm1][0]);
 
-                        forcing[ k, j, i,3] = forcing[ k, j, i,3] - tx2 * (
-                                ue[ 3,ip1] * buf[ 1,ip1] - ue[ 3,im1] * buf[ 1,im1]) +
-                                xxcon2 * (buf[ 3,ip1] - 2.0 * buf[ 3,i] + buf[ 3,im1]) +
-                                dx4tx1 * (ue[ 3,ip1] - 2.0 * ue[ 3,i] + ue[ 3,im1]);
+					forcing[k][j][i][1] = forcing[k][j][i][1] - ty2 * (
+						  ue[jp1][1] * buf[jp1][2] - ue[jm1][1] * buf[jm1][2]) +
+						  yycon2 * (buf[jp1][1] - 2.0 * buf[j][1] + buf[jm1][1]) +
+						  dy2ty1 * (ue[jp1][1] - 2.0 * ue[j][1] + ue[jm1][1]);
 
-                        forcing[ k, j, i,4] = forcing[ k, j, i,4] - tx2 * (
-                                buf[ 1,ip1] * (c1 * ue[ 4,ip1] - c2 * q[ip1]) -
-                                buf[ 1,im1] * (c1 * ue[ 4,im1] - c2 * q[im1])) +
-                                0.5 * xxcon3 * (buf[ 0,ip1] - 2.0 * buf[ 0,i] +
-                                buf[ 0,im1]) +
-                                xxcon4 * (cuf[ip1] - 2.0 * cuf[i] + cuf[im1]) +
-                                xxcon5 * (buf[ 4,ip1] - 2.0 * buf[ 4,i] + buf[ 4,im1]) +
-                                dx5tx1 * (ue[ 4,ip1] - 2.0 * ue[ 4,i] + ue[ 4,im1]);
-                    }
+					forcing[k][j][i][2] = forcing[k][j][i][2] - ty2 * (
+						  (ue[jp1][2] * buf[jp1][2] + c2 * (ue[jp1][4] - q[jp1])) -
+						  (ue[jm1][2] * buf[jm1][2] + c2 * (ue[jm1][4] - q[jm1]))) +
+						  yycon1 * (buf[jp1][2] - 2.0 * buf[j][2] + buf[jm1][2]) +
+						  dy3ty1 * (ue[jp1][2] - 2.0 * ue[j][2] + ue[jm1][2]);
 
-                    //---------------------------------------------------------------------
-                    //     Fourth-order dissipation                         
-                    //---------------------------------------------------------------------
+					forcing[k][j][i][3] = forcing[k][j][i][3] - ty2 * (
+						  ue[jp1][3] * buf[jp1][2] - ue[jm1][3] * buf[jm1][2]) +
+						  yycon2 * (buf[jp1][3] - 2.0 * buf[j][3] + buf[jm1][3]) +
+						  dy4ty1 * (ue[jp1][3] - 2.0 * ue[j][3] + ue[jm1][3]);
 
-                    for (m = 0; m <= 4; m++)
-                    {
-                        i = 1;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (5.0 * ue[ m,i] - 4.0 * ue[ m,i + 1] + ue[ m,i + 2]);
-                        i = 2;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (-4.0 * ue[ m,i - 1] + 6.0 * ue[ m,i] -
-                                   4.0 * ue[ m,i + 1] + ue[ m,i + 2]);
-                    }
+					forcing[k][j][i][4] = forcing[k][j][i][4] - ty2 * (
+						  buf[jp1][2] * (c1 * ue[jp1][4] - c2 * q[jp1]) -
+						  buf[jm1][2] * (c1 * ue[jm1][4] - c2 * q[jm1])) +
+						  0.5 * yycon3 * (buf[jp1][0] - 2.0 * buf[j][0] +
+										buf[jm1][0]) +
+						  yycon4 * (cuf[jp1] - 2.0 * cuf[j] + cuf[jm1]) +
+						  yycon5 * (buf[jp1][4] - 2.0 * buf[j][4] + buf[jm1][4]) +
+						  dy5ty1 * (ue[jp1][4] - 2.0 * ue[j][4] + ue[jm1][4]);
+				}
 
-                    for (m = 0; m <= 4; m++)
-                    {
-                        for (i = 3; i <= grid_points[0] - 4; i++)
-                        {
-                            forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                    (ue[ m,i - 2] - 4.0 * ue[ m,i - 1] +
-                                    6.0 * ue[ m,i] - 4.0 * ue[ m,i + 1] + ue[ m,i + 2]);
-                        }
-                    }
+				//---------------------------------------------------------------------
+				//            Fourth-order dissipation                      
+				//---------------------------------------------------------------------
+				for (m = 0; m <= 4; m++)
+				{
+					j = 1;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							  (5.0 * ue[j][m] - 4.0 * ue[j+1][m] + ue[j+2][m]);
+					j = 2;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							 (-4.0 * ue[j-1][m] + 6.0 * ue[j][m] -
+							   4.0 * ue[j+1][m] + ue[j+2][m]);
+				}
 
-                    for (m = 0; m <= 4; m++)
-                    {
-                        i = grid_points[0] - 3;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (ue[ m,i - 2] - 4.0 * ue[ m,i - 1] +
-                                   6.0 * ue[ m,i] - 4.0 * ue[ m,i + 1]);
-                        i = grid_points[0] - 2;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (ue[ m,i - 2] - 4.0 * ue[ m,i - 1] + 5.0 * ue[ m,i]);
-                    }
+				for (m = 0; m <= 4; m++)
+				{
+					for (j = 3; j <= grid_points[1] - 4; j++)
+					{
+						forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							  (ue[j-2][m] - 4.0 * ue[j-1][m] +
+							   6.0 * ue[j][m] - 4.0 * ue[j+1][m] + ue[j+2][m]);
+					}
+				}
 
-                }
-            }
+				for (m = 0; m <= 4; m++)
+				{
+					j = grid_points[1] - 3;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							 (ue[j-2][m] - 4.0 * ue[j-1][m] +
+							  6.0 * ue[j][m] - 4.0 * ue[j+1][m]);
+					j = grid_points[1] - 2;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							 (ue[j-2][m] - 4.0 * ue[j-1][m] + 5.0 * ue[j][m]);
 
-            //---------------------------------------------------------------------
-            //     eta-direction flux differences             
-            //---------------------------------------------------------------------
-            for (k = 1; k <= grid_points[2] - 2; k++)
-            {
-                zeta = k * dnzm1;
-                for (i = 1; i <= grid_points[0] - 2; i++)
-                {
-                    xi = i * dnxm1;
+				}
 
-                    for (j = 0; j <= grid_points[1] - 1; j++)
-                    {
-                        eta = j * dnym1;
+			}
+		}
 
-                        exact_solution(xi, eta, zeta, dtemp, 0);
-                        for (m = 0; m <= 4; m++)
-                        {
-                            ue[ m,j] = dtemp[m];
-                        }
+		//---------------------------------------------------------------------
+		//      zeta-direction flux differences                      
+		//---------------------------------------------------------------------
+		for (j = 1; j <= grid_points[1] - 2; j++)
+		{
+			eta = j * dnym1;
+			for (i = 1; i <= grid_points[0] - 2; i++)
+			{
+				xi = i * dnxm1;
 
-                        dtpp = 1.0 / dtemp[0];
+				for (k = 0; k <= grid_points[2] - 1; k++)
+				{
+					zeta = k * dnzm1;
 
-                        for (m = 1; m <= 4; m++)
-                        {
-                            buf[ m,j] = dtpp * dtemp[m];
-                        }
+					exact_solution(xi, eta, zeta, dtemp, 0);
+					for (m = 0; m <= 4; m++)
+					{
+						ue[k][m] = dtemp[m];
+					}
 
-                        cuf[j] = buf[ 2,j] * buf[ 2,j];
-                        buf[ 0,j] = cuf[j] + buf[ 1,j] * buf[ 1,j] +
-                                buf[ 3,j] * buf[ 3,j];
-                        q[j] = 0.5 * (buf[ 1,j] * ue[ 1,j] + buf[ 2,j] * ue[ 2,j] +
-                                buf[ 3,j] * ue[ 3,j]);
-                    }
+					dtpp = 1.0 / dtemp[0];
 
-                    for (j = 1; j <= grid_points[1] - 2; j++)
-                    {
-                        jm1 = j - 1;
-                        jp1 = j + 1;
+					for (m = 1; m <= 4; m++)
+					{
+						buf[k][m] = dtpp * dtemp[m];
+					}
 
-                        forcing[ k, j, i,0] = forcing[ k, j, i,0] -
-                                ty2 * (ue[ 2,jp1] - ue[ 2,jm1]) +
-                                dy1ty1 * (ue[ 0,jp1] - 2.0 * ue[ 0,j] + ue[ 0,jm1]);
+					cuf[k] = buf[k][3] * buf[k][3];
+					buf[k][0] = cuf[k] + buf[k][1] * buf[k][1] +
+							   buf[k][2] * buf[k][2];
+					q[k] = 0.5 * (buf[k][1] * ue[k][1] + buf[k][2] * ue[k][2] +
+								  buf[k][3] * ue[k][3]);
+				}
 
-                        forcing[ k, j, i,1] = forcing[ k, j, i,1] - ty2 * (
-                                ue[ 1,jp1] * buf[ 2,jp1] - ue[ 1,jm1] * buf[ 2,jm1]) +
-                                yycon2 * (buf[ 1,jp1] - 2.0 * buf[ 1,j] + buf[ 1,jm1]) +
-                                dy2ty1 * (ue[ 1,jp1] - 2.0 * ue[ 1,j] + ue[ 1,jm1]);
+				for (k = 1; k <= grid_points[2] - 2; k++)
+				{
+					km1 = k - 1;
+					kp1 = k + 1;
 
-                        forcing[ k, j, i,2] = forcing[ k, j, i,2] - ty2 * (
-                                (ue[ 2,jp1] * buf[ 2,jp1] + c2 * (ue[ 4,jp1] - q[jp1])) -
-                                (ue[ 2,jm1] * buf[ 2,jm1] + c2 * (ue[ 4,jm1] - q[jm1]))) +
-                                yycon1 * (buf[ 2,jp1] - 2.0 * buf[ 2,j] + buf[ 2,jm1]) +
-                                dy3ty1 * (ue[ 2,jp1] - 2.0 * ue[ 2,j] + ue[ 2,jm1]);
+					forcing[k][j][i][0] = forcing[k][j][i][0] -
+						   tz2 * (ue[kp1][3] - ue[km1][3]) +
+						   dz1tz1 * (ue[kp1][0] - 2.0 * ue[k][0] + ue[km1][0]);
 
-                        forcing[ k, j, i,3] = forcing[ k, j, i,3] - ty2 * (
-                                ue[ 3,jp1] * buf[ 2,jp1] - ue[ 3,jm1] * buf[ 2,jm1]) +
-                                yycon2 * (buf[ 3,jp1] - 2.0 * buf[ 3,j] + buf[ 3,jm1]) +
-                                dy4ty1 * (ue[ 3,jp1] - 2.0 * ue[ 3,j] + ue[ 3,jm1]);
+					forcing[k][j][i][1] = forcing[k][j][i][1] - tz2 * (
+						   ue[kp1][1] * buf[kp1][3] - ue[km1][1] * buf[km1][3]) +
+						   zzcon2 * (buf[kp1][1] - 2.0 * buf[k][1] + buf[km1][1]) +
+						   dz2tz1 * (ue[kp1][1] - 2.0 * ue[k][1] + ue[km1][1]);
 
-                        forcing[ k, j, i,4] = forcing[ k, j, i,4] - ty2 * (
-                                buf[ 2,jp1] * (c1 * ue[ 4,jp1] - c2 * q[jp1]) -
-                                buf[ 2,jm1] * (c1 * ue[ 4,jm1] - c2 * q[jm1])) +
-                                0.5 * yycon3 * (buf[ 0,jp1] - 2.0 * buf[ 0,j] +
-                                buf[ 0,jm1]) +
-                                yycon4 * (cuf[jp1] - 2.0 * cuf[j] + cuf[jm1]) +
-                                yycon5 * (buf[ 4,jp1] - 2.0 * buf[ 4,j] + buf[ 4,jm1]) +
-                                dy5ty1 * (ue[ 4,jp1] - 2.0 * ue[ 4,j] + ue[ 4,jm1]);
-                    }
+					forcing[k][j][i][2] = forcing[k][j][i][2] - tz2 * (
+						   ue[kp1][2] * buf[kp1][3] - ue[km1][2] * buf[km1][3]) +
+						   zzcon2 * (buf[kp1][2] - 2.0 * buf[k][2] + buf[km1][2]) +
+						   dz3tz1 * (ue[kp1][2] - 2.0 * ue[k][2] + ue[km1][2]);
 
-                    //---------------------------------------------------------------------
-                    //     Fourth-order dissipation                      
-                    //---------------------------------------------------------------------
-                    for (m = 0; m <= 4; m++)
-                    {
-                        j = 1;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (5.0 * ue[ m,j] - 4.0 * ue[ m,j + 1] + ue[ m,j + 2]);
-                        j = 2;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (-4.0 * ue[ m,j - 1] + 6.0 * ue[ m,j] -
-                                   4.0 * ue[ m,j + 1] + ue[ m,j + 2]);
-                    }
+					forcing[k][j][i][3] = forcing[k][j][i][3] - tz2 * (
+						  (ue[kp1][3] * buf[kp1][3] + c2 * (ue[kp1][4] - q[kp1])) -
+						  (ue[km1][3] * buf[km1][3] + c2 * (ue[km1][4] - q[km1]))) +
+						  zzcon1 * (buf[kp1][3] - 2.0 * buf[k][3] + buf[km1][3]) +
+						  dz4tz1 * (ue[kp1][3] - 2.0 * ue[k][3] + ue[km1][3]);
 
-                    for (m = 0; m <= 4; m++)
-                    {
-                        for (j = 3; j <= grid_points[1] - 4; j++)
-                        {
-                            forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                    (ue[ m,j - 2] - 4.0 * ue[ m,j - 1] +
-                                    6.0 * ue[ m,j] - 4.0 * ue[ m,j + 1] + ue[ m,j + 2]);
-                        }
-                    }
+					forcing[k][j][i][4] = forcing[k][j][i][4] - tz2 * (
+						   buf[kp1][3] * (c1 * ue[kp1][4] - c2 * q[kp1]) -
+						   buf[km1][3] * (c1 * ue[km1][4] - c2 * q[km1])) +
+						   0.5 * zzcon3 * (buf[kp1][0] - 2.0 * buf[k][0]
+										+ buf[km1][0]) +
+						   zzcon4 * (cuf[kp1] - 2.0 * cuf[k] + cuf[km1]) +
+						   zzcon5 * (buf[kp1][4] - 2.0 * buf[k][4] + buf[km1][4]) +
+						   dz5tz1 * (ue[kp1][4] - 2.0 * ue[k][4] + ue[km1][4]);
+				}
 
-                    for (m = 0; m <= 4; m++)
-                    {
-                        j = grid_points[1] - 3;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (ue[ m,j - 2] - 4.0 * ue[ m,j - 1] +
-                                   6.0 * ue[ m,j] - 4.0 * ue[ m,j + 1]);
-                        j = grid_points[1] - 2;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (ue[ m,j - 2] - 4.0 * ue[ m,j - 1] + 5.0 * ue[ m,j]);
+				//---------------------------------------------------------------------
+				//            Fourth-order dissipation
+				//---------------------------------------------------------------------
+				for (m = 0; m <= 4; m++)
+				{
+					k = 1;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							  (5.0 * ue[k][m] - 4.0 * ue[k+1][m] + ue[k+2][m]);
+					k = 2;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							 (-4.0 * ue[k-1][m] + 6.0 * ue[k][m] -
+							   4.0 * ue[k+1][m] + ue[k+2][m]);
+				}
 
-                    }
-                }
-            }
+				for (m = 0; m <= 4; m++)
+				{
+					for (k = 3; k <= grid_points[2] - 4; k++)
+					{
+						forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							  (ue[k-2][m] - 4.0 * ue[k-1][m] +
+							   6.0 * ue[k][m] - 4.0 * ue[k+1][m] + ue[k+2][m]);
+					}
+				}
 
-            //---------------------------------------------------------------------
-            //     zeta-direction flux differences                      
-            //---------------------------------------------------------------------
-            for (j = 1; j <= grid_points[1] - 2; j++)
-            {
-                eta = j * dnym1;
-                for (i = 1; i <= grid_points[0] - 2; i++)
-                {
-                    xi = i * dnxm1;
+				for (m = 0; m <= 4; m++)
+				{
+					k = grid_points[2] - 3;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+							 (ue[k-2][m] - 4.0 * ue[k-1][m] +
+							  6.0 * ue[k][m] - 4.0 * ue[k+1][m]);
+					k = grid_points[2] - 2;
+					forcing[k][j][i][m] = forcing[k][j][i][m] - dssp *
+						  (ue[k-2][m] - 4.0 * ue[k-1][m] + 5.0 * ue[k][m]);
+				}
+			}
+		}
 
-                    for (k = 0; k <= grid_points[2] - 1; k++)
-                    {
-                        zeta = k * dnzm1;
-
-                        exact_solution(xi, eta, zeta, dtemp, 0);
-                        for (m = 0; m <= 4; m++)
-                        {
-                            ue[ m,k] = dtemp[m];
-                        }
-
-                        dtpp = 1.0 / dtemp[0];
-
-                        for (m = 1; m <= 4; m++)
-                        {
-                            buf[ m,k] = dtpp * dtemp[m];
-                        }
-
-                        cuf[k] = buf[ 3,k] * buf[ 3,k];
-                        buf[ 0,k] = cuf[k] + buf[ 1,k] * buf[ 1,k] +
-                                buf[ 2,k] * buf[ 2,k];
-                        q[k] = 0.5 * (buf[ 1,k] * ue[ 1,k] + buf[ 2,k] * ue[ 2,k] +
-                                buf[ 3,k] * ue[ 3,k]);
-                    }
-
-                    for (k = 1; k <= grid_points[2] - 2; k++)
-                    {
-                        km1 = k - 1;
-                        kp1 = k + 1;
-
-                        forcing[ k, j, i,0] = forcing[ k, j, i,0] -
-                                    tz2 * (ue[ 3,kp1] - ue[ 3,km1]) +
-                                    dz1tz1 * (ue[ 0,kp1] - 2.0 * ue[ 0,k] + ue[ 0,km1]);
-
-                        forcing[ k, j, i,1] = forcing[ k, j, i,1] - tz2 * (
-                                ue[ 1,kp1] * buf[ 3,kp1] - ue[ 1,km1] * buf[ 3,km1]) +
-                                zzcon2 * (buf[ 1,kp1] - 2.0 * buf[ 1,k] + buf[ 1,km1]) +
-                                dz2tz1 * (ue[ 1,kp1] - 2.0 * ue[ 1,k] + ue[ 1,km1]);
-
-                        forcing[ k, j, i,2] = forcing[ k, j, i,2] - tz2 * (
-                                ue[ 2,kp1] * buf[ 3,kp1] - ue[ 2,km1] * buf[ 3,km1]) +
-                                zzcon2 * (buf[ 2,kp1] - 2.0 * buf[ 2,k] + buf[ 2,km1]) +
-                                dz3tz1 * (ue[ 2,kp1] - 2.0 * ue[ 2,k] + ue[ 2,km1]);
-
-                        forcing[ k, j, i,3] = forcing[ k, j, i,3] - tz2 * (
-                                (ue[ 3,kp1] * buf[ 3,kp1] + c2 * (ue[ 4,kp1] - q[kp1])) -
-                                (ue[ 3,km1] * buf[ 3,km1] + c2 * (ue[ 4,km1] - q[km1]))) +
-                                zzcon1 * (buf[ 3,kp1] - 2.0 * buf[ 3,k] + buf[ 3,km1]) +
-                                dz4tz1 * (ue[ 3,kp1] - 2.0 * ue[ 3,k] + ue[ 3,km1]);
-
-                        forcing[ k, j, i,4] = forcing[ k, j, i,4] - tz2 * (
-                                buf[ 3,kp1] * (c1 * ue[ 4,kp1] - c2 * q[kp1]) -
-                                buf[ 3,km1] * (c1 * ue[ 4,km1] - c2 * q[km1])) +
-                                0.5 * zzcon3 * (buf[ 0,kp1] - 2.0 * buf[ 0,k]
-                                + buf[ 0,km1]) +
-                                zzcon4 * (cuf[kp1] - 2.0 * cuf[k] + cuf[km1]) +
-                                zzcon5 * (buf[ 4,kp1] - 2.0 * buf[ 4,k] + buf[ 4,km1]) +
-                                dz5tz1 * (ue[ 4,kp1] - 2.0 * ue[ 4,k] + ue[ 4,km1]);
-                    }
-
-                    //---------------------------------------------------------------------
-                    //     Fourth-order dissipation                        
-                    //---------------------------------------------------------------------
-                    for (m = 0; m <= 4; m++)
-                    {
-                        k = 1;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (5.0 * ue[ m,k] - 4.0 * ue[ m,k + 1] + ue[ m,k + 2]);
-                        k = 2;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (-4.0 * ue[ m,k - 1] + 6.0 * ue[ m,k] -
-                                   4.0 * ue[ m,k + 1] + ue[ m,k + 2]);
-                    }
-
-                    for (m = 0; m <= 4; m++)
-                    {
-                        for (k = 3; k <= grid_points[2] - 4; k++)
-                        {
-                            forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                    (ue[ m,k - 2] - 4.0 * ue[ m,k - 1] +
-                                    6.0 * ue[ m,k] - 4.0 * ue[ m,k + 1] + ue[ m,k + 2]);
-                        }
-                    }
-
-                    for (m = 0; m <= 4; m++)
-                    {
-                        k = grid_points[2] - 3;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (ue[ m,k - 2] - 4.0 * ue[ m,k - 1] +
-                                   6.0 * ue[ m,k] - 4.0 * ue[ m,k + 1]);
-                        k = grid_points[2] - 2;
-                        forcing[ k, j, i,m] = forcing[ k, j, i,m] - dssp *
-                                   (ue[ m,k - 2] - 4.0 * ue[ m,k - 1] + 5.0 * ue[ m,k]);
-                    }
-                }
-            }
-
-            //---------------------------------------------------------------------
-            //     now change the sign of the forcing function, 
-            //---------------------------------------------------------------------
-            for (k = 1; k <= grid_points[2] - 2; k++)
-            {
-                for (j = 1; j <= grid_points[1] - 2; j++)
-                {
-                    for (i = 1; i <= grid_points[0] - 2; i++)
-                    {
-                        for (m = 0; m <= 4; m++)
-                        {
-                            forcing[ k, j, i,m] = -1.0 * forcing[ k, j, i,m];
-                        }
-                    }
-                }
-            }
-        }
+		//---------------------------------------------------------------------
+		// now change the sign of the forcing function, 
+		//---------------------------------------------------------------------
+		for (k = 1; k <= grid_points[2] - 2; k++)
+		{
+			for (j = 1; j <= grid_points[1] - 2; j++)
+			{
+				for (i = 1; i <= grid_points[0] - 2; i++)
+				{
+					for (m = 0; m <= 4; m++)
+					{
+						forcing[k][j][i][m] = -1.0 * forcing[k][j][i][m];
+					}
+				}
+			}
+		}
+	}
 
         public void x_solve()
         {
@@ -1106,86 +1105,86 @@ namespace NPB3_0_JAV
                     for (i = 0; i <= isize; i++)
                     {
 
-                        tmp1 = rho_i[ k, j,i];
+                        tmp1 = rho_i[k][j][i];
                         tmp2 = tmp1 * tmp1;
                         tmp3 = tmp1 * tmp2;
                         //---------------------------------------------------------------------
                         //---------------------------------------------------------------------
-                        fjac[ i, 0,0] = 0.0;
-                        fjac[ i, 1,0] = 1.0;
-                        fjac[ i, 2,0] = 0.0;
-                        fjac[ i, 3,0] = 0.0;
-                        fjac[ i, 4,0] = 0.0;
+                        fjac[i][0][0] = 0.0;
+                        fjac[i][1][0] = 1.0;
+                        fjac[i][2][0] = 0.0;
+                        fjac[i][3][0] = 0.0;
+                        fjac[i][4][0] = 0.0;
 
-                        fjac[ i, 0,1] = -(u[ k, j, i,1]) * tmp2 *
-                             u[ k, j, i,1]
-                             + c2 * qs[ k, j,i];
-                        fjac[ i, 1,1] = (2.0 - c2)
-                             * (u[ k, j, i,1] / u[ k, j, i,0]);
-                        fjac[ i, 2,1] = -c2 * (u[ k, j, i,2] * tmp1);
-                        fjac[ i, 3,1] = -c2 * (u[ k, j, i,3] * tmp1);
-                        fjac[ i, 4,1] = c2;
+                        fjac[i][0][1] = -(u[k][j][i][1]) * tmp2 *
+                             u[k][j][i][1]
+                             + c2 * qs[k][j][i];
+                        fjac[i][1][1] = (2.0 - c2)
+                             * (u[k][j][i][1] / u[k][j][i][0]);
+                        fjac[i][2][1] = -c2 * (u[k][j][i][2] * tmp1);
+                        fjac[i][3][1] = -c2 * (u[k][j][i][3] * tmp1);
+                        fjac[i][4][1] = c2;
 
-                        fjac[ i, 0,2] = -(u[ k, j, i,1] * u[ k, j, i,2]) * tmp2;
-                        fjac[ i, 1,2] = u[ k, j, i,2] * tmp1;
-                        fjac[ i, 2,2] = u[ k, j, i,1] * tmp1;
-                        fjac[ i, 3,2] = 0.0;
-                        fjac[ i, 4,2] = 0.0;
+                        fjac[i][0][2] = -(u[k][j][i][1] * u[k][j][i][2]) * tmp2;
+                        fjac[i][1][2] = u[k][j][i][2] * tmp1;
+                        fjac[i][2][2] = u[k][j][i][1] * tmp1;
+                        fjac[i][3][2] = 0.0;
+                        fjac[i][4][2] = 0.0;
 
-                        fjac[ i, 0,3] = -(u[ k, j, i,1] * u[ k, j, i,3]) * tmp2;
-                        fjac[ i, 1,3] = u[ k, j, i,3] * tmp1;
-                        fjac[ i, 2,3] = 0.0;
-                        fjac[ i, 3,3] = u[ k, j, i,1] * tmp1;
-                        fjac[ i, 4,3] = 0.0;
+                        fjac[i][0][3] = -(u[k][j][i][1] * u[k][j][i][3]) * tmp2;
+                        fjac[i][1][3] = u[k][j][i][3] * tmp1;
+                        fjac[i][2][3] = 0.0;
+                        fjac[i][3][3] = u[k][j][i][1] * tmp1;
+                        fjac[i][4][3] = 0.0;
 
-                        fjac[ i, 0,4] = (c2 * 2.0 * square[ k, j,i]
-                             - c1 * u[ k, j, i,4])
-                             * (u[ k, j, i,1] * tmp2);
-                        fjac[ i, 1,4] = c1 * u[ k, j, i,4] * tmp1
+                        fjac[i][0][4] = (c2 * 2.0 * square[k][j][i]
+                             - c1 * u[k][j][i][4])
+                             * (u[k][j][i][1] * tmp2);
+                        fjac[i][1][4] = c1 * u[k][j][i][4] * tmp1
                              - c2
-                             * (u[ k, j, i,1] * u[ k, j, i,1] * tmp2
-                             + qs[ k, j,i]);
-                        fjac[ i, 2,4] = -c2 * (u[ k, j, i,2] * u[ k, j, i,1])
+                             * (u[k][j][i][1] * u[k][j][i][1] * tmp2
+                             + qs[k][j][i]);
+                        fjac[i][2][4] = -c2 * (u[k][j][i][2] * u[k][j][i][1])
                              * tmp2;
-                        fjac[ i, 3,4] = -c2 * (u[ k, j, i,3] * u[ k, j, i,1])
+                        fjac[i][3][4] = -c2 * (u[k][j][i][3] * u[k][j][i][1])
                              * tmp2;
-                        fjac[ i, 4,4] = c1 * (u[ k, j, i,1] * tmp1);
+                        fjac[i][4][4] = c1 * (u[k][j][i][1] * tmp1);
 
-                        njac[ i, 0,0] = 0.0;
-                        njac[ i, 1,0] = 0.0;
-                        njac[ i, 2,0] = 0.0;
-                        njac[ i, 3,0] = 0.0;
-                        njac[ i, 4,0] = 0.0;
+                        njac[i][0][0] = 0.0;
+                        njac[i][1][0] = 0.0;
+                        njac[i][2][0] = 0.0;
+                        njac[i][3][0] = 0.0;
+                        njac[i][4][0] = 0.0;
 
-                        njac[ i, 0,1] = -con43 * c3c4 * tmp2 * u[ k, j, i,1];
-                        njac[ i, 1,1] = con43 * c3c4 * tmp1;
-                        njac[ i, 2,1] = 0.0;
-                        njac[ i, 3,1] = 0.0;
-                        njac[ i, 4,1] = 0.0;
+                        njac[i][0][1] = -con43 * c3c4 * tmp2 * u[k][j][i][1];
+                        njac[i][1][1] = con43 * c3c4 * tmp1;
+                        njac[i][2][1] = 0.0;
+                        njac[i][3][1] = 0.0;
+                        njac[i][4][1] = 0.0;
 
-                        njac[ i, 0,2] = -c3c4 * tmp2 * u[ k, j, i,2];
-                        njac[ i, 1,2] = 0.0;
-                        njac[ i, 2,2] = c3c4 * tmp1;
-                        njac[ i, 3,2] = 0.0;
-                        njac[ i, 4,2] = 0.0;
+                        njac[i][0][2] = -c3c4 * tmp2 * u[k][j][i][2];
+                        njac[i][1][2] = 0.0;
+                        njac[ i][2][2] = c3c4 * tmp1;
+                        njac[i][3][2] = 0.0;
+                        njac[i][4][2] = 0.0;
 
-                        njac[ i, 0,3] = -c3c4 * tmp2 * u[ k, j, i,3];
-                        njac[ i, 1,3] = 0.0;
-                        njac[ i, 2,3] = 0.0;
-                        njac[ i, 3,3] = c3c4 * tmp1;
-                        njac[ i, 4,3] = 0.0;
+                        njac[i][0][3] = -c3c4 * tmp2 * u[k][j][i][3];
+                        njac[i][1][3] = 0.0;
+                        njac[i][2][3] = 0.0;
+                        njac[i][3][3] = c3c4 * tmp1;
+                        njac[i][4][3] = 0.0;
 
-                        njac[ i, 0,4] = -(con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[ k, j, i,1], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[ k, j, i,2], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[ k, j, i,3], 2))
-                             - c1345 * tmp2 * u[ k, j, i,4];
+                        njac[i][0][4] = -(con43 * c3c4
+                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][1], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[k][j][i][2], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[k][j][i][3], 2))
+                             - c1345 * tmp2 * u[k][j][i][4];
 
-                        njac[ i, 1,4] = (con43 * c3c4
-                             - c1345) * tmp2 * u[ k, j, i,1];
-                        njac[ i, 2,4] = (c3c4 - c1345) * tmp2 * u[ k, j, i,2];
-                        njac[ i, 3,4] = (c3c4 - c1345) * tmp2 * u[ k, j, i,3];
-                        njac[ i, 4,4] = (c1345) * tmp1;
+                        njac[i][1][4] = (con43 * c3c4
+                             - c1345) * tmp2 * u[k][j][i][1];
+                        njac[i][2][4] = (c3c4 - c1345) * tmp2 * u[k][j][i][2];
+                        njac[i][3][4] = (c3c4 - c1345) * tmp2 * u[k][j][i][3];
+                        njac[i][4][4] = (c1345) * tmp1;
 
                     }
                     //---------------------------------------------------------------------
@@ -1199,167 +1198,167 @@ namespace NPB3_0_JAV
                         tmp1 = dt * tx1;
                         tmp2 = dt * tx2;
 
-                        lhs[ i, aa, 0,0] = -tmp2 * fjac[ (i - 1), 0,0]
-                             - tmp1 * njac[ (i - 1), 0,0]
+                        lhs[i][aa][0][0] = -tmp2 * fjac[i - 1][0][0]
+                             - tmp1 * njac[i - 1][0][0]
                              - tmp1 * dx1;
-                        lhs[ i, aa, 1,0] = -tmp2 * fjac[ (i - 1), 1,0]
-                             - tmp1 * njac[ (i - 1), 1,0];
-                        lhs[ i, aa, 2,0] = -tmp2 * fjac[ (i - 1), 2,0]
-                             - tmp1 * njac[ (i - 1), 2,0];
-                        lhs[ i, aa, 3,0] = -tmp2 * fjac[ (i - 1), 3,0]
-                             - tmp1 * njac[ (i - 1), 3,0];
-                        lhs[ i, aa, 4,0] = -tmp2 * fjac[ (i - 1), 4,0]
-                             - tmp1 * njac[ (i - 1), 4,0];
+                        lhs[i][aa][1][0] = -tmp2 * fjac[i - 1][1][0]
+                             - tmp1 * njac[i - 1][1][0];
+                        lhs[i][aa][2][0] = -tmp2 * fjac[i - 1][2][0]
+                             - tmp1 * njac[i - 1][2][0];
+                        lhs[i][aa][3][0] = -tmp2 * fjac[i - 1][3][0]
+                             - tmp1 * njac[i - 1][3][0];
+                        lhs[i][aa][4][0] = -tmp2 * fjac[i - 1][4][0]
+                             - tmp1 * njac[i - 1][4][0];
 
-                        lhs[ i, aa, 0,1] = -tmp2 * fjac[ (i - 1), 0,1]
-                             - tmp1 * njac[ (i - 1), 0,1];
-                        lhs[ i, aa, 1,1] = -tmp2 * fjac[ (i - 1), 1,1]
-                             - tmp1 * njac[ (i - 1), 1,1]
+                        lhs[i][aa][0][1] = -tmp2 * fjac[i - 1][0][1]
+                             - tmp1 * njac[i - 1][0][1];
+                        lhs[i][aa][1][1] = -tmp2 * fjac[i - 1][1][1]
+                             - tmp1 * njac[i - 1][1][1]
                              - tmp1 * dx2;
-                        lhs[ i, aa, 2,1] = -tmp2 * fjac[ (i - 1), 2,1]
-                             - tmp1 * njac[ (i - 1), 2,1];
-                        lhs[ i, aa, 3,1] = -tmp2 * fjac[ (i - 1), 3,1]
-                             - tmp1 * njac[ (i - 1), 3,1];
-                        lhs[ i, aa, 4,1] = -tmp2 * fjac[ (i - 1), 4,1]
-                             - tmp1 * njac[ (i - 1), 4,1];
+                        lhs[i][aa][2][1] = -tmp2 * fjac[i - 1][2][1]
+                             - tmp1 * njac[i - 1][2][1];
+                        lhs[i][aa][3][1] = -tmp2 * fjac[i - 1][3][1]
+                             - tmp1 * njac[i - 1][3][1];
+                        lhs[i][aa][4][1] = -tmp2 * fjac[i - 1][4][1]
+                             - tmp1 * njac[i - 1][4][1];
 
-                        lhs[ i, aa, 0,2] = -tmp2 * fjac[ (i - 1), 0,2]
-                             - tmp1 * njac[ (i - 1), 0,2];
-                        lhs[ i, aa, 1,2] = -tmp2 * fjac[ (i - 1), 1,2]
-                             - tmp1 * njac[ (i - 1), 1,2];
-                        lhs[ i, aa, 2,2] = -tmp2 * fjac[ (i - 1), 2,2]
-                             - tmp1 * njac[ (i - 1), 2,2]
+                        lhs[i][aa][0][2] = -tmp2 * fjac[i - 1][0][2]
+                             - tmp1 * njac[i - 1][0][2];
+                        lhs[i][aa][1][2] = -tmp2 * fjac[i - 1][1][2]
+                             - tmp1 * njac[i - 1][1][2];
+                        lhs[i][aa][2][2] = -tmp2 * fjac[i - 1][2][2]
+                             - tmp1 * njac[i - 1][2][2]
                              - tmp1 * dx3;
-                        lhs[ i, aa, 3,2] = -tmp2 * fjac[ (i - 1), 3,2]
-                             - tmp1 * njac[ (i - 1), 3,2];
-                        lhs[ i, aa, 4,2] = -tmp2 * fjac[ (i - 1), 4,2]
-                             - tmp1 * njac[ (i - 1), 4,2];
+                        lhs[i][aa][3][2] = -tmp2 * fjac[i - 1][3][2]
+                             - tmp1 * njac[i - 1][3][2];
+                        lhs[i][aa][4][2] = -tmp2 * fjac[i - 1][4][2]
+                             - tmp1 * njac[i - 1][4][2];
 
-                        lhs[ i, aa, 0,3] = -tmp2 * fjac[ (i - 1), 0,3]
-                             - tmp1 * njac[ (i - 1), 0,3];
-                        lhs[ i, aa, 1,3] = -tmp2 * fjac[ (i - 1), 1,3]
-                             - tmp1 * njac[ (i - 1), 1,3];
-                        lhs[ i, aa, 2,3] = -tmp2 * fjac[ (i - 1), 2,3]
-                             - tmp1 * njac[ (i - 1), 2,3];
-                        lhs[ i, aa, 3,3] = -tmp2 * fjac[ (i - 1), 3,3]
-                             - tmp1 * njac[ (i - 1), 3,3]
+                        lhs[i][aa][0][3] = -tmp2 * fjac[i - 1][0][3]
+                             - tmp1 * njac[i - 1][0][3];
+                        lhs[i][aa][1][3] = -tmp2 * fjac[i - 1][1][3]
+                             - tmp1 * njac[i - 1][1][3];
+                        lhs[i][aa][2][3] = -tmp2 * fjac[i - 1][2][3]
+                             - tmp1 * njac[i - 1][2][3];
+                        lhs[i][aa][3][3] = -tmp2 * fjac[i - 1][3][3]
+                             - tmp1 * njac[i - 1][3][3]
                              - tmp1 * dx4;
-                        lhs[ i, aa, 4,3] = -tmp2 * fjac[ (i - 1), 4,3]
-                             - tmp1 * njac[ (i - 1), 4,3];
+                        lhs[i][aa][4][3] = -tmp2 * fjac[i - 1][4][3]
+                             - tmp1 * njac[i - 1][4][3];
 
-                        lhs[ i, aa, 0,4] = -tmp2 * fjac[ (i - 1), 0,4]
-                             - tmp1 * njac[ (i - 1), 0,4];
-                        lhs[ i, aa, 1,4] = -tmp2 * fjac[ (i - 1), 1,4]
-                             - tmp1 * njac[ (i - 1), 1,4];
-                        lhs[ i, aa, 2,4] = -tmp2 * fjac[ (i - 1), 2,4]
-                             - tmp1 * njac[ (i - 1), 2,4];
-                        lhs[ i, aa, 3,4] = -tmp2 * fjac[ (i - 1), 3,4]
-                             - tmp1 * njac[ (i - 1), 3,4];
-                        lhs[ i, aa, 4,4] = -tmp2 * fjac[ (i - 1), 4,4]
-                             - tmp1 * njac[ (i - 1), 4,4]
+                        lhs[i][aa][0][4] = -tmp2 * fjac[i - 1][0][4]
+                             - tmp1 * njac[i - 1][0][4];
+                        lhs[i][aa][1][4] = -tmp2 * fjac[i - 1][1][4]
+                             - tmp1 * njac[i - 1][1][4];
+                        lhs[i][aa][2][4] = -tmp2 * fjac[i - 1][2][4]
+                             - tmp1 * njac[i - 1][2][4];
+                        lhs[i][aa][3][4] = -tmp2 * fjac[i - 1][3][4]
+                             - tmp1 * njac[i - 1][3][4];
+                        lhs[i][aa][4][4] = -tmp2 * fjac[i - 1][4][4]
+                             - tmp1 * njac[i - 1][4][4]
                              - tmp1 * dx5;
 
-                        lhs[ i, bb, 0,0] = 1.0
-                             + tmp1 * 2.0 * njac[ i, 0,0]
+                        lhs[ i][bb][0][0] = 1.0
+                             + tmp1 * 2.0 * njac[i][0][0]
                              + tmp1 * 2.0 * dx1;
-                        lhs[ i, bb, 1,0] = tmp1 * 2.0 * njac[ i, 1,0];
-                        lhs[ i, bb, 2,0] = tmp1 * 2.0 * njac[ i, 2,0];
-                        lhs[ i, bb, 3,0] = tmp1 * 2.0 * njac[ i, 3,0];
-                        lhs[ i, bb, 4,0] = tmp1 * 2.0 * njac[ i, 4,0];
+                        lhs[i][bb][1][0] = tmp1 * 2.0 * njac[i][1][0];
+                        lhs[i][bb][2][0] = tmp1 * 2.0 * njac[i][2][0];
+                        lhs[i][bb][3][0] = tmp1 * 2.0 * njac[i][3][0];
+                        lhs[i][bb][4][0] = tmp1 * 2.0 * njac[i][4][0];
 
 
 
-                        lhs[ i, bb, 0,1] = tmp1 * 2.0 * njac[ i, 0,1];
-                        lhs[ i, bb, 1,1] = 1.0
-                             + tmp1 * 2.0 * njac[ i, 1,1]
+                        lhs[ i][bb][0][1] = tmp1 * 2.0 * njac[i][0][1];
+                        lhs[i][bb][1][1] = 1.0
+                             + tmp1 * 2.0 * njac[i][1][1]
                              + tmp1 * 2.0 * dx2;
-                        lhs[ i, bb, 2,1] = tmp1 * 2.0 * njac[ i, 2,1];
-                        lhs[ i, bb, 3,1] = tmp1 * 2.0 * njac[ i, 3,1];
-                        lhs[ i, bb, 4,1] = tmp1 * 2.0 * njac[ i, 4,1];
+                        lhs[i][bb][2][1] = tmp1 * 2.0 * njac[i][2][1];
+                        lhs[i][bb][3][1] = tmp1 * 2.0 * njac[i][3][1];
+                        lhs[i][bb][4][1] = tmp1 * 2.0 * njac[i][4][1];
 
-                        lhs[ i, bb, 0,2] = tmp1 * 2.0 * njac[ i, 0,2];
-                        lhs[ i, bb, 1,2] = tmp1 * 2.0 * njac[ i, 1,2];
-                        lhs[ i, bb, 2,2] = 1.0
-                             + tmp1 * 2.0 * njac[ i, 2,2]
+                        lhs[ i][bb][0][2] = tmp1 * 2.0 * njac[i][0][2];
+                        lhs[i][bb][1][2] = tmp1 * 2.0 * njac[i][1][2];
+                        lhs[i][bb][2][2] = 1.0
+                             + tmp1 * 2.0 * njac[ i][2][2]
                              + tmp1 * 2.0 * dx3;
-                        lhs[ i, bb, 3,2] = tmp1 * 2.0 * njac[ i, 3,2];
-                        lhs[ i, bb, 4,2] = tmp1 * 2.0 * njac[ i, 4,2];
+                        lhs[i][bb][3][2] = tmp1 * 2.0 * njac[i][3][2];
+                        lhs[i][bb][4][2] = tmp1 * 2.0 * njac[i][4][2];
 
-                        lhs[ i, bb, 0,3] = tmp1 * 2.0 * njac[ i, 0,3];
-                        lhs[ i, bb, 1,3] = tmp1 * 2.0 * njac[ i, 1,3];
-                        lhs[ i, bb, 2,3] = tmp1 * 2.0 * njac[ i, 2,3];
-                        lhs[ i, bb, 3,3] = 1.0
-                             + tmp1 * 2.0 * njac[ i, 3,3]
+                        lhs[ i][bb][0][3] = tmp1 * 2.0 * njac[i][0][3];
+                        lhs[i][bb][1][3] = tmp1 * 2.0 * njac[i][1][3];
+                        lhs[i][bb][2][3] = tmp1 * 2.0 * njac[i][2][3];
+                        lhs[i][bb][3][3] = 1.0
+                             + tmp1 * 2.0 * njac[i][3][3]
                              + tmp1 * 2.0 * dx4;
-                        lhs[ i, bb, 4,3] = tmp1 * 2.0 * njac[ i, 4,3];
+                        lhs[i][bb][4][3] = tmp1 * 2.0 * njac[i][4][3];
 
-                        lhs[ i, bb, 0,4] = tmp1 * 2.0 * njac[ i, 0,4];
-                        lhs[ i, bb, 1,4] = tmp1 * 2.0 * njac[ i, 1,4];
-                        lhs[ i, bb, 2,4] = tmp1 * 2.0 * njac[ i, 2,4];
-                        lhs[ i, bb, 3,4] = tmp1 * 2.0 * njac[ i, 3,4];
-                        lhs[ i, bb, 4,4] = 1.0
-                             + tmp1 * 2.0 * njac[ i, 4,4]
+                        lhs[ i][bb][0][4] = tmp1 * 2.0 * njac[i][0][4];
+                        lhs[ i][bb][1][4] = tmp1 * 2.0 * njac[i][1][4];
+                        lhs[ i][bb][2][4] = tmp1 * 2.0 * njac[i][2][4];
+                        lhs[ i][bb][3][4] = tmp1 * 2.0 * njac[i][3][4];
+                        lhs[ i][bb][4][4] = 1.0
+                             + tmp1 * 2.0 * njac[i][4][4]
                              + tmp1 * 2.0 * dx5;
 
 
-                        lhs[ i, cc, 0,0] = tmp2 * fjac[ (i + 1), 0,0]
-                                 - tmp1 * njac[ (i + 1), 0,0]
+                        lhs[i][cc][0][0] = tmp2 * fjac[i+1][0][0]
+                                 - tmp1 * njac[i + 1][0][0]
                                  - tmp1 * dx1;
-                        lhs[ i, cc, 1,0] = tmp2 * fjac[ (i + 1), 1,0]
-                             - tmp1 * njac[ (i + 1), 1,0];
-                        lhs[ i, cc, 2,0] = tmp2 * fjac[ (i + 1), 2,0]
-                             - tmp1 * njac[ (i + 1), 2,0];
-                        lhs[ i, cc, 3,0] = tmp2 * fjac[ (i + 1), 3,0]
-                             - tmp1 * njac[ (i + 1), 3,0];
-                        lhs[ i, cc, 4,0] = tmp2 * fjac[ (i + 1), 4,0]
-                             - tmp1 * njac[ (i + 1), 4,0];
+                        lhs[i][cc][1][0] = tmp2 * fjac[i+1][1][0]
+                             - tmp1 * njac[i + 1][1][0];
+                        lhs[i][cc][2][0] = tmp2 * fjac[i+1][2][0]
+                             - tmp1 * njac[i + 1][2][0];
+                        lhs[i][cc][3][0] = tmp2 * fjac[i+1][3][0]
+                             - tmp1 * njac[i + 1][3][0];
+                        lhs[i][cc][4][0] = tmp2 * fjac[i+1][4][0]
+                             - tmp1 * njac[i + 1][4][0];
 
-                        lhs[ i, cc, 0,1] = tmp2 * fjac[ (i + 1), 0,1]
-                             - tmp1 * njac[ (i + 1), 0,1];
-                        lhs[ i, cc, 1,1] = tmp2 * fjac[ (i + 1), 1,1]
-                             - tmp1 * njac[ (i + 1), 1,1]
+                        lhs[i][cc][0][1] = tmp2 * fjac[i+1][0][1]
+                             - tmp1 * njac[i + 1][0][1];
+                        lhs[i][cc][1][1] = tmp2 * fjac[i+1][1][1]
+                             - tmp1 * njac[i + 1][1][1]
                              - tmp1 * dx2;
-                        lhs[ i, cc, 2,1] = tmp2 * fjac[ (i + 1), 2,1]
-                             - tmp1 * njac[ (i + 1), 2,1];
-                        lhs[ i, cc, 3,1] = tmp2 * fjac[ (i + 1), 3,1]
-                             - tmp1 * njac[ (i + 1), 3,1];
-                        lhs[ i, cc, 4,1] = tmp2 * fjac[ (i + 1), 4,1]
-                             - tmp1 * njac[ (i + 1), 4,1];
+                        lhs[i][cc][2][1] = tmp2 * fjac[i+1][2][1]
+                             - tmp1 * njac[i + 1][2][1];
+                        lhs[i][cc][3][1] = tmp2 * fjac[i+1][3][1]
+                             - tmp1 * njac[i + 1][3][1];
+                        lhs[i][cc][4][1] = tmp2 * fjac[i+1][4][1]
+                             - tmp1 * njac[i + 1][4][1];
 
-                        lhs[ i, cc, 0,2] = tmp2 * fjac[ (i + 1), 0,2]
-                             - tmp1 * njac[ (i + 1), 0,2];
-                        lhs[ i, cc, 1,2] = tmp2 * fjac[ (i + 1), 1,2]
-                             - tmp1 * njac[ (i + 1), 1,2];
-                        lhs[ i, cc, 2,2] = tmp2 * fjac[ (i + 1), 2,2]
-                             - tmp1 * njac[ (i + 1), 2,2]
+                        lhs[i][cc][0][2] = tmp2 * fjac[i+1][0][2]
+                             - tmp1 * njac[i + 1][0][2];
+                        lhs[i][cc][1][2] = tmp2 * fjac[i+1][1][2]
+                             - tmp1 * njac[i + 1][1][2];
+                        lhs[i][cc][2][2] = tmp2 * fjac[i+1][2][2]
+                             - tmp1 * njac[i + 1][2][2]
                              - tmp1 * dx3;
-                        lhs[ i, cc, 3,2] = tmp2 * fjac[ (i + 1), 3,2]
-                             - tmp1 * njac[ (i + 1), 3,2];
-                        lhs[ i, cc, 4,2] = tmp2 * fjac[ (i + 1), 4,2]
-                             - tmp1 * njac[ (i + 1), 4,2];
+                        lhs[i][cc][3][2] = tmp2 * fjac[i+1][3][2]
+                             - tmp1 * njac[i + 1][3][2];
+                        lhs[i][cc][4][2] = tmp2 * fjac[i+1][4][2]
+                             - tmp1 * njac[i + 1][4][2];
 
-                        lhs[ i, cc, 0,3] = tmp2 * fjac[ (i + 1), 0,3]
-                             - tmp1 * njac[ (i + 1), 0,3];
-                        lhs[ i, cc, 1,3] = tmp2 * fjac[ (i + 1), 1,3]
-                             - tmp1 * njac[ (i + 1), 1,3];
-                        lhs[ i, cc, 2,3] = tmp2 * fjac[ (i + 1), 2,3]
-                             - tmp1 * njac[ (i + 1), 2,3];
-                        lhs[ i, cc, 3,3] = tmp2 * fjac[ (i + 1), 3,3]
-                             - tmp1 * njac[ (i + 1), 3,3]
+                        lhs[i][cc][0][3] = tmp2 * fjac[i + 1][0][3]
+                             - tmp1 * njac[i + 1][0][3];
+                        lhs[i][cc][1][3] = tmp2 * fjac[i + 1][1][3]
+                             - tmp1 * njac[i + 1][1][3];
+                        lhs[i][cc][2][3] = tmp2 * fjac[i + 1][2][3]
+                             - tmp1 * njac[i + 1][2][3];
+                        lhs[i][cc][3][3] = tmp2 * fjac[i + 1][3][3]
+                             - tmp1 * njac[i + 1][3][3]
                              - tmp1 * dx4;
-                        lhs[ i, cc, 4,3] = tmp2 * fjac[ (i + 1), 4,3]
-                             - tmp1 * njac[ (i + 1), 4,3];
+                        lhs[i][cc][4][3] = tmp2 * fjac[i+1][4][3]
+                             - tmp1 * njac[i + 1][4][3];
 
-                        lhs[ i, cc, 0,4] = tmp2 * fjac[ (i + 1), 0,4]
-                             - tmp1 * njac[ (i + 1), 0,4];
-                        lhs[ i, cc, 1,4] = tmp2 * fjac[ (i + 1), 1,4]
-                             - tmp1 * njac[ (i + 1), 1,4];
-                        lhs[ i, cc, 2,4] = tmp2 * fjac[ (i + 1), 2,4]
-                             - tmp1 * njac[ (i + 1), 2,4];
-                        lhs[ i, cc, 3,4] = tmp2 * fjac[ (i + 1), 3,4]
-                             - tmp1 * njac[ (i + 1), 3,4];
-                        lhs[ i, cc, 4,4] = tmp2 * fjac[ (i + 1), 4,4]
-                             - tmp1 * njac[ (i + 1), 4,4]
+                        lhs[i][cc][0][4] = tmp2 * fjac[i+1][0][4]
+                             - tmp1 * njac[i + 1][0][4];
+                        lhs[i][cc][1][4] = tmp2 * fjac[i+1][1][4]
+                             - tmp1 * njac[i + 1][1][4];
+                        lhs[i][cc][2][4] = tmp2 * fjac[i+1][2][4]
+                             - tmp1 * njac[i + 1][2][4];
+                        lhs[i][cc][3][4] = tmp2 * fjac[i+1][3][4]
+                             - tmp1 * njac[i + 1][3][4];
+                        lhs[i][cc][4][4] = tmp2 * fjac[i+1][4][4]
+                             - tmp1 * njac[i + 1][4][4]
                              - tmp1 * dx5;
 
                     }
@@ -1381,9 +1380,7 @@ namespace NPB3_0_JAV
                     //     multiply c(0,j,k) by b_inverse and copy back to c
                     //     multiply rhs(0) by b_inverse(0) and copy to rhs
                     //---------------------------------------------------------------------
-					binvcrhs(lhs, bb, 0, 
-					         lhs, cc, 0,
-					         rhs, 0, j, k);
+					binvcrhs(lhs, bb, 0, lhs, cc, 0, rhs, 0, j, k);
 
                     //---------------------------------------------------------------------
                     //     begin inner most do loop
@@ -1402,9 +1399,7 @@ namespace NPB3_0_JAV
                         //---------------------------------------------------------------------
                         //     B(i) = B(i) - C(i-1)*A(i)
                         //---------------------------------------------------------------------
-                        matmul_sub(lhs, aa, i,
-						           lhs, cc, (i - 1),
-						           lhs, bb, i);
+                        matmul_sub(lhs, aa, i, lhs, cc, (i - 1), lhs, bb, i);
 
 
                         //---------------------------------------------------------------------
@@ -1433,8 +1428,7 @@ namespace NPB3_0_JAV
                     //---------------------------------------------------------------------
                     //     multiply rhs() by b_inverse() and copy to rhs
                     //---------------------------------------------------------------------
-                    binvrhs(lhs, bb, isize,
-					        rhs, isize, j, k);
+                    binvrhs(lhs, bb, isize, rhs, isize, j, k);
 
                     //---------------------------------------------------------------------
                     //     back solve: if last cell, then generate U(isize)=rhs(isize)
@@ -1449,8 +1443,8 @@ namespace NPB3_0_JAV
                         {
                             for (n = 0; n <= BLOCK_SIZE - 1; n++)
                             {
-                                rhs[ k, j, i,m] = rhs[ k, j, i,m]
-                                     - lhs[ i, cc, n,m] * rhs[ k, j, (i + 1),n];
+                                rhs[k][j][i][m] = rhs[k][j][i][m]
+                                     - lhs[i][cc][n][m] * rhs[ k][ j][ i + 1][n];
                             }
                         }
                     }
@@ -1459,423 +1453,448 @@ namespace NPB3_0_JAV
             if (timeron) timer.stop(t_xsolve);
         }
 
-        public void compute_rhs()
+	public void compute_rhs()
+	{
+		int nx2 = grid_points[0] - 2;
+		int ny2 = grid_points[1] - 2;
+		int nz2 = grid_points[2] - 2;
+
+			
+		int i, j, k, m;
+		double rho_inv, uijk, up1, um1, vijk, vp1, vm1,
+			   wijk, wp1, wm1;
+		//---------------------------------------------------------------------
+		//      compute the reciprocal of density, and the kinetic energy, 
+		//      and the speed of sound. 
+		//---------------------------------------------------------------------
+
+		for (k = 0; k <= grid_points[2] - 1; k++)
+		{
+			for (j = 0; j <= grid_points[1] - 1; j++)
+			{
+				for (i = 0; i <= grid_points[0] - 1; i++)
+				{
+					rho_inv = 1.0 / u[k][j][i][0];
+					rho_i[k][j][i] = rho_inv;
+					us[k][j][i] = u[k][j][i][1] * rho_inv;
+					vs[k][j][i] = u[k][j][i][2] * rho_inv;
+					ws[k][j][i] = u[k][j][i][3] * rho_inv;
+					square[k][j][i] = 0.5 * (
+								  u[k][j][i][1] * u[k][j][i][1] +
+								  u[k][j][i][2] * u[k][j][i][2] +
+								  u[k][j][i][3] * u[k][j][i][3]) * rho_inv;
+					qs[k][j][i] = square[k][j][i] * rho_inv;
+				}
+			}
+		}
+
+		//---------------------------------------------------------------------
+		// copy the exact forcing term to the right hand side;  because 
+		// this forcing term is known, we can store it on the whole grid
+		// including the boundary                   
+		//---------------------------------------------------------------------
+
+		for (k = 0; k <= grid_points[2] - 1; k++)
+		{
+			for (j = 0; j <= grid_points[1] - 1; j++)
+			{
+				for (i = 0; i <= grid_points[0] - 1; i++)
+				{
+					for (m = 0; m <= 4; m++)
+					{
+						rhs[k][j][i][m] = forcing[k][j][i][m];
+					}
+				}
+			}
+		}
+
+		//---------------------------------------------------------------------
+		//      compute xi-direction fluxes 
+		//---------------------------------------------------------------------
+		if (timeron) timer.start(t_rhsx);
+		for (k = 1; k <= nz2; k++)
+		{
+			for (j = 1; j <= ny2; j++)
+			{
+				for (i = 1; i <= nx2; i++)
+				{
+					uijk = us[k][j][i];
+					up1 = us[k][j][i+1];
+					um1 = us[k][j][i-1];
+
+					rhs[k][j][i][0] = rhs[k][j][i][0] + dx1tx1 *
+							  (u[k][j][i+1][0] - 2.0 * u[k][j][i][0] +
+							   u[k][j][i-1][0]) -
+							  tx2 * (u[k][j][i+1][1] - u[k][j][i-1][1]);
+
+					rhs[k][j][i][1] = rhs[k][j][i][1] + dx2tx1 *
+							  (u[k][j][i+1][1] - 2.0 * u[k][j][i][1] +
+							   u[k][j][i-1][1]) +
+							  xxcon2 * con43 * (up1 - 2.0 * uijk + um1) -
+							  tx2 * (u[k][j][i+1][1] * up1 -
+									 u[k][j][i-1][1] * um1 +
+									 (u[k][j][i+1][4] - square[k][j][i+1] -
+									  u[k][j][i-1][4] + square[k][j][i-1]) *
+									  c2);
+
+					rhs[k][j][i][2] = rhs[k][j][i][2] + dx3tx1 *
+							  (u[k][j][i+1][2] - 2.0 * u[k][j][i][2] +
+							   u[k][j][i-1][2]) +
+							  xxcon2 * (vs[k][j][i+1] - 2.0 * vs[k][j][i] +
+										vs[k][j][i-1]) -
+							  tx2 * (u[k][j][i+1][2] * up1 -
+									 u[k][j][i-1][2] * um1);
+
+					rhs[k][j][i][3] = rhs[k][j][i][3] + dx4tx1 *
+							  (u[k][j][i+1][3] - 2.0 * u[k][j][i][3] +
+							   u[k][j][i-1][3]) +
+							  xxcon2 * (ws[k][j][i+1] - 2.0 * ws[k][j][i] +
+										ws[k][j][i-1]) -
+							  tx2 * (u[k][j][i+1][3] * up1 -
+									 u[k][j][i-1][3] * um1);
+
+					rhs[k][j][i][4] = rhs[k][j][i][4] + dx5tx1 *
+							  (u[k][j][i+1][4] - 2.0 * u[k][j][i][4] +
+							   u[k][j][i-1][4]) +
+							  xxcon3 * (qs[k][j][i+1] - 2.0 * qs[k][j][i] +
+										qs[k][j][i-1]) +
+							  xxcon4 * (up1 * up1 - 2.0 * uijk * uijk +
+										um1 * um1) +
+							  xxcon5 * (u[k][j][i+1][4] * rho_i[k][j][i+1] -
+										2.0 * u[k][j][i][4] * rho_i[k][j][i] +
+										u[k][j][i-1][4] * rho_i[k][j][i-1]) -
+							  tx2 * ((c1 * u[k][j][i+1][4] -
+									   c2 * square[k][j][i+1]) * up1 -
+									  (c1 * u[k][j][i-1][4] -
+									   c2 * square[k][j][i-1]) * um1);
+				}
+
+				//---------------------------------------------------------------------
+				//      add fourth order xi-direction dissipation               
+				//---------------------------------------------------------------------
+
+				i = 1;
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (5.0 * u[k][j][i][m] - 4.0 * u[k][j][i+1][m] +
+									  u[k][j][i+2][m]);
+				}
+
+				i = 2;
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (-4.0 * u[k][j][i-1][m] + 6.0 * u[k][j][i][m] -
+								4.0 * u[k][j][i+1][m] + u[k][j][i+2][m]);
+				}
+
+				for (i = 3; i <= nx2 - 2; i++)
+				{
+					for (m = 0; m <= 4; m++)
+					{
+						rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							   (u[k][j][i-2][m] - 4.0 * u[k][j][i-1][m] +
+								6.0 * u[k][j][i][m] - 4.0 * u[k][j][i+1][m] +
+									u[k][j][i+2][m]);
+					}
+				}
+
+				i = nx2 - 1;
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (u[k][j][i-2][m] - 4.0 * u[k][j][i-1][m] +
+								6.0 * u[k][j][i][m] - 4.0 * u[k][j][i+1][m]);
+				}
+
+				i = nx2;
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (u[k][j][i-2][m] - 4.0 * u[k][j][i-1][m] +
+								5.0 * u[k][j][i][m]);
+				}
+			}
+		}
+		if (timeron) timer.stop(t_rhsx);
+
+		//---------------------------------------------------------------------
+		//      compute eta-direction fluxes 
+		//---------------------------------------------------------------------
+		if (timeron) timer.start(t_rhsy);
+		for (k = 1; k <= nz2; k++)
+		{
+			for (j = 1; j <= ny2; j++)
+			{
+				for (i = 1; i <= nx2; i++)
+				{
+					vijk = vs[k][j][i];
+					vp1 = vs[k][j+1][i];
+					vm1 = vs[k][j-1][i];
+					rhs[k][j][i][0] = rhs[k][j][i][0] + dy1ty1 *
+							 (u[k][j+1][i][0] - 2.0 * u[k][j][i][0] +
+							  u[k][j-1][i][0]) -
+							 ty2 * (u[k][j+1][i][2] - u[k][j-1][i][2]);
+					rhs[k][j][i][1] = rhs[k][j][i][1] + dy2ty1 *
+							 (u[k][j+1][i][1] - 2.0 * u[k][j][i][1] +
+							  u[k][j-1][i][1]) +
+							 yycon2 * (us[k][j+1][i] - 2.0 * us[k][j][i] +
+									   us[k][j-1][i]) -
+							 ty2 * (u[k][j+1][i][1] * vp1 -
+									u[k][j-1][i][1] * vm1);
+					rhs[k][j][i][2] = rhs[k][j][i][2] + dy3ty1 *
+							 (u[k][j+1][i][2] - 2.0 * u[k][j][i][2] +
+							  u[k][j-1][i][2]) +
+							 yycon2 * con43 * (vp1 - 2.0 * vijk + vm1) -
+							 ty2 * (u[k][j+1][i][2] * vp1 -
+									u[k][j-1][i][2] * vm1 +
+									(u[k][j+1][i][4] - square[k][j+1][i] -
+									 u[k][j-1][i][4] + square[k][j-1][i])
+									* c2);
+					rhs[k][j][i][3] = rhs[k][j][i][3] + dy4ty1 *
+							 (u[k][j+1][i][3] - 2.0 * u[k][j][i][3] +
+							  u[k][j-1][i][3]) +
+							 yycon2 * (ws[k][j+1][i] - 2.0 * ws[k][j][i] +
+									   ws[k][j-1][i]) -
+							 ty2 * (u[k][j+1][i][3] * vp1 -
+									u[k][j-1][i][3] * vm1);
+					rhs[k][j][i][4] = rhs[k][j][i][4] + dy5ty1 *
+							 (u[k][j+1][i][4] - 2.0 * u[k][j][i][4] +
+							  u[k][j-1][i][4]) +
+							 yycon3 * (qs[k][j+1][i] - 2.0 * qs[k][j][i] +
+									   qs[k][j-1][i]) +
+							 yycon4 * (vp1 * vp1 - 2.0 * vijk * vijk +
+									   vm1 * vm1) +
+							 yycon5 * (u[k][j+1][i][4] * rho_i[k][j+1][i] -
+									   2.0 * u[k][j][i][4] * rho_i[k][j][i] +
+									   u[k][j-1][i][4] * rho_i[k][j-1][i]) -
+							 ty2 * ((c1 * u[k][j+1][i][4] -
+									 c2 * square[k][j+1][i]) * vp1 -
+									(c1 * u[k][j-1][i][4] -
+									 c2 * square[k][j-1][i]) * vm1);
+				}
+			}
+
+			//---------------------------------------------------------------------
+			//      add fourth order eta-direction dissipation         
+			//---------------------------------------------------------------------
+
+			j = 1;
+			for (i = 1; i <= nx2; i++)
+			{
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (5.0 * u[k][j][i][m] - 4.0 * u[k][j+1][i][m] +
+									  u[k][j+2][i][m]);
+				}
+			}
+
+			j = 2;
+			for (i = 1; i <= nx2; i++)
+			{
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (-4.0 * u[k][j-1][i][m] + 6.0 * u[k][j][i][m] -
+								4.0 * u[k][j+1][i][m] + u[k][j+2][i][m]);
+				}
+			}
+
+			for (j = 3; j <= ny2 - 2; j++)
+			{
+				for (i = 1; i <= nx2; i++)
+				{
+					for (m = 0; m <= 4; m++)
+					{
+						rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							   (u[k][j-2][i][m] - 4.0 * u[k][j-1][i][m] +
+								6.0 * u[k][j][i][m] - 4.0 * u[k][j+1][i][m] +
+									u[k][j+2][i][m]);
+					}
+				}
+			}
+
+			j = ny2 - 1;
+			for (i = 1; i <= nx2; i++)
+			{
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (u[k][j-2][i][m] - 4.0 * u[k][j-1][i][m] +
+								6.0 * u[k][j][i][m] - 4.0 * u[k][j+1][i][m]);
+				}
+			}
+
+			j = ny2;
+			for (i = 1; i <= nx2; i++)
+			{
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (u[k][j-2][i][m] - 4.0 * u[k][j-1][i][m] +
+								5.0 * u[k][j][i][m]);
+				}
+			}
+		}
+		if (timeron) timer.stop(t_rhsy);
+
+		//---------------------------------------------------------------------
+		//      compute zeta-direction fluxes 
+		//---------------------------------------------------------------------
+		if (timeron) timer.start(t_rhsz);
+		for (k = 1; k <= nz2; k++)
+		{
+			for (j = 1; j <= ny2; j++)
+			{
+				for (i = 1; i <= nx2; i++)
+				{
+					wijk = ws[k][j][i];
+					wp1 = ws[k+1][j][i];
+					wm1 = ws[k-1][j][i];
+
+					rhs[k][j][i][0] = rhs[k][j][i][0] + dz1tz1 *
+							 (u[k+1][j][i][0] - 2.0 * u[k][j][i][0] +
+							  u[k-1][j][i][0]) -
+							 tz2 * (u[k+1][j][i][3] - u[k-1][j][i][3]);
+					rhs[k][j][i][1] = rhs[k][j][i][1] + dz2tz1 *
+							 (u[k+1][j][i][1] - 2.0 * u[k][j][i][1] +
+							  u[k-1][j][i][1]) +
+							 zzcon2 * (us[k+1][j][i] - 2.0 * us[k][j][i] +
+									   us[k-1][j][i]) -
+							 tz2 * (u[k+1][j][i][1] * wp1 -
+									u[k-1][j][i][1] * wm1);
+					rhs[k][j][i][2] = rhs[k][j][i][2] + dz3tz1 *
+							 (u[k+1][j][i][2] - 2.0 * u[k][j][i][2] +
+							  u[k-1][j][i][2]) +
+							 zzcon2 * (vs[k+1][j][i] - 2.0 * vs[k][j][i] +
+									   vs[k-1][j][i]) -
+							 tz2 * (u[k+1][j][i][2] * wp1 -
+									u[k-1][j][i][2] * wm1);
+					rhs[k][j][i][3] = rhs[k][j][i][3] + dz4tz1 *
+							 (u[k+1][j][i][3] - 2.0 * u[k][j][i][3] +
+							  u[k-1][j][i][3]) +
+							 zzcon2 * con43 * (wp1 - 2.0 * wijk + wm1) -
+							 tz2 * (u[k+1][j][i][3] * wp1 -
+									u[k-1][j][i][3] * wm1 +
+									(u[k+1][j][i][4] - square[k+1][j][i] -
+									 u[k-1][j][i][4] + square[k-1][j][i])
+									* c2);
+					rhs[k][j][i][4] = rhs[k][j][i][4] + dz5tz1 *
+							 (u[k+1][j][i][4] - 2.0 * u[k][j][i][4] +
+							  u[k-1][j][i][4]) +
+							 zzcon3 * (qs[k+1][j][i] - 2.0 * qs[k][j][i] +
+									   qs[k-1][j][i]) +
+							 zzcon4 * (wp1 * wp1 - 2.0 * wijk * wijk +
+									   wm1 * wm1) +
+							 zzcon5 * (u[k+1][j][i][4] * rho_i[k+1][j][i] -
+									   2.0 * u[k][j][i][4] * rho_i[k][j][i] +
+									   u[k-1][j][i][4] * rho_i[k-1][j][i]) -
+							 tz2 * ((c1 * u[k+1][j][i][4] -
+									  c2 * square[k+1][j][i]) * wp1 -
+									 (c1 * u[k-1][j][i][4] -
+									  c2 * square[k-1][j][i]) * wm1);
+				}
+			}
+		}
+
+		//---------------------------------------------------------------------
+		//      add fourth order zeta-direction dissipation                
+		//---------------------------------------------------------------------
+
+		k = 1;
+		for (j = 1; j <= ny2; j++)
+		{
+			for (i = 1; i <= nx2; i++)
+			{
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (5.0 * u[k][j][i][m] - 4.0 * u[k+1][j][i][m] +
+									  u[k+2][j][i][m]);
+				}
+			}
+		}
+
+		k = 2;
+		for (j = 1; j <= ny2; j++)
+		{
+			for (i = 1; i <= nx2; i++)
+			{
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (-4.0 * u[k-1][j][i][m] + 6.0 * u[k][j][i][m] -
+								4.0 * u[k+1][j][i][m] + u[k+2][j][i][m]);
+				}
+			}
+		}
+
+		for (k = 3; k <= nz2 - 2; k++)
+		{
+			for (j = 1; j <= ny2; j++)
+			{
+				for (i = 1; i <= nx2; i++)
+				{
+					for (m = 0; m <= 4; m++)
+					{
+						rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							   (u[k-2][j][i][m] - 4.0 * u[k-1][j][i][m] +
+								6.0 * u[k][j][i][m] - 4.0 * u[k+1][j][i][m] +
+									u[k+2][j][i][m]);
+					}
+				}
+			}
+		}
+
+		k = nz2 - 1;
+		for (j = 1; j <= ny2; j++)
+		{
+			for (i = 1; i <= nx2; i++)
+			{
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (u[k-2][j][i][m] - 4.0 * u[k-1][j][i][m] +
+								6.0 * u[k][j][i][m] - 4.0 * u[k+1][j][i][m]);
+				}
+			}
+		}
+
+		k = nz2;
+		for (j = 1; j <= ny2; j++)
+		{
+			for (i = 1; i <= nx2; i++)
+			{
+				for (m = 0; m <= 4; m++)
+				{
+					rhs[k][j][i][m] = rhs[k][j][i][m] - dssp *
+							  (u[k-2][j][i][m] - 4.0 * u[k-1][j][i][m] +
+								5.0 * u[k][j][i][m]);
+				}
+			}
+		}
+		if (timeron) timer.stop(t_rhsz);
+
+
+        for (m = 0; m <= 4; m++)
         {
-            int i, j, k, m;
-            double rho_inv, uijk, up1, um1, vijk, vp1, vm1,
-                   wijk, wp1, wm1;
-
-            if (timeron) timer.start(t_rhs);
-            //---------------------------------------------------------------------
-            //     compute the reciprocal of density, and the kinetic energy,
-            //     and the speed of sound.
-            //---------------------------------------------------------------------
-            for (k = 0; k <= grid_points[2] - 1; k++)
+            for (k = 1; k <= nz2; k++)
             {
-                for (j = 0; j <= grid_points[1] - 1; j++)
+
+                for (j = 1; j <= ny2; j++)
                 {
-                    for (i = 0; i <= grid_points[0] - 1; i++)
+                    for (i = 1; i <= nx2; i++)
                     {
-                        rho_inv = 1.0 / u[ k, j, i,0];
-                        rho_i[ k, j,i] = rho_inv;
-                        us[ k, j,i] = u[ k, j, i,1] * rho_inv;
-                        vs[ k, j,i] = u[ k, j, i,2] * rho_inv;
-                        ws[ k, j,i] = u[ k, j, i,3] * rho_inv;
-                        square[ k, j,i] = 0.5 * (
-                                u[ k, j, i,1] * u[ k, j, i,1] +
-                                u[ k, j, i,2] * u[ k, j, i,2] +
-                                u[ k, j, i,3] * u[ k, j, i,3]) * rho_inv;
-                        qs[ k, j,i] = square[ k, j,i] * rho_inv;
+                        rhs[k][j][i][m] = rhs[k][j][i][m] * dt;
+
                     }
                 }
             }
-
-            //---------------------------------------------------------------------
-            // copy the exact forcing term to the right hand side;  because
-            // this forcing term is known, we can store it on the whole grid
-            // including the boundary
-            //---------------------------------------------------------------------
-
-            for (k = 0; k <= grid_points[2] - 1; k++)
-            {
-                for (j = 0; j <= grid_points[1] - 1; j++)
-                {
-                    for (i = 0; i <= grid_points[0] - 1; i++)
-                    {
-                        for (m = 0; m <= 4; m++)
-                        {
-                            rhs[ k, j, i,m] = forcing[ k, j, i,m];
-                        }
-                    }
-                }
-            }
-
-            if (timeron) timer.start(t_rhsx);
-            //---------------------------------------------------------------------
-            //     compute xi-direction fluxes
-            //---------------------------------------------------------------------
-            for (k = 1; k <= grid_points[2] - 2; k++)
-            {
-                for (j = 1; j <= grid_points[1] - 2; j++)
-                {
-                    for (i = 1; i <= grid_points[0] - 2; i++)
-                    {
-                        uijk = us[ k, j,i];
-                        up1 = us[ k, j,(i + 1)];
-                        um1 = us[ k, j,(i - 1)];
-
-                        rhs[ k, j, i,0] = rhs[ k, j, i,0] + dx1tx1 *
-                                (u[ k, j, (i + 1),0] - 2.0 * u[ k, j, i,0] +
-                                u[ k, j, (i - 1),0]) -
-                                tx2 * (u[ k, j, (i + 1),1] - u[ k, j, (i - 1),1]);
-
-                        rhs[ k, j, i,1] = rhs[ k, j, i,1] + dx2tx1 *
-                                (u[ k, j, (i + 1),1] - 2.0 * u[ k, j, i,1] +
-                                u[ k, j, (i - 1),1]) +
-                                xxcon2 * con43 * (up1 - 2.0 * uijk + um1) -
-                                tx2 * (u[ k, j, (i + 1),1] * up1 -
-                                u[ k, j, (i - 1),1] * um1 +
-                                (u[ k, j, (i + 1),4] - square[ k, j,(i + 1)] -
-                                u[ k, j, (i - 1),4] + square[ k, j,(i - 1)]) *
-                                c2);
-
-                        rhs[ k, j, i,2] = rhs[ k, j, i,2] + dx3tx1 *
-                                (u[ k, j, (i + 1),2] - 2.0 * u[ k, j, i,2] +
-                                u[ k, j, (i - 1),2]) +
-                                xxcon2 * (vs[ k, j,(i + 1)] - 2.0 * vs[ k, j,i] +
-                                vs[ k, j,(i - 1)]) -
-                                tx2 * (u[ k, j, (i + 1),2] * up1 -
-                                u[ k, j, (i - 1),2] * um1);
-
-                        rhs[ k, j, i,3] = rhs[ k, j, i,3] + dx4tx1 *
-                                (u[ k, j, (i + 1),3] - 2.0 * u[ k, j, i,3] +
-                                u[ k, j, (i - 1),3]) +
-                                xxcon2 * (ws[ k, j,(i + 1)] - 2.0 * ws[ k, j,i] +
-                                ws[ k, j,(i - 1)]) -
-                                tx2 * (u[ k, j, (i + 1),3] * up1 -
-                                u[ k, j, (i - 1),3] * um1);
-
-                        rhs[ k, j, i,4] = rhs[ k, j, i,4] + dx5tx1 *
-                                (u[ k, j, (i + 1),4] - 2.0 * u[ k, j, i,4] +
-                                u[ k, j, (i - 1),4]) +
-                                xxcon3 * (qs[ k, j,(i + 1)] - 2.0 * qs[ k, j,i] +
-                                qs[ k, j,(i - 1)]) +
-                                xxcon4 * (up1 * up1 - 2.0 * uijk * uijk +
-                                um1 * um1) +
-                                xxcon5 * (u[ k, j, (i + 1),4] * rho_i[ k, j,(i + 1)] -
-                                2.0 * u[ k, j, i,4] * rho_i[ k, j,i] +
-                                u[ k, j, (i - 1),4] * rho_i[ k, j,(i - 1)]) -
-                                tx2 * ((c1 * u[ k, j, (i + 1),4] -
-                                c2 * square[ k, j,(i + 1)]) * up1 -
-                                (c1 * u[ k, j, (i - 1),4] -
-                                c2 * square[ k, j,(i - 1)]) * um1);
-                    }
-                }
-
-                //---------------------------------------------------------------------
-                //     add fourth order xi-direction dissipation
-                //---------------------------------------------------------------------
-                for (j = 1; j <= grid_points[1] - 2; j++)
-                {
-                    i = 1;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (5.0 * u[ k, j, i,m] - 4.0 * u[ k, j, (i + 1),m] +
-                                   u[ k, j, (i + 2),m]);
-                    }
-
-                    i = 2;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (-4.0 * u[ k, j, (i - 1),m] + 6.0 * u[ k, j, i,m] -
-                                   4.0 * u[ k, j, (i + 1),m] + u[ k, j, (i + 2),m]);
-                    }
-
-                    for (m = 0; m <= 4; m++)
-                    {
-                        for (i = 3; i <= grid_points[0] - 4; i++)
-                        {
-                            rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                    (u[ k, j, (i - 2),m] - 4.0 * u[ k, j, (i - 1),m] +
-                                    6.0 * u[ k, j, i,m] - 4.0 * u[ k, j, (i + 1),m] +
-                                    u[ k, j, (i + 2),m]);
-                        }
-                    }
-
-                    i = grid_points[0] - 3;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (u[ k, j, (i - 2),m] - 4.0 * u[ k, j, (i - 1),m] +
-                                   6.0 * u[ k, j, i,m] - 4.0 * u[ k, j, (i + 1),m]);
-                    }
-
-                    i = grid_points[0] - 2;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (u[ k, j, (i - 2),m] - 4.0 * u[ k, j, (i - 1),m] +
-                                   5.0 * u[ k, j, i,m]);
-                    }
-                }
-            }
-            if (timeron) timer.stop(t_rhsx);
-
-            if (timeron) timer.start(t_rhsy);
-            //---------------------------------------------------------------------
-            //     compute eta-direction fluxes
-            //---------------------------------------------------------------------
-            for (k = 1; k <= grid_points[2] - 2; k++)
-            {
-                for (j = 1; j <= grid_points[1] - 2; j++)
-                {
-                    for (i = 1; i <= grid_points[0] - 2; i++)
-                    {
-                        vijk = vs[ k, j,i];
-                        vp1 = vs[ k, (j + 1),i];
-                        vm1 = vs[ k, (j - 1),i];
-                        rhs[ k, j, i,0] = rhs[ k, j, i,0] + dy1ty1 *
-                                (u[ k, (j + 1), i,0] - 2.0 * u[ k, j, i,0] +
-                                u[ k, (j - 1), i,0]) -
-                                ty2 * (u[ k, (j + 1), i,2] - u[ k, (j - 1), i,2]);
-                        rhs[ k, j, i,1] = rhs[ k, j, i,1] + dy2ty1 *
-                                (u[ k, (j + 1), i,1] - 2.0 * u[ k, j, i,1] +
-                                u[ k, (j - 1), i,1]) +
-                                yycon2 * (us[ k, (j + 1),i] - 2.0 * us[ k, j,i] +
-                                us[ k, (j - 1),i]) -
-                                ty2 * (u[ k, (j + 1), i,1] * vp1 -
-                                u[ k, (j - 1), i,1] * vm1);
-                        rhs[ k, j, i,2] = rhs[ k, j, i,2] + dy3ty1 *
-                                (u[ k, (j + 1), i,2] - 2.0 * u[ k, j, i,2] +
-                                u[ k, (j - 1), i,2]) +
-                                yycon2 * con43 * (vp1 - 2.0 * vijk + vm1) -
-                                ty2 * (u[ k, (j + 1), i,2] * vp1 -
-                                u[ k, (j - 1), i,2] * vm1 +
-                                (u[ k, (j + 1), i,4] - square[ k, (j + 1),i] -
-                                u[ k, (j - 1), i,4] + square[ k, (j - 1),i])
-                                * c2);
-                        rhs[ k, j, i,3] = rhs[ k, j, i,3] + dy4ty1 *
-                                (u[ k, (j + 1), i,3] - 2.0 * u[ k, j, i,3] +
-                                u[ k, (j - 1), i,3]) +
-                                yycon2 * (ws[ k, (j + 1),i] - 2.0 * ws[ k, j,i] +
-                                ws[ k, (j - 1),i]) -
-                                ty2 * (u[ k, (j + 1), i,3] * vp1 -
-                                u[ k, (j - 1), i,3] * vm1);
-                        rhs[ k, j, i,4] = rhs[ k, j, i,4] + dy5ty1 *
-                                (u[ k, (j + 1), i,4] - 2.0 * u[ k, j, i,4] +
-                                u[ k, (j - 1), i,4]) +
-                                yycon3 * (qs[ k, (j + 1),i] - 2.0 * qs[ k, j,i] +
-                                qs[ k, (j - 1),i]) +
-                                yycon4 * (vp1 * vp1 - 2.0 * vijk * vijk +
-                                vm1 * vm1) +
-                                yycon5 * (u[ k, (j + 1), i,4] * rho_i[ k, (j + 1),i] -
-                                2.0 * u[ k, j, i,4] * rho_i[ k, j,i] +
-                                u[ k, (j - 1), i,4] * rho_i[ k, (j - 1),i]) -
-                                ty2 * ((c1 * u[ k, (j + 1), i,4] -
-                                c2 * square[ k, (j + 1),i]) * vp1 -
-                                (c1 * u[ k, (j - 1), i,4] -
-                                c2 * square[ k, (j - 1),i]) * vm1);
-                    }
-                }
-
-                //---------------------------------------------------------------------
-                //     add fourth order eta-direction dissipation
-                //---------------------------------------------------------------------
-                for (i = 1; i <= grid_points[0] - 2; i++)
-                {
-                    j = 1;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (5.0 * u[ k, j, i,m] - 4.0 * u[ k, (j + 1), i,m] +
-                                   u[ k, (j + 2), i,m]);
-                    }
-
-                    j = 2;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (-4.0 * u[ k, (j - 1), i,m] + 6.0 * u[ k, j, i,m] -
-                                   4.0 * u[ k, (j + 1), i,m] + u[ k, (j + 2), i,m]);
-                    }
-                }
-
-                for (j = 3; j <= grid_points[1] - 4; j++)
-                {
-                    for (i = 1; i <= grid_points[0] - 2; i++)
-                    {
-                        for (m = 0; m <= 4; m++)
-                        {
-                            rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                    (u[ k, (j - 2), i,m] - 4.0 * u[ k, (j - 1), i,m] +
-                                    6.0 * u[ k, j, i,m] - 4.0 * u[ k, (j + 1), i,m] +
-                                    u[ k, (j + 2), i,m]);
-                        }
-                    }
-                }
-
-                for (i = 1; i <= grid_points[0] - 2; i++)
-                {
-                    j = grid_points[1] - 3;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (u[ k, (j - 2), i,m] - 4.0 * u[ k, (j - 1), i,m] +
-                                   6.0 * u[ k, j, i,m] - 4.0 * u[ k, (j + 1), i,m]);
-                    }
-
-                    j = grid_points[1] - 2;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (u[ k, (j - 2), i,m] - 4.0 * u[ k, (j - 1), i,m] +
-                                   5.0 * u[ k, j, i,m]);
-                    }
-                }
-            }
-            if (timeron) timer.stop(t_rhsy);
-            if (timeron) timer.start(t_rhsz);
-
-            //---------------------------------------------------------------------
-            //     compute zeta-direction fluxes
-            //---------------------------------------------------------------------
-            for (k = 1; k <= grid_points[2] - 2; k++)
-            {
-                for (j = 1; j <= grid_points[1] - 2; j++)
-                {
-                    for (i = 1; i <= grid_points[0] - 2; i++)
-                    {
-                        wijk = ws[ k, j,i];
-                        wp1 = ws[ (k + 1), j,i];
-                        wm1 = ws[ (k - 1), j,i];
-
-                        rhs[ k, j, i,0] = rhs[ k, j, i,0] + dz1tz1 *
-                                (u[ (k + 1), j, i,0] - 2.0 * u[ k, j, i,0] +
-                                u[ (k - 1), j, i,0]) -
-                                tz2 * (u[ (k + 1), j, i,3] - u[ (k - 1), j, i,3]);
-                        rhs[ k, j, i,1] = rhs[ k, j, i,1] + dz2tz1 *
-                                (u[ (k + 1), j, i,1] - 2.0 * u[ k, j, i,1] +
-                                u[ (k - 1), j, i,1]) +
-                                zzcon2 * (us[ (k + 1), j,i] - 2.0 * us[ k, j,i] +
-                                us[ (k - 1), j,i]) -
-                                tz2 * (u[ (k + 1), j, i,1] * wp1 -
-                                u[ (k - 1), j, i,1] * wm1);
-                        rhs[ k, j, i,2] = rhs[ k, j, i,2] + dz3tz1 *
-                                (u[ (k + 1), j, i,2] - 2.0 * u[ k, j, i,2] +
-                                u[ (k - 1), j, i,2]) +
-                                zzcon2 * (vs[ (k + 1), j,i] - 2.0 * vs[ k, j,i] +
-                                vs[ (k - 1), j,i]) -
-                                tz2 * (u[ (k + 1), j, i,2] * wp1 -
-                                u[ (k - 1), j, i,2] * wm1);
-                        rhs[ k, j, i,3] = rhs[ k, j, i,3] + dz4tz1 *
-                                (u[ (k + 1), j, i,3] - 2.0 * u[ k, j, i,3] +
-                                u[ (k - 1), j, i,3]) +
-                                zzcon2 * con43 * (wp1 - 2.0 * wijk + wm1) -
-                                tz2 * (u[ (k + 1), j, i,3] * wp1 -
-                                u[ (k - 1), j, i,3] * wm1 +
-                                (u[ (k + 1), j, i,4] - square[ (k + 1), j,i] -
-                                u[ (k - 1), j, i,4] + square[ (k - 1), j,i])
-                                * c2);
-                        rhs[ k, j, i,4] = rhs[ k, j, i,4] + dz5tz1 *
-                                (u[ (k + 1), j, i,4] - 2.0 * u[ k, j, i,4] +
-                                u[ (k - 1), j, i,4]) +
-                                zzcon3 * (qs[ (k + 1), j,i] - 2.0 * qs[ k, j,i] +
-                                qs[ (k - 1), j,i]) +
-                                zzcon4 * (wp1 * wp1 - 2.0 * wijk * wijk +
-                                wm1 * wm1) +
-                                zzcon5 * (u[ (k + 1), j, i,4] * rho_i[ (k + 1), j,i] -
-                                2.0 * u[ k, j, i,4] * rho_i[ k, j,i] +
-                                u[ (k - 1), j, i,4] * rho_i[ (k - 1), j,i]) -
-                                tz2 * ((c1 * u[ (k + 1), j, i,4] -
-                                c2 * square[ (k + 1), j,i]) * wp1 -
-                                (c1 * u[ (k - 1), j, i,4] -
-                                c2 * square[ (k - 1), j,i]) * wm1);
-                    }
-                }
-            }
-
-            //---------------------------------------------------------------------
-            //     add fourth order zeta-direction dissipation
-            //---------------------------------------------------------------------
-            for (j = 1; j <= grid_points[1] - 2; j++)
-            {
-                for (i = 1; i <= grid_points[0] - 2; i++)
-                {
-                    k = 1;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (5.0 * u[ k, j, i,m] - 4.0 * u[ (k + 1), j, i,m] +
-                                   u[ (k + 2), j, i,m]);
-                    }
-
-                    k = 2;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (-4.0 * u[ (k - 1), j, i,m] + 6.0 * u[ k, j, i,m] -
-                                   4.0 * u[ (k + 1), j, i,m] + u[ (k + 2), j, i,m]);
-                    }
-                }
-            }
-
-            for (k = 3; k <= grid_points[2] - 4; k++)
-            {
-                for (j = 1; j <= grid_points[1] - 2; j++)
-                {
-                    for (i = 1; i <= grid_points[0] - 2; i++)
-                    {
-                        for (m = 0; m <= 4; m++)
-                        {
-                            rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                    (u[ (k - 2), j, i,m] - 4.0 * u[ (k - 1), j, i,m] +
-                                    6.0 * u[ k, j, i,m] - 4.0 * u[ (k + 1), j, i,m] +
-                                    u[ (k + 2), j, i,m]);
-                        }
-                    }
-                }
-            }
-
-            for (j = 1; j <= grid_points[1] - 2; j++)
-            {
-                for (i = 1; i <= grid_points[0] - 2; i++)
-                {
-                    k = grid_points[2] - 3;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (u[ (k - 2), j, i,m] - 4.0 * u[ (k - 1), j, i,m] +
-                                   6.0 * u[ k, j, i,m] - 4.0 * u[ (k + 1), j, i,m]);
-                    }
-
-                    k = grid_points[2] - 2;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        rhs[ k, j, i,m] = rhs[ k, j, i,m] - dssp *
-                                   (u[ (k - 2), j, i,m] - 4.0 * u[ (k - 1), j, i,m] +
-                                   5.0 * u[ k, j, i,m]);
-                    }
-                }
-            }
-            if (timeron) timer.stop(t_rhsz);
-
-            for (k = 1; k <= grid_points[2] - 2; k++)
-            {
-                for (j = 1; j <= grid_points[1] - 2; j++)
-                {
-                    for (i = 1; i <= grid_points[0] - 2; i++)
-                    {
-                        for (m = 0; m <= 4; m++)
-                        {
-                            rhs[ k, j, i,m] = rhs[ k, j, i,m] * dt;
-                        }
-                    }
-                }
-            }
-            if (timeron) timer.stop(t_rhs);
         }
+		
+	}
 
         public void print_lhs()
         {
@@ -1886,11 +1905,11 @@ namespace NPB3_0_JAV
                 {
                     for (int m = 0; m < problem_size + 1; m++)
                     {
-                        count2 += njac[ m, j,i];
-                        count3 += fjac[ m, j,i];
+                        count2 += njac[m][j][i];
+                        count3 += fjac[m][j][i];
                         for (int k = 0; k < 3; k++)
                         {
-                            count1 += lhs[ m, k, j,i];
+                            count1 += lhs[m][k][j][i];
                         }
                     }
                 }
@@ -1926,87 +1945,87 @@ namespace NPB3_0_JAV
                     for (j = 0; j <= jsize; j++)
                     {
 
-                        tmp1 = rho_i[ k, j,i];
+                        tmp1 = rho_i[k][j][i];
                         tmp2 = tmp1 * tmp1;
                         tmp3 = tmp1 * tmp2;
 
-                        fjac[ j, 0,0] = 0.0;
-                        fjac[ j, 1,0] = 0.0;
-                        fjac[ j, 2,0] = 1.0;
-                        fjac[ j, 3,0] = 0.0;
-                        fjac[ j, 4,0] = 0.0;
+                        fjac[ j][0][0] = 0.0;
+                        fjac[ j][1][0] = 0.0;
+                        fjac[ j][2][0] = 1.0;
+                        fjac[ j][3][0] = 0.0;
+                        fjac[ j][4][0] = 0.0;
 
-                        fjac[ j, 0,1] = -(u[ k, j, i,1] * u[ k, j, i,2])
+                        fjac[j][0][1] = -(u[k][j][i][1] * u[k][j][i][2])
                              * tmp2;
-                        fjac[ j, 1,1] = u[ k, j, i,2] * tmp1;
-                        fjac[ j, 2,1] = u[ k, j, i,1] * tmp1;
-                        fjac[ j, 3,1] = 0.0;
-                        fjac[ j, 4,1] = 0.0;
+                        fjac[j][1][1] = u[k][j][i][2] * tmp1;
+                        fjac[j][2][1] = u[k][j][i][1] * tmp1;
+                        fjac[j][3][1] = 0.0;
+                        fjac[ j][4][1] = 0.0;
 
-                        fjac[ j, 0,2] = -(u[ k, j, i,2] * u[ k, j, i,2] * tmp2)
-                             + c2 * qs[ k, j,i];
-                        fjac[ j, 1,2] = -c2 * u[ k, j, i,1] * tmp1;
-                        fjac[ j, 2,2] = (2.0 - c2)
-                             * u[ k, j, i,2] * tmp1;
-                        fjac[ j, 3,2] = -c2 * u[ k, j, i,3] * tmp1;
-                        fjac[ j, 4,2] = c2;
+                        fjac[j][0][2] = -(u[k][j][i][2] * u[k][j][i][2] * tmp2)
+                             + c2 * qs[k][j][i];
+                        fjac[j][1][2] = -c2 * u[k][j][i][1] * tmp1;
+                        fjac[j][2][2] = (2.0 - c2)
+                             * u[k][j][i][2] * tmp1;
+                        fjac[j][3][2] = -c2 * u[k][j][i][3] * tmp1;
+                        fjac[j][4][2] = c2;
 
-                        fjac[ j, 0,3] = -(u[ k, j, i,2] * u[ k, j, i,3])
+                        fjac[j][0][3] = -(u[k][j][i][2] * u[k][j][i][3])
                              * tmp2;
-                        fjac[ j, 1,3] = 0.0;
-                        fjac[ j, 2,3] = u[ k, j, i,3] * tmp1;
-                        fjac[ j, 3,3] = u[ k, j, i,2] * tmp1;
-                        fjac[ j, 4,3] = 0.0;
+                        fjac[j][1][3] = 0.0;
+                        fjac[j][2][3] = u[k][j][i][3] * tmp1;
+                        fjac[j][3][3] = u[k][j][i][2] * tmp1;
+                        fjac[j][4][3] = 0.0;
 
-                        fjac[ j, 0,4] = (c2 * 2.0 * square[ k, j,i]
-                             - c1 * u[ k, j, i,4])
-                             * u[ k, j, i,2] * tmp2;
-                        fjac[ j, 1,4] = -c2 * u[ k, j, i,1] * u[ k, j, i,2]
+                        fjac[j][0][4] = (c2 * 2.0 * square[k][j][i]
+                             - c1 * u[k][j][i][4])
+                             * u[k][j][i][2] * tmp2;
+                        fjac[j][1][4] = -c2 * u[k][j][i][1] * u[k][j][i][2]
                              * tmp2;
-                        fjac[ j, 2,4] = c1 * u[ k, j, i,4] * tmp1
+                        fjac[j][2][4] = c1 * u[k][j][i][4] * tmp1
                              - c2
-                             * (qs[ k, j,i]
-                             + u[ k, j, i,2] * u[ k, j, i,2] * tmp2);
-                        fjac[ j, 3,4] = -c2 * (u[ k, j, i,2] * u[ k, j, i,3])
+                             * (qs[k][j][i]
+                             + u[k][j][i][2] * u[k][j][i][2] * tmp2);
+                        fjac[j][3][4] = -c2 * (u[k][j][i][2] * u[k][j][i][3])
                              * tmp2;
-                        fjac[ j, 4,4] = c1 * u[ k, j, i,2] * tmp1;
+                        fjac[j][4][4] = c1 * u[k][j][i][2] * tmp1;
 
-                        njac[ j, 0,0] = 0.0;
-                        njac[ j, 1,0] = 0.0;
-                        njac[ j, 2,0] = 0.0;
-                        njac[ j, 3,0] = 0.0;
-                        njac[ j, 4,0] = 0.0;
+                        njac[j][0][0] = 0.0;
+                        njac[j][1][0] = 0.0;
+                        njac[j][2][0] = 0.0;
+                        njac[j][3][0] = 0.0;
+                        njac[j][4][0] = 0.0;
 
-                        njac[ j, 0,1] = -c3c4 * tmp2 * u[ k, j, i,1];
-                        njac[ j, 1,1] = c3c4 * tmp1;
-                        njac[ j, 2,1] = 0.0;
-                        njac[ j, 3,1] = 0.0;
-                        njac[ j, 4,1] = 0.0;
+                        njac[j][0][1] = -c3c4 * tmp2 * u[k][j][i][1];
+                        njac[j][1][1] = c3c4 * tmp1;
+                        njac[j][2][1] = 0.0;
+                        njac[j][3][1] = 0.0;
+                        njac[j][4][1] = 0.0;
 
-                        njac[ j, 0,2] = -con43 * c3c4 * tmp2 * u[ k, j, i,2];
-                        njac[ j, 1,2] = 0.0;
-                        njac[ j, 2,2] = con43 * c3c4 * tmp1;
-                        njac[ j, 3,2] = 0.0;
-                        njac[ j, 4,2] = 0.0;
+                        njac[j][0][2] = -con43 * c3c4 * tmp2 * u[k][j][i][2];
+                        njac[j][1][2] = 0.0;
+                        njac[j][2][2] = con43 * c3c4 * tmp1;
+                        njac[j][3][2] = 0.0;
+                        njac[j][4][2] = 0.0;
 
-                        njac[ j, 0,3] = -c3c4 * tmp2 * u[ k, j, i,3];
-                        njac[ j, 1,3] = 0.0;
-                        njac[ j, 2,3] = 0.0;
-                        njac[ j, 3,3] = c3c4 * tmp1;
-                        njac[ j, 4,3] = 0.0;
+                        njac[j][0][3] = -c3c4 * tmp2 * u[k][j][i][3];
+                        njac[j][1][3] = 0.0;
+                        njac[j][2][3] = 0.0;
+                        njac[j][3][3] = c3c4 * tmp1;
+                        njac[j][4][3] = 0.0;
 
-                        njac[ j, 0,4] = -(c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[ k, j, i,1], 2))
+                        njac[j][0][4] = -(c3c4
+                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][1], 2))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[ k, j, i,2], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[ k, j, i,3], 2))
-                             - c1345 * tmp2 * u[ k, j, i,4];
+                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][2], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[k][j][i][3], 2))
+                             - c1345 * tmp2 * u[k][j][i][4];
 
-                        njac[ j, 1,4] = (c3c4 - c1345) * tmp2 * u[ k, j, i,1];
-                        njac[ j, 2,4] = (con43 * c3c4
-                             - c1345) * tmp2 * u[ k, j, i,2];
-                        njac[ j, 3,4] = (c3c4 - c1345) * tmp2 * u[ k, j, i,3];
-                        njac[ j, 4,4] = (c1345) * tmp1;
+                        njac[j][1][4] = (c3c4 - c1345) * tmp2 * u[k][j][i][1];
+                        njac[j][2][4] = (con43 * c3c4
+                             - c1345) * tmp2 * u[k][j][i][2];
+                        njac[j][3][4] = (c3c4 - c1345) * tmp2 * u[k][j][i][3];
+                        njac[j][4][4] = (c1345) * tmp1;
                     }
 
                     //---------------------------------------------------------------------
@@ -2020,168 +2039,168 @@ namespace NPB3_0_JAV
                         tmp2 = dt * ty2;
 
 
-                        lhs[ j, aa, 0,0] = -tmp2 * fjac[ (j - 1), 0,0]
-                             - tmp1 * njac[ (j - 1), 0,0]
+                        lhs[ j][aa][0][0] = -tmp2 * fjac[j-1][0][0]
+                             - tmp1 * njac[j-1][0][0]
                              - tmp1 * dy1;
-                        lhs[ j, aa, 1,0] = -tmp2 * fjac[ (j - 1), 1,0]
-                             - tmp1 * njac[ (j - 1), 1,0];
-                        lhs[ j, aa, 2,0] = -tmp2 * fjac[ (j - 1), 2,0]
-                             - tmp1 * njac[ (j - 1), 2,0];
-                        lhs[ j, aa, 3,0] = -tmp2 * fjac[ (j - 1), 3,0]
-                             - tmp1 * njac[ (j - 1), 3,0];
-                        lhs[ j, aa, 4,0] = -tmp2 * fjac[ (j - 1), 4,0]
-                             - tmp1 * njac[ (j - 1), 4,0];
+                        lhs[j][aa][1][0] = -tmp2 * fjac[j-1][1][0]
+                             - tmp1 * njac[j-1][1][0];
+                        lhs[j][aa][2][0] = -tmp2 * fjac[j-1][2][0]
+                             - tmp1 * njac[j-1][2][0];
+                        lhs[j][aa][3][0] = -tmp2 * fjac[j-1][3][0]
+                             - tmp1 * njac[j-1][3][0];
+                        lhs[j][aa][4][0] = -tmp2 * fjac[j-1][4][0]
+                             - tmp1 * njac[j-1][4][0];
 
-                        lhs[ j, aa, 0,1] = -tmp2 * fjac[ (j - 1), 0,1]
-                             - tmp1 * njac[ (j - 1), 0,1];
-                        lhs[ j, aa, 1,1] = -tmp2 * fjac[ (j - 1), 1,1]
-                             - tmp1 * njac[ (j - 1), 1,1]
+                        lhs[j][aa][0][1] = -tmp2 * fjac[j-1][0][1]
+                             - tmp1 * njac[j-1][0][1];
+                        lhs[j][aa][1][1] = -tmp2 * fjac[j-1][1][1]
+                             - tmp1 * njac[j-1][1][1]
                              - tmp1 * dy2;
-                        lhs[ j, aa, 2,1] = -tmp2 * fjac[ (j - 1), 2,1]
-                             - tmp1 * njac[ (j - 1), 2,1];
-                        lhs[ j, aa, 3,1] = -tmp2 * fjac[ (j - 1), 3,1]
-                             - tmp1 * njac[ (j - 1), 3,1];
-                        lhs[ j, aa, 4,1] = -tmp2 * fjac[ (j - 1), 4,1]
-                             - tmp1 * njac[ (j - 1), 4,1];
+                        lhs[j][aa][2][1] = -tmp2 * fjac[j-1][2][1]
+                             - tmp1 * njac[j-1][2][1];
+                        lhs[j][aa][3][1] = -tmp2 * fjac[j-1][3][1]
+                             - tmp1 * njac[j-1][3][1];
+                        lhs[j][aa][4][1] = -tmp2 * fjac[j-1][4][1]
+                             - tmp1 * njac[j-1][4][1];
 
 
-                        lhs[ j, aa, 0,2] = -tmp2 * fjac[ (j - 1), 0,2]
-                             - tmp1 * njac[ (j - 1), 0,2];
-                        lhs[ j, aa, 1,2] = -tmp2 * fjac[ (j - 1), 1,2]
-                             - tmp1 * njac[ (j - 1), 1,2];
-                        lhs[ j, aa, 2,2] = -tmp2 * fjac[ (j - 1), 2,2]
-                             - tmp1 * njac[ (j - 1), 2,2]
+                        lhs[j][aa][0][2] = -tmp2 * fjac[j-1][0][2]
+                             - tmp1 * njac[j-1][0][2];
+                        lhs[j][aa][1][2] = -tmp2 * fjac[j-1][1][2]
+                             - tmp1 * njac[j-1][1][2];
+                        lhs[j][aa][2][2] = -tmp2 * fjac[j-1][2][2]
+                             - tmp1 * njac[j-1][2][2]
                              - tmp1 * dy3;
-                        lhs[ j, aa, 3,2] = -tmp2 * fjac[ (j - 1), 3,2]
-                             - tmp1 * njac[ (j - 1), 3,2];
-                        lhs[ j, aa, 4,2] = -tmp2 * fjac[ (j - 1), 4,2]
-                             - tmp1 * njac[ (j - 1), 4,2];
+                        lhs[j][aa][3][2] = -tmp2 * fjac[j-1][3][2]
+                             - tmp1 * njac[j-1][3][2];
+                        lhs[j][aa][4][2] = -tmp2 * fjac[j-1][4][2]
+                             - tmp1 * njac[j-1][4][2];
 
 
-                        lhs[ j, aa, 0,3] = -tmp2 * fjac[ (j - 1), 0,3]
-                             - tmp1 * njac[ (j - 1), 0,3];
-                        lhs[ j, aa, 1,3] = -tmp2 * fjac[ (j - 1), 1,3]
-                             - tmp1 * njac[ (j - 1), 1,3];
-                        lhs[ j, aa, 2,3] = -tmp2 * fjac[ (j - 1), 2,3]
-                             - tmp1 * njac[ (j - 1), 2,3];
-                        lhs[ j, aa, 3,3] = -tmp2 * fjac[ (j - 1), 3,3]
-                             - tmp1 * njac[ (j - 1), 3,3]
+                        lhs[j][aa][0][3] = -tmp2 * fjac[j-1][0][3]
+                             - tmp1 * njac[j-1][0][3];
+                        lhs[j][aa][1][3] = -tmp2 * fjac[j-1][1][3]
+                             - tmp1 * njac[j-1][1][3];
+                        lhs[j][aa][2][3] = -tmp2 * fjac[j-1][2][3]
+                             - tmp1 * njac[j-1][2][3];
+                        lhs[j][aa][3][3] = -tmp2 * fjac[j-1][3][3]
+                             - tmp1 * njac[j-1][3][3]
                              - tmp1 * dy4;
-                        lhs[ j, aa, 4,3] = -tmp2 * fjac[ (j - 1), 4,3]
-                             - tmp1 * njac[ (j - 1), 4,3];
+                        lhs[j][aa][4][3] = -tmp2 * fjac[j-1][4][3]
+                             - tmp1 * njac[j-1][4][3];
 
 
 
-                        lhs[ j, aa, 0,4] = -tmp2 * fjac[ (j - 1), 0,4]
-                             - tmp1 * njac[ (j - 1), 0,4];
-                        lhs[ j, aa, 1,4] = -tmp2 * fjac[ (j - 1), 1,4]
-                             - tmp1 * njac[ (j - 1), 1,4];
-                        lhs[ j, aa, 2,4] = -tmp2 * fjac[ (j - 1), 2,4]
-                             - tmp1 * njac[ (j - 1), 2,4];
-                        lhs[ j, aa, 3,4] = -tmp2 * fjac[ (j - 1), 3,4]
-                             - tmp1 * njac[ (j - 1), 3,4];
-                        lhs[ j, aa, 4,4] = -tmp2 * fjac[ (j - 1), 4,4]
-                             - tmp1 * njac[ (j - 1), 4,4]
+                        lhs[j][aa][0][4] = -tmp2 * fjac[j-1][0][4]
+                             - tmp1 * njac[j-1][0][4];
+                        lhs[j][aa][1][4] = -tmp2 * fjac[j-1][1][4]
+                             - tmp1 * njac[j-1][1][4];
+                        lhs[j][aa][2][4] = -tmp2 * fjac[j-1][2][4]
+                             - tmp1 * njac[j-1][2][4];
+                        lhs[j][aa][3][4] = -tmp2 * fjac[j-1][3][4]
+                             - tmp1 * njac[j-1][3][4];
+                        lhs[j][aa][4][4] = -tmp2 * fjac[j-1][4][4]
+                             - tmp1 * njac[j-1][4][4]
                              - tmp1 * dy5;
 
-                        lhs[ j, bb, 0,0] = 1.0
-                             + tmp1 * 2.0 * njac[ j, 0,0]
+                        lhs[j][bb][0][0] = 1.0
+                             + tmp1 * 2.0 * njac[j][0][0]
                              + tmp1 * 2.0 * dy1;
-                        lhs[ j, bb, 1,0] = tmp1 * 2.0 * njac[ j, 1,0];
-                        lhs[ j, bb, 2,0] = tmp1 * 2.0 * njac[ j, 2,0];
-                        lhs[ j, bb, 3,0] = tmp1 * 2.0 * njac[ j, 3,0];
-                        lhs[ j, bb, 4,0] = tmp1 * 2.0 * njac[ j, 4,0];
+                        lhs[j][bb][1][0] = tmp1 * 2.0 * njac[j][1][0];
+                        lhs[j][bb][2][0] = tmp1 * 2.0 * njac[j][2][0];
+                        lhs[j][bb][3][0] = tmp1 * 2.0 * njac[j][3][0];
+                        lhs[j][bb][4][0] = tmp1 * 2.0 * njac[j][4][0];
 
-                        lhs[ j, bb, 0,1] = tmp1 * 2.0 * njac[ j, 0,1];
-                        lhs[ j, bb, 1,1] = 1.0
-                             + tmp1 * 2.0 * njac[ j, 1,1]
+                        lhs[j][bb][0][1] = tmp1 * 2.0 * njac[j][0][1];
+                        lhs[j][bb][1][1] = 1.0
+                             + tmp1 * 2.0 * njac[j][1][1]
                              + tmp1 * 2.0 * dy2;
-                        lhs[ j, bb, 2,1] = tmp1 * 2.0 * njac[ j, 2,1];
-                        lhs[ j, bb, 3,1] = tmp1 * 2.0 * njac[ j, 3,1];
-                        lhs[ j, bb, 4,1] = tmp1 * 2.0 * njac[ j, 4,1];
+                        lhs[j][bb][2][1] = tmp1 * 2.0 * njac[j][2][1];
+                        lhs[j][bb][3][1] = tmp1 * 2.0 * njac[j][3][1];
+                        lhs[j][bb][4][1] = tmp1 * 2.0 * njac[j][4][1];
 
-                        lhs[ j, bb, 0,2] = tmp1 * 2.0 * njac[ j, 0,2];
-                        lhs[ j, bb, 1,2] = tmp1 * 2.0 * njac[ j, 1,2];
-                        lhs[ j, bb, 2,2] = 1.0
-                             + tmp1 * 2.0 * njac[ j, 2,2]
+                        lhs[j][bb][0][2] = tmp1 * 2.0 * njac[j][0][2];
+                        lhs[j][bb][1][2] = tmp1 * 2.0 * njac[j][1][2];
+                        lhs[j][bb][2][2] = 1.0
+                             + tmp1 * 2.0 * njac[j][2][2]
                              + tmp1 * 2.0 * dy3;
-                        lhs[ j, bb, 3,2] = tmp1 * 2.0 * njac[ j, 3,2];
-                        lhs[ j, bb, 4,2] = tmp1 * 2.0 * njac[ j, 4,2];
+                        lhs[j][bb][3][2] = tmp1 * 2.0 * njac[j][3][2];
+                        lhs[j][bb][4][2] = tmp1 * 2.0 * njac[j][4][2];
 
-                        lhs[ j, bb, 0,3] = tmp1 * 2.0 * njac[ j, 0,3];
-                        lhs[ j, bb, 1,3] = tmp1 * 2.0 * njac[ j, 1,3];
-                        lhs[ j, bb, 2,3] = tmp1 * 2.0 * njac[ j, 2,3];
-                        lhs[ j, bb, 3,3] = 1.0
-                             + tmp1 * 2.0 * njac[ j, 3,3]
+                        lhs[j][bb][0][3] = tmp1 * 2.0 * njac[j][0][3];
+                        lhs[j][bb][1][3] = tmp1 * 2.0 * njac[j][1][3];
+                        lhs[j][bb][2][3] = tmp1 * 2.0 * njac[j][2][3];
+                        lhs[j][bb][3][3] = 1.0
+                             + tmp1 * 2.0 * njac[j][3][3]
                              + tmp1 * 2.0 * dy4;
-                        lhs[ j, bb, 4,3] = tmp1 * 2.0 * njac[ j, 4,3];
+                        lhs[j][bb][4][3] = tmp1 * 2.0 * njac[j][4][3];
 
-                        lhs[ j, bb, 0,4] = tmp1 * 2.0 * njac[ j, 0,4];
-                        lhs[ j, bb, 1,4] = tmp1 * 2.0 * njac[ j, 1,4];
-                        lhs[ j, bb, 2,4] = tmp1 * 2.0 * njac[ j, 2,4];
-                        lhs[ j, bb, 3,4] = tmp1 * 2.0 * njac[ j, 3,4];
-                        lhs[ j, bb, 4,4] = 1.0
-                             + tmp1 * 2.0 * njac[ j, 4,4]
+                        lhs[j][bb][0][4] = tmp1 * 2.0 * njac[j][0][4];
+                        lhs[j][bb][1][4] = tmp1 * 2.0 * njac[j][1][4];
+                        lhs[j][bb][2][4] = tmp1 * 2.0 * njac[j][2][4];
+                        lhs[j][bb][3][4] = tmp1 * 2.0 * njac[j][3][4];
+                        lhs[j][bb][4][4] = 1.0
+                             + tmp1 * 2.0 * njac[j][4][4]
                              + tmp1 * 2.0 * dy5;
 
-                        lhs[ j, cc, 0,0] = tmp2 * fjac[ (j + 1), 0,0]
-                             - tmp1 * njac[ (j + 1), 0,0]
+                        lhs[j][cc][0][0] = tmp2 * fjac[j + 1][0][0]
+                             - tmp1 * njac[j + 1][0][0]
                              - tmp1 * dy1;
-                        lhs[ j, cc, 1,0] = tmp2 * fjac[ (j + 1), 1,0]
-                             - tmp1 * njac[ (j + 1), 1,0];
-                        lhs[ j, cc, 2,0] = tmp2 * fjac[ (j + 1), 2,0]
-                             - tmp1 * njac[ (j + 1), 2,0];
-                        lhs[ j, cc, 3,0] = tmp2 * fjac[ (j + 1), 3,0]
-                             - tmp1 * njac[ (j + 1), 3,0];
-                        lhs[ j, cc, 4,0] = tmp2 * fjac[ (j + 1), 4,0]
-                             - tmp1 * njac[ (j + 1), 4,0];
+                        lhs[j][cc][1][0] = tmp2 * fjac[j + 1][1][0]
+                             - tmp1 * njac[j + 1][1][0];
+                        lhs[j][cc][2][0] = tmp2 * fjac[j + 1][2][0]
+                             - tmp1 * njac[j + 1][2][0];
+                        lhs[j][cc][3][0] = tmp2 * fjac[j + 1][3][0]
+                             - tmp1 * njac[j + 1][3][0];
+                        lhs[j][cc][4][0] = tmp2 * fjac[j + 1][4][0]
+                             - tmp1 * njac[j + 1][4][0];
 
-                        lhs[ j, cc, 0,1] = tmp2 * fjac[ (j + 1), 0,1]
-                             - tmp1 * njac[ (j + 1), 0,1];
-                        lhs[ j, cc, 1,1] = tmp2 * fjac[ (j + 1), 1,1]
-                             - tmp1 * njac[ (j + 1), 1,1]
+                        lhs[j][cc][0][1] = tmp2 * fjac[j + 1][0][1]
+                             - tmp1 * njac[j + 1][0][1];
+                        lhs[j][cc][1][1] = tmp2 * fjac[j + 1][1][1]
+                             - tmp1 * njac[j + 1][1][1]
                              - tmp1 * dy2;
-                        lhs[ j, cc, 2,1] = tmp2 * fjac[ (j + 1), 2,1]
-                             - tmp1 * njac[ (j + 1), 2,1];
-                        lhs[ j, cc, 3,1] = tmp2 * fjac[ (j + 1), 3,1]
-                             - tmp1 * njac[ (j + 1), 3,1];
-                        lhs[ j, cc, 4,1] = tmp2 * fjac[ (j + 1), 4,1]
-                             - tmp1 * njac[ (j + 1), 4,1];
+                        lhs[j][cc][2][1] = tmp2 * fjac[j + 1][2][1]
+                             - tmp1 * njac[j + 1][2][1];
+                        lhs[j][cc][3][1] = tmp2 * fjac[j + 1][3][1]
+                             - tmp1 * njac[j + 1][3][1];
+                        lhs[j][cc][4][1] = tmp2 * fjac[j + 1][4][1]
+                             - tmp1 * njac[j + 1][4][1];
 
-                        lhs[ j, cc, 0,2] = tmp2 * fjac[ (j + 1), 0,2]
-                             - tmp1 * njac[ (j + 1), 0,2];
-                        lhs[ j, cc, 1,2] = tmp2 * fjac[ (j + 1), 1,2]
-                             - tmp1 * njac[ (j + 1), 1,2];
-                        lhs[ j, cc, 2,2] = tmp2 * fjac[ (j + 1), 2,2]
-                             - tmp1 * njac[ (j + 1), 2,2]
+                        lhs[j][cc][0][2] = tmp2 * fjac[j + 1][0][2]
+                             - tmp1 * njac[j + 1][0][2];
+                        lhs[j][cc][1][2] = tmp2 * fjac[j + 1][1][2]
+                             - tmp1 * njac[j + 1][1][2];
+                        lhs[j][cc][2][2] = tmp2 * fjac[j + 1][2][2]
+                             - tmp1 * njac[j + 1][2][2]
                              - tmp1 * dy3;
-                        lhs[ j, cc, 3,2] = tmp2 * fjac[ (j + 1), 3,2]
-                             - tmp1 * njac[ (j + 1), 3,2];
-                        lhs[ j, cc, 4,2] = tmp2 * fjac[ (j + 1), 4,2]
-                             - tmp1 * njac[ (j + 1), 4,2];
+                        lhs[j][cc][3][2] = tmp2 * fjac[j + 1][3][2]
+                             - tmp1 * njac[j + 1][3][2];
+                        lhs[j][cc][4][2] = tmp2 * fjac[j + 1][4][2]
+                             - tmp1 * njac[j + 1][4][2];
 
-                        lhs[ j, cc, 0,3] = tmp2 * fjac[ (j + 1), 0,3]
-                             - tmp1 * njac[ (j + 1), 0,3];
-                        lhs[ j, cc, 1,3] = tmp2 * fjac[ (j + 1), 1,3]
-                             - tmp1 * njac[ (j + 1), 1,3];
-                        lhs[ j, cc, 2,3] = tmp2 * fjac[ (j + 1), 2,3]
-                             - tmp1 * njac[ (j + 1), 2,3];
-                        lhs[ j, cc, 3,3] = tmp2 * fjac[ (j + 1), 3,3]
-                             - tmp1 * njac[ (j + 1), 3,3]
+                        lhs[j][cc][0][3] = tmp2 * fjac[j + 1][0][3]
+                             - tmp1 * njac[j + 1][0][3];
+                        lhs[j][cc][1][3] = tmp2 * fjac[j + 1][1][3]
+                             - tmp1 * njac[j + 1][1][3];
+                        lhs[j][cc][2][3] = tmp2 * fjac[j + 1][2][3]
+                             - tmp1 * njac[j + 1][2][3];
+                        lhs[j][cc][3][3] = tmp2 * fjac[j + 1][3][3]
+                             - tmp1 * njac[j + 1][3][3]
                              - tmp1 * dy4;
-                        lhs[ j, cc, 4,3] = tmp2 * fjac[ (j + 1), 4,3]
-                             - tmp1 * njac[ (j + 1), 4,3];
+                        lhs[j][cc][4][3] = tmp2 * fjac[j + 1][4][3]
+                             - tmp1 * njac[j + 1][4][3];
 
-                        lhs[ j, cc, 0,4] = tmp2 * fjac[ (j + 1), 0,4]
-                             - tmp1 * njac[ (j + 1), 0,4];
-                        lhs[ j, cc, 1,4] = tmp2 * fjac[ (j + 1), 1,4]
-                             - tmp1 * njac[ (j + 1), 1,4];
-                        lhs[ j, cc, 2,4] = tmp2 * fjac[ (j + 1), 2,4]
-                             - tmp1 * njac[ (j + 1), 2,4];
-                        lhs[ j, cc, 3,4] = tmp2 * fjac[ (j + 1), 3,4]
-                             - tmp1 * njac[ (j + 1), 3,4];
-                        lhs[ j, cc, 4,4] = tmp2 * fjac[ (j + 1), 4,4]
-                             - tmp1 * njac[ (j + 1), 4,4]
+                        lhs[j][cc][0][4] = tmp2 * fjac[j + 1][0][4]
+                             - tmp1 * njac[j + 1][0][4];
+                        lhs[j][cc][1][4] = tmp2 * fjac[j + 1][1][4]
+                             - tmp1 * njac[j + 1][1][4];
+                        lhs[j][cc][2][4] = tmp2 * fjac[j + 1][2][4]
+                             - tmp1 * njac[j + 1][2][4];
+                        lhs[j][cc][3][4] = tmp2 * fjac[j + 1][3][4]
+                             - tmp1 * njac[j + 1][3][4];
+                        lhs[j][cc][4][4] = tmp2 * fjac[j + 1][4][4]
+                             - tmp1 * njac[j + 1][4][4]
                              - tmp1 * dy5;
                     }
                     //---------------------------------------------------------------------
@@ -2221,9 +2240,7 @@ namespace NPB3_0_JAV
                         //---------------------------------------------------------------------
                         //     B(j) = B(j) - C(j-1)*A(j)
                         //---------------------------------------------------------------------
-                        matmul_sub(lhs, aa, j,
-						           lhs, cc, (j - 1),
-						           lhs, bb, j);
+                        matmul_sub(lhs, aa, j,  lhs, cc, (j - 1), lhs, bb, j);
 
                         //---------------------------------------------------------------------
                         //     multiply c(i,j,k) by b_inverse and copy back to c
@@ -2269,8 +2286,8 @@ namespace NPB3_0_JAV
                         {
                             for (n = 0; n <= BLOCK_SIZE - 1; n++)
                             {
-                                rhs[ k, j, i,m] = rhs[ k, j, i,m]
-                                     - lhs[ j, cc, n,m] * rhs[ k, (j + 1), i,n];
+                                rhs[k][j][i][m] = rhs[k][j][i][m]
+                                     - lhs[ j][cc][n][m] * rhs[k][j+1][i][n];
                             }
                         }
                     }
@@ -2302,87 +2319,87 @@ namespace NPB3_0_JAV
                     for (k = 0; k <= ksize; k++)
                     {
 
-                        tmp1 = 1.0 / u[ k, j, i,0];
+                        tmp1 = 1.0 / u[k][j][i][0];
                         tmp2 = tmp1 * tmp1;
                         tmp3 = tmp1 * tmp2;
 
-                        fjac[ k, 0,0] = 0.0;
-                        fjac[ k, 1,0] = 0.0;
-                        fjac[ k, 2,0] = 0.0;
-                        fjac[ k, 3,0] = 1.0;
-                        fjac[ k, 4,0] = 0.0;
+                        fjac[ k][0][0] = 0.0;
+                        fjac[k][1][0] = 0.0;
+                        fjac[k][2][0] = 0.0;
+                        fjac[k][3][0] = 1.0;
+                        fjac[k][4][0] = 0.0;
 
-                        fjac[ k, 0,1] = -(u[ k, j, i,1] * u[ k, j, i,3])
+                        fjac[k][0][1] = -(u[k][j][i][1] * u[k][j][i][3])
                              * tmp2;
-                        fjac[ k, 1,1] = u[ k, j, i,3] * tmp1;
-                        fjac[ k, 2,1] = 0.0;
-                        fjac[ k, 3,1] = u[ k, j, i,1] * tmp1;
-                        fjac[ k, 4,1] = 0.0;
+                        fjac[k][1][1] = u[k][j][i][3] * tmp1;
+                        fjac[k][2][1] = 0.0;
+                        fjac[k][3][1] = u[k][j][i][1] * tmp1;
+                        fjac[k][4][1] = 0.0;
 
-                        fjac[ k, 0,2] = -(u[ k, j, i,2] * u[ k, j, i,3])
+                        fjac[k][0][2] = -(u[k][j][i][2] * u[k][j][i][3])
                              * tmp2;
-                        fjac[ k, 1,2] = 0.0;
-                        fjac[ k, 2,2] = u[ k, j, i,3] * tmp1;
-                        fjac[ k, 3,2] = u[ k, j, i,2] * tmp1;
-                        fjac[ k, 4,2] = 0.0;
+                        fjac[k][1][2] = 0.0;
+                        fjac[k][2][2] = u[k][j][i][3] * tmp1;
+                        fjac[k][3][2] = u[k][j][i][2] * tmp1;
+                        fjac[k][4][2] = 0.0;
 
-                        fjac[ k, 0,3] = -(u[ k, j, i,3] * u[ k, j, i,3] * tmp2)
-                             + c2 * qs[ k, j,i];
-                        fjac[ k, 1,3] = -c2 * u[ k, j, i,1] * tmp1;
-                        fjac[ k, 2,3] = -c2 * u[ k, j, i,2] * tmp1;
-                        fjac[ k, 3,3] = (2.0 - c2)
-                             * u[ k, j, i,3] * tmp1;
-                        fjac[ k, 4,3] = c2;
+                        fjac[k][0][3] = -(u[k][j][i][3] * u[k][j][i][3] * tmp2)
+                             + c2 * qs[k][j][i];
+                        fjac[k][1][3] = -c2 * u[k][j][i][1] * tmp1;
+                        fjac[k][2][3] = -c2 * u[k][j][i][2] * tmp1;
+                        fjac[k][3][3] = (2.0 - c2)
+                             * u[k][j][i][3] * tmp1;
+                        fjac[k][4][3] = c2;
 
-                        fjac[ k, 0,4] = (c2 * 2.0 * square[ k, j,i]
-                                 - c1 * u[ k, j, i,4])
-                                 * u[ k, j, i,3] * tmp2;
-                        fjac[ k, 1,4] = -c2 * (u[ k, j, i,1] * u[ k, j, i,3])
+                        fjac[k][0][4] = (c2 * 2.0 * square[k][j][i]
+                                 - c1 * u[k][j][i][4])
+                                 * u[k][j][i][3] * tmp2;
+                        fjac[k][1][4] = -c2 * (u[k][j][i][1] * u[k][j][i][3])
                              * tmp2;
-                        fjac[ k, 2,4] = -c2 * (u[ k, j, i,2] * u[ k, j, i,3])
+                        fjac[k][2][4] = -c2 * (u[k][j][i][2] * u[k][j][i][3])
                              * tmp2;
-                        fjac[ k, 3,4] = c1 * (u[ k, j, i,4] * tmp1)
+                        fjac[k][3][4] = c1 * (u[k][j][i][4] * tmp1)
                              - c2
-                             * (qs[ k, j,i]
-                             + u[ k, j, i,3] * u[ k, j, i,3] * tmp2);
-                        fjac[ k, 4,4] = c1 * u[ k, j, i,3] * tmp1;
+                             * (qs[k][j][i]
+                             + u[k][j][i][3] * u[k][j][i][3] * tmp2);
+                        fjac[k][4][4] = c1 * u[k][j][i][3] * tmp1;
 
-                        njac[ k, 0,0] = 0.0;
-                        njac[ k, 1,0] = 0.0;
-                        njac[ k, 2,0] = 0.0;
-                        njac[ k, 3,0] = 0.0;
-                        njac[ k, 4,0] = 0.0;
+                        njac[k][0][0] = 0.0;
+                        njac[k][1][0] = 0.0;
+                        njac[k][2][0] = 0.0;
+                        njac[k][3][0] = 0.0;
+                        njac[k][4][0] = 0.0;
 
-                        njac[ k, 0,1] = -c3c4 * tmp2 * u[ k, j, i,1];
-                        njac[ k, 1,1] = c3c4 * tmp1;
-                        njac[ k, 2,1] = 0.0;
-                        njac[ k, 3,1] = 0.0;
-                        njac[ k, 4,1] = 0.0;
+                        njac[k][0][1] = -c3c4 * tmp2 * u[k][j][i][1];
+                        njac[k][1][1] = c3c4 * tmp1;
+                        njac[k][2][1] = 0.0;
+                        njac[k][3][1] = 0.0;
+                        njac[k][4][1] = 0.0;
 
-                        njac[ k, 0,2] = -c3c4 * tmp2 * u[ k, j, i,2];
-                        njac[ k, 1,2] = 0.0;
-                        njac[ k, 2,2] = c3c4 * tmp1;
-                        njac[ k, 3,2] = 0.0;
-                        njac[ k, 4,2] = 0.0;
+                        njac[k][0][2] = -c3c4 * tmp2 * u[k][j][i][2];
+                        njac[k][1][2] = 0.0;
+                        njac[k][2][2] = c3c4 * tmp1;
+                        njac[k][3][2] = 0.0;
+                        njac[k][4][2] = 0.0;
 
-                        njac[ k, 0,3] = -con43 * c3c4 * tmp2 * u[ k, j, i,3];
-                        njac[ k, 1,3] = 0.0;
-                        njac[ k, 2,3] = 0.0;
-                        njac[ k, 3,3] = con43 * c3 * c4 * tmp1;
-                        njac[ k, 4,3] = 0.0;
+                        njac[k][0][3] = -con43 * c3c4 * tmp2 * u[k][j][i][3];
+                        njac[k][1][3] = 0.0;
+                        njac[k][2][3] = 0.0;
+                        njac[k][3][3] = con43 * c3 * c4 * tmp1;
+                        njac[k][4][3] = 0.0;
 
-                        njac[ k, 0,4] = -(c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[ k, j, i,1], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[ k, j, i,2], 2))
+                        njac[k][0][4] = -(c3c4
+                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][1], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[k][j][i][2], 2))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[ k, j, i,3], 2))
-                             - c1345 * tmp2 * u[ k, j, i,4];
+                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][3], 2))
+                             - c1345 * tmp2 * u[k][j][i][4];
 
-                        njac[ k, 1,4] = (c3c4 - c1345) * tmp2 * u[ k, j, i,1];
-                        njac[ k, 2,4] = (c3c4 - c1345) * tmp2 * u[ k, j, i,2];
-                        njac[ k, 3,4] = (con43 * c3c4
-                             - c1345) * tmp2 * u[ k, j, i,3];
-                        njac[ k, 4,4] = (c1345) * tmp1;
+                        njac[k][1][4] = (c3c4 - c1345) * tmp2 * u[k][j][i][1];
+                        njac[k][2][4] = (c3c4 - c1345) * tmp2 * u[k][j][i][2];
+                        njac[k][3][4] = (con43 * c3c4
+                             - c1345) * tmp2 * u[k][j][i][3];
+                        njac[k][4][4] = (c1345) * tmp1;
                     }
 
                     //---------------------------------------------------------------------
@@ -2395,164 +2412,164 @@ namespace NPB3_0_JAV
                         tmp1 = dt * tz1;
                         tmp2 = dt * tz2;
 
-                        lhs[ k, aa, 0,0] = -tmp2 * fjac[ (k - 1), 0,0]
-                                 - tmp1 * njac[ (k - 1), 0,0]
+                        lhs[k][aa][0][0] = -tmp2 * fjac[k-1][0][0]
+                                 - tmp1 * njac[k-1][0][0]
                                  - tmp1 * dz1;
-                        lhs[ k, aa, 1,0] = -tmp2 * fjac[ (k - 1), 1,0]
-                             - tmp1 * njac[ (k - 1), 1,0];
-                        lhs[ k, aa, 2,0] = -tmp2 * fjac[ (k - 1), 2,0]
-                             - tmp1 * njac[ (k - 1), 2,0];
-                        lhs[ k, aa, 3,0] = -tmp2 * fjac[ (k - 1), 3,0]
-                             - tmp1 * njac[ (k - 1), 3,0];
-                        lhs[ k, aa, 4,0] = -tmp2 * fjac[ (k - 1), 4,0]
-                             - tmp1 * njac[ (k - 1), 4,0];
+                        lhs[k][aa][1][0] = -tmp2 * fjac[k-1][1][0]
+                             - tmp1 * njac[k-1][1][0];
+                        lhs[k][aa][2][0] = -tmp2 * fjac[k-1][2][0]
+                             - tmp1 * njac[k-1][2][0];
+                        lhs[k][aa][3][0] = -tmp2 * fjac[k-1][3][0]
+                             - tmp1 * njac[k-1][3][0];
+                        lhs[k][aa][4][0] = -tmp2 * fjac[k-1][4][0]
+                             - tmp1 * njac[k-1][4][0];
 
-                        lhs[ k, aa, 0,1] = -tmp2 * fjac[ (k - 1), 0,1]
-                             - tmp1 * njac[ (k - 1), 0,1];
-                        lhs[ k, aa, 1,1] = -tmp2 * fjac[ (k - 1), 1,1]
-                             - tmp1 * njac[ (k - 1), 1,1]
+                        lhs[k][aa][0][1] = -tmp2 * fjac[k-1][0][1]
+                             - tmp1 * njac[k-1][0][1];
+                        lhs[k][aa][1][1] = -tmp2 * fjac[k-1][1][1]
+                             - tmp1 * njac[k-1][1][1]
                              - tmp1 * dz2;
-                        lhs[ k, aa, 2,1] = -tmp2 * fjac[ (k - 1), 2,1]
-                             - tmp1 * njac[ (k - 1), 2,1];
-                        lhs[ k, aa, 3,1] = -tmp2 * fjac[ (k - 1), 3,1]
-                             - tmp1 * njac[ (k - 1), 3,1];
-                        lhs[ k, aa, 4,1] = -tmp2 * fjac[ (k - 1), 4,1]
-                             - tmp1 * njac[ (k - 1), 4,1];
+                        lhs[k][aa][2][1] = -tmp2 * fjac[k-1][2][1]
+                             - tmp1 * njac[k-1][2][1];
+                        lhs[k][aa][3][1] = -tmp2 * fjac[k-1][3][1]
+                             - tmp1 * njac[k-1][3][1];
+                        lhs[k][aa][4][1] = -tmp2 * fjac[k-1][4][1]
+                             - tmp1 * njac[k-1][4][1];
 
-                        lhs[ k, aa, 0,2] = -tmp2 * fjac[ (k - 1), 0,2]
-                             - tmp1 * njac[ (k - 1), 0,2];
-                        lhs[ k, aa, 1,2] = -tmp2 * fjac[ (k - 1), 1,2]
-                             - tmp1 * njac[ (k - 1), 1,2];
-                        lhs[ k, aa, 2,2] = -tmp2 * fjac[ (k - 1), 2,2]
-                             - tmp1 * njac[ (k - 1), 2,2]
+                        lhs[k][aa][0][2] = -tmp2 * fjac[k-1][0][2]
+                             - tmp1 * njac[k-1][0][2];
+                        lhs[k][aa][1][2] = -tmp2 * fjac[k-1][1][2]
+                             - tmp1 * njac[k-1][1][2];
+                        lhs[k][aa][2][2] = -tmp2 * fjac[k-1][2][2]
+                             - tmp1 * njac[k-1][2][2]
                              - tmp1 * dz3;
-                        lhs[ k, aa, 3,2] = -tmp2 * fjac[ (k - 1), 3,2]
-                             - tmp1 * njac[ (k - 1), 3,2];
-                        lhs[ k, aa, 4,2] = -tmp2 * fjac[ (k - 1), 4,2]
-                             - tmp1 * njac[ (k - 1), 4,2];
+                        lhs[k][aa][3][2] = -tmp2 * fjac[k-1][3][2]
+                             - tmp1 * njac[k-1][3][2];
+                        lhs[k][aa][4][2] = -tmp2 * fjac[k-1][4][2]
+                             - tmp1 * njac[k-1][4][2];
 
-                        lhs[ k, aa, 0,3] = -tmp2 * fjac[ (k - 1), 0,3]
-                             - tmp1 * njac[ (k - 1), 0,3];
-                        lhs[ k, aa, 1,3] = -tmp2 * fjac[ (k - 1), 1,3]
-                             - tmp1 * njac[ (k - 1), 1,3];
-                        lhs[ k, aa, 2,3] = -tmp2 * fjac[ (k - 1), 2,3]
-                             - tmp1 * njac[ (k - 1), 2,3];
-                        lhs[ k, aa, 3,3] = -tmp2 * fjac[ (k - 1), 3,3]
-                             - tmp1 * njac[ (k - 1), 3,3]
+                        lhs[k][aa][0][3] = -tmp2 * fjac[k-1][0][3]
+                             - tmp1 * njac[k-1][0][3];
+                        lhs[k][aa][1][3] = -tmp2 * fjac[k-1][1][3]
+                             - tmp1 * njac[k-1][1][3];
+                        lhs[k][aa][2][3] = -tmp2 * fjac[k-1][2][3]
+                             - tmp1 * njac[k-1][2][3];
+                        lhs[k][aa][3][3] = -tmp2 * fjac[k-1][3][3]
+                             - tmp1 * njac[k-1][3][3]
                              - tmp1 * dz4;
-                        lhs[ k, aa, 4,3] = -tmp2 * fjac[ (k - 1), 4,3]
-                             - tmp1 * njac[ (k - 1), 4,3];
+                        lhs[k][aa][4][3] = -tmp2 * fjac[k-1][4][3]
+                             - tmp1 * njac[k-1][4][3];
 
-                        lhs[ k, aa, 0,4] = -tmp2 * fjac[ (k - 1), 0,4]
-                             - tmp1 * njac[ (k - 1), 0,4];
-                        lhs[ k, aa, 1,4] = -tmp2 * fjac[ (k - 1), 1,4]
-                             - tmp1 * njac[ (k - 1), 1,4];
-                        lhs[ k, aa, 2,4] = -tmp2 * fjac[ (k - 1), 2,4]
-                             - tmp1 * njac[ (k - 1), 2,4];
-                        lhs[ k, aa, 3,4] = -tmp2 * fjac[ (k - 1), 3,4]
-                             - tmp1 * njac[ (k - 1), 3,4];
-                        lhs[ k, aa, 4,4] = -tmp2 * fjac[ (k - 1), 4,4]
-                             - tmp1 * njac[ (k - 1), 4,4]
+                        lhs[k][aa][0][4] = -tmp2 * fjac[k-1][0][4]
+                             - tmp1 * njac[k-1][0][4];
+                        lhs[k][aa][1][4] = -tmp2 * fjac[k-1][1][4]
+                             - tmp1 * njac[k-1][1][4];
+                        lhs[k][aa][2][4] = -tmp2 * fjac[k-1][2][4]
+                             - tmp1 * njac[k-1][2][4];
+                        lhs[k][aa][3][4] = -tmp2 * fjac[k-1][3][4]
+                             - tmp1 * njac[k-1][3][4];
+                        lhs[k][aa][4][4] = -tmp2 * fjac[k-1][4][4]
+                             - tmp1 * njac[k-1][4][4]
                              - tmp1 * dz5;
 
-                        lhs[ k, bb, 0,0] = 1.0
-                             + tmp1 * 2.0 * njac[ k, 0,0]
+                        lhs[k][bb][0][0] = 1.0
+                             + tmp1 * 2.0 * njac[k][0][0]
                              + tmp1 * 2.0 * dz1;
-                        lhs[ k, bb, 1,0] = tmp1 * 2.0 * njac[ k, 1,0];
-                        lhs[ k, bb, 2,0] = tmp1 * 2.0 * njac[ k, 2,0];
-                        lhs[ k, bb, 3,0] = tmp1 * 2.0 * njac[ k, 3,0];
-                        lhs[ k, bb, 4,0] = tmp1 * 2.0 * njac[ k, 4,0];
+                        lhs[k][bb][1][0] = tmp1 * 2.0 * njac[k][1][0];
+                        lhs[k][bb][2][0] = tmp1 * 2.0 * njac[k][2][0];
+                        lhs[k][bb][3][0] = tmp1 * 2.0 * njac[k][3][0];
+                        lhs[k][bb][4][0] = tmp1 * 2.0 * njac[k][4][0];
 
-                        lhs[ k, bb, 0,1] = tmp1 * 2.0 * njac[ k, 0,1];
-                        lhs[ k, bb, 1,1] = 1.0
-                             + tmp1 * 2.0 * njac[ k, 1,1]
+                        lhs[k][bb][0][1] = tmp1 * 2.0 * njac[k][0][1];
+                        lhs[k][bb][1][1] = 1.0
+                             + tmp1 * 2.0 * njac[k][1][1]
                              + tmp1 * 2.0 * dz2;
-                        lhs[ k, bb, 2,1] = tmp1 * 2.0 * njac[ k, 2,1];
-                        lhs[ k, bb, 3,1] = tmp1 * 2.0 * njac[ k, 3,1];
-                        lhs[ k, bb, 4,1] = tmp1 * 2.0 * njac[ k, 4,1];
+                        lhs[k][bb][2][1] = tmp1 * 2.0 * njac[k][2][1];
+                        lhs[k][bb][3][1] = tmp1 * 2.0 * njac[k][3][1];
+                        lhs[k][bb][4][1] = tmp1 * 2.0 * njac[k][4][1];
 
-                        lhs[ k, bb, 0,2] = tmp1 * 2.0 * njac[ k, 0,2];
-                        lhs[ k, bb, 1,2] = tmp1 * 2.0 * njac[ k, 1,2];
-                        lhs[ k, bb, 2,2] = 1.0
-                             + tmp1 * 2.0 * njac[ k, 2,2]
+                        lhs[k][bb][0][2] = tmp1 * 2.0 * njac[k][0][2];
+                        lhs[k][bb][1][2] = tmp1 * 2.0 * njac[k][1][2];
+                        lhs[k][bb][2][2] = 1.0
+                             + tmp1 * 2.0 * njac[k][2][2]
                              + tmp1 * 2.0 * dz3;
-                        lhs[ k, bb, 3,2] = tmp1 * 2.0 * njac[ k, 3,2];
-                        lhs[ k, bb, 4,2] = tmp1 * 2.0 * njac[ k, 4,2];
+                        lhs[k][bb][3][2] = tmp1 * 2.0 * njac[k][3][2];
+                        lhs[k][bb][4][2] = tmp1 * 2.0 * njac[k][4][2];
 
-                        lhs[ k, bb, 0,3] = tmp1 * 2.0 * njac[ k, 0,3];
-                        lhs[ k, bb, 1,3] = tmp1 * 2.0 * njac[ k, 1,3];
-                        lhs[ k, bb, 2,3] = tmp1 * 2.0 * njac[ k, 2,3];
-                        lhs[ k, bb, 3,3] = 1.0
-                             + tmp1 * 2.0 * njac[ k, 3,3]
+                        lhs[k][bb][0][3] = tmp1 * 2.0 * njac[k][0][3];
+                        lhs[k][bb][1][3] = tmp1 * 2.0 * njac[k][1][3];
+                        lhs[k][bb][2][3] = tmp1 * 2.0 * njac[k][2][3];
+                        lhs[k][bb][3][3] = 1.0
+                             + tmp1 * 2.0 * njac[k][3][3]
                              + tmp1 * 2.0 * dz4;
-                        lhs[ k, bb, 4,3] = tmp1 * 2.0 * njac[ k, 4,3];
+                        lhs[k][bb][4][3] = tmp1 * 2.0 * njac[k][4][3];
 
-                        lhs[ k, bb, 0,4] = tmp1 * 2.0 * njac[ k, 0,4];
-                        lhs[ k, bb, 1,4] = tmp1 * 2.0 * njac[ k, 1,4];
-                        lhs[ k, bb, 2,4] = tmp1 * 2.0 * njac[ k, 2,4];
-                        lhs[ k, bb, 3,4] = tmp1 * 2.0 * njac[ k, 3,4];
-                        lhs[ k, bb, 4,4] = 1.0
-                             + tmp1 * 2.0 * njac[ k, 4,4]
+                        lhs[k][bb][0][4] = tmp1 * 2.0 * njac[k][0][4];
+                        lhs[k][bb][1][4] = tmp1 * 2.0 * njac[k][1][4];
+                        lhs[k][bb][2][4] = tmp1 * 2.0 * njac[k][2][4];
+                        lhs[k][bb][3][4] = tmp1 * 2.0 * njac[k][3][4];
+                        lhs[k][bb][4][4] = 1.0
+                             + tmp1 * 2.0 * njac[k][4][4]
                              + tmp1 * 2.0 * dz5;
 
-                        lhs[ k, cc, 0,0] = tmp2 * fjac[ (k + 1), 0,0]
-                             - tmp1 * njac[ (k + 1), 0,0]
+                        lhs[k][cc][0][0] = tmp2 * fjac[k + 1][0][0]
+                             - tmp1 * njac[k+1][0][0]
                              - tmp1 * dz1;
-                        lhs[ k, cc, 1,0] = tmp2 * fjac[ (k + 1), 1,0]
-                             - tmp1 * njac[ (k + 1), 1,0];
-                        lhs[ k, cc, 2,0] = tmp2 * fjac[ (k + 1), 2,0]
-                             - tmp1 * njac[ (k + 1), 2,0];
-                        lhs[ k, cc, 3,0] = tmp2 * fjac[ (k + 1), 3,0]
-                             - tmp1 * njac[ (k + 1), 3,0];
-                        lhs[ k, cc, 4,0] = tmp2 * fjac[ (k + 1), 4,0]
-                             - tmp1 * njac[ (k + 1), 4,0];
+                        lhs[k][cc][1][0] = tmp2 * fjac[k + 1][1][0]
+                             - tmp1 * njac[k+1][1][0];
+                        lhs[k][cc][2][0] = tmp2 * fjac[k + 1][2][0]
+                             - tmp1 * njac[k+1][2][0];
+                        lhs[k][cc][3][0] = tmp2 * fjac[k + 1][3][0]
+                             - tmp1 * njac[k+1][3][0];
+                        lhs[k][cc][4][0] = tmp2 * fjac[k + 1][4][0]
+                             - tmp1 * njac[k+1][4][0];
 
-                        lhs[ k, cc, 0,1] = tmp2 * fjac[ (k + 1), 0,1]
-                             - tmp1 * njac[ (k + 1), 0,1];
-                        lhs[ k, cc, 1,1] = tmp2 * fjac[ (k + 1), 1,1]
-                             - tmp1 * njac[ (k + 1), 1,1]
+                        lhs[k][cc][0][1] = tmp2 * fjac[k + 1][0][1]
+                             - tmp1 * njac[k+1][0][1];
+                        lhs[k][cc][1][1] = tmp2 * fjac[k + 1][1][1]
+                             - tmp1 * njac[k+1][1][1]
                              - tmp1 * dz2;
-                        lhs[ k, cc, 2,1] = tmp2 * fjac[ (k + 1), 2,1]
-                             - tmp1 * njac[ (k + 1), 2,1];
-                        lhs[ k, cc, 3,1] = tmp2 * fjac[ (k + 1), 3,1]
-                             - tmp1 * njac[ (k + 1), 3,1];
-                        lhs[ k, cc, 4,1] = tmp2 * fjac[ (k + 1), 4,1]
-                             - tmp1 * njac[ (k + 1), 4,1];
+                        lhs[k][cc][2][1] = tmp2 * fjac[k + 1][2][1]
+                             - tmp1 * njac[k+1][2][1];
+                        lhs[k][cc][3][1] = tmp2 * fjac[k + 1][3][1]
+                             - tmp1 * njac[k+1][3][1];
+                        lhs[k][cc][4][1] = tmp2 * fjac[k + 1][4][1]
+                             - tmp1 * njac[k+1][4][1];
 
-                        lhs[ k, cc, 0,2] = tmp2 * fjac[ (k + 1), 0,2]
-                             - tmp1 * njac[ (k + 1), 0,2];
-                        lhs[ k, cc, 1,2] = tmp2 * fjac[ (k + 1), 1,2]
-                             - tmp1 * njac[ (k + 1), 1,2];
-                        lhs[ k, cc, 2,2] = tmp2 * fjac[ (k + 1), 2,2]
-                             - tmp1 * njac[ (k + 1), 2,2]
+                        lhs[k][cc][0][2] = tmp2 * fjac[k + 1][0][2]
+                             - tmp1 * njac[k+1][0][2];
+                        lhs[k][cc][1][2] = tmp2 * fjac[k + 1][1][2]
+                             - tmp1 * njac[k+1][1][2];
+                        lhs[k][cc][2][2] = tmp2 * fjac[k + 1][2][2]
+                             - tmp1 * njac[k+1][2][2]
                              - tmp1 * dz3;
-                        lhs[ k, cc, 3,2] = tmp2 * fjac[ (k + 1), 3,2]
-                             - tmp1 * njac[ (k + 1), 3,2];
-                        lhs[ k, cc, 4,2] = tmp2 * fjac[ (k + 1), 4,2]
-                             - tmp1 * njac[ (k + 1), 4,2];
+                        lhs[k][cc][3][2] = tmp2 * fjac[k + 1][3][2]
+                             - tmp1 * njac[k+1][3][2];
+                        lhs[k][cc][4][2] = tmp2 * fjac[k + 1][4][2]
+                             - tmp1 * njac[k+1][4][2];
 
-                        lhs[ k, cc, 0,3] = tmp2 * fjac[ (k + 1), 0,3]
-                             - tmp1 * njac[ (k + 1), 0,3];
-                        lhs[ k, cc, 1,3] = tmp2 * fjac[ (k + 1), 1,3]
-                             - tmp1 * njac[ (k + 1), 1,3];
-                        lhs[ k, cc, 2,3] = tmp2 * fjac[ (k + 1), 2,3]
-                             - tmp1 * njac[ (k + 1), 2,3];
-                        lhs[ k, cc, 3,3] = tmp2 * fjac[ (k + 1), 3,3]
-                             - tmp1 * njac[ (k + 1), 3,3]
+                        lhs[k][cc][0][3] = tmp2 * fjac[k + 1][0][3]
+                             - tmp1 * njac[k+1][0][3];
+                        lhs[k][cc][1][3] = tmp2 * fjac[k + 1][1][3]
+                             - tmp1 * njac[k+1][1][3];
+                        lhs[k][cc][2][3] = tmp2 * fjac[k + 1][2][3]
+                             - tmp1 * njac[k+1][2][3];
+                        lhs[k][cc][3][3] = tmp2 * fjac[k + 1][3][3]
+                             - tmp1 * njac[k+1][3][3]
                              - tmp1 * dz4;
-                        lhs[ k, cc, 4,3] = tmp2 * fjac[ (k + 1), 4,3]
-                             - tmp1 * njac[ (k + 1), 4,3];
+                        lhs[k][cc][4][3] = tmp2 * fjac[k + 1][4][3]
+                             - tmp1 * njac[k+1][4][3];
 
-                        lhs[ k, cc, 0,4] = tmp2 * fjac[ (k + 1), 0,4]
-                             - tmp1 * njac[ (k + 1), 0,4];
-                        lhs[ k, cc, 1,4] = tmp2 * fjac[ (k + 1), 1,4]
-                             - tmp1 * njac[ (k + 1), 1,4];
-                        lhs[ k, cc, 2,4] = tmp2 * fjac[ (k + 1), 2,4]
-                             - tmp1 * njac[ (k + 1), 2,4];
-                        lhs[ k, cc, 3,4] = tmp2 * fjac[ (k + 1), 3,4]
-                             - tmp1 * njac[ (k + 1), 3,4];
-                        lhs[ k, cc, 4,4] = tmp2 * fjac[ (k + 1), 4,4]
-                             - tmp1 * njac[ (k + 1), 4,4]
+                        lhs[k][cc][0][4] = tmp2 * fjac[k + 1][0][4]
+                             - tmp1 * njac[k+1][0][4];
+                        lhs[k][cc][1][4] = tmp2 * fjac[k + 1][1][4]
+                             - tmp1 * njac[k+1][1][4];
+                        lhs[k][cc][2][4] = tmp2 * fjac[k + 1][2][4]
+                             - tmp1 * njac[k+1][2][4];
+                        lhs[k][cc][3][4] = tmp2 * fjac[k + 1][3][4]
+                             - tmp1 * njac[k+1][3][4];
+                        lhs[k][cc][4][4] = tmp2 * fjac[k + 1][4][4]
+                             - tmp1 * njac[k+1][4][4]
                              - tmp1 * dz5;
                     }
 
@@ -2650,9 +2667,7 @@ namespace NPB3_0_JAV
                         {
                             for (n = 0; n <= BLOCK_SIZE - 1; n++)
                             {
-                                rhs[ k, j, i,m]
-                           += -lhs[ k, cc, n,m]
-                          * rhs[ (k + 1), j, i,n];
+                                rhs[k][j][i][m] += -lhs[k][cc][n][m]* rhs[k+1][j][i][n];
                             }
                         }
                     }

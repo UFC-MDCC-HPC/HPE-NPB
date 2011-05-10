@@ -60,15 +60,15 @@ namespace NPB3_0_JAV.BTThreads
         protected double dt_default = 0.0;
 
         //array declarations from header.h
-        protected double[,,] us, vs, ws,
+        protected double[][][] us, vs, ws,
                          qs, rho_i, square;
         protected int jsize1, ksize1;
 
-        protected double[,,,] forcing, u, rhs;
+        protected double[][][][] forcing, u, rhs;
         protected double[] cv, cuf, q;
         protected int isize2, jsize2, ksize2;
 
-        protected double[,] ue, buf;
+        protected double[][] ue, buf;
         protected int jsize3;
 
         //here 5 are the dimensions of the CFD vector
@@ -171,35 +171,82 @@ namespace NPB3_0_JAV.BTThreads
 
             jsize1 = IMAX / 2 * 2 + 1;
             ksize1 = (JMAX / 2 * 2 + 1) * (IMAX / 2 * 2 + 1);
-            us = new double[ KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1)];
-            vs = new double[ KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1)];
-            ws = new double[ KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1)];
-            qs = new double[ KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1)];
-            rho_i = new double[ KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1)];
-            square = new double[ KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1)];
+			
+            us = instantiate_jagged_array_3(KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1));
+            vs = instantiate_jagged_array_3(KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1));
+            ws = instantiate_jagged_array_3(KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1));
+            qs = instantiate_jagged_array_3(KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1));
+            rho_i = instantiate_jagged_array_3(KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1));
+            square = instantiate_jagged_array_3(KMAX, (JMAX / 2 * 2 + 1),(IMAX / 2 * 2 + 1));
 
             isize2 = 5;
             jsize2 = 5 * (IMAX / 2 * 2 + 1);
             ksize2 = 5 * (IMAX / 2 * 2 + 1) * (JMAX / 2 * 2 + 1);
 
-            forcing = new double[ KMAX, (JMAX / 2 * 2 + 1), (IMAX / 2 * 2 + 1),5];
-            u = new double[ KMAX, (JMAX / 2 * 2 + 1), (IMAX / 2 * 2 + 1),5];
-            rhs = new double[ KMAX, (JMAX / 2 * 2 + 1), (IMAX / 2 * 2 + 1),5];
+            forcing = instantiate_jagged_array_4(KMAX, (JMAX / 2 * 2 + 1), (IMAX / 2 * 2 + 1),5);
+            u = instantiate_jagged_array_4(KMAX, (JMAX / 2 * 2 + 1), (IMAX / 2 * 2 + 1),5);
+            rhs = instantiate_jagged_array_4(KMAX,JMAX / 2 * 2 + 1,IMAX / 2 * 2 + 1,5);
 
             cv = new double[problem_size + 2];
             cuf = new double[problem_size + 2];
             q = new double[problem_size + 2];
 
             jsize3 = (problem_size + 2);
-            ue = new double[ 5,(problem_size + 2)];
-            buf = new double[ 5,(problem_size + 2)];
+            ue = instantiate_jagged_array_2(problem_size + 2, 5);
+            buf = instantiate_jagged_array_2(problem_size + 2, 5);
         }
 
 
         // thread variables
         protected Thread master = null;
         protected int num_threads;
+		
+	public static double[][][][] instantiate_jagged_array_4(int N1, int N2, int N3, int N4)	
+	{
+	    double[][][][] r = new double[N1][][][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2][][];
+			for (int j=0; j<N2; j++) 
+			{
+				r[i][j] = new double[N3][];
+				for (int k=0; k<N3; k++) 
+				{
+					r[i][j][k] = new double[N4];
+				}
+			}
+		}
+			
+		return r;
+	}
+		
+	public static double[][][] instantiate_jagged_array_3(int N1, int N2, int N3)	
+	{
+	    double[][][] r = new double[N1][][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2][];
+			for (int j=0; j<N2; j++) 
+			{
+				r[i][j] = new double[N3];
+			}
+		}
+			
+		return r;
+	}
+		
+	public static double[][] instantiate_jagged_array_2(int N1, int N2)	
+	{
+	    double[][] r = new double[N1][];
+		for (int i=0; i < N1; i++) 
+		{
+			r[i] = new double[N2];
+		}
+			
+		return r;
+	}
 
+		
         /*
         protected RHSCompute[] rhscomputer;
         protected XSolver[] xsolver;
@@ -440,7 +487,7 @@ namespace NPB3_0_JAV.BTThreads
                     {
                         for (m = 0; m <= 4; m++)
                         {
-                            u[ k, j, i,m] = 1.0;
+                            u[k][j][i][m] = 1.0;
                         }
                     }
                 }
@@ -486,7 +533,7 @@ namespace NPB3_0_JAV.BTThreads
                             Pzeta = zeta * Pface[m + 2 * 5 + 1 * 15] +
                               (1.0 - zeta) * Pface[m + 2 * 5 + 0 * 15];
 
-                            u[ k, j, i,m] = Pxi + Peta + Pzeta -
+                            u[k][j][i][m] = Pxi + Peta + Pzeta -
                               Pxi * Peta - Pxi * Pzeta - Peta * Pzeta +
                               Pxi * Peta * Pzeta;
 
@@ -512,7 +559,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[ k, j, i,m] = temp[m];
+                        u[k][j][i][m] = temp[m];
                     }
                 }
             }
@@ -532,7 +579,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[ k, j, i,m] = temp[m];
+                        u[k][j][i][m] = temp[m];
                     }
                 }
             }
@@ -551,7 +598,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[ k, j, i,m] = temp[m];
+                        u[k][j][i][m] = temp[m];
                     }
                 }
             }
@@ -570,7 +617,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[ k, j, i,m] = temp[m];
+                        u[k][j][i][m] = temp[m];
                     }
                 }
             }
@@ -589,7 +636,7 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[ k, j, i,m] = temp[m];
+                        u[k][j][i][m] = temp[m];
                     }
                 }
             }
@@ -608,13 +655,13 @@ namespace NPB3_0_JAV.BTThreads
                     exact_solution(xi, eta, zeta, temp, 0);
                     for (m = 0; m <= 4; m++)
                     {
-                        u[ k, j, i,m] = temp[m];
+                        u[k][j][i][m] = temp[m];
                     }
                 }
             }
         }
 
-        public void lhsinit(double[,,,] lhs, int size)
+        public void lhsinit(double[][][][] lhs, int size)
         {
             int i, m, n;
             //---------------------------------------------------------------------
@@ -626,9 +673,9 @@ namespace NPB3_0_JAV.BTThreads
                 {
                     for (n = 0; n <= 4; n++)
                     {
-                        lhs[ i, 0, n,m] = 0.0;
-                        lhs[ i, 1, n,m] = 0.0;
-                        lhs[ i, 2, n,m] = 0.0;
+                        lhs[i][0][n][m] = 0.0;
+                        lhs[i][1][n][m] = 0.0;
+                        lhs[i][2][n][m] = 0.0;
                     }
                 }
             }
@@ -639,453 +686,453 @@ namespace NPB3_0_JAV.BTThreads
             {
                 for (m = 0; m <= 4; m++)
                 {
-                    lhs[ i, 1, m,m] = 1.0;
+                    lhs[i][1][m][m] = 1.0;
                 }
             }
         }
 
-        public void matvec_sub(double[,,,] ablock, int blkoffst1, int blkoffst2,
-                               double[,,,] avect, int avcoffst1, int avcoffst2, int avcoffst3,
-                               double[,,,] bvect, int bvcoffst1, int bvcoffst2, int bvcoffst3)
+        public void matvec_sub(double[][][][] ablock, int blkoffst1, int blkoffst2,
+                               double[][][][] avect, int avcoffst1, int avcoffst2, int avcoffst3,
+                               double[][][][] bvect, int bvcoffst1, int bvcoffst2, int bvcoffst3)
         {
 
             for (int i = 0; i < 5; i++)
             {
-                bvect[ bvcoffst3, bvcoffst2, bvcoffst1,i] += -ablock[ blkoffst2, blkoffst1, 0,i] * avect[ avcoffst3, avcoffst2, avcoffst1,0]
-                                     - ablock[ blkoffst2, blkoffst1, 1,i] * avect[ avcoffst3, avcoffst2, avcoffst1,1]
-                                     - ablock[ blkoffst2, blkoffst1, 2,i] * avect[ avcoffst3, avcoffst2, avcoffst1,2]
-                                     - ablock[ blkoffst2, blkoffst1, 3,i] * avect[ avcoffst3, avcoffst2, avcoffst1,3]
-                                     - ablock[ blkoffst2, blkoffst1, 4,i] * avect[ avcoffst3, avcoffst2, avcoffst1,4];
+                bvect[ bvcoffst3][bvcoffst2][bvcoffst1][i] += -ablock[blkoffst2][blkoffst1][0][i] * avect[avcoffst3][avcoffst2][avcoffst1][0]
+                                     - ablock[blkoffst2][blkoffst1][1][i] * avect[avcoffst3][avcoffst2][avcoffst1][1]
+                                     - ablock[blkoffst2][blkoffst1][2][i] * avect[avcoffst3][avcoffst2][avcoffst1][2]
+                                     - ablock[blkoffst2][blkoffst1][3][i] * avect[avcoffst3][avcoffst2][avcoffst1][3]
+                                     - ablock[blkoffst2][blkoffst1][4][i] * avect[avcoffst3][avcoffst2][avcoffst1][4];
             }
         }
 
-        public void matmul_sub(double[,,,] ablock, int ablkoffst1, int ablkoffst2,
-		                       double[,,,] bblock, int bblkoffst1, int bblkoffst2,
-		                       double[,,,] cblock, int cblkoffst1, int cblkoffst2)
+        public void matmul_sub(double[][][][] ablock, int ablkoffst1, int ablkoffst2,
+		                       double[][][][] bblock, int bblkoffst1, int bblkoffst2,
+		                       double[][][][] cblock, int cblkoffst1, int cblkoffst2)
         {
             for (int j = 0; j < 5; j++)
             {
 
 
-                cblock[ cblkoffst2, cblkoffst1, j,0] += -ablock[ ablkoffst2, ablkoffst1, 0,0] * bblock[ bblkoffst2, bblkoffst1, j,0]
-                                          - ablock[ ablkoffst2, ablkoffst1, 1,0] * bblock[ bblkoffst2, bblkoffst1, j,1]
-                                          - ablock[ ablkoffst2, ablkoffst1, 2,0] * bblock[ bblkoffst2, bblkoffst1, j,2]
-                                          - ablock[ ablkoffst2, ablkoffst1, 3,0] * bblock[ bblkoffst2, bblkoffst1, j,3]
-                                          - ablock[ ablkoffst2, ablkoffst1, 4,0] * bblock[ bblkoffst2, bblkoffst1, j,4];
+                cblock[cblkoffst2][cblkoffst1][j][0] += -ablock[ablkoffst2][ablkoffst1][0][0] * bblock[bblkoffst2][bblkoffst1][j][0]
+                                          - ablock[ablkoffst2][ablkoffst1][1][0] * bblock[bblkoffst2][bblkoffst1][j][1]
+                                          - ablock[ablkoffst2][ablkoffst1][2][0] * bblock[bblkoffst2][bblkoffst1][j][2]
+                                          - ablock[ablkoffst2][ablkoffst1][3][0] * bblock[bblkoffst2][bblkoffst1][j][3]
+                                          - ablock[ablkoffst2][ablkoffst1][4][0] * bblock[bblkoffst2][bblkoffst1][j][4];
 				
-				cblock[ cblkoffst2, cblkoffst1, j,1] += -ablock[ ablkoffst2, ablkoffst1, 0,1] * bblock[ bblkoffst2, bblkoffst1, j,0]
-                                          - ablock[ ablkoffst2, ablkoffst1, 1,1] * bblock[ bblkoffst2, bblkoffst1, j,1]
-                                          - ablock[ ablkoffst2, ablkoffst1, 2,1] * bblock[ bblkoffst2, bblkoffst1, j,2]
-                                          - ablock[ ablkoffst2, ablkoffst1, 3,1] * bblock[ bblkoffst2, bblkoffst1, j,3]
-                                          - ablock[ ablkoffst2, ablkoffst1, 4,1] * bblock[ bblkoffst2, bblkoffst1, j,4];
+				cblock[cblkoffst2][cblkoffst1][j][1] += -ablock[ablkoffst2][ablkoffst1][0][1] * bblock[bblkoffst2][bblkoffst1][j][0]
+                                          - ablock[ablkoffst2][ablkoffst1][1][1] * bblock[bblkoffst2][bblkoffst1][j][1]
+                                          - ablock[ablkoffst2][ablkoffst1][2][1] * bblock[bblkoffst2][bblkoffst1][j][2]
+                                          - ablock[ablkoffst2][ablkoffst1][3][1] * bblock[bblkoffst2][bblkoffst1][j][3]
+                                          - ablock[ablkoffst2][ablkoffst1][4][1] * bblock[bblkoffst2][bblkoffst1][j][4];
 
-				cblock[ cblkoffst2, cblkoffst1, j,2] += -ablock[ ablkoffst2, ablkoffst1, 0,2] * bblock[ bblkoffst2, bblkoffst1, j,0]
-                                          - ablock[ ablkoffst2, ablkoffst1, 1,2] * bblock[ bblkoffst2, bblkoffst1, j,1]
-                                          - ablock[ ablkoffst2, ablkoffst1, 2,2] * bblock[ bblkoffst2, bblkoffst1, j,2]
-                                          - ablock[ ablkoffst2, ablkoffst1, 3,2] * bblock[ bblkoffst2, bblkoffst1, j,3]
-                                          - ablock[ ablkoffst2, ablkoffst1, 4,2] * bblock[ bblkoffst2, bblkoffst1, j,4];
+				cblock[cblkoffst2][cblkoffst1][j][2] += -ablock[ablkoffst2][ablkoffst1][0][2] * bblock[bblkoffst2][bblkoffst1][j][0]
+                                          - ablock[ablkoffst2][ablkoffst1][1][2] * bblock[bblkoffst2][bblkoffst1][j][1]
+                                          - ablock[ablkoffst2][ablkoffst1][2][2] * bblock[bblkoffst2][bblkoffst1][j][2]
+                                          - ablock[ablkoffst2][ablkoffst1][3][2] * bblock[bblkoffst2][bblkoffst1][j][3]
+                                          - ablock[ablkoffst2][ablkoffst1][4][2] * bblock[bblkoffst2][bblkoffst1][j][4];
 
-				cblock[ cblkoffst2, cblkoffst1, j,3] += -ablock[ ablkoffst2, ablkoffst1, 0,3] * bblock[ bblkoffst2, bblkoffst1, j,0]
-                                          - ablock[ ablkoffst2, ablkoffst1, 1,3] * bblock[ bblkoffst2, bblkoffst1, j,1]
-                                          - ablock[ ablkoffst2, ablkoffst1, 2,3] * bblock[ bblkoffst2, bblkoffst1, j,2]
-                                          - ablock[ ablkoffst2, ablkoffst1, 3,3] * bblock[ bblkoffst2, bblkoffst1, j,3]
-                                          - ablock[ ablkoffst2, ablkoffst1, 4,3] * bblock[ bblkoffst2, bblkoffst1, j,4];
+				cblock[cblkoffst2][cblkoffst1][j][3] += -ablock[ablkoffst2][ablkoffst1][0][3] * bblock[bblkoffst2][bblkoffst1][j][0]
+                                          - ablock[ablkoffst2][ablkoffst1][1][3] * bblock[bblkoffst2][bblkoffst1][j][1]
+                                          - ablock[ablkoffst2][ablkoffst1][2][3] * bblock[bblkoffst2][bblkoffst1][j][2]
+                                          - ablock[ablkoffst2][ablkoffst1][3][3] * bblock[bblkoffst2][bblkoffst1][j][3]
+                                          - ablock[ablkoffst2][ablkoffst1][4][3] * bblock[bblkoffst2][bblkoffst1][j][4];
 
-				cblock[ cblkoffst2, cblkoffst1, j,4] += -ablock[ ablkoffst2, ablkoffst1, 0,4] * bblock[ bblkoffst2, bblkoffst1, j,0]
-                                          - ablock[ ablkoffst2, ablkoffst1, 1,4] * bblock[ bblkoffst2, bblkoffst1, j,1]
-                                          - ablock[ ablkoffst2, ablkoffst1, 2,4] * bblock[ bblkoffst2, bblkoffst1, j,2]
-                                          - ablock[ ablkoffst2, ablkoffst1, 3,4] * bblock[ bblkoffst2, bblkoffst1, j,3]
-                                          - ablock[ ablkoffst2, ablkoffst1, 4,4] * bblock[ bblkoffst2, bblkoffst1, j,4];
+				cblock[cblkoffst2][cblkoffst1][j][4] += -ablock[ablkoffst2][ablkoffst1][0][4] * bblock[bblkoffst2][bblkoffst1][j][0]
+                                          - ablock[ablkoffst2][ablkoffst1][1][4] * bblock[bblkoffst2][bblkoffst1][j][1]
+                                          - ablock[ablkoffst2][ablkoffst1][2][4] * bblock[bblkoffst2][bblkoffst1][j][2]
+                                          - ablock[ablkoffst2][ablkoffst1][3][4] * bblock[bblkoffst2][bblkoffst1][j][3]
+                                          - ablock[ablkoffst2][ablkoffst1][4][4] * bblock[bblkoffst2][bblkoffst1][j][4];
             }
         }
 
-        public void binvcrhs(double[,,,] lhss, int lhsoffst1, int lhsoffst2,
-                             double[,,,] c, int coffst1, int coffst2,
-		                     double[,,,] r, int roffst1, int roffst2, int roffst3)
+        public void binvcrhs(double[][][][] lhss, int lhsoffst1, int lhsoffst2,
+                             double[][][][] c, int coffst1, int coffst2,
+		                     double[][][][] r, int roffst1, int roffst2, int roffst3)
         {
             double pivot;
             double coeff;
 
-            pivot = 1.0 / lhss[ lhsoffst2, lhsoffst1, 0,0];
-            lhss[ lhsoffst2, lhsoffst1, 1,0] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 2,0] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 3,0] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 4,0] *= pivot;
-            c[ coffst2, coffst1, 0,0] *= pivot;
-            c[ coffst2, coffst1, 1,0] *= pivot;
-            c[ coffst2, coffst1, 2,0] *= pivot;
-            c[ coffst2, coffst1, 3,0] *= pivot;
-            c[ coffst2, coffst1, 4,0] *= pivot;
-            r[ roffst3, roffst2, roffst1,0] *= pivot;
+            pivot = 1.0 / lhss[lhsoffst2][lhsoffst1][0][0];
+            lhss[lhsoffst2][lhsoffst1][1][0] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][2][0] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][3][0] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][4][0] *= pivot;
+            c[coffst2][coffst1][0][0] *= pivot;
+            c[coffst2][coffst1][1][0] *= pivot;
+            c[coffst2][coffst1][2][0] *= pivot;
+            c[coffst2][coffst1][3][0] *= pivot;
+            c[coffst2][coffst1][4][0] *= pivot;
+            r[roffst3][roffst2][roffst1][0] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 0,1];
-            lhss[ lhsoffst2, lhsoffst1, 1,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,0];
-            c[ coffst2, coffst1, 0,1] -= coeff * c[ coffst2, coffst1, 0,0];
-            c[ coffst2, coffst1, 1,1] -= coeff * c[ coffst2, coffst1, 1,0];
-            c[ coffst2, coffst1, 2,1] -= coeff * c[ coffst2, coffst1, 2,0];
-            c[ coffst2, coffst1, 3,1] -= coeff * c[ coffst2, coffst1, 3,0];
-            c[ coffst2, coffst1, 4,1] -= coeff * c[ coffst2, coffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,1] -= coeff * r[ roffst3, roffst2, roffst1,0];
+            coeff = lhss[lhsoffst2][lhsoffst1][0][1];
+            lhss[lhsoffst2][lhsoffst1][1][1] -= coeff * lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][1] -= coeff * lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][1] -= coeff * lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][1] -= coeff * lhss[lhsoffst2][lhsoffst1][4][0];
+            c[coffst2][coffst1][0][1] -= coeff * c[coffst2][coffst1][0][0];
+            c[coffst2][coffst1][1][1] -= coeff * c[coffst2][coffst1][1][0];
+            c[coffst2][coffst1][2][1] -= coeff * c[coffst2][coffst1][2][0];
+            c[coffst2][coffst1][3][1] -= coeff * c[coffst2][coffst1][3][0];
+            c[coffst2][coffst1][4][1] -= coeff * c[coffst2][coffst1][4][0];
+            r[roffst3][roffst2][roffst1][1] -= coeff * r[roffst3][roffst2][roffst1][0];
 
-			coeff = lhss[ lhsoffst2, lhsoffst1, 0,2];
-            lhss[ lhsoffst2, lhsoffst1, 1,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,0];
-            c[ coffst2, coffst1, 0,2] -= coeff * c[ coffst2, coffst1, 0,0];
-            c[ coffst2, coffst1, 1,2] -= coeff * c[ coffst2, coffst1, 1,0];
-            c[ coffst2, coffst1, 2,2] -= coeff * c[ coffst2, coffst1, 2,0];
-            c[ coffst2, coffst1, 3,2] -= coeff * c[ coffst2, coffst1, 3,0];
-            c[ coffst2, coffst1, 4,2] -= coeff * c[ coffst2, coffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,2] -= coeff * r[ roffst3, roffst2, roffst1,0];
-			coeff = lhss[ lhsoffst2, lhsoffst1, 0,3];
-            lhss[ lhsoffst2, lhsoffst1, 1,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,0];
-            c[ coffst2, coffst1, 0,3] -= coeff * c[ coffst2, coffst1, 0,0];
-            c[ coffst2, coffst1, 1,3] -= coeff * c[ coffst2, coffst1, 1,0];
-            c[ coffst2, coffst1, 2,3] -= coeff * c[ coffst2, coffst1, 2,0];
-            c[ coffst2, coffst1, 3,3] -= coeff * c[ coffst2, coffst1, 3,0];
-            c[ coffst2, coffst1, 4,3] -= coeff * c[ coffst2, coffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,3] -= coeff * r[ roffst3, roffst2, roffst1,0];
+			coeff = lhss[lhsoffst2][lhsoffst1][0][2];
+            lhss[lhsoffst2][lhsoffst1][1][2] -= coeff * lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][2] -= coeff * lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][2] -= coeff * lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][2] -= coeff * lhss[lhsoffst2][lhsoffst1][4][0];
+            c[coffst2][coffst1][0][2] -= coeff * c[coffst2][coffst1][0][0];
+            c[coffst2][coffst1][1][2] -= coeff * c[coffst2][coffst1][1][0];
+            c[coffst2][coffst1][2][2] -= coeff * c[coffst2][coffst1][2][0];
+            c[coffst2][coffst1][3][2] -= coeff * c[coffst2][coffst1][3][0];
+            c[coffst2][coffst1][4][2] -= coeff * c[coffst2][coffst1][4][0];
+            r[roffst3][roffst2][roffst1][2] -= coeff * r[roffst3][roffst2][roffst1][0];
+			coeff = lhss[lhsoffst2][lhsoffst1][0][3];
+            lhss[lhsoffst2][lhsoffst1][1][3] -= coeff * lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][3] -= coeff * lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][3] -= coeff * lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][3] -= coeff * lhss[lhsoffst2][lhsoffst1][4][0];
+            c[coffst2][coffst1][0][3] -= coeff * c[coffst2][coffst1][0][0];
+            c[coffst2][coffst1][1][3] -= coeff * c[coffst2][coffst1][1][0];
+            c[coffst2][coffst1][2][3] -= coeff * c[coffst2][coffst1][2][0];
+            c[coffst2][coffst1][3][3] -= coeff * c[coffst2][coffst1][3][0];
+            c[coffst2][coffst1][4][3] -= coeff * c[coffst2][coffst1][4][0];
+            r[roffst3][roffst2][roffst1][3] -= coeff * r[roffst3][roffst2][roffst1][0];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 0,4];
-            lhss[ lhsoffst2, lhsoffst1, 1,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,0];
-            c[ coffst2, coffst1, 0,4] -= coeff * c[ coffst2, coffst1, 0,0];
-            c[ coffst2, coffst1, 1,4] -= coeff * c[ coffst2, coffst1, 1,0];
-            c[ coffst2, coffst1, 2,4] -= coeff * c[ coffst2, coffst1, 2,0];
-            c[ coffst2, coffst1, 3,4] -= coeff * c[ coffst2, coffst1, 3,0];
-            c[ coffst2, coffst1, 4,4] -= coeff * c[ coffst2, coffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,4] -= coeff * r[ roffst3, roffst2, roffst1,0];
+            coeff = lhss[lhsoffst2][lhsoffst1][0][4];
+            lhss[lhsoffst2][lhsoffst1][1][4] -= coeff * lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][4] -= coeff * lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][4] -= coeff * lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][4] -= coeff * lhss[lhsoffst2][lhsoffst1][4][0];
+            c[coffst2][coffst1][0][4] -= coeff * c[coffst2][coffst1][0][0];
+            c[coffst2][coffst1][1][4] -= coeff * c[coffst2][coffst1][1][0];
+            c[coffst2][coffst1][2][4] -= coeff * c[coffst2][coffst1][2][0];
+            c[coffst2][coffst1][3][4] -= coeff * c[coffst2][coffst1][3][0];
+            c[coffst2][coffst1][4][4] -= coeff * c[coffst2][coffst1][4][0];
+            r[roffst3][roffst2][roffst1][4] -= coeff * r[roffst3][roffst2][roffst1][0];
 			
 			
-            pivot = 1.0 / lhss[ lhsoffst2, lhsoffst1, 1,1];
-            lhss[ lhsoffst2, lhsoffst1, 2,1] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 3,1] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 4,1] *= pivot;
-            c[ coffst2, coffst1, 0,1] *= pivot;
-            c[ coffst2, coffst1, 1,1] *= pivot;
-            c[ coffst2, coffst1, 2,1] *= pivot;
-            c[ coffst2, coffst1, 3,1] *= pivot;
-            c[ coffst2, coffst1, 4,1] *= pivot;
-            r[ roffst3, roffst2, roffst1,1] *= pivot;
+            pivot = 1.0 / lhss[lhsoffst2][lhsoffst1][1][1];
+            lhss[lhsoffst2][lhsoffst1][2][1] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][3][1] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][4][1] *= pivot;
+            c[coffst2][coffst1][0][1] *= pivot;
+            c[coffst2][coffst1][1][1] *= pivot;
+            c[coffst2][coffst1][2][1] *= pivot;
+            c[coffst2][coffst1][3][1] *= pivot;
+            c[coffst2][coffst1][4][1] *= pivot;
+            r[roffst3][roffst2][roffst1][1] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,1];
-            c[ coffst2, coffst1, 0,0] -= coeff * c[ coffst2, coffst1, 0,1];
-            c[ coffst2, coffst1, 1,0] -= coeff * c[ coffst2, coffst1, 1,1];
-            c[ coffst2, coffst1, 2,0] -= coeff * c[ coffst2, coffst1, 2,1];
-            c[ coffst2, coffst1, 3,0] -= coeff * c[ coffst2, coffst1, 3,1];
-            c[ coffst2, coffst1, 4,0] -= coeff * c[ coffst2, coffst1, 4,1];
-            r[ roffst3, roffst2, roffst1,0] -= coeff * r[ roffst3, roffst2, roffst1,1];			
+            coeff = lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][0] -= coeff * lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][0] -= coeff * lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][0] -= coeff * lhss[lhsoffst2][lhsoffst1][4][1];
+            c[coffst2][coffst1][0][0] -= coeff * c[coffst2][coffst1][0][1];
+            c[coffst2][coffst1][1][0] -= coeff * c[coffst2][coffst1][1][1];
+            c[coffst2][coffst1][2][0] -= coeff * c[coffst2][coffst1][2][1];
+            c[coffst2][coffst1][3][0] -= coeff * c[coffst2][coffst1][3][1];
+            c[coffst2][coffst1][4][0] -= coeff * c[coffst2][coffst1][4][1];
+            r[roffst3][roffst2][roffst1][0] -= coeff * r[roffst3][roffst2][roffst1][1];			
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 1,2];
-            lhss[ lhsoffst2, lhsoffst1, 2,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,1];
-            c[ coffst2, coffst1, 0,2] -= coeff * c[ coffst2, coffst1, 0,1];
-            c[ coffst2, coffst1, 1,2] -= coeff * c[ coffst2, coffst1, 1,1];
-            c[ coffst2, coffst1, 2,2] -= coeff * c[ coffst2, coffst1, 2,1];
-            c[ coffst2, coffst1, 3,2] -= coeff * c[ coffst2, coffst1, 3,1];
-            c[ coffst2, coffst1, 4,2] -= coeff * c[ coffst2, coffst1, 4,1];
-			r[ roffst3, roffst2, roffst1,2] -= coeff * r[ roffst3, roffst2, roffst1,1];
+            coeff = lhss[lhsoffst2][lhsoffst1][1][2];
+            lhss[lhsoffst2][lhsoffst1][2][2] -= coeff * lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][2] -= coeff * lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][2] -= coeff * lhss[lhsoffst2][lhsoffst1][4][1];
+            c[coffst2][coffst1][0][2] -= coeff * c[coffst2][coffst1][0][1];
+            c[coffst2][coffst1][1][2] -= coeff * c[coffst2][coffst1][1][1];
+            c[coffst2][coffst1][2][2] -= coeff * c[coffst2][coffst1][2][1];
+            c[coffst2][coffst1][3][2] -= coeff * c[coffst2][coffst1][3][1];
+            c[coffst2][coffst1][4][2] -= coeff * c[coffst2][coffst1][4][1];
+			r[roffst3][roffst2][roffst1][2] -= coeff * r[roffst3][roffst2][roffst1][1];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 1,3];
-            lhss[ lhsoffst2, lhsoffst1, 2,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,1];
-            c[ coffst2, coffst1, 0,3] -= coeff * c[ coffst2, coffst1, 0,1];
-            c[ coffst2, coffst1, 1,3] -= coeff * c[ coffst2, coffst1, 1,1];
-            c[ coffst2, coffst1, 2,3] -= coeff * c[ coffst2, coffst1, 2,1];
-            c[ coffst2, coffst1, 3,3] -= coeff * c[ coffst2, coffst1, 3,1];
-            c[ coffst2, coffst1, 4,3] -= coeff * c[ coffst2, coffst1, 4,1];
-            r[ roffst3, roffst2, roffst1,3] -= coeff * r[ roffst3, roffst2, roffst1,1];
+            coeff = lhss[lhsoffst2][lhsoffst1][1][3];
+            lhss[lhsoffst2][lhsoffst1][2][3] -= coeff * lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][3] -= coeff * lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][3] -= coeff * lhss[lhsoffst2][lhsoffst1][4][1];
+            c[coffst2][coffst1][0][3] -= coeff * c[coffst2][coffst1][0][1];
+            c[coffst2][coffst1][1][3] -= coeff * c[coffst2][coffst1][1][1];
+            c[coffst2][coffst1][2][3] -= coeff * c[coffst2][coffst1][2][1];
+            c[coffst2][coffst1][3][3] -= coeff * c[coffst2][coffst1][3][1];
+            c[coffst2][coffst1][4][3] -= coeff * c[coffst2][coffst1][4][1];
+            r[roffst3][roffst2][roffst1][3] -= coeff * r[roffst3][roffst2][roffst1][1];
 			
-            coeff = lhss[ lhsoffst2, lhsoffst1, 1,4];
-            lhss[ lhsoffst2, lhsoffst1, 2,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,1];
-            c[ coffst2, coffst1, 0,4] -= coeff * c[ coffst2, coffst1, 0,1];
-            c[ coffst2, coffst1, 1,4] -= coeff * c[ coffst2, coffst1, 1,1];
-            c[ coffst2, coffst1, 2,4] -= coeff * c[ coffst2, coffst1, 2,1];
-            c[ coffst2, coffst1, 3,4] -= coeff * c[ coffst2, coffst1, 3,1];
-			c[ coffst2, coffst1, 4,4] -= coeff * c[ coffst2, coffst1, 4,1];
-            r[ roffst3, roffst2, roffst1,4] -= coeff * r[ roffst3, roffst2, roffst1,1];
+            coeff = lhss[lhsoffst2][lhsoffst1][1][4];
+            lhss[lhsoffst2][lhsoffst1][2][4] -= coeff * lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][4] -= coeff * lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][4] -= coeff * lhss[lhsoffst2][lhsoffst1][4][1];
+            c[coffst2][coffst1][0][4] -= coeff * c[coffst2][coffst1][0][1];
+            c[coffst2][coffst1][1][4] -= coeff * c[coffst2][coffst1][1][1];
+            c[coffst2][coffst1][2][4] -= coeff * c[coffst2][coffst1][2][1];
+            c[coffst2][coffst1][3][4] -= coeff * c[coffst2][coffst1][3][1];
+			c[coffst2][coffst1][4][4] -= coeff * c[coffst2][coffst1][4][1];
+            r[roffst3][roffst2][roffst1][4] -= coeff * r[roffst3][roffst2][roffst1][1];
 
-            pivot = 1.0 / lhss[ lhsoffst2, lhsoffst1, 2,2];
-            lhss[ lhsoffst2, lhsoffst1, 3,2] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 4,2] *= pivot;
-            c[ coffst2, coffst1, 0,2] *= pivot;
-            c[ coffst2, coffst1, 1,2] *= pivot;
-            c[ coffst2, coffst1, 2,2] *= pivot;
-            c[ coffst2, coffst1, 3,2] *= pivot;
-            c[ coffst2, coffst1, 4,2] *= pivot;
-            r[ roffst3, roffst2, roffst1,2] *= pivot;
-            coeff = lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,2];
-            c[ coffst2, coffst1, 0,0] -= coeff * c[ coffst2, coffst1, 0,2];
-            c[ coffst2, coffst1, 1,0] -= coeff * c[ coffst2, coffst1, 1,2];
-            c[ coffst2, coffst1, 2,0] -= coeff * c[ coffst2, coffst1, 2,2];
-            c[ coffst2, coffst1, 3,0] -= coeff * c[ coffst2, coffst1, 3,2];
-            c[ coffst2, coffst1, 4,0] -= coeff * c[ coffst2, coffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,0] -= coeff * r[ roffst3, roffst2, roffst1,2];
-            coeff = lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,2];
-            c[ coffst2, coffst1, 0,1] -= coeff * c[ coffst2, coffst1, 0,2];
-            c[ coffst2, coffst1, 1,1] -= coeff * c[ coffst2, coffst1, 1,2];
-            c[ coffst2, coffst1, 2,1] -= coeff * c[ coffst2, coffst1, 2,2];
-            c[ coffst2, coffst1, 3,1] -= coeff * c[ coffst2, coffst1, 3,2];
-            c[ coffst2, coffst1, 4,1] -= coeff * c[ coffst2, coffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,1] -= coeff * r[ roffst3, roffst2, roffst1,2];
-            coeff = lhss[ lhsoffst2, lhsoffst1, 2,3];
-            lhss[ lhsoffst2, lhsoffst1, 3,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,2];
-            c[ coffst2, coffst1, 0,3] -= coeff * c[ coffst2, coffst1, 0,2];
-            c[ coffst2, coffst1, 1,3] -= coeff * c[ coffst2, coffst1, 1,2];
-            c[ coffst2, coffst1, 2,3] -= coeff * c[ coffst2, coffst1, 2,2];
-            c[ coffst2, coffst1, 3,3] -= coeff * c[ coffst2, coffst1, 3,2];
-            c[ coffst2, coffst1, 4,3] -= coeff * c[ coffst2, coffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,3] -= coeff * r[ roffst3, roffst2, roffst1,2];
-            coeff = lhss[ lhsoffst2, lhsoffst1, 2,4];
-            lhss[ lhsoffst2, lhsoffst1, 3,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,2];
-            c[ coffst2, coffst1, 0,4] -= coeff * c[ coffst2, coffst1, 0,2];
-            c[ coffst2, coffst1, 1,4] -= coeff * c[ coffst2, coffst1, 1,2];
-            c[ coffst2, coffst1, 2,4] -= coeff * c[ coffst2, coffst1, 2,2];
-            c[ coffst2, coffst1, 3,4] -= coeff * c[ coffst2, coffst1, 3,2];
-            c[ coffst2, coffst1, 4,4] -= coeff * c[ coffst2, coffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,4] -= coeff * r[ roffst3, roffst2, roffst1,2];
+            pivot = 1.0 / lhss[lhsoffst2][lhsoffst1][2][2];
+            lhss[lhsoffst2][lhsoffst1][3][2] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][4][2] *= pivot;
+            c[coffst2][coffst1][0][2] *= pivot;
+            c[coffst2][coffst1][1][2] *= pivot;
+            c[coffst2][coffst1][2][2] *= pivot;
+            c[coffst2][coffst1][3][2] *= pivot;
+            c[coffst2][coffst1][4][2] *= pivot;
+            r[roffst3][roffst2][roffst1][2] *= pivot;
+            coeff = lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][0] -= coeff * lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][0] -= coeff * lhss[lhsoffst2][lhsoffst1][4][2];
+            c[coffst2][coffst1][0][0] -= coeff * c[coffst2][coffst1][0][2];
+            c[coffst2][coffst1][1][0] -= coeff * c[coffst2][coffst1][1][2];
+            c[coffst2][coffst1][2][0] -= coeff * c[coffst2][coffst1][2][2];
+            c[coffst2][coffst1][3][0] -= coeff * c[coffst2][coffst1][3][2];
+            c[coffst2][coffst1][4][0] -= coeff * c[coffst2][coffst1][4][2];
+            r[roffst3][roffst2][roffst1][0] -= coeff * r[roffst3][roffst2][roffst1][2];
+            coeff = lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][1] -= coeff * lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][1] -= coeff * lhss[lhsoffst2][lhsoffst1][4][2];
+            c[coffst2][coffst1][0][1] -= coeff * c[coffst2][coffst1][0][2];
+            c[coffst2][coffst1][1][1] -= coeff * c[coffst2][coffst1][1][2];
+            c[coffst2][coffst1][2][1] -= coeff * c[coffst2][coffst1][2][2];
+            c[coffst2][coffst1][3][1] -= coeff * c[coffst2][coffst1][3][2];
+            c[coffst2][coffst1][4][1] -= coeff * c[coffst2][coffst1][4][2];
+            r[roffst3][roffst2][roffst1][1] -= coeff * r[roffst3][roffst2][roffst1][2];
+            coeff = lhss[lhsoffst2][lhsoffst1][2][3];
+            lhss[lhsoffst2][lhsoffst1][3][3] -= coeff * lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][3] -= coeff * lhss[lhsoffst2][lhsoffst1][4][2];
+            c[coffst2][coffst1][0][3] -= coeff * c[coffst2][coffst1][0][2];
+            c[coffst2][coffst1][1][3] -= coeff * c[coffst2][coffst1][1][2];
+            c[coffst2][coffst1][2][3] -= coeff * c[coffst2][coffst1][2][2];
+            c[coffst2][coffst1][3][3] -= coeff * c[coffst2][coffst1][3][2];
+            c[coffst2][coffst1][4][3] -= coeff * c[coffst2][coffst1][4][2];
+            r[roffst3][roffst2][roffst1][3] -= coeff * r[roffst3][roffst2][roffst1][2];
+            coeff = lhss[lhsoffst2][lhsoffst1][2][4];
+            lhss[lhsoffst2][lhsoffst1][3][4] -= coeff * lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][4] -= coeff * lhss[lhsoffst2][lhsoffst1][4][2];
+            c[coffst2][coffst1][0][4] -= coeff * c[coffst2][coffst1][0][2];
+            c[coffst2][coffst1][1][4] -= coeff * c[coffst2][coffst1][1][2];
+            c[coffst2][coffst1][2][4] -= coeff * c[coffst2][coffst1][2][2];
+            c[coffst2][coffst1][3][4] -= coeff * c[coffst2][coffst1][3][2];
+            c[coffst2][coffst1][4][4] -= coeff * c[coffst2][coffst1][4][2];
+            r[roffst3][roffst2][roffst1][4] -= coeff * r[roffst3][roffst2][roffst1][2];
 
 
-            pivot = 1.0 / lhss[ lhsoffst2, lhsoffst1, 3,3];
-            lhss[ lhsoffst2, lhsoffst1, 4,3] *= pivot;
-            c[ coffst2, coffst1, 0,3] *= pivot;
-            c[ coffst2, coffst1, 1,3] *= pivot;
-            c[ coffst2, coffst1, 2,3] *= pivot;
-            c[ coffst2, coffst1, 3,3] *= pivot;
-            c[ coffst2, coffst1, 4,3] *= pivot;
-            r[ roffst3, roffst2, roffst1,3] *= pivot;
+            pivot = 1.0 / lhss[lhsoffst2][lhsoffst1][3][3];
+            lhss[lhsoffst2][lhsoffst1][4][3] *= pivot;
+            c[coffst2][coffst1][0][3] *= pivot;
+            c[coffst2][coffst1][1][3] *= pivot;
+            c[coffst2][coffst1][2][3] *= pivot;
+            c[coffst2][coffst1][3][3] *= pivot;
+            c[coffst2][coffst1][4][3] *= pivot;
+            r[roffst3][roffst2][roffst1][3] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,3];
-            c[ coffst2, coffst1, 0,0] -= coeff * c[ coffst2, coffst1, 0,3];
-            c[ coffst2, coffst1, 1,0] -= coeff * c[ coffst2, coffst1, 1,3];
-            c[ coffst2, coffst1, 2,0] -= coeff * c[ coffst2, coffst1, 2,3];
-            c[ coffst2, coffst1, 3,0] -= coeff * c[ coffst2, coffst1, 3,3];
-            c[ coffst2, coffst1, 4,0] -= coeff * c[ coffst2, coffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,0] -= coeff * r[ roffst3, roffst2, roffst1,3];
+            coeff = lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][0] -= coeff * lhss[lhsoffst2][lhsoffst1][4][3];
+            c[coffst2][coffst1][0][0] -= coeff * c[coffst2][coffst1][0][3];
+            c[coffst2][coffst1][1][0] -= coeff * c[coffst2][coffst1][1][3];
+            c[coffst2][coffst1][2][0] -= coeff * c[coffst2][coffst1][2][3];
+            c[coffst2][coffst1][3][0] -= coeff * c[coffst2][coffst1][3][3];
+            c[coffst2][coffst1][4][0] -= coeff * c[coffst2][coffst1][4][3];
+            r[roffst3][roffst2][roffst1][0] -= coeff * r[roffst3][roffst2][roffst1][3];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,3];
-            c[ coffst2, coffst1, 0,1] -= coeff * c[ coffst2, coffst1, 0,3];
-            c[ coffst2, coffst1, 1,1] -= coeff * c[ coffst2, coffst1, 1,3];
-            c[ coffst2, coffst1, 2,1] -= coeff * c[ coffst2, coffst1, 2,3];
-            c[ coffst2, coffst1, 3,1] -= coeff * c[ coffst2, coffst1, 3,3];
-            c[ coffst2, coffst1, 4,1] -= coeff * c[ coffst2, coffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,1] -= coeff * r[ roffst3, roffst2, roffst1,3];
+            coeff = lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][1] -= coeff * lhss[lhsoffst2][lhsoffst1][4][3];
+            c[coffst2][coffst1][0][1] -= coeff * c[coffst2][coffst1][0][3];
+            c[coffst2][coffst1][1][1] -= coeff * c[coffst2][coffst1][1][3];
+            c[coffst2][coffst1][2][1] -= coeff * c[coffst2][coffst1][2][3];
+            c[coffst2][coffst1][3][1] -= coeff * c[coffst2][coffst1][3][3];
+            c[coffst2][coffst1][4][1] -= coeff * c[coffst2][coffst1][4][3];
+            r[roffst3][roffst2][roffst1][1] -= coeff * r[roffst3][roffst2][roffst1][3];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,3];
-            c[ coffst2, coffst1, 0,2] -= coeff * c[ coffst2, coffst1, 0,3];
-            c[ coffst2, coffst1, 1,2] -= coeff * c[ coffst2, coffst1, 1,3];
-            c[ coffst2, coffst1, 2,2] -= coeff * c[ coffst2, coffst1, 2,3];
-            c[ coffst2, coffst1, 3,2] -= coeff * c[ coffst2, coffst1, 3,3];
-            c[ coffst2, coffst1, 4,2] -= coeff * c[ coffst2, coffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,2] -= coeff * r[ roffst3, roffst2, roffst1,3];
-            coeff = lhss[ lhsoffst2, lhsoffst1, 3,4];
-			lhss[ lhsoffst2, lhsoffst1, 4,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,3];
-            c[ coffst2, coffst1, 0,4] -= coeff * c[ coffst2, coffst1, 0,3];
-            c[ coffst2, coffst1, 1,4] -= coeff * c[ coffst2, coffst1, 1,3];
-            c[ coffst2, coffst1, 2,4] -= coeff * c[ coffst2, coffst1, 2,3];
-            c[ coffst2, coffst1, 3,4] -= coeff * c[ coffst2, coffst1, 3,3];
-            c[ coffst2, coffst1, 4,4] -= coeff * c[ coffst2, coffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,4] -= coeff * r[ roffst3, roffst2, roffst1,3];
+            coeff = lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][2] -= coeff * lhss[lhsoffst2][lhsoffst1][4][3];
+            c[coffst2][coffst1][0][2] -= coeff * c[coffst2][coffst1][0][3];
+            c[coffst2][coffst1][1][2] -= coeff * c[coffst2][coffst1][1][3];
+            c[coffst2][coffst1][2][2] -= coeff * c[coffst2][coffst1][2][3];
+            c[coffst2][coffst1][3][2] -= coeff * c[coffst2][coffst1][3][3];
+            c[coffst2][coffst1][4][2] -= coeff * c[coffst2][coffst1][4][3];
+            r[roffst3][roffst2][roffst1][2] -= coeff * r[roffst3][roffst2][roffst1][3];
+            coeff = lhss[lhsoffst2][lhsoffst1][3][4];
+			lhss[lhsoffst2][lhsoffst1][4][4] -= coeff * lhss[lhsoffst2][lhsoffst1][4][3];
+            c[coffst2][coffst1][0][4] -= coeff * c[coffst2][coffst1][0][3];
+            c[coffst2][coffst1][1][4] -= coeff * c[coffst2][coffst1][1][3];
+            c[coffst2][coffst1][2][4] -= coeff * c[coffst2][coffst1][2][3];
+            c[coffst2][coffst1][3][4] -= coeff * c[coffst2][coffst1][3][3];
+            c[coffst2][coffst1][4][4] -= coeff * c[coffst2][coffst1][4][3];
+            r[roffst3][roffst2][roffst1][4] -= coeff * r[roffst3][roffst2][roffst1][3];
 
-            pivot = 1.0 / lhss[ lhsoffst2, lhsoffst1, 4,4];
-            c[ coffst2, coffst1, 0,4] *= pivot;
-            c[ coffst2, coffst1, 1,4] *= pivot;
-            c[ coffst2, coffst1, 2,4] *= pivot;
-            c[ coffst2, coffst1, 3,4] *= pivot;
-            c[ coffst2, coffst1, 4,4] *= pivot;
-			r[ roffst3, roffst2, roffst1,4] *= pivot;
+            pivot = 1.0 / lhss[lhsoffst2][lhsoffst1][4][4];
+            c[coffst2][coffst1][0][4] *= pivot;
+            c[coffst2][coffst1][1][4] *= pivot;
+            c[coffst2][coffst1][2][4] *= pivot;
+            c[coffst2][coffst1][3][4] *= pivot;
+            c[coffst2][coffst1][4][4] *= pivot;
+			r[roffst3][roffst2][roffst1][4] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 4,0];
-            c[ coffst2, coffst1, 0,0] -= coeff * c[ coffst2, coffst1, 0,4];
-            c[ coffst2, coffst1, 1,0] -= coeff * c[ coffst2, coffst1, 1,4];
-            c[ coffst2, coffst1, 2,0] -= coeff * c[ coffst2, coffst1, 2,4];
-            c[ coffst2, coffst1, 3,0] -= coeff * c[ coffst2, coffst1, 3,4];
-            c[ coffst2, coffst1, 4,0] -= coeff * c[ coffst2, coffst1, 4,4];
-			r[ roffst3, roffst2, roffst1,0] -= coeff * r[ roffst3, roffst2, roffst1,4];
+            coeff = lhss[lhsoffst2][lhsoffst1][4][0];
+            c[coffst2][coffst1][0][0] -= coeff * c[coffst2][coffst1][0][4];
+            c[coffst2][coffst1][1][0] -= coeff * c[coffst2][coffst1][1][4];
+            c[coffst2][coffst1][2][0] -= coeff * c[coffst2][coffst1][2][4];
+            c[coffst2][coffst1][3][0] -= coeff * c[coffst2][coffst1][3][4];
+            c[coffst2][coffst1][4][0] -= coeff * c[coffst2][coffst1][4][4];
+			r[roffst3][roffst2][roffst1][0] -= coeff * r[roffst3][roffst2][roffst1][4];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 4,1];
-            c[ coffst2, coffst1, 0,1] -= coeff * c[ coffst2, coffst1, 0,4];
-            c[ coffst2, coffst1, 1,1] -= coeff * c[ coffst2, coffst1, 1,4];
-            c[ coffst2, coffst1, 2,1] -= coeff * c[ coffst2, coffst1, 2,4];
-            c[ coffst2, coffst1, 3,1] -= coeff * c[ coffst2, coffst1, 3,4];
-            c[ coffst2, coffst1, 4,1] -= coeff * c[ coffst2, coffst1, 4,4];
-            r[ roffst3, roffst2, roffst1,1] -= coeff * r[ roffst3, roffst2, roffst1,4];
+            coeff = lhss[lhsoffst2][lhsoffst1][4][1];
+            c[coffst2][coffst1][0][1] -= coeff * c[coffst2][coffst1][0][4];
+            c[coffst2][coffst1][1][1] -= coeff * c[coffst2][coffst1][1][4];
+            c[coffst2][coffst1][2][1] -= coeff * c[coffst2][coffst1][2][4];
+            c[coffst2][coffst1][3][1] -= coeff * c[coffst2][coffst1][3][4];
+            c[coffst2][coffst1][4][1] -= coeff * c[coffst2][coffst1][4][4];
+            r[roffst3][roffst2][roffst1][1] -= coeff * r[roffst3][roffst2][roffst1][4];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 4,2];
-            c[ coffst2, coffst1, 0,2] -= coeff * c[ coffst2, coffst1, 0,4];
-            c[ coffst2, coffst1, 1,2] -= coeff * c[ coffst2, coffst1, 1,4];
-            c[ coffst2, coffst1, 2,2] -= coeff * c[ coffst2, coffst1, 2,4];
-            c[ coffst2, coffst1, 3,2] -= coeff * c[ coffst2, coffst1, 3,4];
-            c[ coffst2, coffst1, 4,2] -= coeff * c[ coffst2, coffst1, 4,4];
-            r[ roffst3, roffst2, roffst1,2] -= coeff * r[ roffst3, roffst2, roffst1,4];
+            coeff = lhss[lhsoffst2][lhsoffst1][4][2];
+            c[coffst2][coffst1][0][2] -= coeff * c[coffst2][coffst1][0][4];
+            c[coffst2][coffst1][1][2] -= coeff * c[coffst2][coffst1][1][4];
+            c[coffst2][coffst1][2][2] -= coeff * c[coffst2][coffst1][2][4];
+            c[coffst2][coffst1][3][2] -= coeff * c[coffst2][coffst1][3][4];
+            c[coffst2][coffst1][4][2] -= coeff * c[coffst2][coffst1][4][4];
+            r[roffst3][roffst2][roffst1][2] -= coeff * r[roffst3][roffst2][roffst1][4];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 4,3];
-            c[ coffst2, coffst1, 0,3] -= coeff * c[ coffst2, coffst1, 0,4];
-            c[ coffst2, coffst1, 1,3] -= coeff * c[ coffst2, coffst1, 1,4];
-            c[ coffst2, coffst1, 2,3] -= coeff * c[ coffst2, coffst1, 2,4];
-            c[ coffst2, coffst1, 3,3] -= coeff * c[ coffst2, coffst1, 3,4];
-            c[ coffst2, coffst1, 4,3] -= coeff * c[ coffst2, coffst1, 4,4];
-            r[ roffst3, roffst2, roffst1,3] -= coeff * r[ roffst3, roffst2, roffst1,4];
+            coeff = lhss[lhsoffst2][lhsoffst1][4][3];
+            c[coffst2][coffst1][0][3] -= coeff * c[coffst2][coffst1][0][4];
+            c[coffst2][coffst1][1][3] -= coeff * c[coffst2][coffst1][1][4];
+            c[coffst2][coffst1][2][3] -= coeff * c[coffst2][coffst1][2][4];
+            c[coffst2][coffst1][3][3] -= coeff * c[coffst2][coffst1][3][4];
+            c[coffst2][coffst1][4][3] -= coeff * c[coffst2][coffst1][4][4];
+            r[roffst3][roffst2][roffst1][3] -= coeff * r[roffst3][roffst2][roffst1][4];
         }
 
-        public void binvrhs(double[,,,] lhss, int lhsoffst1, int lhsoffst2, double[,,,] r, int roffst1, int roffst2, int roffst3)
+        public void binvrhs(double[][][][] lhss, int lhsoffst1, int lhsoffst2, double[][][][] r, int roffst1, int roffst2, int roffst3)
         {
             double pivot;
             double coeff;
 
-            pivot = 1 / lhss[ lhsoffst2, lhsoffst1, 0,0];
-            lhss[ lhsoffst2, lhsoffst1, 1,0] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 2,0] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 3,0] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 4,0] *= pivot;
-            r[ roffst3, roffst2, roffst1,0] *= pivot;
+            pivot = 1 / lhss[lhsoffst2][lhsoffst1][0][0];
+            lhss[lhsoffst2][lhsoffst1][1][0] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][2][0] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][3][0] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][4][0] *= pivot;
+            r[roffst3][roffst2][roffst1][0] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 0,1];
-            lhss[ lhsoffst2, lhsoffst1, 1,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,1] -= coeff * r[ roffst3, roffst2, roffst1,0];
+            coeff = lhss[lhsoffst2][lhsoffst1][0][1];
+            lhss[lhsoffst2][lhsoffst1][1][1] -= coeff * lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][1] -= coeff * lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][1] -= coeff * lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][1] -= coeff * lhss[lhsoffst2][lhsoffst1][4][0];
+            r[roffst3][roffst2][roffst1][1] -= coeff * r[roffst3][roffst2][roffst1][0];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 0,2];
-            lhss[ lhsoffst2, lhsoffst1, 1,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,2] -= coeff * r[ roffst3, roffst2, roffst1,0];
+            coeff = lhss[lhsoffst2][lhsoffst1][0][2];
+            lhss[lhsoffst2][lhsoffst1][1][2] -= coeff * lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][2] -= coeff * lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][2] -= coeff * lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][2] -= coeff * lhss[lhsoffst2][lhsoffst1][4][0];
+            r[roffst3][roffst2][roffst1][2] -= coeff * r[roffst3][roffst2][roffst1][0];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 0,3];
-            lhss[ lhsoffst2, lhsoffst1, 1,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,3] -= coeff * r[ roffst3, roffst2, roffst1,0];
+            coeff = lhss[lhsoffst2][lhsoffst1][0][3];
+            lhss[lhsoffst2][lhsoffst1][1][3] -= coeff * lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][3] -= coeff * lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][3] -= coeff * lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][3] -= coeff * lhss[lhsoffst2][lhsoffst1][4][0];
+            r[roffst3][roffst2][roffst1][3] -= coeff * r[roffst3][roffst2][roffst1][0];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 0,4];
-            lhss[ lhsoffst2, lhsoffst1, 1,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,4] -= coeff * r[ roffst3, roffst2, roffst1,0];
+            coeff = lhss[lhsoffst2][lhsoffst1][0][4];
+            lhss[lhsoffst2][lhsoffst1][1][4] -= coeff * lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][4] -= coeff * lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][4] -= coeff * lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][4] -= coeff * lhss[lhsoffst2][lhsoffst1][4][0];
+            r[roffst3][roffst2][roffst1][4] -= coeff * r[roffst3][roffst2][roffst1][0];
 			
 
-            pivot = 1 / lhss[ lhsoffst2, lhsoffst1, 1,1];
-            lhss[ lhsoffst2, lhsoffst1, 2,1] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 3,1] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 4,1] *= pivot;
-            r[ roffst3, roffst2, roffst1,1] *= pivot;
+            pivot = 1 / lhss[lhsoffst2][lhsoffst1][1][1];
+            lhss[lhsoffst2][lhsoffst1][2][1] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][3][1] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][4][1] *= pivot;
+            r[roffst3][roffst2][roffst1][1] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 1,0];
-            lhss[ lhsoffst2, lhsoffst1, 2,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,1];
-            r[ roffst3, roffst2, roffst1,0] -= coeff * r[ roffst3, roffst2, roffst1,1];
+            coeff = lhss[lhsoffst2][lhsoffst1][1][0];
+            lhss[lhsoffst2][lhsoffst1][2][0] -= coeff * lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][0] -= coeff * lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][0] -= coeff * lhss[lhsoffst2][lhsoffst1][4][1];
+            r[roffst3][roffst2][roffst1][0] -= coeff * r[roffst3][roffst2][roffst1][1];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 1,2];
-            lhss[ lhsoffst2, lhsoffst1, 2,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,1];
-            r[ roffst3, roffst2, roffst1,2] -= coeff * r[ roffst3, roffst2, roffst1,1];
+            coeff = lhss[lhsoffst2][lhsoffst1][1][2];
+            lhss[lhsoffst2][lhsoffst1][2][2] -= coeff * lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][2] -= coeff * lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][2] -= coeff * lhss[lhsoffst2][lhsoffst1][4][1];
+            r[roffst3][roffst2][roffst1][2] -= coeff * r[roffst3][roffst2][roffst1][1];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 1,3];
-            lhss[ lhsoffst2, lhsoffst1, 2,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,1];
-            r[ roffst3, roffst2, roffst1,3] -= coeff * r[ roffst3, roffst2, roffst1,1];
+            coeff = lhss[lhsoffst2][lhsoffst1][1][3];
+            lhss[lhsoffst2][lhsoffst1][2][3] -= coeff * lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][3] -= coeff * lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][3] -= coeff * lhss[lhsoffst2][lhsoffst1][4][1];
+            r[roffst3][roffst2][roffst1][3] -= coeff * r[roffst3][roffst2][roffst1][1];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 1,4];
-            lhss[ lhsoffst2, lhsoffst1, 2,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,1];
-            r[ roffst3, roffst2, roffst1,4] -= coeff * r[ roffst3, roffst2, roffst1,1];
+            coeff = lhss[lhsoffst2][lhsoffst1][1][4];
+            lhss[lhsoffst2][lhsoffst1][2][4] -= coeff * lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][4] -= coeff * lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][4] -= coeff * lhss[lhsoffst2][lhsoffst1][4][1];
+            r[roffst3][roffst2][roffst1][4] -= coeff * r[roffst3][roffst2][roffst1][1];
 			
 
-            pivot = 1 / lhss[ lhsoffst2, lhsoffst1, 2,2];
-            lhss[ lhsoffst2, lhsoffst1, 3,2] *= pivot;
-            lhss[ lhsoffst2, lhsoffst1, 4,2] *= pivot;
-            r[ roffst3, roffst2, roffst1,2] *= pivot;
+            pivot = 1 / lhss[lhsoffst2][lhsoffst1][2][2];
+            lhss[lhsoffst2][lhsoffst1][3][2] *= pivot;
+            lhss[lhsoffst2][lhsoffst1][4][2] *= pivot;
+            r[roffst3][roffst2][roffst1][2] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 2,0];
-            lhss[ lhsoffst2, lhsoffst1, 3,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,0] -= coeff * r[ roffst3, roffst2, roffst1,2];
+            coeff = lhss[lhsoffst2][lhsoffst1][2][0];
+            lhss[lhsoffst2][lhsoffst1][3][0] -= coeff * lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][0] -= coeff * lhss[lhsoffst2][lhsoffst1][4][2];
+            r[roffst3][roffst2][roffst1][0] -= coeff * r[roffst3][roffst2][roffst1][2];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 2,1];
-            lhss[ lhsoffst2, lhsoffst1, 3,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,1] -= coeff * r[ roffst3, roffst2, roffst1,2];
+            coeff = lhss[lhsoffst2][lhsoffst1][2][1];
+            lhss[lhsoffst2][lhsoffst1][3][1] -= coeff * lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][1] -= coeff * lhss[lhsoffst2][lhsoffst1][4][2];
+            r[roffst3][roffst2][roffst1][1] -= coeff * r[roffst3][roffst2][roffst1][2];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 2,3];
-            lhss[ lhsoffst2, lhsoffst1, 3,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,3] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,3] -= coeff * r[ roffst3, roffst2, roffst1,2];
+            coeff = lhss[lhsoffst2][lhsoffst1][2][3];
+            lhss[lhsoffst2][lhsoffst1][3][3] -= coeff * lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][3] -= coeff * lhss[lhsoffst2][lhsoffst1][4][2];
+            r[roffst3][roffst2][roffst1][3] -= coeff * r[roffst3][roffst2][roffst1][2];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 2,4];
-            lhss[ lhsoffst2, lhsoffst1, 3,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,4] -= coeff * r[ roffst3, roffst2, roffst1,2];
+            coeff = lhss[lhsoffst2][lhsoffst1][2][4];
+            lhss[lhsoffst2][lhsoffst1][3][4] -= coeff * lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][4] -= coeff * lhss[lhsoffst2][lhsoffst1][4][2];
+            r[roffst3][roffst2][roffst1][4] -= coeff * r[roffst3][roffst2][roffst1][2];
 			
 
-            pivot = 1 / lhss[ lhsoffst2, lhsoffst1, 3,3];
-            lhss[ lhsoffst2, lhsoffst1, 4,3] *= pivot;
-            r[ roffst3, roffst2, roffst1,3] *= pivot;
+            pivot = 1 / lhss[lhsoffst2][lhsoffst1][3][3];
+            lhss[lhsoffst2][lhsoffst1][4][3] *= pivot;
+            r[roffst3][roffst2][roffst1][3] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 3,0];
-            lhss[ lhsoffst2, lhsoffst1, 4,0] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,0] -= coeff * r[ roffst3, roffst2, roffst1,3];
+            coeff = lhss[lhsoffst2][lhsoffst1][3][0];
+            lhss[lhsoffst2][lhsoffst1][4][0] -= coeff * lhss[lhsoffst2][lhsoffst1][4][3];
+            r[roffst3][roffst2][roffst1][0] -= coeff * r[roffst3][roffst2][roffst1][3];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 3,1];
-            lhss[ lhsoffst2, lhsoffst1, 4,1] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,1] -= coeff * r[ roffst3, roffst2, roffst1,3];
+            coeff = lhss[lhsoffst2][lhsoffst1][3][1];
+            lhss[lhsoffst2][lhsoffst1][4][1] -= coeff * lhss[lhsoffst2][lhsoffst1][4][3];
+            r[roffst3][roffst2][roffst1][1] -= coeff * r[roffst3][roffst2][roffst1][3];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 3,2];
-            lhss[ lhsoffst2, lhsoffst1, 4,2] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,2] -= coeff * r[ roffst3, roffst2, roffst1,3];
+            coeff = lhss[lhsoffst2][lhsoffst1][3][2];
+            lhss[lhsoffst2][lhsoffst1][4][2] -= coeff * lhss[lhsoffst2][lhsoffst1][4][3];
+            r[roffst3][roffst2][roffst1][2] -= coeff * r[roffst3][roffst2][roffst1][3];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 3,4];
-            lhss[ lhsoffst2, lhsoffst1, 4,4] -= coeff * lhss[ lhsoffst2, lhsoffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,4] -= coeff * r[ roffst3, roffst2, roffst1,3];
+            coeff = lhss[lhsoffst2][lhsoffst1][3][4];
+            lhss[lhsoffst2][lhsoffst1][4][4] -= coeff * lhss[lhsoffst2][lhsoffst1][4][3];
+            r[roffst3][roffst2][roffst1][4] -= coeff * r[roffst3][roffst2][roffst1][3];
 
 
-            pivot = 1 / lhss[ lhsoffst2, lhsoffst1, 4,4];
-            r[ roffst3, roffst2, roffst1,4] *= pivot;
+            pivot = 1 / lhss[lhsoffst2][lhsoffst1][4][4];
+            r[roffst3][roffst2][roffst1][4] *= pivot;
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 4,0];
-            r[ roffst3, roffst2, roffst1,0] -= coeff * r[ roffst3, roffst2, roffst1,4];
+            coeff = lhss[lhsoffst2][lhsoffst1][4][0];
+            r[roffst3][roffst2][roffst1][0] -= coeff * r[roffst3][roffst2][roffst1][4];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 4,1];
-            r[ roffst3, roffst2, roffst1,1] -= coeff * r[ roffst3, roffst2, roffst1,4];
+            coeff = lhss[lhsoffst2][lhsoffst1][4][1];
+            r[roffst3][roffst2][roffst1][1] -= coeff * r[roffst3][roffst2][roffst1][4];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 4,2];
-            r[ roffst3, roffst2, roffst1,2] -= coeff * r[ roffst3, roffst2, roffst1,4];
+            coeff = lhss[lhsoffst2][lhsoffst1][4][2];
+            r[roffst3][roffst2][roffst1][2] -= coeff * r[roffst3][roffst2][roffst1][4];
 
-            coeff = lhss[ lhsoffst2, lhsoffst1, 4,3];
-            r[ roffst3, roffst2, roffst1,3] -= coeff * r[ roffst3, roffst2, roffst1,4];
+            coeff = lhss[lhsoffst2][lhsoffst1][4][3];
+            r[roffst3][roffst2][roffst1][3] -= coeff * r[roffst3][roffst2][roffst1][4];
         }
     }
 }
