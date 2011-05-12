@@ -137,7 +137,7 @@ public class ZSolver extends SPBase {
     int i, j, k, n, k1, k2, m;
     double  t1, t2, t3, ac, xvel, yvel, zvel, r1, r2, r3,r4, r5, 
             btuz, acinv, ac2u, uzik1;
-    double ru1, fac1, fac2, rtmp[] = new double[5*(KMAX+1)];
+    double ru1, fac1, fac2, rtmp[][] = new double[5][(KMAX+1)];
 
     switch(state){
     case 1:
