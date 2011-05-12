@@ -532,7 +532,7 @@ public class SPBase extends Thread
 	}
 	public void set_constants(int ndid)
 	{
-		ce[0] = 2.0 * (1.0 + ((double)ndid) * 0.01);
+		ce[0][0] = 2.0 * (1.0 + ((double)ndid) * 0.01);
 		//    ce[0]=2.0;
 
 		c1 = 1.4;
