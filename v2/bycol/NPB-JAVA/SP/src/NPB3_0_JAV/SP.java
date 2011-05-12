@@ -863,7 +863,7 @@ public class SP extends SPBase {
 					forcing[m][i][j][k] = forcing[m][i][j][k]
 							- dssp
 							* (ue[k - 2 + m * jsize3] - 4.0
-									* ue[k - 1][m + 6.0 * ue[k][m] - 4.0 * ue[k + 1][m]);
+									* ue[k - 1][m] + 6.0 * ue[k][m] - 4.0 * ue[k + 1][m]);
 					k = grid_points[2] - 2;
 					forcing[m][i][j][k] = forcing[m][i][j][k]
 							- dssp
