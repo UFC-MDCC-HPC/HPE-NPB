@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="NPB3_0_JAV.SPThreads.SPBase"/>
+<fullyQualifiedTypeName name="NPB3_0_JAV.Timer"/>
+<fullyQualifiedTypeName name="NPB3_0_JAV.BMInOut.BMArgs"/>
+<fullyQualifiedTypeName name="NPB3_0_JAV.BMInOut.BMResults"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.io.FileReader"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+</qualifiedTypeNameHistroy>
