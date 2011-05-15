@@ -1,0 +1,5 @@
+H:\HPE\NPB\NPB-CSharp\bin\FT.exe
+H:\HPE\NPB\NPB-CSharp\bin\FT.pdb
+H:\HPE\NPB\NPB-CSharp\FT\obj\Debug\ResolveAssemblyReference.cache
+H:\HPE\NPB\NPB-CSharp\FT\obj\Debug\FT.exe
+H:\HPE\NPB\NPB-CSharp\FT\obj\Debug\FT.pdb

@@ -1,0 +1,5 @@
+H:\HPE\NPB\NPB-CSharp\bin\BT.exe
+H:\HPE\NPB\NPB-CSharp\bin\BT.pdb
+H:\HPE\NPB\NPB-CSharp\BT\obj\Debug\ResolveAssemblyReference.cache
+H:\HPE\NPB\NPB-CSharp\BT\obj\Debug\BT.exe
+H:\HPE\NPB\NPB-CSharp\BT\obj\Debug\BT.pdb
