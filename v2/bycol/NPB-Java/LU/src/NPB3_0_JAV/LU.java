@@ -55,7 +55,11 @@
 
 package NPB3_0_JAV;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.text.DecimalFormat;
 
 import NPB3_0_JAV.BMInOut.BMArgs;
 import NPB3_0_JAV.BMInOut.BMResults;
@@ -70,7 +74,7 @@ public class LU extends LUBase{
 			super(clss,np);
 		}
 		
-		public static void Main(String[] argv){
+		public static void main(String[] argv){
 			LU lu = null;
 
 			BMArgs.ParseCmdLineArgs(argv, BMName);
@@ -80,7 +84,7 @@ public class LU extends LUBase{
 			try{ 
 				lu = new LU(CLSS, np);
 			} catch(OutOfMemoryError e){
-				System.out.println(e.Message);
+				System.out.println(e.getMessage());
 				BMArgs.outOfMemoryMessage();
 				System.exit(0);
 			}      
@@ -184,33 +188,33 @@ public class LU extends LUBase{
 			return mflops;
 		}
 		public void printTimers(String[] t_names, double[] trecs, double tm){
-			//DecimalFormat fmt = new DecimalFormat("0.000");
+			DecimalFormat fmt = new DecimalFormat("0.000");
 			System.out.println("  SECTION     Time (secs)");
 			for(int i = 0; i < t_last; i++) trecs[i] = timer.readTimer(i);
 			if ( tm == 0.0 ) tm = 1.0;
 			for(int i = 1; i < t_last; i++){
 				double dbl =(trecs[i] * 100.0 / tm);
-				System.out.println("  " + t_names[i] + ":" + trecs[i].ToString("N3") + 
-				                  "(" + dbl.ToString("N3") + "%)" );
+				System.out.println("  " + t_names[i] + ":" + fmt.format(trecs[i]) + 
+				                  "(" + fmt.format(dbl) + "%)" );
 				if (i == t_rhs) {
 					double t = trecs[t_rhsx] + trecs[t_rhsy] + trecs[t_rhsz];
 					dbl = (t * 100.0 / tm);
 					System.out.println("     " + "--> total " + "sub-rhs" + 
-					                  ":" + t.ToString("N3") +
-					                  "  (" + dbl.ToString("N3") + "%)");
+					                  ":" + fmt.format(t) +
+					                  "  (" + fmt.format(dbl) + "%)");
 					t = trecs[i] - t;
 					dbl = (t * 100.0 / tm);
 					System.out.println("     " + "--> total " + "rest-rhs" +
-					                  ":" + t.ToString("N3") + 
-					                  "  (" + dbl.ToString("N3") + "%)");
+					                  ":" + fmt.format(t) + 
+					                  "  (" + fmt.format(dbl) + "%)");
 				}
 			}
 		}
   
 		public void setTimers(String[] t_names){
-			//File f1 = new File("timer.flag");
+			File f1 = new File("timer.flag");
 			timeron = false;
-			if(File.Exists("timer.flag")){
+			if(f1.exists()){
 				timeron = true;
 				t_names[t_total] = "total";
 				t_names[t_rhsx] = "rhsx";
@@ -635,7 +639,7 @@ public class LU extends LUBase{
 				System.out.println("     " + "ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS");
 				System.out.println("     " + "SO THAT NX, NY AND NZ ARE GREATER THAN OR EQUAL");
 				System.out.println("     " + "TO 4 THEY ARE CURRENTLY "+ nx + " "+ny + " " + nz);
-				Environment.Exit(0);
+				System.exit(0);
 			}
 
 			if ( ( nx > isiz1 ) || ( ny > isiz2 ) || ( nz > isiz3 ) ) {
@@ -645,7 +649,7 @@ public class LU extends LUBase{
 				System.out.println( "     " + "TO ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY."
 				                  +" THEY ARE");
 				System.out.println("     " + " CURRENTLY "+ nx + " "+ny + " " + nz);
-				Environment.Exit(0);
+				System.exit(0);
 			}
 
 //---------------------------------------------------------------------
@@ -1965,29 +1969,30 @@ public class LU extends LUBase{
      File f2 = new File("inputlu.data");
       if (f2.exists()){
 				
-		FileStream f2 = new FileStream("inputlu.data", System.IO.FileMode.Open);
-		try{  
-		  	  FileReader datafile = new FileReader(f2);
+		FileReader fis;
+		try {
+			fis = new FileReader(f2);
+		  	  BufferedReader datafile = new BufferedReader(fis);
 			  System.out.println("Reading from input file inputlu.data");
 			 
-			  ipr = Integer.parseInt(datafile.ReadLine());
-			  inorm = Integer.parseInt(datafile.ReadLine());
-			  itmax = Integer.parseInt(datafile.ReadLine());
-			  dt = Double.parseDouble(datafile.ReadLine());
-			  omega = Double.parseDouble(datafile.ReadLine());
-			  tolrsd[0] = Double.parseDouble(datafile.ReadLine());
-			  tolrsd[1] = Double.parseDouble(datafile.ReadLine());
-			  tolrsd[2] = Double.parseDouble(datafile.ReadLine());
-			  tolrsd[3] = Double.parseDouble(datafile.ReadLine());
-			  tolrsd[4] = Double.parseDouble(datafile.ReadLine());
-			  nx0 = Integer.parseInt(datafile.ReadLine());
-			  ny0 = Integer.parseInt(datafile.ReadLine()); 
-			  nz0 = Integer.parseInt(datafile.ReadLine());
+			  ipr = Integer.parseInt(datafile.readLine());
+			  inorm = Integer.parseInt(datafile.readLine());
+			  itmax = Integer.parseInt(datafile.readLine());
+			  dt = Double.parseDouble(datafile.readLine());
+			  omega = Double.parseDouble(datafile.readLine());
+			  tolrsd[0] = Double.parseDouble(datafile.readLine());
+			  tolrsd[1] = Double.parseDouble(datafile.readLine());
+			  tolrsd[2] = Double.parseDouble(datafile.readLine());
+			  tolrsd[3] = Double.parseDouble(datafile.readLine());
+			  tolrsd[4] = Double.parseDouble(datafile.readLine());
+			  nx0 = Integer.parseInt(datafile.readLine());
+			  ny0 = Integer.parseInt(datafile.readLine()); 
+			  nz0 = Integer.parseInt(datafile.readLine());
 	  
 	 // fis.close();
         }catch(Exception e){  
 	       System.out.println("exception caught! " + e.getMessage());
-        } 
+        }
       }else{
         ipr = ipr_default;
         inorm = inorm_default;
@@ -2010,13 +2015,13 @@ public class LU extends LUBase{
       if ( ( nx0 < 4 ) || ( ny0 < 4 ) || ( nz0 < 4 ) ) {
 	System.out.println("     PROBLEM SIZE IS TOO SMALL - ");
 	System.out.println("     SET EACH OF NX, NY AND NZ AT LEAST EQUAL TO 5");
-	Environment.Exit(0);
+	System.exit(0);
       }
       if ( ( nx0 > isiz1 ) || ( ny0 > isiz2 ) || ( nz0 > isiz3 ) ) {
 	System.out.println("     PROBLEM SIZE IS TOO LARGE - ");
 	System.out.println("     NX, NY AND NZ SHOULD BE EQUAL TO");
 	System.out.println("     ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY");
-	Environment.Exit(0);
+	System.exit(0);
       }
       System.out.println("LU: Iterations="+itmax+" dt="+dt);
   }
