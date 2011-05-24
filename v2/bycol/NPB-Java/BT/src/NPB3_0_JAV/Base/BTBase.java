@@ -71,8 +71,8 @@ public class BTBase /*extends Thread */ {
 
         //here 5 are the dimensions of the CFD vector
         //(density,x_impuls,y_impuls,z_impuls,energy)
-        protected const int isize4 = 5, jsize4 = 5 * 5, ksize4 = 5 * 5 * 3;
-        protected const int aa = 0, bb = 1, cc = 2, BLOCK_SIZE = 5;
+        protected final int isize4 = 5, jsize4 = 5 * 5, ksize4 = 5 * 5 * 3;
+        protected final int aa = 0, bb = 1, cc = 2, BLOCK_SIZE = 5;
 
         // constants
         protected static double tx1, tx2, tx3, dt,
@@ -377,13 +377,13 @@ public class BTBase /*extends Thread */ {
         {
             for (int m = 0; m < 5; m++)
             {
-                dtemp[m + dtmpoffst] = ce[0,m]
-                                     + xi * (ce[1,m] + xi * (ce[4,m]
-                                     + xi * (ce[7,m] + xi * ce[10,m])))
-                                     + eta * (ce[2,m] + eta * (ce[5,m]
-                                     + eta * (ce[8,m] + eta * ce[11,m])))
-                                     + zeta * (ce[3,m] + zeta * (ce[6,m]
-                                     + zeta * (ce[9,m] + zeta * ce[12,m])));
+                dtemp[m + dtmpoffst] = ce[0][m]
+                                     + xi * (ce[1][m] + xi * (ce[4][m]
+                                     + xi * (ce[7][m] + xi * ce[10][m])))
+                                     + eta * (ce[2][m] + eta * (ce[5][m]
+                                     + eta * (ce[8][m] + eta * ce[11][m])))
+                                     + zeta * (ce[3][m] + zeta * (ce[6][m]
+                                     + zeta * (ce[9][m] + zeta * ce[12][m])));
             }
         }
         public void initialize()
