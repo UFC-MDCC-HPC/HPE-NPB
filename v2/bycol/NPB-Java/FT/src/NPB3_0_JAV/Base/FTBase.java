@@ -38,7 +38,10 @@
 
 package NPB3_0_JAV.Base;
 
-public class FTBase /* : Thread*/
+import NPB3_0_JAV.Random;
+import NPB3_0_JAV.Timer;
+
+public class FTBase extends Thread
 {
   public static String BMName = "FT";
   public char CLASS = 'S';
@@ -57,7 +60,7 @@ public class FTBase /* : Thread*/
   protected double[][][][] xnt;  //isize4=2;jsize4=2*(ny+1);ksize4=2*(ny+1)*nz;
   protected double[][] exp1,exp2,exp3; 
 
-  public bool timeron=false;
+  public boolean timeron=false;
   public Timer timer = new Timer();
 
   //constants
@@ -66,7 +69,7 @@ public class FTBase /* : Thread*/
 
   public FTBase(){}
   
-  public FTBase(char clss, int np, bool serial){
+  public FTBase(char clss, int np, boolean serial){
     CLASS = clss;
     num_threads=np;
     switch (CLASS){
@@ -181,10 +184,10 @@ public class FTBase /* : Thread*/
         for(int i=0;i<=ln-1;i++){
 	        double ti = i * t;
             int idx = (i + ku); // obs  int idx=(i+ku)*2;
-	        exponent[REAL][idx] = Math.Cos(ti);
-            exponent[IMAG][idx] = Math.Sin(ti);
-	        if(Math.Abs(exponent[REAL][idx]) < eps) exponent[REAL][idx]=0;
-	        if(Math.Abs(exponent[IMAG][idx]) < eps) exponent[IMAG][idx]=0;
+	        exponent[REAL][idx] = Math.cos(ti);
+            exponent[IMAG][idx] = Math.sin(ti);
+	        if(Math.abs(exponent[REAL][idx]) < eps) exponent[REAL][idx]=0;
+	        if(Math.abs(exponent[IMAG][idx]) < eps) exponent[IMAG][idx]=0;
         }
         ku = ku + ln;
         ln = 2 * ln;
@@ -197,7 +200,7 @@ public class FTBase /* : Thread*/
       //seed has to be init here since
       //is called 2 times 
       double seed = 314159265;
-      double a = Math.Pow(5.0, 13);
+      double a = Math.pow(5.0, 13);
       double start = seed;
       //---------------------------------------------------------------------
       // Jump to the starting element for our first plane.
@@ -266,8 +269,8 @@ public class FTBase /* : Thread*/
           for (l = 1; l <= m; l += 2)
           {
               n1 = n / 2;
-              lk = (int)Math.Pow(2, l - 1);
-              li = (int)Math.Pow(2, m - l);
+              lk = (int)Math.pow(2, l - 1);
+              li = (int)Math.pow(2, m - l);
               lj = 2 * lk;
               ku = li;
 
@@ -316,8 +319,8 @@ public class FTBase /* : Thread*/
               else
               {
                   n1 = n / 2;
-                  lk = (int)Math.Pow(2, l);
-                  li = (int)Math.Pow(2, m - l - 1);
+                  lk = (int)Math.pow(2, l);
+                  li = (int)Math.pow(2, m - l - 1);
                   lj = 2 * lk;
                   ku = li;
 
