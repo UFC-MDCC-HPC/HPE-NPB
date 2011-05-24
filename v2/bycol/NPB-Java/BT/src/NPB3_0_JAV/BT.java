@@ -51,12 +51,21 @@
 
 package NPB3_0_JAV;
 
-public class BT : BTBase
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.text.DecimalFormat;
+
+import NPB3_0_JAV.BMInOut.BMArgs;
+import NPB3_0_JAV.BMInOut.BMResults;
+import NPB3_0_JAV.Base.BTBase;
+
+public class BT extends BTBase
     {
 
         public int bid = -1;
         public BMResults results;
-        public bool serial = true;
+        public boolean serial = true;
         double[][][] fjac;
         double[][][] njac;
         double[][][][] lhs;
@@ -65,9 +74,9 @@ public class BT : BTBase
         double tmp2;
         double tmp3;
 
-        public BT(char clss, int threads, bool ser) : base(clss, threads)
+        public BT(char clss, int threads, boolean ser)
         {
-            //super(clss, threads);
+            super(clss, threads);
             serial = ser;
             fjac =  instantiate_jagged_array_3(5, 5, problem_size + 1);
             njac = instantiate_jagged_array_3(5, 5, problem_size + 1);
@@ -81,16 +90,15 @@ public class BT : BTBase
             BMArgs.ParseCmdLineArgs(argv, BMName);
             char CLSS = BMArgs.CLASS;
             int np = BMArgs.num_threads;
-            bool serial = BMArgs.serial;
+            boolean serial = BMArgs.serial;
             try
             {
                 bt = new BT(CLSS, np, serial);
             }
-            catch (OutOfMemoryException e)
+            catch (OutOfMemoryError e)
             {
-				Console.Error.WriteLine(e.Message);
                 BMArgs.outOfMemoryMessage();
-                Environment.Exit(0);
+                System.exit(0);
             }
             bt.runBenchMark();
         }
@@ -126,7 +134,7 @@ public class BT : BTBase
             {   //niter
                 if (step % 20 == 0 || step == 1 || step == niter)
                 {
-                    Console.WriteLine("Time step " + step);
+                    System.out.println("Time step " + step);
                 }
                 if (serial) adi_serial();
                 //else adi();
@@ -161,7 +169,7 @@ public class BT : BTBase
             {
                 double n3 = grid_points[0] * grid_points[1] * grid_points[2];
                 double navg = (grid_points[0] + grid_points[1] + grid_points[2]) / 3.0;
-                mflops = 3478.8 * n3 - 17655.7 * Math.Pow(navg, 2) + 28023.7 * navg;
+                mflops = 3478.8 * n3 - 17655.7 * Math.pow(navg, 2) + 28023.7 * navg;
                 mflops *= niter / (total_time * 1000000.0);
             }
             return mflops;
@@ -176,150 +184,56 @@ public class BT : BTBase
             add();
         }
 
-        /*
-              public void adi(){
-                if(timeron)timer.start(t_rhs);
-                doRHS();
-
-                if(timeron)timer.start(t_rhsx);
-                doRHS();
-                if(timeron)timer.stop(t_rhsx);   
-
-                if(timeron)timer.start(t_rhsy);
-                doRHS(); 
-                if(timeron)timer.stop(t_rhsy);
-
-                if(timeron)timer.start(t_rhsz);
-                doRHS();
-                if(timeron)timer.stop(t_rhsz);
-
-                doRHS();
-                if(timeron)timer.stop(t_rhs);
-
-                if(timeron)timer.start(t_xsolve);
-                synchronized(this){
-                  for(int m=0;m<num_threads;m++)
-                synchronized(xsolver[m]){
-                      xsolver[m].done=false;
-                      xsolver[m].notify();
-                    }
-                  for(int m=0;m<num_threads;m++)
-                      while(!xsolver[m].done){
-                    try{wait();}catch(InterruptedException e){} 
-                        notifyAll();
-                  }
-                }
-                if(timeron)timer.stop(t_xsolve);
-
-                if(timeron)timer.start(t_ysolve);
-                synchronized(this){
-                  for(int m=0;m<num_threads;m++)
-                synchronized(ysolver[m]){
-                      ysolver[m].done=false;
-                      ysolver[m].notify();
-                    }
-                  for(int m=0;m<num_threads;m++)
-                      while(!ysolver[m].done){
-                    try{wait();}catch(InterruptedException e){}
-                        notifyAll();
-                  }
-                 }
-                 if(timeron)timer.stop(t_ysolve);
-
-                if(timeron)timer.start(t_zsolve);
-                synchronized(this){
-                  for(int m=0;m<num_threads;m++)
-                synchronized(zsolver[m]){
-                      zsolver[m].done=false;
-                      zsolver[m].notify();
-                    }
-                  for(int m=0;m<num_threads;m++)
-                      while(!zsolver[m].done){
-                    try{wait();}catch(InterruptedException e){} 
-                        notifyAll();
-                  }
-                }
-                if(timeron)timer.stop(t_zsolve);
-
-                if(timeron)timer.start(t_add);
-                synchronized(this){
-                  for(int m=0;m<num_threads;m++)
-                synchronized(rhsadder[m]){
-                      rhsadder[m].done=false;
-                      rhsadder[m].notify();
-                    }
-                  for(int m=0;m<num_threads;m++)
-                      while(!rhsadder[m].done){
-                    try{wait();}catch(InterruptedException e){} 
-                        notifyAll();
-                  }
-                }
-                if(timeron)timer.stop(t_add);    
-              } 
-
-              synchronized void doRHS(){
-                int m;
-                for(m=0;m<num_threads;m++)
-                synchronized(rhscomputer[m]){
-                      rhscomputer[m].done=false;
-                      rhscomputer[m].notify();
-                    }
-                for(m=0;m<num_threads;m++)
-                while(!rhscomputer[m].done){
-                  try{wait();}catch(InterruptedException e){}
-                      notifyAll();
-                }
-              }
-        */
 
         public void printTimers(String[] t_names, double[] trecs, double tmax)
         {
-            //DecimalFormat fmt = new DecimalFormat("0.000");
+            DecimalFormat fmt = new DecimalFormat("0.000");
             
             double t;
-            Console.WriteLine("SECTION  Time           (secs)");
+            System.out.println("SECTION  Time           (secs)");
             for (int i = 1; i <= t_last; i++) trecs[i] = timer.readTimer(i);
             if (tmax == 0.0) tmax = 1.0;
             for (int i = 1; i <= t_last; i++)
             {
-                Console.WriteLine(t_names[i] + ":" + String.Format("{0:0.000}", trecs[i]) + ":" +
-                                   "  (" + String.Format("{0:0.000}", trecs[i] * 100 / tmax) + "%)");
+                System.out.println(t_names[i] + ":" + fmt.format(trecs[i]) + ":" +
+                                   "  (" + fmt.format(trecs[i]*100/tmax) + "%)");
+                							
 
                 if (i == t_rhs)
                 {
                     t = trecs[t_rhsx] + trecs[t_rhsy] + trecs[t_rhsz];
-                    Console.WriteLine("    --> total ");
-                    Console.WriteLine("sub-rhs ");
-                    Console.WriteLine(String.Format("{0:0.000}", t));
-                    Console.WriteLine("  (");
-                    Console.WriteLine(String.Format("{0:0.000}",t * 100 / tmax));
-                    Console.WriteLine("%)");
+                    System.out.println("    --> total ");
+                    System.out.println("sub-rhs ");
+                    System.out.println(fmt.format(t));
+                    System.out.println("  (");
+                    System.out.println(fmt.format(t*100/tmax));
+                    System.out.println("%)");
                     t = trecs[t_rhs] - trecs[t_rhsx] + trecs[t_rhsy] + trecs[t_rhsz];
-                    Console.WriteLine("    --> total ");
-                    Console.WriteLine("rest-rhs ");
-                    Console.WriteLine(String.Format("{0:0.000}",t));
-                    Console.WriteLine("  (");
-                    Console.WriteLine(String.Format("{0:0.000}",t * 100 / tmax));
-                    Console.WriteLine("%)");
+                    System.out.println("    --> total ");
+                    System.out.println("rest-rhs ");
+                    System.out.println(fmt.format(t));
+                    System.out.println("  (");
+                    System.out.println(fmt.format(t*100/tmax));
+                    System.out.println("%)");
                 }
                 else if (i == t_zsolve)
                 {
                     t = trecs[t_zsolve] - trecs[t_rdis1] - trecs[t_rdis2];
-                    Console.WriteLine("    --> total ");
-                    Console.WriteLine("sub-zsol ");
-                    Console.WriteLine(String.Format("{0:0.000}",t));
-                    Console.WriteLine("  ");
-                    Console.WriteLine(String.Format("{0:0.000}",t * 100 / tmax));
-                    Console.WriteLine();
+                    System.out.println("    --> total ");
+                    System.out.println("sub-zsol ");
+                    System.out.println(fmt.format(t));
+                    System.out.println("  ");
+                    System.out.println(fmt.format(t*100/tmax));
+                    System.out.println();
                 }
                 else if (i == t_rdis2)
                 {
                     t = trecs[t_rdis1] + trecs[t_rdis2];
-                    Console.WriteLine("    --> total ");
-                    Console.WriteLine("redist ");
-                    Console.WriteLine(String.Format("{0:0.000}",t));
-                    Console.WriteLine("  ");
-                    Console.WriteLine(String.Format("{0:0.000}",t * 100 / tmax));
+                    System.out.println("    --> total ");
+                    System.out.println("redist ");
+                    System.out.println(fmt.format(t));
+                    System.out.println("  ");
+                    System.out.println(fmt.format(t*100/tmax));
                 }
             }
         }
@@ -328,56 +242,55 @@ public class BT : BTBase
         public int getInputPars()
         {
             int niter = 0;
-            //File f2 = new File("inputbt.data");
-            if (File.Exists("inputbt.data"))
+            File f2 = new File("inputbt.data");
+            if (f2.exists())
             {
-            	FileStream f2 = new FileStream("inputbt.data", System.IO.FileMode.Open);
+            	//FileStream f2 = new FileStream("inputbt.data", System.IO.FileMode.Open);
                 try
                 {
-                    //FileInputStream fis = new FileInputStream(f2);
-                    StreamReader datafile = new StreamReader(f2);
-                    //StreamReader datafile = new StreamReader(fis);
-                    Console.WriteLine("Reading from input file inputbt.data");
-                    niter = int.Parse(datafile.ReadLine());
-                    dt = double.Parse(datafile.ReadLine());
-                    grid_points[0] = int.Parse(datafile.ReadLine());
-                    grid_points[1] = int.Parse(datafile.ReadLine());
-                    grid_points[2] = int.Parse(datafile.ReadLine());
-                    datafile.Close();
+                    FileReader fis = new FileReader(f2);
+                    BufferedReader datafile = new BufferedReader(fis);
+                    System.out.println("Reading from input file inputbt.data");
+                    niter = Integer.valueOf(datafile.readLine());
+                    dt = Double.parseDouble(datafile.readLine());
+                    grid_points[0] = Integer.valueOf(datafile.readLine());
+                    grid_points[1] = Integer.valueOf(datafile.readLine());
+                    grid_points[2] = Integer.valueOf(datafile.readLine());
+                    fis.close();
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine("exception caught! " + e.Message);
+                    System.err.println("exception caught! " + e.getMessage());
                 }
             }
             else
             {
-                Console.WriteLine("No input file inputbt.data, Using compiled defaults");
+                System.out.println("No input file inputbt.data, Using compiled defaults");
                 niter = niter_default;
                 dt = dt_default;
                 grid_points[0] = problem_size;
                 grid_points[1] = problem_size;
                 grid_points[2] = problem_size;
             }
-            Console.WriteLine("Size: " + grid_points[0]
+            System.out.println("Size: " + grid_points[0]
                        + " X " + grid_points[1]
                        + " X " + grid_points[2]);
             if ((grid_points[0] > IMAX) ||
              (grid_points[1] > JMAX) ||
              (grid_points[2] > KMAX))
             {
-                Console.WriteLine("Problem size too big for array");
-                Environment.Exit(0);
+                System.out.println("Problem size too big for array");
+                System.exit(0);
             }
-            Console.WriteLine("Iterations: " + niter + " dt: " + dt);
+            System.out.println("Iterations: " + niter + " dt: " + dt);
             return niter;
         }
 
         public void setTimers(String[] t_names)
         {
-            //File f1 = new File("timer.flag");
+            File f1 = new File("timer.flag");
             timeron = false;
-            if (File.Exists("timer.flag"))
+            if (f1.exists())
             {
                 timeron = true;
                 t_names[t_total] = "total    ";
@@ -399,7 +312,7 @@ public class BT : BTBase
             int i, j, k, d, m;
             double add;
 
-            for (m = 0; m < rms.Length; m++) rms[m + rmsoffst] = 0.0;
+            for (m = 0; m < rms.length; m++) rms[m + rmsoffst] = 0.0;
 
             for (k = 1; k <= grid_points[2] - 2; k++)
             {
@@ -407,7 +320,7 @@ public class BT : BTBase
                 {
                     for (i = 1; i <= grid_points[0] - 2; i++)
                     {
-                        for (m = 0; m < rms.Length; m++)
+                        for (m = 0; m < rms.length; m++)
                         {
                             add = rhs[m][i][j][k];
                             rms[m] += add * add;
@@ -416,13 +329,13 @@ public class BT : BTBase
                 }
             }
 
-            for (m = 0; m < rms.Length; m++)
+            for (m = 0; m < rms.length; m++)
             {
                 for (d = 0; d <= 2; d++)
                 {
                     rms[m] /= grid_points[d] - 2;
                 }
-                rms[m] = Math.Sqrt(rms[m + rmsoffst]);
+                rms[m] = Math.sqrt(rms[m + rmsoffst]);
             }
         }
 
@@ -432,7 +345,7 @@ public class BT : BTBase
             double[] u_exact = new double[5];
             double xi, eta, zeta, add;
 
-            for (m = 0; m < rms.Length; m++) rms[m + rmsoffst] = 0.0;
+            for (m = 0; m < rms.length; m++) rms[m + rmsoffst] = 0.0;
 
             for (k = 0; k <= grid_points[2] - 1; k++)
             {
@@ -444,7 +357,7 @@ public class BT : BTBase
                     {
                         xi = i * dnxm1;
                         exact_solution(xi, eta, zeta, u_exact, 0);
-                        for (m = 0; m < rms.Length; m++)
+                        for (m = 0; m < rms.length; m++)
                         {
                             add = u[m][i][j][k] - u_exact[m];
                             rms[m] += add * add;
@@ -453,13 +366,13 @@ public class BT : BTBase
                 }
             }
 
-            for (m = 0; m < rms.Length; m++)
+            for (m = 0; m < rms.length; m++)
             {
                 for (d = 0; d <= 2; d++)
                 {
                     rms[m] /= grid_points[d] - 2;
                 }
-                rms[m] = Math.Sqrt(rms[m]);
+                rms[m] = Math.sqrt(rms[m]);
             }
         }
 
@@ -479,9 +392,9 @@ public class BT : BTBase
             compute_rhs();
             rhs_norm(xcr, 0);
 
-            for (m = 0; m < xcr.Length; m++) xcr[m] = xcr[m] / dt;
+            for (m = 0; m < xcr.length; m++) xcr[m] = xcr[m] / dt;
 
-            for (m = 1; m < xcrref.Length; m++)
+            for (m = 1; m < xcrref.length; m++)
             {
                 xcrref[m] = 1.0;
                 xceref[m] = 1.0;
@@ -646,23 +559,23 @@ public class BT : BTBase
             //---------------------------------------------------------------------
             //    Compute the difference of solution values and the known reference values.
             //---------------------------------------------------------------------
-            for (m = 0; m < xcr.Length; m++)
+            for (m = 0; m < xcr.length; m++)
             {
-                xcrdif[m] = Math.Abs((xcr[m] - xcrref[m]) / xcrref[m]);
-                xcedif[m] = Math.Abs((xce[m] - xceref[m]) / xceref[m]);
+                xcrdif[m] = Math.abs((xcr[m] - xcrref[m]) / xcrref[m]);
+                xcedif[m] = Math.abs((xce[m] - xceref[m]) / xceref[m]);
             }
             //---------------------------------------------------------------------
             //   tolerance level
             //---------------------------------------------------------------------
-            double epsilon = 1.0 * Math.Pow(.1, 8);
+            double epsilon = 1.0 * Math.pow(.1, 8);
             //---------------------------------------------------------------------
             //    Output the comparison of computed results to known cases.
             //---------------------------------------------------------------------
             if (clss != 'U')
             {
-                Console.WriteLine("Verification being performed for class " + clss);
-                Console.WriteLine("accuracy setting for epsilon = " + epsilon);
-                if (Math.Abs(dt - dtref) <= epsilon)
+                System.out.println("Verification being performed for class " + clss);
+                System.out.println("accuracy setting for epsilon = " + epsilon);
+                if (Math.abs(dt - dtref) <= epsilon)
                 {
                     verified = 1;
                 }
@@ -670,26 +583,26 @@ public class BT : BTBase
                 {
                     verified = 0;
                     clss = 'U';
-                    Console.WriteLine("DT does not match the reference value of " + dtref);
+                    System.out.println("DT does not match the reference value of " + dtref);
                 }
             }
             else
             {
-                Console.WriteLine("Unknown class");
+                System.out.println("Unknown class");
             }
 
-            if (clss != 'U') Console.WriteLine("Comparison of RMS-norms of residual");
-            else Console.WriteLine("RMS-norms of residual");
+            if (clss != 'U') System.out.println("Comparison of RMS-norms of residual");
+            else System.out.println("RMS-norms of residual");
             verified = BMResults.printComparisonStatus(clss, verified, epsilon,
                                                      xcr, xcrref, xcrdif);
 
             if (clss != 'U')
             {
-                Console.WriteLine("Comparison of RMS-norms of solution error");
+                System.out.println("Comparison of RMS-norms of solution error");
             }
             else
             {
-                Console.WriteLine("RMS-norms of solution error");
+                System.out.println("RMS-norms of solution error");
             }
             verified = BMResults.printComparisonStatus(clss, verified, epsilon,
                                                      xce, xceref, xcedif);
@@ -1169,9 +1082,9 @@ public class BT : BTBase
                         njac[3][4][i] = 0.0;
 
                         njac[4][0][i] = -(con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[1][i][j][k], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[2][i][j][k], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[3][i][j][k], 2))
+                             - c1345) * tmp3 * (Math.pow(u[1][i][j][k], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[2][i][j][k], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[3][i][j][k], 2))
                              - c1345 * tmp2 * u[4][i][j][k];
 
                         njac[4][1][i] = (con43 * c3c4
@@ -1908,12 +1821,12 @@ public class BT : BTBase
                     }
                 }
             }
-            Console.WriteLine("lhs checksum is: ");
-            Console.WriteLine(count1);
-            Console.WriteLine("fjac checksum is: ");
-            Console.WriteLine(count3);
-            Console.WriteLine("njac checksum is: ");
-            Console.WriteLine(count2);
+            System.out.println("lhs checksum is: ");
+            System.out.println(count1);
+            System.out.println("fjac checksum is: ");
+            System.out.println(count3);
+            System.out.println("njac checksum is: ");
+            System.out.println(count2);
         }
 
         public void y_solve()
@@ -2009,10 +1922,10 @@ public class BT : BTBase
                         njac[3][4][j] = 0.0;
 
                         njac[4][0][j] = -(c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[1][i][j][k], 2))
+                             - c1345) * tmp3 * (Math.pow(u[1][i][j][k], 2))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[2][i][j][k], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[3][i][j][k], 2))
+                             - c1345) * tmp3 * (Math.pow(u[2][i][j][k], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[3][i][j][k], 2))
                              - c1345 * tmp2 * u[4][i][j][k];
 
                         njac[4][1][j] = (c3c4 - c1345) * tmp2 * u[1][i][j][k];
@@ -2383,10 +2296,10 @@ public class BT : BTBase
                         njac[3][4][k] = 0.0;
 
                         njac[4][0][k] = -(c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[1][i][j][k], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[2][i][j][k], 2))
+                             - c1345) * tmp3 * (Math.pow(u[1][i][j][k], 2))
+                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[2][i][j][k], 2))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[3][i][j][k], 2))
+                             - c1345) * tmp3 * (Math.pow(u[3][i][j][k], 2))
                              - c1345 * tmp2 * u[4][i][j][k];
 
                         njac[4][1][k] = (c3c4 - c1345) * tmp2 * u[1][i][j][k];
@@ -2692,7 +2605,7 @@ public class BT : BTBase
 
         public double getTime() { return timer.readTimer(1); }
         public void finalize() /*throws Throwable */ {
-            Console.WriteLine("BT: is about to be garbage collected");
+            System.out.println("BT: is about to be garbage collected");
             //super.finalize();
         }
 }
