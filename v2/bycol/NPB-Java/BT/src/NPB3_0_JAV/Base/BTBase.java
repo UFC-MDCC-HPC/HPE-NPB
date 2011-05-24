@@ -45,7 +45,7 @@ package NPB3_0_JAV.Base;
 
 import NPB3_0_JAV.Timer;
 
-public class BTBase /*extends Thread */ {
+public class BTBase extends Thread {
 
         public static String BMName = "BT";
         public char CLASS = 'S';
