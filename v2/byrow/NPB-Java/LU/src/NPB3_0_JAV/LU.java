@@ -53,19 +53,26 @@
 */
 package NPB3_0_JAV;
 
-using NPB3_0_JAV.LUThreads;
-using NPB3_0_JAV.BMInOut;
-using System;
-using System.IO;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
 
-public class LU : LUBase{
+import NPB3_0_JAV.BMInOut.BMArgs;
+import NPB3_0_JAV.BMInOut.BMResults;
+import NPB3_0_JAV.Base.LUBase;
+
+
+public class LU extends LUBase{
 		public int bid = -1;
 		public BMResults results;
         
-		public LU(char clss, int np) : base(clss, np){
+		public LU(char clss, int np){
+			super(clss,np);
 		}
 		
-		public static void Main(String[] argv){
+		public static void main(String[] argv){
 			LU lu = null;
 
 			BMArgs.ParseCmdLineArgs(argv, BMName);
@@ -74,10 +81,10 @@ public class LU : LUBase{
 			
 			try{ 
 				lu = new LU(CLSS, np);
-			} catch(OutOfMemoryException e){
-				Console.WriteLine(e.Message);
+			} catch(OutOfMemoryError e){
+				System.out.println(e.getMessage());
 				BMArgs.outOfMemoryMessage();
-				Environment.Exit(0);
+				System.exit(0);
 			}      
 			lu.runBenchMark();
 		}
@@ -172,40 +179,40 @@ public class LU : LUBase{
 			double mflops = 0.0;
 			if( tm > 0 ){
 				mflops = 1984.77 * nx0 * ny0 * nz0
-					-10923.3 * Math.Pow((nx0 + ny0 + nz0)/ 3.0,2) 
+					-10923.3 * Math.pow((nx0 + ny0 + nz0)/ 3.0,2) 
 						+27770.9 * (nx0 + ny0 + nz0) / 3.0-144010.0;
 				mflops *= itmax / (tm * 1000000.0);
 			}
 			return mflops;
 		}
 		public void printTimers(String[] t_names, double[] trecs, double tm){
-			//DecimalFormat fmt = new DecimalFormat("0.000");
-			Console.WriteLine("  SECTION     Time (secs)");
+			DecimalFormat fmt = new DecimalFormat("0.000");
+			System.out.println("  SECTION     Time (secs)");
 			for(int i = 0; i < t_last; i++) trecs[i] = timer.readTimer(i);
 			if ( tm == 0.0 ) tm = 1.0;
 			for(int i = 1; i < t_last; i++){
 				double dbl =(trecs[i] * 100.0 / tm);
-				Console.WriteLine("  " + t_names[i] + ":" + trecs[i].ToString("N3") + 
-				                  "(" + dbl.ToString("N3") + "%)" );
+				System.out.println("  " + t_names[i] + ":" + fmt.format(trecs[i]) + 
+				                  "(" + fmt.format(dbl) + "%)" );
 				if (i == t_rhs) {
 					double t = trecs[t_rhsx] + trecs[t_rhsy] + trecs[t_rhsz];
 					dbl = (t * 100.0 / tm);
-					Console.WriteLine("     " + "--> total " + "sub-rhs" + 
-					                  ":" + t.ToString("N3") +
-					                  "  (" + dbl.ToString("N3") + "%)");
+					System.out.println("     " + "--> total " + "sub-rhs" + 
+					                  ":" + fmt.format(t) +
+					                  "  (" + fmt.format(dbl) + "%)");
 					t = trecs[i] - t;
 					dbl = (t * 100.0 / tm);
-					Console.WriteLine("     " + "--> total " + "rest-rhs" +
-					                  ":" + t.ToString("N3") + 
-					                  "  (" + dbl.ToString("N3") + "%)");
+					System.out.println("     " + "--> total " + "rest-rhs" +
+					                  ":" + fmt.format(t) + 
+					                  "  (" + fmt.format(dbl) + "%)");
 				}
 			}
 		}
   
 		public void setTimers(String[] t_names){
-			//File f1 = new File("timer.flag");
+			File f1 = new File("timer.flag");
 			timeron = false;
-			if(File.Exists("timer.flag")){
+			if(f1.exists()){
 				timeron = true;
 				t_names[t_total] = "total";
 				t_names[t_rhsx] = "rhsx";
@@ -626,21 +633,21 @@ public class LU : LUBase{
 //   check the sub-domain size
 //---------------------------------------------------------------------
 			if ( ( nx < 4 ) || ( ny < 4 ) || ( nz < 4 ) ) {
-				Console.WriteLine("     " + "SUBDOMAIN SIZE IS TOO SMALL - ");
-				Console.WriteLine("     " + "ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS");
-				Console.WriteLine("     " + "SO THAT NX, NY AND NZ ARE GREATER THAN OR EQUAL");
-				Console.WriteLine("     " + "TO 4 THEY ARE CURRENTLY "+ nx + " "+ny + " " + nz);
-				Environment.Exit(0);
+				System.out.println("     " + "SUBDOMAIN SIZE IS TOO SMALL - ");
+				System.out.println("     " + "ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS");
+				System.out.println("     " + "SO THAT NX, NY AND NZ ARE GREATER THAN OR EQUAL");
+				System.out.println("     " + "TO 4 THEY ARE CURRENTLY "+ nx + " "+ny + " " + nz);
+				System.exit(0);
 			}
 
 			if ( ( nx > isiz1 ) || ( ny > isiz2 ) || ( nz > isiz3 ) ) {
-				Console.WriteLine("     " + "SUBDOMAIN SIZE IS TOO LARGE - ");
-				Console.WriteLine("     " + "ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS");
-				Console.WriteLine("     " + "SO THAT NX, NY AND NZ ARE LESS THAN OR EQUAL");
-				Console.WriteLine( "     " + "TO ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY."
+				System.out.println("     " + "SUBDOMAIN SIZE IS TOO LARGE - ");
+				System.out.println("     " + "ADJUST PROBLEM SIZE OR NUMBER OF PROCESSORS");
+				System.out.println("     " + "SO THAT NX, NY AND NZ ARE LESS THAN OR EQUAL");
+				System.out.println( "     " + "TO ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY."
 				                  +" THEY ARE");
-				Console.WriteLine("     " + " CURRENTLY "+ nx + " "+ny + " " + nz);
-				Environment.Exit(0);
+				System.out.println("     " + " CURRENTLY "+ nx + " "+ny + " " + nz);
+				System.exit(0);
 			}
 
 //---------------------------------------------------------------------
@@ -755,10 +762,10 @@ public class LU : LUBase{
                flux[i][2] = tx3 * ( u31i - u31im1 );
                flux[i][3] = tx3 * ( u41i - u41im1 );
                flux[i][4] = 0.50 * ( 1.0 - c1*c5 )
-                    * tx3 * ( ( Math.Pow(u21i,2) + Math.Pow(u31i,2) + Math.Pow(u41i,2) )
-                            - ( Math.Pow(u21im1,2) + Math.Pow(u31im1,2) + Math.Pow(u41im1,2) ) )
+                    * tx3 * ( ( Math.pow(u21i,2) + Math.pow(u31i,2) + Math.pow(u41i,2) )
+                            - ( Math.pow(u21im1,2) + Math.pow(u31im1,2) + Math.pow(u41im1,2) ) )
                     + (1.0/6.0)
-                    * tx3 * ( Math.Pow(u21i,2) - Math.Pow(u21im1,2) )
+                    * tx3 * ( Math.pow(u21i,2) - Math.pow(u21im1,2) )
                     + c1 * c5 * tx3 * ( u51i - u51im1 );
             }
 
@@ -879,10 +886,10 @@ public class LU : LUBase{
                              ( u31j - u31jm1 );
                flux[j][ 3] = ty3 * ( u41j - u41jm1 );
                flux[j][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
-                            - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
+                    * ty3 * ( ( Math.pow(u21j,2) + Math.pow(u31j,2) + Math.pow(u41j,2) )
+                            - ( Math.pow(u21jm1,2) + Math.pow(u31jm1,2) + Math.pow(u41jm1,2) ) )
                     + (1.0/6.0)
-                    * ty3 * ( Math.Pow(u31j,2) - Math.Pow(u31jm1,2) )
+                    * ty3 * ( Math.pow(u31j,2) - Math.pow(u31jm1,2) )
                     + c1 * c5 * ty3 * ( u51j - u51jm1 );
             }
 
@@ -999,10 +1006,10 @@ public class LU : LUBase{
                flux[k][ 3] = (4.0/3.0) * tz3 * ( u41k 
                              - u41km1 );
                flux[k][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * tz3 * ( ( Math.Pow(u21k,2) + Math.Pow(u31k,2) + Math.Pow(u41k,2) )
-                            - ( Math.Pow(u21km1,2) + Math.Pow(u31km1,2) + Math.Pow(u41km1,2) ) )
+                    * tz3 * ( ( Math.pow(u21k,2) + Math.pow(u31k,2) + Math.pow(u41k,2) )
+                            - ( Math.pow(u21km1,2) + Math.pow(u31km1,2) + Math.pow(u41km1,2) ) )
                     + (1.0/6.0)
-                    * tz3 * ( Math.Pow(u41k,2) - Math.Pow(u41km1,2) )
+                    * tz3 * ( Math.pow(u41k,2) - Math.pow(u41km1,2) )
                     + c1 * c5 * tz3 * ( u51k - u51km1 );
             }
 
@@ -1089,14 +1096,14 @@ public class LU : LUBase{
 	  exact( i+1, j+1, k+1, u000ijk );
 	  for(m=0;m<=4;m++){
 	    tmp = ( u000ijk[m] - u[k][ j][ i][ m] );
-	    errnm[m] = errnm[m] + Math.Pow(tmp,2);
+	    errnm[m] = errnm[m] + Math.pow(tmp,2);
 	  }
 	}
       }
     }
 
     for(m=0;m<=4;m++){
-      errnm[m] = Math.Sqrt( errnm[m] / ( (nx0-2)*(ny0-2)*(nz0-2) ) );
+      errnm[m] = Math.sqrt( errnm[m] / ( (nx0-2)*(ny0-2)*(nz0-2) ) );
     }
   }
     
@@ -1171,13 +1178,13 @@ public class LU : LUBase{
                d[j][ i][ 0][ 4] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.Pow(u[k][ j][ i][ 1],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( Math.pow(u[k][ j][ i][ 1],2) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.Pow(u[k][ j][ i][ 2],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( Math.pow(u[k][ j][ i][ 2],2) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * ( Math.Pow(u[k][ j][ i][ 3],2) )
+           + tz1 * ( r43*c34 - c1345 ) ) * ( Math.pow(u[k][ j][ i][ 3],2) )
             ) * tmp3
          + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[k][ j][ i][ 4] );
 
@@ -1233,7 +1240,7 @@ public class LU : LUBase{
                a[j][ i][ 4][ 2] = 0.0;
 
                a[j][ i][ 0][ 3] = - dt * tz2
-              * ( - Math.Pow(( u[k-1][ j][ i][ 3] * tmp1 ),2)
+              * ( - Math.pow(( u[k-1][ j][ i][ 3] * tmp1 ),2)
                   + c2 * qs[k-1][ j][ i] * tmp1 )
               - dt * tz1 * ( - r43 * c34 * tmp2 * u[k-1][ j][ i][ 3] );
                a[j][ i][ 1][ 3] = - dt * tz2
@@ -1251,9 +1258,9 @@ public class LU : LUBase{
              - c1 * u[k-1][ j][ i][ 4] )
                   * u[k-1][ j][ i][ 3] * tmp2 )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k-1][ j][ i][ 1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k-1][ j][ i][ 2],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.Pow(u[k-1][ j][ i][ 3],2)
+             * ( - ( c34 - c1345 ) * tmp3 * Math.pow(u[k-1][ j][ i][ 1],2)
+                 - ( c34 - c1345 ) * tmp3 * Math.pow(u[k-1][ j][ i][ 2],2)
+                 - ( r43*c34 - c1345 )* tmp3 * Math.pow(u[k-1][ j][ i][ 3],2)
                 - c1345 * tmp2 * u[k-1][ j][ i][ 4] );
                a[j][ i][ 1][ 4] = - dt * tz2
              * ( - c2 * ( u[k-1][ j][ i][ 1]*u[k-1][ j][ i][ 3] ) * tmp2 )
@@ -1296,7 +1303,7 @@ public class LU : LUBase{
                b[j][ i][ 4][ 1] = 0.0;
 
                b[j][ i][ 0][ 2] = - dt * ty2
-                 * ( - Math.Pow(( u[k][ j-1][ i][ 2] * tmp1 ),2)
+                 * ( - Math.pow(( u[k][ j-1][ i][ 2] * tmp1 ),2)
              + c2 * ( qs[k][ j-1][ i] * tmp1 ) )
              - dt * ty1 * ( - r43 * c34 * tmp2 * u[k][ j-1][ i][ 2] );
                b[j][ i][ 1][ 2] = - dt * ty2
@@ -1324,9 +1331,9 @@ public class LU : LUBase{
                      - c1 * u[k][ j-1][ i][ 4] )
                 * ( u[k][ j-1][ i][ 2] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.Pow(u[k][ j-1][ i][ 1],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.Pow(u[k][ j-1][ i][ 2],2)
-                    - (     c34 - c1345 )*tmp3*Math.Pow(u[k][ j-1][ i][ 3],2)
+                * ( - (     c34 - c1345 )*tmp3*Math.pow(u[k][ j-1][ i][ 1],2)
+                    - ( r43*c34 - c1345 )*tmp3*Math.pow(u[k][ j-1][ i][ 2],2)
+                    - (     c34 - c1345 )*tmp3*Math.pow(u[k][ j-1][ i][ 3],2)
                     - c1345*tmp2*u[k][ j-1][ i][ 4] );
                b[j][ i][ 1][ 4] = - dt * ty2
                 * ( - c2 * ( u[k][ j-1][ i][ 1]*u[k][ j-1][ i][ 2] ) * tmp2 )
@@ -1361,7 +1368,7 @@ public class LU : LUBase{
                c[j][ i][ 4][ 0] =   0.0;
 
                c[j][ i][ 0][ 1] = - dt * tx2
-                * ( - Math.Pow(( u[k][ j][ i-1][ 1] * tmp1 ),2)
+                * ( - Math.pow(( u[k][ j][ i-1][ 1] * tmp1 ),2)
              + c2 * qs[k][ j][ i-1] * tmp1 )
                 - dt * tx1 * ( - r43 * c34 * tmp2 * u[k][ j][ i-1][ 1] );
                c[j][ i][ 1][ 1] = - dt * tx2
@@ -1399,9 +1406,9 @@ public class LU : LUBase{
                     - c1 * u[k][ j][ i-1][ 4] )
                 * u[k][ j][ i-1][ 1] * tmp2 )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i-1][ 1],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i-1][ 2],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i-1][ 3],2 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i-1][ 1],2 )
+                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i-1][ 2],2 )
+                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i-1][ 3],2 )
                     - c1345 * tmp2 * u[k][ j][ i-1][ 4] );
                c[j][ i][ 1][ 4] = - dt * tx2
                 * ( c1 * ( u[k][ j][ i-1][ 4] * tmp1 )
@@ -1498,13 +1505,13 @@ public class LU : LUBase{
                d[j][ i][ 0][ 4] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * Math.Pow( u[k][ j][ i][ 1],2)
+           + tz1 * ( c34 - c1345 ) ) * Math.pow( u[k][ j][ i][ 1],2)
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * Math.Pow( u[k][ j][ i][ 2],2)
+           + tz1 * ( c34 - c1345 ) ) * Math.pow( u[k][ j][ i][ 2],2)
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * Math.Pow( u[k][ j][ i][ 3],2)
+           + tz1 * ( r43*c34 - c1345 ) ) * Math.pow( u[k][ j][ i][ 3],2)
             ) * tmp3
          + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[k][ j][ i][ 4] );
 
@@ -1539,7 +1546,7 @@ public class LU : LUBase{
                a[j][ i][ 4][ 0] =   0.0;
 
                a[j][ i][ 0][ 1] =  dt * tx2
-                * ( - Math.Pow(( u[k][ j][ i+1][ 1] * tmp1 ),2)
+                * ( - Math.pow(( u[k][ j][ i+1][ 1] * tmp1 ),2)
            + c2 * qs[k][ j][ i+1] * tmp1 )
                 - dt * tx1 * ( - r43 * c34 * tmp2 * u[k][ j][ i+1][ 1] );
                a[j][ i][ 1][ 1] =  dt * tx2
@@ -1577,9 +1584,9 @@ public class LU : LUBase{
                     - c1 * u[k][ j][ i+1][ 4] )
                 * ( u[k][ j][ i+1][ 1] * tmp2 ) )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i+1][ 1],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i+1][ 2],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[k][ j][ i+1][ 3],2 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i+1][ 1],2 )
+                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i+1][ 2],2 )
+                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i+1][ 3],2 )
                     - c1345 * tmp2 * u[k][ j][ i+1][ 4] );
                a[j][ i][ 1][ 4] = dt * tx2
                 * ( c1 * ( u[k][ j][ i+1][ 4] * tmp1 )
@@ -1625,7 +1632,7 @@ public class LU : LUBase{
                b[j][ i][ 4][ 1] = 0.0;
 
                b[j][ i][ 0][ 2] =  dt * ty2
-                 * ( - Math.Pow(( u[k][ j+1][ i][ 2] * tmp1 ),2)
+                 * ( - Math.pow(( u[k][ j+1][ i][ 2] * tmp1 ),2)
             + c2 * ( qs[k][ j+1][ i] * tmp1 ) )
              - dt * ty1 * ( - r43 * c34 * tmp2 * u[k][ j+1][ i][ 2] );
                b[j][ i][ 1][ 2] =  dt * ty2
@@ -1653,9 +1660,9 @@ public class LU : LUBase{
                      - c1 * u[k][ j+1][ i][ 4] )
                 * ( u[k][ j+1][ i][ 2] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.Pow(u[k][ j+1][ i][ 1],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.Pow(u[k][ j+1][ i][ 2],2)
-                    - (     c34 - c1345 )*tmp3*Math.Pow(u[k][ j+1][ i][ 3],2)
+                * ( - (     c34 - c1345 )*tmp3*Math.pow(u[k][ j+1][ i][ 1],2)
+                    - ( r43*c34 - c1345 )*tmp3*Math.pow(u[k][ j+1][ i][ 2],2)
+                    - (     c34 - c1345 )*tmp3*Math.pow(u[k][ j+1][ i][ 3],2)
                     - c1345*tmp2*u[k][ j+1][ i][ 4] );
                b[j][ i][ 1][ 4] =  dt * ty2
                 * ( - c2 * ( u[k][ j+1][ i][ 1]*u[k][ j+1][ i][ 2] ) * tmp2 )
@@ -1710,7 +1717,7 @@ public class LU : LUBase{
                c[j][ i][ 4][ 2] = 0.0;
 
                c[j][ i][ 0][ 3] = dt * tz2
-              * ( - Math.Pow(( u[k+1][ j][ i][ 3] * tmp1 ),2)
+              * ( - Math.pow(( u[k+1][ j][ i][ 3] * tmp1 ),2)
                   + c2 * ( qs[k+1][ j][ i] * tmp1 ) )
               - dt * tz1 * ( - r43 * c34 * tmp2 * u[k+1][ j][ i][ 3] );
                c[j][ i][ 1][ 3] = dt * tz2
@@ -1728,9 +1735,9 @@ public class LU : LUBase{
              - c1 * u[k+1][ j][ i][ 4] )
                   * ( u[k+1][ j][ i][ 3] * tmp2 ) )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k+1][ j][ i][ 1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.Pow(u[k+1][ j][ i][ 2],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.Pow(u[k+1][ j][ i][ 3],2)
+             * ( - ( c34 - c1345 ) * tmp3 * Math.pow(u[k+1][ j][ i][ 1],2)
+                 - ( c34 - c1345 ) * tmp3 * Math.pow(u[k+1][ j][ i][ 2],2)
+                 - ( r43*c34 - c1345 )* tmp3 * Math.pow(u[k+1][ j][ i][ 3],2)
                 - c1345 * tmp2 * u[k+1][ j][ i][ 4] );
                c[j][ i][ 1][ 4] = dt * tz2
              * ( - c2 * ( u[k+1][ j][ i][ 1]*u[k+1][ j][ i][ 3] ) * tmp2 )
@@ -1774,7 +1781,7 @@ public class LU : LUBase{
     }
 
     for(m=0;m<=4;m++){
-       sum[m] = Math.Sqrt( sum[m] / ( (nx0-2)*(ny0-2)*(nz0-2) ) );
+       sum[m] = Math.sqrt( sum[m] / ( (nx0-2)*(ny0-2)*(nz0-2) ) );
     }
   }
 
@@ -1813,17 +1820,17 @@ public class LU : LUBase{
             k = ki1-1;
 
             phi1[j][i] = c2*(  u[k][ j][ i][ 4]
-                 - 0.50 * (  Math.Pow(u[k][ j][ i][ 1],2)
-                               + Math.Pow(u[k][ j][ i][ 2],2)
-                               + Math.Pow(u[k][ j][ i][ 3],2) )
+                 - 0.50 * (  Math.pow(u[k][ j][ i][ 1],2)
+                               + Math.pow(u[k][ j][ i][ 2],2)
+                               + Math.pow(u[k][ j][ i][ 3],2) )
                               / u[k][ j][ i][ 0] );
 
             k = ki2-1;
 
             phi2[j][i] = c2*(  u[k][ j][ i][ 4]
-                 - 0.50 * (  Math.Pow(u[k][ j][ i][ 1],2)
-                               + Math.Pow(u[k][ j][ i][ 2],2)
-                               + Math.Pow(u[k][ j][ i][ 3],2) )
+                 - 0.50 * (  Math.pow(u[k][ j][ i][ 1],2)
+                               + Math.pow(u[k][ j][ i][ 2],2)
+                               + Math.pow(u[k][ j][ i][ 3],2) )
                               / u[k][ j][ i][ 0] );
          }
       }
@@ -1858,9 +1865,9 @@ public class LU : LUBase{
         for(k=ki1-1;k<=ki2-1;k++){
            for(i=ibeg-1;i<=ifin-1;i++){
               phi1[k][i] = c2*(  u[k][ jbeg-1][ i][ 4]
-                   - 0.50 * (  Math.Pow(u[k][ jbeg-1][ i][ 1],2)
-                                 + Math.Pow(u[k][ jbeg-1][ i][ 2],2)
-                                 + Math.Pow(u[k][ jbeg-1][ i][ 3],2) )
+                   - 0.50 * (  Math.pow(u[k][ jbeg-1][ i][ 1],2)
+                                 + Math.pow(u[k][ jbeg-1][ i][ 2],2)
+                                 + Math.pow(u[k][ jbeg-1][ i][ 3],2) )
                                 / u[k][ jbeg-1][ i][ 0] );
            }
         }
@@ -1870,9 +1877,9 @@ public class LU : LUBase{
         for(k=ki1-1;k<=ki2-1;k++){
            for(i=ibeg-1;i<=ifin-1;i++){
               phi2[k][i] = c2*(  u[k][ jfin-1][ i][ 4]
-                   - 0.50 * (  Math.Pow(u[k][ jfin-1][ i][ 1],2)
-                                 + Math.Pow(u[k][ jfin-1][ i][ 2],2)
-                                 + Math.Pow(u[k][ jfin-1][ i][ 3],2) )
+                   - 0.50 * (  Math.pow(u[k][ jfin-1][ i][ 1],2)
+                                 + Math.pow(u[k][ jfin-1][ i][ 2],2)
+                                 + Math.pow(u[k][ jfin-1][ i][ 3],2) )
                                 / u[k][ jfin-1][ i][ 0] );
            }
         }
@@ -1907,9 +1914,9 @@ public class LU : LUBase{
         for(k=ki1-1;k<=ki2-1;k++){
            for(j=jbeg-1;j<=jfin-1;j++){
               phi1[k][j] = c2*(  u[k][ j][ ibeg-1][ 4]
-                   - 0.50 * ( Math.Pow(u[k][ j][ ibeg-1][ 1],2)
-                                 + Math.Pow(u[k][ j][ ibeg-1][ 2],2)
-                                 + Math.Pow(u[k][ j][ ibeg-1][ 3],2) )
+                   - 0.50 * ( Math.pow(u[k][ j][ ibeg-1][ 1],2)
+                                 + Math.pow(u[k][ j][ ibeg-1][ 2],2)
+                                 + Math.pow(u[k][ j][ ibeg-1][ 3],2) )
                                 / u[k][ j][ ibeg-1][ 0] );
            }
         }
@@ -1919,9 +1926,9 @@ public class LU : LUBase{
         for(k=ki1-1;k<=ki2-1;k++){
            for(j=jbeg-1;j<=jfin-1;j++){
               phi2[k][j] = c2*(  u[k][ j][ ifin-1][ 4]
-                   - 0.50 * (  Math.Pow(u[k][ j][ ifin-1][ 1] ,2)
-                                 + Math.Pow(u[k][ j][ ifin-1][ 2],2)
-                                 + Math.Pow(u[k][ j][ ifin-1][ 3],2) )
+                   - 0.50 * (  Math.pow(u[k][ j][ ifin-1][ 1] ,2)
+                                 + Math.pow(u[k][ j][ ifin-1][ 2],2)
+                                 + Math.pow(u[k][ j][ ifin-1][ 3],2) )
                                 / u[k][ j][ ifin-1][ 0] );
            }
         }
@@ -1957,33 +1964,41 @@ public class LU : LUBase{
 //       tolrsd = steady state residual tolerance levels
 //       nx, ny, nz = number of grid points in x, y, z directions
 //---------------------------------------------------------------------
-     // File f2 = new File("inputlu.data");
-      if (File.Exists("inputlu.data")){
+     File f2 = new File("inputlu.data");
+      if (f2.exists()){
 				
-		FileStream f2 = new FileStream("inputlu.data", System.IO.FileMode.Open);
+		//FileStream f2 = new FileStream("inputlu.data", System.IO.FileMode.Open);
+    	
+			FileReader fis;
 		try{  
-  	  StreamReader datafile = new StreamReader(f2);
-	  Console.WriteLine("Reading from input file inputlu.data");
-	  
-	  ipr = int.Parse(datafile.ReadLine());
-	  inorm = int.Parse(datafile.ReadLine());
-	  itmax = int.Parse(datafile.ReadLine());
-	  dt = double.Parse(datafile.ReadLine());
-	  omega = double.Parse(datafile.ReadLine());
-	  tolrsd[0] = double.Parse(datafile.ReadLine());
-	  tolrsd[1] = double.Parse(datafile.ReadLine());
-	  tolrsd[2] = double.Parse(datafile.ReadLine());
-	  tolrsd[3] = double.Parse(datafile.ReadLine());
-	  tolrsd[4] = double.Parse(datafile.ReadLine());
-	  nx0 = int.Parse(datafile.ReadLine());
-	  ny0 = int.Parse(datafile.ReadLine()); 
-	  nz0 = int.Parse(datafile.ReadLine());
-	  
+			 fis = new FileReader(f2);
+		  	  BufferedReader datafile = new BufferedReader(fis);
+			  System.out.println("Reading from input file inputlu.data");
+		
+			
+				  ipr = Integer.parseInt(datafile.readLine());
+				  inorm = Integer.parseInt(datafile.readLine());
+				  itmax = Integer.parseInt(datafile.readLine());
+				  dt = Double.parseDouble(datafile.readLine());
+				  omega = Double.parseDouble(datafile.readLine());
+				  tolrsd[0] = Double.parseDouble(datafile.readLine());
+				  tolrsd[1] = Double.parseDouble(datafile.readLine());
+				  tolrsd[2] = Double.parseDouble(datafile.readLine());
+				  tolrsd[3] = Double.parseDouble(datafile.readLine());
+				  tolrsd[4] = Double.parseDouble(datafile.readLine());
+				  nx0 = Integer.parseInt(datafile.readLine());
+				  ny0 = Integer.parseInt(datafile.readLine()); 
+				 nz0 = Integer.parseInt(datafile.readLine());
 	 // fis.close();
-        }catch(Exception e){  
-	       Console.WriteLine("exception caught! " + e.Message);
-        } 
-      }else{
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      }
+      else{
         ipr = ipr_default;
         inorm = inorm_default;
         itmax = itmax_default;
@@ -2003,17 +2018,17 @@ public class LU : LUBase{
 //   check problem size
 //---------------------------------------------------------------------
       if ( ( nx0 < 4 ) || ( ny0 < 4 ) || ( nz0 < 4 ) ) {
-	Console.WriteLine("     PROBLEM SIZE IS TOO SMALL - ");
-	Console.WriteLine("     SET EACH OF NX, NY AND NZ AT LEAST EQUAL TO 5");
-	Environment.Exit(0);
+		System.out.println("     PROBLEM SIZE IS TOO SMALL - ");
+		System.out.println("     SET EACH OF NX, NY AND NZ AT LEAST EQUAL TO 5");
+		System.exit(0);
       }
       if ( ( nx0 > isiz1 ) || ( ny0 > isiz2 ) || ( nz0 > isiz3 ) ) {
-	Console.WriteLine("     PROBLEM SIZE IS TOO LARGE - ");
-	Console.WriteLine("     NX, NY AND NZ SHOULD BE EQUAL TO");
-	Console.WriteLine("     ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY");
-	Environment.Exit(0);
+		System.out.println("     PROBLEM SIZE IS TOO LARGE - ");
+		System.out.println("     NX, NY AND NZ SHOULD BE EQUAL TO");
+		System.out.println("     ISIZ1, ISIZ2 AND ISIZ3 RESPECTIVELY");
+		System.exit(0);
       }
-      Console.WriteLine("LU: Iterations="+itmax+" dt="+dt);
+      System.out.println("LU: Iterations="+itmax+" dt="+dt);
   }
   
 		
@@ -2092,10 +2107,10 @@ public class LU : LUBase{
                flux[i][ 2] = tx3 * ( u31i - u31im1 );
                flux[i][ 3] = tx3 * ( u41i - u41im1 );
                flux[i][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * tx3 * ( ( Math.Pow(u21i,2) + Math.Pow(u31i,2) + Math.Pow(u41i,2) )
-                            - ( Math.Pow(u21im1,2) + Math.Pow(u31im1,2) + Math.Pow(u41im1,2) ) )
+                    * tx3 * ( ( Math.pow(u21i,2) + Math.pow(u31i,2) + Math.pow(u41i,2) )
+                            - ( Math.pow(u21im1,2) + Math.pow(u31im1,2) + Math.pow(u41im1,2) ) )
                     + (1.0/6.0)
-                    * tx3 * ( Math.Pow(u21i,2) - Math.Pow(u21im1,2) )
+                    * tx3 * ( Math.pow(u21i,2) - Math.pow(u21im1,2) )
                     + c1 * c5 * tx3 * ( u51i - u51im1 );
             }
 
@@ -2213,10 +2228,10 @@ public class LU : LUBase{
                flux[j][ 2] = (4.0/3.0) * ty3 * (u31j-u31jm1);
                flux[j][ 3] = ty3 * ( u41j - u41jm1 );
                flux[j][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
-                            - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
+                    * ty3 * ( ( Math.pow(u21j,2) + Math.pow(u31j,2) + Math.pow(u41j,2) )
+                            - ( Math.pow(u21jm1,2) + Math.pow(u31jm1,2) + Math.pow(u41jm1,2) ) )
                     + (1.0/6.0)
-                    * ty3 * ( Math.Pow(u31j,2) - Math.Pow(u31jm1,2) )
+                    * ty3 * ( Math.pow(u31j,2) - Math.pow(u31jm1,2) )
                     + c1 * c5 * ty3 * ( u51j - u51jm1 );
             }
 
@@ -2340,10 +2355,10 @@ public class LU : LUBase{
                flux[k][ 2] = tz3 * ( u31k - u31km1 );
                flux[k][ 3] = (4.0/3.0) * tz3 * (u41k-u41km1);
                flux[k][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * tz3 * ( (Math.Pow(u21k,2) + Math.Pow(u31k,2) +Math.Pow(u41k,2) )
-                            - ( Math.Pow(u21km1,2) + Math.Pow(u31km1,2) +Math.Pow(u41km1,2) ) )
+                    * tz3 * ( (Math.pow(u21k,2) + Math.pow(u31k,2) +Math.pow(u41k,2) )
+                            - ( Math.pow(u21km1,2) + Math.pow(u31km1,2) +Math.pow(u41km1,2) ) )
                     + (1.0/6.0)
-                    * tz3 * ( Math.Pow(u41k,2) - Math.Pow(u41km1,2) )
+                    * tz3 * ( Math.pow(u41k,2) - Math.pow(u41km1,2) )
                     + c1 * c5 * tz3 * ( u51k - u51km1 );
             }
 
@@ -2596,7 +2611,7 @@ public class LU : LUBase{
 //---------------------------------------------------------------------
     for(istep=1;istep<=itmax;istep++){         
       if (istep % 20 == 0 || istep == itmax || istep == 1) {
-	Console.WriteLine(" Time step " + istep);
+	System.out.println(" Time step " + istep);
       }
 
 //---------------------------------------------------------------------
@@ -2889,10 +2904,10 @@ public class LU : LUBase{
 //    Compute the difference of solution values and the known reference values.
 //---------------------------------------------------------------------
     for(m=0;m<=4;m++){
-      xcrdif[m] = Math.Abs((xcr[m]-xcrref[m])/xcrref[m]) ;
-      xcedif[m] = Math.Abs((xce[m]-xceref[m])/xceref[m]);       
+      xcrdif[m] = Math.abs((xcr[m]-xcrref[m])/xcrref[m]) ;
+      xcedif[m] = Math.abs((xce[m]-xceref[m])/xceref[m]);       
     }
-    xcidif = Math.Abs((xci - xciref)/xciref);
+    xcidif = Math.abs((xci - xciref)/xciref);
 
 //---------------------------------------------------------------------
 //   tolerance level
@@ -2903,41 +2918,41 @@ public class LU : LUBase{
 //---------------------------------------------------------------------
 
     if(clss != 'U') {
-      Console.WriteLine(" Verification being performed for class " + clss);
-      Console.WriteLine(" Accuracy setting for epsilon = " + epsilon);
-      if (Math.Abs(dt-dtref) <= epsilon) {  
+      System.out.println(" Verification being performed for class " + clss);
+      System.out.println(" Accuracy setting for epsilon = " + epsilon);
+      if (Math.abs(dt-dtref) <= epsilon) {  
 	if(verified==-1) verified = 1;
       }else{
 	verified = 0;
 	clss = 'U';
-	Console.WriteLine(" DT= "+dt+
+	System.out.println(" DT= "+dt+
 	                   " does not match the reference value of "+ dtref);
       }
     }else{ 
-      Console.WriteLine(" Unknown class");
+      System.out.println(" Unknown class");
       verified = -1;
     }
     if (clss != 'U') {
-      Console.WriteLine(" Comparison of RMS-norms of residual");
+      System.out.println(" Comparison of RMS-norms of residual");
     }else{
-      Console.WriteLine(" RMS-norms of residual");
+      System.out.println(" RMS-norms of residual");
       verified = -1;
     }
     verified=BMResults.printComparisonStatus(clss,verified,epsilon,
                                              xcr,xcrref,xcrdif);
 
     if (clss != 'U') {
-      Console.WriteLine(" Comparison of RMS-norms of solution error");
+      System.out.println(" Comparison of RMS-norms of solution error");
     }else{
-      Console.WriteLine(" RMS-norms of solution error");
+      System.out.println(" RMS-norms of solution error");
     }
     verified=BMResults.printComparisonStatus(clss,verified,epsilon,
                                              xce,xceref,xcedif);
 
     if (clss != 'U') {
-      Console.WriteLine(" Comparison of surface integral");
+      System.out.println(" Comparison of surface integral");
     }else{
-      Console.WriteLine(" Surface integral");
+      System.out.println(" Surface integral");
     }
     verified=BMResults.printComparisonStatus(clss,verified,epsilon,
                                              xci,xciref,xcidif);
@@ -2945,13 +2960,13 @@ public class LU : LUBase{
     return verified;
   }
   public void checksum(double[] array, int size, 
-                       String[] arrayname, bool stop){
+                       String[] arrayname, boolean stop){
     double sum = 0;
     for(int i=0; i<size; i++){
       sum += array[i];
     }
-    Console.WriteLine("array:"+arrayname + " checksum is: " + sum);
-    if(stop)Environment.Exit(0);
+    System.out.println("array:"+arrayname + " checksum is: " + sum);
+    if(stop)System.exit(0);
   }
   public double checkSum(double[] arr){
     double csum=0.0;
@@ -2970,7 +2985,7 @@ public class LU : LUBase{
   }  
   public double getTime(){ return timer.readTimer(1);} 
   public void finalize() /*throws Throwable*/{
-    Console.WriteLine("LU: is about to be garbage collected"); 
+    System.out.println("LU: is about to be garbage collected"); 
     //super.finalize();
   }
 }
