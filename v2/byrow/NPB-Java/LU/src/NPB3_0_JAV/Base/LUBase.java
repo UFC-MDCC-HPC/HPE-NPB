@@ -47,12 +47,9 @@
 */
 package NPB3_0_JAV.Base;
 
-using System;
-using System.Threading;
-using NPB3_0_JAV;
+import NPB3_0_JAV.Timer;
 
-
-public class LUBase /* : Thread*/{
+public class LUBase extends Thread{
 
   public static String BMName="LU";
   public char CLASS = 'S';
@@ -122,7 +119,7 @@ public class LUBase /* : Thread*/{
 //---------------------------------------------------------------------
 //   coefficients of the exact solution
 //---------------------------------------------------------------------
-   private double[,] ce_ = 			
+   private double[][] ce_ = 			
 		{   {2.0, 1.0, 2.0, 2.0, 5.0},
 			{0.0, 0.0, 2.0, 2.0, 4.0},
 			{0.0, 0.0, 0.0, 0.0, 3.0},
@@ -146,7 +143,7 @@ public class LUBase /* : Thread*/{
 			{
 				for (int m=0; m < 5; m++) 
 				{
-					ce[n][m] = ce_[n,m];
+					ce[n][m] = ce_[n][m];
 				}	
 			}
 	}
@@ -158,7 +155,7 @@ public class LUBase /* : Thread*/{
   public static int t_total = 1, t_rhsx = 2,  t_rhsy = 3, t_rhsz = 4,
                t_rhs = 5, t_jacld = 6, t_blts = 7,t_jacu = 8,
                t_buts = 9, t_add = 10, t_l2norm = 11,t_last = 11;
-  public bool timeron;
+  public boolean timeron;
   public Timer timer = new Timer();
 
   public LUBase(){ init_ce(); }
@@ -268,66 +265,13 @@ public class LUBase /* : Thread*/{
 		
   protected Thread master=null;
   protected int num_threads;
-		
-  /*protected RHSCompute[] rhscomputer = null;
-  protected Scale[] scaler = null;
-  protected Adder[] adder =null;
-  protected LowerJac[] lowerjac =null;
-  protected UpperJac[] upperjac =null;
-  
-  public void setupThreads(LU lu){
-    master = lu;
-   if(num_threads>isiz1-2)
-   num_threads=isiz1-2;
-		
-		
-    int[] interval1=new int[num_threads];
-    int[] interval2=new int[num_threads];    
-	set_interval(num_threads, isiz1, interval1);
-    set_interval(num_threads, isiz1-2, interval2);
-    int[,] partition1 = new int[interval1.Length][2];
-    int[,] partition2 = new int[interval2.Length][2];
-    set_partition(0,interval1,partition1);
-    set_partition(1,interval2,partition2);
-   
-    rhscomputer = new RHSCompute[num_threads];
-    scaler = new Scale[num_threads];
-    adder = new Adder[num_threads];
-    lowerjac = new LowerJac[num_threads];
-    upperjac = new UpperJac[num_threads];
-    for(int ii=0;ii<num_threads;ii++){
-      rhscomputer[ii] =  new RHSCompute(lu,partition1[ii][0],partition1[ii][1],
-					partition2[ii][0],partition2[ii][1]);
-      rhscomputer[ii].id=ii;
-      rhscomputer[ii].start();
-
-      scaler[ii] =  new Scale(lu,partition2[ii][0],partition2[ii][1]);
-      scaler[ii].id=ii;
-      scaler[ii].start();
-
-      adder[ii] =  new Adder(lu,partition2[ii][0],partition2[ii][1]);
-      adder[ii].id=ii;
-      adder[ii].start();
-
-      lowerjac[ii] =  new LowerJac(lu,partition2[ii][0],partition2[ii][1]);
-      lowerjac[ii].id=ii;
-      lowerjac[ii].neighbor=lowerjac;
-      lowerjac[ii].start();
-
-      upperjac[ii] =  new UpperJac(lu,partition2[num_threads-ii-1][0],
-                                      partition2[num_threads-ii-1][1]);
-      upperjac[ii].id=ii;
-      upperjac[ii].neighbor=upperjac;
-      upperjac[ii].start();
-    }
- // }*/
 
   public void checksum(double[] array, int size, 
-                       String arrayname, bool stop){
+                       String arrayname, boolean stop){
     double sum = 0;
     for(int i=0; i<size; i++) sum += array[i];
-    Console.WriteLine("array:"+arrayname + " checksum is: " + sum);
-    if(stop) Environment.Exit(0);
+    System.out.println("array:"+arrayname + " checksum is: " + sum);
+    if(stop) System.exit(0);
   }
   
   public void set_interval(int threads, int problem_size, int[] interval ){
@@ -344,7 +288,7 @@ public class LUBase /* : Thread*/{
     if(start==0) array[0][1]=interval[0]-1;
     else array[0][1]=interval[0];
     
-    for(int i=1;i<interval.Length;i++){
+    for(int i=1;i<interval.length;i++){
       array[i][0]=array[i-1][1]+1;
       array[i][1]=array[i-1][1]+interval[i];
     }
