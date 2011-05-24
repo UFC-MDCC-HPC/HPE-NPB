@@ -43,6 +43,8 @@
 
 package NPB3_0_JAV.Base;
 
+import NPB3_0_JAV.Timer;
+
 public class BTBase /*extends Thread */ {
 
         public static String BMName = "BT";
@@ -69,8 +71,8 @@ public class BTBase /*extends Thread */ {
 
         //here 5 are the dimensions of the CFD vector
         //(density,x_impuls,y_impuls,z_impuls,energy)
-        protected const int isize4 = 5, jsize4 = 5 * 5, ksize4 = 5 * 5 * 3;
-        protected const int aa = 0, bb = 1, cc = 2, BLOCK_SIZE = 5;
+        protected final int isize4 = 5, jsize4 = 5 * 5, ksize4 = 5 * 5 * 3;
+        protected final int aa = 0, bb = 1, cc = 2, BLOCK_SIZE = 5;
 
         // constants
         protected static double tx1, tx2, tx3, dt,
@@ -94,7 +96,7 @@ public class BTBase /*extends Thread */ {
                comz1, comz4, comz5, comz6, c3c4tx3, c3c4ty3,
                c3c4tz3, c2iv, con43, con16;
 
-        protected static double[,] ce = {
+        protected static double[][] ce = {
                	{2.0, 1.0, 2.0, 2.0, 5.0},
                	{0.0, 0.0, 2.0, 2.0, 4.0},
                	{0.0, 0.0, 0.0, 0.0, 3.0},
@@ -110,8 +112,8 @@ public class BTBase /*extends Thread */ {
                	{0.3, 0.5, 0.4, 0.3, 0.2}};
 
         //timer constants
-        public bool timeron = false;
-        public const int t_rhsx = 2, t_rhsy = 3, t_rhsz = 4,
+        public boolean timeron = false;
+        public final int t_rhsx = 2, t_rhsy = 3, t_rhsz = 4,
                          t_xsolve = 6, t_ysolve = 7, t_zsolve = 8,
                          t_rdis1 = 9, t_rdis2 = 10, t_add = 11,
                          t_rhs = 5, t_last = 11, t_total = 1;
@@ -243,82 +245,6 @@ public class BTBase /*extends Thread */ {
 	}
 
 		
-        /*
-        protected RHSCompute[] rhscomputer;
-        protected XSolver[] xsolver;
-        protected YSolver[] ysolver;
-        protected ZSolver[] zsolver;
-        protected RHSAdder[] rhsadder;
-
-        public void setupThreads(BT bt)
-        {
-            master = bt;
-            if (num_threads > problem_size - 2)
-                num_threads = problem_size - 2;
-
-
-            int[] interval1 = new int[num_threads];
-            int[] interval2 = new int[num_threads];
-            set_interval(problem_size, interval1);
-            set_interval(problem_size - 2, interval2);
-            int[][] partition1 = new int[interval1.Length][2];
-            int[][] partition2 = new int[interval2.Length][2];
-            set_partition(0, interval1, partition1);
-            set_partition(1, interval2, partition2);
-
-            rhscomputer = new RHSCompute[num_threads];
-            xsolver = new XSolver[num_threads];
-            ysolver = new YSolver[num_threads];
-            zsolver = new ZSolver[num_threads];
-            rhsadder = new RHSAdder[num_threads];
-
-            // create and start threads  
-            for (int ii = 0; ii < num_threads; ii++)
-            {
-                rhscomputer[ii] = new RHSCompute(bt, partition1[ii][0], partition1[ii][1],
-                                                  partition2[ii][0], partition2[ii][1]);
-                rhscomputer[ii].id = ii;
-                rhscomputer[ii].start();
-
-                xsolver[ii] = new XSolver(bt, partition2[ii][0], partition2[ii][1]);
-                xsolver[ii].id = ii;
-                xsolver[ii].start();
-
-                ysolver[ii] = new YSolver(bt, partition2[ii][0], partition2[ii][1]);
-                ysolver[ii].id = ii;
-                ysolver[ii].start();
-
-                zsolver[ii] = new ZSolver(bt, partition2[ii][0], partition2[ii][1]);
-                zsolver[ii].id = ii;
-                zsolver[ii].start();
-
-                rhsadder[ii] = new RHSAdder(bt, partition2[ii][0], partition2[ii][1]);
-                rhsadder[ii].id = ii;
-                rhsadder[ii].start();
-            }
-        }
-
-        public void set_interval(int problem_size, int[] interval)
-        {
-            interval[0] = problem_size / num_threads;
-            for (int i = 1; i < num_threads; i++) interval[i] = interval[0];
-            int remainder = problem_size % num_threads;
-            for (int i = 0; i < remainder; i++) interval[i]++;
-        }
-
-        public void set_partition(int start, int[] interval, int[][] array)
-        {
-            array[0][0] = start;
-            if (start == 0) array[0][1] = interval[0] - 1;
-            else array[0][1] = interval[0];
-
-            for (int i = 1; i < interval.Length; i++)
-            {
-                array[i][0] = array[i - 1][1] + 1;
-                array[i][1] = array[i - 1][1] + interval[i];
-            }
-        }
-		*/
 		
         public double dmax1(double a, double b)
         {
@@ -451,13 +377,13 @@ public class BTBase /*extends Thread */ {
         {
             for (int m = 0; m < 5; m++)
             {
-                dtemp[m + dtmpoffst] = ce[0,m]
-                                     + xi * (ce[1,m] + xi * (ce[4,m]
-                                     + xi * (ce[7,m] + xi * ce[10,m])))
-                                     + eta * (ce[2,m] + eta * (ce[5,m]
-                                     + eta * (ce[8,m] + eta * ce[11,m])))
-                                     + zeta * (ce[3,m] + zeta * (ce[6,m]
-                                     + zeta * (ce[9,m] + zeta * ce[12,m])));
+                dtemp[m + dtmpoffst] = ce[0][m]
+                                     + xi * (ce[1][m] + xi * (ce[4][m]
+                                     + xi * (ce[7][m] + xi * ce[10][m])))
+                                     + eta * (ce[2][m] + eta * (ce[5][m]
+                                     + eta * (ce[8][m] + eta * ce[11][m])))
+                                     + zeta * (ce[3][m] + zeta * (ce[6][m]
+                                     + zeta * (ce[9][m] + zeta * ce[12][m])));
             }
         }
         public void initialize()
