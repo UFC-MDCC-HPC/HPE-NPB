@@ -48,15 +48,20 @@
 
 package NPB3_0_JAV;
 
-    public class FT : FTBase
-    {
+import java.io.File;
+import java.text.DecimalFormat;
+
+import NPB3_0_JAV.BMInOut.BMArgs;
+import NPB3_0_JAV.BMInOut.BMResults;
+import NPB3_0_JAV.Base.FTBase;
+
+    public class FT extends FTBase{
         public int bid = -1;
         public BMResults results;
-        public bool serial = true;
-        bool done = false;
-        public FT(char clss, int np, bool ser) : base(clss, np, ser)
-        {
-            //super(clss, np, ser);
+        public boolean serial = true;
+        boolean done = false;
+        public FT(char clss, int np, boolean ser){
+            super(clss, np, ser);
             serial = ser;
         }
         static void Main(String[] argv)
@@ -66,23 +71,23 @@ package NPB3_0_JAV;
             BMArgs.ParseCmdLineArgs(argv, BMName);
             char CLSS = BMArgs.CLASS;
             int np = BMArgs.num_threads;
-            bool serial = BMArgs.serial;
+            boolean serial = BMArgs.serial;
 
             try
             {
                 ft = new FT(CLSS, np, serial);
             }
-            catch (OutOfMemoryException e)
+            catch (OutOfMemoryError e)
             {
                 BMArgs.outOfMemoryMessage();
-                Environment.Exit(0);
+                System.exit(0);
             }
             ft.runBenchMark();
         }
         public void runBenchMark()
         {
             BMArgs.Banner(BMName, CLASS, serial, num_threads);
-            Console.WriteLine(" Size = " + nx + " X " + ny + " X " + nz
+            System.out.println(" Size = " + nx + " X " + ny + " X " + nz
                                + " niter = " + niter_default);
             setTimers();
             timer.resetAllTimers();
@@ -130,7 +135,7 @@ package NPB3_0_JAV;
             fftXYZ(1, xtr, exp2, exp1, exp3, ny, nx, nz);
             if (timeron) timer.stop(15);
 
-            double ap = (-4.0 * alpha * Math.Pow(pi, 2));
+            double ap = (-4.0 * alpha * Math.pow(pi, 2));
             int n12 = nx / 2;
             int n22 = ny / 2;
             int n32 = nz / 2;
@@ -151,8 +156,8 @@ package NPB3_0_JAV;
                             int jj = j - ((j) / n22) * ny;
                             //xnt[REAL+j*isize4+k*jsize4+i*ksize4] = xtr[REAL+j*isize3+i*jsize3+k*ksize3] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
                             //xnt[IMAG+j*isize4+k*jsize4+i*ksize4] = xtr[IMAG+j*isize3+i*jsize3+k*ksize3] * Math.Exp((ap*(jj*jj+ik2))*(it + 1));
-                            xnt[REAL][j][k][i] = xtr[REAL][j][i][k] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
-                            xnt[IMAG][j][k][i] = xtr[IMAG][j][i][k] * Math.Exp((ap*(jj*jj+ik2))*(it+1));
+                            xnt[REAL][j][k][i] = xtr[REAL][j][i][k] * Math.exp((ap*(jj*jj+ik2))*(it+1));
+                            xnt[IMAG][j][k][i] = xtr[IMAG][j][i][k] * Math.exp((ap*(jj*jj+ik2))*(it+1));
                         }
                     }
                 }
@@ -169,29 +174,29 @@ package NPB3_0_JAV;
         }
         public void setTimers()
         {
-            //File f1 = new File("timer.flag");
+            File f1 = new File("timer.flag");
             timeron = false;
-            if (File.Exists("timer.flag")) timeron = true;
+            if (f1.exists()) timeron = true;
         }
         public void printTimers()
         {
-            //DecimalFormat fmt = new DecimalFormat("0.000");
-            Console.WriteLine("  SECTION   Time (secs)");
-            Console.WriteLine("FT time =		      " + timer.readTimer(1).ToString("N3"));
-            Console.WriteLine("WarmUp time =		      " + timer.readTimer(2).ToString("N3"));
-            Console.WriteLine("ffXYZ body time =	      " + timer.readTimer(3).ToString("N3"));
-            Console.WriteLine("Swarztrauber body time =      " + timer.readTimer(4).ToString("N3"));
-            Console.WriteLine("Redistribution time =	      " + timer.readTimer(5).ToString("N3"));
-            Console.WriteLine("Transposition time =	      " + timer.readTimer(6).ToString("N3"));
-            Console.WriteLine("X time =		      " + timer.readTimer(7).ToString("N3"));
-            Console.WriteLine("Y time =		      " + timer.readTimer(8).ToString("N3"));
-            Console.WriteLine("Z time =		      " + timer.readTimer(9).ToString("N3"));
-            Console.WriteLine("CalculateChecksum =	      " + timer.readTimer(10).ToString("N3"));
-            Console.WriteLine("evolve =		      " + timer.readTimer(11).ToString("N3"));
-            Console.WriteLine("compute_initial_conditions =  " + timer.readTimer(12).ToString("N3"));
-            Console.WriteLine("twiddle =		      " + timer.readTimer(13).ToString("N3"));
-            Console.WriteLine("verify =		      " + timer.readTimer(14).ToString("N3"));
-            Console.WriteLine("fftXYZ =		      " + timer.readTimer(15).ToString("N3"));
+            DecimalFormat fmt = new DecimalFormat("0.000");
+            System.out.println("  SECTION   Time (secs)"); 
+            System.out.println("FT time =		      " + fmt.format(timer.readTimer(1)));
+            System.out.println("WarmUp time =		      " + fmt.format(timer.readTimer(2)));
+            System.out.println("ffXYZ body time =	      " + fmt.format(timer.readTimer(3)));
+            System.out.println("Swarztrauber body time =      " + fmt.format(timer.readTimer(4)));
+            System.out.println("Redistribution time =	      " + fmt.format(timer.readTimer(5)));
+            System.out.println("Transposition time =	      " + fmt.format(timer.readTimer(6)));
+            System.out.println("X time =		      " + fmt.format(timer.readTimer(7)));
+            System.out.println("Y time =		      " + fmt.format(timer.readTimer(8)));
+            System.out.println("Z time =		      " + fmt.format(timer.readTimer(9)));
+            System.out.println("CalculateChecksum =	      " + fmt.format(timer.readTimer(10)));
+            System.out.println("evolve =		      " + fmt.format(timer.readTimer(11)));
+            System.out.println("compute_initial_conditions =  " + fmt.format(timer.readTimer(12)));
+            System.out.println("twiddle =		      " + fmt.format(timer.readTimer(13)));
+            System.out.println("verify =		      " + fmt.format(timer.readTimer(14)));
+            System.out.println("fftXYZ =		      " + fmt.format(timer.readTimer(15)));
         }
 
         public double getMFLOPS(double total_time, int nx, int ny, int nz)
@@ -200,7 +205,7 @@ package NPB3_0_JAV;
             int ntotal = nx * ny * nz;
             if (total_time > 0)
             {
-                mflops = 14.8157 + 7.19641 * Math.Log(ntotal) + (5.23518 + 7.21113 * Math.Log(ntotal)) * niter_default;
+                mflops = 14.8157 + 7.19641 * Math.log(ntotal) + (5.23518 + 7.21113 * Math.log(ntotal)) * niter_default;
                 mflops *= ntotal / (total_time * 1000000.0);
             }
             return mflops;
@@ -297,7 +302,7 @@ package NPB3_0_JAV;
         public int verify(int ires, int n1, int n2, int n3, int nt, double[][] cksum)
         {
             int verified = -1;
-            bool[] temp = new bool[niter_default];
+            boolean[] temp = new boolean[niter_default];
             double[][] cexpd = instantiate_jagged_array_2(2,21);
             if ((n1 == 64) && (n2 == 64) && (n3 == 64) && (nt == 6)) {
                 //
@@ -465,8 +470,8 @@ package NPB3_0_JAV;
                 {
                     double csumr = (cksum[REAL][it] - cexpd[REAL][it]) / cexpd[REAL][it];
                     double csumi = (cksum[IMAG][it] - cexpd[IMAG][it]) / cexpd[IMAG][it];
-                    if (Math.Abs(csumr) <= epsilon
-                     || Math.Abs(csumi) <= epsilon
+                    if (Math.abs(csumr) <= epsilon
+                     || Math.abs(csumi) <= epsilon
                    )
                     {
                         if (verified == -1) verified = 1;
@@ -482,9 +487,9 @@ package NPB3_0_JAV;
         }
 
         public double getTime() { return timer.readTimer(1); }
-        public bool isDone() { return done; }
+        public boolean isDone() { return done; }
         public void finalize() { // throws Throwable{
-            Console.WriteLine("FT: is about to be garbage collected");
+            System.out.println("FT: is about to be garbage collected");
             //super.finalize();
         }
  }
