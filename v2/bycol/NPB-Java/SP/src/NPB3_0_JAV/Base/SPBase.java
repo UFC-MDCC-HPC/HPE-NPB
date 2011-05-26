@@ -42,11 +42,10 @@
 */
 package NPB3_0_JAV.Base;
 
-using System;
-using System.Threading;
-using NPB3_0_JAV;
+import NPB3_0_JAV.Timer;
 
-public class SPBase /* : Thread*/
+
+public class SPBase extends Thread
 {
   
 	public static String BMName = "SP";
@@ -85,8 +84,8 @@ public class SPBase /* : Thread*/
 			c2dtty1, c2dttz1, comz1, comz4, comz5, comz6,
 			c3c4tx3, c3c4ty3, c3c4tz3, c2iv, con43, con16;
 
-    protected double[,] ce ={{
-                2.0,1.0,2.0,2.0,5.0},
+    protected double[][] ce ={
+    	{2.0,1.0,2.0,2.0,5.0},
 		{0.0,0.0,2.0,2.0,4.0},
 		{0.0,0.0,0.0,0.0,3.0},
 		{4.0,0.0,0.0,0.0,2.0},
@@ -100,7 +99,7 @@ public class SPBase /* : Thread*/
 		{0.4,0.3,0.5,0.1,0.3},
 		{0.3,0.5,0.4,0.3,0.2}};
 
-	public bool timeron = false;
+	public boolean timeron = false;
 	public Timer timer = new Timer();
 	public static int t_total = 1, t_rhsx = 2,
 					 t_rhsy = 3, t_rhsz = 4, t_rhs = 5,
@@ -238,12 +237,12 @@ public class SPBase /* : Thread*/
 	}
 
 	public void checksum(double[] array, int size, String arrayname,
-						 bool stop)
+						 boolean stop)
 	{
 		double sum = 0;
 		for (int i = 0; i < size; i++) sum += array[i];
-		Console.WriteLine("array:" + arrayname + " checksum is: " + sum);
-		if (stop) Environment.Exit(0);
+		System.out.println("array:" + arrayname + " checksum is: " + sum);
+		if (stop) System.exit(0);
 	}
 
 	public void exact_solution(double xi, double eta, double zeta,
@@ -251,11 +250,11 @@ public class SPBase /* : Thread*/
 	{
 		for (int m = 0; m <= 4; m++)
 		{
-			dtemp[m + offset] = ce[0,m] +
-			xi * (ce[1,m] + xi * (ce[4,m] + xi * (ce[7,m] + xi * ce[10,m]))) +
-			eta * (ce[2,m] + eta * (ce[5,m] + eta * (ce[8,m] + eta * ce[11,m]))) +
-			zeta * (ce[3,m] + zeta * (ce[6,m] + zeta * (ce[9,m] +
-			zeta * ce[12,m])));
+			dtemp[m + offset] = ce[0][m] +
+			xi * (ce[1][m] + xi * (ce[4][m] + xi * (ce[7][m] + xi * ce[10][m]))) +
+			eta * (ce[2][m] + eta * (ce[5][m] + eta * (ce[8][m] + eta * ce[11][m]))) +
+			zeta * (ce[3][m] + zeta * (ce[6][m] + zeta * (ce[9][m] +
+			zeta * ce[12][m])));
 		}
 	}
 
@@ -481,7 +480,7 @@ public class SPBase /* : Thread*/
 	}
 	public void set_constants(int ndid)
 	{
-		ce[0,0] = 2.0 * (1.0 + ((double)ndid) * 0.01);
+		ce[0][0] = 2.0 * (1.0 + ((double)ndid) * 0.01);
 		//    ce[0]=2.0;
 
 		c1 = 1.4;
@@ -490,7 +489,7 @@ public class SPBase /* : Thread*/
 		c4 = 1.0;
 		c5 = 1.4;
 
-		bt = Math.Sqrt(0.5);
+		bt = Math.sqrt(0.5);
 
 		dnxm1 = 1.0 / (grid_points[0] - 1);
 		dnym1 = 1.0 / (grid_points[1] - 1);
