@@ -44,6 +44,8 @@ package NPB3_0_JAV;
 
 public class Random{
 
+  protected static final int REAL = 0, IMAG = 1;
+	
   //default seed
   public double tran = 314159265.0;   //First 9 digits of PI
   //Random Number Multiplier
@@ -114,6 +116,32 @@ public class Random{
     tran = t3 - t46 * t4;
     return(r46 * tran);
   }
+  
+  public double vranlc2_jagged(double n, double x, double a, double[][] y,int offset){ 
+	    long Lx = (long)x;
+	    long La = (long)a;
+
+	    for(int i=0;i<n;i++){
+	      Lx   = (Lx*La) & (i246m1);
+	      y[i+offset][REAL] = (double)(d2m46* Lx);
+	      Lx   = (Lx*La) & (i246m1);
+	      y[i+offset][IMAG] = (double)(d2m46* Lx);				
+	    }
+	    return (double) Lx;
+	  }
+  
+  public double vranlc2_jagged_inv(double n, double x, double a, double[][] y,int offset){ 
+	    long Lx = (long)x;
+	    long La = (long)a;
+
+	    for(int i=0;i<n;i++){
+	      Lx   = (Lx*La) & (i246m1);
+	      y[REAL][i+offset] = (double)(d2m46* Lx);
+	      Lx   = (Lx*La) & (i246m1);
+	      y[IMAG][i+offset] = (double)(d2m46* Lx);				
+	    }
+	    return (double) Lx;
+	  }  
   public double vranlc(double n, double x, double a, double y[],int offset){ 
     long Lx = (long)x;
     long La = (long)a;
