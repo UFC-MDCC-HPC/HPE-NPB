@@ -50,36 +50,47 @@
 
 package NPB3_0_JAV;
 
-using System;
-using System.IO;
-using NPB3_0_JAV.SPThreads;
-using NPB3_0_JAV.BMInOut;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.DecimalFormat;
 
-public class SP : SPBase
+import NPB3_0_JAV.BMInOut.BMArgs;
+import NPB3_0_JAV.BMInOut.BMResults;
+import NPB3_0_JAV.Base.SPBase;
+
+
+public class SP extends SPBase
 {
 	public int bid = -1;
 	public BMResults results;
-	public bool serial = false;
-	public SP(char clss, int np, bool ser) : base(clss,np)
+	public boolean serial = false;
+	public boolean timeron;
+	public Timer timer = new Timer();
+	  
+	public SP(char clss, int np, boolean ser) 
 	{
+		super(clss,np);
 		serial = ser;
 	}
-	public static void Main(String[] argv)
+	
+	public static void main(String[] argv)
 	{
 		SP sp = null;
-        Console.WriteLine("testw");
 		BMArgs.ParseCmdLineArgs(argv, BMName);
 		char CLSS = BMArgs.CLASS;
 		int np = BMArgs.num_threads;
-		bool serial = BMArgs.serial;
+		boolean serial = BMArgs.serial;
 		try
 		{
 			sp = new SP(CLSS, np, serial);
 		}
-		catch (OutOfMemoryException e)
+		catch (OutOfMemoryError e)
 		{
 			BMArgs.outOfMemoryMessage();
-			Environment.Exit(0);
+			System.exit(0);
 		}
 		sp.runBenchMark();
 
@@ -118,7 +129,7 @@ public class SP : SPBase
 		{
 			if (step % 20 == 0 || step == 1 || step == niter)
 			{
-				Console.WriteLine("Time step " + step);
+				System.out.println("Time step " + step);
 			}
 			if (serial) adi_serial();
 //			else adi();
@@ -175,189 +186,41 @@ public class SP : SPBase
 		if (timeron) timer.stop(t_add);
 	}
 
-/*	public void adi()
-	{
-		if (timeron) timer.start(t_rhs);
-		doRHS();
-		doRHS();
-
-		if (timeron) timer.start(t_rhsx);
-		doRHS();
-		if (timeron) timer.stop(t_rhsx);
-
-		if (timeron) timer.start(t_rhsy);
-		doRHS();
-		if (timeron) timer.stop(t_rhsy);
-
-		if (timeron) timer.start(t_rhsz);
-		doRHS();
-		if (timeron) timer.stop(t_rhsz);
-
-		doRHS();
-		if (timeron) timer.stop(t_rhs);
-
-		if (timeron) timer.start(t_txinvr);
-		synchronized (this)
-		{
-			for (int m = 0; m < num_threads; m++)
-				synchronized (txinverse[m])
-				{
-					txinverse[m].done = false;
-					txinverse[m].notify();
-				}
-			for (int m = 0; m < num_threads; m++)
-				while (!txinverse[m].done)
-				{
-					try { wait(); }
-					catch (InterruptedException e) { }
-					notifyAll();
-				}
-		}
-		if (timeron) timer.stop(t_txinvr);
-
-		if (timeron) timer.start(t_xsolve);
-		doXsolve();
-		if (timeron) timer.stop(t_xsolve);
-
-		if (timeron) timer.start(t_ninvr);
-		doXsolve();
-		if (timeron) timer.stop(t_ninvr);
-
-		if (timeron) timer.start(t_ysolve);
-		doYsolve();
-		if (timeron) timer.stop(t_ysolve);
-
-		if (timeron) timer.start(t_pinvr);
-		doYsolve();
-		if (timeron) timer.stop(t_pinvr);
-
-		if (timeron) timer.start(t_zsolve);
-		doZsolve();
-		if (timeron) timer.stop(t_zsolve);
-
-		if (timeron) timer.start(t_tzetar);
-		doZsolve();
-		if (timeron) timer.stop(t_tzetar);
-
-		if (timeron) timer.start(t_add);
-		synchronized (this)
-		{
-			for (int m = 0; m < num_threads; m++)
-				synchronized (rhsadder[m])
-				{
-					rhsadder[m].done = false;
-					rhsadder[m].notify();
-				}
-			for (int m = 0; m < num_threads; m++)
-				while (!rhsadder[m].done)
-				{
-					try { wait(); }
-					catch (InterruptedException e) { }
-					notifyAll();
-				}
-		}
-		if (timeron) timer.stop(t_add);
-	}
-  
-    synchronized void doRHS()
-	{
-		int m;
-		for (m = 0; m < num_threads; m++)
-			synchronized (rhscomputer[m])
-			{
-				rhscomputer[m].done = false;
-				rhscomputer[m].notify();
-			}
-		for (m = 0; m < num_threads; m++)
-			while (!rhscomputer[m].done)
-			{
-				try { wait(); }
-				catch (InterruptedException e) { }
-				notifyAll();
-			}
-	}
-
-	synchronized void doXsolve()
-	{
-		int m;
-		for (m = 0; m < num_threads; m++)
-			synchronized (xsolver[m])
-			{
-				xsolver[m].done = false;
-				xsolver[m].notify();
-			}
-		for (m = 0; m < num_threads; m++)
-			while (!xsolver[m].done)
-			{
-				try { wait(); }
-				catch (InterruptedException e) { }
-				notifyAll();
-			}
-	}
-
-	synchronized void doYsolve()
-	{
-		int m;
-		for (m = 0; m < num_threads; m++)
-			synchronized (ysolver[m])
-			{
-				ysolver[m].done = false;
-				ysolver[m].notify();
-			}
-		for (m = 0; m < num_threads; m++)
-			while (!ysolver[m].done)
-			{
-				try { wait(); }
-				catch (InterruptedException e) { }
-				notifyAll();
-			}
-	}
-
-	synchronized void doZsolve()
-	{
-		int m;
-		for (m = 0; m < num_threads; m++)
-			synchronized (zsolver[m])
-			{
-				zsolver[m].done = false;
-				zsolver[m].notify();
-			}
-		for (m = 0; m < num_threads; m++)
-			while (!zsolver[m].done)
-			{
-				try { wait(); }
-				catch (InterruptedException e) { }
-				notifyAll();
-			}
-	}
- */
 
     public int getInputPars()
 	{
 		int niter = 0;
-        if (File.Exists("inputsp.data"))
+		File f1 = new File("inputsp.data");
+        if (f1.exists())
         {
-            FileStream f2 = new FileStream("inputsp.data", System.IO.FileMode.Open);
+            FileReader f2;	
 			try
 			{
-                StreamReader sss = new StreamReader(f2);
-				Console.WriteLine("Reading from input file inputsp.data");
-                ;
-				niter = int.Parse(sss.ReadLine());
-				dt = double.Parse(sss.ReadLine());
-				grid_points[0] = int.Parse(sss.ReadLine());
-                grid_points[1] = int.Parse(sss.ReadLine());
-                grid_points[2] = int.Parse(sss.ReadLine());
+				f2 = new FileReader(f1);
+                BufferedReader sss = new BufferedReader(f2);
+				System.out.println("Reading from input file inputsp.data");
+                
+				niter = Integer.parseInt(sss.readLine());
+				dt = Double.parseDouble(sss.readLine());
+				grid_points[0] = Integer.parseInt(sss.readLine());
+                grid_points[1] = Integer.parseInt(sss.readLine());
+                grid_points[2] = Integer.parseInt(sss.readLine());
 	//			fis.close();
 			}
-			catch (Exception e)
+			catch (FileNotFoundException e)
 			{
-				Console.Error.WriteLine("exception caught!");
+				System.err.println("exception caught!");
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		else
 		{
-			Console.WriteLine("No input file inputsp.data," +
+			System.out.println("No input file inputsp.data," +
 							   "Using compiled defaults");
 			niter = niter_default;
 			dt = dt_default;
@@ -369,10 +232,10 @@ public class SP : SPBase
 		 (grid_points[1] > JMAX) ||
 		 (grid_points[2] > KMAX))
 		{
-			Console.WriteLine("Problem size too big for array");
-			Environment.Exit(0);
+			System.out.println("Problem size too big for array");
+			System.exit(0);
 		}
-		Console.WriteLine("Iterations: " + niter + " dt: " + dt);
+		System.out.println("Iterations: " + niter + " dt: " + dt);
 
 		nx2 = grid_points[0] - 2;
 		ny2 = grid_points[1] - 2;
@@ -381,8 +244,9 @@ public class SP : SPBase
 	}
 	public void setTimers(String[] t_names)
 	{
+		File f1 = new File("timer.flag");
 		timeron = false;
-		if (File.Exists("timer.flag"))
+		if (f1.exists())
 		{
 			timeron = true;
 			t_names[t_total] = "total";
@@ -404,8 +268,9 @@ public class SP : SPBase
 	}
 	public void printTimers(String[] t_names, double[] trecs, double tmax)
 	{
+		DecimalFormat fmt = new DecimalFormat("0.000");
 		double t;
-		Console.WriteLine("  SECTION   Time (secs)");
+		System.out.println("  SECTION   Time (secs)");
 		for (int i = 1; i <= t_last; i++)
 		{
 			trecs[i] = timer.readTimer(i);
@@ -414,32 +279,32 @@ public class SP : SPBase
 		for (int i = 1; i < t_last; i++)
 		{
             double dbl = trecs[i] * 100 / tmax;
-			Console.WriteLine(t_names[i] + ":" + trecs[i].ToString("N3") +
-						   "  (" + dbl.ToString("N3") + "%)");
+			System.out.println(t_names[i] + ":" + fmt.format(trecs[i]) +
+						   "  (" + fmt.format(dbl) + "%)");
 			if (i == t_rhs)
 			{
 				t = trecs[t_rhsx] + trecs[t_rhsy] + trecs[t_rhsz];
                 dbl = (t * 100.0 / tmax);
-				Console.WriteLine("    --> total " + "sub-rhs" + ":" + (t.ToString("N3")) +
-							   "  (" + dbl.ToString("N3") + "%)");
+				System.out.println("    --> total " + "sub-rhs" + ":" + fmt.format(t) +
+							   "  (" + fmt.format(dbl) + "%)");
 				t = trecs[t_rhs] - t;
                 dbl = (t * 100.0 / tmax);
-				Console.WriteLine("    --> total " + "rest-rhs" + ":" + (t.ToString("N3")) +
-							   "  (" + dbl.ToString("N3") + "%)");
+				System.out.println("    --> total " + "rest-rhs" + ":" + (fmt.format(t)) +
+							   "  (" + fmt.format(dbl) + "%)");
 			}
 			else if (i == t_zsolve)
 			{
 				t = trecs[t_zsolve] - trecs[t_rdis1] - trecs[t_rdis2];
                 dbl = (t * 100.0 / tmax);
-				Console.WriteLine("    --> total " + "sub-zsol" + ":" + (t.ToString("N3")) +
-							   "  (" + dbl.ToString("N3") + "%)");
+				System.out.println("    --> total " + "sub-zsol" + ":" + (fmt.format(t)) +
+							   "  (" + fmt.format(dbl) + "%)");
 			}
 			else if (i == t_rdis2)
 			{
 				t = trecs[t_rdis1] + trecs[t_rdis2];
                 dbl = (t * 100.0 / tmax);
-				Console.WriteLine("    --> total " + "redist" + ":" + (t.ToString("N3")) +
-							   "  (" + dbl.ToString("N3") + "%)");
+				System.out.println("    --> total " + "redist" + ":" + (fmt.format(t)) +
+							   "  (" + fmt.format(dbl) + "%)");
 			}
 		}
 	}
@@ -496,9 +361,6 @@ public class SP : SPBase
 			}
 		}
 
-        foreach (double x in rms) {
-
-        }
 
 		for (m = 0; m <= 4; m++)
 		{
@@ -506,7 +368,7 @@ public class SP : SPBase
 			{
 				rms[m] = rms[m] / (grid_points[d] - 2);
 			}
-			rms[m] = Math.Sqrt(rms[m]);
+			rms[m] = Math.sqrt(rms[m]);
 		}
 	}
 
@@ -541,7 +403,7 @@ public class SP : SPBase
 			{
 				rms[m] = rms[m] / (grid_points[d] - 2);
 			}
-			rms[m] = Math.Sqrt(rms[m]);
+			rms[m] = Math.sqrt(rms[m]);
 		}
 	}
 
@@ -997,7 +859,7 @@ public class SP : SPBase
 					//               (don't need speed and ainx until the lhs computation)
 					//---------------------------------------------------------------------
 					aux = c1c2 * rho_inv * (u[4][i][j][k] - square[i][j][k]);
-					speed[i][j][k] = Math.Sqrt(aux);
+					speed[i][j][k] = Math.sqrt(aux);
 				}
 			}
 		}
@@ -1688,8 +1550,8 @@ public class SP : SPBase
 		//---------------------------------------------------------------------
 		for (m = 0; m <= 4; m++)
 		{
-			xcrdif[m] = Math.Abs((xcr[m] - xcrref[m]) / xcrref[m]);
-			xcedif[m] = Math.Abs((xce[m] - xceref[m]) / xceref[m]);
+			xcrdif[m] = Math.abs((xcr[m] - xcrref[m]) / xcrref[m]);
+			xcedif[m] = Math.abs((xce[m] - xceref[m]) / xceref[m]);
 		}
 		//---------------------------------------------------------------------
 		//   tolerance level
@@ -1700,9 +1562,9 @@ public class SP : SPBase
 		//---------------------------------------------------------------------
 		if (clss != 'U')
 		{
-			Console.WriteLine(" Verification being performed for class " + clss);
-			Console.WriteLine(" Accuracy setting for epsilon = " + epsilon);
-			if (Math.Abs(dt - dtref) <= epsilon)
+			System.out.println(" Verification being performed for class " + clss);
+			System.out.println(" Accuracy setting for epsilon = " + epsilon);
+			if (Math.abs(dt - dtref) <= epsilon)
 			{
 				if (verified == -1) verified = 1;
 			}
@@ -1710,24 +1572,24 @@ public class SP : SPBase
 			{
 				verified = 0;
 				clss = 'U';
-				Console.WriteLine("DT does not match the reference value of " + dtref);
+				System.out.println("DT does not match the reference value of " + dtref);
 			}
-			Console.WriteLine(" Comparison of RMS-norms of residual");
+			System.out.println(" Comparison of RMS-norms of residual");
 		}
 		else
 		{
-			Console.WriteLine(" Unknown CLASS");
-			Console.WriteLine(" RMS-norms of residual");
+			System.out.println(" Unknown CLASS");
+			System.out.println(" RMS-norms of residual");
 		}
 		verified = BMResults.printComparisonStatus(clss, verified, epsilon,
 												 xcr, xcrref, xcrdif);
 		if (clss != 'U')
 		{
-			Console.WriteLine(" Comparison of RMS-norms of solution error");
+			System.out.println(" Comparison of RMS-norms of solution error");
 		}
 		else
 		{
-			Console.WriteLine(" RMS-norms of solution error");
+			System.out.println(" RMS-norms of solution error");
 		}
 		verified = BMResults.printComparisonStatus(clss, verified, epsilon,
 												 xce, xceref, xcedif);
@@ -2657,7 +2519,7 @@ public class SP : SPBase
 
 	public void finalize() 
 	{
-	    Console.WriteLine("SP: is about to be garbage collected");
+	    System.out.println("SP: is about to be garbage collected");
 		//base.finalize();
 	}
 }
