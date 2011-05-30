@@ -129,7 +129,10 @@ namespace NPB3_0_JAV{
             lhsinit();
             exact_rhs();
             compute_buffer_size(5);
-
+			
+			init_copy_faces();
+			create_buffers_solvers();
+			
             //---------------------------------------------------------------------
             //      do one time step to touch all code, and reinitialize
             //---------------------------------------------------------------------
@@ -504,7 +507,7 @@ namespace NPB3_0_JAV{
                             im1 = i - 1;
                             ip1 = i + 1;
 
-                            double b = forcing[c, k, j, i, 0];
+                            //double b = forcing[c, k, j, i, 0];
 
                             forcing[c, k, j, i, 0] = forcing[c, k, j, i, 0] -
                                              tx2 * (ue[ip1, 1] - ue[im1, 1]) +
@@ -826,17 +829,42 @@ namespace NPB3_0_JAV{
             } // cell loop
         }
 
+		private double[][] out_buffer_copy_faces;
+		private double[][] in_buffer_copy_faces;
+		private Request[] requests_copy_faces;
+        private int[] b_size_copy_faces;
+		
+		public void init_copy_faces()
+		{
+            out_buffer_copy_faces = new double[6][];
+            in_buffer_copy_faces = new double[6][];
+			
+            requests_copy_faces = new Request[12];
+            b_size_copy_faces = new int[6];			
+			
+            b_size_copy_faces[0] = east_size;
+            b_size_copy_faces[1] = west_size;
+            b_size_copy_faces[2] = north_size;
+            b_size_copy_faces[3] = south_size;
+            b_size_copy_faces[4] = top_size;
+            b_size_copy_faces[5] = bottom_size;
+
+            for (int i = 0; i < 6; i++)
+            {
+                out_buffer_copy_faces[i] = new double[b_size_copy_faces[i]];
+                in_buffer_copy_faces[i] = new double[b_size_copy_faces[i]];
+            }
+		}
+
         public void copy_faces()
         {
             int i, j, k, c, m, p0, p1, p2, p3, p4, p5, ksize, jsize, isize;
             Request[] requests;
-            int[] b_size;
+            
+            double[][] out_buffer = out_buffer_copy_faces; // new double[6][];
+            double[][] in_buffer = in_buffer_copy_faces; // new double[6][];
 
-            double[][] out_buffer = new double[6][];
-            double[][] in_buffer = new double[6][];
-
-            requests = new Request[12];
-            b_size = new int[6];
+            requests = requests_copy_faces; // new Request[12];
 
             if (no_nodes == 1)
             {
@@ -844,18 +872,6 @@ namespace NPB3_0_JAV{
                 return;
             }
 
-            b_size[0] = east_size;
-            b_size[1] = west_size;
-            b_size[2] = north_size;
-            b_size[3] = south_size;
-            b_size[4] = top_size;
-            b_size[5] = bottom_size;
-
-            for (i = 0; i < 6; i++)
-            {
-                out_buffer[i] = new double[b_size[i]];
-                in_buffer[i] = new double[b_size[i]];
-            }
 
 
             //---------------------------------------------------------------------
@@ -2042,7 +2058,24 @@ namespace NPB3_0_JAV{
             return verified;
         }
 
-
+		private double[][] in_buffer_solver;
+		private double[][] out_buffer_solver;
+		
+		private void create_buffers_solvers()
+		{
+		    in_buffer_solver = new double[2][];
+			out_buffer_solver = new double[2][];
+			int buffer_size;
+			
+			buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
+			in_buffer_solver[0] = new double[buffer_size];
+			out_buffer_solver[0] = new double[buffer_size];
+			
+			buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
+			in_buffer_solver[1] = new double[buffer_size];
+			out_buffer_solver[1] = new double[buffer_size];
+		}
+		
         public void x_solve() {
             //---------------------------------------------------------------------
             //     
@@ -2056,13 +2089,11 @@ namespace NPB3_0_JAV{
             //     
             //---------------------------------------------------------------------
             int c, stage, first, last, buffer_size; //r_status[MPI_STATUS_SIZE];
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
+            //buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests = new MPI.Request[2] { null, null };
-            double[] out_buffer_x = new double[buffer_size];
-            double[, , , , ,] lhsc = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];
-            double[, , ,] backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];
+            double[] out_buffer_x = out_buffer_solver[0]; // ; new double[buffer_size];
             //istart = 0;
             //---------------------------------------------------------------------
             //     in our terminology stage is the number of the cell in the x-direction
@@ -2115,7 +2146,7 @@ namespace NPB3_0_JAV{
                     x_solve_cell(lhsc, first, last, c);
                 }
                 if(last == 0) {
-                    double[] in_buffer_x = new double[buffer_size];//buffer_size=(MAX_CELL_DIM*MAX_CELL_DIM*(5*5+5))
+                    double[] in_buffer_x = in_buffer_solver[0]; // new double[buffer_size];//buffer_size=(MAX_CELL_DIM*MAX_CELL_DIM*(5*5+5))
 
                     x_pack_solve_info(lhsc, in_buffer_x, c); //send_id, c); //x_send_solve_info(send_id,c);
                     
@@ -2123,8 +2154,8 @@ namespace NPB3_0_JAV{
                 }
             }
             out_buffer_x = null;
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
-            out_buffer_x = new double[buffer_size];
+            //buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
+            out_buffer_x = out_buffer_solver[1]; // new double[buffer_size];
             //---------------------------------------------------------------------
             //     now perform backsubstitution in reverse direction
             //---------------------------------------------------------------------
@@ -2148,7 +2179,7 @@ namespace NPB3_0_JAV{
                     x_backsubstitute(lhsc, backsub_info, first, last, c);   //      call x_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
-                    double[] in_buffer_x = new double[buffer_size];//buffer_size=(MAX_CELL_DIM * MAX_CELL_DIM * 5)
+                    double[] in_buffer_x = in_buffer_solver[1]; // ew double[buffer_size];//buffer_size=(MAX_CELL_DIM * MAX_CELL_DIM * 5)
                     x_pack_backsub_info(in_buffer_x, c); //send_id, c);  //call x_send_backsub_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[0], DEFAULT_TAG);                    
                 }
@@ -2216,7 +2247,6 @@ namespace NPB3_0_JAV{
             //     pack up and send U[istart] for all j and k
             //---------------------------------------------------------------------
             int j, k, n, ptr, istart;
-            int buffer_size;
             //---------------------------------------------------------------------
             //     Send element 0 to previous processor
             //---------------------------------------------------------------------
@@ -2304,10 +2334,6 @@ namespace NPB3_0_JAV{
             //---------------------------------------------------------------------
             int i, j, k, isize, ksize, jsize, istart;
             double tmp1, tmp2, tmp3;
-            double[,,] fjac = new double[MAX_CELL_DIM+5, 5, 5];
-            double[,,] njac = new double[MAX_CELL_DIM+5, 5, 5];
-            double[,,] lhsa = new double[MAX_CELL_DIM+3, 5, 5];
-            double[,,] lhsb = new double[MAX_CELL_DIM+3, 5, 5];
             istart = 2;
             isize = cell_size[c, 0] + 1;
             jsize = cell_size[c, 1] - end[c, 1] + 1;
@@ -2574,14 +2600,11 @@ namespace NPB3_0_JAV{
             //     of the sweep.
             //---------------------------------------------------------------------
             int c, stage, first, last, buffer_size;//int r_status[MPI_STATUS_SIZE];
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
+            // buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests=new MPI.Request[2] { null, null };
-            double[] out_buffer_y = new double[buffer_size];
-            double[] out_buffer_x = new double[buffer_size];
-            double[, , , , ,] lhsc = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];
-            double[, , ,] backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];
+            double[] out_buffer_y = out_buffer_solver[0]; // new double[buffer_size];
             //---------------------------------------------------------------------
             //     in our terminology stage is the number of the cell in the y-direction
             //     i.e. stage = 1 means the start of the line stage=ncells means end
@@ -2633,14 +2656,14 @@ namespace NPB3_0_JAV{
                     y_solve_cell(lhsc, first, last, c); //call y_solve_cell[first,last,c];
                 }
                 if(last == 0) {
-                    double[] in_buffer_y = new double[buffer_size];//buffer_size=MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5)
+                    double[] in_buffer_y = in_buffer_solver[0]; // = new double[buffer_size];//buffer_size=MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5)
                     y_pack_solve_info(lhsc, in_buffer_y, c); //send_id, c);  //call y_send_solve_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, successor[1], DEFAULT_TAG);
                 }
             }
             out_buffer_y = null;
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
-            out_buffer_y = new double[buffer_size];
+            // buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
+            out_buffer_y = out_buffer_solver[1]; // new double[buffer_size];
             //---------------------------------------------------------------------
             //     now perform backsubstitution in reverse direction
             //---------------------------------------------------------------------
@@ -2667,7 +2690,7 @@ namespace NPB3_0_JAV{
                     y_backsubstitute(lhsc, backsub_info, first, last, c);      //call y_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
-                    double[] in_buffer_y = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;                    
+                    double[] in_buffer_y = in_buffer_solver[1]; // new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;                    
                     y_pack_backsub_info(in_buffer_y, c); //send_id, c);  //call y_send_backsub_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_y, predecessor[1], DEFAULT_TAG);
                 }
@@ -2704,7 +2727,6 @@ namespace NPB3_0_JAV{
             //     all i and k
             //---------------------------------------------------------------------
             int i, k, m, n, jsize, ptr;
-            int buffer_size;
             jsize = cell_size[c, 1] + 1;
             //---------------------------------------------------------------------
             //     pack up buffer
@@ -2736,7 +2758,6 @@ namespace NPB3_0_JAV{
             //     pack up and send U[jstart] for all i and k
             //---------------------------------------------------------------------
             int i, k, n, ptr, jstart;
-            int buffer_size;
             //---------------------------------------------------------------------
             //     Send element 0 to previous processor
             //---------------------------------------------------------------------
@@ -2825,10 +2846,6 @@ namespace NPB3_0_JAV{
             int i, j, k, isize, ksize, jsize, jstart;
             double tmp1, tmp2, tmp3;
             double[,] utmp = new double[JMAX + 4, 7];   //double utmp[6,-2:JMAX+1];
-            double[,,] fjac = new double[MAX_CELL_DIM+5, 5, 5];
-            double[,,] njac = new double[MAX_CELL_DIM+5, 5, 5];
-            double[,,] lhsa = new double[MAX_CELL_DIM+3, 5, 5];
-            double[,,] lhsb = new double[MAX_CELL_DIM+3, 5, 5];
             jstart = 2;
             isize = cell_size[c, 0] - end[c, 0] + 1;
             jsize = cell_size[c, 1] + 1;
@@ -3103,14 +3120,11 @@ namespace NPB3_0_JAV{
             //     of the sweep.
             //---------------------------------------------------------------------
             int c, stage, first, last, buffer_size; //int[] r_status[MPI_STATUS_SIZE];
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
+            // buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
             //MPI.Request[] recv_id = new MPI.Request[1];
             //MPI.Request[] send_id = new MPI.Request[1];
             MPI.Request[] requests = new MPI.Request[2] { null, null };
-            double[] out_buffer_z = new double[buffer_size];
-            double[] out_buffer_x = new double[buffer_size];
-            double[, , , , ,] lhsc = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];
-            double[, , ,] backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];
+            double[] out_buffer_z = out_buffer_solver[0]; // new double[buffer_size];
             //---------------------------------------------------------------------
             //     in our terminology stage is the number of the cell in the y-direction
             //     i.e. stage = 1 means the start of the line stage=ncells means end
@@ -3162,14 +3176,14 @@ namespace NPB3_0_JAV{
                     z_solve_cell(lhsc, first, last, c);  //call z_solve_cell[first,last,c];
                 }
                 if(last == 0) {
-                    double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
+                    double[] in_buffer_z = in_buffer_solver[0];// new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
                     z_pack_solve_info(lhsc, in_buffer_z, c); //send_id, c);  //call z_send_solve_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, successor[2], DEFAULT_TAG);                    
                 }
             }
             out_buffer_z = null;
-            buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
-            out_buffer_z = new double[buffer_size];
+            // buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
+            out_buffer_z = out_buffer_solver[1]; // new double[buffer_size];
             //---------------------------------------------------------------------
             //     now perform backsubstitution in reverse direction
             //---------------------------------------------------------------------
@@ -3196,7 +3210,7 @@ namespace NPB3_0_JAV{
                     z_backsubstitute(lhsc, backsub_info, first, last, c); //call z_backsubstitute[first,last,c];
                 }
                 if(first == 0) {
-                    double[] in_buffer_z = new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
+                    double[] in_buffer_z = in_buffer_solver[1]; // new double[buffer_size];//buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
                     z_pack_backsub_info(in_buffer_z, c); //send_id, c);  //call z_send_backsub_info[send_id,c];
                     requests[1] = comm_solve.ImmediateSend<double>(in_buffer_z, predecessor[2], DEFAULT_TAG);
                 }
@@ -3351,10 +3365,6 @@ namespace NPB3_0_JAV{
             int i, j, k, isize, ksize, jsize, kstart;
             double tmp1, tmp2, tmp3;
             double[,] utmp = new double[KMAX + 4, 7];   //double utmp[6,-2:KMAX+1];
-            double[,,] fjac = new double[MAX_CELL_DIM+5, 5, 5];
-            double[,,] njac = new double[MAX_CELL_DIM+5, 5, 5];
-            double[,,] lhsa = new double[MAX_CELL_DIM+3, 5, 5];
-            double[,,] lhsb = new double[MAX_CELL_DIM+3, 5, 5];
             kstart = 2;
             isize = cell_size[c, 0] - end[c, 0] + 1;
             jsize = cell_size[c, 1] - end[c, 1] + 1;

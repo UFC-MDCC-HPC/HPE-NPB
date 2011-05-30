@@ -42,7 +42,7 @@
 */
 using System;
 //using System.Threading;
-using NPB;
+//using NPB;
 using MPI;
 
 namespace NPB3_0_JAV.BTThreads{
@@ -65,8 +65,13 @@ namespace NPB3_0_JAV.BTThreads{
 	    protected double dt_default = 0.0d;
 
 	    protected double[,,,,] u, rhs, forcing, lhs;
+        protected double[, , , , ,] lhsc;
+        protected double[,,] fjac;
+        protected double[,,] njac;
+        protected double[,,] lhsa;
+        protected double[,,] lhsb;
 
-	    protected double[,,,] us, vs, ws, qs, ainv, rho_i, speed, square;
+	    protected double[,,,] us, vs, ws, qs, ainv, rho_i, speed, square, backsub_info;
 
 	    protected double[,] ue, buf;
 
@@ -194,6 +199,14 @@ namespace NPB3_0_JAV.BTThreads{
 		    cuf = new double[MAX_CELL_DIM + 4];    /* -2 */   // exact_rhs (local)
 		    q = new double[MAX_CELL_DIM + 4];      /* -2 */   // exact_rhs (local)
 
+            lhsc = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];
+            backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];
+            fjac = new double[MAX_CELL_DIM+5, 5, 5];
+            njac = new double[MAX_CELL_DIM+5, 5, 5];
+            lhsa = new double[MAX_CELL_DIM+3, 5, 5];
+            lhsb = new double[MAX_CELL_DIM+3, 5, 5];
+			
+			
             cell_coord = new int[maxcells,3]; // copy_faces (use), make_set (def), compute_buffer_size (use)
             cell_high = new int[maxcells,3];  // make_set (def), error_norm (use), initialize (use)
             cell_low = new int[maxcells, 3];  // make_set (def), error_norm (use), exact_rhs (use), initialize (use)
