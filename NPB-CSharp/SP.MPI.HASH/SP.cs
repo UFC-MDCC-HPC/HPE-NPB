@@ -126,13 +126,17 @@ namespace NPB3_0_JAV
                     System.Environment.Exit(0);
                 }
             }
-
+			
+			create_buffers();
+			
             set_constants(0);
             initialize();
             lhsinit();
             exact_rhs();
             compute_buffer_size(5);
-
+			
+			init_copy_faces();
+			
             //---------------------------------------------------------------------
             //      do one time step to touch all code, and reinitialize
             //---------------------------------------------------------------------
@@ -897,18 +901,43 @@ namespace NPB3_0_JAV
                 }
             }
         }
+		
+		private double[][] out_buffer_copy_faces;
+		private double[][] in_buffer_copy_faces;
+		private Request[] requests_copy_faces;
+        private int[] b_size_copy_faces;
+		
+		public void init_copy_faces()
+		{
+            out_buffer_copy_faces = new double[6][];
+            in_buffer_copy_faces = new double[6][];
+			
+            requests_copy_faces = new Request[12];
+            b_size_copy_faces = new int[6];			
+			
+            b_size_copy_faces[0] = east_size;
+            b_size_copy_faces[1] = west_size;
+            b_size_copy_faces[2] = north_size;
+            b_size_copy_faces[3] = south_size;
+            b_size_copy_faces[4] = top_size;
+            b_size_copy_faces[5] = bottom_size;
+
+            for (int i = 0; i < 6; i++)
+            {
+                out_buffer_copy_faces[i] = new double[b_size_copy_faces[i]];
+                in_buffer_copy_faces[i] = new double[b_size_copy_faces[i]];
+            }
+		}
 
         public void copy_faces()
         {
             int i, j, k, c, m, p0, p1, p2, p3, p4, p5, ksize, jsize, isize;
             Request[] requests;
-            int[] b_size;
+            
+            double[][] out_buffer = out_buffer_copy_faces; // new double[6][];
+            double[][] in_buffer = in_buffer_copy_faces; // new double[6][];
 
-            double[][] out_buffer = new double[6][];
-            double[][] in_buffer = new double[6][];
-
-            requests = new Request[12];
-            b_size = new int[6];
+            requests = requests_copy_faces; // new Request[12];
 
             if (no_nodes == 1)
             {
@@ -916,18 +945,6 @@ namespace NPB3_0_JAV
                 return;
             }
 
-            b_size[0] = east_size;
-            b_size[1] = west_size;
-            b_size[2] = north_size;
-            b_size[3] = south_size;
-            b_size[4] = top_size;
-            b_size[5] = bottom_size;
-
-            for (i = 0; i < 6; i++)
-            {
-                out_buffer[i] = new double[b_size[i]];
-                in_buffer[i] = new double[b_size[i]];
-            }
 
 
             //---------------------------------------------------------------------
@@ -2202,8 +2219,56 @@ namespace NPB3_0_JAV
 
             BMResults.printVerificationStatus(clss, verified, BMName);
             return verified;
+			
+			
         }
+		
+		protected double[,][] in_buffer_solver, out_buffer_solver;
+		
+		void create_buffers() 		
+		{
+			int c, stage, isize, jsize, ksize, buffer_size;
+			
+			in_buffer_solver = new double[3,2][];			
+			out_buffer_solver = new double[3,2][];
+			
+			for (stage = 0; stage < ncells; stage++)
+            {
+                c = slice[stage, 0];
+				
+                isize = cell_size[c, 0] + 2;
+                jsize = cell_size[c, 1] + 2;
+                ksize = cell_size[c, 2] + 2;
+				
+				buffer_size = (jsize - start[c, 1] - end[c, 1]) * (ksize - start[c, 2] - end[c, 2]);
+				
+                in_buffer_solver[0,0] = new double[22*buffer_size];
+                out_buffer_solver[0,0] = new double[22*buffer_size];				
+				
+                in_buffer_solver[0,1] = new double[10 * buffer_size];
+                out_buffer_solver[0,1] = new double[10 * buffer_size];
+				
+                buffer_size = (isize - start[c, 0] - end[c, 0]) * (ksize - start[c, 2] - end[c, 2]);
 
+                in_buffer_solver[1,0] = new double[22*buffer_size];
+                out_buffer_solver[1,0] = new double[22 * buffer_size];
+				
+                in_buffer_solver[1,1] = new double[10 * buffer_size];
+                out_buffer_solver[1,1] = new double[10 * buffer_size];
+				
+                buffer_size = (isize - start[c, 0] - end[c, 0]) * (jsize - start[c, 1] - end[c, 1]);
+
+				in_buffer_solver[2,0] = new double[22*buffer_size];
+                out_buffer_solver[2,0] = new double[22 * buffer_size];
+				
+                in_buffer_solver[2,1] = new double[10 * buffer_size];
+                out_buffer_solver[2,1] = new double[10 * buffer_size];
+				
+			}
+			
+		}
+		
+		
         public void x_solve()
         {
             int c, i, j, k, n, iend, jsize, ksize, i1, i2, m, buffer_size, p, istart, stage;
@@ -2227,12 +2292,11 @@ namespace NPB3_0_JAV
 
                 jsize = cell_size[c, 1] + 2;
                 ksize = cell_size[c, 2] + 2;
+								
+                // buffer_size = (jsize - start[c, 1] - end[c, 1]) * (ksize - start[c, 2] - end[c, 2]);
 
-                buffer_size = (jsize - start[c, 1] - end[c, 1]) *
-                              (ksize - start[c, 2] - end[c, 2]);
-
-                in_buffer_x = new double[22*buffer_size];
-                out_buffer_x = new double[22*buffer_size];
+                 in_buffer_x = in_buffer_solver[0,0]; // new double[22*buffer_size];
+                 out_buffer_x = out_buffer_solver[0,0]; // new double[22*buffer_size];
                 
                 if (stage != 0)
                 {
@@ -2578,10 +2642,10 @@ namespace NPB3_0_JAV
                 jsize = cell_size[c, 1] + 2;
                 ksize = cell_size[c, 2] + 2;
 
-                buffer_size = (jsize - start[c, 1] - end[c, 1]) * (ksize - start[c, 2] - end[c, 2]);
+                // buffer_size = (jsize - start[c, 1] - end[c, 1]) * (ksize - start[c, 2] - end[c, 2]);
 
-                in_buffer_x = new double[10 * buffer_size];
-                out_buffer_x = new double[10 * buffer_size];
+                in_buffer_x = in_buffer_solver[0,1]; // new double[10 * buffer_size];
+                out_buffer_x = out_buffer_solver[0,1]; // new double[10 * buffer_size];
 
                 if (stage != ncells - 1)
                 {
@@ -2830,10 +2894,10 @@ namespace NPB3_0_JAV
                 isize = cell_size[c, 0] + 2;
                 ksize = cell_size[c, 2] + 2;
 
-                buffer_size = (isize - start[c, 0] - end[c, 0]) * (ksize - start[c, 2] - end[c, 2]);
+//                buffer_size = (isize - start[c, 0] - end[c, 0]) * (ksize - start[c, 2] - end[c, 2]);
 
-                in_buffer_y = new double[22*buffer_size];
-                out_buffer_y = new double[22 * buffer_size];
+                in_buffer_y = in_buffer_solver[1,0]; // new double[22*buffer_size];
+                out_buffer_y = out_buffer_solver[1,0]; // new double[22 * buffer_size];
 
                 if (stage != 0)
                 {
@@ -3190,11 +3254,10 @@ namespace NPB3_0_JAV
                 isize = cell_size[c, 0] + 2;
                 ksize = cell_size[c, 2] + 2;
 
-                buffer_size = (isize - start[c, 0] - end[c, 0]) *
-                             (ksize - start[c, 2] - end[c, 2]);
+//                buffer_size = (isize - start[c, 0] - end[c, 0]) * (ksize - start[c, 2] - end[c, 2]);
 
-                in_buffer_y = new double[10 * buffer_size];
-                out_buffer_y = new double[10 * buffer_size];
+                in_buffer_y = in_buffer_solver[1,1]; // new double[10 * buffer_size];
+                out_buffer_y = out_buffer_solver[1,1]; // new double[10 * buffer_size];
 
                 if (stage != ncells - 1)
                 {
@@ -3448,11 +3511,10 @@ namespace NPB3_0_JAV
                 isize = cell_size[c, 0] + 2;
                 jsize = cell_size[c, 1] + 2;
 
-                buffer_size = (isize - start[c, 0] - end[c, 0]) *
-                             (jsize - start[c, 1] - end[c, 1]);
+//                buffer_size = (isize - start[c, 0] - end[c, 0]) * (jsize - start[c, 1] - end[c, 1]);
 
-                in_buffer_z = new double[22*buffer_size];
-                out_buffer_z = new double[22 * buffer_size];
+                in_buffer_z = in_buffer_solver[2,0];// new double[22*buffer_size];
+                out_buffer_z = out_buffer_solver[2,0];// new double[22 * buffer_size];
 
                 if (stage != 0)
                 {
@@ -3792,11 +3854,11 @@ namespace NPB3_0_JAV
 
                 isize = cell_size[c, 0] + 2;
                 jsize = cell_size[c, 1] + 2;
-                buffer_size = (isize - start[c, 0] - end[c, 0]) *
-                             (jsize - start[c, 1] - end[c, 1]);
+				
+//                buffer_size = (isize - start[c, 0] - end[c, 0]) * (jsize - start[c, 1] - end[c, 1]);
 
-                in_buffer_z = new double[10 * buffer_size];
-                out_buffer_z = new double[10 * buffer_size];
+                in_buffer_z = in_buffer_solver[2,1]; // new double[10 * buffer_size];
+               out_buffer_z = out_buffer_solver[2,1]; // new double[10 * buffer_size];
 
                 if (stage != ncells - 1)
                 {
