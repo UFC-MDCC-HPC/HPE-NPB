@@ -1,0 +1,56 @@
+ NAS Parallel Benchmarks C# version (NPB3_0_CS)
+ Multithreaded Version SP.W np=16
+No input file inputsp.data,Using compiled defaults
+Size: 36 X 36 X 36
+Iterations: 400 dt: 0.0015
+STARTING
+Time step 1
+Time step 20
+Time step 40
+Time step 60
+Time step 80
+Time step 100
+Time step 120
+Time step 140
+Time step 160
+Time step 180
+Time step 200
+Time step 220
+Time step 240
+Time step 260
+Time step 280
+Time step 300
+Time step 320
+Time step 340
+Time step 360
+Time step 380
+Time step 400
+ Verification being performed for class W
+ Accuracy setting for epsilon = 1E-08
+ Comparison of RMS-norms of residual
+FAILURE: 0. 0.00189398125176907 0.001893253733584 0.000384268718006785
+FAILURE: 1. 0.00017176631541755 0.0001717075447775 0.000342271739578561
+FAILURE: 2. 0.000278184623905255 0.0002778153350936 0.00132925999758225
+FAILURE: 3. 0.000289126005428897 0.0002887475409984 0.00131071048843563
+FAILURE: 4. 0.00314492232215577 0.003143611161242 0.000417087497949439
+ Comparison of RMS-norms of solution error
+FAILURE: 0. 7.54496910738146E-05 7.542088599534E-05 0.000381924424440586
+FAILURE: 1. 6.515468183261E-06 6.512852253086E-06 0.000401656612702064
+FAILURE: 2. 1.05056496017133E-05 1.049092285688E-05 0.00140376066378993
+FAILURE: 3. 1.13032476789355E-05 1.128838671535E-05 0.00131648250190214
+FAILURE: 4. 0.000121335514269056 0.0001212845639773 0.000420088839707105
+SP.W: Verification Failed
+***** NAS Parallel Benchmarks Java version (NPB3_0_JAV) SP ***** 
+* Class             = W                                        * 
+* Size              = 36 X 36 X 36                             * 
+* Iterations        = 400                                      * 
+* Time in seconds   = 63.070                                   * 
+* ACCTime           = 0.000                                    * 
+* Mops total        = 14,174.351                               * 
+* Operation type    = floating point                           * 
+* Verification      = Failed                                   * 
+*                                                              *
+* Please send all errors/feedbacks to:                         * 
+* NPB Working Team                                             * 
+* npb@nas.nasa.gov                                             * 
+**************************************************************** 

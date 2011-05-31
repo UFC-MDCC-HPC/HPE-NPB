@@ -1,0 +1,46 @@
+ NAS Parallel Benchmarks C# version (NPB3_0_CS)
+ Multithreaded Version BT.A np=16
+No input file inputbt.data,Using compiled defaults
+Size: 64 X 64 X 64
+Iterations: 200 dt: 0.0008
+STARTING
+Time step 1
+Time step 20
+Time step 40
+Time step 60
+Time step 80
+Time step 100
+Time step 120
+Time step 140
+Time step 160
+Time step 180
+Time step 200
+ Verification being performed for class A
+ Accuracy setting for epsilon = 1E-08
+ Comparison of RMS-norms of residual
+0. 108.063467146372 108.063467146373 8.02178720078592E-15
+1. 11.3197309012208 11.3197309012208 9.41554276281607E-16
+2. 25.9743545115826 25.9743545115825 3.28266591776865E-15
+3. 23.6656225446791 23.6656225446789 8.10654941753741E-15
+4. 252.789632117487 252.789632117483 1.29297098030406E-14
+ Comparison of RMS-norms of solution error
+0. 4.23484160405251 4.2348416040525 1.04865600976692E-15
+1. 0.443902824969954 0.443902824969957 5.62736181184624E-15
+2. 0.966924801363457 0.966924801363456 8.03739976616325E-16
+3. 0.883020630397656 0.883020630397655 1.50876161177596E-15
+4. 9.73799017708298 9.73799017708293 4.92520877425797E-15
+BT.A: Verification Successful
+***** NAS Parallel Benchmarks Java version (NPB3_0_JAV) BT ***** 
+* Class             = A                                        * 
+* Size              = 64 X 64 X 64                             * 
+* Iterations        = 200                                      * 
+* Time in seconds   = 1,036.790                                * 
+* ACCTime           = 0.000                                    * 
+* Mops total        = 42,504.983                               * 
+* Operation type    = floating point                           * 
+* Verification      = Successful                               * 
+*                                                              *
+* Please send all errors/feedbacks to:                         * 
+* NPB Working Team                                             * 
+* npb@nas.nasa.gov                                             * 
+**************************************************************** 

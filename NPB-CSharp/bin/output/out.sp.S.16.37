@@ -1,0 +1,41 @@
+ NAS Parallel Benchmarks C# version (NPB3_0_CS)
+ Multithreaded Version SP.S np=16
+No input file inputsp.data,Using compiled defaults
+Size: 12 X 12 X 12
+Iterations: 100 dt: 0.015
+STARTING
+Time step 1
+Time step 20
+Time step 40
+Time step 60
+Time step 80
+Time step 100
+ Verification being performed for class S
+ Accuracy setting for epsilon = 1E-08
+ Comparison of RMS-norms of residual
+FAILURE: 0. 0.0274366741448106 0.0274703154513395 0.00122464216286444
+FAILURE: 1. 0.0103484114399042 0.0103607467052854 0.00119057686980665
+FAILURE: 2. 0.0162174744649299 0.0162357450650955 0.00112533179674783
+FAILURE: 3. 0.0158231620765692 0.0158405572244556 0.00109813989747593
+FAILURE: 4. 0.0348431895617587 0.0348490406093625 0.000167896949282918
+ Comparison of RMS-norms of solution error
+FAILURE: 0. 2.7255065642717E-05 2.72892585573772E-05 0.00125298071357833
+FAILURE: 1. 1.03517756119694E-05 1.03644466408373E-05 0.00122254755193216
+FAILURE: 2. 1.61361289441033E-05 1.61547982871665E-05 0.00115565312121707
+FAILURE: 3. 1.57329178279936E-05 1.57507049944801E-05 0.00112929335498198
+FAILURE: 4. 3.41686150173995E-05 3.41776661833905E-05 0.000264826917743078
+SP.S: Verification Failed
+***** NAS Parallel Benchmarks Java version (NPB3_0_JAV) SP ***** 
+* Class             = S                                        * 
+* Size              = 12 X 12 X 12                             * 
+* Iterations        = 100                                      * 
+* Time in seconds   = 1.585                                    * 
+* ACCTime           = 0.000                                    * 
+* Mops total        = 96.673                                   * 
+* Operation type    = floating point                           * 
+* Verification      = Failed                                   * 
+*                                                              *
+* Please send all errors/feedbacks to:                         * 
+* NPB Working Team                                             * 
+* npb@nas.nasa.gov                                             * 
+**************************************************************** 

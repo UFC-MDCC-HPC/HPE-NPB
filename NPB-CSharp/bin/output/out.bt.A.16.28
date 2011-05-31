@@ -1,0 +1,12 @@
+ NAS Parallel Benchmarks C# version (NPB3_0_CS)
+ Multithreaded Version BT.A np=16
+No input file inputbt.data,Using compiled defaults
+Size: 64 X 64 X 64
+Iterations: 200 dt: 0.0008
+STARTING
+Time step 1
+Time step 20
+Time step 40
+Time step 60
+Time step 80
+Time step 100

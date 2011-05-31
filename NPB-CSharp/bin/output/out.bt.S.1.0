@@ -1,0 +1,39 @@
+ NAS Parallel Benchmarks C# version (NPB3_0_CS)
+ Multithreaded Version BT.S np=1
+No input file inputbt.data,Using compiled defaults
+Size: 12 X 12 X 12
+Iterations: 60 dt: 0.01
+STARTING
+Time step 1
+Time step 20
+Time step 40
+Time step 60
+ Verification being performed for class S
+ Accuracy setting for epsilon = 1E-08
+ Comparison of RMS-norms of residual
+0. 0.170342837095414 0.170342837095413 6.35464025060949E-15
+1. 0.0129752520700462 0.0129752520700341 9.35194988811179E-13
+2. 0.0325279269895019 0.0325279269894861 4.86158838591713E-13
+3. 0.0264364212751479 0.0264364212751668 7.15899967167078E-13
+4. 0.192117841317446 0.192117841317444 8.81276877224433E-15
+ Comparison of RMS-norms of solution error
+0. 0.000499769133458026 0.000499769133458116 1.80494581821456E-13
+1. 4.51956667829728E-05 4.51956667829619E-05 2.40790325289013E-13
+2. 7.39737651729521E-05 7.39737651729214E-05 4.15330745852782E-13
+3. 7.38212386323799E-05 7.38212386324397E-05 8.10714653802903E-13
+4. 0.000892696309874878 0.000892696309874914 4.06865945075473E-14
+BT.S: Verification Successful
+***** NAS Parallel Benchmarks Java version (NPB3_0_JAV) BT ***** 
+* Class             = S                                        * 
+* Size              = 12 X 12 X 12                             * 
+* Iterations        = 60                                       * 
+* Time in seconds   = 22.240                                   * 
+* ACCTime           = 0.000                                    * 
+* Mops total        = 58.004                                   * 
+* Operation type    = floating point                           * 
+* Verification      = Successful                               * 
+*                                                              *
+* Please send all errors/feedbacks to:                         * 
+* NPB Working Team                                             * 
+* npb@nas.nasa.gov                                             * 
+**************************************************************** 
