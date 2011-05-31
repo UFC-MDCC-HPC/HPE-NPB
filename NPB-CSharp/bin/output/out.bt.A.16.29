@@ -34,7 +34,7 @@ BT.A: Verification Successful
 * Class             = A                                        * 
 * Size              = 64 X 64 X 64                             * 
 * Iterations        = 200                                      * 
-* Time in seconds   = 1,038.051                                * 
+* Time in seconds   = 1,069.693                                * 
 * ACCTime           = 0.000                                    * 
 * Mops total        = 42,504.983                               * 
 * Operation type    = floating point                           * 
