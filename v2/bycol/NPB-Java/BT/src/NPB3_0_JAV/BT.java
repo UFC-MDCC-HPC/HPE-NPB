@@ -1,4 +1,4 @@
-﻿
+
 
 /*
 !-------------------------------------------------------------------------!
@@ -83,7 +83,7 @@ public class BT extends BTBase
             lhs = instantiate_jagged_array_4(5, 5, 3, problem_size + 1);
         }
 
-        public static void Main(String[] argv)
+        public static void main(String[] argv)
         {
             BT bt = null;
 
