@@ -1,9 +1,4 @@
-// LUBase.cs created with MonoDevelop
-// User: diane at 21:47 10/4/2009
-//
-// To change standard headers go to Edit->Preferences->Coding->Standard Headers
-//
-	/*
+/*
 !-------------------------------------------------------------------------!
 !									  !
 !	 N  A  S     P A R A L L E L	 B E N C H M A R K S  3.0	  !
