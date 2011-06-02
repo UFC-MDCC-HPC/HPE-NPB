@@ -1,8 +1,3 @@
-// LU.cs created with MonoDevelop
-// User: diane at 12:56 10/4/2009
-//
-// To change standard headers go to Edit->Preferences->Coding->Standard Headers
-//
 /*
 !-------------------------------------------------------------------------!
 !								          !
