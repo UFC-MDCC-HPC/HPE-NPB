@@ -1,8 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="FT/FT.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../../common/NPB-CSharp/Random/Random.cs">
     <Files>
       <File FileName="FT/FT.cs" Line="310" Column="19" />
+      <File FileName="../../../common/NPB-CSharp/Random/Random.cs" Line="171" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
