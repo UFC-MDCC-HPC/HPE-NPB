@@ -823,6 +823,28 @@ namespace NPB {
                 }
             }
         }
+		
+		private double[] buf1_0 = null, buf_0 = null;
+		private double[] buf1_1 = null, buf_1 = null;
+		
+		private void exchange3_buffers()
+		{
+			if (buf1_0 == null && buf_0 == null) 
+			{				
+				int bsize = 10*ny*nz;
+	            buf1_0 = new double[bsize];
+	            buf_0 = new double[bsize];				
+			}
+			
+			if (buf1_1 == null && buf_1 == null) 
+			{				
+                int bsize = 10*nx*nz;
+	            buf1_1 = new double[bsize];
+	            buf_1 = new double[bsize];				
+			}
+			
+		}		
+		
         //Exchange_3.f
         public void exchange3(double[, , ,] g, int iex) {
             //---------------------------------------------------------------------
@@ -834,17 +856,22 @@ namespace NPB {
             MPI.Request ShiftToWest;
             int i, j, k0;
             int ipos1, ipos2;
-            int bsize = 10*ny*nz;
-            int size2 = bsize / 5;
-            double[] buf1;
-            buf1 = new double[bsize];
-            double[] buf;
-            buf = new double[bsize];
+	        
+			int bsize;
+	        int size2;
+			double[] buf1, buf;
+			
+			exchange3_buffers();
 
             if(iex==0) {
+				
+			    bsize = 10*ny*nz;
+	            size2 = bsize / 5;
+				buf1 = buf1_0;
+				buf = buf_0;
+				
                 if(north!=-1) {
                     ShiftToSouth = worldcomm.ImmediateReceive<double>(north, from_n, buf1);
-                    ShiftToSouth.Wait();
                 }
                 if(south!=-1) {
                     for(k0 = 1; k0<=nz; k0++) {
@@ -868,6 +895,8 @@ namespace NPB {
                     worldcomm.Send<double>(buf, south, from_n);
                 }
                 if(north!=-1) {
+                    ShiftToSouth.Wait();
+					
                     for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
                             ipos1 = (k0-1)*ny + j - 1;
@@ -883,12 +912,12 @@ namespace NPB {
                             g[k0-1, j+1, 1, 2] = buf1[2*size2+ipos2];
                             g[k0-1, j+1, 1, 3] = buf1[3*size2+ipos2];
                             g[k0-1, j+1, 1, 4] = buf1[4*size2+ipos2];
+							
                         }
                     }
                 }
                 if(south!=-1) {
                     ShiftToNorth = worldcomm.ImmediateReceive<double>(south, from_s, buf1);
-                    ShiftToNorth.Wait();
                 }
                 if(north!=-1) {
                     for(k0 = 1; k0<=nz; k0++) {
@@ -912,6 +941,7 @@ namespace NPB {
                     worldcomm.Send<double>(buf, north, from_s);
                 }
                 if(south!=-1) {
+                    ShiftToNorth.Wait();
                     for(k0 = 1; k0<=nz; k0++) {
                         for(j = 1; j<=ny; j++) {
                             ipos1 = (k0-1)*ny + j - 1;
@@ -927,6 +957,7 @@ namespace NPB {
                             g[k0-1, j+1, nx+2, 2] = buf1[2*size2+ipos2];
                             g[k0-1, j+1, nx+2, 3] = buf1[3*size2+ipos2];
                             g[k0-1, j+1, nx+2, 4] = buf1[4*size2+ipos2];
+														
                         }
                     }
                 }
@@ -934,11 +965,10 @@ namespace NPB {
             else {
                 bsize = 10*nx*nz;
                 size2 = bsize/5;
-                buf1 = new double[bsize];
-                buf  = new double[bsize];
+				buf1 = buf1_1;
+				buf = buf_1;
                 if(west!=-1) {
                     ShiftToEast = worldcomm.ImmediateReceive<double>(west, from_w, buf1);
-                    ShiftToEast.Wait();
                 }
                 if(east!=-1) {
                     for(k0 = 1; k0<=nz; k0++) {
@@ -962,6 +992,7 @@ namespace NPB {
                     worldcomm.Send<double>(buf, east, from_w);
                 }
                 if(west!=-1) {
+                    ShiftToEast.Wait();
                     for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
                             ipos1 = (k0-1)*nx + i - 1;
@@ -982,7 +1013,6 @@ namespace NPB {
                 }
                 if(east!=-1) {
                     ShiftToWest = worldcomm.ImmediateReceive<double>(east, from_e, buf1);
-                    ShiftToWest.Wait();
                 }
                 if(west!=-1) {
                     for(k0 = 1; k0<=nz; k0++) {
@@ -1006,6 +1036,7 @@ namespace NPB {
                     worldcomm.Send<double>(buf, west, from_e);
                 }
                 if(east!=-1) {
+                    ShiftToWest.Wait();
                     for(k0 = 1; k0<=nz; k0++) {
                         for(i = 1; i<=nx; i++) {
                             ipos1 = (k0-1)*nx + i - 1;
@@ -1836,20 +1867,37 @@ namespace NPB {
         }
         // end blts.f
         // Exchange_1.f NSEW
-        public void exchange1(double[, , ,] g, int iex, int k) {
+		
+		private double[][] e1buf = null;
+		public void exchange1_buffers()
+		{
+			if (e1buf == null) 
+			{
+				e1buf = new double[2][];
+				e1buf[0] = new double[5*(jend-jst+1)];
+				e1buf[1] = new double[5*(iend-ist+1)];
+			}
+		}
+		
+        public void exchange1(double[, , ,] g, int iex, int k) 
+		{
             MPI.Request ShiftToSouth;
             MPI.Request ShiftToNorth;
             MPI.Request ShiftToEast;
             MPI.Request ShiftToWest;
+			
+			exchange1_buffers();
+			
             if(k>=0) {
                 int i, j;
                 if(iex == 0) {
                     if(north != -1) {
-                        double[] dum1;
-                        dum1 = new double[5*(jend-jst+1)];
+                        double[] dum1 = e1buf[0];
+                        //dum1 = new double[5*(jend-jst+1)];
                         int idx = 0;
                         ShiftToSouth = worldcomm.ImmediateReceive<double>(north, from_n, dum1);
                         ShiftToSouth.Wait();
+						
                         for(j=jst; j<=jend; j++) {
                             g[k-1, j+1, 1, 0] = dum1[0+idx];
                             g[k-1, j+1, 1, 1] = dum1[1+idx];
@@ -1860,8 +1908,8 @@ namespace NPB {
                         }
                     }
                     if(west != -1) {
-                        double[] dum1;
-                        dum1 = new double[(5*(iend-ist+1))];
+                        double[] dum1 = e1buf[1];
+                        //dum1 = new double[(5*(iend-ist+1))];
                         int idx = 0;
                         ShiftToEast = worldcomm.ImmediateReceive<double>(west, from_w, dum1);
                         ShiftToEast.Wait();
@@ -1877,8 +1925,8 @@ namespace NPB {
                 }
                 else if(iex == 1) {
                     if(south != -1) {
-                        double[] dum1;
-                        dum1 = new double[(5*(jend-jst+1))];
+                        double[] dum1 = e1buf[0];
+                        //dum1 = new double[(5*(jend-jst+1))];
                         int idx = 0;
                         ShiftToNorth = worldcomm.ImmediateReceive<double>(south, from_s, dum1);
                         ShiftToNorth.Wait();
@@ -1892,8 +1940,8 @@ namespace NPB {
                         }
                     }
                     if(east != -1) {
-                        double[] dum1;
-                        dum1 = new double[(5*(iend-ist+1))];
+                        double[] dum1 = e1buf[1];
+                        //dum1 = new double[(5*(iend-ist+1))];
                         int idx = 0;
                         ShiftToWest = worldcomm.ImmediateReceive<double>(east, from_e, dum1);
                         ShiftToWest.Wait();
@@ -1909,23 +1957,32 @@ namespace NPB {
                 }
                 else if(iex == 2) {
                     if(south != -1) {
-                        double[] dum;
-                        dum = new double[5*(jend-jst+1)];
+                        double[] dum = e1buf[0];
+                        //dum = new double[5*(jend-jst+1)];
                         int idx = 0;
+//						Console.WriteLine("$$$$$$");
                         for(j=jst; j<=jend; j++) {
                             dum[0+idx] = g[k-1, j+1, nx+1, 0];
                             dum[1+idx] = g[k-1, j+1, nx+1, 1];
                             dum[2+idx] = g[k-1, j+1, nx+1, 2];
                             dum[3+idx] = g[k-1, j+1, nx+1, 3];
                             dum[4+idx] = g[k-1, j+1, nx+1, 4];
+/*					if (this.worldcomm.Rank == 0)
+								Console.WriteLine(
+									              dum[0+idx] + " " + 
+									              dum[1+idx] + " " + 
+									              dum[2+idx] + " " + 
+									              dum[3+idx] + " " +
+									              dum[4+idx] 
+									);*/
                             idx = idx + 5;
                         }
                         //ShiftToSouth 
                         worldcomm.Send<double>(dum, south, from_n);
                     }
                     if(east != -1) {
-                        double[] dum;
-                        dum = new double[(5*(iend-ist+1))];
+                        double[] dum = e1buf[1];
+                        // dum = new double[(5*(iend-ist+1))];
                         int idx = 0;
                         for(i=ist; i<=iend; i++) {
                             dum[0+idx] = g[k-1, ny+1, i+1, 0];
@@ -1941,8 +1998,8 @@ namespace NPB {
                 }
                 else {
                     if(north != -1) {
-                        double[] dum;
-                        dum = new double[(5*(jend-jst+1))];
+                        double[] dum = e1buf[0];
+                        //dum = new double[(5*(jend-jst+1))];
                         int idx = 0;
                         for(j=jst; j<=jend; j++) {
                             dum[0+idx] = g[k-1, j+1, 2, 0];
@@ -1956,8 +2013,8 @@ namespace NPB {
                         worldcomm.Send<double>(dum, north, from_s);
                     }
                     if(west != -1) {
-                        double[] dum;
-                        dum = new double[(5*(iend-ist+1))];
+                        double[] dum = e1buf[1];
+                        // dum = new double[(5*(iend-ist+1))];
                         int idx = 0;
                         for(i=ist; i<=iend; i++) {
                             dum[0+idx] = g[k-1, 2, i+1, 0];
