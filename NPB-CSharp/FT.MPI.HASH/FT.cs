@@ -106,7 +106,8 @@ namespace NPB {
 
         }
 
-        public void runBenchMark() {
+        public void runBenchMark() 
+		{
             for(int i = 1; i <= T_max; i++) timer.resetTimer(i);
             int niter = initialConfig();
             problemDefination();
@@ -951,8 +952,13 @@ namespace NPB {
                 }
             }
         }
+		
+		
+		private double[,,,] y_cffts1 = null;
+		
 
-/**/    public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+		public void cffts1(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) 
+		{
             int logd1;
             //Fortran
             //double complex x(d1,d2,d3);
@@ -962,7 +968,7 @@ namespace NPB {
             //y   [2, d1, fftblockpad]
             //x   [d3,d2,d1];
             //xout[d3,d2,d1];
-            double[,,,] y = new double[2, d1, fftblockpad, 2];
+            double[,,,] y = y_cffts1 == null ? y_cffts1 = new double[2, d1, fftblockpad, 2] : y_cffts1;
 
             int i, j, k, jj, io;
             logd1 = ilog2(d1);
@@ -1017,8 +1023,12 @@ namespace NPB {
                 }
             }
         }
+		
+		private double[,,,] y_cffts2 = null;
+		
 
-/**/    public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+    	public void cffts2(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) 
+		{
             int logd2;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1026,7 +1036,7 @@ namespace NPB {
             //C#:  x   [d3,d2,d1];
             //     xout[d3,d2,d1];
             //     y   [2, d2, fftblockpad];
-            double[,,,] y = new double[2, d2, fftblockpad, 2];
+            double[,,,] y = y_cffts2 == null ? y_cffts2 = new double[2, d2, fftblockpad, 2] : y_cffts2; 
 
             int i, j, k, ii, io;
             logd2 = ilog2(d2);
@@ -1081,8 +1091,11 @@ namespace NPB {
                 }
             }
         }
+		
+		private double[,,,] y_cffts3 = null;
 
-/**/    public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) {
+        public void cffts3(int dir, int d1, int d2, int d3, double[, , ,] x, double[, , ,] xout) 
+		{
             int logd3;
             //Fortran: double complex x(d1,d2,d3);
             //         double complex xout(d1,d2,d3);
@@ -1090,7 +1103,7 @@ namespace NPB {
             //C#:  x    [d3,d2,d1];
             //     xout [d3,d2,d1];
             //     y    [2, d3, fftblockpad]; 
-            double[,,,] y = new double[2, d3, fftblockpad, 2];
+            double[,,,] y = y_cffts3 == null ? y_cffts3 = new double[2, d3, fftblockpad, 2] : y_cffts3;
 
             int i, j, k, ii, io;
 
@@ -1241,16 +1254,8 @@ namespace NPB {
             }
         }
 
-/**/    public void transpose_x_y(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {  // x1, x2); x1=u1 x2 = u0
-            /*  double complex xin(ntdivnp), xout(ntdivnp)
-                ---------------------------------------------------------------------
-                 xy transpose is a little tricky, since we don't want
-                 to touch 3rd axis. But alltoall must involve 3rd axis (most 
-                 slowly varying) to be efficient. So we do
-                 (nx, ny/np1, nz/np2) -> (ny/np1, nz/np2, nx) (local)
-                 (ny/np1, nz/np2, nx) -> ((ny/np1*nz/np2)*np1, nx/np1) (global)
-                 then local finish. 
-                --------------------------------------------------------------------- */
+        public void transpose_x_y(int l1, int l2, double[, , ,] xin, double[, , ,] xout) 
+		{
             transpose_x_y_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
 
             transpose_x_y_global(dims[0, l1], dims[1, l1], dims[2, l1], xout, xin);
@@ -1259,7 +1264,8 @@ namespace NPB {
 
         }
 
-/**/    public void transpose_x_y_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+/**/    
+		public void transpose_x_y_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //implicit none
             //include 'global.h'
             //integer d1, d2, d3
@@ -1302,30 +1308,21 @@ namespace NPB {
             //if(timers_enabled)
             //    timer.stop(T_transxyloc);
         }
+		
+	private	double[] src_transpose_x_y_global = null;
+	private	double[] dst_transpose_x_y_global = null;
 
-/**/    public void transpose_x_y_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
-            /* ---------------------------------------------------------------------
-               array is in form (ny/np1, nz/np2, nx)
-               ---------------------------------------------------------------------
-               double complex uxin(d2,d3,d1)
-               double complex uxout(d2,d3,d1) ! not real layout but right size      */
-            //if(timers_enabled)
-            //    synchup();
-            /* ---------------------------------------------------------------------
-               do transpose among all processes with same 1-coord (me1)
-               --------------------------------------------------------------------- */
-            //if(timers_enabled)
-            //    timer.start(T_transxyglo);
-            double[] src       = new double[d1*d2*d3*2];
-            double[] dst       = new double[d1*d2*d3*2];
+    public void transpose_x_y_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) 
+		{
+            double[] src       = src_transpose_x_y_global == null ? src_transpose_x_y_global = new double[d1*d2*d3*2] : src_transpose_x_y_global;
+            double[] dst       = dst_transpose_x_y_global == null ? dst_transpose_x_y_global = new double[d1*d2*d3*2] : dst_transpose_x_y_global;
+			
             setVetor(xin, src);
             commslice2.AlltoallFlattened<double>(src, d1*d2*d3*2/np1, ref dst);
             setVetor(dst, xout);
-            //if(timers_enabled)
-            //    timer.stop(T_transxyglo);
         }
 
-/**/    public void transpose_x_y_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+    public void transpose_x_y_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(d1/np1, d3, d2, 0:np1-1); 
             //double complex xout(d1,d2,d3);
@@ -1370,14 +1367,17 @@ namespace NPB {
             //    timer.stop(T_transxyfin);
         }
 
-/**/    public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) {
-            //double complex xin(ntdivnp), xout(ntdivnp)
+        public void transpose_xy_z(int l1, int l2, double[, , ,] xin, double[, , ,] xout) 
+		{
             transpose_xy_z_local(dims[0, l1], dims[1, l1], dims[2, l1], xin, xout);
             transpose_xy_z_global(dims[1, 0], dims[2, 0], dims[0, 0], xout, xin);
             transpose_xy_z_finish(dims[0, l1],dims[1, l1], dims[2, l1], xin, xout);
         }
 
-/**/    public void transpose_xy_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+		private double[,,] z_transpose_xy_z_local = null;
+		
+       public void transpose_xy_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) 
+		{
             //Fortran
             //double complex xin(n1, n2), xout(n2, n1)
             //double complex z(transblockpad, transblock)
@@ -1386,7 +1386,7 @@ namespace NPB {
             //xout[n1,n2]
             //z[transblock, transblockpad]
 
-            double[,,] z = new double[transblockpad, transblock, 2];
+            double[,,] z = z_transpose_xy_z_local == null ? z_transpose_xy_z_local = new double[transblockpad, transblock, 2] : z_transpose_xy_z_local;
             int i, j, ii, jj, iin, io;
             int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
             int n1 = d1*d2;
@@ -1498,8 +1498,11 @@ namespace NPB {
             //    timer.stop(T_transxzloc);
 
         }
+		
+		private double[,,] z_transpose_x_yz_local = null;
 
-/**/    public void transpose_x_yz_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
+		public void transpose_x_yz_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) 
+		{
             //Fortran
             //double complex xin(n1, n2), xout(n2, n1)
             //double complex z(transblockpad, transblock)
@@ -1508,7 +1511,7 @@ namespace NPB {
             //xout[n1,n2]
             //z[transblock, transblockpad]
 
-            double[,,] z = new double[transblockpad, transblock, 2];
+            double[,,] z = z_transpose_x_yz_local == null ? z_transpose_x_yz_local = new double[transblockpad, transblock, 2] : z_transpose_x_yz_local;
             int i, j, ii, jj, iin, io;
             int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
             int n1 = d1;
@@ -1620,12 +1623,15 @@ namespace NPB {
             //    timer.stop(T_transxzloc);
 
         }
-
+		
+		private double[] src_transpose_xy_z_global = null;
+		private double[] dst_transpose_xy_z_global = null;
+				
 /**/    public void transpose_xy_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             // double complex xin(ntdivnp)
             // double complex xout(ntdivnp) 
-            double[] src = new double[d1*d2*d3*2];//ntdivnp*2
-            double[] dst = new double[d1*d2*d3*2];//ntdivnp*2
+            double[] src = src_transpose_xy_z_global == null ? src_transpose_xy_z_global = new double[d1*d2*d3*2] : src_transpose_xy_z_global;
+            double[] dst = dst_transpose_xy_z_global == null ? dst_transpose_xy_z_global = new double[d1*d2*d3*2] : dst_transpose_xy_z_global;
             //if(timers_enabled)
             //    synchup();
             //if(timers_enabled)
@@ -1638,23 +1644,18 @@ namespace NPB {
             //    timer.stop(T_transxzglo);
 
         }
+		
+		private double[] src_transpose_x_yz_global = null;
+		private double[] dst_transpose_x_yz_global = null;
+			
+        public void transpose_x_yz_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) 
+		{
+            double[] src = src_transpose_x_yz_global == null ? src_transpose_x_yz_global = new double[d1*d2*d3*2] : src_transpose_x_yz_global;
+            double[] dst = dst_transpose_x_yz_global == null ? dst_transpose_x_yz_global = new double[d1*d2*d3*2] : dst_transpose_x_yz_global;
 
-/**/    public void transpose_x_yz_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
-            // double complex xin(ntdivnp)
-            // double complex xout(ntdivnp) 
-            double[] src = new double[d1*d2*d3*2];//ntdivnp*2
-            double[] dst = new double[d1*d2*d3*2];//ntdivnp*2
-            //if(timers_enabled)
-            //    synchup();
-            //if(timers_enabled)
-            //    timer.start(T_transxzglo);
-            setVetor(xin, src);
+			setVetor(xin, src);
             commslice1.AlltoallFlattened<double>(src, d1*d2*d3*2 / np, ref dst);//ntdivnp*2
             setVetor(dst, xout);
-            // call mpi_alltoall(xin, ntdivnp/np, dc_type, xout, ntdivnp/np, dc_type, commslice1, ierr);
-            //if(timers_enabled)
-            //    timer.stop(T_transxzglo);
-
         }
 
 /**/    public void transpose_xy_z_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {//Ok
@@ -1750,7 +1751,10 @@ namespace NPB {
             transpose_x_z_global(dims[0, l1], dims[1, l1], dims[2, l1], xout, xin);
             transpose_x_z_finish(dims[0, l2], dims[1, l2], dims[2, l2], xin, xout);
         }
-
+		
+		
+		private double[,,] buf_transpose_x_z_local = null;
+		
 /**/    public void transpose_x_z_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
             //Fortran
             //double complex xin(d1,d2,d3)
@@ -1759,7 +1763,8 @@ namespace NPB {
             //C#
             //xin [d3,d2,d1]
             //xout[d1,d2,d3]
-            double[,,] buf = new double[maxdim, transblockpad, 2];
+            double[,,] buf = buf_transpose_x_z_local == null ? buf_transpose_x_z_local = new double[maxdim, transblockpad, 2] : buf_transpose_x_z_local;
+			
             int block1, block3;
             int i, j, k, kk, ii, i1, k1;
             int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
@@ -1859,29 +1864,18 @@ namespace NPB {
                 //if(timers_enabled)
                 //    timer.stop(T_transxzloc);
         }
-
-/**/    public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
-            //Fortran
-            //double complex xin(d3,d2,d1);
-            //double complex xout(d3,d2,d1) ! not real layout, but right size;
-            //C#
-            //xin[d1,d2,d3];
-            //xout[d1,d2,d3]
-            //if(timers_enabled)
-            //    synchup();
-            //---------------------------------------------------------------------
-            // do transpose among all  processes with same 1-coord (me1)
-            //---------------------------------------------------------------------
-            //if(timers_enabled)
-            //    timer.start(T_transxzglo);
-            double[] src = new double[d1*d2*d3*2];
-            double[] dst = new double[d1*d2*d3*2];
+		
+		double[] src_transpose_x_z_global = null;
+		double[] dst_transpose_x_z_global = null;
+				
+    	public void transpose_x_z_global(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) 
+		{
+            double[] src = src_transpose_x_z_global == null ? src_transpose_x_z_global = new double[d1*d2*d3*2]: src_transpose_x_z_global;
+            double[] dst = src_transpose_x_z_global == null ? src_transpose_x_z_global = new double[d1*d2*d3*2] : src_transpose_x_z_global;
+			
             setVetor(xin, src);
             commslice1.AlltoallFlattened<double>(src, d1*d2*d3*2/np2, ref dst);
             setVetor(dst, xout);
-            //call mpi_alltoall(xin, d1*d2*d3/np2, dc_type,xout, d1*d2*d3/np2, dc_type,commslice1, ierr);
-            //if(timers_enabled)
-            //    timer.stop(T_transxzglo);
         }
 
 /**/    public void transpose_x_z_finish(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
