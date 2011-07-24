@@ -150,7 +150,7 @@ namespace NPB3_0_JAV{
 
             if (node==root) Console.WriteLine("STARTING"); Console.Out.Flush();
 
-            for (int step = 1; step <= 1 /*niter*/; step++)
+            for (int step = 1; step <= niter; step++)
             {
                 if (node == 0 && (step % 20 == 0 || step == 1 || step == niter))
                 {
