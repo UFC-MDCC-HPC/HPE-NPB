@@ -150,7 +150,7 @@ namespace NPB3_0_JAV{
 
             if (node==root) Console.WriteLine("STARTING"); Console.Out.Flush();
 
-            for (int step = 1; step <= niter; step++)
+            for (int step = 1; step <= 1 /*niter*/; step++)
             {
                 if (node == 0 && (step % 20 == 0 || step == 1 || step == niter))
                 {
@@ -205,8 +205,8 @@ namespace NPB3_0_JAV{
             for (c = 0; c < ncells; c++)
             {
                 face_size = cell_size[c, 1] * cell_size[c, 2] * dim * 2;
-                if (cell_coord[c, 0] != 0) west_size = west_size + face_size;
-                if (cell_coord[c, 0] != ncells - 1) east_size = east_size + face_size;
+                if (cell_coord[c, 0] != 0) west_size += face_size;
+                if (cell_coord[c, 0] != ncells - 1) east_size += face_size;
             }
 
             north_size = 0;
@@ -214,8 +214,8 @@ namespace NPB3_0_JAV{
             for (c = 0; c < ncells; c++)
             {
                 face_size = cell_size[c, 0] * cell_size[c, 2] * dim * 2;
-                if (cell_coord[c, 1] != 0) south_size = south_size + face_size;
-                if (cell_coord[c, 1] != ncells - 1) north_size = north_size + face_size;
+                if (cell_coord[c, 1] != 0) south_size += face_size;
+                if (cell_coord[c, 1] != ncells - 1) north_size += face_size;
             }
 
             top_size = 0;
@@ -223,8 +223,8 @@ namespace NPB3_0_JAV{
             for (c = 0; c < ncells; c++)
             {
                 face_size = cell_size[c, 0] * cell_size[c, 1] * dim * 2;
-                if (cell_coord[c, 2] != 0) bottom_size = bottom_size + face_size;
-                if (cell_coord[c, 2] != ncells - 1) top_size = top_size + face_size;
+                if (cell_coord[c, 2] != 0) bottom_size += face_size;
+                if (cell_coord[c, 2] != ncells - 1) top_size += face_size;
             }
 
             start_send_west = 1;
@@ -256,12 +256,28 @@ namespace NPB3_0_JAV{
 
         public void adi()
         {
+//			double[] x = new double[5];
+//			double[] y = new double[5];
+//			error_norm(x); rhs_norm(y); if (node == 0) { print_check("begin loop" , x, y);}
             copy_faces();
+//			error_norm(x); rhs_norm(y); if (node == 0) { print_check("after copy_faces" , x, y);}
             x_solve();
+//			error_norm(x); rhs_norm(y); if (node == 0) { print_check("after x_solve" , x, y); }
             y_solve();
+//			error_norm(x); rhs_norm(y); if (node == 0) { print_check("after y_solve" , x, y); }
             z_solve();
+//			error_norm(x); rhs_norm(y); if (node == 0) { print_check("after z_solve" , x, y); }
             add();
+//			error_norm(x); rhs_norm(y); if (node == 0) { print_check("after add" , x, y); }
         }
+		
+/*		void print_check(string p, double[] x, double[] y) 			
+		{
+			for (int i=0; i <5; i++) 
+			{
+				Console.WriteLine(p + ": " + x[i] + "," + y[i]);
+			}
+		}*/
 
         public int getInputPars()
         {
@@ -327,6 +343,8 @@ namespace NPB3_0_JAV{
                         {
                             for (m = 0; m < 5; m++)
                             {
+								//if (node == 0)
+								//	Console.WriteLine(u[c, k, j, i, m] + " - " + rhs[c, k, j, i, m]);
                                 u[c, k, j, i, m] += rhs[c, k, j, i, m];
                             }
                         }
@@ -406,17 +424,17 @@ namespace NPB3_0_JAV{
                 jsize = cell_size[c, 1] + 2;
                 isize = cell_size[c, 0] + 2;
 
-                for (m = 0; m < 5; m++)
+                for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
                 {
-                    for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
+                    for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
                     {
-                        for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
+                        for (i = start[c, 0]; i < isize - end[c, 0]; i++)
                         {
-                            for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                            {
+			               for (m = 0; m < 5; m++)
+			               {
                                 add = rhs[c, k, j, i, m];
                                 rms_work[m] += add * add;
-                            }
+							}
                         }
                     }
                 }
@@ -1064,6 +1082,8 @@ namespace NPB3_0_JAV{
                                 for (m = 0; m < 5; m++)
                                 {
                                     u[c, k, j, i, m] = in_buffer[1][p0++];
+									//if (node == 0)
+  									//    Console.WriteLine("u[" + c + "," + k + "," + j + "," + i + "," + m + "]" + u[c, k, j, i, m] + " - p0:" + p0);
                                 }
                             }
                         }
@@ -1081,6 +1101,8 @@ namespace NPB3_0_JAV{
                                 for (m = 0; m < 5; m++)
                                 {
                                     u[c, k, j, i, m] = in_buffer[0][p1++];
+									//if (node == 0)
+  									//    Console.WriteLine("u[" + c + "," + k + "," + j + "," + i + "," + m + "]" + u[c, k, j, i, m] + " - p1:" + p1);
                                 }
                             }
                         }
@@ -1098,6 +1120,8 @@ namespace NPB3_0_JAV{
                                 for (m = 0; m < 5; m++)
                                 {
                                     u[c, k, j, i, m] = in_buffer[3][p2++];
+									//if (node == 0)
+  									//    Console.WriteLine("u[" + c + "," + k + "," + j + "," + i + "," + m + "]" + u[c, k, j, i, m] + " - p2:" + p2);
                                 }
                             }
                         }
@@ -1115,6 +1139,8 @@ namespace NPB3_0_JAV{
                                 for (m = 0; m < 5; m++)
                                 {
                                     u[c, k, j, i, m] = in_buffer[2][p3++];
+									//if (node == 0)
+  									//    Console.WriteLine("u[" + c + "," + k + "," + j + "," + i + "," + m + "]" + u[c, k, j, i, m] + " - p3:" + p3);
                                 }
                             }
                         }
@@ -1132,6 +1158,8 @@ namespace NPB3_0_JAV{
                                 for (m = 0; m < 5; m++)
                                 {
                                     u[c, k, j, i, m] = in_buffer[5][p4++];
+									//if (node == 0)
+  									//    Console.WriteLine("u[" + c + "," + k + "," + j + "," + i + "," + m + "]" + u[c, k, j, i, m] + " - p4:" + p4);
                                 }
                             }
                         }
@@ -1149,6 +1177,8 @@ namespace NPB3_0_JAV{
                                 for (m = 0; m < 5; m++)
                                 {
                                     u[c, k, j, i, m] = in_buffer[4][p5++];
+									//if (node == 0)
+  									//    Console.WriteLine("u[" + c + "," + k + "," + j + "," + i + "," + m + "]" + u[c, k, j, i, m] + " - p5:" + p5);
                                 }
                             }
                         }
@@ -1248,8 +1278,14 @@ namespace NPB3_0_JAV{
                 size = grid_points[dir] / p;
                 excess = mod(grid_points[dir], p);
 
+				//if (node == 0)
+				//	Console.WriteLine("grid_points[" + dir + "] "  + grid_points[dir]);
+				
                 for (c = 0; c < ncells; c++)
                 {
+				//	if (node == 0)
+				//		Console.WriteLine("cell_coord[" + c + "," +  dir + "] " + cell_coord[c, dir]);
+					
                     if (cell_coord[c, dir] < excess)
                     {
                         cell_size[c, dir] = size + 1;
@@ -1260,9 +1296,18 @@ namespace NPB3_0_JAV{
                     {
                         cell_size[c, dir] = size;
                         cell_low[c, dir] = excess * (size + 1) + (cell_coord[c, dir] - excess) * size;
-                        cell_high[c, dir] = cell_low[c, dir] + size - 1;
+                        cell_high[c, dir] = cell_low[c, dir] + size - 1;						
                     }
-                    if (cell_size[c, dir] <= 2)
+
+				/*		if (node == 0)
+						{
+							Console.WriteLine("branch 1 " + excess);
+							Console.WriteLine("cell_size[c, dir] = " +  cell_size[c, dir]);
+							Console.WriteLine("cell_low[c, dir] = " +  cell_low[c, dir]);
+							Console.WriteLine("cell_high[c, dir] = " +  cell_high[c, dir]);
+						}*/
+					
+					if (cell_size[c, dir] <= 2)
                     {
                         Console.WriteLine("Error: Cell size too small. Min size is 3");
                         worldcomm.Abort(ierrcode); 
@@ -1340,6 +1385,8 @@ namespace NPB3_0_JAV{
                         {
                             for (m = 0; m < 5; m++)
                             {
+								//if (node == 0)
+								//	Console.WriteLine("forcing = " + forcing[c, k, j, i, m]);
                                 rhs[c, k, j, i, m] = forcing[c, k, j, i, m];
                             }
                         }
@@ -1405,6 +1452,12 @@ namespace NPB3_0_JAV{
                                                c2 * square[c, k, j, i + 1]) * up1 -
                                               (c1 * u[c, k, j, i - 1, 4] -
                                                c2 * square[c, k, j, i - 1]) * um1);
+							
+//							for (int mm=0; mm<5;mm++)
+//							{
+//							    if (node==0) Console.WriteLine("TRACE XI 1: " + rhs[c,k,j,i,mm]);	
+//							}
+							
                         }
                     }
                 }
@@ -1415,30 +1468,28 @@ namespace NPB3_0_JAV{
 
                 if (start[c, 0] > 2)
                 {
-                    i = 3;
                     for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
                     {
                         for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
                         {
+                    		i = 3;
                             for (m = 0; m < 5; m++)
                             {
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                               (5.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j, i + 1, m] +
                                       u[c, k, j, i + 2, m]);
+								
+							 //   if (node==0) Console.WriteLine("TRACE XI 2: " + rhs[c,k,j,i,m]);	
                             }
-                        }
-                    }
-
-                    i = 4;
-                    for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                    {
-                        for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
-                        {
+							
+                    		i = 4;
                             for (m = 0; m < 5; m++)
                             {
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                               (-4.0d * u[c, k, j, i - 1, m] + 6.0d * u[c, k, j, i, m] -
                                 4.0d * u[c, k, j, i + 1, m] + u[c, k, j, i + 2, m]);
+								
+							   // if (node==0) Console.WriteLine("TRACE XI 3: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -1458,6 +1509,8 @@ namespace NPB3_0_JAV{
                                    (u[c, k, j, i - 2, m] - 4.0d * u[c, k, j, i - 1, m] +
                                     6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j, i + 1, m] +
                                         u[c, k, j, i + 2, m]);
+								
+							 //   if (node==0) Console.WriteLine("TRACE XI 4: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -1465,34 +1518,31 @@ namespace NPB3_0_JAV{
 
                 if (end[c, 0] > 0)
                 {
-                    i = ksize - 3;
                     for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
                     {
                         for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
                         {
-                            for (m = 0; m <= 4; m++)
+                    		i = isize - 3;
+                            for (m = 0; m < 5; m++)
                             {
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (u[c, k, j, i - 2, m] - 4.0d * u[c, k, j, i - 1, m] +
                                         6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j, i + 1, m]);
+								
+	//						    if (node==0) Console.WriteLine("TRACE XI 5: " + rhs[c,k,j,i,m]);	
                             }
-                        }
-                    }
-
-                    i = ksize - 2;
-                    for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                    {
-                        for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
-                        {
-                            for (m = 0; m <= 4; m++)
+							
+                    		i = isize - 2;
+                            for (m = 0; m < 5; m++)
                             {
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (u[c, k, j, i - 2, m] - 4.0d * u[c, k, j, i - 1, m] +
                                         5.0d * u[c, k, j, i, m]);
+								
+	//						    if (node==0) Console.WriteLine("TRACE XI 6: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
-
                 }
 
                 // if (timeron) timer.stop(t_rhsx);
@@ -1552,6 +1602,11 @@ namespace NPB3_0_JAV{
                                              c2 * square[c, k, j + 1, i]) * vp1 -
                                             (c1 * u[c, k, j - 1, i, 4] -
                                              c2 * square[c, k, j - 1, i]) * vm1);
+							
+			//				for (int mm=0; mm<5;mm++)
+			//				{
+			//				    if (node==0) Console.WriteLine("TRACE ETA 1: " + rhs[c,k,j,i,mm]);	
+			//				}
                         }
                     }
                 }
@@ -1563,9 +1618,9 @@ namespace NPB3_0_JAV{
 
                 if (start[c, 1] > 2)
                 {
-                    j = 3;
                     for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
                     {
+                   		j = 3;
                         for (i = start[c, 0]; i < isize - end[c, 0]; i++)
                         {
                             for (m = 0; m < 5; m++)
@@ -1573,21 +1628,21 @@ namespace NPB3_0_JAV{
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (5.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j + 1, i, m] +
                                               u[c, k, j + 2, i, m]);
+								
+							   // if (node==0) Console.WriteLine("TRACE ETA 2: " + rhs[c,k,j,i,m]);	
                             }
                         }
-                    }
-
-
-                    j = 4;
-                    for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                    {
+						
+                   		j = 4;
                         for (i = start[c, 0]; i < isize - end[c, 0]; i++)
                         {
-                            for (m = 0; m <= 4; m++)
+                            for (m = 0; m < 5; m++)
                             {
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (-4.0d * u[c, k, j - 1, i, m] + 6.0d * u[c, k, j, i, m] -
                                         4.0d * u[c, k, j + 1, i, m] + u[c, k, j + 2, i, m]);
+								
+							 //   if (node==0) Console.WriteLine("TRACE ETA 3: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -1605,6 +1660,8 @@ namespace NPB3_0_JAV{
                                    (u[c, k, j - 2, i, m] - 4.0d * u[c, k, j - 1, i, m] +
                                     6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j + 1, i, m] +
                                         u[c, k, j + 2, i, m]);
+								
+//							    if (node==0) Console.WriteLine("TRACE ETA 4: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -1613,9 +1670,9 @@ namespace NPB3_0_JAV{
 
                 if (end[c, 1] > 0)
                 {
-                    j = jsize - 3;
                     for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
                     {
+                   		j = jsize - 3;
                         for (i = start[c, 0]; i < isize - end[c, 0]; i++)
                         {
                             for (m = 0; m <= 4; m++)
@@ -1623,14 +1680,12 @@ namespace NPB3_0_JAV{
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (u[c, k, j - 2, i, m] - 4.0d * u[c, k, j - 1, i, m] +
                                         6.0d * u[c, k, j, i, m] - 4.0d * u[c, k, j + 1, i, m]);
+								
+			//				    if (node==0) Console.WriteLine("TRACE ETA 5: " + rhs[c,k,j,i,m]);	
                             }
                         }
-                    }
-
-
-                    j = jsize - 2;
-                    for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                    {
+						
+                        j = jsize - 2;
                         for (i = start[c, 0]; i < isize - end[c, 0]; i++)
                         {
                             for (m = 0; m <= 4; m++)
@@ -1638,6 +1693,8 @@ namespace NPB3_0_JAV{
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (u[c, k, j - 2, i, m] - 4.0d * u[c, k, j - 1, i, m] +
                                         5.0d * u[c, k, j, i, m]);
+								
+			//				    if (node==0) Console.WriteLine("TRACE ETA 6: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -1701,6 +1758,11 @@ namespace NPB3_0_JAV{
                                               c2 * square[c, k + 1, j, i]) * wp1 -
                                              (c1 * u[c, k - 1, j, i, 4] -
                                               c2 * square[c, k - 1, j, i]) * wm1);
+							
+	//						for (int mm=0; mm<5;mm++)
+	//						{
+	//						    if (node==0) Console.WriteLine("TRACE ZETA 1: " + rhs[c,k,j,i,mm]);	
+	//						}
                         }
                     }
                 }
@@ -1711,7 +1773,7 @@ namespace NPB3_0_JAV{
 
                 if (start[c, 2] > 2)
                 {
-                    k = 3;
+                 	k = 3;
                     for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
                     {
                         for (i = start[c, 0]; i < isize - end[c, 0]; i++)
@@ -1721,10 +1783,12 @@ namespace NPB3_0_JAV{
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (5.0d * u[c, k, j, i, m] - 4.0d * u[c, k + 1, j, i, m] +
                                               u[c, k + 2, j, i, m]);
+								
+				//			    if (node==0) Console.WriteLine("TRACE ZETA 2: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
-
+					
                     k = 4;
                     for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
                     {
@@ -1735,6 +1799,8 @@ namespace NPB3_0_JAV{
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (-4.0d * u[c, k - 1, j, i, m] + 6.0d * u[c, k, j, i, m] -
                                         4.0d * u[c, k + 1, j, i, m] + u[c, k + 2, j, i, m]);
+								
+							   // if (node==0) Console.WriteLine("TRACE ZETA 3: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -1752,6 +1818,8 @@ namespace NPB3_0_JAV{
                                    (u[c, k - 2, j, i, m] - 4.0d * u[c, k - 1, j, i, m] +
                                     6.0d * u[c, k, j, i, m] - 4.0d * u[c, k + 1, j, i, m] +
                                         u[c, k + 2, j, i, m]);
+								
+							 //   if (node==0) Console.WriteLine("TRACE ZETA 4: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -1759,8 +1827,23 @@ namespace NPB3_0_JAV{
 
                 if (end[c, 2] > 0)
                 {
-
-                    k = ksize - 3;
+               		k = ksize - 3;
+                    for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
+                    {
+                        for (i = start[c, 0]; i < isize - end[c, 0]; i++)
+                        {							
+                            for (m = 0; m < 5; m++)
+                            {
+                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
+                                      (u[c, k - 2, j, i, m] - 4.0d * u[c, k - 1, j, i, m] +
+                                        6.0d * u[c, k, j, i, m] - 4.0d * u[c, k + 1, j, i, m]);
+								
+	//						    if (node==0) Console.WriteLine("TRACE ZETA 5: " + rhs[c,k,j,i,m]);	
+                            }
+                        }
+                    }
+					
+                    k = ksize - 2;
                     for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
                     {
                         for (i = start[c, 0]; i < isize - end[c, 0]; i++)
@@ -1769,21 +1852,9 @@ namespace NPB3_0_JAV{
                             {
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
                                       (u[c, k - 2, j, i, m] - 4.0d * u[c, k - 1, j, i, m] +
-                                        6.0d * u[c, k, j, i, m] - 4.0d * u[c, k + 1, j, i, m]);
-                            }
-                        }
-                    }
-
-                    k = ksize - 2;
-                    for (j = start[c, 1]; j < jsize - end[c, 1]; j++)
-                    {
-                        for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                        {
-                            for (m = 0; m <= 4; m++)
-                            {
-                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - dssp *
-                                      (u[c, k - 2, j, i, m] - 4.0d * u[c, k - 1, j, i, m] +
                                         5.0d * u[c, k, j, i, m]);
+								
+			//				    if (node==0) Console.WriteLine("TRACE ZETA 6: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -1801,6 +1872,8 @@ namespace NPB3_0_JAV{
                             for (m = 0; m < 5; m++)
                             {
                                 rhs[c, k, j, i, m] = rhs[c, k, j, i, m] * dt;
+							    	
+			//				    if (node==0) Console.WriteLine("TRACE DT 0: " + rhs[c,k,j,i,m]);	
                             }
                         }
                     }
@@ -2338,7 +2411,7 @@ namespace NPB3_0_JAV{
             isize = cell_size[c, 0] + 1;
             jsize = cell_size[c, 1] - end[c, 1] + 1;
             ksize = cell_size[c, 2] - end[c, 2] + 1;
-
+			
             lhsabinit(lhsa, lhsb, isize);
             for(k = start[c, 2]; k <= ksize; k++) {
                 for(j = start[c, 1]; j <= jsize; j++) {

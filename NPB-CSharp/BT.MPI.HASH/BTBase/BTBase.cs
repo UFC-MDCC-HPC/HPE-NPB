@@ -365,9 +365,12 @@ namespace NPB3_0_JAV.BTThreads{
             //lhsa[5, 5, -1:size], 
             //lhsb[5, 5, -1:size];
             int i, m, n;
-            if(MAX_CELL_DIM < size) {
+			
+/*            if(MAX_CELL_DIM < size) {
+				Console.WriteLine("MAX_CELL_DIM = " + MAX_CELL_DIM);
+				Console.WriteLine("size = " + size);
                 throw new ArgumentException("Instruction Debug: Verificar size vetor lhsb");
-            }
+            } */
             //---------------------------------------------------------------------
             //     next, set all diagonal values to 1. This is overkill, but convenient
             //---------------------------------------------------------------------
@@ -637,9 +640,9 @@ namespace NPB3_0_JAV.BTThreads{
 
 		    bt = Math.Sqrt(0.5d);
 
-		    dnxm1 = 1.0d / (grid_points[0] - 1);
-		    dnym1 = 1.0d / (grid_points[1] - 1);
-		    dnzm1 = 1.0d / (grid_points[2] - 1);
+		    dnxm1 = 1.0d / (grid_points[0] - 1); 
+		    dnym1 = 1.0d / (grid_points[1] - 1); 
+		    dnzm1 = 1.0d / (grid_points[2] - 1); 
 
 		    c1c2 = c1 * c2;
 		    c1c5 = c1 * c5;
