@@ -224,11 +224,9 @@ namespace NPB3_0_JAV{
 			}
 		}
 
-		public void blts(int ldmx, int ldmy, int ldmz, int nx, int ny, int nz, 
-		                 int k, double omega, 
-		                 double[,,,] v, double[,,] tv, double[,,,] ldz, double[,,,] ldy, 
-		                 double[,,,] ldx, double[,,,] d, 
-		                 int ist, int iend, int jst, int jend, int nx0, int ny0){
+		public void blts(int k, double omega, 
+		                 double[,,] tv, double[,,,] ldz, double[,,,] ldy, 
+		                 double[,,,] ldx){
 			int i, j, m;
 			double  tmp, tmp1;
 			double[,]  tmat = new double[5,5];
@@ -237,12 +235,12 @@ namespace NPB3_0_JAV{
 				for(i = ist-1; i <= iend-1; i++){
 					for(m = 0; m <= 4; m++){
 
-						tv[j,i,m] =  v[k,j,i,m]
-						- omega * (  ldz[j, i, 0, m] * v[k-1, j, i, 0]
-						           + ldz[j, i, 1, m] * v[k-1, j, i, 1]
-						           + ldz[j, i, 2, m] * v[k-1, j, i, 2]
-						           + ldz[j, i, 3, m] * v[k-1, j, i, 3]
-						           + ldz[j, i, 4, m] * v[k-1, j, i, 4]  );
+						tv[j,i,m] =  rsd[k,j,i,m]
+						- omega * (  ldz[j, i, 0, m] * rsd[k-1, j, i, 0]
+						           + ldz[j, i, 1, m] * rsd[k-1, j, i, 1]
+						           + ldz[j, i, 2, m] * rsd[k-1, j, i, 2]
+						           + ldz[j, i, 3, m] * rsd[k-1, j, i, 3]
+						           + ldz[j, i, 4, m] * rsd[k-1, j, i, 4]  );
 					}
 				}
 			}
@@ -252,16 +250,16 @@ namespace NPB3_0_JAV{
 					for(m=0;m<=4;m++){
 
 						tv[j, i, m] =  tv[j, i , m]
-						- omega * (  ldy[j, i, 0, m] * v[k, j-1, i, 0]
-						           + ldx[j, i, 0, m] * v[k, j, i-1, 0]
-						           + ldy[j, i, 1, m] * v[k, j-1, i, 1]
-						           + ldx[j, i, 1, m] * v[k, j, i-1, 1]
-						           + ldy[j, i, 2, m] * v[k, j-1, i, 2]
-						           + ldx[j, i, 2, m] * v[k, j, i-1, 2]
-						           + ldy[j, i, 3, m] * v[k, j-1, i, 3]
-						           + ldx[j, i, 3, m] * v[k, j, i-1, 3]
-						           + ldy[j, i, 4, m] * v[k, j-1, i, 4]
-						           + ldx[j, i, 4, m] * v[k, j, i-1, 4] );
+						- omega * (  ldy[j, i, 0, m] * rsd[k, j-1, i, 0]
+						           + ldx[j, i, 0, m] * rsd[k, j, i-1, 0]
+						           + ldy[j, i, 1, m] * rsd[k, j-1, i, 1]
+						           + ldx[j, i, 1, m] * rsd[k, j, i-1, 1]
+						           + ldy[j, i, 2, m] * rsd[k, j-1, i, 2]
+						           + ldx[j, i, 2, m] * rsd[k, j, i-1, 2]
+						           + ldy[j, i, 3, m] * rsd[k, j-1, i, 3]
+						           + ldx[j, i, 3, m] * rsd[k, j, i-1, 3]
+						           + ldy[j, i, 4, m] * rsd[k, j-1, i, 4]
+						           + ldx[j, i, 4, m] * rsd[k, j, i-1, 4] );
 					}
        
 //---------------------------------------------------------------------
@@ -385,43 +383,41 @@ namespace NPB3_0_JAV{
 //   back substitution
 //---------------------------------------------------------------------
             
-					v[k, j, i, 4] = tv[j, i, 4]
+					rsd[k, j, i, 4] = tv[j, i, 4]
 					/ tmat[4, 4];
 
 					tv[j, i, 3] = tv[j, i, 3]
-					- tmat[4, 3] * v[k, j, i, 4];
-					v[k, j, i, 3] = tv[j, i, 3]
+					- tmat[4, 3] * rsd[k, j, i, 4];
+					rsd[k, j, i, 3] = tv[j, i, 3]
 					/ tmat[3, 3];
 
 					tv[j, i, 2] = tv[j, i, 2]
-					- tmat[3, 2] * v[k, j, i, 3]
-					- tmat[4, 2] * v[k, j, i, 4];
-					v[k, j, i, 2] = tv[j, i, 2]
+					- tmat[3, 2] * rsd[k, j, i, 3]
+					- tmat[4, 2] * rsd[k, j, i, 4];
+					rsd[k, j, i, 2] = tv[j, i, 2]
 					/ tmat[2, 2];
 
 					tv[j, i, 1] = tv[j, i, 1]
-					- tmat[2, 1] * v[k, j, i, 2]
-					- tmat[3, 1] * v[k, j, i, 3]
-					- tmat[4, 1] * v[k, j, i, 4];
-					v[k, j, i, 1] = tv[j, i, 1]
+					- tmat[2, 1] * rsd[k, j, i, 2]
+					- tmat[3, 1] * rsd[k, j, i, 3]
+					- tmat[4, 1] * rsd[k, j, i, 4];
+					rsd[k, j, i, 1] = tv[j, i, 1]
 					/ tmat[1, 1];
 
 					tv[j, i, 0] = tv[j, i, 0]
-					- tmat[1, 0] * v[k, j, i, 1]
-					- tmat[2, 0] * v[k, j, i, 2]
-					- tmat[3, 0] * v[k, j, i, 3]
-					- tmat[4, 0] * v[k, j, i, 4];
-					v[k, j, i, 0] = tv[j, i, 0]
+					- tmat[1, 0] * rsd[k, j, i, 1]
+					- tmat[2, 0] * rsd[k, j, i, 2]
+					- tmat[3, 0] * rsd[k, j, i, 3]
+					- tmat[4, 0] * rsd[k, j, i, 4];
+					rsd[k, j, i, 0] = tv[j, i, 0]
 					/ tmat[0, 0];
 				}
 			}
 		}
 
-		public void buts(int ldmx, int ldmy, int ldmz, int nx, int ny, int nz, 
-		                 int k, double omega, 
-		                 double[,,,] v, double[,,] tv, double[,,,] d, double[,,,] udx, 
-		                 double[,,,] udy, double[,,,] udz, 
-		                 int ist, int iend, int jst, int jend, int nx0, int ny0){
+		public void buts(int k, double omega, 
+		                 double[,,] tv, double[,,,] udx, 
+		                 double[,,,] udy, double[,,,] udz){
 			int i, j, m;
 			double  tmp, tmp1;
 			double[,]  tmat =  new double[5,5];
@@ -431,11 +427,11 @@ namespace NPB3_0_JAV{
 				for(i=iend-1;i>=ist-1;i--){
 					for(m=0;m<=4;m++){
 						tv[j, i, m] = 
-							omega * (  udz[j, i, 0, m] * v[k+1, j, i, 0]
-							         + udz[j, i, 1, m] * v[k+1, j, i, 1]
-							         + udz[j, i, 2, m] * v[k+1, j, i, 2]
-							         + udz[j, i, 3, m] * v[k+1, j, i, 3]
-							         + udz[j, i, 4, m] * v[k+1, j, i, 4] );
+							omega * (  udz[j, i, 0, m] * rsd[k+1, j, i, 0]
+							         + udz[j, i, 1, m] * rsd[k+1, j, i, 1]
+							         + udz[j, i, 2, m] * rsd[k+1, j, i, 2]
+							         + udz[j, i, 3, m] * rsd[k+1, j, i, 3]
+							         + udz[j, i, 4, m] * rsd[k+1, j, i, 4] );
 					}
 				}
 			}
@@ -445,16 +441,16 @@ namespace NPB3_0_JAV{
 				for(i=iend-1;i>=ist-1;i--){
 					for(m=0;m<=4;m++){
 						tv[j, i, m] = tv[j, i, m]
-						+ omega * ( udy[j, i, 0, m] * v[k, j+1, i, 0]
-						           + udx[j, i, 0, m] * v[k, j, i+1, 0]
-						           + udy[j, i, 1, m] * v[k, j+1, i, 1]
-						           + udx[j, i, 1, m] * v[k, j, i+1, 1]
-						           + udy[j, i, 2, m] * v[k, j+1, i, 2]
-						           + udx[j, i, 2, m] * v[k, j, i+1, 2]
-						           + udy[j, i, 3, m] * v[k, j+1, i, 3]
-						           + udx[j, i, 3, m] * v[k, j, i+1, 3]
-						           + udy[j, i, 4, m] * v[k, j+1, i, 4]
-						           + udx[j, i, 4, m] * v[k, j, i+1, 4] );
+						+ omega * ( udy[j, i, 0, m] * rsd[k, j+1, i, 0]
+						           + udx[j, i, 0, m] * rsd[k, j, i+1, 0]
+						           + udy[j, i, 1, m] * rsd[k, j+1, i, 1]
+						           + udx[j, i, 1, m] * rsd[k, j, i+1, 1]
+						           + udy[j, i, 2, m] * rsd[k, j+1, i, 2]
+						           + udx[j, i, 2, m] * rsd[k, j, i+1, 2]
+						           + udy[j, i, 3, m] * rsd[k, j+1, i, 3]
+						           + udx[j, i, 3, m] * rsd[k, j, i+1, 3]
+						           + udy[j, i, 4, m] * rsd[k, j+1, i, 4]
+						           + udx[j, i, 4, m] * rsd[k, j, i+1, 4] );
 					}
 
 //---------------------------------------------------------------------
@@ -605,15 +601,15 @@ namespace NPB3_0_JAV{
 					tv[j, i, 0] = tv[j, i, 0]
 					/ tmat[0, 0];
 
-					v[k,j , i, 0] = v[k,j , i, 0] 
+					rsd[k,j , i, 0] = rsd[k,j , i, 0] 
 					- tv[j, i, 0];
-					v[k, j, i, 1] = v[k, j, i, 1] 
+					rsd[k, j, i, 1] = rsd[k, j, i, 1] 
 					- tv[j, i, 1];
-					v[k, j, i, 2] = v[k, j, i, 2] 
+					rsd[k, j, i, 2] = rsd[k, j, i, 2] 
 					- tv[j, i, 2];
-					v[k, j, i, 3] = v[k, j, i, 3] 
+					rsd[k, j, i, 3] = rsd[k, j, i, 3] 
 					- tv[j, i, 3];
-					v[k, j, i, 4] = v[k, j, i, 4] 
+					rsd[k, j, i, 4] = rsd[k, j, i, 4] 
 					- tv[j, i, 4];	    
 				}
 			}
@@ -2564,17 +2560,21 @@ namespace NPB3_0_JAV{
 //   initialize a,b,c,d to zero (guarantees that page tables have been
 //   formed, if applicable on given architecture, before timestepping).
 //---------------------------------------------------------------------
-    for(j=0;j<=isiz2-1;j++){
-      for(i=0;i<=isiz1-1;i++){
-	for(n=0;n<=4;n++){
-	  for(m=0;m<=4;m++){
-	    a[j, i, n ,m] = 0;
-	    b[j, i, n ,m] = 0;
-	    c[j, i, n ,m] = 0;
-	    d[j, i, n ,m] = 0;
-	  }
-	}
-      }
+    for(j=0;j<=isiz2-1;j++)
+	{
+    	for(i=0;i<=isiz1-1;i++)
+		{
+			for(n=0;n<=4;n++)
+			{
+	  			for(m=0;m<=4;m++)
+				{
+				    a[j, i, n ,m] = 0;
+				    b[j, i, n ,m] = 0;
+				    c[j, i, n ,m] = 0;
+				    d[j, i, n ,m] = 0;
+	  			}
+			}
+      	}
     }
 
     timer.resetAllTimers();
@@ -2597,85 +2597,91 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
 //   the timestep loop
 //---------------------------------------------------------------------
-    for(istep=1;istep<=itmax;istep++){         
-      if (istep % 20 == 0 || istep == itmax || istep == 1) {
-	Console.WriteLine(" Time step " + istep);
-      }
-
-//---------------------------------------------------------------------
-//   perform SSOR iteration
-//---------------------------------------------------------------------
-      if (timeron)  timer.start(t_rhs);
-      for(k=1;k<=nz - 2;k++){
-	for(j=jst-1;j<=jend-1;j++){
-	  for(i=ist-1;i<=iend-1;i++){
-	    for(m=0;m<=4;m++){
-	      rsd[k, j, i, m] = 
-	                      dt * rsd[k, j, i, m];
-	    }
-	  }
-	}
-      }
-      if (timeron)  timer.stop(t_rhs);
- 
-      for(k=1;k<=nz -2 ;k++){
-//---------------------------------------------------------------------
-//   form the lower triangular part of the jacobian matrix
-//---------------------------------------------------------------------
-	if (timeron)  timer.start(t_jacld);
-	jacld(k);
-	if (timeron)  timer.stop(t_jacld);
-
-//---------------------------------------------------------------------
-//   perform the lower triangular solution
-//---------------------------------------------------------------------;
-	if (timeron)  timer.start(t_blts);
-	blts( isiz1, isiz2, isiz3,
-	      nx, ny, nz, k,
-	      omega,
-	      rsd, tv,
-	      a, b, c, d,
-	      ist, iend, jst, jend, 
-	      nx0, ny0 );
-	if (timeron)  timer.stop(t_blts);
-      }
-      for(k = nz-2;k>=1; k--){
-//---------------------------------------------------------------------
-//   form the strictly upper triangular part of the jacobian matrix
-//---------------------------------------------------------------------
-	if (timeron)  timer.start(t_jacu);
-	jacu(k);
-	if (timeron)  timer.stop(t_jacu);
-
-//---------------------------------------------------------------------
-//   perform the upper triangular solution
-//---------------------------------------------------------------------
-	if (timeron)  timer.start(t_buts);
-	buts( isiz1, isiz2, isiz3,
-	      nx, ny, nz, k,
-	      omega,
-	      rsd, tv,
-	      d, a, b, c,
-	      ist, iend, jst, jend,
-	      nx0, ny0 );
-	if (timeron)  timer.stop(t_buts);
-      }
+	for(istep=1;istep<=itmax;istep++)
+	{         
+		if (istep % 20 == 0 || istep == itmax || istep == 1) 
+		{
+			Console.WriteLine(" Time step " + istep);
+		}
+	
+		//---------------------------------------------------------------------
+		//   perform SSOR iteration
+		//---------------------------------------------------------------------
+		if (timeron)  timer.start(t_rhs);
+				
+		for(k=1;k<=nz - 2;k++)
+		{
+		for(j=jst-1;j<=jend-1;j++)
+		{
+			for(i=ist-1;i<=iend-1;i++)
+			{
+				for(m=0;m<=4;m++)
+				{
+		  			rsd[k, j, i, m] = dt * rsd[k, j, i, m];
+				}
+			}
+			}
+		}
+			
+		if (timeron)  timer.stop(t_rhs);
+	 
+		for(k=1;k<=nz -2 ;k++)
+		{
+		//---------------------------------------------------------------------
+		//   form the lower triangular part of the jacobian matrix
+		//---------------------------------------------------------------------
+		   if (timeron)  timer.start(t_jacld);
+		   jacld(k);
+		   if (timeron)  timer.stop(t_jacld);
+		
+		//---------------------------------------------------------------------
+		//   perform the lower triangular solution
+		//---------------------------------------------------------------------;
+		   if (timeron)  timer.start(t_blts);
+		      blts(k,
+			      omega, tv,
+			      a, b, c);
+		   if (timeron)  timer.stop(t_blts);
+		}
+					
+		for(k = nz-2;k>=1; k--)
+		{
+	//---------------------------------------------------------------------
+	//   form the strictly upper triangular part of the jacobian matrix
+	//---------------------------------------------------------------------
+			if (timeron)  timer.start(t_jacu);
+			jacu(k);
+			if (timeron)  timer.stop(t_jacu);
+	
+	//---------------------------------------------------------------------
+	//   perform the upper triangular solution
+	//---------------------------------------------------------------------
+			if (timeron)  timer.start(t_buts);
+			buts(k,
+			      omega, tv,
+			      a, b, c);
+			if (timeron)  timer.stop(t_buts);
+		}
  
 //---------------------------------------------------------------------
 //   update the variables
 //---------------------------------------------------------------------
 
-      if (timeron)  timer.start(t_add);
-      for(k=1;k<=nz-2;k++){
-	for(j=jst-1;j<=jend-1;j++){
-	  for(i=ist-1;i<=iend-1;i++){
-	    for(m=0;m<=4;m++){
-	      u[k, j, i, m] += 
-		   + tmp * rsd[k, j, i, m];
-	    }
-	  }
+	if (timeron)  timer.start(t_add);
+				
+	for(k=1;k<=nz-2;k++)
+	{
+		for(j=jst-1;j<=jend-1;j++)
+		{
+			for(i=ist-1;i<=iend-1;i++)
+			{
+				for(m=0;m<=4;m++)
+				{
+					u[k, j, i, m] += tmp * rsd[k, j, i, m];
+				}
+			}
+		}
 	}
-      }
       if (timeron)  timer.stop(t_add);
  
 //---------------------------------------------------------------------
