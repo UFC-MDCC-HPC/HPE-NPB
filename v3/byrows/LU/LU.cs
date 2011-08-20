@@ -224,8 +224,7 @@ namespace NPB3_0_JAV{
 			}
 		}
 
-		public void blts(int k, double omega, 
-		                 double[,,] tv, double[,,,] ldz, double[,,,] ldy, 
+		public void blts(int k, double omega, double[,,,] ldz, double[,,,] ldy, 
 		                 double[,,,] ldx){
 			int i, j, m;
 			double  tmp, tmp1;
@@ -235,7 +234,7 @@ namespace NPB3_0_JAV{
 				for(i = ist-1; i <= iend-1; i++){
 					for(m = 0; m <= 4; m++){
 
-						tv[j,i,m] =  rsd[k,j,i,m]
+						rsd[k, j, i, m] =  rsd[k,j,i,m]
 						- omega * (  ldz[j, i, 0, m] * rsd[k-1, j, i, 0]
 						           + ldz[j, i, 1, m] * rsd[k-1, j, i, 1]
 						           + ldz[j, i, 2, m] * rsd[k-1, j, i, 2]
@@ -249,7 +248,7 @@ namespace NPB3_0_JAV{
 				for(i=ist-1;i<=iend-1;i++){
 					for(m=0;m<=4;m++){
 
-						tv[j, i, m] =  tv[j, i , m]
+						rsd[k, j, i, m] =  rsd[k, j, i, m]
 						- omega * (  ldy[j, i, 0, m] * rsd[k, j-1, i, 0]
 						           + ldx[j, i, 0, m] * rsd[k, j, i-1, 0]
 						           + ldy[j, i, 1, m] * rsd[k, j-1, i, 1]
@@ -277,150 +276,95 @@ namespace NPB3_0_JAV{
 
 					tmp1 = 1.0 / tmat[0, 0];
 					tmp = tmp1 * tmat[0, 1];
-					tmat[1, 1] =  tmat[1, 1]
-					- tmp * tmat[1, 0];
-					tmat[2, 1] =  tmat[2, 1]
-					- tmp * tmat[2, 0];
-					tmat[3, 1] =  tmat[3, 1]
-					- tmp * tmat[3, 0];
-					tmat[4, 1] =  tmat[4, 1]
-					- tmp * tmat[4, 0];
-					tv[j, i, 1] = tv[j, i, 1]
-					- tv[j, i, 0] * tmp;
+					tmat[1, 1] =  tmat[1, 1] - tmp * tmat[1, 0];
+					tmat[2, 1] =  tmat[2, 1] - tmp * tmat[2, 0];
+					tmat[3, 1] =  tmat[3, 1] - tmp * tmat[3, 0];
+					tmat[4, 1] =  tmat[4, 1] - tmp * tmat[4, 0];
+					rsd[k, j, i, 1] = rsd[k, j, i, 1] - rsd[k, j, i, 0] * tmp;
 
 					tmp = tmp1 * tmat[0, 2];
-					tmat[1, 2] =  tmat[1, 2]
-					- tmp * tmat[1, 0];
-					tmat[2, 2] =  tmat[2, 2]
-					- tmp * tmat[2, 0];
-					tmat[3, 2] =  tmat[3, 2]
-					- tmp * tmat[3, 0];
-					tmat[4, 2] =  tmat[4, 2]
-					- tmp * tmat[4, 0];
-					tv[j, i, 2] = tv[j, i, 2]
-					- tv[j, i, 0] * tmp;
+					tmat[1, 2] =  tmat[1, 2] - tmp * tmat[1, 0];
+					tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 0];
+					tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 0];
+					tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 0];
+					rsd[k, j, i, 2] = rsd[k, j, i, 2] - rsd[k, j, i, 0] * tmp;
 
 					tmp = tmp1 * tmat[0, 3];
-					tmat[1, 3] =  tmat[1, 3]
-					- tmp * tmat[1, 0];
-					tmat[2, 3] =  tmat[2, 3]
-					- tmp * tmat[2, 0];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 0];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 0];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 0] * tmp;
+					tmat[1, 3] =  tmat[1, 3] - tmp * tmat[1, 0];
+					tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 0];
+					tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 0];
+					tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 0];
+					rsd[k, j, i, 3] = rsd[k, j, i, 3] - rsd[k, j, i, 0] * tmp;
 
 					tmp = tmp1 * tmat[0, 4];
-					tmat[1, 4] =  tmat[1, 4]
-					- tmp * tmat[1, 0];
-					tmat[2, 4] =  tmat[2, 4]
-					- tmp * tmat[2, 0];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 0];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 0];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 0] * tmp;
+					tmat[1, 4] =  tmat[1, 4] - tmp * tmat[1, 0];
+					tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 0];
+					tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 0];
+					tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 0];
+					rsd[k, j, i, 4] = rsd[k, j, i, 4] - rsd[k, j, i, 0] * tmp;
 
 					tmp1 = 1.0 / tmat[1, 1];
 					tmp = tmp1 * tmat[1, 2];
-					tmat[2, 2] =  tmat[2, 2]
-					- tmp * tmat[2, 1];
-					tmat[3, 2] =  tmat[3, 2]
-					- tmp * tmat[3, 1];
-					tmat[4, 2] =  tmat[4, 2]
-					- tmp * tmat[4, 1];
-					tv[j, i, 2] = tv[j, i, 2]
-					- tv[j, i, 1] * tmp;
+					tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 1];
+					tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 1];
+					tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 1];
+					rsd[k, j, i, 2] = rsd[k, j, i, 2] - rsd[k, j, i, 1] * tmp;
 
 					tmp = tmp1 * tmat[1, 3];
-					tmat[2, 3] =  tmat[2, 3]
-					- tmp * tmat[2, 1];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 1];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 1];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 1] * tmp;
+					tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 1];
+					tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 1];
+					tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 1];
+					rsd[k, j, i, 3] = rsd[k, j, i, 3] - rsd[k, j, i, 1] * tmp;
 
 					tmp = tmp1 * tmat[1, 4];
-					tmat[2, 4] =  tmat[2, 4]
-					- tmp * tmat[2, 1];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 1];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 1];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 1] * tmp;
+					tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 1];
+					tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 1];
+					tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 1];
+					rsd[k, j, i, 4] = rsd[k, j, i, 4] - rsd[k, j, i, 1] * tmp;
 
 					tmp1 = 1.0 / tmat[2, 2];
 					tmp = tmp1 * tmat[2, 3];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 2];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 2];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 2] * tmp;
+					tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 2];
+					tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 2];
+					rsd[k, j, i, 3] = rsd[k, j, i, 3] - rsd[k, j, i, 2] * tmp;
 
 					tmp = tmp1 * tmat[2, 4];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 2];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 2];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 2] * tmp;
+					tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 2];
+					tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 2];
+					rsd[k, j, i, 4] = rsd[k, j, i, 4] - rsd[k, j, i, 2] * tmp;
 
 					tmp1 = 1.0 / tmat[3, 3];
 					tmp = tmp1 * tmat[3, 4];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 3];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 3] * tmp;
+					tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 3];
+					rsd[k, j, i, 4] = rsd[k, j, i, 4] - rsd[k, j, i, 3] * tmp;
 
 //---------------------------------------------------------------------
 //   back substitution
 //---------------------------------------------------------------------
             
-					rsd[k, j, i, 4] = tv[j, i, 4]
-					/ tmat[4, 4];
+					rsd[k, j, i, 4] = rsd[k, j, i, 4] / tmat[4, 4];
 
-					tv[j, i, 3] = tv[j, i, 3]
-					- tmat[4, 3] * rsd[k, j, i, 4];
-					rsd[k, j, i, 3] = tv[j, i, 3]
-					/ tmat[3, 3];
+					rsd[k, j, i, 3] = rsd[k, j, i, 3] - tmat[4, 3] * rsd[k, j, i, 4];
+					rsd[k, j, i, 3] = rsd[k, j, i, 3] / tmat[3, 3];
 
-					tv[j, i, 2] = tv[j, i, 2]
-					- tmat[3, 2] * rsd[k, j, i, 3]
-					- tmat[4, 2] * rsd[k, j, i, 4];
-					rsd[k, j, i, 2] = tv[j, i, 2]
-					/ tmat[2, 2];
+					rsd[k, j, i, 2] = rsd[k, j, i, 2] - tmat[3, 2] * rsd[k, j, i, 3] - tmat[4, 2] * rsd[k, j, i, 4];
+					rsd[k, j, i, 2] = rsd[k, j, i, 2] / tmat[2, 2];
 
-					tv[j, i, 1] = tv[j, i, 1]
-					- tmat[2, 1] * rsd[k, j, i, 2]
-					- tmat[3, 1] * rsd[k, j, i, 3]
-					- tmat[4, 1] * rsd[k, j, i, 4];
-					rsd[k, j, i, 1] = tv[j, i, 1]
-					/ tmat[1, 1];
+					rsd[k, j, i, 1] = rsd[k, j, i, 1] - tmat[2, 1] * rsd[k, j, i, 2] - tmat[3, 1] * rsd[k, j, i, 3] - tmat[4, 1] * rsd[k, j, i, 4];
+					rsd[k, j, i, 1] = rsd[k, j, i, 1] / tmat[1, 1];
 
-					tv[j, i, 0] = tv[j, i, 0]
-					- tmat[1, 0] * rsd[k, j, i, 1]
-					- tmat[2, 0] * rsd[k, j, i, 2]
-					- tmat[3, 0] * rsd[k, j, i, 3]
-					- tmat[4, 0] * rsd[k, j, i, 4];
-					rsd[k, j, i, 0] = tv[j, i, 0]
-					/ tmat[0, 0];
+					rsd[k, j, i, 0] = rsd[k, j, i, 0] - tmat[1, 0] * rsd[k, j, i, 1] - tmat[2, 0] * rsd[k, j, i, 2] - tmat[3, 0] * rsd[k, j, i, 3] - tmat[4, 0] * rsd[k, j, i, 4];
+					rsd[k, j, i, 0] = rsd[k, j, i, 0] / tmat[0, 0];
 				}
 			}
 		}
 
-		public void buts(int k, double omega, 
-		                 double[,,] tv, double[,,,] udx, 
+		public void buts(int k, double omega, double[,,,] udx, 
 		                 double[,,,] udy, double[,,,] udz){
 			int i, j, m;
 			double  tmp, tmp1;
 			double[,]  tmat =  new double[5,5];
+			double[,,] tv = new double[isiz2,isiz1,5];
 
 
 			for(j=jend-1;j>=jst-1;j--){
@@ -2550,7 +2494,7 @@ namespace NPB3_0_JAV{
     int i, j, k, m, n;
     int istep;
     double  tmp;
-    double[]  delunm = new double[5]; double[,,] tv = new double[isiz2,isiz1,5];
+    double[]  delunm = new double[5]; 
  
 //---------------------------------------------------------------------
 //   begin pseudo-time stepping iterations
@@ -2639,7 +2583,7 @@ namespace NPB3_0_JAV{
 		//---------------------------------------------------------------------;
 		   if (timeron)  timer.start(t_blts);
 		      blts(k,
-			      omega, tv,
+			      omega,
 			      a, b, c);
 		   if (timeron)  timer.stop(t_blts);
 		}
@@ -2658,7 +2602,7 @@ namespace NPB3_0_JAV{
 	//---------------------------------------------------------------------
 			if (timeron)  timer.start(t_buts);
 			buts(k,
-			      omega, tv,
+			      omega,
 			      a, b, c);
 			if (timeron)  timer.stop(t_buts);
 		}
