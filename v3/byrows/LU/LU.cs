@@ -1641,9 +1641,7 @@ namespace NPB3_0_JAV{
          } 
   }
   
-  public void l2norm(int ldx, int ldy, int ldz, int nx0, int ny0, int nz0, 
-    		     int ist, int iend, 
-        	     int jst, int jend, double[,,,] v, double[] sum){
+  public void l2norm(double[,,,] v, double[] sum){
     int i, j, k, m;
 
     for(m=0;m<=4;m++){
@@ -2467,9 +2465,7 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
 //   compute the L2 norms of newton iteration residuals
 //---------------------------------------------------------------------
-    l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-	    ist, iend, jst, jend,
-	    rsd, rsdnm ); 
+    l2norm(rsd, rsdnm ); 
  
     timer.resetAllTimers();
     
@@ -2552,7 +2548,7 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
       if ( istep % inorm  == 0 )
 	  {
-	       l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, delunm );
+	       l2norm(rsd, delunm );
       }
  
 //---------------------------------------------------------------------
@@ -2565,7 +2561,7 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
       if ( istep % inorm == 0 || istep == itmax )
 	  {
-	     l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, rsdnm );
+	     l2norm(rsd, rsdnm );
       }
 
 //---------------------------------------------------------------------
