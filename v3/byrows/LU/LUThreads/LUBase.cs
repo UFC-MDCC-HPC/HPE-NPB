@@ -98,10 +98,10 @@ public class LUBase /* : Thread*/{
 //   and l2norm are similarly padded
 //---------------------------------------------------------------------
 
-  protected double[,,,] u, rsd, frct;
+  protected double[,,,] u, rsd, frct, flux;
   protected int isize1, jsize1, ksize1; 
 
-  protected double[,] flux; 
+  //protected double[,] flux; 
   protected int isize2;
 
   protected double[,,] qs, rho_i;
@@ -183,11 +183,12 @@ public class LUBase /* : Thread*/{
     u = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
     rsd = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
     frct = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1),5];
+    flux= new double[isiz3,isiz2,isiz1,5];
+			
     isize1=5;
     jsize1=5*(isiz1/2*2+1);
     ksize1=5*(isiz1/2*2+1)*(isiz2/2*2+1);
     
-    flux= new double[isiz1,5];
     isize2=5;
 
     qs = new double[isiz3,(isiz2/2*2+1),(isiz1/2*2+1)];

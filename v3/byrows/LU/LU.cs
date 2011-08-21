@@ -604,23 +604,23 @@ namespace NPB3_0_JAV{
       for(k=1;k<=nz - 2;k++){
          for(j=jst-1;j<=jend-1;j++){
             for(i=0;i<=nx-1;i++){
-               flux[i,0] = rsd[k, j, i, 1];
+               flux[k, j, i, 0] = rsd[k, j, i, 1];
                u21 = rsd[k, j, i, 1] / rsd[k, j, i, 0];
                q = 0.50 * (  rsd[k, j, i, 1] * rsd[k, j, i, 1]
                                + rsd[k, j, i, 2] * rsd[k, j, i, 2]
                                + rsd[k, j, i, 3] * rsd[k, j, i, 3] )
                             / rsd[k, j, i, 0];
-               flux[i, 1] = rsd[k, j, i, 1] * u21 + c2 * 
+               flux[k, j, i, 1] = rsd[k, j, i, 1] * u21 + c2 * 
                                ( rsd[k, j, i, 4] - q );
-               flux[i, 2] = rsd[k, j, i, 2] * u21;
-               flux[i, 3] = rsd[k, j, i, 3] * u21;
-               flux[i, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u21;
+               flux[k, j, i, 2] = rsd[k, j, i, 2] * u21;
+               flux[k, j, i, 3] = rsd[k, j, i, 3] * u21;
+               flux[k, j, i, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u21;
             }
 
             for(i=ist-1;i<=iend-1;i++){
                for(m=0;m<=4;m++){
                   frct[k, j, i, m] =  frct[k, j, i, m]
-                         - tx2 * ( flux[i+1, m] - flux[i-1, m] );
+                         - tx2 * ( flux[k, j, i+1, m] - flux[k, j, i-1, m] );
                }
             }
             for(i=ist-1;i<=nx-1;i++){
@@ -638,11 +638,11 @@ namespace NPB3_0_JAV{
                u41im1 = tmp * rsd[k, j, i-1, 3];
                u51im1 = tmp * rsd[k, j, i-1, 4];
 
-               flux[i,1] = (4.0/3.0) * tx3 * 
+               flux[k, j, i,1] = (4.0/3.0) * tx3 * 
                               ( u21i - u21im1 );
-               flux[i,2] = tx3 * ( u31i - u31im1 );
-               flux[i,3] = tx3 * ( u41i - u41im1 );
-               flux[i,4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[k, j, i,2] = tx3 * ( u31i - u31im1 );
+               flux[k, j, i,3] = tx3 * ( u41i - u41im1 );
+               flux[k, j, i,4] = 0.50 * ( 1.0 - c1*c5 )
                     * tx3 * ( ( Math.Pow(u21i,2) + Math.Pow(u31i,2) + Math.Pow(u41i,2) )
                             - ( Math.Pow(u21im1,2) + Math.Pow(u31im1,2) + Math.Pow(u41im1,2) ) )
                     + (1.0/6.0)
@@ -656,22 +656,22 @@ namespace NPB3_0_JAV{
                                    - 2.0 * rsd[k, j, i, 0]
                                    +           rsd[k, j, i+1, 0] );
                frct[k, j, i, 1] = frct[k, j, i, 1]
-                 + tx3 * c3 * c4 * ( flux[i+1, 1] - flux[i, 1] )
+                 + tx3 * c3 * c4 * ( flux[k, j, i+1, 1] - flux[k, j, i, 1] )
                     + dx2 * tx1 * (            rsd[k, j, i-1, 1]
                                    - 2.0 * rsd[k, j, i, 1]
                                    +           rsd[k, j, i+1, 1] );
                frct[k, j, i, 2] = frct[k, j, i, 2]
-                 + tx3 * c3 * c4 * ( flux[i+1, 2] - flux[i, 2] )
+                 + tx3 * c3 * c4 * ( flux[k, j, i+1, 2] - flux[k, j, i, 2] )
                     + dx3 * tx1 * (            rsd[k, j, i-1, 2]
                                    - 2.0 * rsd[k, j, i, 2]
                                    +           rsd[k, j, i+1, 2] );
                frct[k, j, i, 3] = frct[k, j, i, 3]
-                  + tx3 * c3 * c4 * ( flux[i+1, 3] - flux[i, 3] )
+                  + tx3 * c3 * c4 * ( flux[k, j, i+1, 3] - flux[k, j, i, 3] )
                     + dx4 * tx1 * (            rsd[k, j, i-1, 3]
                                    - 2.0 * rsd[k, j, i, 3]
                                    +           rsd[k, j, i+1, 3] );
                frct[k, j, i, 4] = frct[k, j, i, 4]
-                 + tx3 * c3 * c4 * ( flux[i+1, 4] - flux[i, 4] )
+                 + tx3 * c3 * c4 * ( flux[k, j, i+1, 4] - flux[k, j, i, 4] )
                     + dx5 * tx1 * (            rsd[k, j, i-1, 4]
                                    - 2.0 * rsd[k, j, i, 4]
                                    +           rsd[k, j, i+1, 4] );
@@ -727,23 +727,23 @@ namespace NPB3_0_JAV{
       for(k=1;k<=nz - 2;k++){
          for(i=ist-1;i<=iend-1;i++){
             for(j=0;j<=ny-1;j++){
-               flux[j, 0] = rsd[k, j, i, 2];
+               flux[k, j, i, 0] = rsd[k, j, i, 2];
                u31 = rsd[k, j, i, 2] / rsd[k, j, i, 0];
                q = 0.50 * (  rsd[k, j, i, 1] * rsd[k, j, i, 1]
                                + rsd[k, j, i, 2] * rsd[k, j, i, 2]
                                + rsd[k, j, i, 3] * rsd[k, j, i, 3] )
                             / rsd[k, j, i, 0];
-               flux[j, 1] = rsd[k, j, i, 1] * u31 ;
-               flux[j, 2] = rsd[k, j, i, 2] * u31 + c2 * 
+               flux[k, j, i, 1] = rsd[k, j, i, 1] * u31 ;
+               flux[k, j, i, 2] = rsd[k, j, i, 2] * u31 + c2 * 
                              ( rsd[k, j, i, 4] - q );
-               flux[j, 3] = rsd[k, j, i, 3] * u31;
-               flux[j, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u31;
+               flux[k, j, i, 3] = rsd[k, j, i, 3] * u31;
+               flux[k, j, i, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u31;
             }
 
             for(j=jst-1;j<=jend-1;j++){
                for(m=0;m<=4;m++){
                   frct[k, j, i, m] =  frct[k, j, i, m]
-                       - ty2 * ( flux[j+1,m] - flux[j-1,m] );
+                       - ty2 * ( flux[k, j+1, i ,m] - flux[k, j-1, i ,m] );
                }
             }
 
@@ -762,11 +762,11 @@ namespace NPB3_0_JAV{
                u41jm1 = tmp * rsd[k, j-1, i, 3];
                u51jm1 = tmp * rsd[k, j-1, i, 4];
 
-               flux[j, 1] = ty3 * ( u21j - u21jm1 );
-               flux[j, 2] = (4.0/3.0) * ty3 * 
+               flux[k, j, i, 1] = ty3 * ( u21j - u21jm1 );
+               flux[k, j, i, 2] = (4.0/3.0) * ty3 * 
                              ( u31j - u31jm1 );
-               flux[j, 3] = ty3 * ( u41j - u41jm1 );
-               flux[j, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[k, j, i, 3] = ty3 * ( u41j - u41jm1 );
+               flux[k, j, i, 4] = 0.50 * ( 1.0 - c1*c5 )
                     * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
                             - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
                     + (1.0/6.0)
@@ -780,22 +780,22 @@ namespace NPB3_0_JAV{
                                    - 2.0 * rsd[k, j, i, 0]
                                    +           rsd[k, j+1, i, 0] );
                frct[k, j, i, 1] = frct[k, j, i, 1]
-                + ty3 * c3 * c4 * ( flux[j+1, 1] - flux[j, 1] )
+                + ty3 * c3 * c4 * ( flux[k, j+1, i, 1] - flux[k, j, i, 1] )
                     + dy2 * ty1 * (            rsd[k, j-1, i, 1]
                                    - 2.0 * rsd[k, j, i, 1]
                                    +           rsd[k, j+1, i, 1] );
                frct[k, j, i, 2] = frct[k, j, i, 2]
-                + ty3 * c3 * c4 * ( flux[j+1, 2] - flux[j, 2] )
+                + ty3 * c3 * c4 * ( flux[k, j+1, i, 2] - flux[k, j, i, 2] )
                     + dy3 * ty1 * (            rsd[k, j-1, i, 2]
                                    - 2.0 * rsd[k, j, i, 2]
                                    +           rsd[k, j+1, i, 2] );
                frct[k, j, i, 3] = frct[k, j, i, 3]
-                + ty3 * c3 * c4 * ( flux[j+1, 3] - flux[j, 3] )
+                + ty3 * c3 * c4 * ( flux[k, j+1, i, 3] - flux[k, j, i, 3] )
                     + dy4 * ty1 * (            rsd[k, j-1, i, 3]
                                    - 2.0 * rsd[k, j, i, 3]
                                    +           rsd[k, j+1, i, 3] );
                frct[k, j, i, 4] = frct[k, j, i, 4]
-                + ty3 * c3 * c4 * ( flux[j+1, 4] - flux[j, 4] )
+                + ty3 * c3 * c4 * ( flux[k, j+1, i, 4] - flux[k, j, i, 4] )
                     + dy5 * ty1 * (            rsd[k, j-1, i, 4]
                                    - 2.0 * rsd[k, j, i, 4]
                                    +           rsd[k, j+1, i, 4] );
@@ -847,23 +847,23 @@ namespace NPB3_0_JAV{
       for(j=jst-1;j<=jend-1;j++){
          for(i=ist-1;i<=iend-1;i++){
             for(k=0;k<=nz-1;k++){
-               flux[k, 0] = rsd[k, j, i, 3];
+               flux[k, j, i, 0] = rsd[k, j, i, 3];
                u41 = rsd[k, j, i, 3] / rsd[k, j, i, 0];
                q = 0.50 * (  rsd[k, j, i, 1] * rsd[k, j, i, 1]
                                + rsd[k, j, i, 2] * rsd[k, j, i, 2]
                                + rsd[k, j, i, 3] * rsd[k, j, i, 3] )
                             / rsd[k, j, i, 0];
-               flux[k, 1] = rsd[k, j, i, 1] * u41 ;
-               flux[k, 2] = rsd[k, j, i, 2] * u41 ;
-               flux[k, 3] = rsd[k, j, i, 3] * u41 + c2 * 
+               flux[k, j, i, 1] = rsd[k, j, i, 1] * u41 ;
+               flux[k, j, i, 2] = rsd[k, j, i, 2] * u41 ;
+               flux[k, j, i, 3] = rsd[k, j, i, 3] * u41 + c2 * 
                                ( rsd[k, j, i, 4] - q );
-               flux[k, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u41;
+               flux[k, j, i, 4] = ( c1 * rsd[k, j, i, 4] - c2 * q ) * u41;
             }
 
             for(k=1;k<=nz - 2;k++){
                for(m=0;m<=4;m++){
                   frct[k, j, i, m] =  frct[k, j, i, m]
-                        - tz2 * ( flux[k+1, m] - flux[k-1, m] );
+                        - tz2 * ( flux[k+1, j, i, m] - flux[k-1, j, i, m] );
                }
             }
 
@@ -882,11 +882,11 @@ namespace NPB3_0_JAV{
                u41km1 = tmp * rsd[k-1, j, i, 3];
                u51km1 = tmp * rsd[k-1, j, i, 4];
 
-               flux[k, 1] = tz3 * ( u21k - u21km1 );
-               flux[k, 2] = tz3 * ( u31k - u31km1 );
-               flux[k, 3] = (4.0/3.0) * tz3 * ( u41k 
+               flux[k, j, i, 1] = tz3 * ( u21k - u21km1 );
+               flux[k, j, i, 2] = tz3 * ( u31k - u31km1 );
+               flux[k, j, i, 3] = (4.0/3.0) * tz3 * ( u41k 
                              - u41km1 );
-               flux[k, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[k, j, i, 4] = 0.50 * ( 1.0 - c1*c5 )
                     * tz3 * ( ( Math.Pow(u21k,2) + Math.Pow(u31k,2) + Math.Pow(u41k,2) )
                             - ( Math.Pow(u21km1,2) + Math.Pow(u31km1,2) + Math.Pow(u41km1,2) ) )
                     + (1.0/6.0)
@@ -900,22 +900,22 @@ namespace NPB3_0_JAV{
                                    - 2.0 * rsd[k, j, i, 0]
                                    +           rsd[k-1, j, i, 0] );
                frct[k, j, i, 1] = frct[k, j, i, 1]
-                + tz3 * c3 * c4 * ( flux[k+1, 1] - flux[k, 1] )
+                + tz3 * c3 * c4 * ( flux[k+1, j, i, 1] - flux[k, j, i, 1] )
                     + dz2 * tz1 * (            rsd[k+1, j, i, 1]
                                    - 2.0 * rsd[k, j, i, 1]
                                    +           rsd[k-1, j, i, 1] );
                frct[k, j, i, 2] = frct[k, j, i, 2]
-                + tz3 * c3 * c4 * ( flux[k+1, 2] - flux[k, 2] )
+                + tz3 * c3 * c4 * ( flux[k+1, j, i, 2] - flux[k, j, i, 2] )
                     + dz3 * tz1 * (            rsd[k+1, j, i, 2]
                                    - 2.0 * rsd[k, j, i, 2]
                                    +           rsd[k-1, j, i, 2] );
                frct[k, j, i, 3] = frct[k, j, i, 3]
-                + tz3 * c3 * c4 * ( flux[k+1, 3] - flux[k, 3] )
+                + tz3 * c3 * c4 * ( flux[k+1, j, i, 3] - flux[k, j, i, 3] )
                     + dz4 * tz1 * (            rsd[k+1, j, i, 3]
                                    - 2.0 * rsd[k, j, i, 3]
                                    +           rsd[k-1, j, i, 3] );
                frct[k, j, i, 4] = frct[k, j, i, 4]
-                + tz3 * c3 * c4 * ( flux[k+1, 4] - flux[k, 4] )
+                + tz3 * c3 * c4 * ( flux[k+1, j, i, 4] - flux[k, j, i, 4] )
                     + dz5 * tz1 * (            rsd[k+1, j, i, 4]
                                    - 2.0 * rsd[k, j, i, 4]
                                    +           rsd[k-1, j, i, 4] );
@@ -1939,22 +1939,22 @@ namespace NPB3_0_JAV{
       for(k=1;k<=nz - 2;k++){
          for(j=jst-1;j<=jend-1;j++){
             for(i=0;i<=nx-1;i++){
-               flux[i, 0] = u[k, j, i, 1];
+               flux[k, j, i, 0] = u[k, j, i, 1];
                u21 = u[k, j, i, 1] * rho_i[k, j, i];
 
                q = qs[k, j, i];
 
-               flux[i, 1] = u[k, j, i, 1] * u21 + c2 * 
+               flux[k, j, i, 1] = u[k, j, i, 1] * u21 + c2 * 
                               ( u[k, j, i, 4] - q );
-               flux[i, 2] = u[k, j, i, 2] * u21;
-               flux[i, 3] = u[k, j, i, 3] * u21;
-               flux[i, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u21;
+               flux[k, j, i, 2] = u[k, j, i, 2] * u21;
+               flux[k, j, i, 3] = u[k, j, i, 3] * u21;
+               flux[k, j, i, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u21;
             }
 
             for(i=ist-1;i<=iend-1;i++){
                for(m=0;m<=4;m++){
                   rsd[k, j, i, m] =  rsd[k, j, i, m]
-                       - tx2 * ( flux[i+1, m] - flux[i-1, m] );
+                       - tx2 * ( flux[k, j, i+1, m] - flux[k, j, i-1, m] );
                }
             }
 
@@ -1973,10 +1973,10 @@ namespace NPB3_0_JAV{
                u41im1 = tmp * u[k, j, i-1, 3];
                u51im1 = tmp * u[k, j, i-1, 4];
 
-               flux[i, 1] = (4.0/3.0) * tx3 * (u21i-u21im1);
-               flux[i, 2] = tx3 * ( u31i - u31im1 );
-               flux[i, 3] = tx3 * ( u41i - u41im1 );
-               flux[i, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[k, j, i, 1] = (4.0/3.0) * tx3 * (u21i-u21im1);
+               flux[k, j, i, 2] = tx3 * ( u31i - u31im1 );
+               flux[k, j, i, 3] = tx3 * ( u41i - u41im1 );
+               flux[k, j, i, 4] = 0.50 * ( 1.0 - c1*c5 )
                     * tx3 * ( ( Math.Pow(u21i,2) + Math.Pow(u31i,2) + Math.Pow(u41i,2) )
                             - ( Math.Pow(u21im1,2) + Math.Pow(u31im1,2) + Math.Pow(u41im1,2) ) )
                     + (1.0/6.0)
@@ -1990,22 +1990,22 @@ namespace NPB3_0_JAV{
                                    - 2.0 * u[k, j, i, 0]
                                    +           u[k, j, i+1, 0] );
                rsd[k, j, i, 1] = rsd[k, j, i, 1]
-                + tx3 * c3 * c4 * ( flux[i+1, 1] - flux[i, 1] )
+                + tx3 * c3 * c4 * ( flux[k, j, i+1, 1] - flux[k, j, i, 1] )
                     + dx2 * tx1 * (            u[k, j, i-1, 1]
                                    - 2.0 * u[k, j, i, 1]
                                    +           u[k, j, i+1, 1] );
                rsd[k, j, i, 2] = rsd[k, j, i, 2]
-                + tx3 * c3 * c4 * ( flux[i+1, 2] - flux[i, 2] )
+                + tx3 * c3 * c4 * ( flux[k, j, i+1, 2] - flux[k, j, i, 2] )
                     + dx3 * tx1 * (            u[k, j, i-1, 2]
                                    - 2.0 * u[k, j, i, 2]
                                    +           u[k, j, i+1, 2] );
                rsd[k, j, i, 3] = rsd[k, j, i, 3]
-                + tx3 * c3 * c4 * ( flux[i+1, 3] - flux[i, 3] )
+                + tx3 * c3 * c4 * ( flux[k, j, i+1, 3] - flux[k, j, i, 3] )
                     + dx4 * tx1 * (            u[k, j, i-1, 3]
                                    - 2.0 * u[k, j, i, 3]
                                    +           u[k, j, i+1, 3] );
                rsd[k, j, i, 4] = rsd[k, j, i, 4]
-                + tx3 * c3 * c4 * ( flux[i+1, 4] - flux[i, 4] )
+                + tx3 * c3 * c4 * ( flux[k, j, i+1, 4] - flux[k, j, i, 4] )
                     + dx5 * tx1 * (            u[k, j, i-1, 4]
                                    - 2.0 * u[k, j, i, 4]
                                    +           u[k, j, i+1, 4] );
@@ -2056,151 +2056,196 @@ namespace NPB3_0_JAV{
 //---------------------------------------------------------------------
 //   eta-direction flux differences
 //---------------------------------------------------------------------
-      for(k=1;k<=nz - 2;k++){
-         for(i=ist-1;i<=iend-1;i++){
-            for(j=0;j<=ny-1;j++){
-               flux[j, 0] = u[k, j, i, 2];
+      for(k=1;k<=nz - 2;k++)
+	  {
+         for(j=0;j<=ny-1;j++)
+		 {
+             for(i=ist-1;i<=iend-1;i++)
+			 {
+               flux[k, j, i, 0] = u[k, j, i, 2];
                u31 = u[k, j, i, 2] * rho_i[k, j, i];
 
                q = qs[k, j, i];
 
-               flux[j, 1] = u[k, j, i, 1] * u31 ;
-               flux[j, 2] = u[k, j, i, 2] * u31 + c2 * (u[k, j, i, 4]-q);
-               flux[j, 3] = u[k, j, i, 3] * u31;
-               flux[j, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u31;
-            }
+               flux[k, j, i, 1] = u[k, j, i, 1] * u31 ;
+               flux[k, j, i, 2] = u[k, j, i, 2] * u31 + c2 * (u[k, j, i, 4]-q);
+               flux[k, j, i, 3] = u[k, j, i, 3] * u31;
+               flux[k, j, i, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u31;
+             }
+		 }
 
-            for(j=jst-1;j<=jend-1;j++){
-               for(m=0;m<=4;m++){
+         for(j=jst-1;j<=jend-1;j++)
+ 		 {
+            for(i=ist-1;i<=iend-1;i++)
+			{
+               for(m=0;m<=4;m++)
+			    {
                   rsd[k, j, i, m] =  rsd[k, j, i, m]
-                         - ty2 * ( flux[j+1, m] - flux[j-1, m] );
-               }
+                         - ty2 * ( flux[k, j+1, i, m] - flux[k, j-1, i, m] );
+				}
             }
+         }
 
-            for(j=jst-1;j<=ny-1;j++){
-               tmp = rho_i[k, j, i];
+            for(j=jst-1;j<=ny-1;j++)
+			{
+	            for(i=ist-1;i<=iend-1;i++)
+				{
+	               tmp = rho_i[k, j, i];
+	
+	               u21j = tmp * u[k, j, i, 1];
+	               u31j = tmp * u[k, j, i, 2];
+	               u41j = tmp * u[k, j, i, 3];
+	               u51j = tmp * u[k, j, i, 4];
+	
+	               tmp = rho_i[k, j-1, i];
+	               u21jm1 = tmp * u[k, j-1, i, 1];
+	               u31jm1 = tmp * u[k, j-1, i, 2];
+	               u41jm1 = tmp * u[k, j-1, i, 3];
+	               u51jm1 = tmp * u[k, j-1, i, 4];
+	
+	               flux[k, j, i, 1] = ty3 * ( u21j - u21jm1 );
+	               flux[k, j, i, 2] = (4.0/3.0) * ty3 * (u31j-u31jm1);
+	               flux[k, j, i, 3] = ty3 * ( u41j - u41jm1 );
+	               flux[k, j, i, 4] = 0.50 * ( 1.0 - c1*c5 )
+	                    * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
+	                            - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
+	                    + (1.0/6.0)
+	                    * ty3 * ( Math.Pow(u31j,2) - Math.Pow(u31jm1,2) )
+	                    + c1 * c5 * ty3 * ( u51j - u51jm1 );
+	            }
+			}
 
-               u21j = tmp * u[k, j, i, 1];
-               u31j = tmp * u[k, j, i, 2];
-               u41j = tmp * u[k, j, i, 3];
-               u51j = tmp * u[k, j, i, 4];
-
-               tmp = rho_i[k, j-1, i];
-               u21jm1 = tmp * u[k, j-1, i, 1];
-               u31jm1 = tmp * u[k, j-1, i, 2];
-               u41jm1 = tmp * u[k, j-1, i, 3];
-               u51jm1 = tmp * u[k, j-1, i, 4];
-
-               flux[j, 1] = ty3 * ( u21j - u21jm1 );
-               flux[j, 2] = (4.0/3.0) * ty3 * (u31j-u31jm1);
-               flux[j, 3] = ty3 * ( u41j - u41jm1 );
-               flux[j, 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
-                            - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
-                    + (1.0/6.0)
-                    * ty3 * ( Math.Pow(u31j,2) - Math.Pow(u31jm1,2) )
-                    + c1 * c5 * ty3 * ( u51j - u51jm1 );
-            }
-
-            for(j=jst-1;j<=jend-1;j++){
-
-               rsd[k, j, i, 0] = rsd[k, j, i, 0]
-                    + dy1 * ty1 * (            u[k, j-1, i, 0]
-                                   - 2.0 * u[k, j, i, 0]
-                                   +           u[k, j+1, i, 0] );
-
-               rsd[k, j, i, 1] = rsd[k, j, i, 1]
-                + ty3 * c3 * c4 * ( flux[j+1, 1] - flux[j, 1] )
-                    + dy2 * ty1 * (            u[k, j-1, i, 1]
-                                   - 2.0 * u[k, j, i, 1]
-                                   +           u[k, j+1, i, 1] );
-
-               rsd[k, j, i, 2] = rsd[k, j, i, 2]
-                + ty3 * c3 * c4 * ( flux[j+1, 2] - flux[j, 2] )
-                    + dy3 * ty1 * (            u[k, j-1, i, 2]
-                                   - 2.0 * u[k, j, i, 2]
-                                   +           u[k, j+1, i, 2] );
-
-               rsd[k, j, i, 3] = rsd[k, j, i, 3]
-                + ty3 * c3 * c4 * ( flux[j+1, 3] - flux[j, 3] )
-                    + dy4 * ty1 * (            u[k, j-1, i, 3]
-                                   - 2.0 * u[k, j, i, 3]
-                                   +           u[k, j+1, i, 3] );
-
-               rsd[k, j, i, 4] = rsd[k, j, i, 4]
-                + ty3 * c3 * c4 * ( flux[j+1, 4] - flux[j, 4] )
-                    + dy5 * ty1 * (            u[k, j-1, i, 4]
-                                   - 2.0 * u[k, j, i, 4]
-                                   +           u[k, j+1, i, 4] );
-
-            }
+            for(j=jst-1;j<=jend-1;j++)
+			{
+	            for(i=ist-1;i<=iend-1;i++)
+				{
+	               rsd[k, j, i, 0] = rsd[k, j, i, 0]
+	                    + dy1 * ty1 * (            u[k, j-1, i, 0]
+	                                   - 2.0 * u[k, j, i, 0]
+	                                   +           u[k, j+1, i, 0] );
+	
+	               rsd[k, j, i, 1] = rsd[k, j, i, 1]
+	                + ty3 * c3 * c4 * ( flux[k, j+1, i, 1] - flux[k, j, i, 1] )
+	                    + dy2 * ty1 * (            u[k, j-1, i, 1]
+	                                   - 2.0 * u[k, j, i, 1]
+	                                   +           u[k, j+1, i, 1] );
+	
+	               rsd[k, j, i, 2] = rsd[k, j, i, 2]
+	                + ty3 * c3 * c4 * ( flux[k, j+1, i, 2] - flux[k, j, i, 2] )
+	                    + dy3 * ty1 * (            u[k, j-1, i, 2]
+	                                   - 2.0 * u[k, j, i, 2]
+	                                   +           u[k, j+1, i, 2] );
+	
+	               rsd[k, j, i, 3] = rsd[k, j, i, 3]
+	                + ty3 * c3 * c4 * ( flux[k, j+1, i, 3] - flux[k, j, i, 3] )
+	                    + dy4 * ty1 * (            u[k, j-1, i, 3]
+	                                   - 2.0 * u[k, j, i, 3]
+	                                   +           u[k, j+1, i, 3] );
+	
+	               rsd[k, j, i, 4] = rsd[k, j, i, 4]
+	                + ty3 * c3 * c4 * ( flux[k, j+1, i, 4] - flux[k, j, i, 4] )
+	                    + dy5 * ty1 * (            u[k, j-1, i, 4]
+	                                   - 2.0 * u[k, j, i, 4]
+	                                   +           u[k, j+1, i, 4] );
+				}
+           }
 
 //---------------------------------------------------------------------
 //   fourth-order dissipation
 //---------------------------------------------------------------------
-            for(m=0;m<=4;m++){
-               rsd[k, 1, i, m] = rsd[k, 1, i, m]
-                 - dssp * ( + 5.0 * u[k, 1, i, m]
-                            - 4.0 * u[k, 2, i, m]
-                            +           u[k, 3, i, m] );
-               rsd[k, 2, i, m] = rsd[k, 2, i, m]
-                 - dssp * ( - 4.0 * u[k, 1, i, m]
-                            + 6.0 * u[k, 2, i, m]
-                            - 4.0 * u[k, 3, i, m]
-                            +           u[k, 4, i, m] );
+            for(i=ist-1;i<=iend-1;i++)
+			{
+		        for(m=0;m<=4;m++){
+		           rsd[k, 1, i, m] = rsd[k, 1, i, m]
+		             - dssp * ( + 5.0 * u[k, 1, i, m]
+		                        - 4.0 * u[k, 2, i, m]
+		                        +           u[k, 3, i, m] );
+		           rsd[k, 2, i, m] = rsd[k, 2, i, m]
+		             - dssp * ( - 4.0 * u[k, 1, i, m]
+		                        + 6.0 * u[k, 2, i, m]
+		                        - 4.0 * u[k, 3, i, m]
+		                        +           u[k, 4, i, m] );
+		        }
+			}
+
+            for(j=3;j<=ny - 4;j++)
+			{
+	            for(i=ist-1;i<=iend-1;i++)
+				{
+	               for(m=0;m<=4;m++)
+				   {
+	                  rsd[k, j, i, m] = rsd[k, j, i, m]
+	                    - dssp * (            u[k, j-2, i, m]
+	                              - 4.0 * u[k, j-1, i, m]
+	                              + 6.0 * u[k, j, i, m]
+	                              - 4.0 * u[k, j+1, i, m]
+	                              +           u[k, j+2, i, m] );
+	               }
+				}
             }
 
-            for(j=3;j<=ny - 4;j++){
-               for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] = rsd[k, j, i, m]
-                    - dssp * (            u[k, j-2, i, m]
-                              - 4.0 * u[k, j-1, i, m]
-                              + 6.0 * u[k, j, i, m]
-                              - 4.0 * u[k, j+1, i, m]
-                              +           u[k, j+2, i, m] );
-               }
-            }
+            for(i=ist-1;i<=iend-1;i++)
+			{
+	            for(m=0;m<=4;m++)
+				{
+	               rsd[k, ny-3, i, m] = rsd[k, ny-3, i, m]
+	                 - dssp * (             u[k, ny-5, i, m]
+	                            - 4.0 * u[k, ny-4, i, m]
+	                            + 6.0 * u[k, ny-3, i, m]
+	                            - 4.0 * u[k, ny-2, i, m]  );
+	               rsd[k, ny-2, i, m] = rsd[k, ny-2, i, m]
+	                 - dssp * (             u[k, ny-4, i, m]
+	                            - 4.0 * u[k, ny-3, i, m]
+	                            + 5.0 * u[k, ny-2, i, m] );
+	            }
+			}
 
-            for(m=0;m<=4;m++){
-               rsd[k, ny-3, i, m] = rsd[k, ny-3, i, m]
-                 - dssp * (             u[k, ny-5, i, m]
-                            - 4.0 * u[k, ny-4, i, m]
-                            + 6.0 * u[k, ny-3, i, m]
-                            - 4.0 * u[k, ny-2, i, m]  );
-               rsd[k, ny-2, i, m] = rsd[k, ny-2, i, m]
-                 - dssp * (             u[k, ny-4, i, m]
-                            - 4.0 * u[k, ny-3, i, m]
-                            + 5.0 * u[k, ny-2, i, m] );
-            }
-
-         }
+        
       }
 
 //---------------------------------------------------------------------
 //   zeta-direction flux differences
 //---------------------------------------------------------------------
-      for(j=jst-1;j<=jend-1;j++){
-         for(i=ist-1;i<=iend-1;i++){
-      	    for(k=0;k<=nz-1;k++){
-               flux[k, 0] = u[k, j, i, 3];
+    for(k=0;k<=nz-1;k++)
+	{
+      for(j=jst-1;j<=jend-1;j++)
+	  {
+         for(i=ist-1;i<=iend-1;i++)
+		 {
+               flux[k, j, i, 0] = u[k, j, i, 3];
                u41 = u[k, j, i, 3] * rho_i[k, j, i];
 
                q = qs[k, j, i];
 
-               flux[k, 1] = u[k, j, i, 1] * u41 ;
-               flux[k, 2] = u[k, j, i, 2] * u41 ;
-               flux[k, 3] = u[k, j, i, 3] * u41 + c2 * (u[k, j, i, 4]-q);
-               flux[k, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u41;
-            }
+               flux[k, j, i, 1] = u[k, j, i, 1] * u41 ;
+               flux[k, j, i, 2] = u[k, j, i, 2] * u41 ;
+               flux[k, j, i, 3] = u[k, j, i, 3] * u41 + c2 * (u[k, j, i, 4]-q);
+               flux[k, j, i, 4] = ( c1 * u[k, j, i, 4] - c2 * q ) * u41;
+         }
+	   }
+    }
+		
 
-            for(k=1;k<=nz - 2;k++){
-               for(m=0;m<=4;m++){
-                  rsd[k, j, i, m] =  rsd[k, j, i, m]
-                      - tz2 * ( flux[k+1, m] - flux[k-1, m] );
-               }
-            }
+    for(k=1;k<=nz - 2;k++)
+	{
+      for(j=jst-1;j<=jend-1;j++)
+	  {
+         for(i=ist-1;i<=iend-1;i++) 
+		 {
+             for(m=0;m<=4;m++){
+                 rsd[k, j, i, m] =  rsd[k, j, i, m]
+                      - tz2 * ( flux[k+1, j, i, m] - flux[k-1, j, i, m] );
+             }
+         }
+  	  }
+    }
 
-            for(k=1;k<=nz-1;k++){
+    for(k=1;k<=nz-1;k++)
+	{
+       for(j=jst-1;j<=jend-1;j++)
+	   {
+          for(i=ist-1;i<=iend-1;i++) 
+		  {
                tmp = rho_i[k, j, i];
 
                u21k = tmp * u[k, j, i, 1];
@@ -2215,48 +2260,62 @@ namespace NPB3_0_JAV{
                u41km1 = tmp * u[k-1, j, i, 3];
                u51km1 = tmp * u[k-1, j, i, 4];
 
-               flux[k, 1] = tz3 * ( u21k - u21km1 );
-               flux[k, 2] = tz3 * ( u31k - u31km1 );
-               flux[k, 3] = (4.0/3.0) * tz3 * (u41k-u41km1);
-               flux[k, 4] = 0.50 * ( 1.0 - c1*c5 )
+               flux[k, j, i, 1] = tz3 * ( u21k - u21km1 );
+               flux[k, j, i, 2] = tz3 * ( u31k - u31km1 );
+               flux[k, j, i, 3] = (4.0/3.0) * tz3 * (u41k-u41km1);
+               flux[k, j, i, 4] = 0.50 * ( 1.0 - c1*c5 )
                     * tz3 * ( (Math.Pow(u21k,2) + Math.Pow(u31k,2) +Math.Pow(u41k,2) )
                             - ( Math.Pow(u21km1,2) + Math.Pow(u31km1,2) +Math.Pow(u41km1,2) ) )
                     + (1.0/6.0)
                     * tz3 * ( Math.Pow(u41k,2) - Math.Pow(u41km1,2) )
                     + c1 * c5 * tz3 * ( u51k - u51km1 );
-            }
+           }
+		}
+	}
 
-            for(k=1;k<=nz - 2;k++){
+    for(k=1;k<=nz - 2;k++)
+	{
+      for(j=jst-1;j<=jend-1;j++)
+	  {
+         for(i=ist-1;i<=iend-1;i++) 
+		 {
                rsd[k, j, i, 0] = rsd[k, j, i, 0]
                     + dz1 * tz1 * (            u[k-1, j, i, 0]
                                    - 2.0 * u[k, j, i, 0]
                                    +           u[k+1, j, i, 0] );
                rsd[k, j, i, 1] = rsd[k, j, i, 1]
-                + tz3 * c3 * c4 * ( flux[k+1, 1] - flux[k, 1] )
+                + tz3 * c3 * c4 * ( flux[k+1, j, i, 1] - flux[k, j, i, 1] )
                     + dz2 * tz1 * (            u[k-1, j, i, 1]
                                    - 2.0 * u[k, j, i, 1]
                                    +           u[k+1, j, i, 1] );
                rsd[k, j, i, 2] = rsd[k, j, i, 2]
-                + tz3 * c3 * c4 * ( flux[k+1, 2] - flux[k, 2] )
+                + tz3 * c3 * c4 * ( flux[k+1, j, i, 2] - flux[k, j, i, 2] )
                     + dz3 * tz1 * (            u[k-1, j, i, 2]
                                    - 2.0 * u[k, j, i, 2]
                                    +           u[k+1, j, i, 2] );
                rsd[k, j, i, 3] = rsd[k, j, i, 3]
-                + tz3 * c3 * c4 * ( flux[k+1, 3] - flux[k, 3] )
+                + tz3 * c3 * c4 * ( flux[k+1, j, i, 3] - flux[k, j, i, 3] )
                     + dz4 * tz1 * (            u[k-1, j, i, 3]
                                    - 2.0 * u[k, j, i, 3]
                                    +           u[k+1, j, i, 3] );
                rsd[k, j, i, 4] = rsd[k, j, i, 4]
-                + tz3 * c3 * c4 * ( flux[k+1, 4] - flux[k, 4] )
+                + tz3 * c3 * c4 * ( flux[k+1, j, i, 4] - flux[k, j, i, 4] )
                     + dz5 * tz1 * (            u[k-1, j, i, 4]
                                    - 2.0 * u[k, j, i, 4]
                                    +           u[k+1, j, i, 4] );
-            }
+          }
+	   }
+	}
 
 //---------------------------------------------------------------------
 //   fourth-order dissipation
 //---------------------------------------------------------------------
-            for(m=0;m<=4;m++){
+      for(j=jst-1;j<=jend-1;j++)
+	  {
+         for(i=ist-1;i<=iend-1;i++) 
+		 {
+            for(m=0;m<=4;m++)
+			{
                rsd[1, j, i, m] = rsd[1, j, i, m]
                  - dssp * ( + 5.0 * u[1, j, i, m]
                             - 4.0 * u[2, j, i, m]
@@ -2267,9 +2326,17 @@ namespace NPB3_0_JAV{
                             - 4.0 * u[3, j, i, m]
                             +       u[4, j, i, m] );
             }
+	 	 }
+	  }
 
-            for(k=3;k<=nz - 4;k++){
-               for(m=0;m<=4;m++){
+      for(k=3;k<=nz - 4;k++)
+	  {
+	      for(j=jst-1;j<=jend-1;j++)
+		  {
+	         for(i=ist-1;i<=iend-1;i++) 
+			 {
+               for(m=0;m<=4;m++)
+			   {
                   rsd[k, j, i, m] = rsd[k, j, i, m]
                     - dssp * (            u[k-2, j, i, m]
                               - 4.0 * u[k-1, j, i, m]
@@ -2278,8 +2345,15 @@ namespace NPB3_0_JAV{
                               +           u[k+2, j, i, m] );
                }
             }
+	  	 }
+	  }
 
-            for(m=0;m<=4;m++){
+      for(j=jst-1;j<=jend-1;j++)
+	  {
+         for(i=ist-1;i<=iend-1;i++) 
+		 {
+            for(m=0;m<=4;m++)
+			{
                rsd[nz-3, j, i, m] = rsd[nz-3, j, i, m]
                  - dssp * (             u[nz-5, j, i, m]
                             - 4.0 * u[nz-4, j, i, m]
@@ -2289,7 +2363,7 @@ namespace NPB3_0_JAV{
                  - dssp * (             u[nz-4, j, i, m]
                             - 4.0 * u[nz-3, j, i, m]
                             + 5.0 * u[nz-2, j, i, m] );
-            }
+            }					
          }
       }
   }
