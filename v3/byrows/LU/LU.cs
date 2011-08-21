@@ -169,7 +169,6 @@ namespace NPB3_0_JAV{
 //      More timers
 //---------------------------------------------------------------------
     
-			if(timeron) printTimers(t_names, trecs, tm);
 		}
 		public double getMFLOPS(int itmax, double tm){
 			double mflops = 0.0;
@@ -367,9 +366,12 @@ namespace NPB3_0_JAV{
 			double[,,] tv = new double[isiz2,isiz1,5];
 
 
-			for(j=jend-1;j>=jst-1;j--){
-				for(i=iend-1;i>=ist-1;i--){
-					for(m=0;m<=4;m++){
+			for(j=jend-1;j>=jst-1;j--)
+			{
+				for(i=iend-1;i>=ist-1;i--)
+				{
+					for(m=0;m<=4;m++)
+					{
 						tv[j, i, m] = 
 							omega * (  udz[j, i, 0, m] * rsd[k+1, j, i, 0]
 							         + udz[j, i, 1, m] * rsd[k+1, j, i, 1]
@@ -381,9 +383,12 @@ namespace NPB3_0_JAV{
 			}
 
       
-			for(j=jend-1;j>=jst-1;j--){
-				for(i=iend-1;i>=ist-1;i--){
-					for(m=0;m<=4;m++){
+			for(j=jend-1;j>=jst-1;j--)
+			{
+				for(i=iend-1;i>=ist-1;i--)
+				{
+					for(m=0;m<=4;m++)
+					{
 						tv[j, i, m] = tv[j, i, m]
 						+ omega * ( udy[j, i, 0, m] * rsd[k, j+1, i, 0]
 						           + udx[j, i, 0, m] * rsd[k, j, i+1, 0]
@@ -411,150 +416,90 @@ namespace NPB3_0_JAV{
 
 					tmp1 = 1.0 / tmat[0, 0];
 					tmp = tmp1 * tmat[0, 1];
-					tmat[1, 1] =  tmat[1, 1]
-					- tmp * tmat[1, 0];
-					tmat[2, 1] =  tmat[2, 1]
-					- tmp * tmat[2, 0];
-					tmat[3, 1] =  tmat[3, 1]
-					- tmp * tmat[3, 0];
-					tmat[4, 1] =  tmat[4, 1]
-					- tmp * tmat[4, 0];
-					tv[j, i, 1] = tv[j, i, 1]
-					- tv[j, i, 0] * tmp;
+					tmat[1, 1] =  tmat[1, 1] - tmp * tmat[1, 0];
+					tmat[2, 1] =  tmat[2, 1] - tmp * tmat[2, 0];
+					tmat[3, 1] =  tmat[3, 1] - tmp * tmat[3, 0];
+					tmat[4, 1] =  tmat[4, 1] - tmp * tmat[4, 0];
+					tv[j, i, 1] = tv[j, i, 1] - tv[j, i, 0] * tmp;
 
 					tmp = tmp1 * tmat[0, 2];
-					tmat[1, 2] =  tmat[1, 2]
-					- tmp * tmat[1, 0];
-					tmat[2, 2] =  tmat[2, 2]
-					- tmp * tmat[2, 0];
-					tmat[3, 2] =  tmat[3, 2]
-					- tmp * tmat[3, 0];
-					tmat[4, 2] =  tmat[4, 2]
-					- tmp * tmat[4, 0];
-					tv[j, i, 2] = tv[j, i, 2]
-					- tv[j, i, 0] * tmp;
+					tmat[1, 2] =  tmat[1, 2] - tmp * tmat[1, 0];
+					tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 0];
+					tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 0];
+					tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 0];
+					tv[j, i, 2] = tv[j, i, 2] - tv[j, i, 0] * tmp;
 
 					tmp = tmp1 * tmat[0, 3];
-					tmat[1, 3] =  tmat[1, 3]
-					- tmp * tmat[1, 0];
-					tmat[2, 3] =  tmat[2, 3]
-					- tmp * tmat[2, 0];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 0];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 0];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 0] * tmp;
+					tmat[1, 3] =  tmat[1, 3] - tmp * tmat[1, 0];
+					tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 0];
+					tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 0];
+					tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 0];
+					tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 0] * tmp;
 
 					tmp = tmp1 * tmat[0, 4];
-					tmat[1, 4] =  tmat[1, 4]
-					- tmp * tmat[1, 0];
-					tmat[2, 4] =  tmat[2, 4]
-					- tmp * tmat[2, 0];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 0];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 0];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 0] * tmp;
+					tmat[1, 4] =  tmat[1, 4] - tmp * tmat[1, 0];
+					tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 0];
+					tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 0];
+					tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 0];
+					tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 0] * tmp;
 
 					tmp1 = 1.0 / tmat[1, 1];
 					tmp = tmp1 * tmat[1, 2];
-					tmat[2, 2] =  tmat[2, 2]
-					- tmp * tmat[2, 1];
-					tmat[3, 2] =  tmat[3, 2]
-					- tmp * tmat[3, 1];
-					tmat[4, 2] =  tmat[4, 2]
-					- tmp * tmat[4, 1];
-					tv[j, i, 2] = tv[j, i, 2]
-					- tv[j, i, 1] * tmp;
+					tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 1];
+					tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 1];
+					tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 1];
+					tv[j, i, 2] = tv[j, i, 2] - tv[j, i, 1] * tmp;
 
 					tmp = tmp1 * tmat[1, 3];
-					tmat[2, 3] =  tmat[2, 3]
-					- tmp * tmat[2, 1];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 3];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 1];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 1] * tmp;
+					tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 1];
+					tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 3];
+					tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 1];
+					tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 1] * tmp;
 
 					tmp = tmp1 * tmat[1, 4];
-					tmat[2, 4] =  tmat[2, 4]
-					- tmp * tmat[2, 1];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 1];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 1];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 1] * tmp;
+					tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 1];
+					tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 1];
+					tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 1];
+					tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 1] * tmp;
 
 					tmp1 = 1.0 / tmat[2, 2];
 					tmp = tmp1 * tmat[2, 3];
-					tmat[3, 3] =  tmat[3, 3]
-					- tmp * tmat[3, 2];
-					tmat[4, 3] =  tmat[4, 3]
-					- tmp * tmat[4, 2];
-					tv[j, i, 3] = tv[j, i, 3]
-					- tv[j, i, 2] * tmp;
+					tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 2];
+					tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 2];
+					tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 2] * tmp;
 
 					tmp = tmp1 * tmat[2, 4];
-					tmat[3, 4] =  tmat[3, 4]
-					- tmp * tmat[3, 2];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 2];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 2] * tmp;
+					tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 2];
+					tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 2];
+					tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 2] * tmp;
 
 					tmp1 = 1.0 / tmat[3, 3];
 					tmp = tmp1 * tmat[3, 4];
-					tmat[4, 4] =  tmat[4, 4]
-					- tmp * tmat[4, 3];
-					tv[j, i, 4] = tv[j, i, 4]
-					- tv[j, i, 3] * tmp;
+					tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 3];
+					tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 3] * tmp;
 
 //---------------------------------------------------------------------
 //   back substitution
 //---------------------------------------------------------------------
-					tv[j, i, 4] = tv[j, i, 4]
-					/ tmat[4, 4];
+					tv[j, i, 4] = tv[j, i, 4] / tmat[4, 4];
 
-					tv[j, i, 3] = tv[j, i, 3]
-					- tmat[4, 3] * tv[j, i, 4];
-					tv[j, i, 3] = tv[j, i, 3]
-					/ tmat[3, 3];
+					tv[j, i, 3] = tv[j, i, 3] - tmat[4, 3] * tv[j, i, 4];
+					tv[j, i, 3] = tv[j, i, 3] / tmat[3, 3];
 
-					tv[j, i, 2] = tv[j, i, 2]
-					- tmat[3, 2] * tv[j, i, 3]
-					- tmat[4, 2] * tv[j, i, 4];
-					tv[j, i, 2] = tv[j, i, 2]
-					/ tmat[2, 2];
+					tv[j, i, 2] = tv[j, i, 2] - tmat[3, 2] * tv[j, i, 3] - tmat[4, 2] * tv[j, i, 4];
+					tv[j, i, 2] = tv[j, i, 2] / tmat[2, 2];
 
-					tv[j, i, 1] = tv[j, i, 1]
-					- tmat[2, 1] * tv[j, i, 2]
-					- tmat[3, 1] * tv[j, i, 3]
-					- tmat[4, 1] * tv[j, i, 4];
-					tv[j, i, 1] = tv[j, i, 1]
-					/ tmat[1, 1];
+					tv[j, i, 1] = tv[j, i, 1] - tmat[2, 1] * tv[j, i, 2] - tmat[3, 1] * tv[j, i, 3] - tmat[4, 1] * tv[j, i, 4];
+					tv[j, i, 1] = tv[j, i, 1] / tmat[1, 1];
 
-					tv[j, i, 0] = tv[j, i, 0]
-					- tmat[1, 0] * tv[j, i, 1]
-					- tmat[2, 0] * tv[j, i, 2]
-					- tmat[3, 0] * tv[j, i, 3]
-					- tmat[4, 0] * tv[j, i, 4];
-					tv[j, i, 0] = tv[j, i, 0]
-					/ tmat[0, 0];
+					tv[j, i, 0] = tv[j, i, 0] - tmat[1, 0] * tv[j, i, 1] - tmat[2, 0] * tv[j, i, 2] - tmat[3, 0] * tv[j, i, 3] - tmat[4, 0] * tv[j, i, 4];
+					tv[j, i, 0] = tv[j, i, 0] / tmat[0, 0];
 
-					rsd[k,j , i, 0] = rsd[k,j , i, 0] 
-					- tv[j, i, 0];
-					rsd[k, j, i, 1] = rsd[k, j, i, 1] 
-					- tv[j, i, 1];
-					rsd[k, j, i, 2] = rsd[k, j, i, 2] 
-					- tv[j, i, 2];
-					rsd[k, j, i, 3] = rsd[k, j, i, 3] 
-					- tv[j, i, 3];
-					rsd[k, j, i, 4] = rsd[k, j, i, 4] 
-					- tv[j, i, 4];	    
+					rsd[k,j , i, 0] = rsd[k,j , i, 0] - tv[j, i, 0];
+					rsd[k, j, i, 1] = rsd[k, j, i, 1] - tv[j, i, 1];
+					rsd[k, j, i, 2] = rsd[k, j, i, 2] - tv[j, i, 2];
+					rsd[k, j, i, 3] = rsd[k, j, i, 3] - tv[j, i, 3];
+					rsd[k, j, i, 4] = rsd[k, j, i, 4] - tv[j, i, 4];	    
 				}
 			}
 		}
@@ -1989,7 +1934,6 @@ namespace NPB3_0_JAV{
             }
          }
       }
-      if (timeron)  timer.start(t_rhsx);
 //---------------------------------------------------------------------
 //   xi-direction flux differences
 //---------------------------------------------------------------------
@@ -2110,9 +2054,6 @@ namespace NPB3_0_JAV{
 	    
          }
       }
-      if (timeron)  timer.stop(t_rhsx);
-
-      if (timeron)  timer.start(t_rhsy);
 
 //---------------------------------------------------------------------
 //   eta-direction flux differences
@@ -2236,9 +2177,6 @@ namespace NPB3_0_JAV{
 
          }
       }
-      if (timeron)  timer.stop(t_rhsy);
-
-      if (timeron)  timer.start(t_rhsz);
 
 //---------------------------------------------------------------------
 //   zeta-direction flux differences
@@ -2356,7 +2294,6 @@ namespace NPB3_0_JAV{
             }
          }
       }
-      if (timeron)  timer.stop(t_rhsz);  
   }
   
   public void setcoeff(){
@@ -2551,7 +2488,6 @@ namespace NPB3_0_JAV{
 		//---------------------------------------------------------------------
 		//   perform SSOR iteration
 		//---------------------------------------------------------------------
-		if (timeron)  timer.start(t_rhs);
 				
 		for(k=1;k<=nz - 2;k++)
 		{
@@ -2567,52 +2503,36 @@ namespace NPB3_0_JAV{
 			}
 		}
 			
-		if (timeron)  timer.stop(t_rhs);
-	 
 		for(k=1;k<=nz -2 ;k++)
 		{
-		//---------------------------------------------------------------------
-		//   form the lower triangular part of the jacobian matrix
-		//---------------------------------------------------------------------
-		   if (timeron)  timer.start(t_jacld);
-		   jacld(k);
-		   if (timeron)  timer.stop(t_jacld);
+			//---------------------------------------------------------------------
+			//   form the lower triangular part of the jacobian matrix
+			//---------------------------------------------------------------------
+		    jacld(k);
 		
-		//---------------------------------------------------------------------
-		//   perform the lower triangular solution
-		//---------------------------------------------------------------------;
-		   if (timeron)  timer.start(t_blts);
-		      blts(k,
-			      omega,
-			      a, b, c);
-		   if (timeron)  timer.stop(t_blts);
+			//---------------------------------------------------------------------
+			//   perform the lower triangular solution
+			//---------------------------------------------------------------------;
+		    blts(k, omega, a, b, c);
 		}
 					
 		for(k = nz-2;k>=1; k--)
 		{
-	//---------------------------------------------------------------------
-	//   form the strictly upper triangular part of the jacobian matrix
-	//---------------------------------------------------------------------
-			if (timeron)  timer.start(t_jacu);
+			//---------------------------------------------------------------------
+			//   form the strictly upper triangular part of the jacobian matrix
+			//---------------------------------------------------------------------
 			jacu(k);
-			if (timeron)  timer.stop(t_jacu);
 	
-	//---------------------------------------------------------------------
-	//   perform the upper triangular solution
-	//---------------------------------------------------------------------
-			if (timeron)  timer.start(t_buts);
-			buts(k,
-			      omega,
-			      a, b, c);
-			if (timeron)  timer.stop(t_buts);
+			//---------------------------------------------------------------------
+			//   perform the upper triangular solution
+			//---------------------------------------------------------------------
+			buts(k, omega, a, b, c);
 		}
  
 //---------------------------------------------------------------------
 //   update the variables
 //---------------------------------------------------------------------
 
-	if (timeron)  timer.start(t_add);
-				
 	for(k=1;k<=nz-2;k++)
 	{
 		for(j=jst-1;j<=jend-1;j++)
@@ -2626,35 +2546,26 @@ namespace NPB3_0_JAV{
 			}
 		}
 	}
-      if (timeron)  timer.stop(t_add);
  
 //---------------------------------------------------------------------
 //   compute the max-norms of newton iteration corrections
 //---------------------------------------------------------------------
-      if ( istep % inorm  == 0 ){
-	if (timeron)timer.start(t_l2norm);
-	l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-		ist, iend, jst, jend,
-		rsd, delunm );
-	if (timeron)  timer.stop(t_l2norm);
+      if ( istep % inorm  == 0 )
+	  {
+	       l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, delunm );
       }
  
 //---------------------------------------------------------------------
 //   compute the steady-state residuals
 //---------------------------------------------------------------------
-      if (timeron)  timer.start(t_rhs);
       rhs();    
-      if (timeron)  timer.stop(t_rhs);
  
 //---------------------------------------------------------------------
 //   compute the max-norms of newton iteration residuals
 //---------------------------------------------------------------------
-      if ( istep % inorm == 0 || istep == itmax ){
-	if (timeron)timer.start(t_l2norm);
-	l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-		ist, iend, jst, jend,
-		rsd, rsdnm );
-	if (timeron)  timer.stop(t_l2norm);
+      if ( istep % inorm == 0 || istep == itmax )
+	  {
+	     l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0, ist, iend, jst, jend, rsd, rsdnm );
       }
 
 //---------------------------------------------------------------------
@@ -2664,7 +2575,8 @@ namespace NPB3_0_JAV{
 	   ( rsdnm[1] < tolrsd[1] ) &&
 	   ( rsdnm[2] < tolrsd[2] ) &&
 	   ( rsdnm[3] < tolrsd[3] ) &&
-	   ( rsdnm[4] < tolrsd[4] ) ) {
+	   ( rsdnm[4] < tolrsd[4] ) ) 
+	   {
            timer.stop(1);
            return timer.readTimer(1);
         }
