@@ -1,6 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="LU\LU.cs">
+    <Files>
+      <File FileName="LU\LU.cs" Line="2056" Column="27" />
+      <File FileName="LU\LU2.cs" Line="2193" Column="20" />
+      <File FileName="LU\LUThreads\LUBase.cs" Line="186" Column="27" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
