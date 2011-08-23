@@ -110,7 +110,7 @@ namespace NPB {
 		{
             for(int i = 1; i <= T_max; i++) timer.resetTimer(i);
             int niter = initialConfig();
-            problemDefination();
+            problemDefinition();
             blocksInfo();
             //if(timers_enabled)
             //    synchup();
@@ -306,7 +306,7 @@ namespace NPB {
             return niter;
         }
 
-        public void problemDefination() {
+        public void problemDefinition() {
             if(layout_type == layout_0D) {
                 for(int i = 0; i < 3; i++) {
                     dims[0, i] = nx;
@@ -1265,28 +1265,16 @@ namespace NPB {
         }
 
 /**/    
-		public void transpose_x_y_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) {
-            //implicit none
-            //include 'global.h'
-            //integer d1, d2, d3
-            //double complex uxin(d1, d2, d3)  ===> [d3, d2, d1]       
-            //double complex uxout(d2, d3, d1) ===> [d1, d3, d2]
-            int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
-
-            //if(timers_enabled)
-            //    timer.start(T_transxyloc);
-            //if(timers_enabled)
-            //    timer.start(T_transxzloc);
+		public void transpose_x_y_local(int d1, int d2, int d3, double[, , ,] xin, double[, , ,] xout) 
+		{
+			int m1, m2, _i, _j, _k, om1, om2, o_i, o_j, o_k;
             int i, j, k, ii, io;
+			
             for(k = 0; k < d3; k++) { //k=1 <= d3        
                 for(i = 0; i < d1; i++) { //i=1 <= d1 
                     for(j = 0; j < d2; j++) { // j=1 <= d2                     //xout(j,k,i)    =    xin(i,j,k); 
                         ii = ((k*d2+j)*d1+i)*2;
                         io = ((i*d3+k)*d2+j)*2;
-                        //Point.setAddress(xin, ii+REAL, xout, io+REAL);
-                        //Point.setAddress(xin, ii+IMAG, xout, io+IMAG);
-                        //xout[i, k, j, REAL] = xin[k, j, i, REAL];
-                        //xout[i, k, j, IMAG] = xin[k, j, i, IMAG];
 
                         m1 = (ii % size1);
                         m2 = (m1 % size2);
