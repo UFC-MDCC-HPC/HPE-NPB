@@ -135,7 +135,7 @@ namespace NPB3_0_JAV {
             fftXYZ(1, xtr, exp2, exp1, exp3, ny, nx, nz);
             if (timeron) timer.stop(15);
 
-            double ap = (-4.0 * alpha * Math.Pow(pi, 2));
+            double ap = (-4.0 * alpha * pow2(pi));
             int n12 = nx / 2;
             int n22 = ny / 2;
             int n32 = nz / 2;

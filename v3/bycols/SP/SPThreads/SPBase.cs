@@ -555,6 +555,7 @@ public class SPBase /* : Thread*/
 		zzcon4 = c3c4tz3 * con16 * tz3;
 		zzcon5 = c3c4tz3 * c1c5 * tz3;
 	}
+		public double pow2(double p) { return p * p; }		
 }
 }
 

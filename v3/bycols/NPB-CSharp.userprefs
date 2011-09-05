@@ -2,7 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="FT/FTThreads/FTBase.cs">
     <Files>
-      <File FileName="FT/FTThreads/FTBase.cs" Line="177" Column="35" />
+      <File FileName="FT/FTThreads/FTBase.cs" Line="195" Column="3" />
+      <File FileName="../../common/NPB-CSharp/Random/Random.cs" Line="48" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

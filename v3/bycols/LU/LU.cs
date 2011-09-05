@@ -175,7 +175,7 @@ namespace NPB3_0_JAV{
 			double mflops = 0.0;
 			if( tm > 0 ){
 				mflops = 1984.77 * nx0 * ny0 * nz0
-					-10923.3 * Math.Pow((nx0 + ny0 + nz0)/ 3.0,2) 
+					-10923.3 * pow2((nx0 + ny0 + nz0)/ 3.0) 
 						+27770.9 * (nx0 + ny0 + nz0) / 3.0-144010.0;
 				mflops *= itmax / (tm * 1000000.0);
 			}
@@ -758,10 +758,10 @@ namespace NPB3_0_JAV{
                flux[2,i] = tx3 * ( u31i - u31im1 );
                flux[3,i] = tx3 * ( u41i - u41im1 );
                flux[4,i] = 0.50 * ( 1.0 - c1*c5 )
-                    * tx3 * ( ( Math.Pow(u21i,2) + Math.Pow(u31i,2) + Math.Pow(u41i,2) )
-                            - ( Math.Pow(u21im1,2) + Math.Pow(u31im1,2) + Math.Pow(u41im1,2) ) )
+                    * tx3 * ( ( pow2(u21i) + pow2(u31i) + pow2(u41i) )
+                            - ( pow2(u21im1) + pow2(u31im1) + pow2(u41im1) ) )
                     + (1.0/6.0)
-                    * tx3 * ( Math.Pow(u21i,2) - Math.Pow(u21im1,2) )
+                    * tx3 * ( pow2(u21i) - pow2(u21im1) )
                     + c1 * c5 * tx3 * ( u51i - u51im1 );
             }
 
@@ -882,10 +882,10 @@ namespace NPB3_0_JAV{
                              ( u31j - u31jm1 );
                flux[ 3,j] = ty3 * ( u41j - u41jm1 );
                flux[ 4,j] = 0.50 * ( 1.0 - c1*c5 )
-                    * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
-                            - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
+                    * ty3 * ( ( pow2(u21j) + pow2(u31j) + pow2(u41j) )
+                            - ( pow2(u21jm1) + pow2(u31jm1) + pow2(u41jm1) ) )
                     + (1.0/6.0)
-                    * ty3 * ( Math.Pow(u31j,2) - Math.Pow(u31jm1,2) )
+                    * ty3 * ( pow2(u31j) - pow2(u31jm1) )
                     + c1 * c5 * ty3 * ( u51j - u51jm1 );
             }
 
@@ -1002,10 +1002,10 @@ namespace NPB3_0_JAV{
                flux[ 3,k] = (4.0/3.0) * tz3 * ( u41k 
                              - u41km1 );
                flux[ 4,k] = 0.50 * ( 1.0 - c1*c5 )
-                    * tz3 * ( ( Math.Pow(u21k,2) + Math.Pow(u31k,2) + Math.Pow(u41k,2) )
-                            - ( Math.Pow(u21km1,2) + Math.Pow(u31km1,2) + Math.Pow(u41km1,2) ) )
+                    * tz3 * ( ( pow2(u21k) + pow2(u31k) + pow2(u41k) )
+                            - ( pow2(u21km1) + pow2(u31km1) + pow2(u41km1) ) )
                     + (1.0/6.0)
-                    * tz3 * ( Math.Pow(u41k,2) - Math.Pow(u41km1,2) )
+                    * tz3 * ( pow2(u41k) - pow2(u41km1) )
                     + c1 * c5 * tz3 * ( u51k - u51km1 );
             }
 
@@ -1092,7 +1092,7 @@ namespace NPB3_0_JAV{
 	  exact( i+1, j+1, k+1, u000ijk );
 	  for(m=0;m<=4;m++){
 	    tmp = ( u000ijk[m] - u[ m, i, j,k] );
-	    errnm[m] = errnm[m] + Math.Pow(tmp,2);
+	    errnm[m] = errnm[m] + pow2(tmp);
 	  }
 	}
       }
@@ -1174,13 +1174,13 @@ namespace NPB3_0_JAV{
                d[ 4, 0, i,j] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.Pow(u[ 1, i, j,k],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( pow2(u[ 1, i, j,k]) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.Pow(u[ 2, i, j,k],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( pow2(u[ 2, i, j,k]) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * ( Math.Pow(u[ 3, i, j,k],2) )
+           + tz1 * ( r43*c34 - c1345 ) ) * ( pow2(u[ 3, i, j,k]) )
             ) * tmp3
          + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[ 4, i, j,k] );
 
@@ -1236,7 +1236,7 @@ namespace NPB3_0_JAV{
                a[ 2, 4, i,j] = 0.0;
 
                a[ 3, 0, i,j] = - dt * tz2
-              * ( - Math.Pow(( u[ 3, i, j,k-1] * tmp1 ),2)
+              * ( - pow2(( u[ 3, i, j,k-1] * tmp1 ))
                   + c2 * qs[ i, j,k-1] * tmp1 )
               - dt * tz1 * ( - r43 * c34 * tmp2 * u[ 3, i, j,k-1] );
                a[ 3, 1, i,j] = - dt * tz2
@@ -1254,9 +1254,9 @@ namespace NPB3_0_JAV{
              - c1 * u[ 4, i, j,k-1] )
                   * u[ 3, i, j,k-1] * tmp2 )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.Pow(u[ 1, i, j,k-1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.Pow(u[ 2, i, j,k-1],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.Pow(u[ 3, i, j,k-1],2)
+             * ( - ( c34 - c1345 ) * tmp3 * pow2(u[ 1, i, j,k-1])
+                 - ( c34 - c1345 ) * tmp3 * pow2(u[ 2, i, j,k-1])
+                 - ( r43*c34 - c1345 )* tmp3 * pow2(u[ 3, i, j,k-1])
                 - c1345 * tmp2 * u[ 4, i, j,k-1] );
                a[ 4, 1, i,j] = - dt * tz2
              * ( - c2 * ( u[ 1, i, j,k-1]*u[ 3, i, j,k-1] ) * tmp2 )
@@ -1299,7 +1299,7 @@ namespace NPB3_0_JAV{
                b[ 1, 4, i,j] = 0.0;
 
                b[ 2, 0, i,j] = - dt * ty2
-                 * ( - Math.Pow(( u[ 2, i, j-1,k] * tmp1 ),2)
+                 * ( - pow2(( u[ 2, i, j-1,k] * tmp1 ))
              + c2 * ( qs[ i, j-1,k] * tmp1 ) )
              - dt * ty1 * ( - r43 * c34 * tmp2 * u[ 2, i, j-1,k] );
                b[ 2, 1, i,j] = - dt * ty2
@@ -1327,9 +1327,9 @@ namespace NPB3_0_JAV{
                      - c1 * u[ 4, i, j-1,k] )
                 * ( u[ 2, i, j-1,k] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.Pow(u[ 1, i, j-1,k],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.Pow(u[ 2, i, j-1,k],2)
-                    - (     c34 - c1345 )*tmp3*Math.Pow(u[ 3, i, j-1,k],2)
+                * ( - (     c34 - c1345 )*tmp3*pow2(u[ 1, i, j-1,k])
+                    - ( r43*c34 - c1345 )*tmp3*pow2(u[ 2, i, j-1,k])
+                    - (     c34 - c1345 )*tmp3*pow2(u[ 3, i, j-1,k])
                     - c1345*tmp2*u[ 4, i, j-1,k] );
                b[ 4, 1, i,j] = - dt * ty2
                 * ( - c2 * ( u[ 1, i, j-1,k]*u[ 2, i, j-1,k] ) * tmp2 )
@@ -1364,7 +1364,7 @@ namespace NPB3_0_JAV{
                c[ 0, 4, i,j] =   0.0;
 
                c[ 1, 0, i,j] = - dt * tx2
-                * ( - Math.Pow(( u[ 1, i-1, j,k] * tmp1 ),2)
+                * ( - pow2(( u[ 1, i-1, j,k] * tmp1 ))
              + c2 * qs[ i-1, j,k] * tmp1 )
                 - dt * tx1 * ( - r43 * c34 * tmp2 * u[ 1, i-1, j,k] );
                c[ 1, 1, i,j] = - dt * tx2
@@ -1402,9 +1402,9 @@ namespace NPB3_0_JAV{
                     - c1 * u[ 4, i-1, j,k] )
                 * u[ 1, i-1, j,k] * tmp2 )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.Pow( u[ 1, i-1, j,k],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[ 2, i-1, j,k],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[ 3, i-1, j,k],2 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * pow2( u[ 1, i-1, j,k] )
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[ 2, i-1, j,k] )
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[ 3, i-1, j,k] )
                     - c1345 * tmp2 * u[ 4, i-1, j,k] );
                c[ 4, 1, i,j] = - dt * tx2
                 * ( c1 * ( u[ 4, i-1, j,k] * tmp1 )
@@ -1501,13 +1501,13 @@ namespace NPB3_0_JAV{
                d[ 4, 0, i,j] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * Math.Pow( u[ 1, i, j,k],2)
+           + tz1 * ( c34 - c1345 ) ) * pow2( u[ 1, i, j,k])
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * Math.Pow( u[ 2, i, j,k],2)
+           + tz1 * ( c34 - c1345 ) ) * pow2( u[ 2, i, j,k])
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * Math.Pow( u[ 3, i, j,k],2)
+           + tz1 * ( r43*c34 - c1345 ) ) * pow2( u[ 3, i, j,k])
             ) * tmp3
          + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[ 4, i, j,k] );
 
@@ -1542,7 +1542,7 @@ namespace NPB3_0_JAV{
                a[ 0, 4, i,j] =   0.0;
 
                a[ 1, 0, i,j] =  dt * tx2
-                * ( - Math.Pow(( u[ 1, i+1, j,k] * tmp1 ),2)
+                * ( - pow2(( u[ 1, i+1, j,k] * tmp1 ))
            + c2 * qs[ i+1, j,k] * tmp1 )
                 - dt * tx1 * ( - r43 * c34 * tmp2 * u[ 1, i+1, j,k] );
                a[ 1, 1, i,j] =  dt * tx2
@@ -1580,9 +1580,9 @@ namespace NPB3_0_JAV{
                     - c1 * u[ 4, i+1, j,k] )
                 * ( u[ 1, i+1, j,k] * tmp2 ) )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.Pow( u[ 1, i+1, j,k],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[ 2, i+1, j,k],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.Pow( u[ 3, i+1, j,k],2 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * pow2( u[ 1, i+1, j,k] )
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[ 2, i+1, j,k] )
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[ 3, i+1, j,k] )
                     - c1345 * tmp2 * u[ 4, i+1, j,k] );
                a[ 4, 1, i,j] = dt * tx2
                 * ( c1 * ( u[ 4, i+1, j,k] * tmp1 )
@@ -1628,7 +1628,7 @@ namespace NPB3_0_JAV{
                b[ 1, 4, i,j] = 0.0;
 
                b[ 2, 0, i,j] =  dt * ty2
-                 * ( - Math.Pow(( u[ 2, i, j+1,k] * tmp1 ),2)
+                 * ( - pow2(( u[ 2, i, j+1,k] * tmp1 ))
             + c2 * ( qs[ i, j+1,k] * tmp1 ) )
              - dt * ty1 * ( - r43 * c34 * tmp2 * u[ 2, i, j+1,k] );
                b[ 2, 1, i,j] =  dt * ty2
@@ -1656,9 +1656,9 @@ namespace NPB3_0_JAV{
                      - c1 * u[ 4, i, j+1,k] )
                 * ( u[ 2, i, j+1,k] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.Pow(u[ 1, i, j+1,k],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.Pow(u[ 2, i, j+1,k],2)
-                    - (     c34 - c1345 )*tmp3*Math.Pow(u[ 3, i, j+1,k],2)
+                * ( - (     c34 - c1345 )*tmp3*pow2(u[ 1, i, j+1,k])
+                    - ( r43*c34 - c1345 )*tmp3*pow2(u[ 2, i, j+1,k])
+                    - (     c34 - c1345 )*tmp3*pow2(u[ 3, i, j+1,k])
                     - c1345*tmp2*u[ 4, i, j+1,k] );
                b[ 4, 1, i,j] =  dt * ty2
                 * ( - c2 * ( u[ 1, i, j+1,k]*u[ 2, i, j+1,k] ) * tmp2 )
@@ -1713,7 +1713,7 @@ namespace NPB3_0_JAV{
                c[ 2, 4, i,j] = 0.0;
 
                c[ 3, 0, i,j] = dt * tz2
-              * ( - Math.Pow(( u[ 3, i, j,k+1] * tmp1 ),2)
+              * ( - pow2(( u[ 3, i, j,k+1] * tmp1 ))
                   + c2 * ( qs[ i, j,k+1] * tmp1 ) )
               - dt * tz1 * ( - r43 * c34 * tmp2 * u[ 3, i, j,k+1] );
                c[ 3, 1, i,j] = dt * tz2
@@ -1731,9 +1731,9 @@ namespace NPB3_0_JAV{
              - c1 * u[ 4, i, j,k+1] )
                   * ( u[ 3, i, j,k+1] * tmp2 ) )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.Pow(u[ 1, i, j,k+1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.Pow(u[ 2, i, j,k+1],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.Pow(u[ 3, i, j,k+1],2)
+             * ( - ( c34 - c1345 ) * tmp3 * pow2(u[ 1, i, j,k+1])
+                 - ( c34 - c1345 ) * tmp3 * pow2(u[ 2, i, j,k+1])
+                 - ( r43*c34 - c1345 )* tmp3 * pow2(u[ 3, i, j,k+1])
                 - c1345 * tmp2 * u[ 4, i, j,k+1] );
                c[ 4, 1, i,j] = dt * tz2
              * ( - c2 * ( u[ 1, i, j,k+1]*u[ 3, i, j,k+1] ) * tmp2 )
@@ -1816,17 +1816,17 @@ namespace NPB3_0_JAV{
             k = ki1-1;
 
             phi1[j,i] = c2*(  u[ 4, i, j,k]
-                 - 0.50 * (  Math.Pow(u[ 1, i, j,k],2)
-                               + Math.Pow(u[ 2, i, j,k],2)
-                               + Math.Pow(u[ 3, i, j,k],2) )
+                 - 0.50 * (  pow2(u[ 1, i, j,k])
+                               + pow2(u[ 2, i, j,k])
+                               + pow2(u[ 3, i, j,k]) )
                               / u[ 0, i, j,k] );
 
             k = ki2-1;
 
             phi2[j,i] = c2*(  u[ 4, i, j,k]
-                 - 0.50 * (  Math.Pow(u[ 1, i, j,k],2)
-                               + Math.Pow(u[ 2, i, j,k],2)
-                               + Math.Pow(u[ 3, i, j,k],2) )
+                 - 0.50 * (  pow2(u[ 1, i, j,k])
+                               + pow2(u[ 2, i, j,k])
+                               + pow2(u[ 3, i, j,k]) )
                               / u[ 0, i, j,k] );
          }
       }
@@ -1861,9 +1861,9 @@ namespace NPB3_0_JAV{
         for(k=ki1-1;k<=ki2-1;k++){
            for(i=ibeg-1;i<=ifin-1;i++){
               phi1[k,i] = c2*(  u[ 4, i, jbeg-1,k]
-                   - 0.50 * (  Math.Pow(u[ 1, i, jbeg-1,k],2)
-                                 + Math.Pow(u[ 2, i, jbeg-1,k],2)
-                                 + Math.Pow(u[ 3, i, jbeg-1,k],2) )
+                   - 0.50 * (  pow2(u[ 1, i, jbeg-1,k])
+                                 + pow2(u[ 2, i, jbeg-1,k])
+                                 + pow2(u[ 3, i, jbeg-1,k]) )
                                 / u[ 0, i, jbeg-1,k] );
            }
         }
@@ -1873,9 +1873,9 @@ namespace NPB3_0_JAV{
         for(k=ki1-1;k<=ki2-1;k++){
            for(i=ibeg-1;i<=ifin-1;i++){
               phi2[k,i] = c2*(  u[ 4, i, jfin-1,k]
-                   - 0.50 * (  Math.Pow(u[ 1, i, jfin-1,k],2)
-                                 + Math.Pow(u[ 2, i, jfin-1,k],2)
-                                 + Math.Pow(u[ 3, i, jfin-1,k],2) )
+                   - 0.50 * (  pow2(u[ 1, i, jfin-1,k])
+                                 + pow2(u[ 2, i, jfin-1,k])
+                                 + pow2(u[ 3, i, jfin-1,k]) )
                                 / u[ 0, i, jfin-1,k] );
            }
         }
@@ -1910,9 +1910,9 @@ namespace NPB3_0_JAV{
         for(k=ki1-1;k<=ki2-1;k++){
            for(j=jbeg-1;j<=jfin-1;j++){
               phi1[k,j] = c2*(  u[ 4, ibeg-1, j,k]
-                   - 0.50 * ( Math.Pow(u[ 1, ibeg-1, j,k],2)
-                                 + Math.Pow(u[ 2, ibeg-1, j,k],2)
-                                 + Math.Pow(u[ 3, ibeg-1, j,k],2) )
+                   - 0.50 * ( pow2(u[ 1, ibeg-1, j,k])
+                                 + pow2(u[ 2, ibeg-1, j,k])
+                                 + pow2(u[ 3, ibeg-1, j,k]) )
                                 / u[ 0, ibeg-1, j,k] );
            }
         }
@@ -1922,9 +1922,9 @@ namespace NPB3_0_JAV{
         for(k=ki1-1;k<=ki2-1;k++){
            for(j=jbeg-1;j<=jfin-1;j++){
               phi2[k,j] = c2*(  u[ 4, ifin-1, j,k]
-                   - 0.50 * (  Math.Pow(u[ 1, ifin-1, j,k] ,2)
-                                 + Math.Pow(u[ 2, ifin-1, j,k],2)
-                                 + Math.Pow(u[ 3, ifin-1, j,k],2) )
+                   - 0.50 * (  pow2(u[ 1, ifin-1, j,k] )
+                                 + pow2(u[ 2, ifin-1, j,k])
+                                 + pow2(u[ 3, ifin-1, j,k]) )
                                 / u[ 0, ifin-1, j,k] );
            }
         }
@@ -2095,10 +2095,10 @@ namespace NPB3_0_JAV{
                flux[ 2,i] = tx3 * ( u31i - u31im1 );
                flux[ 3,i] = tx3 * ( u41i - u41im1 );
                flux[ 4,i] = 0.50 * ( 1.0 - c1*c5 )
-                    * tx3 * ( ( Math.Pow(u21i,2) + Math.Pow(u31i,2) + Math.Pow(u41i,2) )
-                            - ( Math.Pow(u21im1,2) + Math.Pow(u31im1,2) + Math.Pow(u41im1,2) ) )
+                    * tx3 * ( ( pow2(u21i) + pow2(u31i) + pow2(u41i) )
+                            - ( pow2(u21im1) + pow2(u31im1) + pow2(u41im1) ) )
                     + (1.0/6.0)
-                    * tx3 * ( Math.Pow(u21i,2) - Math.Pow(u21im1,2) )
+                    * tx3 * ( pow2(u21i) - pow2(u21im1) )
                     + c1 * c5 * tx3 * ( u51i - u51im1 );
             }
 
@@ -2216,10 +2216,10 @@ namespace NPB3_0_JAV{
                flux[ 2,j] = (4.0/3.0) * ty3 * (u31j-u31jm1);
                flux[ 3,j] = ty3 * ( u41j - u41jm1 );
                flux[ 4,j] = 0.50 * ( 1.0 - c1*c5 )
-                    * ty3 * ( ( Math.Pow(u21j,2) + Math.Pow(u31j,2) + Math.Pow(u41j,2) )
-                            - ( Math.Pow(u21jm1,2) + Math.Pow(u31jm1,2) + Math.Pow(u41jm1,2) ) )
+                    * ty3 * ( ( pow2(u21j) + pow2(u31j) + pow2(u41j) )
+                            - ( pow2(u21jm1) + pow2(u31jm1) + pow2(u41jm1) ) )
                     + (1.0/6.0)
-                    * ty3 * ( Math.Pow(u31j,2) - Math.Pow(u31jm1,2) )
+                    * ty3 * ( pow2(u31j) - pow2(u31jm1) )
                     + c1 * c5 * ty3 * ( u51j - u51jm1 );
             }
 
@@ -2343,10 +2343,10 @@ namespace NPB3_0_JAV{
                flux[ 2,k] = tz3 * ( u31k - u31km1 );
                flux[ 3,k] = (4.0/3.0) * tz3 * (u41k-u41km1);
                flux[ 4,k] = 0.50 * ( 1.0 - c1*c5 )
-                    * tz3 * ( (Math.Pow(u21k,2) + Math.Pow(u31k,2) +Math.Pow(u41k,2) )
-                            - ( Math.Pow(u21km1,2) + Math.Pow(u31km1,2) +Math.Pow(u41km1,2) ) )
+                    * tz3 * ( (pow2(u21k) + pow2(u31k) +pow2(u41k) )
+                            - ( pow2(u21km1) + pow2(u31km1) +pow2(u41km1) ) )
                     + (1.0/6.0)
-                    * tz3 * ( Math.Pow(u41k,2) - Math.Pow(u41km1,2) )
+                    * tz3 * ( pow2(u41k) - pow2(u41km1) )
                     + c1 * c5 * tz3 * ( u51k - u51km1 );
             }
 

@@ -315,5 +315,6 @@ public class FTBase /* : Thread*/
       }
       if (timeron) timer.stop(4);
   }
+		public double pow2(double p) { return p * p; }		
 }
 }
