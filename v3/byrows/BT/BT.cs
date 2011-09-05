@@ -1176,7 +1176,7 @@ namespace NPB3_0_JAV
                         njac[ i, 4,3] = 0.0;
 
                         njac[ i, 0,4] = -(con43 * c3c4
-                             - c1345) * tmp3 * (row2(u[ k, j, i,1]))
+                             - c1345) * tmp3 * (pow2(u[ k, j, i,1]))
                              - (c3c4 - c1345) * tmp3 * (pow2(u[ k, j, i,2]))
                              - (c3c4 - c1345) * tmp3 * (pow2(u[ k, j, i,3]))
                              - c1345 * tmp2 * u[ k, j, i,4];

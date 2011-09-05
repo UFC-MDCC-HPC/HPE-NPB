@@ -916,7 +916,6 @@ public class SP : SPBase
 			{
 				for (i = 1; i <= nx2; i++)
 				{
-
 					r1 = rhs[k,j,i,0];
 					r2 = rhs[k,j,i,1];
 					r3 = rhs[k,j,i,2];
