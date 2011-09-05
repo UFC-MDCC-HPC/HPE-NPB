@@ -167,7 +167,7 @@ namespace NPB3_0_JAV
             {
                 double n3 = grid_points[0] * grid_points[1] * grid_points[2];
                 double navg = (grid_points[0] + grid_points[1] + grid_points[2]) / 3.0;
-                mflops = 3478.8 * n3 - 17655.7 * Math.Pow(navg, 2) + 28023.7 * navg;
+                mflops = 3478.8 * n3 - 17655.7 * pow2(navg) + 28023.7 * navg;
                 mflops *= niter / (total_time * 1000000.0);
             }
             return mflops;
@@ -1175,9 +1175,9 @@ namespace NPB3_0_JAV
                         njac[i][4][3] = 0.0;
 
                         njac[i][0][4] = -(con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][1], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[k][j][i][2], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[k][j][i][3], 2))
+                             - c1345) * tmp3 * (pow2(u[k][j][i][1]))
+                             - (c3c4 - c1345) * tmp3 * (pow2(u[k][j][i][2]))
+                             - (c3c4 - c1345) * tmp3 * (pow2(u[k][j][i][3]))
                              - c1345 * tmp2 * u[k][j][i][4];
 
                         njac[i][1][4] = (con43 * c3c4
@@ -2015,10 +2015,10 @@ namespace NPB3_0_JAV
                         njac[j][4][3] = 0.0;
 
                         njac[j][0][4] = -(c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][1], 2))
+                             - c1345) * tmp3 * (pow2(u[k][j][i][1]))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][2], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[k][j][i][3], 2))
+                             - c1345) * tmp3 * (pow2(u[k][j][i][2]))
+                             - (c3c4 - c1345) * tmp3 * (pow2(u[k][j][i][3]))
                              - c1345 * tmp2 * u[k][j][i][4];
 
                         njac[j][1][4] = (c3c4 - c1345) * tmp2 * u[k][j][i][1];
@@ -2389,10 +2389,10 @@ namespace NPB3_0_JAV
                         njac[k][4][3] = 0.0;
 
                         njac[k][0][4] = -(c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][1], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.Pow(u[k][j][i][2], 2))
+                             - c1345) * tmp3 * (pow2(u[k][j][i][1]))
+                             - (c3c4 - c1345) * tmp3 * (pow2(u[k][j][i][2]))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.Pow(u[k][j][i][3], 2))
+                             - c1345) * tmp3 * (pow2(u[k][j][i][3]))
                              - c1345 * tmp2 * u[k][j][i][4];
 
                         njac[k][1][4] = (c3c4 - c1345) * tmp2 * u[k][j][i][1];

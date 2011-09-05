@@ -7,6 +7,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="NPB3_0_JAV.SP"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="CLASS=S"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="CLASS=W"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="SP"/>
 </launchConfiguration>

@@ -379,6 +379,8 @@ public class LUBase /* : Thread*/{
   protected double max(double a, double b, double c){
     return max( a, max( b , c) );
   }
+  public double pow2(double p) { return p * p; }
+		
 }
 
 }
