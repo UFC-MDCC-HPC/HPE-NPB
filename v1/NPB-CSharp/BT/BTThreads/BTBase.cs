@@ -1087,6 +1087,7 @@ namespace NPB3_0_JAV.BTThreads
             coeff = lhss[3 + 4 * 5 + lhsoffst];
             r[3 + roffst] -= coeff * r[4 + roffst];
         }
+		public double pow2(double p) { return p * p; }
     }
 }
  
