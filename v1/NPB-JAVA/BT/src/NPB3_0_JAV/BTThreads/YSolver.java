@@ -205,10 +205,10 @@ public class YSolver extends BTBase{
                njac[3+4*isize4+j*jsize4] =   0.0;
 
                njac[4+0*isize4+j*jsize4] = - (  c3c4
-                    - c1345 ) * tmp3 * (Math.pow(u[1+i*isize2+j*jsize2+k*ksize2],2))
+                    - c1345 ) * tmp3 * (pow2(u[1+i*isize2+j*jsize2+k*ksize2]))
                     - ( con43 * c3c4
-                    - c1345 ) * tmp3 * (Math.pow(u[2+i*isize2+j*jsize2+k*ksize2],2))
-                    - ( c3c4 - c1345 ) * tmp3 * (Math.pow(u[3+i*isize2+j*jsize2+k*ksize2],2))
+                    - c1345 ) * tmp3 * (pow2(u[2+i*isize2+j*jsize2+k*ksize2]))
+                    - ( c3c4 - c1345 ) * tmp3 * (pow2(u[3+i*isize2+j*jsize2+k*ksize2]))
                     - c1345 * tmp2 * u[4+i*isize2+j*jsize2+k*ksize2];
 
                njac[4+1*isize4+j*jsize4] = (  c3c4 - c1345 ) * tmp2 * u[1+i*isize2+j*jsize2+k*ksize2];
