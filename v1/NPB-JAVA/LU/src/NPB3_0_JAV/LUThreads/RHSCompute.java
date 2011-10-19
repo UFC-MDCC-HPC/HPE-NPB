@@ -249,10 +249,10 @@ public class RHSCompute extends LUBase{
 	flux[2+i*isize2] = tx3 * ( u31i - u31im1 );
 	flux[3+i*isize2] = tx3 * ( u41i - u41im1 );
 	flux[4+i*isize2] = 0.50 * ( 1.0 - c1*c5 )
-	  * tx3 * ( ( Math.pow(u21i,2) + Math.pow(u31i,2) + Math.pow(u41i,2) )
-		   - ( Math.pow(u21im1,2) + Math.pow(u31im1,2) + Math.pow(u41im1,2) ) )
+	  * tx3 * ( ( pow2(u21i) + pow2(u31i) + pow2(u41i) )
+		   - ( pow2(u21im1) + pow2(u31im1) + pow2(u41im1) ) )
 	    + (1.0/6.0)
-	      * tx3 * ( Math.pow(u21i,2) - Math.pow(u21im1,2) )
+	      * tx3 * ( pow2(u21i) - pow2(u21im1) )
 		+ c1 * c5 * tx3 * ( u51i - u51im1 );
       }
 
@@ -369,10 +369,10 @@ public class RHSCompute extends LUBase{
 	flux[2+j*isize2] = (4.0/3.0) * ty3 * (u31j-u31jm1);
 	flux[3+j*isize2] = ty3 * ( u41j - u41jm1 );
 	flux[4+j*isize2] = 0.50 * ( 1.0 - c1*c5 )
-	  * ty3 * ( ( Math.pow(u21j,2) + Math.pow(u31j,2) + Math.pow(u41j,2) )
-		   - ( Math.pow(u21jm1,2) + Math.pow(u31jm1,2) + Math.pow(u41jm1,2) ) )
+	  * ty3 * ( ( pow2(u21j) + pow2(u31j) + pow2(u41j) )
+		   - ( pow2(u21jm1) + pow2(u31jm1) + pow2(u41jm1) ) )
 	    + (1.0/6.0)
-	      * ty3 * ( Math.pow(u31j,2) - Math.pow(u31jm1,2) )
+	      * ty3 * ( pow2(u31j) - pow2(u31jm1) )
 		+ c1 * c5 * ty3 * ( u51j - u51jm1 );
       }
 
@@ -493,10 +493,10 @@ public class RHSCompute extends LUBase{
 	flux[2+k*isize2] = tz3 * ( u31k - u31km1 );
 	flux[3+k*isize2] = (4.0/3.0) * tz3 * (u41k-u41km1);
 	flux[4+k*isize2] = 0.50 * ( 1.0 - c1*c5 )
-	  * tz3 * ( (Math.pow(u21k,2) + Math.pow(u31k,2) +Math.pow(u41k,2) )
-		   - ( Math.pow(u21km1,2) + Math.pow(u31km1,2) +Math.pow(u41km1,2) ) )
+	  * tz3 * ( (pow2(u21k) + pow2(u31k) +pow2(u41k) )
+		   - ( pow2(u21km1) + pow2(u31km1) +pow2(u41km1) ) )
 	    + (1.0/6.0)
-	      * tz3 * ( Math.pow(u41k,2) - Math.pow(u41km1,2) )
+	      * tz3 * ( pow2(u41k) - pow2(u41km1) )
 		+ c1 * c5 * tz3 * ( u51k - u51km1 );
             }
       

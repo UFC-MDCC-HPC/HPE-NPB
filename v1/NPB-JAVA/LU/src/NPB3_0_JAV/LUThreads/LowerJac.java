@@ -271,13 +271,13 @@ public class LowerJac extends LUBase{
                d[4+0*isize4+i*jsize4+j*ksize4] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.pow(u[1+i*isize1+j*jsize1+k*ksize1],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( pow2(u[1+i*isize1+j*jsize1+k*ksize1]) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.pow(u[2+i*isize1+j*jsize1+k*ksize1],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( pow2(u[2+i*isize1+j*jsize1+k*ksize1]) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * ( Math.pow(u[3+i*isize1+j*jsize1+k*ksize1],2) )
+           + tz1 * ( r43*c34 - c1345 ) ) * ( pow2(u[3+i*isize1+j*jsize1+k*ksize1]) )
             ) * tmp3
          + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[4+i*isize1+j*jsize1+k*ksize1] );
 
@@ -333,7 +333,7 @@ public class LowerJac extends LUBase{
                a[2+4*isize4+i*jsize4+j*ksize4] = 0.0;
 
                a[3+0*isize4+i*jsize4+j*ksize4] = - dt * tz2
-              * ( - Math.pow(( u[3+i*isize1+j*jsize1+(k-1)*ksize1] * tmp1 ),2)
+              * ( - pow2(( u[3+i*isize1+j*jsize1+(k-1)*ksize1] * tmp1 ))
                   + c2 * qs[i+j*jsize3+(k-1)*ksize3] * tmp1 )
               - dt * tz1 * ( - r43 * c34 * tmp2 * u[3+i*isize1+j*jsize1+(k-1)*ksize1] );
                a[3+1*isize4+i*jsize4+j*ksize4] = - dt * tz2
@@ -351,9 +351,9 @@ public class LowerJac extends LUBase{
              - c1 * u[4+i*isize1+j*jsize1+(k-1)*ksize1] )
                   * u[3+i*isize1+j*jsize1+(k-1)*ksize1] * tmp2 )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.pow(u[1+i*isize1+j*jsize1+(k-1)*ksize1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.pow(u[2+i*isize1+j*jsize1+(k-1)*ksize1],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.pow(u[3+i*isize1+j*jsize1+(k-1)*ksize1],2)
+             * ( - ( c34 - c1345 ) * tmp3 * pow2(u[1+i*isize1+j*jsize1+(k-1)*ksize1])
+                 - ( c34 - c1345 ) * tmp3 * pow2(u[2+i*isize1+j*jsize1+(k-1)*ksize1])
+                 - ( r43*c34 - c1345 )* tmp3 * pow2(u[3+i*isize1+j*jsize1+(k-1)*ksize1])
                 - c1345 * tmp2 * u[4+i*isize1+j*jsize1+(k-1)*ksize1] );
                a[4+1*isize4+i*jsize4+j*ksize4] = - dt * tz2
              * ( - c2 * ( u[1+i*isize1+j*jsize1+(k-1)*ksize1]*u[3+i*isize1+j*jsize1+(k-1)*ksize1] ) * tmp2 )
@@ -396,7 +396,7 @@ public class LowerJac extends LUBase{
                b[1+4*isize4+i*jsize4+j*ksize4] = 0.0;
 
                b[2+0*isize4+i*jsize4+j*ksize4] = - dt * ty2
-                 * ( - Math.pow(( u[2+i*isize1+(j-1)*jsize1+k*ksize1] * tmp1 ),2)
+                 * ( - pow2(( u[2+i*isize1+(j-1)*jsize1+k*ksize1] * tmp1 ))
              + c2 * ( qs[i+(j-1)*jsize3+k*ksize3] * tmp1 ) )
              - dt * ty1 * ( - r43 * c34 * tmp2 * u[2+i*isize1+(j-1)*jsize1+k*ksize1] );
                b[2+1*isize4+i*jsize4+j*ksize4] = - dt * ty2
@@ -424,9 +424,9 @@ public class LowerJac extends LUBase{
                      - c1 * u[4+i*isize1+(j-1)*jsize1+k*ksize1] )
                 * ( u[2+i*isize1+(j-1)*jsize1+k*ksize1] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.pow(u[1+i*isize1+(j-1)*jsize1+k*ksize1],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.pow(u[2+i*isize1+(j-1)*jsize1+k*ksize1],2)
-                    - (     c34 - c1345 )*tmp3*Math.pow(u[3+i*isize1+(j-1)*jsize1+k*ksize1],2)
+                * ( - (     c34 - c1345 )*tmp3*pow2(u[1+i*isize1+(j-1)*jsize1+k*ksize1])
+                    - ( r43*c34 - c1345 )*tmp3*pow2(u[2+i*isize1+(j-1)*jsize1+k*ksize1])
+                    - (     c34 - c1345 )*tmp3*pow2(u[3+i*isize1+(j-1)*jsize1+k*ksize1])
                     - c1345*tmp2*u[4+i*isize1+(j-1)*jsize1+k*ksize1] );
                b[4+1*isize4+i*jsize4+j*ksize4] = - dt * ty2
                 * ( - c2 * ( u[1+i*isize1+(j-1)*jsize1+k*ksize1]*u[2+i*isize1+(j-1)*jsize1+k*ksize1] ) * tmp2 )
@@ -461,7 +461,7 @@ public class LowerJac extends LUBase{
                c[0+4*isize4+i*jsize4+j*ksize4] =   0.0;
 
                c[1+0*isize4+i*jsize4+j*ksize4] = - dt * tx2
-                * ( - Math.pow(( u[1+(i-1)*isize1+j*jsize1+k*ksize1] * tmp1 ),2)
+                * ( - pow2(( u[1+(i-1)*isize1+j*jsize1+k*ksize1] * tmp1 ))
              + c2 * qs[(i-1)+j*jsize3+k*ksize3] * tmp1 )
                 - dt * tx1 * ( - r43 * c34 * tmp2 * u[1+(i-1)*isize1+j*jsize1+k*ksize1] );
                c[1+1*isize4+i*jsize4+j*ksize4] = - dt * tx2
@@ -499,9 +499,9 @@ public class LowerJac extends LUBase{
                     - c1 * u[4+(i-1)*isize1+j*jsize1+k*ksize1] )
                 * u[1+(i-1)*isize1+j*jsize1+k*ksize1] * tmp2 )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.pow( u[1+(i-1)*isize1+j*jsize1+k*ksize1],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[2+(i-1)*isize1+j*jsize1+k*ksize1],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[3+(i-1)*isize1+j*jsize1+k*ksize1],2 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * pow2( u[1+(i-1)*isize1+j*jsize1+k*ksize1])
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[2+(i-1)*isize1+j*jsize1+k*ksize1])
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[3+(i-1)*isize1+j*jsize1+k*ksize1])
                     - c1345 * tmp2 * u[4+(i-1)*isize1+j*jsize1+k*ksize1] );
                c[4+1*isize4+i*jsize4+j*ksize4] = - dt * tx2
                 * ( c1 * ( u[4+(i-1)*isize1+j*jsize1+k*ksize1] * tmp1 )
