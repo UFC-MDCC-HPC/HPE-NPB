@@ -82,7 +82,12 @@ public class BT extends BTBase
             njac = instantiate_jagged_array_3(5, 5, problem_size + 1);
             lhs = instantiate_jagged_array_4(5, 5, 3, problem_size + 1);
         }
-
+        
+		public static double pow2(double x)
+		{
+			  return x*x;
+		}
+		  
         public static void main(String[] argv)
         {
             BT bt = null;
@@ -169,7 +174,7 @@ public class BT extends BTBase
             {
                 double n3 = grid_points[0] * grid_points[1] * grid_points[2];
                 double navg = (grid_points[0] + grid_points[1] + grid_points[2]) / 3.0;
-                mflops = 3478.8 * n3 - 17655.7 * Math.pow(navg, 2) + 28023.7 * navg;
+                mflops = 3478.8 * n3 - 17655.7 * pow2(navg) + 28023.7 * navg;
                 mflops *= niter / (total_time * 1000000.0);
             }
             return mflops;
@@ -1082,9 +1087,9 @@ public class BT extends BTBase
                         njac[3][4][i] = 0.0;
 
                         njac[4][0][i] = -(con43 * c3c4
-                             - c1345) * tmp3 * (Math.pow(u[1][i][j][k], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[2][i][j][k], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[3][i][j][k], 2))
+                             - c1345) * tmp3 * (pow2(u[1][i][j][k]))
+                             - (c3c4 - c1345) * tmp3 * (pow2(u[2][i][j][k]))
+                             - (c3c4 - c1345) * tmp3 * (pow2(u[3][i][j][k]))
                              - c1345 * tmp2 * u[4][i][j][k];
 
                         njac[4][1][i] = (con43 * c3c4
@@ -1922,10 +1927,10 @@ public class BT extends BTBase
                         njac[3][4][j] = 0.0;
 
                         njac[4][0][j] = -(c3c4
-                             - c1345) * tmp3 * (Math.pow(u[1][i][j][k], 2))
+                             - c1345) * tmp3 * (pow2(u[1][i][j][k]))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.pow(u[2][i][j][k], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[3][i][j][k], 2))
+                             - c1345) * tmp3 * (pow2(u[2][i][j][k]))
+                             - (c3c4 - c1345) * tmp3 * (pow2(u[3][i][j][k]))
                              - c1345 * tmp2 * u[4][i][j][k];
 
                         njac[4][1][j] = (c3c4 - c1345) * tmp2 * u[1][i][j][k];
@@ -2296,10 +2301,10 @@ public class BT extends BTBase
                         njac[3][4][k] = 0.0;
 
                         njac[4][0][k] = -(c3c4
-                             - c1345) * tmp3 * (Math.pow(u[1][i][j][k], 2))
-                             - (c3c4 - c1345) * tmp3 * (Math.pow(u[2][i][j][k], 2))
+                             - c1345) * tmp3 * (pow2(u[1][i][j][k]))
+                             - (c3c4 - c1345) * tmp3 * (pow2(u[2][i][j][k]))
                              - (con43 * c3c4
-                             - c1345) * tmp3 * (Math.pow(u[3][i][j][k], 2))
+                             - c1345) * tmp3 * (pow2(u[3][i][j][k]))
                              - c1345 * tmp2 * u[4][i][j][k];
 
                         njac[4][1][k] = (c3c4 - c1345) * tmp2 * u[1][i][j][k];
