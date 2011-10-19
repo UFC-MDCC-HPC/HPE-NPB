@@ -72,6 +72,11 @@ public class LU extends LUBase{
 			super(clss,np);
 		}
 		
+	    public static double pow2(double x)
+	    {
+	      return x*x;
+	    }
+		
 		public static void main(String[] argv){
 			LU lu = null;
 
@@ -179,7 +184,7 @@ public class LU extends LUBase{
 			double mflops = 0.0;
 			if( tm > 0 ){
 				mflops = 1984.77 * nx0 * ny0 * nz0
-					-10923.3 * Math.pow((nx0 + ny0 + nz0)/ 3.0,2) 
+					-10923.3 * pow2((nx0 + ny0 + nz0)/ 3.0) 
 						+27770.9 * (nx0 + ny0 + nz0) / 3.0-144010.0;
 				mflops *= itmax / (tm * 1000000.0);
 			}
@@ -762,10 +767,10 @@ public class LU extends LUBase{
                flux[i][2] = tx3 * ( u31i - u31im1 );
                flux[i][3] = tx3 * ( u41i - u41im1 );
                flux[i][4] = 0.50 * ( 1.0 - c1*c5 )
-                    * tx3 * ( ( Math.pow(u21i,2) + Math.pow(u31i,2) + Math.pow(u41i,2) )
-                            - ( Math.pow(u21im1,2) + Math.pow(u31im1,2) + Math.pow(u41im1,2) ) )
+                    * tx3 * ( ( pow2(u21i) + pow2(u31i) + pow2(u41i) )
+                            - ( pow2(u21im1) + pow2(u31im1) + pow2(u41im1) ) )
                     + (1.0/6.0)
-                    * tx3 * ( Math.pow(u21i,2) - Math.pow(u21im1,2) )
+                    * tx3 * ( pow2(u21i) - pow2(u21im1) )
                     + c1 * c5 * tx3 * ( u51i - u51im1 );
             }
 
@@ -886,10 +891,10 @@ public class LU extends LUBase{
                              ( u31j - u31jm1 );
                flux[j][ 3] = ty3 * ( u41j - u41jm1 );
                flux[j][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * ty3 * ( ( Math.pow(u21j,2) + Math.pow(u31j,2) + Math.pow(u41j,2) )
-                            - ( Math.pow(u21jm1,2) + Math.pow(u31jm1,2) + Math.pow(u41jm1,2) ) )
+                    * ty3 * ( ( pow2(u21j) + pow2(u31j) + pow2(u41j) )
+                            - ( pow2(u21jm1) + pow2(u31jm1) + pow2(u41jm1) ) )
                     + (1.0/6.0)
-                    * ty3 * ( Math.pow(u31j,2) - Math.pow(u31jm1,2) )
+                    * ty3 * ( pow2(u31j) - pow2(u31jm1) )
                     + c1 * c5 * ty3 * ( u51j - u51jm1 );
             }
 
@@ -1006,10 +1011,10 @@ public class LU extends LUBase{
                flux[k][ 3] = (4.0/3.0) * tz3 * ( u41k 
                              - u41km1 );
                flux[k][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * tz3 * ( ( Math.pow(u21k,2) + Math.pow(u31k,2) + Math.pow(u41k,2) )
-                            - ( Math.pow(u21km1,2) + Math.pow(u31km1,2) + Math.pow(u41km1,2) ) )
+                    * tz3 * ( ( pow2(u21k) + pow2(u31k) + pow2(u41k) )
+                            - ( pow2(u21km1) + pow2(u31km1) + pow2(u41km1) ) )
                     + (1.0/6.0)
-                    * tz3 * ( Math.pow(u41k,2) - Math.pow(u41km1,2) )
+                    * tz3 * ( pow2(u41k) - pow2(u41km1) )
                     + c1 * c5 * tz3 * ( u51k - u51km1 );
             }
 
@@ -1096,7 +1101,7 @@ public class LU extends LUBase{
 	  exact( i+1, j+1, k+1, u000ijk );
 	  for(m=0;m<=4;m++){
 	    tmp = ( u000ijk[m] - u[k][ j][ i][ m] );
-	    errnm[m] = errnm[m] + Math.pow(tmp,2);
+	    errnm[m] = errnm[m] + pow2(tmp);
 	  }
 	}
       }
@@ -1178,13 +1183,13 @@ public class LU extends LUBase{
                d[j][ i][ 0][ 4] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.pow(u[k][ j][ i][ 1],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( pow2(u[k][ j][ i][ 1]) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * ( Math.pow(u[k][ j][ i][ 2],2) )
+           + tz1 * ( c34 - c1345 ) ) * ( pow2(u[k][ j][ i][ 2]) )
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * ( Math.pow(u[k][ j][ i][ 3],2) )
+           + tz1 * ( r43*c34 - c1345 ) ) * ( pow2(u[k][ j][ i][ 3]) )
             ) * tmp3
          + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[k][ j][ i][ 4] );
 
@@ -1240,7 +1245,7 @@ public class LU extends LUBase{
                a[j][ i][ 4][ 2] = 0.0;
 
                a[j][ i][ 0][ 3] = - dt * tz2
-              * ( - Math.pow(( u[k-1][ j][ i][ 3] * tmp1 ),2)
+              * ( - pow2(( u[k-1][ j][ i][ 3] * tmp1 ))
                   + c2 * qs[k-1][ j][ i] * tmp1 )
               - dt * tz1 * ( - r43 * c34 * tmp2 * u[k-1][ j][ i][ 3] );
                a[j][ i][ 1][ 3] = - dt * tz2
@@ -1258,9 +1263,9 @@ public class LU extends LUBase{
              - c1 * u[k-1][ j][ i][ 4] )
                   * u[k-1][ j][ i][ 3] * tmp2 )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.pow(u[k-1][ j][ i][ 1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.pow(u[k-1][ j][ i][ 2],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.pow(u[k-1][ j][ i][ 3],2)
+             * ( - ( c34 - c1345 ) * tmp3 * pow2(u[k-1][ j][ i][ 1])
+                 - ( c34 - c1345 ) * tmp3 * pow2(u[k-1][ j][ i][ 2])
+                 - ( r43*c34 - c1345 )* tmp3 * pow2(u[k-1][ j][ i][ 3])
                 - c1345 * tmp2 * u[k-1][ j][ i][ 4] );
                a[j][ i][ 1][ 4] = - dt * tz2
              * ( - c2 * ( u[k-1][ j][ i][ 1]*u[k-1][ j][ i][ 3] ) * tmp2 )
@@ -1303,7 +1308,7 @@ public class LU extends LUBase{
                b[j][ i][ 4][ 1] = 0.0;
 
                b[j][ i][ 0][ 2] = - dt * ty2
-                 * ( - Math.pow(( u[k][ j-1][ i][ 2] * tmp1 ),2)
+                 * ( - pow2(( u[k][ j-1][ i][ 2] * tmp1 ))
              + c2 * ( qs[k][ j-1][ i] * tmp1 ) )
              - dt * ty1 * ( - r43 * c34 * tmp2 * u[k][ j-1][ i][ 2] );
                b[j][ i][ 1][ 2] = - dt * ty2
@@ -1331,9 +1336,9 @@ public class LU extends LUBase{
                      - c1 * u[k][ j-1][ i][ 4] )
                 * ( u[k][ j-1][ i][ 2] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.pow(u[k][ j-1][ i][ 1],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.pow(u[k][ j-1][ i][ 2],2)
-                    - (     c34 - c1345 )*tmp3*Math.pow(u[k][ j-1][ i][ 3],2)
+                * ( - (     c34 - c1345 )*tmp3*pow2(u[k][ j-1][ i][ 1])
+                    - ( r43*c34 - c1345 )*tmp3*pow2(u[k][ j-1][ i][ 2])
+                    - (     c34 - c1345 )*tmp3*pow2(u[k][ j-1][ i][ 3])
                     - c1345*tmp2*u[k][ j-1][ i][ 4] );
                b[j][ i][ 1][ 4] = - dt * ty2
                 * ( - c2 * ( u[k][ j-1][ i][ 1]*u[k][ j-1][ i][ 2] ) * tmp2 )
@@ -1368,7 +1373,7 @@ public class LU extends LUBase{
                c[j][ i][ 4][ 0] =   0.0;
 
                c[j][ i][ 0][ 1] = - dt * tx2
-                * ( - Math.pow(( u[k][ j][ i-1][ 1] * tmp1 ),2)
+                * ( - pow2(( u[k][ j][ i-1][ 1] * tmp1 ))
              + c2 * qs[k][ j][ i-1] * tmp1 )
                 - dt * tx1 * ( - r43 * c34 * tmp2 * u[k][ j][ i-1][ 1] );
                c[j][ i][ 1][ 1] = - dt * tx2
@@ -1406,9 +1411,9 @@ public class LU extends LUBase{
                     - c1 * u[k][ j][ i-1][ 4] )
                 * u[k][ j][ i-1][ 1] * tmp2 )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i-1][ 1],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i-1][ 2],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i-1][ 3],2 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * pow2( u[k][ j][ i-1][ 1])
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[k][ j][ i-1][ 2])
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[k][ j][ i-1][ 3])
                     - c1345 * tmp2 * u[k][ j][ i-1][ 4] );
                c[j][ i][ 1][ 4] = - dt * tx2
                 * ( c1 * ( u[k][ j][ i-1][ 4] * tmp1 )
@@ -1505,13 +1510,13 @@ public class LU extends LUBase{
                d[j][ i][ 0][ 4] = -dt * 2.0
         * ( ( ( tx1 * ( r43*c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * Math.pow( u[k][ j][ i][ 1],2)
+           + tz1 * ( c34 - c1345 ) ) * pow2( u[k][ j][ i][ 1])
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( r43*c34 - c1345 )
-           + tz1 * ( c34 - c1345 ) ) * Math.pow( u[k][ j][ i][ 2],2)
+           + tz1 * ( c34 - c1345 ) ) * pow2( u[k][ j][ i][ 2])
          + ( tx1 * ( c34 - c1345 )
            + ty1 * ( c34 - c1345 )
-           + tz1 * ( r43*c34 - c1345 ) ) * Math.pow( u[k][ j][ i][ 3],2)
+           + tz1 * ( r43*c34 - c1345 ) ) * pow2( u[k][ j][ i][ 3])
             ) * tmp3
          + ( tx1 + ty1 + tz1 ) * c1345 * tmp2 * u[k][ j][ i][ 4] );
 
@@ -1546,7 +1551,7 @@ public class LU extends LUBase{
                a[j][ i][ 4][ 0] =   0.0;
 
                a[j][ i][ 0][ 1] =  dt * tx2
-                * ( - Math.pow(( u[k][ j][ i+1][ 1] * tmp1 ),2)
+                * ( - pow2(( u[k][ j][ i+1][ 1] * tmp1 ))
            + c2 * qs[k][ j][ i+1] * tmp1 )
                 - dt * tx1 * ( - r43 * c34 * tmp2 * u[k][ j][ i+1][ 1] );
                a[j][ i][ 1][ 1] =  dt * tx2
@@ -1584,9 +1589,9 @@ public class LU extends LUBase{
                     - c1 * u[k][ j][ i+1][ 4] )
                 * ( u[k][ j][ i+1][ 1] * tmp2 ) )
                 - dt * tx1
-                * ( - ( r43*c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i+1][ 1],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i+1][ 2],2 )
-                    - (     c34 - c1345 ) * tmp3 * Math.pow( u[k][ j][ i+1][ 3],2 )
+                * ( - ( r43*c34 - c1345 ) * tmp3 * pow2( u[k][ j][ i+1][ 1])
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[k][ j][ i+1][ 2])
+                    - (     c34 - c1345 ) * tmp3 * pow2( u[k][ j][ i+1][ 3])
                     - c1345 * tmp2 * u[k][ j][ i+1][ 4] );
                a[j][ i][ 1][ 4] = dt * tx2
                 * ( c1 * ( u[k][ j][ i+1][ 4] * tmp1 )
@@ -1632,7 +1637,7 @@ public class LU extends LUBase{
                b[j][ i][ 4][ 1] = 0.0;
 
                b[j][ i][ 0][ 2] =  dt * ty2
-                 * ( - Math.pow(( u[k][ j+1][ i][ 2] * tmp1 ),2)
+                 * ( - pow2(( u[k][ j+1][ i][ 2] * tmp1 ))
             + c2 * ( qs[k][ j+1][ i] * tmp1 ) )
              - dt * ty1 * ( - r43 * c34 * tmp2 * u[k][ j+1][ i][ 2] );
                b[j][ i][ 1][ 2] =  dt * ty2
@@ -1660,9 +1665,9 @@ public class LU extends LUBase{
                      - c1 * u[k][ j+1][ i][ 4] )
                 * ( u[k][ j+1][ i][ 2] * tmp2 ) )
                 - dt * ty1
-                * ( - (     c34 - c1345 )*tmp3*Math.pow(u[k][ j+1][ i][ 1],2)
-                    - ( r43*c34 - c1345 )*tmp3*Math.pow(u[k][ j+1][ i][ 2],2)
-                    - (     c34 - c1345 )*tmp3*Math.pow(u[k][ j+1][ i][ 3],2)
+                * ( - (     c34 - c1345 )*tmp3*pow2(u[k][ j+1][ i][ 1])
+                    - ( r43*c34 - c1345 )*tmp3*pow2(u[k][ j+1][ i][ 2])
+                    - (     c34 - c1345 )*tmp3*pow2(u[k][ j+1][ i][ 3])
                     - c1345*tmp2*u[k][ j+1][ i][ 4] );
                b[j][ i][ 1][ 4] =  dt * ty2
                 * ( - c2 * ( u[k][ j+1][ i][ 1]*u[k][ j+1][ i][ 2] ) * tmp2 )
@@ -1717,7 +1722,7 @@ public class LU extends LUBase{
                c[j][ i][ 4][ 2] = 0.0;
 
                c[j][ i][ 0][ 3] = dt * tz2
-              * ( - Math.pow(( u[k+1][ j][ i][ 3] * tmp1 ),2)
+              * ( - pow2(( u[k+1][ j][ i][ 3] * tmp1 ))
                   + c2 * ( qs[k+1][ j][ i] * tmp1 ) )
               - dt * tz1 * ( - r43 * c34 * tmp2 * u[k+1][ j][ i][ 3] );
                c[j][ i][ 1][ 3] = dt * tz2
@@ -1735,9 +1740,9 @@ public class LU extends LUBase{
              - c1 * u[k+1][ j][ i][ 4] )
                   * ( u[k+1][ j][ i][ 3] * tmp2 ) )
              - dt * tz1
-             * ( - ( c34 - c1345 ) * tmp3 * Math.pow(u[k+1][ j][ i][ 1],2)
-                 - ( c34 - c1345 ) * tmp3 * Math.pow(u[k+1][ j][ i][ 2],2)
-                 - ( r43*c34 - c1345 )* tmp3 * Math.pow(u[k+1][ j][ i][ 3],2)
+             * ( - ( c34 - c1345 ) * tmp3 * pow2(u[k+1][ j][ i][ 1])
+                 - ( c34 - c1345 ) * tmp3 * pow2(u[k+1][ j][ i][ 2])
+                 - ( r43*c34 - c1345 )* tmp3 * pow2(u[k+1][ j][ i][ 3])
                 - c1345 * tmp2 * u[k+1][ j][ i][ 4] );
                c[j][ i][ 1][ 4] = dt * tz2
              * ( - c2 * ( u[k+1][ j][ i][ 1]*u[k+1][ j][ i][ 3] ) * tmp2 )
@@ -1820,17 +1825,17 @@ public class LU extends LUBase{
             k = ki1-1;
 
             phi1[j][i] = c2*(  u[k][ j][ i][ 4]
-                 - 0.50 * (  Math.pow(u[k][ j][ i][ 1],2)
-                               + Math.pow(u[k][ j][ i][ 2],2)
-                               + Math.pow(u[k][ j][ i][ 3],2) )
+                 - 0.50 * (  pow2(u[k][ j][ i][ 1])
+                               + pow2(u[k][ j][ i][ 2])
+                               + pow2(u[k][ j][ i][ 3]) )
                               / u[k][ j][ i][ 0] );
 
             k = ki2-1;
 
             phi2[j][i] = c2*(  u[k][ j][ i][ 4]
-                 - 0.50 * (  Math.pow(u[k][ j][ i][ 1],2)
-                               + Math.pow(u[k][ j][ i][ 2],2)
-                               + Math.pow(u[k][ j][ i][ 3],2) )
+                 - 0.50 * (  pow2(u[k][ j][ i][ 1])
+                               + pow2(u[k][ j][ i][ 2])
+                               + pow2(u[k][ j][ i][ 3]) )
                               / u[k][ j][ i][ 0] );
          }
       }
@@ -1865,9 +1870,9 @@ public class LU extends LUBase{
         for(k=ki1-1;k<=ki2-1;k++){
            for(i=ibeg-1;i<=ifin-1;i++){
               phi1[k][i] = c2*(  u[k][ jbeg-1][ i][ 4]
-                   - 0.50 * (  Math.pow(u[k][ jbeg-1][ i][ 1],2)
-                                 + Math.pow(u[k][ jbeg-1][ i][ 2],2)
-                                 + Math.pow(u[k][ jbeg-1][ i][ 3],2) )
+                   - 0.50 * (  pow2(u[k][ jbeg-1][ i][ 1])
+                                 + pow2(u[k][ jbeg-1][ i][ 2])
+                                 + pow2(u[k][ jbeg-1][ i][ 3]) )
                                 / u[k][ jbeg-1][ i][ 0] );
            }
         }
@@ -1877,9 +1882,9 @@ public class LU extends LUBase{
         for(k=ki1-1;k<=ki2-1;k++){
            for(i=ibeg-1;i<=ifin-1;i++){
               phi2[k][i] = c2*(  u[k][ jfin-1][ i][ 4]
-                   - 0.50 * (  Math.pow(u[k][ jfin-1][ i][ 1],2)
-                                 + Math.pow(u[k][ jfin-1][ i][ 2],2)
-                                 + Math.pow(u[k][ jfin-1][ i][ 3],2) )
+                   - 0.50 * (  pow2(u[k][ jfin-1][ i][ 1])
+                                 + pow2(u[k][ jfin-1][ i][ 2])
+                                 + pow2(u[k][ jfin-1][ i][ 3]) )
                                 / u[k][ jfin-1][ i][ 0] );
            }
         }
@@ -1914,9 +1919,9 @@ public class LU extends LUBase{
         for(k=ki1-1;k<=ki2-1;k++){
            for(j=jbeg-1;j<=jfin-1;j++){
               phi1[k][j] = c2*(  u[k][ j][ ibeg-1][ 4]
-                   - 0.50 * ( Math.pow(u[k][ j][ ibeg-1][ 1],2)
-                                 + Math.pow(u[k][ j][ ibeg-1][ 2],2)
-                                 + Math.pow(u[k][ j][ ibeg-1][ 3],2) )
+                   - 0.50 * ( pow2(u[k][ j][ ibeg-1][ 1])
+                                 + pow2(u[k][ j][ ibeg-1][ 2])
+                                 + pow2(u[k][ j][ ibeg-1][ 3]) )
                                 / u[k][ j][ ibeg-1][ 0] );
            }
         }
@@ -1926,9 +1931,9 @@ public class LU extends LUBase{
         for(k=ki1-1;k<=ki2-1;k++){
            for(j=jbeg-1;j<=jfin-1;j++){
               phi2[k][j] = c2*(  u[k][ j][ ifin-1][ 4]
-                   - 0.50 * (  Math.pow(u[k][ j][ ifin-1][ 1] ,2)
-                                 + Math.pow(u[k][ j][ ifin-1][ 2],2)
-                                 + Math.pow(u[k][ j][ ifin-1][ 3],2) )
+                   - 0.50 * (  pow2(u[k][ j][ ifin-1][ 1] )
+                                 + pow2(u[k][ j][ ifin-1][ 2])
+                                 + pow2(u[k][ j][ ifin-1][ 3]) )
                                 / u[k][ j][ ifin-1][ 0] );
            }
         }
@@ -2107,10 +2112,10 @@ public class LU extends LUBase{
                flux[i][ 2] = tx3 * ( u31i - u31im1 );
                flux[i][ 3] = tx3 * ( u41i - u41im1 );
                flux[i][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * tx3 * ( ( Math.pow(u21i,2) + Math.pow(u31i,2) + Math.pow(u41i,2) )
-                            - ( Math.pow(u21im1,2) + Math.pow(u31im1,2) + Math.pow(u41im1,2) ) )
+                    * tx3 * ( ( pow2(u21i) + pow2(u31i) + pow2(u41i) )
+                            - ( pow2(u21im1) + pow2(u31im1) + pow2(u41im1) ) )
                     + (1.0/6.0)
-                    * tx3 * ( Math.pow(u21i,2) - Math.pow(u21im1,2) )
+                    * tx3 * ( pow2(u21i) - pow2(u21im1) )
                     + c1 * c5 * tx3 * ( u51i - u51im1 );
             }
 
@@ -2228,10 +2233,10 @@ public class LU extends LUBase{
                flux[j][ 2] = (4.0/3.0) * ty3 * (u31j-u31jm1);
                flux[j][ 3] = ty3 * ( u41j - u41jm1 );
                flux[j][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * ty3 * ( ( Math.pow(u21j,2) + Math.pow(u31j,2) + Math.pow(u41j,2) )
-                            - ( Math.pow(u21jm1,2) + Math.pow(u31jm1,2) + Math.pow(u41jm1,2) ) )
+                    * ty3 * ( ( pow2(u21j) + pow2(u31j) + pow2(u41j) )
+                            - ( pow2(u21jm1) + pow2(u31jm1) + pow2(u41jm1) ) )
                     + (1.0/6.0)
-                    * ty3 * ( Math.pow(u31j,2) - Math.pow(u31jm1,2) )
+                    * ty3 * ( pow2(u31j) - pow2(u31jm1) )
                     + c1 * c5 * ty3 * ( u51j - u51jm1 );
             }
 
@@ -2355,10 +2360,10 @@ public class LU extends LUBase{
                flux[k][ 2] = tz3 * ( u31k - u31km1 );
                flux[k][ 3] = (4.0/3.0) * tz3 * (u41k-u41km1);
                flux[k][ 4] = 0.50 * ( 1.0 - c1*c5 )
-                    * tz3 * ( (Math.pow(u21k,2) + Math.pow(u31k,2) +Math.pow(u41k,2) )
-                            - ( Math.pow(u21km1,2) + Math.pow(u31km1,2) +Math.pow(u41km1,2) ) )
+                    * tz3 * ( (pow2(u21k) + pow2(u31k) +pow2(u41k) )
+                            - ( pow2(u21km1) + pow2(u31km1) +pow2(u41km1) ) )
                     + (1.0/6.0)
-                    * tz3 * ( Math.pow(u41k,2) - Math.pow(u41km1,2) )
+                    * tz3 * ( pow2(u41k) - pow2(u41km1) )
                     + c1 * c5 * tz3 * ( u51k - u51km1 );
             }
 
