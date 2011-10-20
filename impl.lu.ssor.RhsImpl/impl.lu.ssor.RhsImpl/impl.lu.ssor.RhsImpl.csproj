@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1CCE9032-DE73-4E4D-AD28-8B72759D4556}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>impl.lu.ssor.RhsImpl</RootNamespace>
+    <AssemblyName>IRhsImpl</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\RhsImpl.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\src\1.0.0.0\BaseIRhsImpl.cs">
+      <Link>BaseIRhsImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\src\1.0.0.0\IRhsImpl.cs">
+      <Link>IRhsImpl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="DGAC, Version=0.0.0.0, Culture=neutral, PublicKeyToken=13cebbba0e117a7c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\DGAC\DGAC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\lu.problem_size.Instance_LU\lu.problem_size.Instance_LU\lu.problem_size.Instance_LU.csproj">
+      <Project>{FF9AE01F-5921-4D51-BE52-01C828B84666}</Project>
+      <Name>lu.problem_size.Instance_LU</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.problem_size.Instance\lu.problem_size.Instance\lu.problem_size.Instance.csproj">
+      <Project>{FAB2133D-CFCB-4F7E-95FE-64FC2090416C}</Project>
+      <Name>lu.problem_size.Instance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.ssor.Rhs\lu.ssor.Rhs\lu.ssor.Rhs.csproj">
+      <Project>{86A66144-06F7-4F89-8E3B-5E49824D20D9}</Project>
+      <Name>lu.ssor.Rhs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.problem_size.Class\common.problem_size.Class\common.problem_size.Class.csproj">
+      <Project>{A57D6AA6-B371-4188-BD22-97494B834BCB}</Project>
+      <Name>common.problem_size.Class</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.data.ProblemDefinition\lu.data.ProblemDefinition\lu.data.ProblemDefinition.csproj">
+      <Project>{E07F89D2-70CB-46FD-BB84-E0DEC7CBDFF0}</Project>
+      <Name>lu.data.ProblemDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.datapartition.BlocksInfo\lu.datapartition.BlocksInfo\lu.datapartition.BlocksInfo.csproj">
+      <Project>{B74F8912-AA26-434F-A585-DB3387FB0072}</Project>
+      <Name>lu.datapartition.BlocksInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.topology.Ring\common.topology.Ring\common.topology.Ring.csproj">
+      <Project>{F77E3063-55D1-4BFE-B504-611A612ACACA}</Project>
+      <Name>common.topology.Ring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\environment.MPIDirect\environment.MPIDirect\environment.MPIDirect.csproj">
+      <Project>{1F563648-2878-4A44-B98C-BBED70407F5D}</Project>
+      <Name>environment.MPIDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.axis.XAxis\common.axis.XAxis\common.axis.XAxis.csproj">
+      <Project>{944FBD84-2F3B-432F-BB71-9597D2D25457}</Project>
+      <Name>common.axis.XAxis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.axis.YAxis\common.axis.YAxis\common.axis.YAxis.csproj">
+      <Project>{9836FF76-DF70-442C-8158-252FF11E6AB3}</Project>
+      <Name>common.axis.YAxis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.exchange.Exchange3\lu.exchange.Exchange3\lu.exchange.Exchange3.csproj">
+      <Project>{320B0130-129C-4F39-AC30-511474BFDEFC}</Project>
+      <Name>lu.exchange.Exchange3</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

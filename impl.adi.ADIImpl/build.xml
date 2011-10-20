@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="ADI">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="ADI-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.bt.ADI/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.bt.ADI/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.bt.ADI/ADI.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.bt.ADI/bin/1.0.0.0/BaseIADIImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.bt.ADI/src/1.0.0.0/BaseIADIImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll"/>
+        <include name="common.topology.Ring/bin/1.0.0.0/ICell.dll"/>
+        <include name="adi.CopyFaces/bin/1.0.0.0/ICopyFaces.dll"/>
+        <include name="bt.problem_size.Instance_BT/bin/1.0.0.0/IInstance_BT.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="adi.ComputeRHS/bin/1.0.0.0/IComputeRHS.dll"/>
+        <include name="bt.solve.Solve/bin/1.0.0.0/ISolve.dll"/>
+        <include name="common.axis.Z/bin/1.0.0.0/IZ.dll"/>
+        <include name="bt.solve.BTMethod/bin/1.0.0.0/IBTMethod.dll"/>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll"/>
+        <include name="common.axis.XAxis/bin/1.0.0.0/IX.dll"/>
+        <include name="common.axis.Y/bin/1.0.0.0/IY.dll"/>
+        <include name="adi.Add/bin/1.0.0.0/IAdd.dll"/>
+        <include name="adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll"/>
+        <include name="bt.ADI/bin/1.0.0.0/BaseIADI.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.bt.ADI/ADI.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.bt.ADI/bin/1.0.0.0/IADIImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.bt.ADI/src/1.0.0.0/IADIImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="/impl.bt.ADI/bin/1.0.0.0/BaseIADIImpl.dll"/>
+        <include name="bt.ADI/bin/1.0.0.0/IADI.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="ADI-1.0.0.0" name="all"/>
+</project>

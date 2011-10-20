@@ -1,0 +1,15 @@
+using br.ufc.pargo.hpe.kinds;
+using common.problem_size.Class;
+using common.problem_size.Instance;
+
+
+namespace adi.ComputeRHS { 
+
+public interface IComputeRHS<I,C> : BaseIComputeRHS<I,C>
+		where I:IInstance<C>
+		where C:IClass
+{
+
+} // end main interface 
+
+} // end namespace 

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{526F1913-4440-4184-8900-7AAC9916779E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>impl.lu.exchange.Exchange3_YForwardReadBufferImpl</RootNamespace>
+    <AssemblyName>IExchange3_YForwardReadBufferImpl</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Exchange3_YForwardReadBufferImpl.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="DGAC, Version=0.0.0.0, Culture=neutral, PublicKeyToken=13cebbba0e117a7c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\DGAC\DGAC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\src\1.0.0.0\BaseIExchange3_YForwardReadBufferImpl.cs">
+      <Link>BaseIExchange3_YForwardReadBufferImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\src\1.0.0.0\IExchange3_YForwardReadBufferImpl.cs">
+      <Link>IExchange3_YForwardReadBufferImpl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\common.Buffer\common.Buffer\common.Buffer.csproj">
+      <Project>{EEAC9F12-55E9-4AEE-8996-5A72FA4FE6CD}</Project>
+      <Name>common.Buffer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.direction.Direction\common.direction.Direction\common.direction.Direction.csproj">
+      <Project>{A6AAE482-FC56-4FC4-8994-D3B6ADBDBBB8}</Project>
+      <Name>common.direction.Direction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.axis.Axis\common.axis.Axis\common.axis.Axis.csproj">
+      <Project>{51EC4A8A-6014-4197-9264-0DF08BC0BDDD}</Project>
+      <Name>common.axis.Axis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.exchange.Exchange3_ReadBuffer\lu.exchange.Exchange3_ReadBuffer\lu.exchange.Exchange3_ReadBuffer.csproj">
+      <Project>{6907DFDE-93CA-44A1-85B6-60980D1CA39D}</Project>
+      <Name>lu.exchange.Exchange3_ReadBuffer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.axis.YAxis\common.axis.YAxis\common.axis.YAxis.csproj">
+      <Project>{9836FF76-DF70-442C-8158-252FF11E6AB3}</Project>
+      <Name>common.axis.YAxis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.direction.Forward\common.direction.Forward\common.direction.Forward.csproj">
+      <Project>{A57012D3-5567-4FA8-B958-D476419A6505}</Project>
+      <Name>common.direction.Forward</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

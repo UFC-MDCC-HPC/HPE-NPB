@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ebeda5a88c729a082f1c6485a17c6f1fd4a68c8bd9508d7835e5d8b26652a425990df6e29cb70309d4af9c4d0bbee84d639670c66b44bcbc056f77fec868ed9abc22880f3b1d7bd23853c3d36c2768455d4d6637d33eea6faf88feb6ca318f4513d82a1e8ed52f408f22d7d9b3bf01ba0d20c962d8ea2e8f8a8c77ce0090f9d9" isAbstract="false" kind="Environment" name="Instance_LU_B" packagePath="impl.lu.problem_size">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004d9c75ae5f43eaaeb10762b3e7c65b336ea4790b679668da776b55e1821b1f59388b8ea2e5f25263fc4cebe208bc2cb79d9bcbbc6167a4bd4b552d03cca4ef35f734d0cbac01feb8e9a6d6296807fccc63cd003ba735a6445bb240120f051f046aa5787203f6fd7fd7b0cd0e18a980c63f35f8918343d6ea5563d8c3211f8ab1" localRef="base" location="lu.problem_size.Instance_LU/Instance_LU.hpe" name="Instance_LU" package="lu.problem_size" version="1.0.0.0">
+        <visualDescription h="73" w="142" x="205" y="313">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="class" varName="C"/>
+        <unitBounds uRef="instance">
+          <visualDescription h="10" w="10" x="64" y="5"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000d76ada745d0479a7eff879cb836ee7123457ed13c4050bd57b23355f5fd55b301b8ebfaa0774d1f2976a27eacca47d4eb321a1e13a1d91a2f4a515e0f27b606c4015a783b57cdf4262fc091cc4e0d34d4f9bb46def6de75b38a270c56ed1979743fb07f43b90b98cb8d2216f152f09d4f38763e4ade9caa72719be504472c690" localRef="class" location="common.problem_size.Class_B/Class_B.hpe" name="Class_B" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="285" y="183">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="class">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="class" varName="C"/>
+    <interface iRef="IInstance_LU_B_Impl" nArgs="1">
+      <slice isRef="class">
+        <originRef cRef="class" iRef="IClass"/>
+        <visualDescription h="10" w="10" x="32" y="19"/>
+      </slice>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Class_B;&#xA;using lu.problem_size.Instance_LU;&#xA;&#xA;namespace impl.lu.problem_size.Instance_LU_B { &#xA;&#x9;public abstract class BaseIInstance_LU_B_Impl&lt;C>: br.ufc.pargo.hpe.kinds.Environment, BaseIInstance_LU&lt;C>&#xA;&#x9;where C:IClass_B {&#xA;&#x9;&#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="BaseIInstance_LU_B_Impl.cs" srcType="base" uri="impl.lu.problem_size.Instance_LU_B/bin/1.0.0.0/BaseIInstance_LU_B_Impl.dll" versionId="1.0.0.0">
+          <dependency>lu.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>common.problem_size.Class_B/bin/1.0.0.0/IClass_B.dll</dependency>
+          <dependency>lu.problem_size.Instance_LU/bin/1.0.0.0/BaseIInstance.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Class_B;&#xA;using lu.problem_size.Instance_LU;&#xA;using lu.problem_size.Instance;&#xA;&#xA;namespace impl.lu.problem_size.Instance_LU_B { &#xA;&#x9;public class IInstance_LU_B_Impl&lt;C> : BaseIInstance_LU_B_Impl&lt;C>, IInstance_LU&lt;C>&#xA;&#x9;where C:IClass_B {&#x9;&#xA;&#x9;&#x9;public IInstance_LU_B_Impl() { &#x9;&#x9;&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;&#x9;private&#x9;double _dt     = 2.0d;&#xA;&#x9;&#x9;private&#x9;int    _itmax  = 250;&#xA;&#x9;&#x9;private&#x9;int    _inorm  = 250;&#xA;&#x9;&#x9;private&#x9;int    _isiz01 = 102;&#xA;&#x9;&#x9;private&#x9;int    _isiz02 = 102;&#xA;&#x9;&#x9;private&#x9;int    _isiz03 = 102;&#xA;&#x9;&#x9;private&#x9;int    _isiz3  = 102;&#xA;&#x9;&#x9;private PROBLEM_CLASS _CLASS_ = PROBLEM_CLASS.B;&#xA;&#xA;&#x9;&#x9;public double dt  { get { return _dt;     } }&#xA;&#x9;&#x9;public int itmax  { get { return _itmax;  } }&#xA;&#x9;&#x9;public int inorm  { get { return _inorm;  } }&#xA;&#x9;&#x9;public int isiz01 { get { return _isiz01; } }&#xA;&#x9;&#x9;public int isiz02 { get { return _isiz02; } }&#xA;&#x9;&#x9;public int isiz03 { get { return _isiz03; } }&#xA;&#x9;&#x9;public int isiz3  { get { return _isiz3;  } }&#xA;&#x9;&#x9;public PROBLEM_CLASS CLASS { get { return _CLASS_; } }&#xA;&#xA;&#x9;&#x9;private&#x9;double[] _xcrref_ = {3.5532672969982736E+03, 2.6214750795310692E+02, 8.8333721850952190E+02, 7.7812774739425265E+02, 7.3087969592545314E+03}; //    Reference values of RMS-norms of residual.&#xA;&#x9;&#x9;private double[] _xceref_ = {1.1401176380212709E+02, 8.1098963655421574E+00, 2.8480597317698308E+01, 2.5905394567832939E+01, 2.6054907504857413E+02}; //    Reference values of RMS-norms of solution error.&#xA;&#x9;&#x9;private&#x9;double _dtref_ = 2.0E+0;&#xA;&#x9;&#x9;private&#x9;double _xciref_ = 4.7887162703308227E+01;&#xA;&#xA;&#x9;&#x9;public double[] xcrref { get { return _xcrref_; } }&#xA;&#x9;&#x9;public double[] xceref { get { return _xceref_; } }&#xA;&#x9;&#x9;public double dtref { get { return _dtref_; } }&#xA;&#x9;&#x9;public double xciref { get { return _xciref_; } }&#x9;&#x9;&#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="IInstance_LU_B_Impl.cs" srcType="user" uri="impl.lu.problem_size.Instance_LU_B/bin/1.0.0.0/IInstance_LU_B_Impl.dll" versionId="1.0.0.0">
+          <dependency>common.problem_size.Class_B/bin/1.0.0.0/IClass_B.dll</dependency>
+          <dependency>%WORKSPACE/impl.lu.problem_size.Instance_LU_B/bin/1.0.0.0/BaseIInstance_LU_B_Impl.dll</dependency>
+          <dependency>lu.problem_size.Instance_LU/bin/1.0.0.0/IInstance.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="156" x="196" y="123">
+        <color b="0" g="128" r="255"/>
+      </visualDescription>
+      <parameter iname="IClass_B" order="0" parid="class" uname="class" varid="C"/>
+    </interface>
+    <unit iRef="IInstance_LU_B_Impl" private="false" uRef="instance" visibleInterface="true">
+      <super cRef="base" uRef="instance"/>
+      <slices cRef="class" replica="0" uRef="class" sliceName="class" transitive="false">
+        <visualDescription h="10" w="10" x="32" y="19"/>
+      </slices>
+      <visualDescription h="40" w="80" x="234" y="213"/>
+    </unit>
+  </componentInfo>
+</component:component>

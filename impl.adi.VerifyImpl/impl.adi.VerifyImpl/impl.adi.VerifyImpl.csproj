@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{87B71C83-86C5-45E1-855E-F2B08FD7B3E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>impl.adi.VerifyImpl</RootNamespace>
+    <AssemblyName>IVerifyImpl</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\VerifyImpl.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="BMInOut, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f7ab42cfcd849336">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\BMInOut\BMInOut.dll</HintPath>
+    </Reference>
+    <Reference Include="DGAC, Version=0.0.0.0, Culture=neutral, PublicKeyToken=13cebbba0e117a7c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\DGAC\DGAC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\src\1.0.0.0\BaseIVerifyImpl.cs">
+      <Link>BaseIVerifyImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\src\1.0.0.0\IVerifyImpl.cs">
+      <Link>IVerifyImpl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\common.datapartition.MultiPartitionCells\common.datapartition.MultiPartitionCells\common.datapartition.MultiPartitionCells.csproj">
+      <Project>{AD922723-458D-488B-B525-0A16FAF9774C}</Project>
+      <Name>common.datapartition.MultiPartitionCells</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.error.ErrorNorm\adi.error.ErrorNorm\adi.error.ErrorNorm.csproj">
+      <Project>{F8C34778-EFA9-41AE-AEE9-0AA780413EC9}</Project>
+      <Name>adi.error.ErrorNorm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.error.RHSNorm\adi.error.RHSNorm\adi.error.RHSNorm.csproj">
+      <Project>{3EABA808-0D6A-4230-A4A9-0B39839FE2DB}</Project>
+      <Name>adi.error.RHSNorm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.problem_size.Class\common.problem_size.Class\common.problem_size.Class.csproj">
+      <Project>{A57D6AA6-B371-4188-BD22-97494B834BCB}</Project>
+      <Name>common.problem_size.Class</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.problem_size.Instance\common.problem_size.Instance\common.problem_size.Instance.csproj">
+      <Project>{DC71BFA5-7AB3-44F4-AC61-FF3C0E02561F}</Project>
+      <Name>common.problem_size.Instance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.topology.Ring\common.topology.Ring\common.topology.Ring.csproj">
+      <Project>{F77E3063-55D1-4BFE-B504-611A612ACACA}</Project>
+      <Name>common.topology.Ring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.Verify\adi.Verify\adi.Verify.csproj">
+      <Project>{53EDB048-723C-44FA-8B9B-64A2BBD808C1}</Project>
+      <Name>adi.Verify</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.data.ProblemDefinition\adi.data.ProblemDefinition\adi.data.ProblemDefinition.csproj">
+      <Project>{CAEB389F-AE7E-4052-9FB7-8E29F4928E82}</Project>
+      <Name>adi.data.ProblemDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\environment.MPIDirect\environment.MPIDirect\environment.MPIDirect.csproj">
+      <Project>{1F563648-2878-4A44-B98C-BBED70407F5D}</Project>
+      <Name>environment.MPIDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.CopyFaces\adi.CopyFaces\adi.CopyFaces.csproj">
+      <Project>{EFF27C29-8291-4717-919D-70319E68D1E2}</Project>
+      <Name>adi.CopyFaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\sp.problem_size.Instance_SP\sp.problem_size.Instance_SP\sp.problem_size.Instance_SP.csproj">
+      <Project>{0BC65DA6-CE75-464F-B807-BD41C4773F55}</Project>
+      <Name>sp.problem_size.Instance_SP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.ComputeRHS\adi.ComputeRHS\adi.ComputeRHS.csproj">
+      <Project>{1BF8D641-91A5-44EE-B0D2-4F254D96A91B}</Project>
+      <Name>adi.ComputeRHS</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

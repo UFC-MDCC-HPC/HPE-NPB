@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c19d94c2d459f92388dfd080678374e63515638a9f741ce69a92482bca9c7d90578b9ee73945b2256ec96f1763f5e9245cbcefff810424bad3f402869e2231f70b9ae6ce28c34d50ed8913c0b59c6b842622d7ee3b3ba7648446e3d3c59b77a8099e897b9f5e33d803f9d5bd4f26f2a4e432c8dd7c0521e819b3351dd59c1b9b" isAbstract="false" kind="Computation" name="LHSInitImpl" packagePath="impl.adi.data">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000e50c982b62bbbbda83d59d748c7d4eec76cc728ae1a2b9c02388a3d4691833b25aaf202a216962ad33ba9d7766b12d15131161b39718c2d95ccec70bb3acadd6bba4e8c705bb9389ca49e065f0b8ec9f23ae729bf106fbddc1528709e0f7df8a811a497d5883fa128050ec5403672acd5e76781e5cb7b65c500c054dbc3bc5bc" localRef="base" location="adi.data.LHSInit/LHSInit.hpe" name="LHSInit" package="adi.data" version="1.0.0.0">
+        <visualDescription h="67" w="84" x="203" y="408">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="instance_type" varName="I"/>
+        <parameter formFieldId="class" varName="C"/>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
+          <visualDescription h="30" w="112" x="399" y="388">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cells">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
+          <visualDescription h="30" w="142" x="379" y="260">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="instance_type" varName="I"/>
+          <parameter formFieldId="class" varName="C"/>
+          <unitBounds uRef="problem">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <unitBounds uRef="lhsinit">
+          <visualDescription h="10" w="10" x="39" y="12"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="230" y="426">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="class">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000071d38687e0d5d2c316c5b3d07d8aa67134a4623aa2696b4c1af143b9dfb26a795943f7fad788e11c36c09b5001b5422f85c04f6580101d9e27cbf7d06c6cec1d87e42c3a8940336c5c2d63abadb4ac8c1519030710b5b087e1d7e415c91fe07522356c2184e3ea18bf6684dd71bda7b7e5e4411c6b9941ea98fa97bde5ccceb1" localRef="instance" location="common.problem_size.Instance/Instance.hpe" name="Instance" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="646" y="554">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="class" varName="C"/>
+      <unitBounds uRef="instance">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="class" varName="C"/>
+    <supplyParameter cRef="instance" varName="I"/>
+    <interface iRef="ILHSInitImpl" nArgs="2">
+      <slice isRef="problem">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="69" y="8"/>
+      </slice>
+      <slice isRef="cells">
+        <originRef cRef="cells_info" iRef="ICells"/>
+        <visualDescription h="10" w="10" x="51" y="22"/>
+      </slice>
+      <protocol xsi:type="component:ActionSkipType" label="hPE.frontend.kinds.activate.model.protocol.HSkipAction@4f8601b5" repeat="0">
+        <visualDescription h="50" w="50" x="75" y="75"/>
+      </protocol>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using adi.data.LHSInit;&#xA;&#xA;namespace impl.adi.data.LHSInitImpl { &#xA;&#xA;public abstract class BaseILHSInitImpl&lt;I, C>: Computation, BaseILHSInit&lt;I, C>&#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;{&#xA;&#x9;&#x9;&#xA;#region data&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;protected int[,] cell_size, cell_low, cell_high, start, end, slice, cell_coord;&#x9;&#x9;&#xA;protected int ncells, IMAX, JMAX, KMAX, maxcells;&#x9;&#x9;&#xA;protected double[,,,,] lhs;&#xA;&#xA;override public void initialize()&#xA;{&#x9;&#xA;&#x9;cell_size = Cells.cell_size;&#xA;&#x9;cell_low = Cells.cell_low;&#xA;&#x9;cell_high = Cells.cell_high;&#xA;&#x9;cell_coord = Cells.cell_coord;&#xA;&#x9;start = Cells.cell_start;&#xA;&#x9;end = Cells.cell_end;&#xA;&#x9;slice = Cells.cell_slice;&#xA;&#x9;&#xA;&#x9;ncells = Problem.NCells;&#xA;&#x9;lhs = Problem.Field_lhs;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;IMAX = Problem.IMAX;&#xA;&#x9;JMAX = Problem.JMAX;&#xA;&#x9;KMAX = Problem.KMAX;&#xA;&#x9;maxcells = Problem.maxcells;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseILHSInitImpl.cs" srcType="base" uri="impl.adi.data.LHSInitImpl/bin/1.0.0.0/BaseILHSInitImpl.dll" versionId="1.0.0.0">
+          <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll</dependency>
+          <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
+          <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>adi.data.LHSInit/bin/1.0.0.0/BaseILHSInit.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using adi.data.LHSInit;&#xA;using adi.data.ProblemDefinition;&#xA;&#xA;namespace impl.adi.data.LHSInitImpl { &#xA;&#xA;&#x9;public class ILHSInitImpl&lt;I, C> : BaseILHSInitImpl&lt;I, C>, ILHSInit&lt;I, C>&#xA;&#x9;&#x9;where I:IInstance&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;{&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public ILHSInitImpl() &#xA;&#x9;&#x9;{ &#xA;&#x9;&#x9;}&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{ &#xA;&#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;        // loop over all cells                                       &#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;        for (int c = 0; c &lt; ncells; c++)&#xA;&#x9;        {&#xA;&#x9;&#xA;&#x9;            //---------------------------------------------------------------------&#xA;&#x9;            // zap the whole left hand side for starters&#xA;&#x9;            //---------------------------------------------------------------------&#xA;&#x9;&#xA;&#x9;            for (int k = 2; k &lt; 2 + cell_size[c, 2]; k++)&#xA;&#x9;            {&#xA;&#x9;                for (int j = 2; j &lt; 2 + cell_size[c, 1]; j++)&#xA;&#x9;                {&#xA;&#x9;                    for (int i = 2; i &lt; 2 + cell_size[c, 0]; i++)&#xA;&#x9;                    {&#xA;&#x9;                        for (int n = 0; n &lt; 15; n++)&#xA;&#x9;                        {&#xA;&#x9;                            lhs[c, k, j, i, n] = 0.0d;&#xA;&#x9;                        }&#xA;&#x9;                    }&#xA;&#x9;                }&#xA;&#x9;            }&#xA;&#x9;&#xA;&#x9;            //---------------------------------------------------------------------&#xA;&#x9;            // next, set all diagonal values to 1. This is overkill, but convenient&#xA;&#x9;            //---------------------------------------------------------------------&#xA;&#x9;&#xA;&#x9;            for (int n = 0; n &lt; 3; n++)&#xA;&#x9;            {&#xA;&#x9;                for (int k = 2; k &lt; 2 + cell_size[c, 2]; k++)&#xA;&#x9;                {&#xA;&#x9;                    for (int j = 2; j &lt; 2 + cell_size[c, 1]; j++)&#xA;&#x9;                    {&#xA;&#x9;                        for (int i = 2; i &lt; 2 + cell_size[c, 0]; i++)&#xA;&#x9;                        {&#xA;&#x9;                            lhs[c, k, j, i, 5 * n + 2] = 1.0d;&#xA;&#x9;                        }&#xA;&#x9;                    }&#xA;&#x9;                }&#xA;&#x9;            }&#xA;&#x9;        }&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="ILHSInitImpl.cs" srcType="user" uri="impl.adi.data.LHSInitImpl/bin/1.0.0.0/ILHSInitImpl.dll" versionId="1.0.0.0">
+          <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>%WORKSPACE/impl.adi.data.LHSInitImpl/bin/1.0.0.0/BaseILHSInitImpl.dll</dependency>
+          <dependency>adi.data.LHSInit/bin/1.0.0.0/ILHSInit.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="80" x="228" y="143">
+        <color b="0" g="255" r="128"/>
+      </visualDescription>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem" sRef="problem"/>
+      </port>
+      <port name="cells">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells" sRef="cells"/>
+      </port>
+      <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
+      <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+    </interface>
+    <unit iRef="ILHSInitImpl" private="false" uRef="lhsinit" visibleInterface="true">
+      <super cRef="base" uRef="lhsinit"/>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+        <visualDescription h="10" w="10" x="69" y="8"/>
+      </slices>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+        <visualDescription h="10" w="10" x="51" y="22"/>
+      </slices>
+      <visualDescription h="40" w="80" x="159" y="287"/>
+    </unit>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
+      <originRef>base</originRef>
+      <originRef>problem_data</originRef>
+      <originRef>qs</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="lhsinit"/>
+      <visualDescription h="60" w="61" x="70" y="132"/>
+    </enumerator>
+  </componentInfo>
+</component:component>

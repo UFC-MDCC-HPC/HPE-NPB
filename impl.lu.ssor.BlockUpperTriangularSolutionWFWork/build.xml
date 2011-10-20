@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/cache" default="all" name="BlockUpperTriangularSolutionWFWorkImpl">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="BlockUpperTriangularSolutionWFWorkImpl-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/BlockUpperTriangularSolutionWFWorkImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/bin/1.0.0.0/BaseIBTSUpperWorkImpl.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/src/1.0.0.0/BaseIBTSUpperWorkImpl.cs"/>
+      </sources>
+      <references>
+        <include name="lu.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll"/>
+        <include name="lu.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="lu.datapartition.BlocksInfo/bin/1.0.0.0/IBlocksInfo.dll"/>
+        <include name="common.Buffer/bin/1.0.0.0/IBuffer.dll"/>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll"/>
+        <include name="lu.ssor.BlockTriangularSolutionWFWork/bin/1.0.0.0/BaseIBTSWork.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/BlockUpperTriangularSolutionWFWorkImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/bin/1.0.0.0/IBTSUpperWorkImpl.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/src/1.0.0.0/IBTSUpperWorkImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll"/>
+        <include name="lu.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="/impl.lu.ssor.BlockUpperTriangularSolutionWFWorkImpl/bin/1.0.0.0/BaseIBTSUpperWorkImpl.dll"/>
+        <include name="lu.ssor.BlockTriangularSolutionWFWork/bin/1.0.0.0/IBTSWork.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+  </target>
+  <target depends="BlockUpperTriangularSolutionWFWorkImpl-1.0.0.0" name="all"/>
+</project>

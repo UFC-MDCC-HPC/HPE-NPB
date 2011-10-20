@@ -1,0 +1,11 @@
+using br.ufc.pargo.hpe.kinds;
+
+namespace adi.data.ExactSolution { 
+
+public interface IExactSolution : BaseIExactSolution
+{
+   void setParameters(double xi, double eta, double zeta, double[] dtemp, int offset);
+
+} // end main interface 
+
+} // end namespace 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000053a9c5b99d0b2ca97a55d48da1213fb671bb0c0c1d5a641fffdcd4fc2f4965fa3815709ac847bdbadf8c36d00dd09a09e789c7a76ae6fb649e77a84f24685a5af2c7719eb9a31f44faa927f3a7882fc3ed842640b60142241f93abf109901ee7500e4300bd5fb50ed3c2ae9a06a2251b9966a52be85773c5620e0a9fbc964f94" isAbstract="true" kind="Qualifier" name="Forward" packagePath="common.direction">
+    <baseType>
+      <extensionType>
+        <extends>true</extends>
+      </extensionType>
+      <component hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="base" location="common.direction.Direction/Direction.hpe" name="Direction" package="common.direction" version="1.0.0.0">
+        <visualDescription h="30" w="50" x="63" y="174">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <unitBounds uRef="forward">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <interface iRef="IForwardDirection" nArgs="0">
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Direction;&#xA;&#xA;namespace common.direction.Forward { &#xA;&#xA;public interface BaseIForwardDirection : BaseIDirection, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIForwardDirection.cs" srcType="base" uri="common.direction.Forward/bin/1.0.0.0/BaseIForwardDirection.dll" versionId="1.0.0.0">
+          <dependency>common.direction.Direction/bin/1.0.0.0/BaseIDirection.dll</dependency>
+        </file>
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Direction;&#xA;&#xA;namespace common.direction.Forward { &#xA;&#xA;public interface IForwardDirection : BaseIForwardDirection, IDirection&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IForwardDirection.cs" srcType="user" uri="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/common.direction.Forward/bin/1.0.0.0/BaseIForwardDirection.dll</dependency>
+          <dependency>common.direction.Direction/bin/1.0.0.0/IDirection.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="155" x="154" y="141">
+        <color b="192" g="192" r="192"/>
+      </visualDescription>
+    </interface>
+    <unit iRef="IForwardDirection" private="false" uRef="forward" visibleInterface="true">
+      <super cRef="base" uRef="direction"/>
+      <visualDescription h="46" w="105" x="121" y="283"/>
+    </unit>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>base</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="forward"/>
+      <visualDescription h="20" w="20" x="354" y="190"/>
+    </enumerator>
+  </componentInfo>
+</component:component>

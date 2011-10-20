@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/cache" default="all" name="Exchange3_YForwardReadBufferImpl">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="Exchange3_YForwardReadBufferImpl-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/Exchange3_YForwardReadBufferImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/bin/1.0.0.0/BaseIExchange3_YForwardReadBufferImpl.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/src/1.0.0.0/BaseIExchange3_YForwardReadBufferImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.Buffer/bin/1.0.0.0/IBuffer.dll"/>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="common.orientation.Axis/bin/1.0.0.0/IAxis.dll"/>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="common.orientation.Y/bin/1.0.0.0/IY.dll"/>
+        <include name="lu.exchange.Exchange3_ReadBuffer/bin/1.0.0.0/BaseIExchange3_ReadBuffer.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/Exchange3_YForwardReadBufferImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/bin/1.0.0.0/IExchange3_YForwardReadBufferImpl.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/src/1.0.0.0/IExchange3_YForwardReadBufferImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="common.orientation.Y/bin/1.0.0.0/IY.dll"/>
+        <include name="/impl.lu.exchange.Exchange3_YForwardReadBufferImpl/bin/1.0.0.0/BaseIExchange3_YForwardReadBufferImpl.dll"/>
+        <include name="lu.exchange.Exchange3_ReadBuffer/bin/1.0.0.0/IExchange3_ReadBuffer.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+  </target>
+  <target depends="Exchange3_YForwardReadBufferImpl-1.0.0.0" name="all"/>
+</project>

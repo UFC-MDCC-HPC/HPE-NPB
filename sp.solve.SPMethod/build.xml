@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="SPMethod">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="SPMethod-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.solve.SPMethod/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.solve.SPMethod/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.solve.SPMethod/SPMethod.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.solve.SPMethod/bin/1.0.0.0/BaseISPMethod.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.solve.SPMethod/src/1.0.0.0/BaseISPMethod.cs"/>
+      </sources>
+      <references>
+        <include name="common.solve.SolvingMethod/bin/1.0.0.0/BaseISolvingMethod.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.solve.SPMethod/SPMethod.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.solve.SPMethod/src/1.0.0.0/ISPMethod.cs"/>
+      </sources>
+      <references>
+        <include name="/sp.solve.SPMethod/bin/1.0.0.0/BaseISPMethod.dll"/>
+        <include name="common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="SPMethod-1.0.0.0" name="all"/>
+</project>

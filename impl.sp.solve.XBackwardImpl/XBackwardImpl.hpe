@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000d1c7077a36210daa94de0fecb0ec884e5196d8fb9e74a2b840cda7513416a08931fdc67248680ca83415d3b8b4e3e209b4803d79559a5dc62ecea6aec3011937a6b16794f42ca7fa1e44def6fa7ce1fc6b0c0760ddcd8b0dbdcf0837c7c384f8e4a76883bcd7fa615bcc2b6638d2175c1d9e4d8f63d9b6ace92ed547e47a83c6" isAbstract="false" kind="Computation" name="XBackwardImpl" packagePath="impl.sp.solve">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="002400000480000094000000060200000024000052534131000400001100000011ed359b2ec8ca11d0432a3162103ff9b3672ed7ace141eee027e0e8e75db4e3bfe728d83cc3d2106c9fe2d484210de19e84cfa503d608f8c7dd024115667a94eeddf635376e4d69e0ed3b0c4153b75afe1e6be3204d7250a4d9ee595cac356f8f069b3d6204382cdfdbbc95708b14e9f4327caf4779b7488e6e8a0d0d7e3aac" localRef="base" location="sp.solve.Backward/Backward.hpe" name="Backward" package="sp.solve" version="1.0.0.0">
+        <visualDescription h="30" w="50" x="298" y="120">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="axis" varName="DIR"/>
+        <parameter formFieldId="instance_type" varName="I"/>
+        <parameter formFieldId="class" varName="C"/>
+        <parameter formFieldId="method" varName="MTH"/>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
+          <visualDescription h="44" w="103" x="204" y="400">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cells">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
+          <visualDescription h="62" w="157" x="211" y="448">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="instance_type" varName="I"/>
+          <parameter formFieldId="class" varName="C"/>
+          <unitBounds uRef="problem">
+            <visualDescription h="10" w="10" x="13" y="27"/>
+          </unitBounds>
+        </port>
+        <unitBounds uRef="backward">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000159d9ccb4ff0bb35a4fe190495e9c0d9a8406fa4adae5405850aed7cf83bbe6096bcb7deb5b07550a718fabec888b38f45c00ad4323db7b35e01dd236f9d1af6d8d0e529844de79031b63f05f2e810d0218c315e2c720d374b2bc2c0b15ec45863f2832e19f30c9bf6ee1519c76cd5e6f0ed485d2027397f93caec006396c587" localRef="method" location="sp.solve.SPMethod/SPMethod.hpe" name="SPMethod" package="sp.solve" exposed="false">
+      <visualDescription h="30" w="50" x="136" y="114">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="method">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000099ec807d7886f0c2735f4a4c2dc60d8feb0a435847e291a0f9dd7aed2539883c551cf8dd8fe530fe7d695458a20d532e4a58b5cf62af87f410238ec43d1e140b210efe08dea6fc4983660e10cc3431cd1102137a5df63ef9bef47a99b409c0b1c86bd4aa322397fd56e1ed3be2e81f8d1a9765c5dc9134ec1eb1b5d4567311ae" localRef="xdir" location="common.axis.XAxis/XAxis.hpe" name="XAxis" package="common.axis" exposed="false">
+      <visualDescription h="30" w="50" x="475" y="105">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="x">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="102" y="170">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="class">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000796ff7bbb33560060ee9951c4f8242d987089c0c50af1d3a6ab2f92466788c33bfa42e66a347c4206d81a948be78598f82f386b898f40714662cb0134d02313a7e06d04944957cb9149a5069ebfcc65b58711afd15bfbe6f3144cf719a1d8c90833890d5ed1eac7e3b8a657a774a065ca04588c7743c47a41fe59e21cd7767a4" localRef="instance" location="sp.problem_size.Instance_SP/Instance_SP.hpe" name="Instance_SP" package="sp.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="111" y="389">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="class" varName="C"/>
+      <unitBounds uRef="instance">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="class" varName="C"/>
+    <supplyParameter cRef="xdir" varName="DIR"/>
+    <supplyParameter cRef="method" varName="MTH"/>
+    <supplyParameter cRef="instance" varName="I"/>
+    <interface iRef="IXBackwardImpl" nArgs="4">
+      <slice isRef="cells">
+        <originRef cRef="cells_info" iRef="ICells"/>
+        <visualDescription h="10" w="10" x="41" y="26"/>
+      </slice>
+      <slice isRef="problem">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="9" y="27"/>
+      </slice>
+      <slice isRef="axis">
+        <originRef cRef="axis" iRef="IAxis"/>
+        <visualDescription h="10" w="10" x="22" y="27"/>
+      </slice>
+      <slice isRef="method">
+        <originRef cRef="method" iRef="IMethod"/>
+        <visualDescription h="10" w="10" x="30" y="5"/>
+      </slice>
+      <protocol xsi:type="component:ActionSkipType" label="hPE.frontend.kinds.activate.model.protocol.HSkipAction@38cedfad" repeat="0">
+        <visualDescription h="50" w="50" x="75" y="75"/>
+      </protocol>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using common.solve.Method;&#xA;using common.axis.X;&#xA;using sp.solve.SPMethod;&#xA;using sp.solve.Backward;&#xA;&#xA;namespace impl.sp.solve.XBackwardImpl { &#xA;&#xA;public abstract class BaseIXBackwardImpl&lt;I, C, DIR, MTH>: Computation, BaseIBackward&lt;I, C, DIR, MTH>&#xA;where I:IInstance_SP&lt;C>&#xA;where C:IClass&#xA;where DIR:IX&#xA;where MTH:ISPMethod&#xA;{&#xA;&#x9;&#x9;&#xA;#region data&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;protected int[,] start, end, slice, cell_size;&#xA;protected double[,,,,] lhs, rhs;&#xA;&#xA;override public void initialize()&#xA;{&#xA;&#x9;start = Cells.cell_start;&#xA;&#x9;end = Cells.cell_end;&#xA;&#x9;slice = Cells.cell_slice;&#xA;&#x9;cell_size = Cells.cell_size;&#xA;&#x9;&#xA;&#x9;lhs = Problem.Field_lhs;&#xA;&#x9;rhs = Problem.Field_rhs;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR axis = default(DIR);&#xA;&#xA;protected DIR Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (DIR) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIXBackwardImpl.cs" srcType="base" uri="impl.sp.solve.XBackwardImpl/bin/1.0.0.0/BaseIXBackwardImpl.dll" versionId="1.0.0.0">
+          <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll</dependency>
+          <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
+          <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
+          <dependency>common.solve.Method/bin/1.0.0.0/IMethod.dll</dependency>
+          <dependency>common.axis.XAxis/bin/1.0.0.0/IX.dll</dependency>
+          <dependency>sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll</dependency>
+          <dependency>sp.solve.Backward/bin/1.0.0.0/BaseIBackward.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.axis.X;&#xA;using sp.solve.SPMethod;&#xA;using sp.solve.Backward;&#xA;&#xA;namespace impl.sp.solve.XBackwardImpl { &#xA;&#xA;&#x9;public class IXBackwardImpl&lt;I, C, DIR, MTH> : BaseIXBackwardImpl&lt;I, C, DIR, MTH>, IBackward&lt;I, C, DIR, MTH>&#xA;&#x9;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;where DIR:IX&#xA;&#x9;&#x9;where MTH:ISPMethod&#xA;&#x9;{&#x9;&#xA;&#x9;&#x9;public IXBackwardImpl()&#xA;&#x9;&#x9;{&#xA; &#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public void init()&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;int i, j, k, n, i1, m;&#xA;&#x9;&#x9;&#x9;&#xA;            #region backward_init&#xA;            //---------------------------------------------------------------------&#xA;            //            now we know this is the first grid block on the back sweep,&#xA;            //            so we do not need a message to start the substitution. &#xA;            //---------------------------------------------------------------------&#xA;            i = iend - 1;&#xA;            i1 = iend;&#xA;            n = -1;&#xA;            for (m = 0; m &lt;= 2; m++)&#xA;            {&#xA;                for (k = start[c, 2]; k &lt; ksize - end[c, 2] - 1; k++)&#xA;                {&#xA;                    for (j = start[c, 1]; j &lt; jsize - end[c, 1] - 1; j++)&#xA;                    {&#xA;                        rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -&#xA;                                    lhs[c, k, j, i, n + 4] * rhs[c, k, j, i1, m];&#xA;                    }&#xA;                }&#xA;            }&#xA;&#xA;            for (m = 3; m &lt;= 4; m++)&#xA;            {&#xA;                n = (m - 2) * 5 - 1;&#xA;                for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;                {&#xA;                    for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;                    {&#xA;                        rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -&#xA;                                     lhs[c, k, j, i, n + 4] * rhs[c, k, j, i1, m];&#xA;                    }&#xA;                }&#xA;            }&#xA;            #endregion&#xA; &#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private int c, istart, iend, jsize, ksize;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void enterStage(int stage)&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;{&#xA;            c = slice[stage, 0];&#xA;&#xA;            istart = 2;&#xA;            iend = 2 + cell_size[c, 0] - 1;&#xA;&#xA;            jsize = cell_size[c, 1] + 2;&#xA;            ksize = cell_size[c, 2] + 2;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{ &#x9;&#x9;&#xA;            int i, j, k, n, i1, i2, m;&#xA;&#x9;&#x9;&#x9;&#xA;            #region backward&#xA;            //---------------------------------------------------------------------&#xA;            //         Whether or not this is the last processor, we always have&#xA;            //         to complete the back-substitution &#xA;            //---------------------------------------------------------------------&#xA;&#xA;            //---------------------------------------------------------------------&#xA;            //         The first three factors&#xA;            //---------------------------------------------------------------------&#xA;            n = -1;&#xA;            for (m = 0; m &lt;= 2; m++)&#xA;            {&#xA;                for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;                {&#xA;                    for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;                    {&#xA;                        for (i = iend - 2; i >= istart; i--)&#xA;                        {&#xA;                            i1 = i + 1;&#xA;                            i2 = i + 2;&#xA;                            rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -&#xA;                                     lhs[c, k, j, i, n + 4] * rhs[c, k, j, i1, m] -&#xA;                                     lhs[c, k, j, i, n + 5] * rhs[c, k, j, i2, m];&#xA;                        }&#xA;                    }&#xA;                }&#xA;            }&#xA;&#xA;            //---------------------------------------------------------------------&#xA;            //         And the remaining two&#xA;            //---------------------------------------------------------------------&#xA;            for (m = 3; m &lt;= 4; m++)&#xA;            {&#xA;                n = (m - 2) * 5 - 1;&#xA;                for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;                {&#xA;                    for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;                    {&#xA;                        for (i = iend - 2; i >= istart; i--)&#xA;                        {&#xA;                            i1 = i + 1;&#xA;                            i2 = i + 2;&#xA;                            rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -&#xA;                                     lhs[c, k, j, i, n + 4] * rhs[c, k, j, i1, m] -&#xA;                                     lhs[c, k, j, i, n + 5] * rhs[c, k, j, i2, m];&#xA;                        }&#xA;                    }&#xA;                }&#xA;            }&#xA;            #endregion backward&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#xA;&#x9;}&#xA;&#x9;&#xA;}&#xA;" fileType="library" name="IXBackwardImpl.cs" srcType="user" uri="impl.sp.solve.XBackwardImpl/bin/1.0.0.0/IXBackwardImpl.dll" versionId="1.0.0.0">
+          <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>common.axis.XAxis/bin/1.0.0.0/IX.dll</dependency>
+          <dependency>sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll</dependency>
+          <dependency>%WORKSPACE/impl.sp.solve.XBackwardImpl/bin/1.0.0.0/BaseIXBackwardImpl.dll</dependency>
+          <dependency>sp.solve.Backward/bin/1.0.0.0/IBackward.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="80" x="48" y="92">
+        <color b="207" g="207" r="207"/>
+      </visualDescription>
+      <port name="cells">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells" sRef="cells"/>
+      </port>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem" sRef="problem"/>
+      </port>
+      <parameter iname="IInstance_SP" order="0" parid="instance_type" uname="instance" varid="I"/>
+      <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <parameter iname="IX" order="2" parid="axis" uname="x" varid="DIR"/>
+      <parameter iname="ISPMethod" order="3" parid="method" uname="method" varid="MTH"/>
+    </interface>
+    <unit iRef="IXBackwardImpl" private="false" uRef="backward" visibleInterface="true">
+      <super cRef="base" uRef="backward"/>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+        <visualDescription h="10" w="10" x="41" y="26"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+        <visualDescription h="10" w="10" x="9" y="27"/>
+      </slices>
+      <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
+        <visualDescription h="10" w="10" x="22" y="27"/>
+      </slices>
+      <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">
+        <visualDescription h="10" w="10" x="30" y="5"/>
+      </slices>
+      <visualDescription h="40" w="80" x="194" y="188"/>
+    </unit>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>base</originRef>
+      <originRef>axis</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="backward"/>
+      <visualDescription h="48" w="47" x="65" y="284"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
+      <originRef>method</originRef>
+      <originRef>base</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="method" uRef="method"/>
+      <visualDescription h="20" w="20" x="260" y="427"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>xdir</originRef>
+      <originRef>base</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="xdir" uRef="x"/>
+      <visualDescription h="20" w="20" x="354" y="190"/>
+    </enumerator>
+  </componentInfo>
+</component:component>

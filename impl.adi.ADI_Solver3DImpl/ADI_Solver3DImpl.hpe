@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ddeedcaba108d1ed5e25cabaf2bd29f9ccced4266b31e92a275abc158dba1dbdf7da446e2ab536fc6614be14bff8fb9183a4189b985fe4d27b5827017638da1116ce4f24f8a5746b4db9cfb95905093897bf3fdcf3414b497fd7a29025c44f2fc979f9c837232c7f1cb152b236d0f97ff543046b43f4bf10d66edbf4e6d2ffb2" isAbstract="false" kind="Application" name="ADI_Solver3D" packagePath="impl.sp">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cf07384ccb0fb649bcfe9c5eb7bd5fb8e15874406e357fe6bf7a1ff79d8db32a632da9a91a0d32adf6616bed54970128dbdc598cf844bf333180e9bb781c2bf8e26ce5946183f0551faa0ba2a41ff5b7d91ceb38dc04ca2d25324ed3dcf6b850fcfdf619cd5183040308869fd331e8515fd6c000302f164fa204ca14c1a78c95" localRef="base" location="adi.ADI_Solver3D/ADI_Solver3D.hpe" name="ADI_Solver3D" package="adi" version="1.0.0.0">
+        <visualDescription h="67" w="135" x="123" y="144">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="instance_type" varName="I"/>
+        <parameter formFieldId="class" varName="CLASS"/>
+        <parameter formFieldId="method" varName="MTH"/>
+        <unitBounds uRef="adi_solver3D">
+          <visualDescription h="10" w="10" x="61" y="50"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="88" y="245">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="class">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000071d38687e0d5d2c316c5b3d07d8aa67134a4623aa2696b4c1af143b9dfb26a795943f7fad788e11c36c09b5001b5422f85c04f6580101d9e27cbf7d06c6cec1d87e42c3a8940336c5c2d63abadb4ac8c1519030710b5b087e1d7e415c91fe07522356c2184e3ea18bf6684dd71bda7b7e5e4411c6b9941ea98fa97bde5ccceb1" localRef="instance" location="common.problem_size.Instance/Instance.hpe" name="Instance" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="99" x="97" y="221">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="class" varName="CLASS"/>
+      <unitBounds uRef="instance">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000065a583953c3587c1209979536e5ff1a80890361170dab29c31967996924e908f4dfcd7fd7c85921b08aa2193be1674aa220dbaafda9c081270f8248e0ef486f725d00c99c141ffefbc663fb868426326f477127eca49696e967b6c8203ada10b80b06758073be286f99f981981d314cf3ba20addb76983db1e155576d5e86c83" localRef="method" location="common.solve.SolvingMethod/SolvingMethod.hpe" name="SolvingMethod" package="common.solve" exposed="false">
+      <visualDescription h="30" w="102" x="136" y="287">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="method">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="class" varName="CLASS"/>
+    <supplyParameter cRef="method" varName="MTH"/>
+    <supplyParameter cRef="instance" varName="I"/>
+    <interface iRef="IADI_Solver3DImpl" nArgs="3">
+      <slice isRef="adi">
+        <originRef cRef="adi" iRef="IADI"/>
+        <visualDescription h="10" w="10" x="109" y="58"/>
+      </slice>
+      <slice isRef="verify">
+        <originRef cRef="verify" iRef="IVerify"/>
+        <visualDescription h="10" w="10" x="8" y="25"/>
+      </slice>
+      <slice isRef="instance">
+        <originRef cRef="instance" iRef="IInstance"/>
+        <visualDescription h="10" w="10" x="0" y="9"/>
+      </slice>
+      <slice isRef="initialize">
+        <originRef cRef="initialize" iRef="IInitialize"/>
+        <visualDescription h="10" w="10" x="23" y="3"/>
+      </slice>
+      <slice isRef="lhsinit">
+        <originRef cRef="lhsinit" iRef="ILHSInit"/>
+        <visualDescription h="10" w="10" x="38" y="5"/>
+      </slice>
+      <slice isRef="exact_rhs">
+        <originRef cRef="exact_rhs" iRef="IExactRHS"/>
+        <visualDescription h="10" w="10" x="62" y="1"/>
+      </slice>
+      <slice isRef="multipartition">
+        <originRef cRef="data_partition" iRef="IMultiPartition"/>
+        <visualDescription h="10" w="10" x="96" y="46"/>
+      </slice>
+      <slice isRef="timer">
+        <originRef cRef="timer" iRef="ITimer"/>
+        <visualDescription h="10" w="10" x="45" y="29"/>
+      </slice>
+      <protocol xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@5ad29917" repeat="0">
+        <visualDescription h="150" w="130" x="75" y="75"/>
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@3840e396" repeat="0" sliceRef="adi">
+          <visualDescription h="50" w="50" x="10" y="50"/>
+        </action>
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@2c1da9b4" repeat="0" sliceRef="verify">
+          <visualDescription h="50" w="50" x="70" y="50"/>
+        </action>
+      </protocol>
+      <sources sourceType="C# Executable" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using adi.data.ProblemDefinition;&#xA;using sp.problem_size.Instance_ADI_Solver3D;&#xA;using common.problem_size.Class;&#xA;using common.datapartition.MultiPartition;&#xA;using environment.MPIDirect;&#xA;using adi.Verify;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using common.topology.Ring;&#xA;using adi.data.Initialize;&#xA;using adi.data.ExactRHS;&#xA;using adi.data.LHSInit;&#xA;using common.benchmarking.Timer;&#xA;using sp.ADI;&#xA;using sp.ADI_Solver3D;&#xA;using common.problem_size.Instance;&#xA;&#xA;namespace impl.sp.ADI_Solver3D { &#xA;&#xA;public abstract class BaseIADI_Solver3DImpl&lt;CLASS>: Application, BaseIADI_Solver3D&lt;CLASS>&#xA;where CLASS:IClass&#xA;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;#region MyRegion&#xA;&#x9;&#x9;&#xA;public PROBLEM_CLASS problem_class;&#xA;&#x9;&#x9;&#xA;protected int ncells;&#xA;protected int[,] cell_size;&#xA;protected int[] grid_points;&#x9;&#x9;&#xA;protected int problem_size;&#xA;protected int niter;&#xA;&#x9;&#x9;&#xA;override public void initialize()&#xA;{&#x9;&#xA;&#x9;cell_size = Cells.cell_size;&#x9;&#x9;&#xA;&#x9;ncells = Cells.ncells;&#x9;&#x9;&#x9;&#xA;&#x9;&#xA;&#x9;problem_size = Instance.problem_size;&#x9;&#x9;&#x9;&#xA;&#x9;problem_class = Instance.CLASS;&#x9;&#xA;&#x9;niter = Instance.niter_default;&#xA;&#x9;&#xA;&#x9;grid_points = Problem.grid_points;&#x9;&#x9;&#x9;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;private ITimer timer = null;&#xA;&#xA;protected ITimer Timer {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.timer == null)&#xA;&#x9;&#x9;&#x9;this.timer = (ITimer) Services.getPort(&quot;timer&quot;);&#xA;&#x9;&#x9;return this.timer;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IInitialize&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> initialize_ = null;&#xA;&#xA;protected IInitialize&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> Initialize {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.initialize_ == null)&#xA;&#x9;&#x9;&#x9;this.initialize_ = (IInitialize&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS>) Services.getPort(&quot;initialize&quot;);&#xA;&#x9;&#x9;return this.initialize_;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExactRHS&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> exact_rhs = null;&#xA;&#xA;protected IExactRHS&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> Exact_rhs {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.exact_rhs == null)&#xA;&#x9;&#x9;&#x9;this.exact_rhs = (IExactRHS&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS>) Services.getPort(&quot;exact_rhs&quot;);&#xA;&#x9;&#x9;return this.exact_rhs;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ILHSInit&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> lhsinit = null;&#xA;&#xA;protected ILHSInit&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> Lhsinit {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.lhsinit == null)&#xA;&#x9;&#x9;&#x9;this.lhsinit = (ILHSInit&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS>) Services.getPort(&quot;lhsinit&quot;);&#xA;&#x9;&#x9;return this.lhsinit;&#xA;&#x9;}&#xA;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;protected ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell x = null;&#xA;&#xA;protected ICell X {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.x == null)&#xA;&#x9;&#x9;&#x9;this.x = (ICell) Services.getPort(&quot;x&quot;);&#xA;&#x9;&#x9;return this.x;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell y = null;&#xA;&#xA;protected ICell Y {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.y == null)&#xA;&#x9;&#x9;&#x9;this.y = (ICell) Services.getPort(&quot;y&quot;);&#xA;&#x9;&#x9;return this.y;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell z = null;&#xA;&#xA;protected ICell Z {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.z == null)&#xA;&#x9;&#x9;&#x9;this.z = (ICell) Services.getPort(&quot;z&quot;);&#xA;&#x9;&#x9;return this.z;&#xA;&#x9;}&#xA;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;private IInstance_ADI_Solver3D&lt;CLASS> instance = default(IInstance_ADI_Solver3D&lt;CLASS>);&#xA;&#xA;protected IInstance_ADI_Solver3D&lt;CLASS> Instance {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (instance==null) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.instance = (IInstance_ADI_Solver3D&lt;CLASS>) Services.getPort(&quot;instance&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return instance;&#xA;&#x9;}&#xA;}&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#xA;private IProblemDefinition&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> problem = null;&#xA;&#xA;protected IProblemDefinition&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IMultiPartition&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> process = null;&#xA;&#xA;protected IMultiPartition&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> Process {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.process == null)&#xA;&#x9;&#x9;&#x9;this.process = (IMultiPartition&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS>) Services.getPort(&quot;data_partition&quot;);&#xA;&#x9;&#x9;return this.process;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IMPIDirect mpi = null;&#xA;&#xA;protected IMPIDirect Mpi {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.mpi == null)&#xA;&#x9;&#x9;&#x9;this.mpi = (IMPIDirect) Services.getPort(&quot;mpi&quot;);&#xA;&#x9;&#x9;return this.mpi;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IVerify&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> verify = null;&#xA;&#xA;protected IVerify&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS> Verify {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.verify == null)&#xA;&#x9;&#x9;&#x9;this.verify = (IVerify&lt;IInstance_ADI_Solver3D&lt;CLASS>, CLASS>) Services.getPort(&quot;verify&quot;);&#xA;&#x9;&#x9;return this.verify;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IADI&lt;CLASS> adi = null;&#xA;&#xA;protected IADI&lt;CLASS> Adi {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.adi == null)&#xA;&#x9;&#x9;&#x9;this.adi = (IADI&lt;CLASS>) Services.getPort(&quot;adi&quot;);&#xA;&#x9;&#x9;return this.adi;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIADI_Solver3DImpl.cs" srcType="base" uri="impl.sp.ADI_Solver3D/bin/1.0.0.0/BaseIADI_Solver3DImpl.dll" versionId="1.0.0.0">
+          <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
+          <dependency>sp.problem_size.Instance_ADI_Solver3D/bin/1.0.0.0/IInstance_ADI_Solver3D.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>common.datapartition.MultiPartition/bin/1.0.0.0/IMultiPartition.dll</dependency>
+          <dependency>environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll</dependency>
+          <dependency>adi.Verify/bin/1.0.0.0/IVerify.dll</dependency>
+          <dependency>sp.ADI/bin/1.0.0.0/IADI.dll</dependency>
+          <dependency>sp.ADI_Solver3D/bin/1.0.0.0/BaseIADI_Solver3D.dll</dependency>
+          <externalDependency>MPI</externalDependency>
+          <externalDependency>BMInOut</externalDependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Class;&#xA;using sp.ADI_Solver3D;&#xA;using adi.data.ProblemDefinition;&#xA;using MPI;&#xA;using NPB3_0_JAV.BMInOut;&#xA;using common.problem_size.Instance;&#xA;&#xA;namespace impl.sp.ADI_Solver3D { &#xA;&#xA;&#x9;public class IADI_Solver3DImpl&lt;CLASS> : BaseIADI_Solver3DImpl&lt;CLASS>, IADI_Solver3D&lt;CLASS>&#xA;&#x9;where CLASS:IClass&#xA;&#x9;{&#xA;        public int bid = -1;&#xA;&#x9;&#x9;public static int t_total = 1;&#xA;    &#x9;public static String BMName = &quot;ADI_Solver3D&quot;;&#x9;&#x9;&#xA;&#x9;&#x9;protected bool active;&#xA;&#x9;&#x9;protected int node, no_nodes, total_nodes, root ,maxcells;&#xA;&#x9;    protected Intracommunicator worldcomm, comm_setup, comm_solve, comm_rhs = null;&#x9;&#xA;&#x9;&#x9;public BMResults results;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public IADI_Solver3DImpl() {} &#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private void runBenchmark()&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;setup_mpi();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;if (!active)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        Console.WriteLine(&quot;not active !&quot;);&#xA;&#x9;&#x9;        System.Environment.Exit(0);&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    if (node == root)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        BMArgs.Banner(BMName, problem_class.ToString()[0], false, total_nodes);&#x9;&#x9;&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;// Process.make_set();&#xA;&#x9;&#x9;&#x9;&#x9;    &#x9;&#x9;&#xA;&#x9;&#x9;    for (int c = 0; c &lt; ncells; c++)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        if ((cell_size[c, 0] > Problem.IMAX) ||&#xA;&#x9;&#x9;            (cell_size[c, 1] > Problem.JMAX) ||&#xA;&#x9;&#x9;            (cell_size[c, 2] > Problem.KMAX))&#xA;&#x9;&#x9;        {&#xA;&#x9;&#x9;            Console.WriteLine(&quot;Problem size too big for compiled array sizes&quot;);&#xA;&#x9;&#x9;            System.Environment.Exit(0);&#xA;&#x9;&#x9;        }&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;//&#x9;&#x9;&#x9;Problem.initialize_problem_data();&#xA;//&#x9;&#x9;&#x9;Problem.set_constants(0);&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Initialize.go();&#xA;&#x9;&#x9;&#x9;Lhsinit.go();&#xA;&#x9;&#x9;&#x9;Exact_rhs.go();&#xA;&#x9;&#x9;    //compute_buffer_size(5);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    //---------------------------------------------------------------------&#xA;&#x9;&#x9;    //      do one time step to touch all code, and reinitialize&#xA;&#x9;&#x9;    //---------------------------------------------------------------------&#xA;&#x9;&#x9;    Adi.go();&#xA;&#x9;&#x9;    Initialize.go();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    //---------------------------------------------------------------------&#xA;&#x9;&#x9;    //      Synchronize before placing time stamp&#xA;&#x9;&#x9;    //---------------------------------------------------------------------&#xA;&#x9;&#x9;    &#xA;&#x9;&#x9;    comm_setup.Barrier();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Timer.resetAllTimers();&#xA;&#x9;&#x9;&#x9;Timer.start(t_total);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    Console.WriteLine(&quot;STARTING&quot;); Console.Out.Flush();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    for (int step = 1; step &lt;= niter; step++)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        if (node == 0 &amp;&amp; (step % 20 == 0 || step == 1 || step == niter))&#xA;&#x9;&#x9;        {&#xA;&#x9;&#x9;            Console.WriteLine(&quot;Time step &quot; + step);&#xA;&#x9;&#x9;        }&#xA;&#x9;&#x9;&#x9;&#x9;Adi.go();&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Timer.stop(1);&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Verify.go(); &#xA;&#x9;&#x9;    int verified = Verify.Verified;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;   // double tmax = Timer.readTimerGlobal(t_total); &#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    if (node == root)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        double time = Timer.readTimer(t_total);&#xA;&#x9;&#x9;        results = new BMResults(BMName,&#xA;&#x9;&#x9;                      problem_class.ToString()[0],&#xA;&#x9;&#x9;                      grid_points[0],&#xA;&#x9;&#x9;                      grid_points[1],&#xA;&#x9;&#x9;                      grid_points[2],&#xA;&#x9;&#x9;                      niter,&#xA;&#x9;&#x9;                      time,&#xA;&#x9;&#x9;                      getMFLOPS(time, niter),&#xA;&#x9;&#x9;                      &quot;floating point&quot;,&#xA;&#x9;&#x9;                      verified,&#xA;&#x9;&#x9;                      true,&#xA;&#x9;&#x9;                      total_nodes,&#xA;&#x9;&#x9;                      bid);&#xA;&#x9;&#x9;        results.print();&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;    worldcomm.Barrier();&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{           &#xA;&#x9;&#x9;&#x9;runBenchmark();&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#x9;&#xA;&#x9;    private void setup_mpi()&#xA;&#x9;    {&#xA;&#x9;        int nc, color;&#xA;&#x9;&#xA;&#x9;        worldcomm = this.WorldComm;&#xA;&#x9;&#xA;&#x9;        total_nodes = worldcomm.Size;&#xA;&#x9;        node = worldcomm.Rank;&#xA;&#x9;&#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;        //     compute square root; add small number to allow for roundoff&#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;        nc = Convert.ToInt32(Math.Sqrt(total_nodes) + 0.00001d);&#xA;&#x9;        maxcells = Convert.ToInt32(Math.Sqrt(total_nodes));&#xA;&#x9;&#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;        // We handle a non-square number of nodes by making the excess nodes&#xA;&#x9;        // inactive. However, we can never handle more cells than were compiled&#xA;&#x9;        // in. &#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;&#xA;&#x9;        if (nc > maxcells) nc = maxcells;&#xA;&#x9;&#xA;&#x9;        if (node >= nc * nc)&#xA;&#x9;        {&#xA;&#x9;            active = false;&#xA;&#x9;            color = 1;&#xA;&#x9;        }&#xA;&#x9;        else&#xA;&#x9;        {&#xA;&#x9;            active = true;&#xA;&#x9;            color = 0;&#xA;&#x9;        }&#xA;&#x9;&#xA;&#x9;        comm_setup = (Intracommunicator)worldcomm.Split(color, node);&#xA;&#x9;&#xA;&#x9;        if (!active) return;&#xA;&#x9;&#xA;&#x9;        no_nodes = comm_setup.Size;&#xA;&#x9;        comm_solve = (Intracommunicator)comm_setup.Clone();&#xA;&#x9;        comm_rhs = (Intracommunicator)comm_setup.Clone();&#xA;&#x9;&#xA;&#x9;&#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;        //     let node 0 be the root for the group (there is only one)&#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;        root = 0;&#xA;&#x9;    }&#xA;&#x9;&#xA;&#x9;    public double getMFLOPS(double total_time, int niter)&#xA;&#x9;    {&#xA;&#x9;        double mflops = 0.0d;&#xA;&#x9;        if (total_time > 0)&#xA;&#x9;        {&#xA;&#x9;            mflops = (881.174d * Math.Pow(problem_size, 3)&#xA;&#x9;                    - 4683.91d * Math.Pow(problem_size, 2)&#xA;&#x9;                    + 11484.5d * problem_size&#xA;&#x9;                    - 19272.4d) * niter / (1.0d * 1000000.0d);&#xA;&#x9;        }&#xA;&#x9;        return mflops;&#xA;&#x9;    }&#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="IADI_Solver3DImpl.cs" srcType="user" uri="impl.sp.ADI_Solver3D/bin/1.0.0.0/IADI_Solver3DImpl.dll" versionId="1.0.0.0">
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>%WORKADI_Solver3DACE/impl.sp.ADI_Solver3D/bin/1.0.0.0/BaseIADI_Solver3DImpl.dll</dependency>
+          <dependency>sp.ADI_Solver3D/bin/1.0.0.0/IADI_Solver3D.dll</dependency>
+          <externalDependency>MPI</externalDependency>
+          <externalDependency>BMInOut</externalDependency>
+        </file>
+      </sources>
+      <visualDescription h="66" w="165" x="445" y="156">
+        <color b="255" g="255" r="128"/>
+      </visualDescription>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="2" y="66"/>
+        <slice pRef="problem" sRef="adi"/>
+        <slice pRef="problem" sRef="verify"/>
+        <slice pRef="problem" sRef="initialize"/>
+        <slice pRef="problem" sRef="lhsinit"/>
+        <slice pRef="problem" sRef="exact_rhs"/>
+      </port>
+      <port name="cells">
+        <visualDescription h="10" w="10" x="116" y="14"/>
+        <slice pRef="cells" sRef="adi"/>
+        <slice pRef="cells" sRef="verify"/>
+        <slice pRef="cells" sRef="initialize"/>
+        <slice pRef="cells" sRef="lhsinit"/>
+        <slice pRef="cells" sRef="exact_rhs"/>
+        <slice pRef="cells" sRef="multipartition"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="23" y="80"/>
+        <slice pRef="x" sRef="adi"/>
+        <slice pRef="x" sRef="verify"/>
+        <slice pRef="x" sRef="multipartition"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="62" y="122"/>
+        <slice pRef="mpi" sRef="adi"/>
+        <slice pRef="mpi" sRef="verify"/>
+        <slice pRef="mpi" sRef="timer"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="117" y="92"/>
+        <slice pRef="y" sRef="adi"/>
+        <slice pRef="y" sRef="verify"/>
+        <slice pRef="y" sRef="multipartition"/>
+      </port>
+      <port name="z">
+        <visualDescription h="10" w="10" x="83" y="105"/>
+        <slice pRef="z" sRef="adi"/>
+        <slice pRef="z" sRef="verify"/>
+        <slice pRef="z" sRef="multipartition"/>
+      </port>
+      <externalReferences>MPI</externalReferences>
+      <externalReferences>BMInOut</externalReferences>
+      <parameter iname="ISolvingMethod" order="0" parid="method" uname="method" varid="MTH"/>
+      <parameter iname="IClass" order="1" parid="class" uname="class" varid="CLASS"/>
+      <parameter iname="IInstance" order="2" parid="instance_type" uname="instance" varid="I"/>
+    </interface>
+    <unit iRef="IADI_Solver3DImpl" private="false" uRef="adi_solver3D" visibleInterface="true">
+      <super cRef="base" uRef="adi_solver3D"/>
+      <slices cRef="adi" replica="0" uRef="adi" sliceName="adi" transitive="false">
+        <visualDescription h="10" w="10" x="31" y="31"/>
+      </slices>
+      <slices cRef="verify" replica="0" uRef="verify" sliceName="verify" transitive="false">
+        <visualDescription h="10" w="10" x="8" y="25"/>
+      </slices>
+      <slices cRef="instance" replica="0" uRef="instance" sliceName="instance" transitive="false">
+        <visualDescription h="10" w="10" x="0" y="9"/>
+      </slices>
+      <slices cRef="initialize" replica="0" uRef="initialize" sliceName="initialize" transitive="false">
+        <visualDescription h="10" w="10" x="23" y="3"/>
+      </slices>
+      <slices cRef="lhsinit" replica="0" uRef="lhsinit" sliceName="lhsinit" transitive="false">
+        <visualDescription h="10" w="10" x="38" y="5"/>
+      </slices>
+      <slices cRef="exact_rhs" replica="0" uRef="exact_rhs" sliceName="exact_rhs" transitive="false">
+        <visualDescription h="10" w="10" x="62" y="1"/>
+      </slices>
+      <slices cRef="data_partition" replica="0" uRef="multipartition" sliceName="multipartition" transitive="false">
+        <visualDescription h="10" w="10" x="59" y="23"/>
+      </slices>
+      <slices cRef="timer" replica="0" uRef="timer" sliceName="timer" transitive="false">
+        <visualDescription h="10" w="10" x="45" y="29"/>
+      </slices>
+      <visualDescription h="40" w="130" x="322" y="290"/>
+    </unit>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
+      <originRef>base</originRef>
+      <originRef>lhsinit</originRef>
+      <originRef>problem_data</originRef>
+      <originRef>qs</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="adi_solver3D"/>
+      <visualDescription h="60" w="61" x="168" y="379"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
+      <originRef>method</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="method" uRef="method"/>
+      <visualDescription h="20" w="20" x="260" y="427"/>
+    </enumerator>
+  </componentInfo>
+</component:component>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000a9582b55f976cdaada5cfeec8bd575fe3f16ee61c43ff1196f041d19f6eb09f7e597bd58987dc766e39d558b21d6272b332338f9b4a6bb2a4fc8bec7d34b77c10242106fc9b3223043dbf78a4a32542ede7dcc4021ee58f6d4a6cf54cc5eb31c757e8ad32510bd162b9f272fccefca41afb8965759c3320e99f49c00073c068b" isAbstract="false" kind="Environment" name="MultiPartitionCellsImpl" packagePath="impl.common.datapartition">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="base" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" version="1.0.0.0">
+        <visualDescription h="50" w="91" x="395" y="299">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <unitBounds uRef="cells">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <interface iRef="ICellsImpl" nArgs="0">
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;&#xA;namespace impl.common.datapartition.MultiPartitionCellsImpl { &#xA;&#xA;public abstract class BaseICellsImpl: br.ufc.pargo.hpe.kinds.Environment, BaseICells&#xA;{&#xA;&#xA;&#xA;  public BaseICellsImpl() &#xA;  { &#xA;  } &#xA;&#x9;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseICellsImpl.cs" srcType="base" uri="impl.common.datapartition.MultiPartitionCellsImpl/bin/1.0.0.0/BaseICellsImpl.dll" versionId="1.0.0.0">
+          <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/BaseICells.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;&#xA;namespace impl.common.datapartition.MultiPartitionCellsImpl { &#xA;&#xA;public class ICellsImpl : BaseICellsImpl, ICells&#xA;{&#xA;&#xA;&#x9;override public void initialize()&#xA;&#x9;{&#xA;&#x9;&#x9;int total_nodes = this.Ranks.Length;&#xA;&#x9;&#x9;int no_nodes = total_nodes;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;int maxcells =  Convert.ToInt32(Math.Sqrt(total_nodes));&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;_ncells_ = Convert.ToInt32(Math.Sqrt(no_nodes));&#xA;&#x9;&#x9;_ndirs_ = 3;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;_cell_coord_ = new int[maxcells,3];&#xA;&#x9;&#x9;_cell_size_ = new int[maxcells,3];&#xA;&#x9;&#x9;_cell_low_ = new int[maxcells,3];&#xA;&#x9;&#x9;_cell_high_ = new int[maxcells,3];&#xA;&#x9;&#x9;_cell_slice_ = new int[maxcells,3];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;_cell_start_ = new int[maxcells,3];&#xA;&#x9;&#x9;_cell_end_ = new int[maxcells,3];&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;_grid_points_ = new int[3] {0, 0, 0};&#xA;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;private int[,] _cell_coord_;&#xA;&#x9;private int[,] _cell_size_;&#xA;&#x9;private int[,] _cell_low_;&#xA;&#x9;private int[,] _cell_high_;&#xA;&#x9;private int[,] _cell_slice_;&#xA;&#x9;&#xA;&#x9;private int[,] _cell_start_;&#xA;&#x9;private int[,] _cell_end_;&#xA;&#x9;&#xA;&#x9;private int _ncells_;&#xA;&#x9;private int _ndirs_;&#xA;&#x9;&#x9;&#xA;&#x9;private int[] _grid_points_;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public int[,] cell_coord { get { return _cell_coord_; } }&#xA;&#x9;public int[,] cell_size {get { return _cell_size_; } }&#xA;&#x9;public int[,] cell_low {get { return _cell_low_; } }&#xA;&#x9;public int[,] cell_high {get { return _cell_high_; } }&#xA;&#x9;public int[,] cell_slice {get { return _cell_slice_; } }&#xA;&#x9;&#xA;&#x9;public int[,] cell_start {get { return _cell_start_; } }&#xA;&#x9;public int[,] cell_end {get { return _cell_end_; } }&#xA;&#x9;&#xA;&#x9;public int ncells {get { return _ncells_; } set { _ncells_ = value; } } // sqrt(nodes)&#xA;&#x9;public int ndirs {get { return _ndirs_; } set { _ndirs_ = value; } }  // Assumed to be 3 ?&#xA;&#x9;&#x9;&#xA;&#x9;public int[] grid_points { get { return _grid_points_; } }&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="ICellsImpl.cs" srcType="user" uri="impl.common.datapartition.MultiPartitionCellsImpl/bin/1.0.0.0/ICellsImpl.dll" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/impl.common.datapartition.MultiPartitionCellsImpl/bin/1.0.0.0/BaseICellsImpl.dll</dependency>
+          <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="152" x="274" y="109">
+        <color b="0" g="128" r="255"/>
+      </visualDescription>
+    </interface>
+    <unit iRef="ICellsImpl" private="false" uRef="cells" visibleInterface="true">
+      <super cRef="base" uRef="cells"/>
+      <visualDescription h="47" w="94" x="108" y="226"/>
+    </unit>
+  </componentInfo>
+</component:component>

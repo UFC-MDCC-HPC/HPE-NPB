@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000eff9047215bb7ccaef2e59a1b299cf871ae7066d7fd5ab67abc4d820499d2077aece50bb4fb9a42d904efdef42eedc6538147ddea94bbfaf8b23ecf37e48af0bd5e08721f6355b02310d3bcf6971ba4ade5d807295462c215f1f06dcf1f144b61ba49b6b2f57e9d569260f58230a791499aeacd75d30192f7a6453e290cf489e" isAbstract="false" kind="Computation" name="ZForwardImpl" packagePath="impl.sp.solve">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000bf3b077fd7fdb53f8868745cfa6b3337ded93d8905fbe7289bd61960ab52862ebd80a7aaec7625667b9fd0ce765ece1e73858766e9c482be9e9d8a7eed7a3fdab32d03cd765de942a38cb2668ddaadac495fe0a625d31d025862f6289c33c74669b3317afbc86223dfa02b3abe427c65bf947f7e24d2b605ca92a33cfddaf2c5" localRef="base" location="sp.solve.Forward/Forward.hpe" name="Forward" package="sp.solve" version="1.0.0.0">
+        <visualDescription h="30" w="50" x="269" y="164">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="axis" varName="DIR"/>
+        <parameter formFieldId="instance_type" varName="I"/>
+        <parameter formFieldId="class" varName="C"/>
+        <parameter formFieldId="method" varName="MTH"/>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
+          <visualDescription h="56" w="114" x="264" y="422">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cells">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
+          <visualDescription h="45" w="106" x="57" y="434">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="instance_type" varName="I"/>
+          <parameter formFieldId="class" varName="C"/>
+          <unitBounds uRef="problem">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <unitBounds uRef="forward">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000003bb781674ea675f3e73d687d81c2a1fc30c172ba4dc5abb7591c0493b3e0f7a440be50941862ce7b3d1d6a7d57a55f20f8929f9f272be575cb8c2735e6faaeb2aa7c8b4cdc19e0c763e7a660a9c4cce5993fd57a435000e7717204249b8b85fac784054d914d6776215ae09ebe843efcc400849f526412b1a2b2209ff2903ce" localRef="zdir" location="common.axis.ZAxis/ZAxis.hpe" name="ZAxis" package="common.axis" exposed="false">
+      <visualDescription h="30" w="50" x="106" y="177">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="z">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000159d9ccb4ff0bb35a4fe190495e9c0d9a8406fa4adae5405850aed7cf83bbe6096bcb7deb5b07550a718fabec888b38f45c00ad4323db7b35e01dd236f9d1af6d8d0e529844de79031b63f05f2e810d0218c315e2c720d374b2bc2c0b15ec45863f2832e19f30c9bf6ee1519c76cd5e6f0ed485d2027397f93caec006396c587" localRef="method" location="sp.solve.SPMethod/SPMethod.hpe" name="SPMethod" package="sp.solve" exposed="false">
+      <visualDescription h="30" w="50" x="56" y="133">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="method">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="102" y="170">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="class">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000796ff7bbb33560060ee9951c4f8242d987089c0c50af1d3a6ab2f92466788c33bfa42e66a347c4206d81a948be78598f82f386b898f40714662cb0134d02313a7e06d04944957cb9149a5069ebfcc65b58711afd15bfbe6f3144cf719a1d8c90833890d5ed1eac7e3b8a657a774a065ca04588c7743c47a41fe59e21cd7767a4" localRef="instance" location="sp.problem_size.Instance_SP/Instance_SP.hpe" name="Instance_SP" package="sp.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="111" y="389">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="class" varName="C"/>
+      <unitBounds uRef="instance">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="class" varName="C"/>
+    <supplyParameter cRef="zdir" varName="DIR"/>
+    <supplyParameter cRef="instance" varName="I"/>
+    <supplyParameter cRef="method" varName="MTH"/>
+    <interface iRef="IZForwardImpl" nArgs="4">
+      <slice isRef="cells">
+        <originRef cRef="cells_info" iRef="ICells"/>
+        <visualDescription h="10" w="10" x="59" y="26"/>
+      </slice>
+      <slice isRef="problem">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="11" y="23"/>
+      </slice>
+      <slice isRef="method">
+        <originRef cRef="method" iRef="IMethod"/>
+        <visualDescription h="10" w="10" x="30" y="27"/>
+      </slice>
+      <slice isRef="axis">
+        <originRef cRef="axis" iRef="IAxis"/>
+        <visualDescription h="10" w="10" x="47" y="28"/>
+      </slice>
+      <protocol xsi:type="component:ActionSkipType" label="hPE.frontend.kinds.activate.model.protocol.HSkipAction@686bf4fe" repeat="0">
+        <visualDescription h="50" w="50" x="75" y="75"/>
+      </protocol>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using common.solve.Method;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.Z;&#xA;using sp.solve.Forward;&#xA;&#xA;namespace impl.sp.solve.ZForwardImpl { &#xA;&#xA;public abstract class BaseIZForwardImpl&lt;I, C, MTH, DIR>: Computation, BaseIForward&lt;I, C, MTH, DIR>&#xA;where I:IInstance_SP&lt;C>&#xA;where C:IClass&#xA;where MTH:ISPMethod&#xA;where DIR:IZ&#xA;{&#xA;&#x9;&#x9;&#xA;#region data&#xA;&#x9;&#x9;&#xA;protected int[,] start, end, slice, cell_size;&#xA;protected double[,,,,] lhs, rhs;&#xA;&#x9;&#x9;&#xA;override public void initialize()&#xA;{&#x9;&#xA;&#x9;start = Cells.cell_start;&#xA;&#x9;end = Cells.cell_end;&#xA;&#x9;slice = Cells.cell_slice;&#xA;&#x9;cell_size = Cells.cell_size;&#xA;&#x9;&#xA;&#x9;lhs = Problem.Field_lhs;&#xA;&#x9;rhs = Problem.Field_rhs;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR axis = default(DIR);&#xA;&#xA;protected DIR Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (DIR) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIZForwardImpl.cs" srcType="base" uri="impl.sp.solve.ZForwardImpl/bin/1.0.0.0/BaseIZForwardImpl.dll" versionId="1.0.0.0">
+          <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll</dependency>
+          <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
+          <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
+          <dependency>common.solve.Method/bin/1.0.0.0/IMethod.dll</dependency>
+          <dependency>sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll</dependency>
+          <dependency>common.axis.ZAxis/bin/1.0.0.0/IZ.dll</dependency>
+          <dependency>sp.solve.Forward/bin/1.0.0.0/BaseIForward.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.Z;&#xA;using sp.solve.Forward;&#xA;&#xA;namespace impl.sp.solve.ZForwardImpl { &#xA;&#xA;&#x9;public class IZForwardImpl&lt;I, C, MTH, DIR> : BaseIZForwardImpl&lt;I, C, MTH, DIR>, IForward&lt;I, C, MTH, DIR>&#xA;&#x9;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;where MTH:ISPMethod&#xA;&#x9;&#x9;where DIR:IZ&#xA;&#x9;{&#xA;&#x9;&#x9;public IZForwardImpl() &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;}&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private int c, kstart, kend, isize, jsize;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void enterStage(int stage)&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;{&#xA;            c = slice[stage, 2];&#xA;&#xA;            kstart = 2;&#xA;            kend = 2 + cell_size[c, 2] - 1;&#xA;&#xA;            isize = cell_size[c, 0] + 2;&#xA;            jsize = cell_size[c, 1] + 2;&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{ &#xA;&#x9;&#x9;&#x9;int i, j, k, n, k1, k2, m;&#xA;&#x9;&#x9;&#x9;double fac1, fac2;&#xA;&#x9;&#x9;&#x9;&#xA;            #region forward&#xA;            //---------------------------------------------------------------------&#xA;            //         perform the Thomas algorithm; first, FORWARD ELIMINATION     &#xA;            //---------------------------------------------------------------------&#xA;            n = -1;&#xA;&#xA;            for (k = kstart; k &lt;= kend - 2; k++)&#xA;            {&#xA;                for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;                {&#xA;                    for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;                    {&#xA;                        k1 = k + 1;&#xA;                        k2 = k + 2;&#xA;                        fac1 = 1.0d / lhs[c, k, j, i, n + 3];&#xA;                        lhs[c, k, j, i, n + 4] = fac1 * lhs[c, k, j, i, n + 4];&#xA;                        lhs[c, k, j, i, n + 5] = fac1 * lhs[c, k, j, i, n + 5];&#xA;                        for (m = 0; m &lt;= 2; m++)&#xA;                        {&#xA;                            rhs[c, k, j, i, m] = fac1 * rhs[c, k, j, i, m];&#xA;                        }&#xA;                        lhs[c, k1, j, i, n + 3] = lhs[c, k1, j, i, n + 3] -&#xA;                                   lhs[c, k1, j, i, n + 2] * lhs[c, k, j, i, n + 4];&#xA;                        lhs[c, k1, j, i, n + 4] = lhs[c, k1, j, i, n + 4] -&#xA;                                   lhs[c, k1, j, i, n + 2] * lhs[c, k, j, i, n + 5];&#xA;                        for (m = 0; m &lt;= 2; m++)&#xA;                        {&#xA;                            rhs[c, k1, j, i, m] = rhs[c, k1, j, i, m] -&#xA;                                    lhs[c, k1, j, i, n + 2] * rhs[c, k, j, i, m];&#xA;                        }&#xA;                        lhs[c, k2, j, i, n + 2] = lhs[c, k2, j, i, n + 2] -&#xA;                                   lhs[c, k2, j, i, n + 1] * lhs[c, k, j, i, n + 4];&#xA;                        lhs[c, k2, j, i, n + 3] = lhs[c, k2, j, i, n + 3] -&#xA;                                   lhs[c, k2, j, i, n + 1] * lhs[c, k, j, i, n + 5];&#xA;                        for (m = 0; m &lt;= 2; m++)&#xA;                        {&#xA;                            rhs[c, k2, j, i, m] = rhs[c, k2, j, i, m] -&#xA;                                    lhs[c, k2, j, i, n + 1] * rhs[c, k, j, i, m];&#xA;                        }&#xA;                    }&#xA;                }&#xA;            }&#xA;&#xA;            //---------------------------------------------------------------------&#xA;            //         The last two rows in this grid block are a bit different, &#xA;            //         since they do not have two more rows available for the&#xA;            //         elimination of off-diagonal entries&#xA;            //---------------------------------------------------------------------&#xA;            k = kend - 1;&#xA;            k1 = kend;&#xA;            for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;            {&#xA;                for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;                {&#xA;                    fac1 = 1.0d / lhs[c, k, j, i, n + 3];&#xA;                    lhs[c, k, j, i, n + 4] = fac1 * lhs[c, k, j, i, n + 4];&#xA;                    lhs[c, k, j, i, n + 5] = fac1 * lhs[c, k, j, i, n + 5];&#xA;                    for (m = 0; m &lt;= 2; m++)&#xA;                    {&#xA;                        rhs[c, k, j, i, m] = fac1 * rhs[c, k, j, i, m];&#xA;                    }&#xA;                    lhs[c, k1, j, i, n + 3] = lhs[c, k1, j, i, n + 3] -&#xA;                               lhs[c, k1, j, i, n + 2] * lhs[c, k, j, i, n + 4];&#xA;                    lhs[c, k1, j, i, n + 4] = lhs[c, k1, j, i, n + 4] -&#xA;                               lhs[c, k1, j, i, n + 2] * lhs[c, k, j, i, n + 5];&#xA;                    for (m = 0; m &lt;= 2; m++)&#xA;                    {&#xA;                        rhs[c, k1, j, i, m] = rhs[c, k1, j, i, m] -&#xA;                                lhs[c, k1, j, i, n + 2] * rhs[c, k, j, i, m];&#xA;                    }&#xA;                    //---------------------------------------------------------------------&#xA;                    //               scale the last row immediately (some of this is&#xA;                    //               overkill in case this is the last cell)&#xA;                    //---------------------------------------------------------------------&#xA;                    fac2 = 1.0d / lhs[c, k1, j, i, n + 3];&#xA;                    lhs[c, k1, j, i, n + 4] = fac2 * lhs[c, k1, j, i, n + 4];&#xA;                    lhs[c, k1, j, i, n + 5] = fac2 * lhs[c, k1, j, i, n + 5];&#xA;                    for (m = 0; m &lt;= 2; m++)&#xA;                    {&#xA;                        rhs[c, k1, j, i, m] = fac2 * rhs[c, k1, j, i, m];&#xA;                    }&#xA;                }&#xA;            }&#xA;&#xA;            //---------------------------------------------------------------------&#xA;            //         do the u+c and the u-c factors               &#xA;            //---------------------------------------------------------------------&#xA;            for (m = 3; m &lt;= 4; m++)&#xA;            {&#xA;                n = (m - 2) * 5 - 1;&#xA;                for (k = kstart; k &lt;= kend - 2; k++)&#xA;                {&#xA;                    for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;                    {&#xA;                        for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;                        {&#xA;                            k1 = k + 1;&#xA;                            k2 = k + 2;&#xA;                            fac1 = 1.0d / lhs[c, k, j, i, n + 3];&#xA;                            lhs[c, k, j, i, n + 4] = fac1 * lhs[c, k, j, i, n + 4];&#xA;                            lhs[c, k, j, i, n + 5] = fac1 * lhs[c, k, j, i, n + 5];&#xA;                            rhs[c, k, j, i, m] = fac1 * rhs[c, k, j, i, m];&#xA;                            lhs[c, k1, j, i, n + 3] = lhs[c, k1, j, i, n + 3] -&#xA;                                       lhs[c, k1, j, i, n + 2] * lhs[c, k, j, i, n + 4];&#xA;                            lhs[c, k1, j, i, n + 4] = lhs[c, k1, j, i, n + 4] -&#xA;                                       lhs[c, k1, j, i, n + 2] * lhs[c, k, j, i, n + 5];&#xA;                            rhs[c, k1, j, i, m] = rhs[c, k1, j, i, m] -&#xA;                                       lhs[c, k1, j, i, n + 2] * rhs[c, k, j, i, m];&#xA;                            lhs[c, k2, j, i, n + 2] = lhs[c, k2, j, i, n + 2] -&#xA;                                       lhs[c, k2, j, i, n + 1] * lhs[c, k, j, i, n + 4];&#xA;                            lhs[c, k2, j, i, n + 3] = lhs[c, k2, j, i, n + 3] -&#xA;                                       lhs[c, k2, j, i, n + 1] * lhs[c, k, j, i, n + 5];&#xA;                            rhs[c, k2, j, i, m] = rhs[c, k2, j, i, m] -&#xA;                                       lhs[c, k2, j, i, n + 1] * rhs[c, k, j, i, m];&#xA;                        }&#xA;                    }&#xA;                }&#xA;&#xA;                //---------------------------------------------------------------------&#xA;                //            And again the last two rows separately&#xA;                //---------------------------------------------------------------------&#xA;                k = kend - 1;&#xA;                k1 = kend;&#xA;                for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;                {&#xA;                    for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;                    {&#xA;                        fac1 = 1.0d / lhs[c, k, j, i, n + 3];&#xA;                        lhs[c, k, j, i, n + 4] = fac1 * lhs[c, k, j, i, n + 4];&#xA;                        lhs[c, k, j, i, n + 5] = fac1 * lhs[c, k, j, i, n + 5];&#xA;                        rhs[c, k, j, i, m] = fac1 * rhs[c, k, j, i, m];&#xA;                        lhs[c, k1, j, i, n + 3] = lhs[c, k1, j, i, n + 3] -&#xA;                                   lhs[c, k1, j, i, n + 2] * lhs[c, k, j, i, n + 4];&#xA;                        lhs[c, k1, j, i, n + 4] = lhs[c, k1, j, i, n + 4] -&#xA;                                   lhs[c, k1, j, i, n + 2] * lhs[c, k, j, i, n + 5];&#xA;                        rhs[c, k1, j, i, m] = rhs[c, k1, j, i, m] -&#xA;                                  lhs[c, k1, j, i, n + 2] * rhs[c, k, j, i, m];&#xA;                        //---------------------------------------------------------------------&#xA;                        //               Scale the last row immediately (some of this is overkill&#xA;                        //               if this is the last cell)&#xA;                        //---------------------------------------------------------------------&#xA;                        fac2 = 1.0d / lhs[c, k1, j, i, n + 3];&#xA;                        lhs[c, k1, j, i, n + 4] = fac2 * lhs[c, k1, j, i, n + 4];&#xA;                        lhs[c, k1, j , i, n + 5] = fac2 * lhs[c, k1, j , i, n + 5];&#xA;                        rhs[c, k1, j, i, m] = fac2 * rhs[c, k1, j, i, m];&#xA;&#xA;                    }&#xA;                }&#xA;            }&#xA;&#xA;            #endregion&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="IZForwardImpl.cs" srcType="user" uri="impl.sp.solve.ZForwardImpl/bin/1.0.0.0/IZForwardImpl.dll" versionId="1.0.0.0">
+          <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll</dependency>
+          <dependency>common.axis.ZAxis/bin/1.0.0.0/IZ.dll</dependency>
+          <dependency>%WORKSPACE/impl.sp.solve.ZForwardImpl/bin/1.0.0.0/BaseIZForwardImpl.dll</dependency>
+          <dependency>sp.solve.Forward/bin/1.0.0.0/IForward.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="101" x="128" y="95">
+        <color b="255" g="0" r="0"/>
+      </visualDescription>
+      <port name="cells">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells" sRef="cells"/>
+      </port>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem" sRef="problem"/>
+      </port>
+      <parameter iname="IInstance_SP" order="0" parid="instance_type" uname="instance" varid="I"/>
+      <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <parameter iname="ISPMethod" order="2" parid="method" uname="method" varid="MTH"/>
+      <parameter iname="IZ" order="3" parid="axis" uname="z" varid="DIR"/>
+    </interface>
+    <unit iRef="IZForwardImpl" private="false" uRef="forward" visibleInterface="true">
+      <super cRef="base" uRef="forward"/>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+        <visualDescription h="10" w="10" x="59" y="26"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+        <visualDescription h="10" w="10" x="11" y="23"/>
+      </slices>
+      <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">
+        <visualDescription h="10" w="10" x="30" y="27"/>
+      </slices>
+      <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
+        <visualDescription h="10" w="10" x="47" y="28"/>
+      </slices>
+      <visualDescription h="40" w="80" x="155" y="246"/>
+    </unit>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>base</originRef>
+      <originRef>axis</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="forward"/>
+      <visualDescription h="48" w="47" x="125" y="327"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>zdir</originRef>
+      <originRef>base</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="zdir" uRef="z"/>
+      <visualDescription h="20" w="20" x="354" y="190"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
+      <originRef>method</originRef>
+      <originRef>base</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="method" uRef="method"/>
+      <visualDescription h="20" w="20" x="260" y="427"/>
+    </enumerator>
+  </componentInfo>
+</component:component>

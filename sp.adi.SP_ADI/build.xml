@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="SP_ADI">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="SP_ADI-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.adi.SP_ADI/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.adi.SP_ADI/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.adi.SP_ADI/SP_ADI.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.adi.SP_ADI/bin/1.0.0.0/BaseISP_ADI.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.adi.SP_ADI/src/1.0.0.0/BaseISP_ADI.cs"/>
+      </sources>
+      <references>
+        <include name="sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll"/>
+        <include name="adi.ADI/bin/1.0.0.0/BaseIADI.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.adi.SP_ADI/SP_ADI.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.adi.SP_ADI/bin/1.0.0.0/ISP_ADI.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/sp.adi.SP_ADI/src/1.0.0.0/ISP_ADI.cs"/>
+      </sources>
+      <references>
+        <include name="sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll"/>
+        <include name="/sp.adi.SP_ADI/bin/1.0.0.0/BaseISP_ADI.dll"/>
+        <include name="adi.ADI/bin/1.0.0.0/IADI.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="SP_ADI-1.0.0.0" name="all"/>
+</project>

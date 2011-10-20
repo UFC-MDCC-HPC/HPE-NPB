@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008fb2225469e13dfa81876c6069f7e54bd08b84839477a43892ce106672cbb9541fb046ddca276e9c5d704d062b58590d6a66e2ee91698073d1b8bf6d54c13a1a2c69756512e823cb43c3e95405616576cb12cf1e93eab8c7b35ea7f2012207a5bef5ea34d7d0baf048f5fbdd9b1c1651a382606a018962c267d33d67c933a289" isAbstract="false" kind="Computation" name="BlockUpperTriangularSolutionWFWork" packagePath="impl.lu.ssor">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ef0820961ec17ffd4f7395e6a34af283ca465a51477ff0ee3d153b346694b5136240392b729a7be108fd9b1e655b1bffac846bcb8efbdc3cbfbee5ef02b222971168b8181df690372896178d14488f627b134052e3007213099b83aeea577677a78218d926206181c5cd8aa09822fa8ef9395b38e8837c236f870aa1b7ca5d9b" localRef="base" location="lu.ssor.BlockTriangularSolutionWFWork/BlockTriangularSolutionWFWork.hpe" name="BlockTriangularSolutionWFWork" package="lu.ssor" version="1.0.0.0">
+        <visualDescription h="64" w="142" x="178" y="101">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="instance_type" varName="I"/>
+        <parameter formFieldId="direction" varName="DIR"/>
+        <parameter formFieldId="class" varName="C"/>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="y_buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
+          <visualDescription h="30" w="102" x="297" y="413">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="buffer">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="x_buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
+          <visualDescription h="30" w="115" x="351" y="130">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="buffer">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+          <visualDescription h="30" w="50" x="56" y="444">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cell">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="y" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+          <visualDescription h="30" w="50" x="174" y="490">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cell">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" name="BlocksInfo" package="lu.datapartition" exposed="true">
+          <visualDescription h="42" w="122" x="143" y="295">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="instance_type" varName="I"/>
+          <parameter formFieldId="class" varName="C"/>
+          <unitBounds uRef="blocks">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009f8aadd94be2122c6dbf97a8db4c368df4aa14e5eef40999c777e681c973106bec55b80c133f1e7301d0ff36e2ee37a1d7d095ffff4581f295b2e8fc055fc07304178d993e14731e9c3d1e72370eee41c30ae18e6d096d5d70ac13a2833e8945cd641f4a3cab17bc2397b395bc234fdfa244afa599eb514a94d884e663b3a3a5" localRef="problem_data" location="lu.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="lu.data" exposed="true">
+          <visualDescription h="70" w="137" x="105" y="427">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="instance_type" varName="I"/>
+          <parameter formFieldId="class" varName="C"/>
+          <unitBounds uRef="problem">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <unitBounds uRef="bts_work">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004376d6d9d7de3a1b4d1fdf8832b56bd5b62d403268644c42baa67426cc69adbb726d79ebf33cb4e50759bee5876dae4b375be77b5eba726be3f05f558ea5acc1f13eb2291544bb106ea1da4e63d9252ff2fce1d8428e6d5fbefd2291d534003bd1bc8801fa4fb6341951cfd06c4003178884b8f780965965df6f99b6b33e0782" localRef="backward" location="common.direction.Backward/Backward.hpe" name="Backward" package="common.direction" exposed="false">
+      <visualDescription h="30" w="50" x="73" y="168">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="backward">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000077a299c99b97aaa77aa6e94dc72ce7dd6776e75fef652354d4003676b20ec539b228d1d8aea09626b843cc3ab1c0d84ad167051ddc0b314c7649bd14f16c7858a0eb57d78a2e8a79c7f56f9664fadc7648612fdedc8d36bd105d479fd63b19c286b302d6e4c45aed4573ca06780a204a2d59aeff7863e4b8241ce93db192f0ae" localRef="instance" location="lu.problem_size.Instance/Instance.hpe" name="Instance" package="lu.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="61" y="340">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="class" varName="C"/>
+      <unitBounds uRef="instance">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="74" y="272">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="class">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="class" varName="C"/>
+    <supplyParameter cRef="backward" varName="DIR"/>
+    <supplyParameter cRef="instance" varName="I"/>
+    <interface iRef="IBTSUpperWork" nArgs="3">
+      <slice isRef="x_buffer">
+        <originRef cRef="x_buffer" iRef="IBuffer"/>
+        <visualDescription h="10" w="10" x="113" y="3"/>
+      </slice>
+      <slice isRef="y_buffer">
+        <originRef cRef="y_buffer" iRef="IBuffer"/>
+        <visualDescription h="10" w="10" x="111" y="29"/>
+      </slice>
+      <slice isRef="x">
+        <originRef cRef="x" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="44" y="21"/>
+      </slice>
+      <slice isRef="y">
+        <originRef cRef="y" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="63" y="23"/>
+      </slice>
+      <slice isRef="direction">
+        <originRef cRef="directinon" iRef="IDirection"/>
+        <visualDescription h="10" w="10" x="18" y="26"/>
+      </slice>
+      <slice isRef="blocks">
+        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
+        <visualDescription h="10" w="10" x="16" y="18"/>
+      </slice>
+      <slice isRef="problem">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="53" y="28"/>
+      </slice>
+      <protocol xsi:type="component:ActionSkipType" label="hPE.frontend.kinds.activate.model.protocol.HSkipAction@eef2d62" repeat="0">
+        <visualDescription h="50" w="50" x="75" y="75"/>
+      </protocol>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using lu.data.ProblemDefinition;&#xA;using lu.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using lu.datapartition.BlocksInfo;&#xA;using common.Buffer;&#xA;using common.direction.Direction;&#xA;using common.direction.Backward;&#xA;using lu.ssor.BlockTriangularSolutionWFWork;&#xA;using common.topology.Ring;&#xA;&#xA;namespace impl.lu.ssor.BlockUpperTriangularSolutionWFWork { &#xA;&#xA;public abstract class BaseIBTSUpperWork&lt;DIR, I, C>: Computation, BaseIBTSWork&lt;DIR, I, C>&#xA;&#x9;where DIR:IBackwardDirection&#xA;&#x9;where I:IInstance&lt;C>&#xA;&#x9;where C:IClass&#xA;{&#xA;&#xA;&#x9;#region data&#xA;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected int nx,ny,nz;&#xA;&#x9;&#x9;protected int north, south, east, west;&#xA;&#x9;&#x9;protected int ist,jst,iend,jend;&#xA;&#x9;&#x9;protected int isiz2, isiz1;&#xA;&#x9;&#x9;protected double [,,,] rsd,d;&#xA;&#x9;&#xA;&#x9;    protected double[,,,] udx;&#xA;&#x9;    protected double[,,,] udy;&#xA;&#x9;    protected double[,,,] udz;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;override public void initialize()&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;nx = Blocks.nx;&#xA;&#x9;&#x9;&#x9;ny = Blocks.ny;&#xA;&#x9;&#x9;&#x9;nz = Blocks.nz;&#xA;            ist  = Blocks.ist;&#xA;            jst  = Blocks.jst;                &#xA;            iend = Blocks.iend;&#xA;            jend = Blocks.jend;&#xA;&#x9;&#x9;&#x9;            &#xA;            isiz2 = Problem.isiz2;&#xA;            isiz1 = Problem.isiz1;&#xA;            &#xA;            rsd  = Problem.Field_rsd;&#xA;            d = Problem.Field_d;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    udx = Problem.Field_a;&#xA;&#x9;&#x9;&#x9;udy = Problem.Field_b;&#xA;&#x9;&#x9;&#x9;udz = Problem.Field_c;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Y_buffer.Array = new double[(5*(jend-jst+1))];&#xA;&#x9;&#x9;&#x9;X_buffer.Array = new double[(5*(iend-ist+1))];&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;&#x9;override public void post_initialize()&#xA;&#x9;&#x9;{&#xA;            north = Y.predecessor;//Blocks.north;&#xA;            south = Y.successor;//Blocks.south;&#xA;            east  = X.successor;//Blocks.east;&#xA;            west  = X.predecessor;//Blocks.west;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;#endregion&#xA;&#xA;&#x9;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#x9;&#xA;&#x9;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;&#x9;return this.problem;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;private IBlocksInfo&lt;I,C> blocks = null;&#xA;&#x9;&#xA;&#x9;public IBlocksInfo&lt;I,C> Blocks {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.blocks == null)&#xA;&#x9;&#x9;&#x9;&#x9;this.blocks = (IBlocksInfo&lt;I,C>) Services.getPort(&quot;blocks_info&quot;);&#xA;&#x9;&#x9;&#x9;return this.blocks;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;private ICell y = null;&#xA;&#x9;&#xA;&#x9;public ICell Y {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.y == null)&#xA;&#x9;&#x9;&#x9;&#x9;this.y = (ICell) Services.getPort(&quot;y&quot;);&#xA;&#x9;&#x9;&#x9;return this.y;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;private ICell x = null;&#xA;&#x9;&#xA;&#x9;public ICell X {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.x == null)&#xA;&#x9;&#x9;&#x9;&#x9;this.x = (ICell) Services.getPort(&quot;x&quot;);&#xA;&#x9;&#x9;&#x9;return this.x;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;private IBuffer x_buffer = null;&#xA;&#x9;&#xA;&#x9;public IBuffer X_buffer {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.x_buffer == null)&#xA;&#x9;&#x9;&#x9;&#x9;this.x_buffer = (IBuffer) Services.getPort(&quot;x_buffer&quot;);&#xA;&#x9;&#x9;&#x9;return this.x_buffer;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;private IBuffer y_buffer = null;&#xA;&#x9;&#xA;&#x9;public IBuffer Y_buffer {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.y_buffer == null)&#xA;&#x9;&#x9;&#x9;&#x9;this.y_buffer = (IBuffer) Services.getPort(&quot;y_buffer&quot;);&#xA;&#x9;&#x9;&#x9;return this.y_buffer;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;private DIR direction = default(DIR);&#xA;&#x9;&#xA;&#x9;protected DIR Direction {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.direction == null)&#xA;&#x9;&#x9;&#x9;&#x9;this.direction = (DIR) Services.getPort(&quot;directinon&quot;);&#xA;&#x9;&#x9;&#x9;return this.direction;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;&#xA;&#x9;abstract public int go(); &#xA;&#x9;&#xA;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIBTSUpperWork.cs" srcType="base" uri="impl.lu.ssor.BlockUpperTriangularSolutionWFWork/bin/1.0.0.0/BaseIBTSUpperWork.dll" versionId="1.0.0.0">
+          <dependency>lu.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
+          <dependency>lu.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>lu.datapartition.BlocksInfo/bin/1.0.0.0/IBlocksInfo.dll</dependency>
+          <dependency>common.Buffer/bin/1.0.0.0/IBuffer.dll</dependency>
+          <dependency>common.direction.Direction/bin/1.0.0.0/IDirection.dll</dependency>
+          <dependency>common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll</dependency>
+          <dependency>lu.ssor.BlockTriangularSolutionWFWork/bin/1.0.0.0/BaseIBTSWork.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Backward;&#xA;using lu.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using lu.ssor.BlockTriangularSolutionWFWork;&#xA;&#xA;namespace impl.lu.ssor.BlockUpperTriangularSolutionWFWork { &#xA;&#xA;public class IBTSUpperWork&lt;DIR, I, C> : BaseIBTSUpperWork&lt;DIR, I, C>, IBTSWork&lt;DIR, I, C>&#xA;&#x9;where DIR:IBackwardDirection&#xA;&#x9;where I:IInstance&lt;C>&#xA;&#x9;where C:IClass&#xA;   {&#xA;&#xA;&#x9;    private int k;&#xA;&#x9;    private double omega;&#xA;&#x9;    &#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{&#xA;            int i, j, m;&#xA;            double tmp, tmp1;&#xA;            double[,] tmat = new double[5, 5];&#xA;            double[,,] tv = new double[isiz2, isiz1, 5];&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;//Console.WriteLine(&quot;BTS UPPER - n=&quot; + north + &quot; s=&quot; + south + &quot; e=&quot; + east + &quot; w=&quot; + west);&#xA;&#x9;&#x9;&#x9;&#xA;            readBuffer(rsd, k);&#xA;&#x9;&#x9;&#x9;&#xA;            for(j = jend-1; j>= jst-1; j--) &#xA;&#x9;&#x9;&#x9;{&#xA;                for(i = iend-1; i>= ist-1; i--) &#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;                    for(m = 0; m&lt; 5; m++) &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;{&#xA;                        tv[j, i, m] = omega*( udz[j, i, 0, m] * rsd[k, j+2, i+2, 0]&#xA;                                            + udz[j, i, 1, m] * rsd[k, j+2, i+2, 1]&#xA;                                            + udz[j, i, 2, m] * rsd[k, j+2, i+2, 2]&#xA;                                            + udz[j, i, 3, m] * rsd[k, j+2, i+2, 3]&#xA;                                            + udz[j, i, 4, m] * rsd[k, j+2, i+2, 4]);&#xA;                    }&#xA;                }&#xA;            }&#xA;&#x9;&#x9;&#x9;&#xA;            for(j = jend-1; j>=jst-1; j--) &#xA;&#x9;&#x9;&#x9;{&#xA;                for(i = iend-1; i>=ist-1; i--) &#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;                    for(m = 0; m&lt; 5; m++) &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;{&#xA;                        tv[j, i, m] = tv[j, i, m]&#xA;                                        + omega * ( udy[j, i, 0, m] * rsd[k-1, j+3, i+2, 0]&#xA;                                                  + udx[j, i, 0, m] * rsd[k-1, j+2, i+3, 0]&#xA;                                                  + udy[j, i, 1, m] * rsd[k-1, j+3, i+2, 1]&#xA;                                                  + udx[j, i, 1, m] * rsd[k-1, j+2, i+3, 1]&#xA;                                                  + udy[j, i, 2, m] * rsd[k-1, j+3, i+2, 2]&#xA;                                                  + udx[j, i, 2, m] * rsd[k-1, j+2, i+3, 2]&#xA;                                                  + udy[j, i, 3, m] * rsd[k-1, j+3, i+2, 3]&#xA;                                                  + udx[j, i, 3, m] * rsd[k-1, j+2, i+3, 3]&#xA;                                                  + udy[j, i, 4, m] * rsd[k-1, j+3, i+2, 4]&#xA;                                                  + udx[j, i, 4, m] * rsd[k-1, j+2, i+3, 4]);&#xA;                    }&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;                    for(m = 0; m&lt; 5; m++) &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;{&#xA;                        tmat[0, m] = d[j, i, 0, m];&#xA;                        tmat[1, m] = d[j, i, 1, m];&#xA;                        tmat[2, m] = d[j, i, 2, m];&#xA;                        tmat[3, m] = d[j, i, 3, m];&#xA;                        tmat[4, m] = d[j, i, 4, m];&#xA;                    }&#xA;&#xA;                    tmp1 = 1.0d /tmat[0, 0];&#xA;                    tmp = tmp1 * tmat[0, 1];&#xA;                    tmat[1, 1] =  tmat[1, 1] - tmp * tmat[1, 0];&#xA;                    tmat[2, 1] =  tmat[2, 1] - tmp * tmat[2, 0];&#xA;                    tmat[3, 1] =  tmat[3, 1] - tmp * tmat[3, 0];&#xA;                    tmat[4, 1] =  tmat[4, 1] - tmp * tmat[4, 0];&#xA;                    tv[j, i, 1] = tv[j, i, 1]- tv[j, i, 0] * tmp;&#xA;&#xA;                    tmp = tmp1 * tmat[0, 2];&#xA;                    tmat[1, 2] =  tmat[1, 2] - tmp * tmat[1, 0];&#xA;                    tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 0];&#xA;                    tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 0];&#xA;                    tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 0];&#xA;                    tv[j, i, 2] = tv[j, i, 2] - tv[j, i, 0] * tmp;&#xA;&#xA;                    tmp = tmp1 * tmat[0, 3];&#xA;                    tmat[1, 3] =  tmat[1, 3] - tmp * tmat[1, 0];&#xA;                    tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 0];&#xA;                    tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 0];&#xA;                    tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 0];&#xA;                    tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 0] * tmp;&#xA;&#xA;                    tmp = tmp1 * tmat[0, 4];&#xA;                    tmat[1, 4] =  tmat[1, 4] - tmp * tmat[1, 0];&#xA;                    tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 0];&#xA;                    tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 0];&#xA;                    tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 0];&#xA;                    tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 0] * tmp;&#xA;&#xA;                    tmp1 = 1.0d /tmat[1, 1];&#xA;                    tmp = tmp1 * tmat[1, 2];&#xA;                    tmat[2, 2] =  tmat[2, 2] - tmp * tmat[2, 1];&#xA;                    tmat[3, 2] =  tmat[3, 2] - tmp * tmat[3, 1];&#xA;                    tmat[4, 2] =  tmat[4, 2] - tmp * tmat[4, 1];&#xA;                    tv[j, i, 2] = tv[j, i, 2] - tv[j, i, 1] * tmp;&#xA;&#xA;                    tmp = tmp1 * tmat[1, 3];&#xA;                    tmat[2, 3] =  tmat[2, 3] - tmp * tmat[2, 1];&#xA;                    tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 1];&#xA;                    tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 1];&#xA;                    tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 1] * tmp;&#xA;&#xA;                    tmp = tmp1 * tmat[1, 4];&#xA;                    tmat[2, 4] =  tmat[2, 4] - tmp * tmat[2, 1];&#xA;                    tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 1];&#xA;                    tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 1];&#xA;                    tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 1] * tmp;&#xA;&#xA;                    tmp1 = 1.0d /tmat[2, 2];&#xA;                    tmp = tmp1 * tmat[2, 3];&#xA;                    tmat[3, 3] =  tmat[3, 3] - tmp * tmat[3, 2];&#xA;                    tmat[4, 3] =  tmat[4, 3] - tmp * tmat[4, 2];&#xA;                    tv[j, i, 3] = tv[j, i, 3] - tv[j, i, 2] * tmp;&#xA;&#xA;                    tmp = tmp1 * tmat[2, 4];&#xA;                    tmat[3, 4] =  tmat[3, 4] - tmp * tmat[3, 2];&#xA;                    tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 2];&#xA;                    tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 2] * tmp;&#xA;&#xA;                    tmp1 = 1.0d /tmat[3, 3];&#xA;                    tmp = tmp1 * tmat[3, 4];&#xA;                    tmat[4, 4] =  tmat[4, 4] - tmp * tmat[4, 3];&#xA;                    tv[j, i, 4] = tv[j, i, 4] - tv[j, i, 3] * tmp;&#xA;&#xA;                    tv[j, i, 4] = tv[j, i, 4]/tmat[4,4];&#xA;                    tv[j, i, 3] = tv[j, i, 3]-tmat[4,3]*tv[j, i, 4];&#xA;                    tv[j, i, 3] = tv[j, i, 3]/tmat[3,3];&#xA;                    tv[j, i, 2] = tv[j, i, 2]-tmat[3,2]*tv[j, i, 3]-tmat[4, 2]*tv[j, i, 4];&#xA;                    tv[j, i, 2] = tv[j, i, 2]/tmat[2,2];&#xA;                    tv[j, i, 1] = tv[j, i, 1]-tmat[2,1]*tv[j, i, 2]-tmat[3, 1]*tv[j, i, 3]-tmat[4, 1]*tv[j, i, 4];&#xA;                    tv[j, i, 1] = tv[j, i, 1]/tmat[1,1];&#xA;                    tv[j, i, 0] = tv[j, i, 0]-tmat[1,0]*tv[j, i, 1]-tmat[2, 0]*tv[j, i, 2]-tmat[3, 0]*tv[j, i, 3] - tmat[4, 0]*tv[j, i, 4];&#xA;                    tv[j, i, 0] = tv[j, i, 0]/tmat[0,0];&#xA;&#xA;                    rsd[k-1, j+2, i+2, 0] = rsd[k-1, j+2, i+2, 0] - tv[j, i, 0];&#xA;                    rsd[k-1, j+2, i+2, 1] = rsd[k-1, j+2, i+2, 1] - tv[j, i, 1];&#xA;                    rsd[k-1, j+2, i+2, 2] = rsd[k-1, j+2, i+2, 2] - tv[j, i, 2];&#xA;                    rsd[k-1, j+2, i+2, 3] = rsd[k-1, j+2, i+2, 3] - tv[j, i, 3];&#xA;                    rsd[k-1, j+2, i+2, 4] = rsd[k-1, j+2, i+2, 4] - tv[j, i, 4];&#xA;                }&#xA;            }&#xA;&#xA;            writeBuffer(rsd, k);&#xA;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void setParameters(int k, double omega)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;   this.k     = k;&#xA;&#x9;&#x9;   this.omega = omega;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;    // From IExchance11.cs&#x9;&#xA;&#x9;private void readBuffer(double[,,,] g, int k) &#xA;&#x9;{&#xA;&#x9;   int i, j, idx;&#xA;&#x9;&#xA;&#x9;    double[] dum1;&#xA;&#x9;    &#xA;&#x9;&#x9;if (south != -1)&#x9;    &#xA;&#x9;    {&#xA;&#x9;        dum1 = Y_buffer.Array;       &#xA;&#x9;        &#xA;&#x9;        idx = 0;&#xA;            for(j=jst; j&lt;=jend; j++) &#xA;&#x9;&#x9;&#x9;{&#xA;                g[k-1, j+1, nx+2, 0] = dum1[0+idx];&#xA;                g[k-1, j+1, nx+2, 1] = dum1[1+idx];&#xA;                g[k-1, j+1, nx+2, 2] = dum1[2+idx];&#xA;                g[k-1, j+1, nx+2, 3] = dum1[3+idx];&#xA;                g[k-1, j+1, nx+2, 4] = dum1[4+idx];&#xA;                idx = idx + 5;&#xA;            }&#xA;&#x9;    }&#xA;       &#xA;&#x9;&#x9;if (east != -1)&#x9;    &#xA;        {&#xA;&#x9;        dum1 = X_buffer.Array;&#xA;&#x9;       &#xA;&#x9;        idx = 0;&#xA;            for(i=ist; i&lt;=iend; i++) {&#xA;                g[k-1, ny+2, i+1, 0] = dum1[0+idx];&#xA;                g[k-1, ny+2, i+1, 1] = dum1[1+idx];&#xA;                g[k-1, ny+2, i+1, 2] = dum1[2+idx];&#xA;                g[k-1, ny+2, i+1, 3] = dum1[3+idx];&#xA;                g[k-1, ny+2, i+1, 4] = dum1[4+idx];&#xA;                idx = idx + 5;&#xA;            }&#xA;        }&#xA;       &#xA;&#x9;}&#xA;&#x9; &#xA;&#x9;// From IExchange13.cs &#xA;&#x9;private void writeBuffer(double[,,,] g, int k) &#xA;&#x9;{&#xA;        int i, j, idx;&#xA;        double[] dum;&#xA;&#xA;&#x9;    if (north != -1)&#xA;        {        &#xA;&#x9;        dum = Y_buffer.Array;&#xA;&#x9;        &#xA;&#x9;        idx = 0;&#xA;&#x9;        for(j=jst; j&lt;=jend; j++) {&#xA;&#x9;            dum[0+idx] = g[k-1, j+1, 2, 0];&#xA;&#x9;            dum[1+idx] = g[k-1, j+1, 2, 1];&#xA;&#x9;            dum[2+idx] = g[k-1, j+1, 2, 2];&#xA;&#x9;            dum[3+idx] = g[k-1, j+1, 2, 3];&#xA;&#x9;            dum[4+idx] = g[k-1, j+1, 2, 4];&#xA;&#x9;            idx = idx + 5;&#xA;&#x9;        }&#xA;        }&#xA;&#xA;        if (west != -1)&#xA;        {&#x9;   &#xA;&#x9;        dum = X_buffer.Array;&#xA;&#x9;        &#xA;&#x9;        idx = 0;&#xA;&#x9;        for(i=ist; i&lt;=iend; i++) {&#xA;&#x9;            dum[0+idx] = g[k-1, 2, i+1, 0];&#xA;&#x9;            dum[1+idx] = g[k-1, 2, i+1, 1];&#xA;&#x9;            dum[2+idx] = g[k-1, 2, i+1, 2];&#xA;&#x9;            dum[3+idx] = g[k-1, 2, i+1, 3];&#xA;&#x9;            dum[4+idx] = g[k-1, 2, i+1, 4];&#xA;&#x9;            idx = idx + 5;&#xA;&#x9;        }&#xA;        }&#xA;&#x9;}&#xA;&#xA;   }&#xA;&#xA;}&#xA;" fileType="library" name="IBTSUpperWork.cs" srcType="user" uri="impl.lu.ssor.BlockUpperTriangularSolutionWFWork/bin/1.0.0.0/IBTSUpperWork.dll" versionId="1.0.0.0">
+          <dependency>lu.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll</dependency>
+          <dependency>%WORKSPACE/impl.lu.ssor.BlockUpperTriangularSolutionWFWork/bin/1.0.0.0/BaseIBTSUpperWork.dll</dependency>
+          <dependency>lu.ssor.BlockTriangularSolutionWFWork/bin/1.0.0.0/IBTSWork.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="89" w="165" x="14" y="71">
+        <color b="144" g="238" r="144"/>
+      </visualDescription>
+      <port name="x_buffer">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="buffer" sRef="x_buffer"/>
+      </port>
+      <port name="y_buffer">
+        <visualDescription h="10" w="10" x="7" y="22"/>
+        <slice pRef="buffer" sRef="y_buffer"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="13" y="6"/>
+        <slice pRef="cell" sRef="x"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="92" y="15"/>
+        <slice pRef="cell" sRef="y"/>
+      </port>
+      <port name="blocks">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks" sRef="blocks"/>
+      </port>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem" sRef="problem"/>
+      </port>
+      <parameter iname="IBackwardDirection" order="0" parid="direction" uname="backward" varid="DIR"/>
+      <parameter iname="IInstance" order="1" parid="instance_type" uname="instance" varid="I"/>
+      <parameter iname="IClass" order="2" parid="class" uname="class" varid="C"/>
+    </interface>
+    <unit iRef="IBTSUpperWork" private="false" uRef="bts_work" visibleInterface="true">
+      <super cRef="base" uRef="bts_work"/>
+      <slices cRef="x_buffer" replica="0" uRef="buffer" sliceName="x_buffer" transitive="false">
+        <visualDescription h="10" w="10" x="113" y="3"/>
+      </slices>
+      <slices cRef="y_buffer" replica="0" uRef="buffer" sliceName="y_buffer" transitive="false">
+        <visualDescription h="10" w="10" x="111" y="29"/>
+      </slices>
+      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="false">
+        <visualDescription h="10" w="10" x="44" y="21"/>
+      </slices>
+      <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="false">
+        <visualDescription h="10" w="10" x="63" y="23"/>
+      </slices>
+      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="false">
+        <visualDescription h="10" w="10" x="16" y="18"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+        <visualDescription h="10" w="10" x="53" y="28"/>
+      </slices>
+      <slices cRef="directinon" replica="0" uRef="direction" sliceName="direction" transitive="false">
+        <visualDescription h="10" w="10" x="18" y="26"/>
+      </slices>
+      <visualDescription h="40" w="89" x="31" y="240"/>
+    </unit>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@b9c6cb1294972272571" varId="n">
+      <originRef>base</originRef>
+      <originRef>base</originRef>
+      <originRef>y</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="bts_work"/>
+      <visualDescription h="30" w="39" x="284" y="310"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@196ae3e1301427817312" varId="n">
+      <originRef>base</originRef>
+      <originRef>problem_data</originRef>
+      <originRef>rsd</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="bts_work"/>
+      <visualDescription h="20" w="20" x="263" y="373"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>backward</originRef>
+      <originRef>base</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="backward" uRef="backward"/>
+      <visualDescription h="20" w="20" x="354" y="190"/>
+    </enumerator>
+  </componentInfo>
+</component:component>

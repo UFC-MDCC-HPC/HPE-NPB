@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C9D17484-F895-4FDD-BFCB-19B7A0DC97EA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>impl.common.interactionpattern.Shift1DBackwardImpl</RootNamespace>
+    <AssemblyName>IShift1DBackwardImpl</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Shift1DBackwardImpl.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="DGAC, Version=0.0.0.0, Culture=neutral, PublicKeyToken=13cebbba0e117a7c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\DGAC\DGAC.dll</HintPath>
+    </Reference>
+    <Reference Include="MPI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=29b4a045737654fe">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\MPI\MPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\src\1.0.0.0\BaseIShift1DBackwardImpl.cs">
+      <Link>BaseIShift1DBackwardImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\src\1.0.0.0\IShift1DBackwardImpl.cs">
+      <Link>IShift1DBackwardImpl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\common.direction.Backward\common.direction.Backward\common.direction.Backward.csproj">
+      <Project>{3219509A-C959-40D6-9857-E6EFD99FDA89}</Project>
+      <Name>common.direction.Backward</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.interactionpattern.shift1D.BufferReader\common.interactionpattern.shift1D.BufferReader\common.interactionpattern.shift1D.BufferReader.csproj">
+      <Project>{A6E0BC27-4DE5-4B95-97BB-5ED7C91FF60A}</Project>
+      <Name>common.interactionpattern.shift1D.BufferReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.interactionpattern.shift1D.BufferWriter\common.interactionpattern.shift1D.BufferWriter\common.interactionpattern.shift1D.BufferWriter.csproj">
+      <Project>{0C3F86B3-C699-4FD3-9231-97165C91940C}</Project>
+      <Name>common.interactionpattern.shift1D.BufferWriter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.interactionpattern.Shift1D\common.interactionpattern.Shift1D\common.interactionpattern.Shift1D.csproj">
+      <Project>{8F3B289D-52D4-4FC8-9BE0-257D7A0051C4}</Project>
+      <Name>common.interactionpattern.Shift1D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.Buffer\common.Buffer\common.Buffer.csproj">
+      <Project>{EEAC9F12-55E9-4AEE-8996-5A72FA4FE6CD}</Project>
+      <Name>common.Buffer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.direction.Direction\common.direction.Direction\common.direction.Direction.csproj">
+      <Project>{A6AAE482-FC56-4FC4-8994-D3B6ADBDBBB8}</Project>
+      <Name>common.direction.Direction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.topology.Ring\common.topology.Ring\common.topology.Ring.csproj">
+      <Project>{F77E3063-55D1-4BFE-B504-611A612ACACA}</Project>
+      <Name>common.topology.Ring</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/cache" default="all" name="BufferReader">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="BufferReader-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/common.interactionpattern.shift1D.BufferReader/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/common.interactionpattern.shift1D.BufferReader/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/common.interactionpattern.shift1D.BufferReader/BufferReader.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/common.interactionpattern.shift1D.BufferReader/bin/1.0.0.0/BaseIBufferReader.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/common.interactionpattern.shift1D.BufferReader/src/1.0.0.0/BaseIBufferReader.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/common.interactionpattern.shift1D.BufferReader/BufferReader.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/common.interactionpattern.shift1D.BufferReader/bin/1.0.0.0/IBufferReader.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/common.interactionpattern.shift1D.BufferReader/src/1.0.0.0/IBufferReader.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="/common.interactionpattern.shift1D.BufferReader/bin/1.0.0.0/BaseIBufferReader.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+  </target>
+  <target depends="BufferReader-1.0.0.0" name="all"/>
+</project>

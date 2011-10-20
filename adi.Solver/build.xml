@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="Solver">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="Solver-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.Solver/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.Solver/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.Solver/Solver.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.Solver/bin/1.0.0.0/BaseISolver.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.Solver/src/1.0.0.0/BaseISolver.cs"/>
+      </sources>
+      <references>
+        <include name="common.solve.Method/bin/1.0.0.0/IMethod.dll"/>
+        <include name="common.axis.Axis/bin/1.0.0.0/IAxis.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="common.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.Solver/Solver.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.Solver/bin/1.0.0.0/ISolver.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.Solver/src/1.0.0.0/ISolver.cs"/>
+      </sources>
+      <references>
+        <include name="common.solve.Method/bin/1.0.0.0/IMethod.dll"/>
+        <include name="common.axis.Axis/bin/1.0.0.0/IAxis.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="common.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="/adi.Solver/bin/1.0.0.0/BaseISolver.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="Solver-1.0.0.0" name="all"/>
+</project>

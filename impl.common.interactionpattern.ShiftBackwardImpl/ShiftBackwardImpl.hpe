@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000edc7b05e0bb9da2bd993cc6deb534c575306f8c96142656271c343e24a1b55eb2a358eff5568646dff1cc33e86eb80ca0ce0402626f531a8f785bb04b5afcee7a8b5314bd04b5112f04d915c2b6947e66abf5e2640ae34d736ce0cd7c46fc9839e66eda8baaee1d3e95beadebfe6831864d972a66c59bc776b3ac44aefda0885" isAbstract="false" kind="Synchronizer" name="ShiftBackwardImpl" packagePath="impl.common.interactionpattern">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="002400000480000094000000060200000024000052534131000400001100000019f24cc9345f4cb04f0a3610c62148f4681f29583195cee45a2799bcc91bc6713b89112dd790ad1ffc5cfa79e0f2cfa522e0ac0b930a681735b82b3e5451e1ecc0e1c2e2975e4cbc5c71b7e56bbfd40e1588670437fe06b6144159e97894ab81796d45e17546e6a8e52183f43cdac5947cf29691f9a99886aba076aa6960538c" localRef="base" location="common.interactionpattern.Shift/Shift.hpe" name="Shift" package="common.interactionpattern" version="1.0.0.0">
+        <visualDescription h="30" w="50" x="228" y="177">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="direction" varName="DIR"/>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="input_buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
+          <visualDescription h="43" w="134" x="382" y="139">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="buffer">
+            <visualDescription h="10" w="10" x="10" y="17"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="output_buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
+          <visualDescription h="44" w="129" x="386" y="194">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="buffer">
+            <visualDescription h="10" w="10" x="9" y="17"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="topology" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+          <visualDescription h="49" w="133" x="122" y="416">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cell">
+            <visualDescription h="10" w="10" x="63" y="6"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" name="MPIDirect" package="environment" exposed="true">
+          <visualDescription h="30" w="50" x="92" y="364">
+            <color b="240" g="32" r="160"/>
+          </visualDescription>
+          <unitBounds uRef="mpi">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <unitBounds uRef="shift">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004376d6d9d7de3a1b4d1fdf8832b56bd5b62d403268644c42baa67426cc69adbb726d79ebf33cb4e50759bee5876dae4b375be77b5eba726be3f05f558ea5acc1f13eb2291544bb106ea1da4e63d9252ff2fce1d8428e6d5fbefd2291d534003bd1bc8801fa4fb6341951cfd06c4003178884b8f780965965df6f99b6b33e0782" localRef="dir" location="common.direction.Backward/Backward.hpe" name="Backward" package="common.direction" exposed="false">
+      <visualDescription h="30" w="50" x="356" y="402">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="backward">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="dir" varName="DIR"/>
+    <interface iRef="IShiftBackwardImpl" nArgs="1">
+      <slice isRef="input_buffer">
+        <originRef cRef="input_buffer" iRef="IBuffer"/>
+        <visualDescription h="10" w="10" x="64" y="10"/>
+      </slice>
+      <slice isRef="output_buffer">
+        <originRef cRef="output_buffer" iRef="IBuffer"/>
+        <visualDescription h="10" w="10" x="63" y="24"/>
+      </slice>
+      <slice isRef="cell">
+        <originRef cRef="topology" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="6" y="28"/>
+      </slice>
+      <slice isRef="mpi">
+        <originRef cRef="mpi" iRef="IMPIDirect"/>
+        <visualDescription h="10" w="10" x="11" y="22"/>
+      </slice>
+      <slice isRef="direction">
+        <originRef cRef="direction" iRef="IDirection"/>
+        <visualDescription h="10" w="10" x="9" y="6"/>
+      </slice>
+      <protocol xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@175c977f" repeat="0">
+        <visualDescription h="50" w="50" x="75" y="75"/>
+      </protocol>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.topology.Ring;&#xA;using common.Buffer;&#xA;using environment.MPIDirect;&#xA;using common.direction.Backward;&#xA;using common.interactionpattern.Shift;&#xA;using MPI;&#xA;&#xA;namespace impl.common.interactionpattern.BackwardImpl { &#xA;&#xA;public abstract class BaseIBackwardImpl&lt;DIR>: Synchronizer, BaseIShift&lt;DIR>&#xA;&#x9;&#x9;where DIR:IBackward&#xA;{&#xA;&#xA;protected Intracommunicator comm;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;override public void initialize()&#xA;{&#xA;   comm = this.WorldComm; //Mpi.localComm(this);&#xA;}&#xA;&#x9;&#xA;private ICell cell = null;&#xA;&#xA;public ICell Cell {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cell == null)&#xA;&#x9;&#x9;&#x9;this.cell = (ICell) Services.getPort(&quot;topology&quot;);&#xA;&#x9;&#x9;return this.cell;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBuffer input_buffer = null;&#xA;&#xA;public IBuffer Input_buffer {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.input_buffer == null)&#xA;&#x9;&#x9;&#x9;this.input_buffer = (IBuffer) Services.getPort(&quot;input_buffer&quot;);&#xA;&#x9;&#x9;return this.input_buffer;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBuffer output_buffer = null;&#xA;&#xA;public IBuffer Output_buffer {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.output_buffer == null)&#xA;&#x9;&#x9;&#x9;this.output_buffer = (IBuffer) Services.getPort(&quot;output_buffer&quot;);&#xA;&#x9;&#x9;return this.output_buffer;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IMPIDirect mpi = null;&#xA;&#xA;public IMPIDirect Mpi {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.mpi == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.mpi = (IMPIDirect) Services.getPort(&quot;mpi&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;comm = Mpi.localComm(this);&#x9;&#x9;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.mpi;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR direction = default(DIR);&#xA;&#xA;protected DIR Direction {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.direction == null)&#xA;&#x9;&#x9;&#x9;this.direction = (DIR) Services.getPort(&quot;direction&quot;);&#xA;&#x9;&#x9;return this.direction;&#xA;&#x9;}&#xA;}&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIShiftBackwardImpl.cs" srcType="base" uri="impl.common.interactionpattern.ShiftBackwardImpl/bin/1.0.0.0/BaseIShiftBackwardImpl.dll" versionId="1.0.0.0">
+          <dependency>common.topology.Ring/bin/1.0.0.0/ICell.dll</dependency>
+          <dependency>common.Buffer/bin/1.0.0.0/IBuffer.dll</dependency>
+          <dependency>environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll</dependency>
+          <dependency>common.direction.Direction/bin/1.0.0.0/IDirection.dll</dependency>
+          <dependency>common.interactionpattern.Shift/bin/1.0.0.0/BaseIShift.dll</dependency>
+          <externalDependency>MPI</externalDependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.interactionpattern.Shift;&#xA;using MPI;&#xA;using common.direction.Backward;&#xA;&#xA;namespace impl.common.interactionpattern.ShiftBackwardImpl { &#xA;&#xA;public class IShiftBackwardImpl&lt;DIR> : BaseIShiftBackwardImpl&lt;DIR>, IShift&lt;DIR>&#xA;&#x9;&#x9;where DIR:IBackward&#xA;{&#xA;&#xA;&#x9;private RequestList requestList = new RequestList();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public IShiftBackwardImpl() &#xA;&#x9;{  &#xA;&#x9;} &#xA;&#x9;&#x9;&#x9;&#xA;&#x9;private static int DEFAULT_TAG = 0;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public void initiate_send()&#xA;&#x9;{&#xA;&#x9;&#x9;if (handle_left != null)&#xA;&#x9;&#x9;&#x9;&#x9;requestList.Remove(handle_left);&#xA;&#x9;&#x9;// int rank = comm.Rank;&#xA;&#x9;&#x9;// Console.WriteLine(rank + &quot;: shift-to-left : initiate_send : &quot; + Cell.predecessor);&#xA;&#x9;&#x9;handle_left = comm.ImmediateSend&lt;double>(Output_buffer.Array, Cell.predecessor, DEFAULT_TAG);      &#xA;&#x9;&#x9;requestList.Add(handle_left);&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;public void initiate_recv() &#xA;&#x9;{&#xA;&#x9;&#x9;if (handle_right != null)&#xA;&#x9;&#x9;&#x9;&#x9;requestList.Remove(handle_right);&#xA;&#x9;//&#x9;int rank = comm.Rank;&#xA;&#x9;&#x9;//Console.WriteLine(rank + &quot;: shift-to-left : initiate_recv : &quot; + Cell.successor);&#xA;&#x9;&#x9;handle_right = comm.ImmediateReceive&lt;double>(Cell.successor, DEFAULT_TAG, Input_buffer.Array);&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;requestList.Add(handle_right);&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;private Request handle_left;&#xA;&#x9;private Request handle_right;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public Request HandleLeft { get { return handle_left; } }&#xA;&#x9;public Request HandleRight { get { return handle_right; } }&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public override int go() &#xA;&#x9;{ &#x9;   &#xA;&#x9;//   int rank = comm.Rank;&#xA;&#x9;//   Console.Error.WriteLine(rank + &quot;: shift to left begin - from &quot; + Cell.successor + &quot;, to &quot; + Cell.predecessor + &quot;, count=&quot; + requestList.Count);&#xA;&#x9; //   Console.Error.Flush();&#xA;&#x9;   requestList.WaitAll();&#xA;&#x9;   //clearRequests();&#xA;&#x9;//   Console.Error.WriteLine(rank + &quot;: shift to left end&quot;);&#xA;&#x9;//    Console.Error.Flush();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;   return 0;&#x9;&#x9;&#xA;&#x9;} // end activate method &#xA;&#xA;&#x9;private void clearRequests() &#xA;&#x9;{&#xA;&#x9;   if (handle_left != null) requestList.Remove(handle_left);&#xA;&#x9;   if (handle_right != null) requestList.Remove(handle_right);&#xA;&#x9;   handle_left = null;&#xA;&#x9;   handle_right = null;&#xA;&#x9;}&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="IShiftBackwardImpl.cs" srcType="user" uri="impl.common.interactionpattern.ShiftBackwardImpl/bin/1.0.0.0/IShiftBackwardImpl.dll" versionId="1.0.0.0">
+          <dependency>%WORKSPACE/impl.common.interactionpattern.ShiftBackwardImpl/bin/1.0.0.0/BaseIShiftBackwardImpl.dll</dependency>
+          <dependency>common.interactionpattern.Shift/bin/1.0.0.0/IShift.dll</dependency>
+          <externalDependency>MPI</externalDependency>
+        </file>
+      </sources>
+      <visualDescription h="40" w="80" x="99" y="68">
+        <color b="64" g="0" r="128"/>
+      </visualDescription>
+      <port name="input_buffer">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="buffer" sRef="input_buffer"/>
+      </port>
+      <port name="output_buffer">
+        <visualDescription h="10" w="10" x="20" y="19"/>
+        <slice pRef="buffer" sRef="output_buffer"/>
+      </port>
+      <port name="cell">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cell" sRef="cell"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="mpi"/>
+      </port>
+      <externalReferences>MPI</externalReferences>
+      <parameter iname="IBackwardDirection" order="0" parid="direction" uname="backward" varid="DIR"/>
+    </interface>
+    <unit iRef="IShiftBackwardImpl" private="false" uRef="shift" visibleInterface="true">
+      <super cRef="base" uRef="shift"/>
+      <slices cRef="input_buffer" replica="0" uRef="buffer" sliceName="input_buffer" transitive="false">
+        <visualDescription h="10" w="10" x="64" y="10"/>
+      </slices>
+      <slices cRef="output_buffer" replica="0" uRef="buffer" sliceName="output_buffer" transitive="false">
+        <visualDescription h="10" w="10" x="63" y="24"/>
+      </slices>
+      <slices cRef="topology" replica="0" uRef="cell" sliceName="cell" transitive="false">
+        <visualDescription h="10" w="10" x="35" y="27"/>
+      </slices>
+      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="false">
+        <visualDescription h="10" w="10" x="11" y="22"/>
+      </slices>
+      <slices cRef="direction" replica="0" uRef="direction" sliceName="direction" transitive="false">
+        <visualDescription h="10" w="10" x="128" y="72"/>
+      </slices>
+      <visualDescription h="40" w="80" x="57" y="261"/>
+    </unit>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>base</originRef>
+      <originRef>direction</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="shift"/>
+      <visualDescription h="20" w="20" x="225" y="137"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>dir</originRef>
+      <originRef>base</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="dir" uRef="backward"/>
+      <visualDescription h="20" w="20" x="354" y="190"/>
+    </enumerator>
+  </componentInfo>
+</component:component>

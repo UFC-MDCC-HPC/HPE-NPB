@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/cache" default="all" name="FTImpl">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="FTImpl-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/FTImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/bin/1.0.0.0/BaseIFTImpl.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/src/1.0.0.0/BaseIFTImpl.cs"/>
+      </sources>
+      <references>
+        <include name="ft.datapartition.BlocksInfo/bin/1.0.0.0/IBlocks.dll"/>
+        <include name="ft.data.ComputeIndexMap/bin/1.0.0.0/IComputeIndexMap.dll"/>
+        <include name="ft.problem_size.Instance_FT/bin/1.0.0.0/IInstance_FT.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="ft.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll"/>
+        <include name="ft.Checksum/bin/1.0.0.0/IChecksum.dll"/>
+        <include name="ft.data.FftInit/bin/1.0.0.0/IFftInit.dll"/>
+        <include name="ft.data.ComputeInitialConditions/bin/1.0.0.0/IComputeInitialConditions.dll"/>
+        <include name="environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll"/>
+        <include name="common.benchmarking.Timer/bin/1.0.0.0/ITimer.dll"/>
+        <include name="ft.Evolve/bin/1.0.0.0/IEvolve.dll"/>
+        <include name="ft.Verify/bin/1.0.0.0/IVerify.dll"/>
+        <include name="ft.fft.Fft/bin/1.0.0.0/IFft.dll"/>
+        <include name="ft.FT/bin/1.0.0.0/BaseIFT.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/FTImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/bin/1.0.0.0/IFTImpl.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/src/1.0.0.0/IFTImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="/impl.ft.FTImpl/bin/1.0.0.0/BaseIFTImpl.dll"/>
+        <include name="ft.FT/bin/1.0.0.0/IFT.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/FTImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/bin/1.0.0.0/IFTImplMain.exe" target="exe" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.ft.FTImpl/src/1.0.0.0/IFTImplMain.cs"/>
+      </sources>
+      <references>
+        <include name="/impl.ft.FTImpl/bin/1.0.0.0/IFTImpl.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+  </target>
+  <target depends="FTImpl-1.0.0.0" name="all"/>
+</project>

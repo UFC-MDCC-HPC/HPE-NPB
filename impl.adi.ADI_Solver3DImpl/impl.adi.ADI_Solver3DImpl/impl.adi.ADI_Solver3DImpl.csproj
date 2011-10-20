@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2054A966-44D7-46C6-B329-C625BDDB06CB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>impl.adi.ADI_Solver3DImpl</RootNamespace>
+    <AssemblyName>IADI_Solver3DImpl</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ADI_Solver3DImpl.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="DGAC, Version=0.0.0.0, Culture=neutral, PublicKeyToken=13cebbba0e117a7c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\local\lib\mono\DGAC\DGAC.dll</HintPath>
+    </Reference>
+    <Reference Include="MPI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=29b4a045737654fe">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\MPI\MPI.dll</HintPath>
+    </Reference>
+    <Reference Include="BMInOut, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f7ab42cfcd849336">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\BMInOut\BMInOut.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\src\1.0.0.0\BaseIADI_Solver3DImpl.cs">
+      <Link>BaseIADI_Solver3DImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\src\1.0.0.0\IADI_Solver3DImpl.cs">
+      <Link>IADI_Solver3DImpl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\adi.data.ProblemDefinition\adi.data.ProblemDefinition\adi.data.ProblemDefinition.csproj">
+      <Project>{CAEB389F-AE7E-4052-9FB7-8E29F4928E82}</Project>
+      <Name>adi.data.ProblemDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.problem_size.Class\common.problem_size.Class\common.problem_size.Class.csproj">
+      <Project>{A57D6AA6-B371-4188-BD22-97494B834BCB}</Project>
+      <Name>common.problem_size.Class</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.problem_size.Instance\common.problem_size.Instance\common.problem_size.Instance.csproj">
+      <Project>{DC71BFA5-7AB3-44F4-AC61-FF3C0E02561F}</Project>
+      <Name>common.problem_size.Instance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.solve.SolvingMethod\common.solve.SolvingMethod\common.solve.SolvingMethod.csproj">
+      <Project>{63E68F25-2D70-4A6A-BB2E-922472355F8F}</Project>
+      <Name>common.solve.SolvingMethod</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\environment.MPIDirect\environment.MPIDirect\environment.MPIDirect.csproj">
+      <Project>{1F563648-2878-4A44-B98C-BBED70407F5D}</Project>
+      <Name>environment.MPIDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.Verify\adi.Verify\adi.Verify.csproj">
+      <Project>{53EDB048-723C-44FA-8B9B-64A2BBD808C1}</Project>
+      <Name>adi.Verify</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.datapartition.MultiPartition\common.datapartition.MultiPartition\common.datapartition.MultiPartition.csproj">
+      <Project>{E308F8A8-C2CE-4159-8073-B8A31100D7D9}</Project>
+      <Name>common.datapartition.MultiPartition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.datapartition.MultiPartitionCells\common.datapartition.MultiPartitionCells\common.datapartition.MultiPartitionCells.csproj">
+      <Project>{AD922723-458D-488B-B525-0A16FAF9774C}</Project>
+      <Name>common.datapartition.MultiPartitionCells</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.data.ExactRHS\adi.data.ExactRHS\adi.data.ExactRHS.csproj">
+      <Project>{0F96A16B-A814-4932-8F30-316C551AC64F}</Project>
+      <Name>adi.data.ExactRHS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.data.Initialize\adi.data.Initialize\adi.data.Initialize.csproj">
+      <Project>{C55C420B-633E-4AFC-BC3D-470BFB3E17C1}</Project>
+      <Name>adi.data.Initialize</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.data.LHSInit\adi.data.LHSInit\adi.data.LHSInit.csproj">
+      <Project>{D22B9238-922C-43B5-B176-7D68B4AC4276}</Project>
+      <Name>adi.data.LHSInit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.topology.Ring\common.topology.Ring\common.topology.Ring.csproj">
+      <Project>{F77E3063-55D1-4BFE-B504-611A612ACACA}</Project>
+      <Name>common.topology.Ring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.benchmarking.Timer\common.benchmarking.Timer\common.benchmarking.Timer.csproj">
+      <Project>{D477316A-7431-4538-BC0B-8D386F0FF20C}</Project>
+      <Name>common.benchmarking.Timer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.ADI_Solver3D\adi.ADI_Solver3D\adi.ADI_Solver3D.csproj">
+      <Project>{43CA9FCE-6E90-4B34-B154-4375FEB10055}</Project>
+      <Name>adi.ADI_Solver3D</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.ADI\adi.ADI\adi.ADI.csproj">
+      <Project>{BEBBDA11-93A7-4EB1-835A-B0385F105109}</Project>
+      <Name>adi.ADI</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

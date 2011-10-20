@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="SwarztrauberMethod">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="SwarztrauberMethod-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.method.SwarztrauberMethod/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.method.SwarztrauberMethod/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.method.SwarztrauberMethod/SwarztrauberMethod.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.method.SwarztrauberMethod/bin/1.0.0.0/BaseISwarztrauberMethod.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.method.SwarztrauberMethod/src/1.0.0.0/BaseISwarztrauberMethod.cs"/>
+      </sources>
+      <references>
+        <include name="common.solve.Method/bin/1.0.0.0/BaseIMethod.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.method.SwarztrauberMethod/SwarztrauberMethod.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.method.SwarztrauberMethod/bin/1.0.0.0/ISwarztrauberMethod.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.method.SwarztrauberMethod/src/1.0.0.0/ISwarztrauberMethod.cs"/>
+      </sources>
+      <references>
+        <include name="/ft.fft.method.SwarztrauberMethod/bin/1.0.0.0/BaseISwarztrauberMethod.dll"/>
+        <include name="common.solve.Method/bin/1.0.0.0/IMethod.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="SwarztrauberMethod-1.0.0.0" name="all"/>
+</project>

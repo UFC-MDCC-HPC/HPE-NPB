@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/cache" default="all" name="WavefrontForward">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="WavefrontForward-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.common.interactionpattern.WavefrontForward/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.common.interactionpattern.WavefrontForward/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.common.interactionpattern.WavefrontForward/WavefrontForward.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.common.interactionpattern.WavefrontForward/bin/1.0.0.0/BaseIWavefrontForward.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.common.interactionpattern.WavefrontForward/src/1.0.0.0/BaseIWavefrontForward.cs"/>
+      </sources>
+      <references>
+        <include name="common.topology.Ring/bin/1.0.0.0/ICell.dll"/>
+        <include name="common.Buffer/bin/1.0.0.0/IBuffer.dll"/>
+        <include name="common.interactionpattern.wavefront.WavefrontWork/bin/1.0.0.0/IWavefrontWork.dll"/>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll"/>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="common.interactionpattern.Wavefront/bin/1.0.0.0/BaseIWavefront.dll"/>
+        <include name="/usr/lib/mono/MPI/MPI.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+    <csc debug="false" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.common.interactionpattern.WavefrontForward/WavefrontForward.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.common.interactionpattern.WavefrontForward/bin/1.0.0.0/IWavefrontForward.dll" target="library" unsafe="true">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.common.interactionpattern.WavefrontForward/src/1.0.0.0/IWavefrontForward.cs"/>
+      </sources>
+      <references>
+        <include name="common.interactionpattern.wavefront.WavefrontWork/bin/1.0.0.0/IWavefrontWork.dll"/>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="/impl.common.interactionpattern.WavefrontForward/bin/1.0.0.0/BaseIWavefrontForward.dll"/>
+        <include name="common.interactionpattern.Wavefront/bin/1.0.0.0/IWavefront.dll"/>
+        <include name="/usr/lib/mono/MPI/MPI.dll"/>
+        <include name="/usr/lib/mono/DGAC/DGAC.dll"/>
+      </references>
+    </csc>
+  </target>
+  <target depends="WavefrontForward-1.0.0.0" name="all"/>
+</project>

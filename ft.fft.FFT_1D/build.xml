@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="FFT_1D">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="FFT_1D-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.FFT_1D/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.FFT_1D/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.FFT_1D/FFT_1D.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.FFT_1D/bin/1.0.0.0/BaseIFFT_1D.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.FFT_1D/src/1.0.0.0/BaseIFFT_1D.cs"/>
+      </sources>
+      <references>
+        <include name="ft.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll"/>
+        <include name="ft.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="ft.datapartition.BlocksInfo/bin/1.0.0.0/IBlocks.dll"/>
+        <include name="ft.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="ft.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.FFT_1D/FFT_1D.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.FFT_1D/bin/1.0.0.0/IFFT_1D.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/ft.fft.FFT_1D/src/1.0.0.0/IFFT_1D.cs"/>
+      </sources>
+      <references>
+        <include name="ft.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll"/>
+        <include name="/ft.fft.FFT_1D/bin/1.0.0.0/BaseIFFT_1D.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="FFT_1D-1.0.0.0" name="all"/>
+</project>

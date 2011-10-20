@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="SP_ADIImpl">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="SP_ADIImpl-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.adi.SP_ADIImpl/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.adi.SP_ADIImpl/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.adi.SP_ADIImpl/SP_ADIImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.adi.SP_ADIImpl/bin/1.0.0.0/BaseISP_ADIImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.adi.SP_ADIImpl/src/1.0.0.0/BaseISP_ADIImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.topology.Ring/bin/1.0.0.0/ICell.dll"/>
+        <include name="adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll"/>
+        <include name="sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="adi.Solver/bin/1.0.0.0/ISolver.dll"/>
+        <include name="sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll"/>
+        <include name="common.axis.YAxis/bin/1.0.0.0/IY.dll"/>
+        <include name="common.axis.ZAxis/bin/1.0.0.0/IZ.dll"/>
+        <include name="environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll"/>
+        <include name="adi.ComputeRHS/bin/1.0.0.0/IComputeRHS.dll"/>
+        <include name="adi.CopyFaces/bin/1.0.0.0/ICopyFaces.dll"/>
+        <include name="adi.Add/bin/1.0.0.0/IAdd.dll"/>
+        <include name="common.axis.XAxis/bin/1.0.0.0/IX.dll"/>
+        <include name="common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll"/>
+        <include name="sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/IBlockDiagonalMatVecProduct.dll"/>
+        <include name="common.axis.XYZAxes/bin/1.0.0.0/IXYZ.dll"/>
+        <include name="sp.adi.SP_ADI/bin/1.0.0.0/BaseISP_ADI.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.adi.SP_ADIImpl/SP_ADIImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.adi.SP_ADIImpl/bin/1.0.0.0/ISP_ADIImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.adi.SP_ADIImpl/src/1.0.0.0/ISP_ADIImpl.cs"/>
+      </sources>
+      <references>
+        <include name="sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll"/>
+        <include name="/impl.sp.adi.SP_ADIImpl/bin/1.0.0.0/BaseISP_ADIImpl.dll"/>
+        <include name="sp.adi.SP_ADI/bin/1.0.0.0/ISP_ADI.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="SP_ADIImpl-1.0.0.0" name="all"/>
+</project>

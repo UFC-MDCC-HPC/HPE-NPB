@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c151ed18675690d884dfeab994aa7708a50b1b2f3c7911516cfd4e34adb11623c20391e45661654bdbac9ddcd1c40c142b28cc9a6a460c5fbb378cefc2f46583e079df76de650943d794e430e632545a26230649255528b2fe55674f2d46be96d01a91b5e2c3f7143e26ce7cb3dbbc6f5d30ee6a292673683cb253d3f2c5d9a5" isAbstract="false" kind="Computation" name="Exchange3XImpl" packagePath="impl.lu.exchange">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008f74104b84f148a1f0be781d9f8611d20fdc4154d734b1a67e4a30d9e7ac50843aed2b5f6a6c40fc7ee7256909f6c6518cd3a4f574f3527d4f6b7b47fc85e527b50fdc147b780180468a22c25af331f781a755a46bd6ca72408e0c79042e0d67db7f6d69b1311a25f0b4602942e1598ee0e9b24d1350d7d05252d7257240c2b4" localRef="base" location="lu.exchange.Exchange3/Exchange3.hpe" name="Exchange3" package="lu.exchange" version="1.0.0.0">
+        <visualDescription h="74" w="180" x="120" y="241">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="axis" varName="O"/>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="topology" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+          <visualDescription h="62" w="106" x="553" y="194">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cell">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" name="MPIDirect" package="environment" exposed="true">
+          <visualDescription h="30" w="50" x="327" y="451">
+            <color b="240" g="32" r="160"/>
+          </visualDescription>
+          <unitBounds uRef="mpi">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <unitBounds uRef="exchange3">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000099ec807d7886f0c2735f4a4c2dc60d8feb0a435847e291a0f9dd7aed2539883c551cf8dd8fe530fe7d695458a20d532e4a58b5cf62af87f410238ec43d1e140b210efe08dea6fc4983660e10cc3431cd1102137a5df63ef9bef47a99b409c0b1c86bd4aa322397fd56e1ed3be2e81f8d1a9765c5dc9134ec1eb1b5d4567311ae" localRef="x_axis" location="common.axis.XAxis/XAxis.hpe" name="XAxis" package="common.axis" exposed="false">
+      <visualDescription h="30" w="50" x="159" y="119">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="x">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="x_axis" varName="O"/>
+    <interface iRef="IExchange3XImpl" nArgs="1">
+      <slice isRef="axis">
+        <originRef cRef="axis" iRef="IAxis"/>
+        <visualDescription h="10" w="10" x="61" y="22"/>
+      </slice>
+      <slice isRef="shift_forward">
+        <originRef cRef="shift_forward" iRef="IShift1D"/>
+        <visualDescription h="10" w="10" x="11" y="21"/>
+      </slice>
+      <slice isRef="shift_backward">
+        <originRef cRef="shift_backward" iRef="IShift1D"/>
+        <visualDescription h="10" w="10" x="111" y="9"/>
+      </slice>
+      <protocol xsi:type="component:ActionCombinatorSeqType" label="hPE.frontend.kinds.activate.model.protocol.HSeqAction@290bdbae" repeat="0">
+        <visualDescription h="210" w="130" x="77" y="44"/>
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@4983918f" repeat="0" sliceRef="shift_forward">
+          <visualDescription h="50" w="50" x="46" y="37"/>
+        </action>
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@5cc968fd" repeat="0" sliceRef="shift_backward">
+          <visualDescription h="50" w="50" x="39" y="113"/>
+        </action>
+      </protocol>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.topology.Ring;&#xA;using common.interactionpattern.shift1D.BufferReader;&#xA;using common.direction.Backward;&#xA;using common.interactionpattern.shift1D.BufferWriter;&#xA;using common.direction.Forward;&#xA;using environment.MPIDirect;&#xA;using common.interactionpattern.Shift1D;&#xA;using lu.exchange.Exchange3_ReadBuffer;&#xA;using lu.exchange.Exchange3_WriteBuffer;&#xA;using common.axis.Axis;&#xA;using common.axis.X;&#xA;using lu.exchange.Exchange3;&#xA;&#xA;namespace impl.lu.exchange.Exchange3XImpl { &#xA;&#xA;public abstract class BaseIExchange3XImpl&lt;O>: Computation, BaseIExchange3&lt;O>&#xA;where O:IX&#xA;{&#xA;&#xA;private ICell cell = null;&#xA;&#xA;public ICell Cell {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cell == null)&#xA;&#x9;&#x9;&#x9;this.cell = (ICell) Services.getPort(&quot;topology&quot;);&#xA;&#x9;&#x9;return this.cell;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_ReadBuffer&lt;IBackwardDirection, O> buffer_reader_backward = null;&#xA;&#xA;protected IExchange3_ReadBuffer&lt;IBackwardDirection, O> Buffer_reader_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_reader_backward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_reader_backward = (IExchange3_ReadBuffer&lt;IBackwardDirection, O>) Services.getPort(&quot;buffer_reader_backward&quot;);&#xA;&#x9;&#x9;return this.buffer_reader_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_WriteBuffer&lt;IForwardDirection, O> buffer_writer_forward = null;&#xA;&#xA;protected IExchange3_WriteBuffer&lt;IForwardDirection, O> Buffer_writer_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_writer_forward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_writer_forward = (IExchange3_WriteBuffer&lt;IForwardDirection, O>) Services.getPort(&quot;buffer_writer_forward&quot;);&#xA;&#x9;&#x9;return this.buffer_writer_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IMPIDirect mpi = null;&#xA;&#xA;public IMPIDirect Mpi {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.mpi == null)&#xA;&#x9;&#x9;&#x9;this.mpi = (IMPIDirect) Services.getPort(&quot;mpi&quot;);&#xA;&#x9;&#x9;return this.mpi;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>> shift_backward = null;&#xA;&#xA;protected IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>> Shift_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.shift_backward == null)&#xA;&#x9;&#x9;&#x9;this.shift_backward = (IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>>) Services.getPort(&quot;shift_backward&quot;);&#xA;&#x9;&#x9;return this.shift_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_WriteBuffer&lt;IBackwardDirection, O> buffer_writer_backward = null;&#xA;&#xA;protected IExchange3_WriteBuffer&lt;IBackwardDirection, O> Buffer_writer_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_writer_backward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_writer_backward = (IExchange3_WriteBuffer&lt;IBackwardDirection, O>) Services.getPort(&quot;buffer_writer_backward&quot;);&#xA;&#x9;&#x9;return this.buffer_writer_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private O axis = default(O);&#xA;&#xA;protected O Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (O) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_ReadBuffer&lt;IForwardDirection, O> buffer_reader_forward = null;&#xA;&#xA;protected IExchange3_ReadBuffer&lt;IForwardDirection, O> Buffer_reader_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_reader_forward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_reader_forward = (IExchange3_ReadBuffer&lt;IForwardDirection, O>) Services.getPort(&quot;buffer_reader_forward&quot;);&#xA;&#x9;&#x9;return this.buffer_reader_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>> shift_forward = null;&#xA;&#xA;protected IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>> Shift_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.shift_forward == null)&#xA;&#x9;&#x9;&#x9;this.shift_forward = (IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>>) Services.getPort(&quot;shift_forward&quot;);&#xA;&#x9;&#x9;return this.shift_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIExchange3XImpl.cs" srcType="base" uri="impl.lu.exchange.Exchange3XImpl/bin/1.0.0.0/BaseIExchange3XImpl.dll" versionId="1.0.0.0">
+          <dependency>common.topology.Ring/bin/1.0.0.0/ICell.dll</dependency>
+          <dependency>common.interactionpattern.shift1D.BufferReader/bin/1.0.0.0/IBufferReader.dll</dependency>
+          <dependency>common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll</dependency>
+          <dependency>common.interactionpattern.shift1D.BufferWriter/bin/1.0.0.0/IBufferWriter.dll</dependency>
+          <dependency>common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll</dependency>
+          <dependency>environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll</dependency>
+          <dependency>common.interactionpattern.Shift1D/bin/1.0.0.0/IShift1D.dll</dependency>
+          <dependency>lu.exchange.Exchange3_ReadBuffer/bin/1.0.0.0/IExchange3_ReadBuffer.dll</dependency>
+          <dependency>lu.exchange.Exchange3_WriteBuffer/bin/1.0.0.0/IExchange3_WriteBuffer.dll</dependency>
+          <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
+          <dependency>common.axis.XAxis/bin/1.0.0.0/IX.dll</dependency>
+          <dependency>lu.exchange.Exchange3/bin/1.0.0.0/BaseIExchange3.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.X;&#xA;using lu.exchange.Exchange3;&#xA;&#xA;namespace impl.lu.exchange.Exchange3XImpl { &#xA;&#xA;&#x9;public class IExchange3XImpl&lt;O> : BaseIExchange3XImpl&lt;O>, IExchange3&lt;O>&#xA;   &#x9;   where O:IX&#xA;&#x9;{&#x9;&#xA;&#x9;&#x9;protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{ &#xA;&#x9;&#x9;&#x9;Shift_forward.setTag(from_w);&#xA;&#x9;&#x9;&#x9;Shift_forward.go();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Shift_backward.setTag(from_e);&#xA;&#x9;&#x9;&#x9;Shift_backward.go();&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;} &#xA;&#x9;&#xA;&#x9;&#x9;private double[,,,] g;&#xA;&#x9;&#x9;&#xA; &#x9;    public void setParameters(double[,,,] g, int nx, int ny, int nz) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.g = g;&#xA;&#x9;&#x9;    Buffer_reader_backward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_reader_forward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_writer_backward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_writer_forward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="IExchange3XImpl.cs" srcType="user" uri="impl.lu.exchange.Exchange3XImpl/bin/1.0.0.0/IExchange3XImpl.dll" versionId="1.0.0.0">
+          <dependency>common.axis.XAxis/bin/1.0.0.0/IX.dll</dependency>
+          <dependency>%WORKSPACE/impl.lu.exchange.Exchange3XImpl/bin/1.0.0.0/BaseIExchange3XImpl.dll</dependency>
+          <dependency>lu.exchange.Exchange3/bin/1.0.0.0/IExchange3.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="104" w="131" x="238" y="44">
+        <color b="0" g="255" r="255"/>
+      </visualDescription>
+      <port name="axis">
+        <visualDescription h="10" w="10" x="22" y="46"/>
+        <slice pRef="axis" sRef="shift_forward"/>
+        <slice pRef="axis" sRef="shift_backward"/>
+      </port>
+      <port name="buffer_reader_forward">
+        <visualDescription h="10" w="10" x="54" y="11"/>
+        <slice pRef="buffer_reader" sRef="shift_forward"/>
+      </port>
+      <port name="buffer_writer_forward">
+        <visualDescription h="10" w="10" x="33" y="6"/>
+        <slice pRef="buffer_writer" sRef="shift_forward"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="3" y="3"/>
+        <slice pRef="mpi" sRef="shift_forward"/>
+        <slice pRef="mpi" sRef="shift_backward"/>
+      </port>
+      <port name="buffer_reader_backward">
+        <visualDescription h="10" w="10" x="14" y="78"/>
+        <slice pRef="buffer_reader" sRef="shift_backward"/>
+      </port>
+      <port name="buffer_writer_backward">
+        <visualDescription h="10" w="10" x="72" y="82"/>
+        <slice pRef="buffer_writer" sRef="shift_backward"/>
+      </port>
+      <parameter iname="IX" order="0" parid="axis" uname="x" varid="O"/>
+    </interface>
+    <unit iRef="IExchange3XImpl" private="false" uRef="exchange3" visibleInterface="true">
+      <super cRef="base" uRef="exchange3"/>
+      <slices cRef="topology" replica="0" uRef="cell" sliceName="axis" transitive="true">
+        <visualDescription h="10" w="10" x="5" y="23"/>
+      </slices>
+      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
+        <visualDescription h="10" w="10" x="29" y="0"/>
+      </slices>
+      <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
+        <visualDescription h="10" w="10" x="61" y="22"/>
+      </slices>
+      <slices cRef="shift_forward" replica="0" uRef="shift" sliceName="shift_forward" transitive="false">
+        <visualDescription h="10" w="10" x="11" y="21"/>
+        <port>axis</port>
+        <port>mpi</port>
+      </slices>
+      <slices cRef="shift_backward" replica="0" uRef="shift" sliceName="shift_backward" transitive="false">
+        <visualDescription h="10" w="10" x="111" y="9"/>
+        <port>axis</port>
+        <port>mpi</port>
+      </slices>
+      <visualDescription h="40" w="131" x="42" y="142"/>
+    </unit>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>base</originRef>
+      <originRef>shift_backward</originRef>
+      <originRef>buffer_writer</originRef>
+      <originRef>direction</originRef>
+      <links xsi:type="component:EnumerableUnitType" ref="exchange3"/>
+      <visualDescription h="20" w="20" x="321" y="186"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
+      <originRef>x_axis</originRef>
+      <originRef>base</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="x_axis" uRef="x"/>
+      <visualDescription h="20" w="20" x="354" y="190"/>
+    </enumerator>
+  </componentInfo>
+</component:component>

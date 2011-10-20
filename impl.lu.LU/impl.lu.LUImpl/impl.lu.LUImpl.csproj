@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{20087C5E-D8D1-494F-8D0D-E7857C3FE31B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>impl.lu.LUImpl</RootNamespace>
+    <AssemblyName>ILUImpl</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\LUImpl.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\src\1.0.0.0\BaseILUImpl.cs">
+      <Link>BaseILUImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\src\1.0.0.0\ILUImpl.cs">
+      <Link>ILUImpl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="DGAC, Version=0.0.0.0, Culture=neutral, PublicKeyToken=13cebbba0e117a7c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\DGAC\DGAC.dll</HintPath>
+    </Reference>
+    <Reference Include="MPI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=29b4a045737654fe">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\MPI\MPI.dll</HintPath>
+    </Reference>
+    <Reference Include="BMInOut, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f7ab42cfcd849336">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\BMInOut\BMInOut.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common.problem_size.Class\common.problem_size.Class\common.problem_size.Class.csproj">
+      <Project>{A57D6AA6-B371-4188-BD22-97494B834BCB}</Project>
+      <Name>common.problem_size.Class</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.ssor.SSOR\lu.ssor.SSOR\lu.ssor.SSOR.csproj">
+      <Project>{4311EE15-4421-4AF2-94EE-7E4AE817132F}</Project>
+      <Name>lu.ssor.SSOR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.Pintgr\lu.Pintgr\lu.Pintgr.csproj">
+      <Project>{40539179-21BB-439E-8E5A-F35491A1F73E}</Project>
+      <Name>lu.Pintgr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.ERhs\lu.ERhs\lu.ERhs.csproj">
+      <Project>{C328A2BA-944C-4EC2-A968-3DA127037C48}</Project>
+      <Name>lu.ERhs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.datapartition.BlocksInfo\lu.datapartition.BlocksInfo\lu.datapartition.BlocksInfo.csproj">
+      <Project>{B74F8912-AA26-434F-A585-DB3387FB0072}</Project>
+      <Name>lu.datapartition.BlocksInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.data.ProblemDefinition\lu.data.ProblemDefinition\lu.data.ProblemDefinition.csproj">
+      <Project>{E07F89D2-70CB-46FD-BB84-E0DEC7CBDFF0}</Project>
+      <Name>lu.data.ProblemDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.data.InitialValues\lu.data.InitialValues\lu.data.InitialValues.csproj">
+      <Project>{97F8C611-9CAC-47F3-9720-C061B02DDA97}</Project>
+      <Name>lu.data.InitialValues</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.Error\lu.Error\lu.Error.csproj">
+      <Project>{21174B0A-8C85-4098-A657-5C2A7C29D817}</Project>
+      <Name>lu.Error</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\environment.MPIDirect\environment.MPIDirect\environment.MPIDirect.csproj">
+      <Project>{1F563648-2878-4A44-B98C-BBED70407F5D}</Project>
+      <Name>environment.MPIDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.Verify\lu.Verify\lu.Verify.csproj">
+      <Project>{2BF9B9FC-B9BC-4423-9718-1315B775B6E5}</Project>
+      <Name>lu.Verify</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.data.BoundaryValues\lu.data.BoundaryValues\lu.data.BoundaryValues.csproj">
+      <Project>{30A00A68-05CC-4872-821A-F857C3FE159C}</Project>
+      <Name>lu.data.BoundaryValues</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.LU\lu.LU\lu.LU.csproj">
+      <Project>{42F2B05E-5C5C-4DAF-A060-55C67011F385}</Project>
+      <Name>lu.LU</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.problem_size.Instance_LU\lu.problem_size.Instance_LU\lu.problem_size.Instance_LU.csproj">
+      <Project>{FF9AE01F-5921-4D51-BE52-01C828B84666}</Project>
+      <Name>lu.problem_size.Instance_LU</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\lu.problem_size.Instance\lu.problem_size.Instance\lu.problem_size.Instance.csproj">
+      <Project>{FAB2133D-CFCB-4F7E-95FE-64FC2090416C}</Project>
+      <Name>lu.problem_size.Instance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.topology.Ring\common.topology.Ring\common.topology.Ring.csproj">
+      <Project>{F77E3063-55D1-4BFE-B504-611A612ACACA}</Project>
+      <Name>common.topology.Ring</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
