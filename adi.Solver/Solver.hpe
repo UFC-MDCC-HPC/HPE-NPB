@@ -8,7 +8,7 @@
   </header>
   <componentInfo>
     <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000454b3cd77d4e1bd37b45801a6d225edceaa85080940d8ff93d8308c4a585601d0e0b00c70d55eb34cfa4de904d0234a5454ee4f10a3d46be2ec77520da0d55fa8d959e0f2ecbf8fd25f8d4e676e2b92a40e6ce7e492f5feb6c31345f8c7c887f7e2ecb139b95c71dcf3ca9aa44f0bdd07cf60319eb2676344bda9667fca51abe" localRef="axis" location="common.axis.Axis/Axis.hpe" name="Axis" package="common.axis" parameter_id="axis" exposed="false">
-      <visualDescription h="30" w="50" x="177" y="224">
+      <visualDescription h="30" w="50" x="178" y="260">
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <unitBounds uRef="axis">
@@ -40,11 +40,49 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
-    <parameter componentRef="class" formFieldId="class" varName="C"/>
-    <parameter componentRef="method" formFieldId="method" varName="MTH"/>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
+      <visualDescription h="30" w="100" x="94" y="435">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="cells">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
+      <visualDescription h="44" w="110" x="270" y="448">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="instance_type" varName="I"/>
+      <parameter formFieldId="class" varName="C"/>
+      <unitBounds uRef="problem">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="topology" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+      <visualDescription h="30" w="50" x="28" y="346">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds uRef="cell">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
     <parameter componentRef="axis" formFieldId="axis" varName="DIR"/>
+    <parameter componentRef="class" formFieldId="class" varName="C"/>
+    <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
+    <parameter componentRef="method" formFieldId="method" varName="MTH"/>
     <interface iRef="ISolver" nArgs="4">
+      <slice isRef="cells">
+        <originRef cRef="cells_info" iRef="ICells"/>
+        <visualDescription h="10" w="10" x="13" y="3"/>
+      </slice>
+      <slice isRef="problem">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="29" y="5"/>
+      </slice>
+      <slice isRef="topology">
+        <originRef cRef="topology" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="1" y="6"/>
+      </slice>
       <slice isRef="method">
         <originRef cRef="method" iRef="ISolvingMethod"/>
         <visualDescription h="10" w="10" x="51" y="11"/>
@@ -62,13 +100,13 @@
         <visualDescription h="10" w="10" x="21" y="26"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using common.problem_size.Class;&#xA;using common.problem_size.Instance;&#xA;&#xA;namespace adi.Solver { &#xA;&#xA;public interface BaseISolver&lt;MTH, DIR, C, I> : IComputationKind &#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;where C:IClass&#xA;where I:IInstance&lt;C>&#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseISolver.cs" srcType="base" uri="adi.Solver/bin/1.0.0.0/BaseISolver.dll" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using common.problem_size.Class;&#xA;using common.problem_size.Instance;&#xA;&#xA;namespace adi.Solver { &#xA;&#xA;public interface BaseISolver&lt;I, C, MTH, DIR> : IComputationKind &#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;where C:IClass&#xA;where I:IInstance&lt;C>&#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseISolver.cs" srcType="base" uri="adi.Solver/bin/1.0.0.0/BaseISolver.dll" versionId="1.0.0.0">
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using common.problem_size.Class;&#xA;using common.problem_size.Instance;&#xA;&#xA;namespace adi.Solver { &#xA;&#xA;public interface ISolver&lt;MTH, DIR, C, I> : BaseISolver&lt;MTH, DIR, C, I>&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;where C:IClass&#xA;where I:IInstance&lt;C>&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ISolver.cs" srcType="user" uri="adi.Solver/bin/1.0.0.0/ISolver.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using common.problem_size.Class;&#xA;using common.problem_size.Instance;&#xA;&#xA;namespace adi.Solver { &#xA;&#xA;public interface ISolver&lt;I, C, MTH, DIR> : BaseISolver&lt;I, C, MTH, DIR>&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;where C:IClass&#xA;where I:IInstance&lt;C>&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ISolver.cs" srcType="user" uri="adi.Solver/bin/1.0.0.0/ISolver.dll" versionId="1.0.0.0">
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
@@ -76,15 +114,36 @@
           <dependency>%WORKSPACE/adi.Solver/bin/1.0.0.0/BaseISolver.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="40" w="80" x="45" y="91">
+      <visualDescription h="76" w="80" x="45" y="55">
         <color b="0" g="0" r="255"/>
       </visualDescription>
+      <port name="cells">
+        <visualDescription h="10" w="10" x="55" y="45"/>
+        <slice pRef="cells" sRef="cells"/>
+      </port>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="31" y="0"/>
+        <slice pRef="problem" sRef="problem"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cell" sRef="topology"/>
+      </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="ISolvingMethod" order="2" parid="method" uname="method" varid="MTH"/>
       <parameter iname="IAxis" order="3" parid="axis" uname="axis" varid="DIR"/>
     </interface>
     <unit iRef="ISolver" private="false" uRef="solve" visibleInterface="true">
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+        <visualDescription h="10" w="10" x="13" y="3"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+        <visualDescription h="10" w="10" x="29" y="5"/>
+      </slices>
+      <slices cRef="topology" replica="0" uRef="cell" sliceName="topology" transitive="false">
+        <visualDescription h="10" w="10" x="1" y="6"/>
+      </slices>
       <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">
         <visualDescription h="10" w="10" x="51" y="11"/>
       </slices>
@@ -103,22 +162,45 @@
       <originRef>axis</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="axis" uRef="axis"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
+      <links xsi:type="component:EnumerableComponentType" ref="cells_info"/>
       <visualDescription h="20" w="20" x="354" y="190"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
       <originRef>method</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="method" uRef="method"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="20" w="20" x="285" y="416"/>
+      <visualDescription h="20" w="20" x="437" y="281"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
+      <originRef>problem_data</originRef>
+      <originRef>qs</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="problem_data" uRef="problem"/>
+      <links xsi:type="component:EnumerableUnitType" ref="solve"/>
+      <visualDescription h="48" w="47" x="393" y="298"/>
+    </enumerator>
+    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@b9c6cb1294972272571" varId="n">
+      <originRef>topology</originRef>
+      <links xsi:type="component:EnumerableEntryType" cRef="topology" uRef="cell"/>
+      <links xsi:type="component:EnumerableUnitType" ref="solve"/>
+      <visualDescription h="20" w="20" x="373" y="363"/>
     </enumerator>
     <fusionsOfReplicators>
       <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>axis</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
         <eRef>hPE.frontend.base.model.HReplicator@129a52a1295029089610</eRef>
         <originRef>method</originRef>
+      </fusionOfReplicators>
+      <fusionOfReplicators>
+        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
+        <originRef>problem_data</originRef>
+        <originRef>qs</originRef>
+      </fusionOfReplicators>
+      <fusionOfReplicators>
+        <eRef>hPE.frontend.base.model.HReplicator@b9c6cb1294972272571</eRef>
+        <originRef>topology</originRef>
+      </fusionOfReplicators>
+      <fusionOfReplicators>
+        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
+        <originRef>axis</originRef>
       </fusionOfReplicators>
     </fusionsOfReplicators>
   </componentInfo>
