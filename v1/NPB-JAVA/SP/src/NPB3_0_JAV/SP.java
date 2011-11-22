@@ -58,11 +58,9 @@ public class SP extends SPBase
 {
 	public int bid = -1;
 	public BMResults results;
-	public boolean serial = false;
 	public SP(char clss, int np, boolean ser)
 	{
 		super(clss, np);
-		serial = ser;
 	}
 	public static void main(String argv[])
 	{
@@ -89,7 +87,7 @@ public class SP extends SPBase
 
 	public void runBenchMark()
 	{
-		BMArgs.Banner(BMName, CLASS, serial, num_threads);
+		BMArgs.Banner(BMName, CLASS, true, num_threads);
 
 		int numTimers = t_last + 1;
 		String t_names[] = new String[numTimers];
@@ -104,12 +102,10 @@ public class SP extends SPBase
 		initialize();
 		exact_rhs();
 
-		if (!serial) setupThreads(this);
 		//---------------------------------------------------------------------
 		//      do one time step to touch all code, and reinitialize
 		//---------------------------------------------------------------------
-		if (serial) adi_serial();
-		else adi();
+		adi_serial();
 		initialize();
 
 		timer.resetAllTimers();
@@ -120,8 +116,7 @@ public class SP extends SPBase
 			{
 				System.out.println("Time step " + step);
 			}
-			if (serial) adi_serial();
-			else adi();
+			adi_serial();
 		}
 		timer.stop(1);
 		int verified = verify(niter);
@@ -137,7 +132,7 @@ public class SP extends SPBase
 					  getMFLOPS(time, niter),
 					  "floating point",
 					  verified,
-					  serial,
+					  true,
 					  num_threads,
 					  bid);
 		results.print();

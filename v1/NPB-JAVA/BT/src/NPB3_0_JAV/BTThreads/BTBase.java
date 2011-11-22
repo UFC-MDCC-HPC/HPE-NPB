@@ -193,55 +193,8 @@ public class BTBase extends Thread{
   protected Thread master = null;
   protected int num_threads;
   protected RHSCompute rhscomputer[];
-  protected XSolver xsolver[];
-  protected YSolver ysolver[];
-  protected ZSolver zsolver[];
   protected RHSAdder rhsadder[];
     
-  public void setupThreads(BT bt){
-    master = bt;
-    if(num_threads>problem_size-2)
-      num_threads=problem_size-2;
-
-    int interval1[]=new int[num_threads];
-    int interval2[]=new int[num_threads];    
-    set_interval(problem_size, interval1);
-    set_interval(problem_size-2, interval2);
-    int partition1[][] = new int[interval1.length][2];
-    int partition2[][] = new int[interval2.length][2];
-    set_partition(0,interval1,partition1);
-    set_partition(1,interval2,partition2);
-  
-    rhscomputer = new RHSCompute[num_threads];
-    xsolver = new XSolver[num_threads];
-    ysolver = new YSolver[num_threads];
-    zsolver = new ZSolver[num_threads];
-    rhsadder = new RHSAdder[num_threads];
- 
-  // create and start threads   
-    for(int ii=0;ii<num_threads;ii++){
-      rhscomputer[ii] =  new RHSCompute(bt,partition1[ii][0],partition1[ii][1],
-                                        partition2[ii][0],partition2[ii][1]);
-      rhscomputer[ii].id=ii;
-      rhscomputer[ii].start();
-
-      xsolver[ii] = new XSolver(bt,partition2[ii][0],partition2[ii][1]);
-      xsolver[ii].id=ii;
-      xsolver[ii].start();
-
-      ysolver[ii] = new YSolver(bt,partition2[ii][0],partition2[ii][1]);
-      ysolver[ii].id=ii;
-      ysolver[ii].start();
-
-      zsolver[ii] = new ZSolver(bt,partition2[ii][0],partition2[ii][1]);
-      zsolver[ii].id=ii;
-      zsolver[ii].start();
-
-      rhsadder[ii] = new RHSAdder(bt,partition2[ii][0],partition2[ii][1]);
-      rhsadder[ii].id=ii;
-      rhsadder[ii].start();
-    }    
-  }
 
   public void set_interval(int problem_size, int interval[] ){
     interval[0]= problem_size/num_threads;

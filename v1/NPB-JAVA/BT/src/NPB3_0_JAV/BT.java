@@ -55,7 +55,6 @@ import java.text.*;
 public class BT extends BTBase{
   public int bid=-1;
   public BMResults results;
-  public boolean serial=true;
   double fjac[];  
   double njac[];  
   double lhs[];  
@@ -71,7 +70,6 @@ public class BT extends BTBase{
   
   public BT(char clss, int threads,boolean ser){            
     super(clss, threads);
-    serial=ser;
     fjac =  new double[5*5*(problem_size+1)];
     njac =  new double[5*5*(problem_size+1)];
     lhs =  new double[5*5*3*(problem_size+1)];
@@ -95,7 +93,7 @@ public class BT extends BTBase{
   public void run(){runBenchMark();}
 
   public void runBenchMark(){
-    BMArgs.Banner(BMName,CLASS,serial,num_threads);
+    BMArgs.Banner(BMName,CLASS,true,num_threads);
 
     int numTimers=t_last+1;
     String t_names[] = new String[numTimers];
@@ -107,12 +105,10 @@ public class BT extends BTBase{
     initialize();
     exact_rhs();
     
-    if(!serial) setupThreads(this);    
 //---------------------------------------------------------------------
 //      do one time step to touch all code, and reinitialize
 //---------------------------------------------------------------------
-    if(serial) adi_serial();
-    else adi(); 
+    adi_serial();
     initialize();
     
     timer.resetAllTimers();
@@ -122,8 +118,7 @@ public class BT extends BTBase{
       if ( step % 20 == 0 || step == 1||step==niter) {   
         System.out.println("Time step "+step);
       }
-      if(serial) adi_serial();
-      else adi(); 
+      adi_serial();
     }
 
     timer.stop(t_total);
@@ -140,7 +135,7 @@ public class BT extends BTBase{
     			  getMFLOPS(time,niter),
     			  "floating point",
     			  verified,
-    			  serial,
+    			  true,
     			  num_threads,
     			  bid);
     results.print();				
@@ -166,85 +161,6 @@ public class BT extends BTBase{
     add();
   }
 
-  public void adi(){
-    if(timeron)timer.start(t_rhs);
-    doRHS();
-
-    if(timeron)timer.start(t_rhsx);
-    doRHS();
-    if(timeron)timer.stop(t_rhsx);   
-
-    if(timeron)timer.start(t_rhsy);
-    doRHS(); 
-    if(timeron)timer.stop(t_rhsy);
-
-    if(timeron)timer.start(t_rhsz);
-    doRHS();
-    if(timeron)timer.stop(t_rhsz);
-
-    doRHS();
-    if(timeron)timer.stop(t_rhs);
-
-    if(timeron)timer.start(t_xsolve);
-    synchronized(this){
-      for(int m=0;m<num_threads;m++)
-	synchronized(xsolver[m]){
-          xsolver[m].done=false;
-          xsolver[m].notify();
-        }
-      for(int m=0;m<num_threads;m++)
-          while(!xsolver[m].done){
-	    try{wait();}catch(InterruptedException e){} 
-            notifyAll();
-	  }
-    }
-    if(timeron)timer.stop(t_xsolve);
-
-    if(timeron)timer.start(t_ysolve);
-    synchronized(this){
-      for(int m=0;m<num_threads;m++)
-	synchronized(ysolver[m]){
-          ysolver[m].done=false;
-          ysolver[m].notify();
-        }
-      for(int m=0;m<num_threads;m++)
-          while(!ysolver[m].done){
-	    try{wait();}catch(InterruptedException e){}
-            notifyAll();
-	  }
-     }
-     if(timeron)timer.stop(t_ysolve);
-
-    if(timeron)timer.start(t_zsolve);
-    synchronized(this){
-      for(int m=0;m<num_threads;m++)
-	synchronized(zsolver[m]){
-          zsolver[m].done=false;
-          zsolver[m].notify();
-        }
-      for(int m=0;m<num_threads;m++)
-          while(!zsolver[m].done){
-	    try{wait();}catch(InterruptedException e){} 
-            notifyAll();
-	  }
-    }
-    if(timeron)timer.stop(t_zsolve);
-
-    if(timeron)timer.start(t_add);
-    synchronized(this){
-      for(int m=0;m<num_threads;m++)
-	synchronized(rhsadder[m]){
-          rhsadder[m].done=false;
-          rhsadder[m].notify();
-        }
-      for(int m=0;m<num_threads;m++)
-          while(!rhsadder[m].done){
-	    try{wait();}catch(InterruptedException e){} 
-            notifyAll();
-	  }
-    }
-    if(timeron)timer.stop(t_add);    
-  } 
 
   synchronized void doRHS(){
     int m;

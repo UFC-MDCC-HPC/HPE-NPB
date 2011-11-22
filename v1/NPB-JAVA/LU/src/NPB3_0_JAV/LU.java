@@ -54,7 +54,6 @@ import java.text.*;
 public class LU extends LUBase{
   public int bid=-1;
   public BMResults results;
-  boolean serial=false;
   
   public static double pow2(double x)
   {
@@ -63,7 +62,6 @@ public class LU extends LUBase{
   
   public LU(char clss, int np, boolean ser){
     super(clss, np);
-    serial=ser;
   }
   public static void main(String argv[]){
     LU lu = null;
@@ -84,7 +82,7 @@ public class LU extends LUBase{
   public void run(){runBenchMark();}
   
   public void runBenchMark(){
-    BMArgs.Banner(BMName,CLASS,serial,num_threads);
+    BMArgs.Banner(BMName,CLASS,true,num_threads);
     
     int numTimers=t_last+1;
     String t_names[] = new String[numTimers];
@@ -102,7 +100,6 @@ public class LU extends LUBase{
 //   set up coefficients
 //---------------------------------------------------------------------
     setcoeff();
-    if(!serial) setupThreads(this);
 //---------------------------------------------------------------------
 //   set the boundary values for dependent variables
 //---------------------------------------------------------------------
@@ -122,8 +119,7 @@ public class LU extends LUBase{
 //   perform the SSOR iterations
 //---------------------------------------------------------------------
     double tm;
-    if(serial) tm=sssor();
-    else tm=ssor();
+    tm=sssor();
 
 //---------------------------------------------------------------------
 //   compute the solution error
@@ -149,7 +145,7 @@ public class LU extends LUBase{
     			  getMFLOPS(itmax,tm),
     			  "floating point",
     			  verified,
-    			  serial,
+    			  true,
     			  num_threads,
     			  bid);
     results.print();				
@@ -2520,196 +2516,6 @@ public class LU extends LUBase{
     	  }
        }
     }
-  }
-  public double ssor(){
-      int i, j, k, m, n;
-      int istep;
-      double  delunm[] = new double[5], tv[] = new double[5*(isiz1/2*2+1)*isiz2];
-      double tmp = 1.0 / ( omega * ( 2.0 - omega ) );
-//---------------------------------------------------------------------
-//   begin pseudo-time stepping iterations
-//---------------------------------------------------------------------
-
-//---------------------------------------------------------------------
-//   initialize a,b,c,d to zero (guarantees that page tables have been
-//   formed, if applicable on given architecture, before timestepping).
-//---------------------------------------------------------------------
-      for(j=0;j<=isiz2-1;j++){
-         for(i=0;i<=isiz1-1;i++){
-            for(n=0;n<=4;n++){
-               for(m=0;m<=4;m++){
-                  a[m+n*isize4+i*jsize4+j*ksize4] = 0.0;
-                  b[m+n*isize4+i*jsize4+j*ksize4] = 0.0;
-                  c[m+n*isize4+i*jsize4+j*ksize4] = 0.0;
-                  d[m+n*isize4+i*jsize4+j*ksize4] = 0.0;
-               }
-            }
-         }
-      }
-
-//---------------------------------------------------------------------
-//   compute the steady-state residuals
-//---------------------------------------------------------------------
-
-       doRHSiteration();
-       doRHSiteration();
-       doRHSiteration();
-       doRHSiteration();
-//---------------------------------------------------------------------
-//   compute the L2 norms of newton iteration residuals
-//---------------------------------------------------------------------
-       l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-                   ist, iend, jst, jend,
-                   rsd, rsdnm ); 
-           
-       timer.resetAllTimers();
-       timer.start(1);
-//---------------------------------------------------------------------
-//   the timestep loop   itmax
-//---------------------------------------------------------------------
-      for(istep=1;istep<=itmax;istep++){         
-        if(istep % 20 == 0 || istep == itmax || istep == 1) {
-          System.out.println(" Time step " + istep);
-        }
-//---------------------------------------------------------------------
-//   perform SSOR iteration
-//---------------------------------------------------------------------
-             synchronized(this){
-	   for(m=0;m<num_threads;m++)
-	     synchronized(scaler[m]){
-               scaler[m].done=false;
-               scaler[m].notify();
-             }
-	   for(m=0;m<num_threads;m++)
-	       while(!scaler[m].done){
-	         try{wait();}catch(InterruptedException e){}
-		 notifyAll();
-	       } 
-             }
-//---------------------------------------------------------------------
-//   form the lower triangular part of the jacobian matrix
-//---------------------------------------------------------------------
-           if (timeron) timer.start(t_jacld);
-
-             synchronized(this){
-          for(m=0;m<num_threads;m++)
-	     synchronized(lowerjac[m]){
-               lowerjac[m].done=false;
-               lowerjac[m].notify();
-	       notifyAll();
-             }
-	     while(!lowerjac[num_threads-1].done){
-	       try{wait();}catch(InterruptedException e){}
-	       notifyAll();
-	     }
-           }
-	   if (timeron) timer.stop(t_jacld);
-//---------------------------------------------------------------------
-//   form the strictly upper triangular part of the jacobian matrix
-//---------------------------------------------------------------------
-  	   if (timeron)  timer.start(t_jacu);
-           synchronized(this){
-           for(m=0;m<num_threads;m++)
-	     synchronized(upperjac[m]){
-               upperjac[m].done=false;
-               upperjac[m].notify();
- 	       notifyAll();
-            }
-	     while(!upperjac[num_threads-1].done){
-	       try{wait();}catch(InterruptedException e){}
-	       notifyAll();
-	     }
-           }
-  	   if (timeron)  timer.stop(t_jacu);
-//---------------------------------------------------------------------
-//   perform the upper triangular solution
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-//   update the variables
-//---------------------------------------------------------------------
-	 if (timeron)  timer.start(t_add);
-         synchronized(this){
-	   for(m=0;m<num_threads;m++)
-	     synchronized(adder[m]){
-               adder[m].done=false;
-               adder[m].notify();
-             }
-	   for(m=0;m<num_threads;m++)
-	     while(!adder[m].done){
-	       try{wait();}catch(InterruptedException e){}
-	       notifyAll();
-	     }
-         }
-	 if (timeron) timer.stop(t_add);
-//---------------------------------------------------------------------
-//   compute the max-norms of newton iteration corrections
-//---------------------------------------------------------------------
-         if ( istep % inorm  == 0 ){
-	   if (timeron) timer.start(t_l2norm);
-           l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-                         ist, iend, jst, jend,
-                         rsd, delunm );
-	   if (timeron) timer.stop(t_l2norm);
-         }
-//---------------------------------------------------------------------
-//   compute the steady-state residuals
-//---------------------------------------------------------------------
-
-      if (timeron) timer.start(t_rhs);  
-      doRHSiteration();
-
-      if (timeron) timer.start(t_rhsx);
-      doRHSiteration();
-      if (timeron) timer.stop(t_rhsx);
-    
-      if (timeron) timer.start(t_rhsy);
-      doRHSiteration();
-      if (timeron) timer.stop(t_rhsy);
-   
-      if (timeron) timer.start(t_rhsz);
-      doRHSiteration();
-      if (timeron) timer.stop(t_rhsz);
-      if (timeron) timer.stop(t_rhs);
-//---------------------------------------------------------------------
-//   compute the max-norms of newton iteration residuals
-//---------------------------------------------------------------------
-         if ( istep % inorm == 0 || istep == itmax ){
-	    if (timeron)timer.start(t_l2norm);
-	    l2norm( isiz1, isiz2, isiz3, nx0, ny0, nz0,
-                         ist, iend, jst, jend,
-                         rsd, rsdnm );
-	    if (timeron)  timer.stop(t_l2norm);
-         }
-
-//---------------------------------------------------------------------
-//   check the newton-iteration residuals against the tolerance levels
-//---------------------------------------------------------------------
-         if ( ( rsdnm[0] < tolrsd[0] ) &&
-              ( rsdnm[1] < tolrsd[1] ) &&
-              ( rsdnm[2] < tolrsd[2] ) &&
-              ( rsdnm[3] < tolrsd[3] ) &&
-              ( rsdnm[4] < tolrsd[4] ) ) {
-            timer.stop(1);
-            return timer.readTimer(1);
-         }
-      }
-      
-      timer.stop(1);
-      return  timer.readTimer(1);
-  }
-  
-  synchronized void doRHSiteration(){
-    int m;
-    for(m=0;m<num_threads;m++)
-	synchronized(rhscomputer[m]){
-          rhscomputer[m].done=false;
-          rhscomputer[m].notify();
-        }
-    for(m=0;m<num_threads;m++)
-	while(!rhscomputer[m].done){
-	  try{wait();}catch(InterruptedException e){}
-	  notifyAll();
-	}
   }
   
   public double sssor(){

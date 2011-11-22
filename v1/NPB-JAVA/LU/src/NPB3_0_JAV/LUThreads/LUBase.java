@@ -199,57 +199,9 @@ public class LUBase extends Thread{
   
   protected Thread master=null;
   protected int num_threads;
-  protected RHSCompute rhscomputer[] = null;
   protected Scale scaler[] = null;
   protected Adder adder[] =null;
-  protected LowerJac lowerjac[] =null;
-  protected UpperJac upperjac[] =null;
   
-  public void setupThreads(LU lu){
-    master = lu;
-    if(num_threads>isiz1-2)
-      num_threads=isiz1-2;
-    int interval1[]=new int[num_threads];
-    int interval2[]=new int[num_threads];    
-    set_interval(num_threads, isiz1, interval1);
-    set_interval(num_threads, isiz1-2, interval2);
-    int partition1[][] = new int[interval1.length][2];
-    int partition2[][] = new int[interval2.length][2];
-    set_partition(0,interval1,partition1);
-    set_partition(1,interval2,partition2);
-   
-    rhscomputer = new RHSCompute[num_threads];
-    scaler = new Scale[num_threads];
-    adder = new Adder[num_threads];
-    lowerjac = new LowerJac[num_threads];
-    upperjac = new UpperJac[num_threads];
-    for(int ii=0;ii<num_threads;ii++){
-      rhscomputer[ii] =  new RHSCompute(lu,partition1[ii][0],partition1[ii][1],
-					partition2[ii][0],partition2[ii][1]);
-      rhscomputer[ii].id=ii;
-      rhscomputer[ii].start();
-
-      scaler[ii] =  new Scale(lu,partition2[ii][0],partition2[ii][1]);
-      scaler[ii].id=ii;
-      scaler[ii].start();
-
-      adder[ii] =  new Adder(lu,partition2[ii][0],partition2[ii][1]);
-      adder[ii].id=ii;
-      adder[ii].start();
-
-      lowerjac[ii] =  new LowerJac(lu,partition2[ii][0],partition2[ii][1]);
-      lowerjac[ii].id=ii;
-      lowerjac[ii].neighbor=lowerjac;
-      lowerjac[ii].start();
-
-      upperjac[ii] =  new UpperJac(lu,partition2[num_threads-ii-1][0],
-                                      partition2[num_threads-ii-1][1]);
-      upperjac[ii].id=ii;
-      upperjac[ii].neighbor=upperjac;
-      upperjac[ii].start();
-    }
-  }
-
   public void checksum(double array[], int size, 
                        String arrayname, boolean stop){
     double sum = 0;

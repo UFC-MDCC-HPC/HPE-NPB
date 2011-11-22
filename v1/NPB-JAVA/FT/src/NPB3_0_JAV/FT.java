@@ -53,11 +53,9 @@ import java.io.*;
 public class FT extends FTBase{
   public int bid=-1;
   public BMResults results;
-  public boolean serial=true;
   boolean done=false;
   public FT(char clss, int np , boolean ser){
     super(clss,np,ser);
-    serial=ser;
   }
   public static void main(String argv[]){
     FT ft = null;
@@ -79,14 +77,13 @@ public class FT extends FTBase{
   public void run(){runBenchMark();}
   
   public void runBenchMark(){
-    BMArgs.Banner(BMName,CLASS,serial,num_threads);
+    BMArgs.Banner(BMName,CLASS,true,num_threads);
     System.out.println( " Size = " + nx+" X " + ny+" X " + nz
                        +" niter = "+niter_default);
     setTimers();		       
     timer.resetAllTimers();
     
-    if(serial) appft_serial();
-    else appft();
+    appft_serial();
 
     if(timeron) timer.start(14);		  
     int verified=verify(4, nx, ny, nz, niter_default, checksum);
@@ -104,7 +101,7 @@ public class FT extends FTBase{
     			  getMFLOPS(time,nx,ny,nz),
     			  "floating point",
     			  verified,
-    			  serial,
+    			  true,
     			  num_threads,
     			  bid);
     results.print();				
