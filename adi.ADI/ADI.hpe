@@ -16,7 +16,7 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
-        <visualDescription h="30" w="100" x="237" y="277">
+        <visualDescription h="30" w="100" x="273" y="255">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
@@ -24,7 +24,7 @@
         </unitBounds>
       </port>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="31" w="118" x="207" y="200">
+        <visualDescription h="31" w="118" x="147" y="174">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
@@ -54,7 +54,7 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
-        <visualDescription h="30" w="100" x="237" y="277">
+        <visualDescription h="30" w="100" x="273" y="255">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
@@ -62,7 +62,7 @@
         </unitBounds>
       </port>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="31" w="118" x="207" y="200">
+        <visualDescription h="31" w="118" x="147" y="174">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
@@ -72,11 +72,11 @@
         </unitBounds>
       </port>
       <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="topology" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
-        <visualDescription h="35" w="38" x="282" y="125">
+        <visualDescription h="35" w="38" x="312" y="145">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="63" y="6"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <unitBounds uRef="solve">
@@ -92,7 +92,7 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
-        <visualDescription h="30" w="100" x="237" y="277">
+        <visualDescription h="30" w="100" x="273" y="255">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
@@ -100,7 +100,7 @@
         </unitBounds>
       </port>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="31" w="118" x="207" y="200">
+        <visualDescription h="31" w="118" x="147" y="174">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
@@ -114,7 +114,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="63" y="6"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <unitBounds uRef="solve">
@@ -160,7 +160,7 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="31" w="118" x="207" y="200">
+        <visualDescription h="31" w="118" x="147" y="174">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
@@ -170,7 +170,7 @@
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
-        <visualDescription h="30" w="100" x="237" y="277">
+        <visualDescription h="30" w="100" x="273" y="255">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
@@ -182,11 +182,11 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="63" y="6"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" name="MPIDirect" package="environment" exposed="true">
-        <visualDescription h="30" w="50" x="395" y="32">
+        <visualDescription h="30" w="50" x="391" y="45">
           <color b="240" g="32" r="160"/>
         </visualDescription>
         <unitBounds uRef="mpi">
@@ -194,11 +194,11 @@
         </unitBounds>
       </port>
       <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="y" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
-        <visualDescription h="35" w="38" x="282" y="125">
+        <visualDescription h="35" w="38" x="312" y="145">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="63" y="6"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="z" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
@@ -220,7 +220,7 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
-        <visualDescription h="30" w="100" x="237" y="277">
+        <visualDescription h="30" w="100" x="273" y="255">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
@@ -228,7 +228,7 @@
         </unitBounds>
       </port>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="31" w="118" x="207" y="200">
+        <visualDescription h="31" w="118" x="147" y="174">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
@@ -248,7 +248,7 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="31" w="118" x="207" y="200">
+        <visualDescription h="31" w="118" x="147" y="174">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
@@ -258,7 +258,7 @@
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
-        <visualDescription h="30" w="100" x="237" y="277">
+        <visualDescription h="30" w="100" x="273" y="255">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
@@ -302,8 +302,18 @@
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <innerRenaming cNewName="x" cOldName="topology" cRef="x_solve"/>
-    <innerRenaming cNewName="y" cOldName="topology" cRef="y_solve"/>
     <innerRenaming cNewName="z" cOldName="topology" cRef="z_solve"/>
+    <innerRenaming cNewName="y" cOldName="topology" cRef="y_solve"/>
+    <fusion>
+      <cRefs>copy_faces</cRefs>
+      <cRefs>x_solve</cRefs>
+      <pRef>x</pRef>
+    </fusion>
+    <fusion>
+      <cRefs>copy_faces</cRefs>
+      <cRefs>z_solve</cRefs>
+      <pRef>z</pRef>
+    </fusion>
     <fusion>
       <cRefs>add</cRefs>
       <cRefs>compute_rhs</cRefs>
@@ -315,18 +325,8 @@
     </fusion>
     <fusion>
       <cRefs>copy_faces</cRefs>
-      <cRefs>x_solve</cRefs>
-      <pRef>x</pRef>
-    </fusion>
-    <fusion>
-      <cRefs>copy_faces</cRefs>
       <cRefs>y_solve</cRefs>
       <pRef>y</pRef>
-    </fusion>
-    <fusion>
-      <cRefs>copy_faces</cRefs>
-      <cRefs>z_solve</cRefs>
-      <pRef>z</pRef>
     </fusion>
     <fusion>
       <cRefs>add</cRefs>
@@ -354,27 +354,27 @@
         <originRef cRef="add" iRef="IAdd"/>
         <visualDescription h="10" w="10" x="34" y="70"/>
       </slice>
-      <protocol xsi:type="component:ActionCombinatorSeqType" label="hPE.frontend.kinds.activate.model.protocol.HSeqAction@1a5c9639" repeat="0">
+      <protocol xsi:type="component:ActionCombinatorSeqType" label="hPE.frontend.kinds.activate.model.protocol.HSeqAction@71ea020a" repeat="0">
         <visualDescription h="493" w="490" x="145" y="125"/>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@348a85b4" repeat="0" sliceRef="copy_faces">
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@3a2c18f3" repeat="0" sliceRef="copy_faces">
           <visualDescription h="50" w="50" x="225" y="38"/>
         </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@7250075e" repeat="0" sliceRef="compute_rhs">
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@251a175b" repeat="0" sliceRef="compute_rhs">
           <visualDescription h="50" w="50" x="222" y="103"/>
         </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@6413e6f3" repeat="0">
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@53f36a64" repeat="0">
           <visualDescription h="50" w="50" x="224" y="167"/>
         </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@569f8ed9" repeat="0">
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@11cdf64b" repeat="0">
           <visualDescription h="50" w="50" x="231" y="231"/>
         </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@55b74fd" repeat="0">
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@68e4bf0e" repeat="0">
           <visualDescription h="50" w="50" x="230" y="298"/>
         </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@375d90ca" repeat="0">
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@1bb65ef" repeat="0">
           <visualDescription h="50" w="50" x="230" y="366"/>
         </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@5fccda2b" repeat="0" sliceRef="add">
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@36212ecc" repeat="0" sliceRef="add">
           <visualDescription h="50" w="50" x="224" y="420"/>
         </action>
       </protocol>
@@ -396,13 +396,17 @@
           <dependency>%WORKSPACE/sp.ADI/bin/1.0.0.0/BaseIADI.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="140" w="228" x="238" y="532">
+      <visualDescription h="140" w="228" x="202" y="506">
         <color b="0" g="128" r="128"/>
       </visualDescription>
-      <port name="z">
-        <visualDescription h="10" w="10" x="118" y="5"/>
-        <slice pRef="topology" sRef="solve"/>
-        <slice pRef="z" sRef="copy_faces"/>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="95" y="24"/>
+        <slice pRef="problem" sRef="solve"/>
+        <slice pRef="problem" sRef="solve"/>
+        <slice pRef="problem" sRef="solve"/>
+        <slice pRef="problem" sRef="copy_faces"/>
+        <slice pRef="problem" sRef="compute_rhs"/>
+        <slice pRef="problem" sRef="add"/>
       </port>
       <port name="cells">
         <visualDescription h="10" w="10" x="41" y="120"/>
@@ -413,22 +417,18 @@
         <slice pRef="cells" sRef="compute_rhs"/>
         <slice pRef="cells" sRef="add"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="95" y="24"/>
-        <slice pRef="problem" sRef="solve"/>
-        <slice pRef="problem" sRef="solve"/>
-        <slice pRef="problem" sRef="solve"/>
-        <slice pRef="problem" sRef="copy_faces"/>
-        <slice pRef="problem" sRef="compute_rhs"/>
-        <slice pRef="problem" sRef="add"/>
+      <port name="x">
+        <visualDescription h="10" w="10" x="6" y="86"/>
+        <slice pRef="topology" sRef="solve"/>
+        <slice pRef="z" sRef="copy_faces"/>
       </port>
-      <port name="topology">
-        <visualDescription h="10" w="10" x="6" y="29"/>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="topology" sRef="solve"/>
         <slice pRef="y" sRef="copy_faces"/>
       </port>
       <port name="x">
-        <visualDescription h="10" w="10" x="6" y="86"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="topology" sRef="solve"/>
         <slice pRef="x" sRef="copy_faces"/>
       </port>
@@ -447,7 +447,7 @@
       <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="true">
         <visualDescription h="10" w="10" x="29" y="5"/>
       </slices>
-      <slices cRef="z" replica="0" uRef="cell" sliceName="topology" transitive="true">
+      <slices cRef="z" replica="0" uRef="cell" sliceName="x" transitive="true">
         <visualDescription h="10" w="10" x="1" y="6"/>
       </slices>
       <slices cRef="y" replica="0" uRef="cell" sliceName="topology" transitive="true">
@@ -463,7 +463,7 @@
         <visualDescription h="10" w="10" x="64" y="28"/>
         <port>cells</port>
         <port>problem</port>
-        <port>topology</port>
+        <port>x</port>
       </slices>
       <slices cRef="y_solve" replica="0" uRef="solve" sliceName="solve" transitive="false">
         <visualDescription h="10" w="10" x="64" y="15"/>
@@ -484,7 +484,7 @@
         <port>y</port>
         <port>mpi</port>
         <port>x</port>
-        <port>z</port>
+        <port>x</port>
       </slices>
       <slices cRef="compute_rhs" replica="0" uRef="compute_rhs" sliceName="compute_rhs" transitive="false">
         <visualDescription h="10" w="10" x="36" y="28"/>
@@ -496,7 +496,7 @@
         <port>problem</port>
         <port>cells</port>
       </slices>
-      <visualDescription h="40" w="80" x="423" y="477"/>
+      <visualDescription h="40" w="80" x="459" y="411"/>
     </unit>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>z_solve</originRef>

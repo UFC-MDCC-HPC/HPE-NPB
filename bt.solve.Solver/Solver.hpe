@@ -6,13 +6,39 @@
         <extends>true</extends>
       </extensionType>
       <component hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000fd23fed6ed3ccc3d4e94b55f9f0c268eef5973ec877adce1dc5b9fba8503dc630e86dd7f5dfa868b01392208c8978a68bf2095c75e166a8f6dbfbc951516916cc70412dbeacd536a4bb77d6b1db081bdccb2509782ae8e28b6a050a0ceaa46c2c320a715f9c9a147b7c120282cc16574cb05b5c2fe290f68e057f85b210593b2" localRef="base" location="adi.Solver/Solver.hpe" name="Solver" package="adi" version="1.0.0.0">
-        <visualDescription h="49" w="112" x="136" y="458">
+        <visualDescription h="49" w="112" x="173" y="504">
           <color b="255" g="255" r="255"/>
         </visualDescription>
+        <parameter formFieldId="axis" varName="DIR"/>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <parameter formFieldId="method" varName="MTH"/>
-        <parameter formFieldId="axis" varName="DIR"/>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
+          <visualDescription h="30" w="87" x="399" y="393">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cells">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
+          <visualDescription h="44" w="110" x="270" y="448">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="instance_type" varName="I"/>
+          <parameter formFieldId="class" varName="C"/>
+          <unitBounds uRef="problem">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="topology" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+          <visualDescription h="29" w="92" x="759" y="93">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds uRef="cell">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
         <unitBounds uRef="solve">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
@@ -66,13 +92,13 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="32" w="93" x="429" y="499">
+        <visualDescription h="44" w="110" x="270" y="448">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="34" y="45"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
@@ -80,7 +106,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
-          <visualDescription h="10" w="10" x="6" y="26"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <unitBounds uRef="back_substitute">
@@ -96,13 +122,13 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="32" w="93" x="429" y="499">
+        <visualDescription h="44" w="110" x="270" y="448">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="34" y="45"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
@@ -110,7 +136,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
-          <visualDescription h="10" w="10" x="6" y="26"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <unitBounds uRef="pack_back_sub_info">
@@ -126,13 +152,13 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="32" w="93" x="429" y="499">
+        <visualDescription h="44" w="110" x="270" y="448">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="34" y="45"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
@@ -140,7 +166,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
-          <visualDescription h="10" w="10" x="6" y="26"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <unitBounds uRef="pack_solve_info">
@@ -156,13 +182,13 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="32" w="93" x="429" y="499">
+        <visualDescription h="44" w="110" x="270" y="448">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="34" y="45"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
@@ -170,7 +196,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
-          <visualDescription h="10" w="10" x="6" y="26"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <unitBounds uRef="unpack_back_sub_info">
@@ -186,13 +212,13 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="32" w="93" x="429" y="499">
+        <visualDescription h="44" w="110" x="270" y="448">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="34" y="45"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
@@ -200,7 +226,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
-          <visualDescription h="10" w="10" x="6" y="26"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <unitBounds uRef="unpack_solve_info">
@@ -216,13 +242,13 @@
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
       <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
-        <visualDescription h="32" w="93" x="429" y="499">
+        <visualDescription h="44" w="110" x="270" y="448">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="34" y="45"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
@@ -230,7 +256,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cells">
-          <visualDescription h="10" w="10" x="6" y="26"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <unitBounds uRef="solve_cell">
@@ -263,7 +289,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="63" y="6"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" name="MPIDirect" package="environment" exposed="true">
@@ -312,7 +338,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="63" y="6"/>
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" name="MPIDirect" package="environment" exposed="true">
@@ -342,27 +368,14 @@
     <parameter componentRef="axis" formFieldId="axis" varName="DIR"/>
     <parameter componentRef="method" formFieldId="method" varName="MTH"/>
     <fusion>
-      <cRefs>shift_rl</cRefs>
-      <cRefs>shift_lr</cRefs>
-      <pRef>topology</pRef>
-    </fusion>
-    <fusion>
       <cRefs>solve_cell</cRefs>
       <cRefs>unpack_solve_info</cRefs>
       <cRefs>unpack_back_sub_info</cRefs>
       <cRefs>pack_solve_info</cRefs>
       <cRefs>pack_back_sub_info</cRefs>
       <cRefs>back_substitute</cRefs>
+      <cRefs>base</cRefs>
       <pRef>cells_info</pRef>
-    </fusion>
-    <fusion>
-      <cRefs>solve_cell</cRefs>
-      <cRefs>unpack_solve_info</cRefs>
-      <cRefs>unpack_back_sub_info</cRefs>
-      <cRefs>pack_solve_info</cRefs>
-      <cRefs>pack_back_sub_info</cRefs>
-      <cRefs>back_substitute</cRefs>
-      <pRef>problem_data</pRef>
     </fusion>
     <fusion>
       <cRefs>shift_rl</cRefs>
@@ -372,14 +385,42 @@
     <fusion>
       <cRefs>shift_rl</cRefs>
       <cRefs>shift_lr</cRefs>
-      <pRef>output_buffer</pRef>
+      <pRef>input_buffer</pRef>
     </fusion>
     <fusion>
       <cRefs>shift_rl</cRefs>
       <cRefs>shift_lr</cRefs>
-      <pRef>input_buffer</pRef>
+      <cRefs>base</cRefs>
+      <pRef>topology</pRef>
+    </fusion>
+    <fusion>
+      <cRefs>solve_cell</cRefs>
+      <cRefs>unpack_solve_info</cRefs>
+      <cRefs>unpack_back_sub_info</cRefs>
+      <cRefs>pack_solve_info</cRefs>
+      <cRefs>pack_back_sub_info</cRefs>
+      <cRefs>back_substitute</cRefs>
+      <cRefs>base</cRefs>
+      <pRef>problem_data</pRef>
+    </fusion>
+    <fusion>
+      <cRefs>shift_rl</cRefs>
+      <cRefs>shift_lr</cRefs>
+      <pRef>output_buffer</pRef>
     </fusion>
     <interface iRef="IBTSolver" nArgs="4">
+      <slice isRef="cells">
+        <originRef cRef="cells_info" iRef="ICells"/>
+        <visualDescription h="10" w="10" x="13" y="3"/>
+      </slice>
+      <slice isRef="problem">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="29" y="5"/>
+      </slice>
+      <slice isRef="cell">
+        <originRef cRef="topology" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="1" y="6"/>
+      </slice>
       <slice isRef="method">
         <originRef cRef="method" iRef="ISolvingMethod"/>
         <visualDescription h="10" w="10" x="51" y="11"/>
@@ -424,56 +465,56 @@
         <originRef cRef="unpack_solve_info" iRef="IUnpackSolveInfo"/>
         <visualDescription h="10" w="10" x="95" y="37"/>
       </slice>
-      <protocol xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@230f0031" repeat="0">
+      <protocol xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@49a29040" repeat="0">
         <visualDescription h="850" w="630" x="335" y="475"/>
-        <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@2dd5a2f2" repeat="0">
+        <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@4fac7f84" repeat="0">
           <visualDescription h="750" w="550" x="70" y="50"/>
-          <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@24bcd560" repeat="0">
+          <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@45e7dbf9" repeat="0">
             <visualDescription h="650" w="470" x="70" y="50"/>
-            <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@695ca477" repeat="0">
+            <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@791adc49" repeat="0">
               <visualDescription h="550" w="390" x="70" y="50"/>
-              <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@4131b6ab" repeat="0">
+              <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@52747abc" repeat="0">
                 <visualDescription h="450" w="310" x="70" y="50"/>
-                <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@26cfb5fd" repeat="0">
+                <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@5d25f6ee" repeat="0">
                   <visualDescription h="350" w="230" x="70" y="50"/>
-                  <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@eb508f3" repeat="0">
+                  <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@6776b308" repeat="0">
                     <visualDescription h="250" w="150" x="70" y="50"/>
-                    <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@f5e9110" repeat="0">
+                    <action xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@21e40749" repeat="0">
                       <visualDescription h="150" w="70" x="70" y="50"/>
-                      <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@985b952" repeat="0" sliceRef="back_substitute">
+                      <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@19a5b01" repeat="0" sliceRef="back_substitute">
                         <visualDescription h="50" w="50" x="10" y="50"/>
                       </action>
                     </action>
-                    <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@2a49bb60" repeat="0" sliceRef="solve_cell">
+                    <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@3ccc9f79" repeat="0" sliceRef="solve_cell">
                       <visualDescription h="50" w="50" x="10" y="50"/>
                     </action>
                   </action>
-                  <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@4eacb150" repeat="0" sliceRef="shift">
+                  <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@1df9e01e" repeat="0" sliceRef="shift">
                     <visualDescription h="50" w="50" x="10" y="50"/>
                   </action>
                 </action>
-                <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@2bad238a" repeat="0" sliceRef="pack_back_sub_info">
+                <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@7fe8e0f1" repeat="0" sliceRef="pack_back_sub_info">
                   <visualDescription h="50" w="50" x="10" y="50"/>
                 </action>
               </action>
-              <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@73f84f6c" repeat="0" sliceRef="pack_solve_info">
+              <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@12082fd2" repeat="0" sliceRef="pack_solve_info">
                 <visualDescription h="50" w="50" x="10" y="50"/>
               </action>
             </action>
-            <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@332676ef" repeat="0" sliceRef="unpack_back_sub_info">
+            <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@577b8d3d" repeat="0" sliceRef="unpack_back_sub_info">
               <visualDescription h="50" w="50" x="10" y="50"/>
             </action>
           </action>
-          <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@224a5f25" repeat="0" sliceRef="unpack_solve_info">
+          <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@7075cca9" repeat="0" sliceRef="unpack_solve_info">
             <visualDescription h="50" w="50" x="10" y="50"/>
           </action>
         </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@40ac87b9" repeat="0" sliceRef="shift">
+        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@45cfa4ed" repeat="0" sliceRef="shift">
           <visualDescription h="50" w="50" x="10" y="50"/>
         </action>
       </protocol>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.topology.Ring;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.Buffer;&#xA;using environment.MPIDirect;&#xA;using common.axis.Axis;&#xA;using common.solve.SolvingMethod;&#xA;using adi.Solver;&#xA;&#xA;namespace bt.solve.Solver { &#xA;&#xA;public interface BaseIBTSolver&lt;I, C, DIR, MTH> : BaseISolver&lt;I, C, DIR, MTH>,IComputationKind &#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;where DIR:IAxis&#xA;where MTH:ISolvingMethod&#xA;{&#xA;&#xA;&#x9;ICell Cell {get;}&#xA;&#x9;ICells Cells {get;}&#xA;&#x9;IProblemDefinition&lt;I, C> Problem {get;}&#xA;&#x9;IMPIDirect Mpi {get;}&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIBTSolver.cs" srcType="base" uri="bt.solve.Solver/bin/1.0.0.0/BaseIBTSolver.dll" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.topology.Ring;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.Buffer;&#xA;using environment.MPIDirect;&#xA;using common.axis.Axis;&#xA;using common.solve.SolvingMethod;&#xA;using adi.Solver;&#xA;&#xA;namespace bt.solve.Solver { &#xA;&#xA;public interface BaseIBTSolver&lt;I, C, MTH, DIR> : BaseISolver&lt;I, C, MTH, DIR>,IComputationKind &#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;where DIR:IAxis&#xA;where MTH:ISolvingMethod&#xA;{&#xA;&#xA;&#x9;ICell Cell {get;}&#xA;&#x9;ICells Cells {get;}&#xA;&#x9;IProblemDefinition&lt;I, C> Problem {get;}&#xA;&#x9;IMPIDirect Mpi {get;}&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIBTSolver.cs" srcType="base" uri="bt.solve.Solver/bin/1.0.0.0/BaseIBTSolver.dll" versionId="1.0.0.0">
           <dependency>common.topology.Ring/bin/1.0.0.0/ICell.dll</dependency>
           <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
@@ -501,6 +542,7 @@
       </visualDescription>
       <port name="cells">
         <visualDescription h="10" w="10" x="17" y="24"/>
+        <slice pRef="cells" sRef="cells"/>
         <slice pRef="cells" sRef="back_substitute"/>
         <slice pRef="cells" sRef="solve_cell"/>
         <slice pRef="cells" sRef="pack_back_sub_info"/>
@@ -510,6 +552,7 @@
       </port>
       <port name="problem">
         <visualDescription h="10" w="10" x="0" y="16"/>
+        <slice pRef="problem" sRef="problem"/>
         <slice pRef="problem" sRef="back_substitute"/>
         <slice pRef="problem" sRef="solve_cell"/>
         <slice pRef="problem" sRef="pack_back_sub_info"/>
@@ -517,22 +560,23 @@
         <slice pRef="problem" sRef="unpack_back_sub_info"/>
         <slice pRef="problem" sRef="unpack_solve_info"/>
       </port>
-      <port name="output_buffer">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer" sRef="shift"/>
-        <slice pRef="buffer" sRef="shift"/>
+      <port name="cell">
+        <visualDescription h="10" w="10" x="68" y="50"/>
+        <slice pRef="cell" sRef="cell"/>
+        <slice pRef="cell" sRef="shift"/>
+        <slice pRef="cell" sRef="shift"/>
       </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="32" y="27"/>
         <slice pRef="mpi" sRef="shift"/>
         <slice pRef="mpi" sRef="shift"/>
       </port>
-      <port name="cell">
-        <visualDescription h="10" w="10" x="68" y="50"/>
-        <slice pRef="cell" sRef="shift"/>
-        <slice pRef="cell" sRef="shift"/>
-      </port>
       <port name="input_buffer">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="buffer" sRef="shift"/>
+        <slice pRef="buffer" sRef="shift"/>
+      </port>
+      <port name="output_buffer">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="buffer" sRef="shift"/>
         <slice pRef="buffer" sRef="shift"/>
@@ -544,20 +588,20 @@
     </interface>
     <unit iRef="IBTSolver" private="false" uRef="solve" visibleInterface="true">
       <super cRef="base" uRef="solve"/>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="true">
-        <visualDescription h="10" w="10" x="87" y="7"/>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+        <visualDescription h="10" w="10" x="13" y="3"/>
       </slices>
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="true">
-        <visualDescription h="10" w="10" x="60" y="7"/>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+        <visualDescription h="10" w="10" x="29" y="5"/>
+      </slices>
+      <slices cRef="topology" replica="0" uRef="cell" sliceName="cell" transitive="false">
+        <visualDescription h="10" w="10" x="1" y="6"/>
       </slices>
       <slices cRef="input_buffer" replica="0" uRef="buffer" sliceName="input_buffer" transitive="true">
         <visualDescription h="10" w="10" x="64" y="10"/>
       </slices>
       <slices cRef="output_buffer" replica="0" uRef="buffer" sliceName="output_buffer" transitive="true">
         <visualDescription h="10" w="10" x="63" y="24"/>
-      </slices>
-      <slices cRef="topology" replica="0" uRef="cell" sliceName="cell" transitive="true">
-        <visualDescription h="10" w="10" x="35" y="27"/>
       </slices>
       <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
         <visualDescription h="10" w="10" x="11" y="22"/>
@@ -624,7 +668,7 @@
       <originRef>base</originRef>
       <originRef>axis</originRef>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
+      <visualDescription h="20" w="20" x="489" y="558"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>axis</originRef>
@@ -641,35 +685,35 @@
       <originRef>axis</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="back_substitute" uRef="back_substitute"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="52" w="51" x="88" y="487"/>
+      <visualDescription h="52" w="51" x="563" y="462"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>pack_back_sub_info</originRef>
       <originRef>axis</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="pack_back_sub_info" uRef="pack_back_sub_info"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="39" w="48" x="118" y="436"/>
+      <visualDescription h="39" w="48" x="485" y="527"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>pack_solve_info</originRef>
       <originRef>axis</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="pack_solve_info" uRef="pack_solve_info"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="20" w="20" x="114" y="450"/>
+      <visualDescription h="20" w="20" x="501" y="541"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>unpack_back_sub_info</originRef>
       <originRef>axis</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="unpack_back_sub_info" uRef="unpack_back_sub_info"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="20" w="20" x="71" y="480"/>
+      <visualDescription h="20" w="20" x="493" y="485"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>unpack_solve_info</originRef>
       <originRef>axis</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="unpack_solve_info" uRef="unpack_solve_info"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="20" w="20" x="72" y="446"/>
+      <visualDescription h="20" w="20" x="517" y="499"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
       <originRef>solve_cell</originRef>
@@ -677,14 +721,14 @@
       <originRef>method</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="solve_cell" uRef="solve_cell"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="38" w="63" x="102" y="469"/>
+      <visualDescription h="38" w="63" x="404" y="508"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>shift_lr</originRef>
       <originRef>direction</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="shift_lr" uRef="shift"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="20" w="20" x="60" y="511"/>
+      <visualDescription h="20" w="20" x="435" y="552"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>direction</originRef>
@@ -697,7 +741,7 @@
       <originRef>direction</originRef>
       <links xsi:type="component:EnumerableEntryType" cRef="shift_rl" uRef="shift"/>
       <links xsi:type="component:EnumerableUnitType" ref="solve"/>
-      <visualDescription h="20" w="20" x="169" y="506"/>
+      <visualDescription h="20" w="20" x="371" y="532"/>
     </enumerator>
     <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
       <originRef>direction3</originRef>
@@ -713,12 +757,32 @@
       </fusionOfReplicators>
       <fusionOfReplicators>
         <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>shift_rl</originRef>
+        <originRef>pack_solve_info</originRef>
+        <originRef>axis</originRef>
+      </fusionOfReplicators>
+      <fusionOfReplicators>
+        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
+        <originRef>shift_lr</originRef>
         <originRef>direction</originRef>
       </fusionOfReplicators>
       <fusionOfReplicators>
         <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
+        <originRef>base</originRef>
+        <originRef>axis</originRef>
+      </fusionOfReplicators>
+      <fusionOfReplicators>
+        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
+        <originRef>back_substitute</originRef>
+        <originRef>axis</originRef>
+      </fusionOfReplicators>
+      <fusionOfReplicators>
+        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
         <originRef>unpack_back_sub_info</originRef>
+        <originRef>axis</originRef>
+      </fusionOfReplicators>
+      <fusionOfReplicators>
+        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
+        <originRef>unpack_solve_info</originRef>
         <originRef>axis</originRef>
       </fusionOfReplicators>
       <fusionOfReplicators>
@@ -729,22 +793,7 @@
       </fusionOfReplicators>
       <fusionOfReplicators>
         <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>back_substitute</originRef>
-        <originRef>axis</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>pack_solve_info</originRef>
-        <originRef>axis</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>unpack_solve_info</originRef>
-        <originRef>axis</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>shift_lr</originRef>
+        <originRef>shift_rl</originRef>
         <originRef>direction</originRef>
       </fusionOfReplicators>
     </fusionsOfReplicators>

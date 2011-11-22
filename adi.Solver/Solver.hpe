@@ -106,7 +106,7 @@
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using common.problem_size.Class;&#xA;using common.problem_size.Instance;&#xA;&#xA;namespace adi.Solver { &#xA;&#xA;public interface ISolver&lt;I, C, MTH, DIR> : BaseISolver&lt;I, C, MTH, DIR>&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;where C:IClass&#xA;where I:IInstance&lt;C>&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ISolver.cs" srcType="user" uri="adi.Solver/bin/1.0.0.0/ISolver.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using common.problem_size.Class;&#xA;using common.problem_size.Instance;&#xA;&#xA;namespace adi.Solver { &#xA;&#xA;public interface ISolver&lt;I, C, MTH, DIR> : BaseISolver&lt;I, C, MTH, DIR>&#xA;&#x9;where MTH:ISolvingMethod&#xA;&#x9;where DIR:IAxis&#xA;&#x9;where C:IClass&#xA;&#x9;where I:IInstance&lt;C>&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ISolver.cs" srcType="user" uri="adi.Solver/bin/1.0.0.0/ISolver.dll" versionId="1.0.0.0">
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
@@ -186,6 +186,10 @@
     </enumerator>
     <fusionsOfReplicators>
       <fusionOfReplicators>
+        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
+        <originRef>axis</originRef>
+      </fusionOfReplicators>
+      <fusionOfReplicators>
         <eRef>hPE.frontend.base.model.HReplicator@129a52a1295029089610</eRef>
         <originRef>method</originRef>
       </fusionOfReplicators>
@@ -197,10 +201,6 @@
       <fusionOfReplicators>
         <eRef>hPE.frontend.base.model.HReplicator@b9c6cb1294972272571</eRef>
         <originRef>topology</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>axis</originRef>
       </fusionOfReplicators>
     </fusionsOfReplicators>
   </componentInfo>
