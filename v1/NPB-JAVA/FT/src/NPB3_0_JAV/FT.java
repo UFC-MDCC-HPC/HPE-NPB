@@ -74,9 +74,8 @@ public class FT extends FTBase{
     ft.runBenchMark();
   }  
   
-  public void run(){runBenchMark();}
-  
-  public void runBenchMark(){
+  public void runBenchMark()
+  {
     BMArgs.Banner(BMName,CLASS,true,num_threads);
     System.out.println( " Size = " + nx+" X " + ny+" X " + nz
                        +" niter = "+niter_default);
@@ -163,99 +162,7 @@ public class FT extends FTBase{
     } 
   }
   
-  public void appft(){
-
-    if(timeron) timer.start(2);	    
-    initial_conditions(xtr,ny,nx,nz); 
-    CompExp( nx, exp1 );
-    CompExp( ny, exp2 );
-    CompExp( nz, exp3 );
-    
-    setupThreads(this);   
-    for(int m=0;m<num_threads;m++)
-      synchronized(doFFT[m]){ 
-        doFFT[m].setVariables(1,false,xtr,exp2,exp1,exp3);
-    }
-    doFFT();
-    doFFT();	    
-    doFFT();
-    if(timeron) timer.stop(2);  
-    		 
-    timer.start(1);
-    if(timeron) timer.start(12);
-    initial_conditions(xtr,ny,nx,nz);
-    if(timeron) timer.stop(12);
-
-    if(timeron) timer.start(15);
-    for(int m=0;m<num_threads;m++)
-      synchronized(doFFT[m]){ 
-        doFFT[m].setVariables(1,false,xtr,exp2,exp1,exp3);
-    }
-    doFFT();
-    doFFT();
-    doFFT();
-    if(timeron) timer.stop(15);
-
-    for(int it=0;it<niter_default;it++){
-      if(timeron) timer.start(11);
-      doEvolve(it); 
-      if(timeron) timer.stop(11);	      
-
-      if(timeron) timer.start(15);      
-      for(int m=0;m<num_threads;m++)
-    	synchronized(doFFT[m]){ 
-          doFFT[m].setVariables(-1,true,xnt,exp2,exp3,exp1);
-      }
-
-      if(timeron) timer.start(3); 
-      if(timeron) timer.start(7); 
-      doFFT();
-      if(timeron) timer.stop(7);	    
-
-      if(timeron) timer.start(8); 
-      doFFT();
-      if(timeron) timer.stop(8);	    
-
-      if(timeron) timer.start(9);
-      doFFT();
-      if(timeron) timer.stop(9);
-      if(timeron) timer.stop(3);		      
-      if(timeron) timer.stop(15);
-      
-      if(timeron) timer.start(10);      
-      CalculateChecksum(checksum, REAL+it*isize2, it, xnt, ny, nz, nx);
-      if(timeron) timer.stop(10);	   
-    }
-  }
-  
-  public synchronized void doFFT(){
-    int m;  
-    for(m=0;m<num_threads;m++)
-      synchronized(doFFT[m]){
-        doFFT[m].done=false;
-        doFFT[m].notify();
-      }
-      for(m=0;m<num_threads;m++)
-	while(!doFFT[m].done){
-	  try{wait();}catch(InterruptedException e){}
-	  notifyAll();
-	}
-  }
-  
-  public synchronized void doEvolve(int it){ 
-    int m;  
-    for(m=0;m<num_threads;m++)
-      synchronized(doEvolve[m]){
-        doEvolve[m].done=false;
-	doEvolve[m].kt=it;
-        doEvolve[m].notify();
-      }
-    for(m=0;m<num_threads;m++)
-      while(!doEvolve[m].done){
-        try{wait();}catch(InterruptedException e){}
-	notifyAll();
-      }
-  }
+ 
   public void setTimers(){
     File f1 = new File("timer.flag");
     timeron = false;
