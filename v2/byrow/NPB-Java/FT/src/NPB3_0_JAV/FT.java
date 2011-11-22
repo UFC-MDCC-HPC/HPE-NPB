@@ -3,7 +3,7 @@
 !									  !
 !	 N  A  S     P A R A L L E L	 B E N C H M A R K S  3.0	  !
 !									  !
-!			C# 	V E R S I O N			  !
+!			JAVA 	V E R S I O N			  !
 !									  !
 !                                  F T                                    !
 !                                                                         !
