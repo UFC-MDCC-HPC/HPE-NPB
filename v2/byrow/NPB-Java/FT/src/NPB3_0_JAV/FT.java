@@ -65,7 +65,8 @@ public class FT extends FTBase{
             super(clss, np, ser);
             serial = ser;
         }
-        static void Main(String[] argv)
+        
+        public static void main(String[] argv)
         {
             FT ft = null;
 
