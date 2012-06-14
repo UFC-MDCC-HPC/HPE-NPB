@@ -186,6 +186,26 @@ public class SPBase extends Thread
 		q = new double[problem_size];
 	}
 
+    protected int index1(int k, int j, int i, int m)
+    {
+        return m + i * isize1 + j * jsize1 + k * ksize1;
+    }
+
+    protected int index2(int k, int j, int i)
+    {
+        return i + j * jsize2 + k * ksize2;
+    }
+
+    protected int index3(int j, int i)
+    {
+        return j + i * jsize3;
+    }
+
+    protected int index4(int ijk, int m)
+    {
+        return m + ijk * jsize4;
+    }
+	
 	protected Thread master = null;
 	protected int num_threads;
 
