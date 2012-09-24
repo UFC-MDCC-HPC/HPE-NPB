@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
-  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ad5b5406433e1136d6257f7a94ec912947e8054f47d9feb326127d5cd4ad0302676ddb90068786128bf20e92671a1e77c88155d513116eef1675dbbaa145876cc626135211ec3e708f984dad645a0205e8c2a75dc51c667d11b1c13b5440ec9f13e57b6f7288107eddf1be427261d931d6b5b6e0c7d6c054ad53b2b7e9de3581" isAbstract="true" kind="Computation" name="Solver" packagePath="connector.sp.solve">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ad5b5406433e1136d6257f7a94ec912947e8054f47d9feb326127d5cd4ad0302676ddb90068786128bf20e92671a1e77c88155d513116eef1675dbbaa145876cc626135211ec3e708f984dad645a0205e8c2a75dc51c667d11b1c13b5440ec9f13e57b6f7288107eddf1be427261d931d6b5b6e0c7d6c054ad53b2b7e9de3581" isAbstract="true" kind="Computation" name="Solver" packagePath="sp.solve">
     <baseType>
       <extensionType>
         <extends>true</extends>
@@ -364,7 +364,7 @@
         <visualDescription h="10" w="10" x="61" y="25"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using common.topology.Ring;&#xA;using adi.data.ProblemDefinition;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.Buffer;&#xA;using environment.MPIDirect;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using adi.Solver;&#xA;&#xA;namespace connector.sp.solve.Solver { &#xA;&#xA;public interface BaseISPSolver&lt;I, C, MTH, DIR> : BaseISolver&lt;I, C, MTH, DIR>, IComputationKind &#xA;where I:IInstance_SP&lt;C>&#xA;where C:IClass&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;{&#xA;&#xA;&#x9;ICells Cells {get;}&#xA;&#x9;ICell Cell {get;}&#xA;&#x9;IProblemDefinition&lt;I, C> Problem {get;}&#xA;&#x9;IMPIDirect Mpi {get;}&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseISPSolver.cs" srcType="base" uri="connector.sp.solve.Solver/bin/1.0.0.0/BaseISPSolver.dll" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using common.topology.Ring;&#xA;using adi.data.ProblemDefinition;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.Buffer;&#xA;using environment.MPIDirect;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using adi.Solver;&#xA;&#xA;namespace sp.solve.Solver { &#xA;&#xA;public interface BaseISPSolver&lt;I, C, MTH, DIR> : BaseISolver&lt;I, C, MTH, DIR>, IComputationKind &#xA;where I:IInstance_SP&lt;C>&#xA;where C:IClass&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;{&#xA;&#xA;&#x9;ICells Cells {get;}&#xA;&#x9;ICell Cell {get;}&#xA;&#x9;IProblemDefinition&lt;I, C> Problem {get;}&#xA;&#x9;IMPIDirect Mpi {get;}&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseISPSolver.cs" srcType="base" uri="sp.solve.Solver/bin/1.0.0.0/BaseISPSolver.dll" versionId="1.0.0.0">
           <dependency>common.topology.Ring/bin/1.0.0.0/ICell.dll</dependency>
           <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
@@ -378,12 +378,12 @@
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
           <dependency>adi.Solver/bin/1.0.0.0/BaseISolver.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using adi.Solver;&#xA;&#xA;namespace connector.sp.solve.Solver { &#xA;&#xA;public interface ISPSolver&lt;I, C, MTH, DIR> : BaseISPSolver&lt;I, C, MTH, DIR>, ISolver&lt;I, C, MTH, DIR>&#xA;where I:IInstance_SP&lt;C>&#xA;where C:IClass&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ISPSolver.cs" srcType="user" uri="connector.sp.solve.Solver/bin/1.0.0.0/ISPSolver.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;using adi.Solver;&#xA;&#xA;namespace sp.solve.Solver { &#xA;&#xA;public interface ISPSolver&lt;I, C, MTH, DIR> : BaseISPSolver&lt;I, C, MTH, DIR>, ISolver&lt;I, C, MTH, DIR>&#xA;where I:IInstance_SP&lt;C>&#xA;where C:IClass&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ISPSolver.cs" srcType="user" uri="sp.solve.Solver/bin/1.0.0.0/ISPSolver.dll" versionId="1.0.0.0">
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
-          <dependency>%WORKSPACE/connector.sp.solve.Solver/bin/1.0.0.0/BaseISPSolver.dll</dependency>
+          <dependency>%WORKSPACE/sp.solve.Solver/bin/1.0.0.0/BaseISPSolver.dll</dependency>
           <dependency>adi.Solver/bin/1.0.0.0/ISolver.dll</dependency>
         </file>
       </sources>
