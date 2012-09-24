@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000025529ab026e77dd546c5f94e76127e76d2c281e7bdedc252d61f6953b04f54d154593621b2aef59dcd634eb5fd324c6e2ad6536ac74f2cdeb85f88c97805cf25c77d65ca931e199c09fa9424a481585529fd2e43b58709ac4c948c2b5b81be648a3f130bd9795324dc2c04a3d5143030b3afa496239772cd9f2e7d3d9a599082" isAbstract="true" kind="Qualifier" name="BTMethod" packagePath="bt.solve">
     <baseType>
       <extensionType>
@@ -34,14 +34,9 @@
         <color b="128" g="0" r="255"/>
       </visualDescription>
     </interface>
-    <unit iRef="IBTMethod" private="false" uRef="method" visibleInterface="true">
+    <unit iRef="IBTMethod" multiple="true" private="false" replica="0" uRef="method" visibleInterface="true">
       <super cRef="base" uRef="method"/>
-      <visualDescription h="40" w="80" x="138" y="239"/>
+      <visualDescription h="40" w="80" x="115" y="241"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="method"/>
-      <visualDescription h="20" w="20" x="327" y="263"/>
-    </enumerator>
   </componentInfo>
 </component:component>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ff1d775d58f7b22af28c6adf54578cd1a6a0403b1a23861cdff8b64e5b860dec4652293d627632518eb00233e345156f478752e32ee99d26e865c8165ceec9687ec85a55acf6070650452cead92fd16d7669a1844de3df9a73c3d6e95ec9321cbbac895ecc47362e0ea40776c88b07bd6fed537d5650f493bd31a370a18375db" isAbstract="true" kind="Computation" name="BinvcRhs" packagePath="bt.solve">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -7,7 +7,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
       <visualDescription h="30" w="50" x="434" y="366">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -15,7 +15,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000071d38687e0d5d2c316c5b3d07d8aa67134a4623aa2696b4c1af143b9dfb26a795943f7fad788e11c36c09b5001b5422f85c04f6580101d9e27cbf7d06c6cec1d87e42c3a8940336c5c2d63abadb4ac8c1519030710b5b087e1d7e415c91fe07522356c2184e3ea18bf6684dd71bda7b7e5e4411c6b9941ea98fa97bde5ccceb1" localRef="instance_type" location="common.problem_size.Instance/Instance.hpe" name="Instance" package="common.problem_size" parameter_id="instance_type" exposed="false">
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000071d38687e0d5d2c316c5b3d07d8aa67134a4623aa2696b4c1af143b9dfb26a795943f7fad788e11c36c09b5001b5422f85c04f6580101d9e27cbf7d06c6cec1d87e42c3a8940336c5c2d63abadb4ac8c1519030710b5b087e1d7e415c91fe07522356c2184e3ea18bf6684dd71bda7b7e5e4411c6b9941ea98fa97bde5ccceb1" localRef="instance_type" location="common.problem_size.Instance/Instance.hpe" multiple="false" name="Instance" package="common.problem_size" parameter_id="instance_type" exposed="false">
       <visualDescription h="64" w="119" x="399" y="192">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -24,7 +24,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000065a583953c3587c1209979536e5ff1a80890361170dab29c31967996924e908f4dfcd7fd7c85921b08aa2193be1674aa220dbaafda9c081270f8248e0ef486f725d00c99c141ffefbc663fb868426326f477127eca49696e967b6c8203ada10b80b06758073be286f99f981981d314cf3ba20addb76983db1e155576d5e86c83" localRef="method" location="common.solve.SolvingMethod/SolvingMethod.hpe" name="SolvingMethod" package="common.solve" parameter_id="method" exposed="false">
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000065a583953c3587c1209979536e5ff1a80890361170dab29c31967996924e908f4dfcd7fd7c85921b08aa2193be1674aa220dbaafda9c081270f8248e0ef486f725d00c99c141ffefbc663fb868426326f477127eca49696e967b6c8203ada10b80b06758073be286f99f981981d314cf3ba20addb76983db1e155576d5e86c83" localRef="method" location="common.solve.SolvingMethod/SolvingMethod.hpe" multiple="false" name="SolvingMethod" package="common.solve" parameter_id="method" exposed="false">
       <visualDescription h="34" w="64" x="203" y="361">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -62,17 +62,11 @@
       </visualDescription>
       <parameter iname="ISolvingMethod" order="0" parid="method" uname="method" varid="MTH"/>
     </interface>
-    <unit iRef="IBinvcRhs" private="false" uRef="binvcrhs" visibleInterface="true">
+    <unit iRef="IBinvcRhs" multiple="true" private="false" replica="0" uRef="binvcrhs" visibleInterface="true">
       <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">
         <visualDescription h="10" w="10" x="23" y="26"/>
       </slices>
-      <visualDescription h="40" w="80" x="217" y="228"/>
+      <visualDescription h="40" w="80" x="242" y="223"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
-      <originRef>method</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="method" uRef="method"/>
-      <links xsi:type="component:EnumerableUnitType" ref="binvcrhs"/>
-      <visualDescription h="20" w="20" x="384" y="377"/>
-    </enumerator>
   </componentInfo>
 </component:component>
