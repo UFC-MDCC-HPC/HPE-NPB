@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008b005b9d5b95286bb64e7067e3017d820fa2f550fa6bd280f67c6cb25643ae5ea56b3b1b1f86118fae013d4a5e9ec4f019d9c2cf06c33d7f9c5a202c86923e09ee46bd614f5f5dee8a6e7bcd755d4f58e197cf5e0bdae6a40ea29a48e7e7c700f186539e85ea074f809fb52327944ea529811009e12cf6c4e06a06773e6acfa7" isAbstract="true" kind="Computation" name="Exchange3_WriteBuffer" packagePath="lu.exchange">
     <baseType>
       <extensionType>
         <extends>true</extends>
       </extensionType>
       <component hash_component_UID="002400000480000094000000060200000024000052534131000400001100000013b510f78a15b963f5a233a48e8dca81439a16ff4b79a19da05b26912ff9635c4da6fe5f19411a49973708c197e84b43b91563658afd16e6e104d7214806d70e234440e52c121dc6122462a9652aee61535e3d5c7033a91cd205b59e7799a63725bd3e7e3edd839316cd53d532cda13e0191bed6546dcb17d817578f9558e48f" localRef="base" location="common.interactionpattern.shift1D.BufferWriter/BufferWriter.hpe" name="BufferWriter" package="common.interactionpattern.shift1D" version="1.0.0.0">
-        <visualDescription h="30" w="50" x="89" y="328">
+        <visualDescription h="30" w="50" x="80" y="336">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="direction" varName="DIR"/>
-        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
           <visualDescription h="30" w="50" x="208" y="355">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -29,7 +29,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="direction" location="common.direction.Direction/Direction.hpe" name="Direction" package="common.direction" parameter_id="direction" exposed="false">
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="direction" location="common.direction.Direction/Direction.hpe" multiple="false" name="Direction" package="common.direction" parameter_id="direction" exposed="false">
       <visualDescription h="30" w="50" x="81" y="312">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -37,7 +37,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000454b3cd77d4e1bd37b45801a6d225edceaa85080940d8ff93d8308c4a585601d0e0b00c70d55eb34cfa4de904d0234a5454ee4f10a3d46be2ec77520da0d55fa8d959e0f2ecbf8fd25f8d4e676e2b92a40e6ce7e492f5feb6c31345f8c7c887f7e2ecb139b95c71dcf3ca9aa44f0bdd07cf60319eb2676344bda9667fca51abe" localRef="axis" location="common.axis.Axis/Axis.hpe" name="Axis" package="common.axis" parameter_id="axis" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000454b3cd77d4e1bd37b45801a6d225edceaa85080940d8ff93d8308c4a585601d0e0b00c70d55eb34cfa4de904d0234a5454ee4f10a3d46be2ec77520da0d55fa8d959e0f2ecbf8fd25f8d4e676e2b92a40e6ce7e492f5feb6c31345f8c7c887f7e2ecb139b95c71dcf3ca9aa44f0bdd07cf60319eb2676344bda9667fca51abe" localRef="axis" location="common.axis.Axis/Axis.hpe" multiple="false" name="Axis" package="common.axis" parameter_id="axis" exposed="false">
       <visualDescription h="30" w="50" x="112" y="447">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -48,14 +48,6 @@
     <parameter componentRef="direction" formFieldId="direction" varName="DIR"/>
     <parameter componentRef="axis" formFieldId="axis" varName="O"/>
     <interface iRef="IExchange3_WriteBuffer" nArgs="2">
-      <slice isRef="buffer">
-        <originRef cRef="buffer" iRef="IBuffer"/>
-        <visualDescription h="10" w="10" x="152" y="23"/>
-      </slice>
-      <slice isRef="direction">
-        <originRef cRef="direction" iRef="IDirection"/>
-        <visualDescription h="10" w="10" x="26" y="16"/>
-      </slice>
       <slice isRef="axis">
         <originRef cRef="axis" iRef="IAxis"/>
         <visualDescription h="10" w="10" x="19" y="26"/>
@@ -76,53 +68,15 @@
       <visualDescription h="40" w="196" x="152" y="114">
         <color b="70" g="70" r="189"/>
       </visualDescription>
-      <port name="buffer">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer" sRef="buffer"/>
-      </port>
       <parameter iname="IDirection" order="0" parid="direction" uname="direction" varid="DIR"/>
       <parameter iname="IAxis" order="1" parid="axis" uname="axis" varid="O"/>
     </interface>
-    <unit iRef="IExchange3_WriteBuffer" private="false" uRef="buffer_writer" visibleInterface="true">
+    <unit iRef="IExchange3_WriteBuffer" multiple="true" private="false" replica="0" uRef="buffer_writer" visibleInterface="true">
       <super cRef="base" uRef="buffer_writer"/>
-      <slices cRef="buffer" replica="0" uRef="buffer" sliceName="buffer" transitive="false">
-        <visualDescription h="10" w="10" x="152" y="23"/>
-      </slices>
-      <slices cRef="direction" replica="0" uRef="direction" sliceName="direction" transitive="false">
-        <visualDescription h="10" w="10" x="26" y="16"/>
-      </slices>
       <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
         <visualDescription h="10" w="10" x="19" y="26"/>
       </slices>
-      <visualDescription h="40" w="196" x="120" y="207"/>
+      <visualDescription h="40" w="196" x="159" y="208"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <originRef>direction</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="buffer_writer"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>direction</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="direction" uRef="direction"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>axis</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="axis" uRef="axis"/>
-      <links xsi:type="component:EnumerableUnitType" ref="buffer_writer"/>
-      <visualDescription h="20" w="20" x="374" y="216"/>
-    </enumerator>
-    <fusionsOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>axis</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>base</originRef>
-        <originRef>direction</originRef>
-      </fusionOfReplicators>
-    </fusionsOfReplicators>
   </componentInfo>
 </component:component>

@@ -1,7 +1,41 @@
-<?xml version='1.0'?>
-<project basedir='.' default='all' name='lu.ssor.SSOR'>
-  <property name='src' value='src'/>
-  <property name='build' value='bin'/>
-  <property name='nant.settings.currentframework' value='mono-2.0'/>
-  <target depends='' name='all'/>
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="SSOR">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="SSOR-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/lu.ssor.SSOR/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/lu.ssor.SSOR/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/lu.ssor.SSOR/SSOR.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/lu.ssor.SSOR/bin/1.0.0.0/BaseISSOR.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/lu.ssor.SSOR/src/1.0.0.0/BaseISSOR.cs"/>
+      </sources>
+      <references>
+        <include name="common.topology.Ring/bin/1.0.0.0/ICell.dll"/>
+        <include name="lu.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll"/>
+        <include name="lu.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="lu.datapartition.BlocksInfo/bin/1.0.0.0/IBlocksInfo.dll"/>
+        <include name="lu.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll"/>
+        <include name="lu.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/lu.ssor.SSOR/SSOR.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/lu.ssor.SSOR/bin/1.0.0.0/ISSOR.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/lu.ssor.SSOR/src/1.0.0.0/ISSOR.cs"/>
+      </sources>
+      <references>
+        <include name="lu.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="/lu.ssor.SSOR/bin/1.0.0.0/BaseISSOR.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="SSOR-1.0.0.0" name="all"/>
 </project>

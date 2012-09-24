@@ -7,7 +7,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
       <visualDescription h="30" w="50" x="299" y="455">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -35,7 +35,7 @@
       </visualDescription>
       <parameter iname="IClass" order="0" parid="class" uname="class" varid="C"/>
     </interface>
-    <unit iRef="IInstance" private="false" uRef="instance" visibleInterface="true">
+    <unit iRef="IInstance" multiple="false" private="false" replica="0" uRef="instance" visibleInterface="true">
       <slices cRef="class" replica="0" uRef="class" sliceName="class" transitive="false">
         <visualDescription h="10" w="10" x="32" y="19"/>
       </slices>

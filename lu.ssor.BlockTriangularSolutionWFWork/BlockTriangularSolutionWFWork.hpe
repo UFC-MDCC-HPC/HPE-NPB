@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ef0820961ec17ffd4f7395e6a34af283ca465a51477ff0ee3d153b346694b5136240392b729a7be108fd9b1e655b1bffac846bcb8efbdc3cbfbee5ef02b222971168b8181df690372896178d14488f627b134052e3007213099b83aeea577677a78218d926206181c5cd8aa09822fa8ef9395b38e8837c236f870aa1b7ca5d9b" isAbstract="true" kind="Computation" name="BlockTriangularSolutionWFWork" packagePath="lu.ssor">
     <baseType>
       <extensionType>
@@ -10,7 +10,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="direction" varName="DIR"/>
-        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="y_buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="y_buffer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
           <visualDescription h="30" w="102" x="297" y="413">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -18,7 +18,7 @@
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="x_buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="x_buffer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
           <visualDescription h="30" w="115" x="351" y="130">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -26,7 +26,7 @@
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="true">
           <visualDescription h="30" w="50" x="56" y="444">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -34,7 +34,7 @@
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="y" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="y" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="true">
           <visualDescription h="30" w="50" x="174" y="490">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -53,7 +53,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" name="BlocksInfo" package="lu.datapartition" exposed="true">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="true">
       <visualDescription h="42" w="122" x="46" y="317">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -63,7 +63,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009f8aadd94be2122c6dbf97a8db4c368df4aa14e5eef40999c777e681c973106bec55b80c133f1e7301d0ff36e2ee37a1d7d095ffff4581f295b2e8fc055fc07304178d993e14731e9c3d1e72370eee41c30ae18e6d096d5d70ac13a2833e8945cd641f4a3cab17bc2397b395bc234fdfa244afa599eb514a94d884e663b3a3a5" localRef="problem_data" location="lu.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="lu.data" exposed="true">
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009f8aadd94be2122c6dbf97a8db4c368df4aa14e5eef40999c777e681c973106bec55b80c133f1e7301d0ff36e2ee37a1d7d095ffff4581f295b2e8fc055fc07304178d993e14731e9c3d1e72370eee41c30ae18e6d096d5d70ac13a2833e8945cd641f4a3cab17bc2397b395bc234fdfa244afa599eb514a94d884e663b3a3a5" localRef="problem_data" location="lu.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="lu.data" exposed="true">
       <visualDescription h="70" w="137" x="105" y="427">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -73,7 +73,7 @@
         <visualDescription h="10" w="10" x="65" y="16"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
       <visualDescription h="30" w="50" x="44" y="241">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -81,7 +81,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000077a299c99b97aaa77aa6e94dc72ce7dd6776e75fef652354d4003676b20ec539b228d1d8aea09626b843cc3ab1c0d84ad167051ddc0b314c7649bd14f16c7858a0eb57d78a2e8a79c7f56f9664fadc7648612fdedc8d36bd105d479fd63b19c286b302d6e4c45aed4573ca06780a204a2d59aeff7863e4b8241ce93db192f0ae" localRef="instance" location="lu.problem_size.Instance/Instance.hpe" name="Instance" package="lu.problem_size" parameter_id="instance_type" exposed="false">
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000077a299c99b97aaa77aa6e94dc72ce7dd6776e75fef652354d4003676b20ec539b228d1d8aea09626b843cc3ab1c0d84ad167051ddc0b314c7649bd14f16c7858a0eb57d78a2e8a79c7f56f9664fadc7648612fdedc8d36bd105d479fd63b19c286b302d6e4c45aed4573ca06780a204a2d59aeff7863e4b8241ce93db192f0ae" localRef="instance" location="lu.problem_size.Instance/Instance.hpe" multiple="false" name="Instance" package="lu.problem_size" parameter_id="instance_type" exposed="false">
       <visualDescription h="47" w="100" x="54" y="89">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -90,7 +90,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="direction" location="common.direction.Direction/Direction.hpe" name="Direction" package="common.direction" parameter_id="direction" exposed="false">
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="direction" location="common.direction.Direction/Direction.hpe" multiple="false" name="Direction" package="common.direction" parameter_id="direction" exposed="false">
       <visualDescription h="30" w="50" x="65" y="290">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -102,26 +102,6 @@
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="direction" formFieldId="direction" varName="DIR"/>
     <interface iRef="IBTSWork" nArgs="3">
-      <slice isRef="buffer">
-        <originRef cRef="x_buffer" iRef="IBuffer"/>
-        <visualDescription h="10" w="10" x="113" y="3"/>
-      </slice>
-      <slice isRef="y_buffer">
-        <originRef cRef="y_buffer" iRef="IBuffer"/>
-        <visualDescription h="10" w="10" x="111" y="29"/>
-      </slice>
-      <slice isRef="x">
-        <originRef cRef="x" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="44" y="21"/>
-      </slice>
-      <slice isRef="y">
-        <originRef cRef="y" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="63" y="23"/>
-      </slice>
-      <slice isRef="direction">
-        <originRef cRef="directinon" iRef="IDirection"/>
-        <visualDescription h="10" w="10" x="18" y="26"/>
-      </slice>
       <slice isRef="blocks">
         <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
         <visualDescription h="10" w="10" x="16" y="18"/>
@@ -149,93 +129,30 @@
           <dependency>common.interactionpattern.wavefront.WavefrontWork/bin/1.0.0.0/IWavefrontWork.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="40" w="89" x="150" y="77">
+      <visualDescription h="60" w="107" x="141" y="43">
         <color b="144" g="238" r="144"/>
       </visualDescription>
-      <port name="buffer">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer" sRef="buffer"/>
-      </port>
-      <port name="y_buffer">
-        <visualDescription h="10" w="10" x="7" y="22"/>
-        <slice pRef="buffer" sRef="y_buffer"/>
-      </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="13" y="6"/>
-        <slice pRef="cell" sRef="x"/>
-      </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="92" y="15"/>
-        <slice pRef="cell" sRef="y"/>
-      </port>
       <port name="blocks">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="blocks" sRef="blocks"/>
       </port>
       <port name="problem">
-        <visualDescription h="10" w="10" x="0" y="0"/>
+        <visualDescription h="10" w="10" x="0" y="36"/>
         <slice pRef="problem" sRef="problem"/>
       </port>
       <parameter iname="IDirection" order="0" parid="direction" uname="direction" varid="DIR"/>
       <parameter iname="IInstance" order="1" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="2" parid="class" uname="class" varid="C"/>
     </interface>
-    <unit iRef="IBTSWork" private="false" uRef="bts_work" visibleInterface="true">
+    <unit iRef="IBTSWork" multiple="true" private="false" replica="0" uRef="bts_work" visibleInterface="true">
       <super cRef="base" uRef="wavefront_work"/>
-      <slices cRef="x_buffer" replica="0" uRef="buffer" sliceName="buffer" transitive="false">
-        <visualDescription h="10" w="10" x="113" y="3"/>
-      </slices>
-      <slices cRef="y_buffer" replica="0" uRef="buffer" sliceName="y_buffer" transitive="false">
-        <visualDescription h="10" w="10" x="111" y="29"/>
-      </slices>
-      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="false">
-        <visualDescription h="10" w="10" x="44" y="21"/>
-      </slices>
-      <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="false">
-        <visualDescription h="10" w="10" x="63" y="23"/>
-      </slices>
       <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="false">
         <visualDescription h="10" w="10" x="16" y="18"/>
       </slices>
       <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
         <visualDescription h="10" w="10" x="53" y="28"/>
       </slices>
-      <slices cRef="directinon" replica="0" uRef="direction" sliceName="direction" transitive="false">
-        <visualDescription h="10" w="10" x="18" y="26"/>
-      </slices>
       <visualDescription h="40" w="89" x="137" y="166"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@b9c6cb1294972272571" varId="n">
-      <originRef>base</originRef>
-      <originRef>y</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="bts_work"/>
-      <links xsi:type="component:EnumerableComponentType" ref="blocks_info"/>
-      <visualDescription h="20" w="20" x="305" y="335"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@196ae3e1301427817312" varId="n">
-      <originRef>problem_data</originRef>
-      <originRef>rsd</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="problem_data" uRef="problem"/>
-      <links xsi:type="component:EnumerableUnitType" ref="bts_work"/>
-      <links xsi:type="component:EnumerableComponentType" ref="blocks_info"/>
-      <visualDescription h="20" w="20" x="241" y="389"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>direction</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="direction" uRef="direction"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
-    <fusionsOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@b9c6cb1294972272571</eRef>
-        <originRef>base</originRef>
-        <originRef>y</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@196ae3e1301427817312</eRef>
-        <originRef>problem_data</originRef>
-        <originRef>rsd</originRef>
-      </fusionOfReplicators>
-    </fusionsOfReplicators>
   </componentInfo>
 </component:component>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000085e04d85c3943118e20cd068c4a1ec4576e03d3bf5eb1bba85e4fadcdf54d0df68bff62d84faa12b2b2e369aea9e87d240808daac68d9bb35201c01c093c11df652595e3f02510e1adb438dc4bda4c876af017a5784f8e52fefb9d60ef2c5a2760d5a133c9da3add6dfc110018abd9f1d35a346a4a640abfb0504631ffda5eaa" isAbstract="true" kind="Qualifier" name="ExchangePattern" packagePath="lu.exchange">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -18,12 +18,8 @@
         <color b="128" g="128" r="64"/>
       </visualDescription>
     </interface>
-    <unit iRef="IExchangePattern" private="false" uRef="exchange_pattern" visibleInterface="true">
-      <visualDescription h="40" w="80" x="121" y="283"/>
+    <unit iRef="IExchangePattern" multiple="true" private="false" replica="0" uRef="exchange_pattern" visibleInterface="true">
+      <visualDescription h="40" w="80" x="91" y="256"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <links xsi:type="component:EnumerableUnitType" ref="exchange_pattern"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

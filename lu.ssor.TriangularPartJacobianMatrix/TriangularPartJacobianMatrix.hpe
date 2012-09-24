@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000000f710402aac3521c5f5726b4c7213e137686fbbb12fa3a1c7c76407da707964e3ffb6bdef53bd776f9b06f5baeaa6ef5ff5ae2c301c2a7b8800ef81f6280da184656f68269c806398c81469f201c02e9461e5f4c389cb3a26759302bae600182fca6830a29f50376cb17b64f0a01601188190179b1df4f0856ea31f5ab9d54a9" isAbstract="true" kind="Computation" name="TriangularPartJacobianMatrix" packagePath="lu.ssor">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -7,7 +7,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009f8aadd94be2122c6dbf97a8db4c368df4aa14e5eef40999c777e681c973106bec55b80c133f1e7301d0ff36e2ee37a1d7d095ffff4581f295b2e8fc055fc07304178d993e14731e9c3d1e72370eee41c30ae18e6d096d5d70ac13a2833e8945cd641f4a3cab17bc2397b395bc234fdfa244afa599eb514a94d884e663b3a3a5" localRef="problem_data" location="lu.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="lu.data" exposed="true">
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009f8aadd94be2122c6dbf97a8db4c368df4aa14e5eef40999c777e681c973106bec55b80c133f1e7301d0ff36e2ee37a1d7d095ffff4581f295b2e8fc055fc07304178d993e14731e9c3d1e72370eee41c30ae18e6d096d5d70ac13a2833e8945cd641f4a3cab17bc2397b395bc234fdfa244afa599eb514a94d884e663b3a3a5" localRef="problem_data" location="lu.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="lu.data" exposed="true">
       <visualDescription h="55" w="138" x="33" y="435">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -17,7 +17,7 @@
         <visualDescription h="10" w="10" x="115" y="23"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" name="BlocksInfo" package="lu.datapartition" exposed="true">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="true">
       <visualDescription h="42" w="89" x="227" y="396">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -27,7 +27,7 @@
         <visualDescription h="10" w="10" x="42" y="5"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000077a299c99b97aaa77aa6e94dc72ce7dd6776e75fef652354d4003676b20ec539b228d1d8aea09626b843cc3ab1c0d84ad167051ddc0b314c7649bd14f16c7858a0eb57d78a2e8a79c7f56f9664fadc7648612fdedc8d36bd105d479fd63b19c286b302d6e4c45aed4573ca06780a204a2d59aeff7863e4b8241ce93db192f0ae" localRef="instance_type" location="lu.problem_size.Instance/Instance.hpe" name="Instance" package="lu.problem_size" parameter_id="instance_type" exposed="false">
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000077a299c99b97aaa77aa6e94dc72ce7dd6776e75fef652354d4003676b20ec539b228d1d8aea09626b843cc3ab1c0d84ad167051ddc0b314c7649bd14f16c7858a0eb57d78a2e8a79c7f56f9664fadc7648612fdedc8d36bd105d479fd63b19c286b302d6e4c45aed4573ca06780a204a2d59aeff7863e4b8241ce93db192f0ae" localRef="instance_type" location="lu.problem_size.Instance/Instance.hpe" multiple="true" name="Instance" package="lu.problem_size" parameter_id="instance_type" exposed="false">
       <visualDescription h="69" w="141" x="541" y="324">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -36,7 +36,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
       <visualDescription h="30" w="50" x="528" y="381">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -44,7 +44,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="direction" location="common.direction.Direction/Direction.hpe" name="Direction" package="common.direction" parameter_id="direction" exposed="false">
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="direction" location="common.direction.Direction/Direction.hpe" multiple="false" name="Direction" package="common.direction" parameter_id="direction" exposed="false">
       <visualDescription h="48" w="101" x="527" y="465">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -104,7 +104,7 @@
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IDirection" order="2" parid="direction" uname="direction" varid="DIS"/>
     </interface>
-    <unit iRef="ITriangularPartJacobianMatrix" private="false" uRef="triangular_part_jacobian_matrix" visibleInterface="true">
+    <unit iRef="ITriangularPartJacobianMatrix" multiple="true" private="false" replica="0" uRef="triangular_part_jacobian_matrix" visibleInterface="true">
       <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
         <visualDescription h="10" w="10" x="18" y="35"/>
       </slices>
@@ -119,30 +119,5 @@
       </slices>
       <visualDescription h="48" w="224" x="236" y="288"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@196ae3e1301427817312" varId="n">
-      <originRef>problem_data</originRef>
-      <originRef>rsd</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="problem_data" uRef="problem"/>
-      <links xsi:type="component:EnumerableUnitType" ref="triangular_part_jacobian_matrix"/>
-      <links xsi:type="component:EnumerableComponentType" ref="blocks_info"/>
-      <visualDescription h="20" w="20" x="101" y="300"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>direction</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="direction" uRef="direction"/>
-      <links xsi:type="component:EnumerableUnitType" ref="triangular_part_jacobian_matrix"/>
-      <visualDescription h="20" w="20" x="287" y="505"/>
-    </enumerator>
-    <fusionsOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1ab5deb1295025097082</eRef>
-        <originRef>direction</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@196ae3e1301427817312</eRef>
-        <originRef>problem_data</originRef>
-        <originRef>rsd</originRef>
-      </fusionOfReplicators>
-    </fusionsOfReplicators>
   </componentInfo>
 </component:component>
