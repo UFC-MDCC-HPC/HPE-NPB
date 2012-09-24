@@ -17,8 +17,7 @@ public class IMPIDirectImpl : BaseIMPIDirectImpl, IMPIDirect
    } 
    
    override public void initialize()
-   {
-   
+   {   
       // string[] args = System.Environment.GetCommandLineArgs();
    	  // mpi = new MPI.Environment(ref args);
    	
@@ -43,20 +42,20 @@ public class IMPIDirectImpl : BaseIMPIDirectImpl, IMPIDirect
        return _localComm;
    }
    
-   public Intracommunicator enumComm(IUnit caller)
+/*   public Intracommunicator enumComm(IUnit caller)
    {
        Intracommunicator _enumComm;   
-       //_enumComm = (Intracommunicator)Communicator.world.Create(Communicator.world.Group.IncludeOnly(caller.EnumPeers));
        _enumComm = (Intracommunicator)this.WorldComm.Create(this.WorldComm.Group.IncludeOnly(caller.EnumPeers));
        return _enumComm;
    }
-   
+  */
+	/*	
    public int[] ranksOf(IUnit caller, string id)
    {
       int[] ranks;   
       caller.Units.TryGetValue(id, out ranks);
       return ranks;
-   } 
+   } */
 
    override public void destroySlice() {
        Console.Write("Finalizing MPI ...");

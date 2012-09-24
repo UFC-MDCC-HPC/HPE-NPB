@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000089f9bda353dc19b65dddc0d421ee2f5e47b41b5d150fc2a5befe010d5ea167e798f2c3e3b72a5441065a2afe7647f631a83dcde994a0cce2d31041fb4cd93e4777df4a550de7dbfceeff04715afb8f596b4f5b32810d5c52bfb826c7b4948f219b2efc48ff5b52d13e84b336f35f6fab4ab94709d2a5bb76f14c929cfa028580" isAbstract="false" kind="Data" name="ProblemDefinitionImpl" packagePath="impl.ft.data">
     <baseType>
       <extensionType>
@@ -11,7 +11,7 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000095e97e58b9ed73eb389d5d67e242ab61d50128486f43ba0afe8ff6bd8d08840f848c22ffad8acff4ef3bd7a6d1af46fd7413f1bf81704ab9152bd0c5c5f6ee8c128f38a1196abb5039132524dd4a4294fda2d6a19c7f1019c9e09736f96280d2298e765b3e51d1f8e779c60cbb6ccff11284a8fd11385bfdb9a8c9d44ada4f92" localRef="blocks_info" location="ft.datapartition.BlocksInfo/BlocksInfo.hpe" name="BlocksInfo" package="ft.datapartition" exposed="true">
+        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000095e97e58b9ed73eb389d5d67e242ab61d50128486f43ba0afe8ff6bd8d08840f848c22ffad8acff4ef3bd7a6d1af46fd7413f1bf81704ab9152bd0c5c5f6ee8c128f38a1196abb5039132524dd4a4294fda2d6a19c7f1019c9e09736f96280d2298e765b3e51d1f8e779c60cbb6ccff11284a8fd11385bfdb9a8c9d44ada4f92" localRef="blocks_info" location="ft.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="ft.datapartition" exposed="true">
           <visualDescription h="55" w="88" x="152" y="398">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -32,7 +32,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000697d9c305173b3189be802c3ff79de737b8611ceba3908e4e506fe84eb48c13ee6bcff5465c546d3f17f9c4be9fd4c3730beb0cdbb834a2cd9a48238e589010fa646d420fa851da6a7fa169817d907191deacca367dd83200354bbdc96d3c5f2986b7d7a8bfceacfa46cb59e4a094c15363a95dc6f9f631d9955d8a6cc75f593" localRef="instance_type" location="ft.problem_size.Instance_FT/Instance_FT.hpe" name="Instance_FT" package="ft.problem_size" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000697d9c305173b3189be802c3ff79de737b8611ceba3908e4e506fe84eb48c13ee6bcff5465c546d3f17f9c4be9fd4c3730beb0cdbb834a2cd9a48238e589010fa646d420fa851da6a7fa169817d907191deacca367dd83200354bbdc96d3c5f2986b7d7a8bfceacfa46cb59e4a094c15363a95dc6f9f631d9955d8a6cc75f593" localRef="instance_type" location="ft.problem_size.Instance_FT/Instance_FT.hpe" multiple="false" name="Instance_FT" package="ft.problem_size" exposed="false">
       <visualDescription h="38" w="79" x="235" y="169">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -41,7 +41,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" exposed="false">
       <visualDescription h="30" w="50" x="463" y="198">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -81,7 +81,7 @@
           <externalDependency>MPI</externalDependency>
         </file>
       </sources>
-      <visualDescription h="40" w="158" x="82" y="153">
+      <visualDescription h="40" w="158" x="93" y="143">
         <color b="0" g="255" r="0"/>
       </visualDescription>
       <port name="blocks">
@@ -92,30 +92,9 @@
       <parameter iname="IInstance_FT" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
     </interface>
-    <unit iRef="IProblemDefinitionImpl" private="false" uRef="problem" visibleInterface="true">
+    <unit iRef="IProblemDefinitionImpl" multiple="true" private="false" replica="0" uRef="problem" visibleInterface="true">
       <super cRef="base" uRef="problem"/>
-      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="false">
-        <visualDescription h="10" w="10" x="23" y="27"/>
-      </slices>
-      <slices cRef="instance_type" replica="0" uRef="instance" sliceName="instance" transitive="false">
-        <visualDescription h="10" w="10" x="3" y="17"/>
-      </slices>
-      <slices cRef="u0" replica="0" uRef="field" sliceName="field" transitive="false">
-        <visualDescription h="10" w="10" x="66" y="2"/>
-      </slices>
-      <slices cRef="u1" replica="0" uRef="field" sliceName="field" transitive="false">
-        <visualDescription h="10" w="10" x="65" y="13"/>
-      </slices>
-      <slices cRef="u2" replica="0" uRef="field" sliceName="field" transitive="false">
-        <visualDescription h="10" w="10" x="66" y="24"/>
-      </slices>
       <visualDescription h="40" w="80" x="324" y="283"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab3c361303241898625" varId="n">
-      <originRef>base</originRef>
-      <originRef>u1</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="28" w="27" x="200" y="297"/>
-    </enumerator>
   </componentInfo>
 </component:component>

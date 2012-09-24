@@ -78,12 +78,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="DGAC, Version=0.0.0.0, Culture=neutral, PublicKeyToken=13cebbba0e117a7c">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="DGAC">
       <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\DGAC\DGAC.dll</HintPath>
     </Reference>
-    <Reference Include="MPI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=29b4a045737654fe">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MPI">
       <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\MPI\MPI.dll</HintPath>
     </Reference>
   </ItemGroup>

@@ -159,7 +159,7 @@ namespace impl.ft.datapartition.BlocksInfoImpl
 		
         public void problemConfig()
 		{
-            _np = this.Ranks.Length;
+            _np = this.Size;
 			_ntdivnp = ((nx*ny)/_np)*nz;
 
             if(_layout_type == layout_0D) 

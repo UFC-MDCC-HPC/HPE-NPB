@@ -56,8 +56,10 @@ namespace impl.ft.fft.Cffts1Impl {
 		
 		protected IFFT_1D<I, C, ISolvingMethod> Cfftz {
 			get {
-				if (this.cfftz == null)
+				if (this.cfftz == null) {
+				    Console.WriteLine("TYPE OF cfftz = " + typeof(IFFT_1D<I, C, ISolvingMethod>));
 					this.cfftz = (IFFT_1D<I, C, ISolvingMethod>) Services.getPort("cfftz");
+				}
 				return this.cfftz;
 			}
 		}
