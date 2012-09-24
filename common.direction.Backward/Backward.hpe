@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004376d6d9d7de3a1b4d1fdf8832b56bd5b62d403268644c42baa67426cc69adbb726d79ebf33cb4e50759bee5876dae4b375be77b5eba726be3f05f558ea5acc1f13eb2291544bb106ea1da4e63d9252ff2fce1d8428e6d5fbefd2291d534003bd1bc8801fa4fb6341951cfd06c4003178884b8f780965965df6f99b6b33e0782" isAbstract="true" kind="Qualifier" name="Backward" packagePath="common.direction">
     <baseType>
       <extensionType>
@@ -30,18 +30,13 @@
           <dependency>common.direction.Direction/bin/1.0.0.0/IDirection.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="40" w="80" x="114" y="185">
+      <visualDescription h="40" w="80" x="149" y="174">
         <color b="192" g="192" r="192"/>
       </visualDescription>
     </interface>
-    <unit iRef="IBackwardDirection" private="false" uRef="backward" visibleInterface="true">
+    <unit iRef="IBackwardDirection" multiple="true" private="false" replica="0" uRef="backward" visibleInterface="true">
       <super cRef="base" uRef="direction"/>
       <visualDescription h="40" w="80" x="167" y="353"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="backward"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

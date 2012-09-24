@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000053a9c5b99d0b2ca97a55d48da1213fb671bb0c0c1d5a641fffdcd4fc2f4965fa3815709ac847bdbadf8c36d00dd09a09e789c7a76ae6fb649e77a84f24685a5af2c7719eb9a31f44faa927f3a7882fc3ed842640b60142241f93abf109901ee7500e4300bd5fb50ed3c2ae9a06a2251b9966a52be85773c5620e0a9fbc964f94" isAbstract="true" kind="Qualifier" name="Forward" packagePath="common.direction">
     <baseType>
       <extensionType>
@@ -34,14 +34,9 @@
         <color b="192" g="192" r="192"/>
       </visualDescription>
     </interface>
-    <unit iRef="IForwardDirection" private="false" uRef="forward" visibleInterface="true">
+    <unit iRef="IForwardDirection" multiple="true" private="false" replica="0" uRef="forward" visibleInterface="true">
       <super cRef="base" uRef="direction"/>
-      <visualDescription h="46" w="105" x="121" y="283"/>
+      <visualDescription h="46" w="105" x="147" y="328"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="forward"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

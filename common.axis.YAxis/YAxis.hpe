@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ffcae3e9a0ecbf9c4629fdb52bc2acc0e2cc392d40ed0441b527e752c9079cf609fb0785045e3d2c5ace2f492d755021fd6cf82d853e202471136832c6cf8fdffec701b57bfde7017dd2ef51f1a4c4adca40833d6c6165b9123411a3dc7be80a59839ab3316debcc5e4d0d6e17dcb8400cf7e4bc1eca328e130aa9f8182bfccb" isAbstract="true" kind="Qualifier" name="YAxis" packagePath="common.axis">
     <baseType>
       <extensionType>
@@ -22,10 +22,10 @@
   <componentInfo>
     <interface iRef="IY" nArgs="0">
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.Y { &#xA;&#xA;public interface BaseIY : BaseIAxis, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIY.cs" srcType="base" uri="common.axis.YAxis/bin/1.0.0.0/BaseIY.dll" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.YAxis { &#xA;&#xA;public interface BaseIY : BaseIAxis, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIY.cs" srcType="base" uri="common.axis.YAxis/bin/1.0.0.0/BaseIY.dll" versionId="1.0.0.0">
           <dependency>common.axis.Axis/bin/1.0.0.0/BaseIAxis.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.Y { &#xA;&#xA;public interface IY : BaseIY, IAxis&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IY.cs" srcType="user" uri="common.axis.YAxis/bin/1.0.0.0/IY.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.YAxis { &#xA;&#xA;public interface IY : BaseIY, IAxis&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IY.cs" srcType="user" uri="common.axis.YAxis/bin/1.0.0.0/IY.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/common.axis.Y/bin/1.0.0.0/BaseIY.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
         </file>
@@ -34,14 +34,9 @@
         <color b="255" g="255" r="128"/>
       </visualDescription>
     </interface>
-    <unit iRef="IY" private="false" uRef="y" visibleInterface="true">
+    <unit iRef="IY" multiple="true" private="false" replica="0" uRef="y" visibleInterface="true">
       <super cRef="base" uRef="axis"/>
-      <visualDescription h="40" w="80" x="75" y="172"/>
+      <visualDescription h="40" w="80" x="75" y="200"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="y"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

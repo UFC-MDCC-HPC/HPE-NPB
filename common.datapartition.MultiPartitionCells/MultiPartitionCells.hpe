@@ -18,7 +18,7 @@
         <color b="0" g="128" r="255"/>
       </visualDescription>
     </interface>
-    <unit iRef="ICells" private="false" uRef="cells" visibleInterface="true">
+    <unit iRef="ICells" multiple="false" private="false" replica="0" uRef="cells" visibleInterface="true">
       <visualDescription h="47" w="94" x="111" y="174"/>
     </unit>
   </componentInfo>

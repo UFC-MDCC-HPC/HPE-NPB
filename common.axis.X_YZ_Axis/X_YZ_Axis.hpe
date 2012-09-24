@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000059bab245ed188ec091184573f355b98424efbf41203475e253ddd056731ff66de5a4ce17eedce0147ae21413688e4d6294470018fc936b594ff7ace4163681b938d523d36cd757ce999e90e50d7c1ae5167cc6d3dbd32e37b615d4da66d3aedca535ffeffaa944f44959523da50d60680661ebdd82b5fa1a67ecf04ca48c71bf" isAbstract="true" kind="Qualifier" name="X_YZ_Axis" packagePath="common.axis">
     <baseType>
       <extensionType>
@@ -30,18 +30,13 @@
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="40" w="80" x="265" y="165">
+      <visualDescription h="40" w="80" x="249" y="138">
         <color b="90" g="145" r="47"/>
       </visualDescription>
     </interface>
-    <unit iRef="IX_YZ_Axis" private="false" uRef="x_yz" visibleInterface="true">
+    <unit iRef="IX_YZ_Axis" multiple="true" private="false" replica="0" uRef="x_yz" visibleInterface="true">
       <super cRef="base" uRef="axis"/>
       <visualDescription h="40" w="80" x="283" y="259"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="x_yz"/>
-      <visualDescription h="20" w="20" x="182" y="276"/>
-    </enumerator>
   </componentInfo>
 </component:component>

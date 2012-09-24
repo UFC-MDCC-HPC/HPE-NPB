@@ -34,9 +34,9 @@
         <color b="0" g="128" r="255"/>
       </visualDescription>
     </interface>
-    <unit iRef="IClass_W" private="false" uRef="class" visibleInterface="true">
+    <unit iRef="IClass_W" multiple="false" private="false" replica="0" uRef="class" visibleInterface="true">
       <super cRef="base" uRef="class"/>
-      <visualDescription h="40" w="80" x="209" y="219"/>
+      <visualDescription h="40" w="80" x="208" y="243"/>
     </unit>
   </componentInfo>
 </component:component>

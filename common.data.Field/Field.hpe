@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" isAbstract="true" kind="Data" name="Field" packagePath="common.data">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -14,16 +14,12 @@
           <dependency>%WORKSPACE/common.data.Field/bin/1.0.0.0/BaseIField.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="40" w="80" x="87" y="94">
+      <visualDescription h="40" w="80" x="100" y="126">
         <color b="255" g="128" r="128"/>
       </visualDescription>
     </interface>
-    <unit iRef="IField" private="false" uRef="field" visibleInterface="true">
-      <visualDescription h="40" w="80" x="70" y="203"/>
+    <unit iRef="IField" multiple="false" private="false" replica="0" uRef="field" visibleInterface="true">
+      <visualDescription h="68" w="113" x="199" y="316"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <links xsi:type="component:EnumerableUnitType" ref="field"/>
-      <visualDescription h="20" w="20" x="224" y="264"/>
-    </enumerator>
   </componentInfo>
 </component:component>

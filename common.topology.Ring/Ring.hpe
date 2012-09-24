@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" isAbstract="true" kind="Environment" name="Ring" packagePath="common.topology">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -18,12 +18,8 @@
         <color b="0" g="255" r="128"/>
       </visualDescription>
     </interface>
-    <unit iRef="ICell" private="false" uRef="cell" visibleInterface="true">
-      <visualDescription h="40" w="80" x="160" y="209"/>
+    <unit iRef="ICell" multiple="true" private="false" replica="0" uRef="cell" visibleInterface="true">
+      <visualDescription h="40" w="80" x="146" y="248"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@b9c6cb1294972272571" varId="i">
-      <links xsi:type="component:EnumerableUnitType" ref="cell"/>
-      <visualDescription h="20" w="20" x="282" y="414"/>
-    </enumerator>
   </componentInfo>
 </component:component>

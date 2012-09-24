@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000067c36061f14996cb08e488ee07ed09e62996bf944597966cab4cce26b562a49fdf0445e7f4e81ae08c7502789c788a1c0b2e9647e93c105be4ef8ae33cbc3d6fa692206f6e4dbe3c8f859a264b95068263868d16aec9a334774a52caa37f23ae86cb48b9f4236edf419b6f72ee177c15c0f6eb6cb84bd1e984874e0c2044d298" isAbstract="true" kind="Computation" name="BufferReader" packagePath="common.interactionpattern.shift1D">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -7,15 +7,15 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
-      <visualDescription h="30" w="50" x="173" y="328">
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
+      <visualDescription h="65" w="103" x="173" y="328">
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <unitBounds uRef="buffer">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="direction" location="common.direction.Direction/Direction.hpe" name="Direction" package="common.direction" parameter_id="direction" exposed="false">
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008dadcae582d76f1488d439896d4bfd505106048b3ba8e45b80ce2579980c636d34a0e59c3ad6a98a0c86460ae326b7aef57b0353433314945005b0cbe63b8ed080f8b93d69d6535a97576c6572b69fb588544b58a8afa38f7837418edca1faa8b74fec26b2d1a16f3c8b69bec57847356073169560cd90f4e6d0d47f0903c29c" localRef="direction" location="common.direction.Direction/Direction.hpe" multiple="false" name="Direction" package="common.direction" parameter_id="direction" exposed="false">
       <visualDescription h="57" w="84" x="94" y="376">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -51,7 +51,7 @@
       </port>
       <parameter iname="IDirection" order="0" parid="direction" uname="direction" varid="DIR"/>
     </interface>
-    <unit iRef="IBufferReader" private="false" uRef="buffer_reader" visibleInterface="true">
+    <unit iRef="IBufferReader" multiple="true" private="false" replica="0" uRef="buffer_reader" visibleInterface="true">
       <slices cRef="buffer" replica="0" uRef="buffer" sliceName="buffer" transitive="false">
         <visualDescription h="10" w="10" x="141" y="20"/>
       </slices>
@@ -60,12 +60,5 @@
       </slices>
       <visualDescription h="40" w="162" x="109" y="218"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>direction</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="direction" uRef="direction"/>
-      <links xsi:type="component:EnumerableUnitType" ref="buffer_reader"/>
-      <links xsi:type="component:EnumerableComponentType" ref="buffer"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

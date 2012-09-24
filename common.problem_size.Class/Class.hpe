@@ -14,11 +14,11 @@
           <dependency>%WORKSPACE/common.problem_size.Class/bin/1.0.0.0/BaseIClass.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="40" w="80" x="169" y="107">
+      <visualDescription h="40" w="80" x="124" y="136">
         <color b="0" g="128" r="255"/>
       </visualDescription>
     </interface>
-    <unit iRef="IClass" private="false" uRef="class" visibleInterface="true">
+    <unit iRef="IClass" multiple="false" private="false" replica="0" uRef="class" visibleInterface="true">
       <visualDescription h="40" w="80" x="209" y="219"/>
     </unit>
   </componentInfo>

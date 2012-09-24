@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000099ec807d7886f0c2735f4a4c2dc60d8feb0a435847e291a0f9dd7aed2539883c551cf8dd8fe530fe7d695458a20d532e4a58b5cf62af87f410238ec43d1e140b210efe08dea6fc4983660e10cc3431cd1102137a5df63ef9bef47a99b409c0b1c86bd4aa322397fd56e1ed3be2e81f8d1a9765c5dc9134ec1eb1b5d4567311ae" isAbstract="true" kind="Qualifier" name="XAxis" packagePath="common.axis">
     <baseType>
       <extensionType>
@@ -22,10 +22,10 @@
   <componentInfo>
     <interface iRef="IX" nArgs="0">
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.X { &#xA;&#xA;public interface BaseIX : BaseIAxis, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIX.cs" srcType="base" uri="common.axis.X/bin/1.0.0.0/BaseIX.dll" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.XAxis { &#xA;&#xA;public interface BaseIX : BaseIAxis, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIX.cs" srcType="base" uri="common.axis.XAxis/bin/1.0.0.0/BaseIX.dll" versionId="1.0.0.0">
           <dependency>common.axis.Axis/bin/1.0.0.0/BaseIAxis.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.X { &#xA;&#xA;public interface IX : BaseIX, IAxis&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IX.cs" srcType="user" uri="common.axis.X/bin/1.0.0.0/IX.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.XAxis { &#xA;&#xA;public interface IX : BaseIX, IAxis&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IX.cs" srcType="user" uri="common.axis.XAxis/bin/1.0.0.0/IX.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/common.axis.X/bin/1.0.0.0/BaseIX.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
         </file>
@@ -34,14 +34,9 @@
         <color b="128" g="255" r="255"/>
       </visualDescription>
     </interface>
-    <unit iRef="IX" private="false" uRef="x" visibleInterface="true">
+    <unit iRef="IX" multiple="true" private="false" replica="0" uRef="x" visibleInterface="true">
       <super cRef="base" uRef="axis"/>
-      <visualDescription h="40" w="80" x="69" y="196"/>
+      <visualDescription h="40" w="80" x="69" y="225"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="x"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

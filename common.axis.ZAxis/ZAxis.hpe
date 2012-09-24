@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000003bb781674ea675f3e73d687d81c2a1fc30c172ba4dc5abb7591c0493b3e0f7a440be50941862ce7b3d1d6a7d57a55f20f8929f9f272be575cb8c2735e6faaeb2aa7c8b4cdc19e0c763e7a660a9c4cce5993fd57a435000e7717204249b8b85fac784054d914d6776215ae09ebe843efcc400849f526412b1a2b2209ff2903ce" isAbstract="true" kind="Qualifier" name="ZAxis" packagePath="common.axis">
     <baseType>
       <extensionType>
@@ -22,10 +22,10 @@
   <componentInfo>
     <interface iRef="IZ" nArgs="0">
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.Z { &#xA;&#xA;public interface BaseIZ : BaseIAxis, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIZ.cs" srcType="base" uri="common.axis.ZAxis/bin/1.0.0.0/BaseIZ.dll" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.ZAxis { &#xA;&#xA;public interface BaseIZ : BaseIAxis, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIZ.cs" srcType="base" uri="common.axis.ZAxis/bin/1.0.0.0/BaseIZ.dll" versionId="1.0.0.0">
           <dependency>common.axis.Axis/bin/1.0.0.0/BaseIAxis.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.Z { &#xA;&#xA;public interface IZ : BaseIZ, IAxis&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IZ.cs" srcType="user" uri="common.axis.ZAxis/bin/1.0.0.0/IZ.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Axis;&#xA;&#xA;namespace common.axis.ZAxis { &#xA;&#xA;public interface IZ : BaseIZ, IAxis&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IZ.cs" srcType="user" uri="common.axis.ZAxis/bin/1.0.0.0/IZ.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/common.axis.Z/bin/1.0.0.0/BaseIZ.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
         </file>
@@ -34,14 +34,9 @@
         <color b="180" g="254" r="131"/>
       </visualDescription>
     </interface>
-    <unit iRef="IZ" private="false" uRef="z" visibleInterface="true">
+    <unit iRef="IZ" multiple="true" private="false" replica="0" uRef="z" visibleInterface="true">
       <super cRef="base" uRef="axis"/>
-      <visualDescription h="40" w="80" x="57" y="242"/>
+      <visualDescription h="40" w="80" x="64" y="219"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="z"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>
