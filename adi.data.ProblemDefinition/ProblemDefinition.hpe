@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" isAbstract="true" kind="Data" name="ProblemDefinition" packagePath="adi.data">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -7,7 +7,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="us" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="us" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="29" w="81" x="437" y="261">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -15,7 +15,7 @@
         <visualDescription h="10" w="10" x="11" y="11"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="vs" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="vs" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="29" w="77" x="440" y="298">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -23,7 +23,7 @@
         <visualDescription h="10" w="10" x="11" y="10"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="ws" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="ws" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="29" w="77" x="442" y="333">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -31,7 +31,7 @@
         <visualDescription h="10" w="10" x="11" y="11"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="qs" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="qs" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="29" w="77" x="443" y="368">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -39,7 +39,7 @@
         <visualDescription h="10" w="10" x="11" y="11"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="ainv" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="ainv" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="29" w="77" x="443" y="430">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -47,7 +47,7 @@
         <visualDescription h="10" w="10" x="10" y="10"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="rho" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="rho" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="29" w="77" x="448" y="399">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -55,7 +55,7 @@
         <visualDescription h="10" w="10" x="11" y="10"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="speed" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="speed" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="29" w="73" x="445" y="466">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -63,7 +63,7 @@
         <visualDescription h="10" w="10" x="9" y="10"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="u" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="u" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="30" w="77" x="443" y="118">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -71,7 +71,7 @@
         <visualDescription h="10" w="10" x="6" y="9"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="forcing" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="forcing" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="30" w="72" x="444" y="164">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -79,7 +79,7 @@
         <visualDescription h="10" w="10" x="5" y="11"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="rhs" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="rhs" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="30" w="73" x="446" y="196">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -87,7 +87,7 @@
         <visualDescription h="10" w="10" x="12" y="11"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhs" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhs" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="30" w="70" x="449" y="229">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -95,7 +95,7 @@
         <visualDescription h="10" w="10" x="9" y="9"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="square" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="square" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="30" w="73" x="451" y="510">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -103,7 +103,7 @@
         <visualDescription h="10" w="10" x="7" y="11"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000071d38687e0d5d2c316c5b3d07d8aa67134a4623aa2696b4c1af143b9dfb26a795943f7fad788e11c36c09b5001b5422f85c04f6580101d9e27cbf7d06c6cec1d87e42c3a8940336c5c2d63abadb4ac8c1519030710b5b087e1d7e415c91fe07522356c2184e3ea18bf6684dd71bda7b7e5e4411c6b9941ea98fa97bde5ccceb1" localRef="instance" location="common.problem_size.Instance/Instance.hpe" name="Instance" package="common.problem_size" parameter_id="instance_type" exposed="false">
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000071d38687e0d5d2c316c5b3d07d8aa67134a4623aa2696b4c1af143b9dfb26a795943f7fad788e11c36c09b5001b5422f85c04f6580101d9e27cbf7d06c6cec1d87e42c3a8940336c5c2d63abadb4ac8c1519030710b5b087e1d7e415c91fe07522356c2184e3ea18bf6684dd71bda7b7e5e4411c6b9941ea98fa97bde5ccceb1" localRef="instance" location="common.problem_size.Instance/Instance.hpe" multiple="true" name="Instance" package="common.problem_size" parameter_id="instance_type" exposed="false">
       <visualDescription h="58" w="158" x="24" y="369">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -112,7 +112,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
       <visualDescription h="30" w="50" x="781" y="517">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -120,7 +120,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsa" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsa" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="30" w="50" x="307" y="517">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -128,7 +128,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsb" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsb" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="30" w="50" x="256" y="552">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -136,7 +136,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsc" location="common.data.Field/Field.hpe" name="Field" package="common.data" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsc" location="common.data.Field/Field.hpe" multiple="true" name="Field" package="common.data" exposed="false">
       <visualDescription h="30" w="50" x="196" y="513">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -223,7 +223,7 @@
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
     </interface>
-    <unit iRef="IProblemDefinition" private="false" uRef="problem" visibleInterface="true">
+    <unit iRef="IProblemDefinition" multiple="true" private="false" replica="0" uRef="problem" visibleInterface="true">
       <slices cRef="us" replica="0" uRef="field" sliceName="us" transitive="false">
         <visualDescription h="10" w="10" x="1" y="26"/>
       </slices>
@@ -274,157 +274,5 @@
       </slices>
       <visualDescription h="40" w="80" x="154" y="217"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>us</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="us" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="229" y="284"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>vs</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="vs" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="197" y="264"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>ws</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="ws" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="249" y="267"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>qs</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="qs" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="48" w="47" x="125" y="327"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>ainv</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="ainv" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="140" y="278"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>rho</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="rho" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="283" y="266"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>speed</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="speed" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="60" w="61" x="31" y="251"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>u</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="u" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="49" y="373"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>forcing</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="forcing" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="75" y="419"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>rhs</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="rhs" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="77" y="365"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>lhs</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="lhs" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="67" y="437"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>square</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="square" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="60" y="330"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>lhsa</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="lhsa" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="197" y="429"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>lhsb</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="lhsb" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="163" y="427"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>lhsc</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="lhsc" uRef="field"/>
-      <links xsi:type="component:EnumerableUnitType" ref="problem"/>
-      <visualDescription h="20" w="20" x="218" y="403"/>
-    </enumerator>
-    <fusionsOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>qs</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>lhs</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>speed</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>vs</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>ainv</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>us</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>ws</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>rho</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>u</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>forcing</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>rhs</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>square</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>lhsa</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>lhsb</originRef>
-      </fusionOfReplicators>
-      <fusionOfReplicators>
-        <eRef>hPE.frontend.base.model.HReplicator@1b2533d1295099559883</eRef>
-        <originRef>lhsc</originRef>
-      </fusionOfReplicators>
-    </fusionsOfReplicators>
   </componentInfo>
 </component:component>

@@ -292,9 +292,9 @@
     <parameter componentRef="method" formFieldId="method" varName="MTH"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
+    <innerRenaming cNewName="z" cOldName="topology" cRef="z_solve"/>
     <innerRenaming cNewName="x" cOldName="topology" cRef="x_solve"/>
     <innerRenaming cNewName="y" cOldName="topology" cRef="y_solve"/>
-    <innerRenaming cNewName="z" cOldName="topology" cRef="z_solve"/>
     <fusion>
       <cRefs>add</cRefs>
       <cRefs>compute_rhs</cRefs>
@@ -374,10 +374,6 @@
       <visualDescription h="140" w="228" x="202" y="506">
         <color b="0" g="128" r="128"/>
       </visualDescription>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="95" y="24"/>
-        <slice pRef="problem" sRef="z_solve"/>
-      </port>
       <port name="z">
         <visualDescription h="10" w="10" x="131" y="30"/>
         <slice pRef="topology" sRef="z_solve"/>
@@ -386,33 +382,65 @@
         <visualDescription h="10" w="10" x="41" y="120"/>
         <slice pRef="cells" sRef="z_solve"/>
       </port>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="95" y="24"/>
+        <slice pRef="problem" sRef="z_solve"/>
+      </port>
       <port name="y">
         <visualDescription h="10" w="10" x="168" y="7"/>
         <slice pRef="topology" sRef="y_solve"/>
-      </port>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="y_solve"/>
       </port>
       <port name="problem">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="problem" sRef="y_solve"/>
       </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="1" y="15"/>
-        <slice pRef="topology" sRef="x_solve"/>
+      <port name="cells">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells" sRef="y_solve"/>
       </port>
       <port name="cells">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="cells" sRef="x_solve"/>
       </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="1" y="15"/>
+        <slice pRef="topology" sRef="x_solve"/>
+      </port>
       <port name="problem">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="problem" sRef="x_solve"/>
       </port>
+      <port name="cells">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells" sRef="copy_faces"/>
+      </port>
       <port name="problem">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="problem" sRef="copy_faces"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="copy_faces"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="copy_faces"/>
+      </port>
+      <port name="cell">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cell" sRef="copy_faces"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="copy_faces"/>
+      </port>
+      <port name="z">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="z" sRef="copy_faces"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="copy_faces"/>
       </port>
       <port name="cell">
         <visualDescription h="10" w="10" x="0" y="0"/>
@@ -438,34 +466,6 @@
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="y" sRef="copy_faces"/>
       </port>
-      <port name="z">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="z" sRef="copy_faces"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="mpi" sRef="copy_faces"/>
-      </port>
-      <port name="cell">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="copy_faces"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="mpi" sRef="copy_faces"/>
-      </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="x" sRef="copy_faces"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="mpi" sRef="copy_faces"/>
-      </port>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="copy_faces"/>
-      </port>
       <port name="problem">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="problem" sRef="compute_rhs"/>
@@ -474,64 +474,17 @@
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="cells" sRef="compute_rhs"/>
       </port>
-      <port name="cells_info">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells_info" sRef="add"/>
-      </port>
       <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="problem_data" sRef="add"/>
       </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="add"/>
+      </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="ISolvingMethod" order="2" parid="method" uname="method" varid="MTH"/>
-      <action id="main">
-        <protocol>
-          <par id="main" repeat="false">
-            <action>
-              <alt repeat="true">
-                <action>
-                  <perform id="a" repeat="true" action_id="c" slice_id="b">
-                    <visualDescription h="50" w="100" x="76" y="168"/>
-                  </perform>
-                </action>
-                <action>
-                  <perform repeat="false" action_id="y" slice_id="u">
-                    <visualDescription h="50" w="100" x="178" y="160"/>
-                  </perform>
-                </action>
-                <visualDescription h="176" w="231" x="67" y="112"/>
-              </alt>
-            </action>
-            <action>
-              <perform id="e" repeat="false" action_id="e" slice_id="w">
-                <visualDescription h="50" w="100" x="703" y="168"/>
-              </perform>
-            </action>
-            <action>
-              <seq repeat="false">
-                <action>
-                  <perform repeat="false" action_id="c" slice_id="w">
-                    <visualDescription h="50" w="100" x="396" y="105"/>
-                  </perform>
-                </action>
-                <action>
-                  <perform repeat="false" action_id="c" slice_id="w">
-                    <visualDescription h="50" w="100" x="393" y="161"/>
-                  </perform>
-                </action>
-                <action>
-                  <perform id="yt" repeat="false" action_id="ppp" slice_id="o">
-                    <visualDescription h="50" w="100" x="391" y="221"/>
-                  </perform>
-                </action>
-                <visualDescription h="207" w="149" x="386" y="95"/>
-              </seq>
-            </action>
-            <visualDescription h="300" w="833" x="53" y="46"/>
-          </par>
-        </protocol>
-      </action>
     </interface>
     <unit iRef="IADI" multiple="true" private="false" replica="0" uRef="adi" visibleInterface="true">
       <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="true">

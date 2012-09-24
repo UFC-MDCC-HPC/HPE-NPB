@@ -5,7 +5,7 @@ using common.problem_size.Instance;
 
 namespace adi.ADI { 
 
-public interface IADI<MTH, CLASS, I> : BaseIADI<MTH, CLASS, I>
+public interface IADI<I, CLASS, MTH> : BaseIADI<I, CLASS, MTH>
 where MTH:ISolvingMethod
 where CLASS:IClass
 where I:IInstance<CLASS>

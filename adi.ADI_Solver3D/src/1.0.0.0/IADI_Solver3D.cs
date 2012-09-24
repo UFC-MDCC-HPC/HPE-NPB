@@ -5,7 +5,7 @@ using common.solve.SolvingMethod;
 
 namespace adi.ADI_Solver3D { 
 
-public interface IADI_Solver3D<MTH, CLASS, I> : BaseIADI_Solver3D<MTH, CLASS, I>
+public interface IADI_Solver3D<I, CLASS, MTH> : BaseIADI_Solver3D<I, CLASS, MTH>
 where MTH:ISolvingMethod
 where CLASS:IClass
 where I:IInstance<CLASS>

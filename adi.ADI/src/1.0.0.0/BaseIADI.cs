@@ -11,7 +11,7 @@ using environment.MPIDirect;
 
 namespace adi.ADI { 
 
-public interface BaseIADI<MTH, CLASS, I> : IComputationKind 
+public interface BaseIADI<I, CLASS, MTH> : IComputationKind 
 where MTH:ISolvingMethod
 where CLASS:IClass
 where I:IInstance<CLASS>

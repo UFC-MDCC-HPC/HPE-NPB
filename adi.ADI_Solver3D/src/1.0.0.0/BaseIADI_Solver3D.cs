@@ -10,7 +10,7 @@ using common.solve.SolvingMethod;
 
 namespace adi.ADI_Solver3D { 
 
-public interface BaseIADI_Solver3D<MTH, CLASS, I> : IApplicationKind 
+public interface BaseIADI_Solver3D<I, CLASS, MTH> : IApplicationKind 
 where MTH:ISolvingMethod
 where CLASS:IClass
 where I:IInstance<CLASS>

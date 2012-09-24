@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000037a9a5a5d556806427fed17e9d9da01cba09c367a7217e9bf0cecb835990985d50990b655933932ff0048b8076e5bf155199f826b77770081eeddb208f1e1189d375d2a21c32678113b87936a8ae52dfc34f72df909869b53b0d601f143f03655edfcd2d755ed0c61b681b9cd312a2b254cfcaff4cdc28b51aeb88bc7bbdf791" isAbstract="true" kind="Computation" name="ExactSolution" packagePath="adi.data">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -18,12 +18,8 @@
         <color b="255" g="0" r="128"/>
       </visualDescription>
     </interface>
-    <unit iRef="IExactSolution" private="false" uRef="exact_solution" visibleInterface="true">
-      <visualDescription h="40" w="115" x="158" y="362"/>
+    <unit iRef="IExactSolution" multiple="true" private="false" replica="0" uRef="exact_solution" visibleInterface="true">
+      <visualDescription h="40" w="115" x="135" y="337"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1a4eaac1296932932353" varId="n">
-      <links xsi:type="component:EnumerableUnitType" ref="exact_solution"/>
-      <visualDescription h="20" w="20" x="95" y="194"/>
-    </enumerator>
   </componentInfo>
 </component:component>
