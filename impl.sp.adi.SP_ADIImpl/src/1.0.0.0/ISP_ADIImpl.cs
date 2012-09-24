@@ -9,7 +9,7 @@ using sp.adi.SP_ADI;
 
 namespace impl.sp.adi.SP_ADIImpl { 
 
-public class ISP_ADIImpl<MTH, C, I> : BaseISP_ADIImpl<MTH, C, I>, ISP_ADI<MTH, C, I>
+public class ISP_ADIImpl<I,C,MTH> : BaseISP_ADIImpl<I,C,MTH>, ISP_ADI<I,C,MTH>
 where MTH:ISPMethod
 where C:IClass
 where I:IInstance_SP<C>
@@ -17,7 +17,7 @@ where I:IInstance_SP<C>
 
 public override int go() 
 { 
-	int no_nodes = Ranks.Length;
+	int no_nodes = this.Size;
 	if (no_nodes > 1) 
 	{
 	   Copy_faces.go();

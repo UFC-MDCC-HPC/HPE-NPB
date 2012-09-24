@@ -21,7 +21,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000069f308cef3ee67fe4a9428f103ea9d47782608466294ceb577ea2487f0dfef904d4cac3d977b78429febc91f5d34d2beaf698ccfa8fe594275093f92aaf7f6d66cac2c1e56f5655cc1894e5b5d589f3017a8ed2ad73e2e2c4f24b9f00c305660cd8fce15a9700519131c700d4b65317e03415aa31473afcff256691f7336b48e" localRef="class" location="common.problem_size.Class_A/Class_A.hpe" name="Class_A" package="common.problem_size" exposed="false">
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000069f308cef3ee67fe4a9428f103ea9d47782608466294ceb577ea2487f0dfef904d4cac3d977b78429febc91f5d34d2beaf698ccfa8fe594275093f92aaf7f6d66cac2c1e56f5655cc1894e5b5d589f3017a8ed2ad73e2e2c4f24b9f00c305660cd8fce15a9700519131c700d4b65317e03415aa31473afcff256691f7336b48e" localRef="class" location="common.problem_size.Class_A/Class_A.hpe" multiple="false" name="Class_A" package="common.problem_size" exposed="false">
       <visualDescription h="30" w="50" x="234" y="252">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -31,10 +31,6 @@
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <interface iRef="IInstance_SP_A_Impl" nArgs="1">
-      <slice isRef="class">
-        <originRef cRef="class" iRef="IClass"/>
-        <visualDescription h="10" w="10" x="27" y="21"/>
-      </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class_A;&#xA;&#xA;namespace impl.sp.problem_size.Instance_SP_A { &#xA;&#xA;public abstract class BaseIInstance_SP_A_Impl&lt;C>: br.ufc.pargo.hpe.kinds.Environment, BaseIInstance_SP&lt;C>&#xA;&#x9;&#x9;where C:IClass_A&#xA;{&#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIInstance_SP_A_Impl.cs" srcType="base" uri="impl.sp.problem_size.Instance_SP_A/bin/1.0.0.0/BaseIInstance_SP_A_Impl.dll" versionId="1.0.0.0">
           <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/BaseIInstance_SP.dll</dependency>
@@ -44,16 +40,13 @@
           <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="40" w="80" x="93" y="153">
+      <visualDescription h="40" w="80" x="87" y="168">
         <color b="0" g="128" r="255"/>
       </visualDescription>
       <parameter iname="IClass_A" order="0" parid="class" uname="class" varid="C"/>
     </interface>
-    <unit iRef="IInstance_SP_A_Impl" private="false" uRef="instance" visibleInterface="true">
+    <unit iRef="IInstance_SP_A_Impl" multiple="false" private="false" replica="0" uRef="instance" visibleInterface="true">
       <super cRef="base" uRef="instance"/>
-      <slices cRef="class" replica="0" uRef="class" sliceName="class" transitive="false">
-        <visualDescription h="10" w="10" x="27" y="21"/>
-      </slices>
       <visualDescription h="40" w="80" x="180" y="318"/>
     </unit>
   </componentInfo>

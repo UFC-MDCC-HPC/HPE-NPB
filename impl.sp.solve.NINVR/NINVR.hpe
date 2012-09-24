@@ -9,11 +9,11 @@
         <visualDescription h="30" w="50" x="207" y="68">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="axis" varName="DIR"/>
+        <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <parameter formFieldId="method" varName="MTH"/>
-        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" name="MultiPartitionCells" package="common.datapartition" exposed="true">
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="true">
           <visualDescription h="53" w="112" x="302" y="427">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -21,7 +21,7 @@
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="adi.data" exposed="true">
+        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="adi.data" exposed="true">
           <visualDescription h="55" w="102" x="332" y="270">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -42,7 +42,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000159d9ccb4ff0bb35a4fe190495e9c0d9a8406fa4adae5405850aed7cf83bbe6096bcb7deb5b07550a718fabec888b38f45c00ad4323db7b35e01dd236f9d1af6d8d0e529844de79031b63f05f2e810d0218c315e2c720d374b2bc2c0b15ec45863f2832e19f30c9bf6ee1519c76cd5e6f0ed485d2027397f93caec006396c587" localRef="method" location="sp.solve.SPMethod/SPMethod.hpe" name="SPMethod" package="common.solve" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000159d9ccb4ff0bb35a4fe190495e9c0d9a8406fa4adae5405850aed7cf83bbe6096bcb7deb5b07550a718fabec888b38f45c00ad4323db7b35e01dd236f9d1af6d8d0e529844de79031b63f05f2e810d0218c315e2c720d374b2bc2c0b15ec45863f2832e19f30c9bf6ee1519c76cd5e6f0ed485d2027397f93caec006396c587" localRef="method" location="sp.solve.SPMethod/SPMethod.hpe" multiple="false" name="SPMethod" package="sp.solve" exposed="false">
       <visualDescription h="30" w="50" x="199" y="403">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -50,7 +50,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000099ec807d7886f0c2735f4a4c2dc60d8feb0a435847e291a0f9dd7aed2539883c551cf8dd8fe530fe7d695458a20d532e4a58b5cf62af87f410238ec43d1e140b210efe08dea6fc4983660e10cc3431cd1102137a5df63ef9bef47a99b409c0b1c86bd4aa322397fd56e1ed3be2e81f8d1a9765c5dc9134ec1eb1b5d4567311ae" localRef="axis" location="common.axis.XAxis/XAxis.hpe" name="XAxis" package="common.axis" exposed="false">
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000099ec807d7886f0c2735f4a4c2dc60d8feb0a435847e291a0f9dd7aed2539883c551cf8dd8fe530fe7d695458a20d532e4a58b5cf62af87f410238ec43d1e140b210efe08dea6fc4983660e10cc3431cd1102137a5df63ef9bef47a99b409c0b1c86bd4aa322397fd56e1ed3be2e81f8d1a9765c5dc9134ec1eb1b5d4567311ae" localRef="axis" location="common.axis.XAxis/XAxis.hpe" multiple="false" name="XAxis" package="common.axis" exposed="false">
       <visualDescription h="39" w="96" x="417" y="187">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -58,7 +58,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" exposed="false">
       <visualDescription h="30" w="50" x="319" y="145">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -66,7 +66,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000796ff7bbb33560060ee9951c4f8242d987089c0c50af1d3a6ab2f92466788c33bfa42e66a347c4206d81a948be78598f82f386b898f40714662cb0134d02313a7e06d04944957cb9149a5069ebfcc65b58711afd15bfbe6f3144cf719a1d8c90833890d5ed1eac7e3b8a657a774a065ca04588c7743c47a41fe59e21cd7767a4" localRef="instance" location="sp.problem_size.Instance_SP/Instance_SP.hpe" name="Instance_SP" package="sp.problem_size" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000796ff7bbb33560060ee9951c4f8242d987089c0c50af1d3a6ab2f92466788c33bfa42e66a347c4206d81a948be78598f82f386b898f40714662cb0134d02313a7e06d04944957cb9149a5069ebfcc65b58711afd15bfbe6f3144cf719a1d8c90833890d5ed1eac7e3b8a657a774a065ca04588c7743c47a41fe59e21cd7767a4" localRef="instance" location="sp.problem_size.Instance_SP/Instance_SP.hpe" multiple="false" name="Instance_SP" package="sp.problem_size" exposed="false">
       <visualDescription h="30" w="50" x="344" y="203">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -77,8 +77,8 @@
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="axis" varName="DIR"/>
-    <supplyParameter cRef="method" varName="MTH"/>
     <supplyParameter cRef="instance" varName="I"/>
+    <supplyParameter cRef="method" varName="MTH"/>
     <interface iRef="ININVR" nArgs="4">
       <slice isRef="cells">
         <originRef cRef="cells_info" iRef="ICells"/>
@@ -93,20 +93,17 @@
         <visualDescription h="10" w="10" x="22" y="27"/>
       </slice>
       <slice isRef="method">
-        <originRef cRef="method" iRef="IMethod"/>
+        <originRef cRef="method" iRef="ISolvingMethod"/>
         <visualDescription h="10" w="10" x="30" y="5"/>
       </slice>
-      <protocol xsi:type="component:ActionSkipType" label="hPE.frontend.kinds.activate.model.protocol.HSkipAction@281ad071" repeat="0">
-        <visualDescription h="50" w="50" x="75" y="75"/>
-      </protocol>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.problem_size.Class;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.axis.Axis;&#xA;using common.solve.Method;&#xA;&#xA;namespace impl.sp.solve.NINVR { &#xA;&#xA;public abstract class BaseININVR&lt;I,C,DIR,MTH>: Computation, BaseIBlockDiagonalMatVecProduct&lt;I,C, DIR,MTH>&#xA;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;where C:IClass&#xA;&#x9;where DIR:IAxis&#xA;&#x9;where MTH:IMethod&#xA;{&#xA;&#x9;&#x9;&#xA;#region&#x9;data&#x9;&#xA;&#x9;&#x9;&#xA;protected int[,] start, end, cell_size, slice;&#xA;protected double[,,,,] rhs;&#xA;protected double bt;&#xA;&#xA;override public void initialize()&#xA;{&#xA;&#x9;start = Cells.cell_start;&#xA;&#x9;end = Cells.cell_end;&#xA;&#x9;cell_size = Cells.cell_size;&#xA;&#x9;slice = Cells.cell_slice;&#xA;&#x9;&#xA;&#x9;bt = Constants.bt;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;rhs = Problem.Field_rhs;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I,C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I,C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I,C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR axis = default(DIR);&#xA;&#xA;protected DIR Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (DIR) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseININVR.cs" srcType="base" uri="impl.sp.solve.NINVR/bin/1.0.0.0/BaseININVR.dll" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.problem_size.Class;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.axis.Axis;&#xA;using common.axis.XAxis;&#xA;using sp.solve.SPMethod;&#xA;&#xA;namespace impl.sp.solve.NINVR { &#xA;&#xA;public abstract class BaseININVR&lt;I,C,DIR,MTH>: Computation, BaseIBlockDiagonalMatVecProduct&lt;I,C, DIR,MTH>&#xA;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;where C:IClass&#xA;&#x9;where DIR:IX&#xA;&#x9;where MTH:ISPMethod&#xA;{&#xA;&#x9;&#x9;&#xA;#region&#x9;data&#x9;&#xA;&#x9;&#x9;&#xA;protected int[,] start, end, cell_size, slice;&#xA;protected double[,,,,] rhs;&#xA;protected double bt;&#xA;&#xA;override public void initialize()&#xA;{&#xA;&#x9;start = Cells.cell_start;&#xA;&#x9;end = Cells.cell_end;&#xA;&#x9;cell_size = Cells.cell_size;&#xA;&#x9;slice = Cells.cell_slice;&#xA;&#x9;&#xA;&#x9;bt = Constants.bt;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;rhs = Problem.Field_rhs;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I,C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I,C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I,C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR axis = default(DIR);&#xA;&#xA;protected DIR Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (DIR) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseININVR.cs" srcType="base" uri="impl.sp.solve.NINVR/bin/1.0.0.0/BaseININVR.dll" versionId="1.0.0.0">
           <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll</dependency>
           <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
           <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/BaseIBlockDiagonalMatVecProduct.dll</dependency>
         </file>
-        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using common.solve.Method;&#xA;&#xA;namespace impl.sp.solve.NINVR { &#xA;&#xA;&#x9;public class ININVR&lt;I,C,DIR,MTH> : BaseININVR&lt;I,C,DIR,MTH>, IBlockDiagonalMatVecProduct&lt;I,C,DIR,MTH>&#xA;&#x9;&#x9;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;&#x9;where DIR:IAxis&#xA;&#x9;&#x9;&#x9;where MTH:IMethod&#xA;&#x9;{&#xA;&#x9;&#xA;&#x9;&#x9;public ININVR() &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;} &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;private int c;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public void enterStage(int stage)&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;    c = slice[stage, 0];&#x9;&#x9;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() { &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;    int i, j, k;&#xA;&#x9;&#x9;    double r1, r2, r3, r4, r5, t1, t2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    int ksize = cell_size[c, 2] + 2;&#xA;&#x9;&#x9;    int jsize = cell_size[c, 1] + 2;&#xA;&#x9;&#x9;    int isize = cell_size[c, 0] + 2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;&#x9;&#x9;        {&#xA;&#x9;&#x9;            for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;&#x9;&#x9;            {&#x9;&#x9;&#xA;&#x9;&#x9;                r1 = rhs[c, k, j, i, 0];&#xA;&#x9;&#x9;                r2 = rhs[c, k, j, i, 1];&#xA;&#x9;&#x9;                r3 = rhs[c, k, j, i, 2];&#xA;&#x9;&#x9;                r4 = rhs[c, k, j, i, 3];&#xA;&#x9;&#x9;                r5 = rhs[c, k, j, i, 4];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                t1 = bt * r3;&#xA;&#x9;&#x9;                t2 = 0.5d * (r4 + r5);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 0] = -r2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 1] = r1;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 2] = bt * (r4 - r5);&#xA;&#x9;&#x9;                rhs[c, k, j, i, 3] = -t1 + t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 4] = t1 + t2;&#xA;&#x9;&#x9;                &#xA;                 //       for (int m=0;m&lt;5;m++)&#x9;&#x9;                &#xA;&#x9;&#x9;         //           Console.WriteLine(&quot;ninvr - rhs&quot; + &quot;[&quot; + c + &quot;,&quot; + k + &quot;,&quot; + j + &quot;,&quot; + i + &quot;,&quot; + m + &quot;] = &quot; + rhs[c, k, j, i, m]);&#xA;&#x9;&#x9;            }&#xA;&#x9;&#x9;        }&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    return 0;&#x9;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="ININVR.cs" srcType="user" uri="impl.sp.solve.NINVR/bin/1.0.0.0/ININVR.dll" versionId="1.0.0.0">
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.XAxis;&#xA;&#xA;namespace impl.sp.solve.NINVR { &#xA;&#xA;&#x9;public class ININVR&lt;I,C,DIR,MTH> : BaseININVR&lt;I,C,DIR,MTH>, IBlockDiagonalMatVecProduct&lt;I,C,DIR,MTH>&#xA;&#x9;&#x9;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;&#x9;where DIR:IX&#xA;&#x9;&#x9;&#x9;where MTH:ISPMethod&#xA;&#x9;{&#xA;&#x9;&#x9;private int c;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public void enterStage(int stage)&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;    c = slice[stage, 0];&#x9;&#x9;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() { &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;    int i, j, k;&#xA;&#x9;&#x9;    double r1, r2, r3, r4, r5, t1, t2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    int ksize = cell_size[c, 2] + 2;&#xA;&#x9;&#x9;    int jsize = cell_size[c, 1] + 2;&#xA;&#x9;&#x9;    int isize = cell_size[c, 0] + 2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;&#x9;&#x9;        {&#xA;&#x9;&#x9;            for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;&#x9;&#x9;            {&#x9;&#x9;&#xA;&#x9;&#x9;                r1 = rhs[c, k, j, i, 0];&#xA;&#x9;&#x9;                r2 = rhs[c, k, j, i, 1];&#xA;&#x9;&#x9;                r3 = rhs[c, k, j, i, 2];&#xA;&#x9;&#x9;                r4 = rhs[c, k, j, i, 3];&#xA;&#x9;&#x9;                r5 = rhs[c, k, j, i, 4];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                t1 = bt * r3;&#xA;&#x9;&#x9;                t2 = 0.5d * (r4 + r5);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 0] = -r2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 1] = r1;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 2] = bt * (r4 - r5);&#xA;&#x9;&#x9;                rhs[c, k, j, i, 3] = -t1 + t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 4] = t1 + t2;&#xA;&#x9;&#x9;                &#xA;                 //       for (int m=0;m&lt;5;m++)&#x9;&#x9;                &#xA;&#x9;&#x9;         //           Console.WriteLine(&quot;ninvr - rhs&quot; + &quot;[&quot; + c + &quot;,&quot; + k + &quot;,&quot; + j + &quot;,&quot; + i + &quot;,&quot; + m + &quot;] = &quot; + rhs[c, k, j, i, m]);&#xA;&#x9;&#x9;            }&#xA;&#x9;&#x9;        }&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    return 0;&#x9;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="ININVR.cs" srcType="user" uri="impl.sp.solve.NINVR/bin/1.0.0.0/ININVR.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/impl.sp.solve.NINVR/bin/1.0.0.0/BaseININVR.dll</dependency>
           <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/IBlockDiagonalMatVecProduct.dll</dependency>
         </file>
@@ -127,40 +124,9 @@
       <parameter iname="IX" order="2" parid="axis" uname="x" varid="DIR"/>
       <parameter iname="ISPMethod" order="3" parid="method" uname="method" varid="MTH"/>
     </interface>
-    <unit iRef="ININVR" private="false" uRef="matvecproduct" visibleInterface="true">
+    <unit iRef="ININVR" multiple="true" private="false" replica="0" uRef="matvecproduct" visibleInterface="true">
       <super cRef="base" uRef="matvecproduct"/>
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
-        <visualDescription h="10" w="10" x="78" y="26"/>
-      </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
-        <visualDescription h="10" w="10" x="92" y="3"/>
-      </slices>
-      <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
-        <visualDescription h="10" w="10" x="22" y="27"/>
-      </slices>
-      <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">
-        <visualDescription h="10" w="10" x="30" y="5"/>
-      </slices>
-      <visualDescription h="40" w="114" x="111" y="272"/>
+      <visualDescription h="40" w="114" x="109" y="280"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1b2533d1295099559883" varId="n">
-      <originRef>base</originRef>
-      <originRef>problem_data</originRef>
-      <originRef>qs</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="matvecproduct"/>
-      <visualDescription h="48" w="47" x="161" y="353"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
-      <originRef>method</originRef>
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="method" uRef="method"/>
-      <visualDescription h="20" w="20" x="260" y="427"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>axis</originRef>
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="axis" uRef="x"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

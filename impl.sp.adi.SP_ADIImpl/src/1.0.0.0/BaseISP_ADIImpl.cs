@@ -25,7 +25,7 @@ using sp.adi.SP_ADI;
 
 namespace impl.sp.adi.SP_ADIImpl { 
 
-public abstract class BaseISP_ADIImpl<MTH, C, I>: Computation, BaseISP_ADI<MTH, C, I>
+public abstract class BaseISP_ADIImpl<I,C,MTH>: Computation, BaseISP_ADI<I,C,MTH>
 where MTH:ISPMethod
 where C:IClass
 where I:IInstance_SP<C>
