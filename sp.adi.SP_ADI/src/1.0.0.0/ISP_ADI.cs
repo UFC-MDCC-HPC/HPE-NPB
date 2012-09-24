@@ -6,7 +6,7 @@ using adi.ADI;
 
 namespace sp.adi.SP_ADI { 
 
-public interface ISP_ADI<MTH, C, I> : BaseISP_ADI<MTH, C, I>, IADI<MTH, C, I>
+public interface ISP_ADI<I, C, MTH> : BaseISP_ADI<I, C, MTH>, IADI<I, C, MTH>
 where MTH:ISPMethod
 where C:IClass
 where I:IInstance_SP<C>

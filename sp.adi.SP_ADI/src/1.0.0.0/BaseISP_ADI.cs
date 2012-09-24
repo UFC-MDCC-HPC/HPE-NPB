@@ -8,7 +8,7 @@ using adi.ADI;
 
 namespace sp.adi.SP_ADI { 
 
-public interface BaseISP_ADI<MTH, C, I> : BaseIADI<MTH, C, I>, IComputationKind 
+public interface BaseISP_ADI<I, C, MTH> : BaseIADI<I, C, MTH>, IComputationKind 
 where MTH:ISPMethod
 where C:IClass
 where I:IInstance_SP<C>
