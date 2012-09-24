@@ -34,9 +34,9 @@
         <color b="128" g="255" r="255"/>
       </visualDescription>
     </interface>
-    <unit iRef="IBufferImpl" private="false" uRef="buffer" visibleInterface="true">
+    <unit iRef="IBufferImpl" multiple="false" private="false" replica="0" uRef="buffer" visibleInterface="true">
       <super cRef="base" uRef="buffer"/>
-      <visualDescription h="40" w="80" x="111" y="206"/>
+      <visualDescription h="40" w="80" x="91" y="231"/>
     </unit>
   </componentInfo>
 </component:component>

@@ -81,8 +81,10 @@ private W wavefront_work = default(W);
 
 public W Wavefront_work {
 	get {
-		if (this.wavefront_work == null)
+		if (this.wavefront_work == null) {
+			Console.WriteLine("TYPE OF wavefront_work (forward) = " + typeof(W));
 			this.wavefront_work = (W) Services.getPort("work");
+		}
 		return this.wavefront_work;
 	}
 }

@@ -11,7 +11,7 @@ public class ICellsImpl : BaseICellsImpl, ICells
 
 	override public void initialize()
 	{
-		int total_nodes = this.Ranks.Length;
+		int total_nodes = this.Size;
 		int no_nodes = total_nodes;
 			
 		int maxcells =  Convert.ToInt32(Math.Sqrt(total_nodes));
