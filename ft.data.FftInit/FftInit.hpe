@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000170ce0ae1aadc875518096658533051409f013232e32b8359b0d9d3908f8d0aa0b857c6f8262222d6d404987335059d3aeb592e18dda4de01731c013a14134583f716bd81a515a5b99cf598272465b48b722bad09f003b79fc7aaa5e124502e178e6c776addacfb94fc9baec0f406fd3eaa4f665a1e1bdac95618cb20f26af8b" isAbstract="true" kind="Computation" name="FftInit" packagePath="ft.data">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -7,14 +7,14 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c1356ca9b2057b2cdaf7bab412ca75fdb39021bca4f4290f39b086b8aa2f45538e23e1af3360a5e85aa8ee62ffd7b1d4b10715fa0b45745b78c496d18d59a1ccb3f0c4a6bb86a302fa6a6ddeba6177db23a3c2f83b018ebec4ecc0035817670de32d367791764d224e4a7387fdcc3f9eea7a6f591775c9b9e13b978d62d79de8" localRef="problem_data" location="ft.data.ProblemDefinition/ProblemDefinition.hpe" name="ProblemDefinition" package="ft.data" exposed="true">
-      <visualDescription h="43" w="106" x="242" y="447">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c1356ca9b2057b2cdaf7bab412ca75fdb39021bca4f4290f39b086b8aa2f45538e23e1af3360a5e85aa8ee62ffd7b1d4b10715fa0b45745b78c496d18d59a1ccb3f0c4a6bb86a302fa6a6ddeba6177db23a3c2f83b018ebec4ecc0035817670de32d367791764d224e4a7387fdcc3f9eea7a6f591775c9b9e13b978d62d79de8" localRef="problem_data" location="ft.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="ft.data" exposed="true">
+      <visualDescription h="43" w="106" x="260" y="453">
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000095e97e58b9ed73eb389d5d67e242ab61d50128486f43ba0afe8ff6bd8d08840f848c22ffad8acff4ef3bd7a6d1af46fd7413f1bf81704ab9152bd0c5c5f6ee8c128f38a1196abb5039132524dd4a4294fda2d6a19c7f1019c9e09736f96280d2298e765b3e51d1f8e779c60cbb6ccff11284a8fd11385bfdb9a8c9d44ada4f92" localRef="blocks_info" location="ft.datapartition.BlocksInfo/BlocksInfo.hpe" name="BlocksInfo" package="ft.datapartition" exposed="true">
-        <visualDescription h="55" w="88" x="152" y="398">
+      <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000095e97e58b9ed73eb389d5d67e242ab61d50128486f43ba0afe8ff6bd8d08840f848c22ffad8acff4ef3bd7a6d1af46fd7413f1bf81704ab9152bd0c5c5f6ee8c128f38a1196abb5039132524dd4a4294fda2d6a19c7f1019c9e09736f96280d2298e765b3e51d1f8e779c60cbb6ccff11284a8fd11385bfdb9a8c9d44ada4f92" localRef="blocks_info" location="ft.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="ft.datapartition" exposed="true">
+        <visualDescription h="55" w="88" x="118" y="374">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
@@ -27,7 +27,7 @@
         <visualDescription h="10" w="10" x="43" y="4"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000a3c75b4c6a2aae61bde961a3d63804eb45e2a72ec900f48c77325137c428cd05f011917bbf0e09c93a36f529c9af7323d471c0126e2bac590a5805a8916e2c625d861aef6e3a3dc12e4d9d60cc79cfa0a94efd01e2984ee38f14ef288478476e4d8a7985a30114a034284e3c981c31be438785000e186b84812b16eb6bea1183" localRef="instance_type" location="ft.problem_size.Instance/Instance.hpe" name="Instance" package="ft.problem_size" parameter_id="instance_type" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000a3c75b4c6a2aae61bde961a3d63804eb45e2a72ec900f48c77325137c428cd05f011917bbf0e09c93a36f529c9af7323d471c0126e2bac590a5805a8916e2c625d861aef6e3a3dc12e4d9d60cc79cfa0a94efd01e2984ee38f14ef288478476e4d8a7985a30114a034284e3c981c31be438785000e186b84812b16eb6bea1183" localRef="instance_type" location="ft.problem_size.Instance/Instance.hpe" multiple="false" name="Instance" package="ft.problem_size" parameter_id="instance_type" exposed="false">
       <visualDescription h="37" w="109" x="78" y="304">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -36,7 +36,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" parameter_id="class" exposed="false">
       <visualDescription h="30" w="50" x="475" y="148">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -80,7 +80,7 @@
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
     </interface>
-    <unit iRef="IFftInit" private="false" uRef="fftinit" visibleInterface="true">
+    <unit iRef="IFftInit" multiple="true" private="false" replica="0" uRef="fftinit" visibleInterface="true">
       <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
         <visualDescription h="10" w="10" x="36" y="25"/>
         <port>blocks</port>
@@ -90,12 +90,5 @@
       </slices>
       <visualDescription h="40" w="80" x="238" y="295"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab3c361303241898625" varId="n">
-      <originRef>problem_data</originRef>
-      <originRef>u1</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="problem_data" uRef="problem"/>
-      <links xsi:type="component:EnumerableUnitType" ref="fftinit"/>
-      <visualDescription h="41" w="40" x="447" y="417"/>
-    </enumerator>
   </componentInfo>
 </component:component>
