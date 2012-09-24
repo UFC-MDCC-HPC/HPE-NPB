@@ -23,7 +23,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000bf53b0511383425a287205701028bd02468fc3d7e016187e316b324317e52a13e4ef0306034cc0f1612eac77c8c89171d233ab624d7f88cf7617781ea97fa7fcba7539b5065ba46eeb6fa2c58d5cc8c4bac53ea60ddac7bab5ad64d967540e78947590eeb466137ff49b1db9e8e77e8207f5e253a70d62b1914edf8cbfcfc0a4" localRef="instance_type" location="bt.problem_size.Instance_BT/Instance_BT.hpe" name="Instance_BT" package="bt.problem_size" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000bf53b0511383425a287205701028bd02468fc3d7e016187e316b324317e52a13e4ef0306034cc0f1612eac77c8c89171d233ab624d7f88cf7617781ea97fa7fcba7539b5065ba46eeb6fa2c58d5cc8c4bac53ea60ddac7bab5ad64d967540e78947590eeb466137ff49b1db9e8e77e8207f5e253a70d62b1914edf8cbfcfc0a4" localRef="instance_type" location="bt.problem_size.Instance_BT/Instance_BT.hpe" multiple="false" name="Instance_BT" package="bt.problem_size" exposed="false">
       <visualDescription h="68" w="119" x="491" y="217">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -32,7 +32,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000025529ab026e77dd546c5f94e76127e76d2c281e7bdedc252d61f6953b04f54d154593621b2aef59dcd634eb5fd324c6e2ad6536ac74f2cdeb85f88c97805cf25c77d65ca931e199c09fa9424a481585529fd2e43b58709ac4c948c2b5b81be648a3f130bd9795324dc2c04a3d5143030b3afa496239772cd9f2e7d3d9a599082" localRef="method" location="bt.solve.BTMethod/BTMethod.hpe" name="BTMethod" package="bt.solve" exposed="false">
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000025529ab026e77dd546c5f94e76127e76d2c281e7bdedc252d61f6953b04f54d154593621b2aef59dcd634eb5fd324c6e2ad6536ac74f2cdeb85f88c97805cf25c77d65ca931e199c09fa9424a481585529fd2e43b58709ac4c948c2b5b81be648a3f130bd9795324dc2c04a3d5143030b3afa496239772cd9f2e7d3d9a599082" localRef="method" location="bt.solve.BTMethod/BTMethod.hpe" multiple="false" name="BTMethod" package="bt.solve" exposed="false">
       <visualDescription h="30" w="50" x="395" y="161">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -40,7 +40,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" exposed="false">
       <visualDescription h="30" w="50" x="142" y="144">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -53,14 +53,11 @@
     <supplyParameter cRef="method" varName="MTH"/>
     <interface iRef="IBinvcRhsImpl" nArgs="1">
       <slice isRef="method">
-        <originRef cRef="method" iRef="IMethod"/>
+        <originRef cRef="method" iRef="ISolvingMethod"/>
         <visualDescription h="10" w="10" x="23" y="26"/>
       </slice>
-      <protocol xsi:type="component:ActionSkipType" label="hPE.frontend.kinds.activate.model.protocol.HSkipAction@18536f57" repeat="0">
-        <visualDescription h="50" w="50" x="75" y="75"/>
-      </protocol>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.Method;&#xA;using bt.solve.BTMethod;&#xA;using bt.solve.BinvcRhs;&#xA;&#xA;namespace impl.bt.solve.BinvcRhsImpl { &#xA;&#xA;public abstract class BaseIBinvcRhsImpl&lt;MTH>: Computation, BaseIBinvcRhs&lt;MTH>&#xA;where MTH:IBTMethod&#xA;{&#xA;&#x9;&#x9;&#xA;/*&#x9;&#x9;&#xA;private IBlocks blocks = null;&#xA;&#xA;public IBlocks Blocks {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.blocks == null)&#xA;&#x9;&#x9;&#x9;this.blocks = (IBlocks) Services.getPort(&quot;blocks_info&quot;);&#xA;&#x9;&#x9;return this.blocks;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#x9;&#x9; &#xA;&#x9;&#x9; */&#xA;&#x9;&#x9;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIBinvcRhsImpl.cs" srcType="base" uri="impl.bt.solve.BinvcRhsImpl/bin/1.0.0.0/BaseIBinvcRhsImpl.dll" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using bt.solve.BTMethod;&#xA;using bt.solve.BinvcRhs;&#xA;&#xA;namespace impl.bt.solve.BinvcRhsImpl { &#xA;&#xA;public abstract class BaseIBinvcRhsImpl&lt;MTH>: Computation, BaseIBinvcRhs&lt;MTH>&#xA;where MTH:IBTMethod&#xA;{&#xA;&#x9;&#x9;&#xA;/*&#x9;&#x9;&#xA;private IBlocks blocks = null;&#xA;&#xA;public IBlocks Blocks {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.blocks == null)&#xA;&#x9;&#x9;&#x9;this.blocks = (IBlocks) Services.getPort(&quot;blocks_info&quot;);&#xA;&#x9;&#x9;return this.blocks;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#x9;&#x9; &#xA;&#x9;&#x9; */&#xA;&#x9;&#x9;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIBinvcRhsImpl.cs" srcType="base" uri="impl.bt.solve.BinvcRhsImpl/bin/1.0.0.0/BaseIBinvcRhsImpl.dll" versionId="1.0.0.0">
           <dependency>common.datapartition.BlocksInfo/bin/1.0.0.0/IBlocks.dll</dependency>
           <dependency>common.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
           <dependency>bt.problem_size.Instance_BT/bin/1.0.0.0/IInstance_BT.dll</dependency>
@@ -77,29 +74,14 @@
           <dependency>bt.solve.BinvcRhs/bin/1.0.0.0/IBinvcRhs.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="40" w="111" x="204" y="187">
+      <visualDescription h="40" w="111" x="178" y="186">
         <color b="255" g="128" r="255"/>
       </visualDescription>
       <parameter iname="IBTMethod" order="0" parid="method" uname="method" varid="MTH"/>
     </interface>
-    <unit iRef="IBinvcRhsImpl" private="false" uRef="binvcrhs" visibleInterface="true">
+    <unit iRef="IBinvcRhsImpl" multiple="true" private="false" replica="0" uRef="binvcrhs" visibleInterface="true">
       <super cRef="base" uRef="binvcrhs"/>
-      <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">
-        <visualDescription h="10" w="10" x="23" y="26"/>
-      </slices>
       <visualDescription h="40" w="80" x="240" y="332"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
-      <originRef>base</originRef>
-      <originRef>method</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="binvcrhs"/>
-      <visualDescription h="20" w="20" x="384" y="377"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
-      <originRef>method</originRef>
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="method" uRef="method"/>
-      <visualDescription h="20" w="20" x="327" y="106"/>
-    </enumerator>
   </componentInfo>
 </component:component>

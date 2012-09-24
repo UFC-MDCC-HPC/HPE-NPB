@@ -46,7 +46,6 @@ namespace impl.bt.solve.XSolver
 
 			int c, stage, first, last;
 			
-			// buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
 			double[] out_buffer_x;// = new double[buffer_size];
 			
 			Input_buffer.Array = out_buffer_x = out_buffer_solver[0] ; // new double[buffer_size];
@@ -72,13 +71,8 @@ namespace impl.bt.solve.XSolver
 			    else 
 			    {
 			        first = 0;
-			        //int jp = cell_coord[c,1];
-			        //int kp = cell_coord[c,2];
 			        Shift_lr.initiate_recv();
 			        Shift_lr.go();
-			        //requests[0] = comm_solve.ImmediateReceive<double>(predecessor[0], WEST + jp + kp * ncells, out_buffer_x); 
-			        //requests[1].Wait(); 
-			        //requests[0].Wait(); 
 			        Unpack_solve_info.setParameters(lhsc, out_buffer_x, c);
 			        Unpack_solve_info.go();
 			        Solve_cell.setParameters(lhsc, first, last, c);
@@ -90,15 +84,11 @@ namespace impl.bt.solve.XSolver
 			        double[] in_buffer_x = Output_buffer.Array = in_buffer_solver[0]; // new double[buffer_size];
 			        Pack_solve_info.setParameters(lhsc, in_buffer_x, c);
 			        Pack_solve_info.go();
-			        //int jp = cell_coord[c,1];
-			        //int kp = cell_coord[c,2];
 			        Shift_lr.initiate_send();
-			        //requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, successor[0], WEST+jp+kp*ncells);
 			    }
 			}
 			
 			Input_buffer.Array = out_buffer_x = null;
-			// buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
 			Input_buffer.Array = out_buffer_x = out_buffer_solver[1]; // new double[buffer_size];
 			
 			for(stage = ncells-1; stage >= 0; stage--) 
@@ -118,13 +108,8 @@ namespace impl.bt.solve.XSolver
 			    }
 			    else 
 			    {
-			       // int jp = cell_coord[c,1];
-			       // int kp = cell_coord[c,2];
 				    Shift_rl.initiate_recv();
 			        Shift_rl.go();		        
-			        //requests[0] = comm_solve.ImmediateReceive<double>(successor[0], EAST+jp+kp*ncells, out_buffer_x); 
-			        //requests[1].Wait(); 
-			        //requests[0].Wait(); 
 			        Unpack_back_sub_info.setParameters(backsub_info, out_buffer_x, c);
 			        Unpack_back_sub_info.go();
 			        Back_substitute.setParameters(lhsc, backsub_info, first, last, c);
@@ -133,13 +118,10 @@ namespace impl.bt.solve.XSolver
 			    
 			    if(first == 0) 
 			    {
-			      //  int jp = cell_coord[c,1];
-			       // int kp = cell_coord[c,2];
 			        double[] in_buffer_x = Output_buffer.Array = in_buffer_solver[1]; // new double[buffer_size];
 			        Pack_back_sub_info.setParameters(in_buffer_x, c);
 			        Pack_back_sub_info.go();
 			        Shift_rl.initiate_send();
-			        //requests[1] = comm_solve.ImmediateSend<double>(in_buffer_x, predecessor[0], EAST+jp+kp*ncells);                    
 			    }
 			}
 			
