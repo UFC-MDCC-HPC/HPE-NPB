@@ -23,7 +23,7 @@ namespace impl.lu.data.ProblemDefinitionImpl
 		{
 		    setProblemClass();
 
-            int _num    = this.Ranks.Length;
+            int _num    = this.Size;
 //            _node   = this.GlobalRank;         
 //            _ndim   = Constants.nodedim(_num);
             

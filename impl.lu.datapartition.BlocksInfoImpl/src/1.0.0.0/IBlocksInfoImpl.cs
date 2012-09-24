@@ -27,7 +27,7 @@ namespace impl.lu.datapartition.BlocksInfoImpl
 		
 		override public void initialize()
 		{
-            int _num    = this.Ranks.Length;
+            int _num    = this.Size;
             _node   = this.GlobalRank;         
             int _ndim   = nodedim(_num);
             
@@ -162,7 +162,7 @@ namespace impl.lu.datapartition.BlocksInfoImpl
 		
 		private void setCheck()
 		{
-		    int _num    = this.Ranks.Length;
+		    int _num    = this.Size;
             int ydiv = ilog2(_num) / 2;
             int xdiv = ydiv;
             if(xdiv + ydiv != ilog2(_num)) xdiv += 1;

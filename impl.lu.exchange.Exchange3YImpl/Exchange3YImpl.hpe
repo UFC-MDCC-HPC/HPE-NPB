@@ -10,7 +10,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="axis" varName="O"/>
-        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="topology" location="common.topology.Ring/Ring.hpe" name="Ring" package="common.topology" exposed="true">
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="topology" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="true">
           <visualDescription h="62" w="106" x="553" y="194">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -18,7 +18,7 @@
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" name="MPIDirect" package="environment" exposed="true">
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="true">
           <visualDescription h="30" w="50" x="327" y="451">
             <color b="240" g="32" r="160"/>
           </visualDescription>
@@ -37,7 +37,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ffcae3e9a0ecbf9c4629fdb52bc2acc0e2cc392d40ed0441b527e752c9079cf609fb0785045e3d2c5ace2f492d755021fd6cf82d853e202471136832c6cf8fdffec701b57bfde7017dd2ef51f1a4c4adca40833d6c6165b9123411a3dc7be80a59839ab3316debcc5e4d0d6e17dcb8400cf7e4bc1eca328e130aa9f8182bfccb" localRef="y_axis" location="common.axis.YAxis/YAxis.hpe" name="YAxis" package="common.axis" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ffcae3e9a0ecbf9c4629fdb52bc2acc0e2cc392d40ed0441b527e752c9079cf609fb0785045e3d2c5ace2f492d755021fd6cf82d853e202471136832c6cf8fdffec701b57bfde7017dd2ef51f1a4c4adca40833d6c6165b9123411a3dc7be80a59839ab3316debcc5e4d0d6e17dcb8400cf7e4bc1eca328e130aa9f8182bfccb" localRef="y_axis" location="common.axis.YAxis/YAxis.hpe" multiple="false" name="YAxis" package="common.axis" exposed="false">
       <visualDescription h="30" w="50" x="134" y="129">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -59,17 +59,8 @@
         <originRef cRef="shift_backward" iRef="IShift1D"/>
         <visualDescription h="10" w="10" x="111" y="9"/>
       </slice>
-      <protocol xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@14bbe706" repeat="0">
-        <visualDescription h="150" w="130" x="75" y="75"/>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@3c3c458c" repeat="0" sliceRef="shift_forward">
-          <visualDescription h="50" w="50" x="10" y="50"/>
-        </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@18fa0939" repeat="0" sliceRef="shift_backward">
-          <visualDescription h="50" w="50" x="70" y="50"/>
-        </action>
-      </protocol>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.topology.Ring;&#xA;using common.interactionpattern.shift1D.BufferReader;&#xA;using common.direction.Backward;&#xA;using common.interactionpattern.shift1D.BufferWriter;&#xA;using common.direction.Forward;&#xA;using environment.MPIDirect;&#xA;using common.interactionpattern.Shift1D;&#xA;using lu.exchange.Exchange3_ReadBuffer;&#xA;using lu.exchange.Exchange3_WriteBuffer;&#xA;using common.axis.Axis;&#xA;using common.axis.Y;&#xA;using lu.exchange.Exchange3;&#xA;&#xA;namespace impl.lu.exchange.Exchange3YImpl { &#xA;&#xA;public abstract class BaseIExchange3YImpl&lt;O>: Computation, BaseIExchange3&lt;O>&#xA;where O:IY&#xA;{&#xA;&#xA;private ICell cell = null;&#xA;&#xA;public ICell Cell {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cell == null)&#xA;&#x9;&#x9;&#x9;this.cell = (ICell) Services.getPort(&quot;topology&quot;);&#xA;&#x9;&#x9;return this.cell;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_ReadBuffer&lt;IBackwardDirection, O> buffer_reader_backward = null;&#xA;&#xA;protected IExchange3_ReadBuffer&lt;IBackwardDirection, O> Buffer_reader_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_reader_backward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_reader_backward = (IExchange3_ReadBuffer&lt;IBackwardDirection, O>) Services.getPort(&quot;buffer_reader_backward&quot;);&#xA;&#x9;&#x9;return this.buffer_reader_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_WriteBuffer&lt;IForwardDirection, O> buffer_writer_forward = null;&#xA;&#xA;protected IExchange3_WriteBuffer&lt;IForwardDirection, O> Buffer_writer_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_writer_forward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_writer_forward = (IExchange3_WriteBuffer&lt;IForwardDirection, O>) Services.getPort(&quot;buffer_writer_forward&quot;);&#xA;&#x9;&#x9;return this.buffer_writer_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IMPIDirect mpi = null;&#xA;&#xA;public IMPIDirect Mpi {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.mpi == null)&#xA;&#x9;&#x9;&#x9;this.mpi = (IMPIDirect) Services.getPort(&quot;mpi&quot;);&#xA;&#x9;&#x9;return this.mpi;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>> shift_backward = null;&#xA;&#xA;protected IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>> Shift_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.shift_backward == null)&#xA;&#x9;&#x9;&#x9;this.shift_backward = (IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>>) Services.getPort(&quot;shift_backward&quot;);&#xA;&#x9;&#x9;return this.shift_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_WriteBuffer&lt;IBackwardDirection, O> buffer_writer_backward = null;&#xA;&#xA;protected IExchange3_WriteBuffer&lt;IBackwardDirection, O> Buffer_writer_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_writer_backward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_writer_backward = (IExchange3_WriteBuffer&lt;IBackwardDirection, O>) Services.getPort(&quot;buffer_writer_backward&quot;);&#xA;&#x9;&#x9;return this.buffer_writer_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private O axis = default(O);&#xA;&#xA;protected O Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (O) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_ReadBuffer&lt;IForwardDirection, O> buffer_reader_forward = null;&#xA;&#xA;protected IExchange3_ReadBuffer&lt;IForwardDirection, O> Buffer_reader_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_reader_forward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_reader_forward = (IExchange3_ReadBuffer&lt;IForwardDirection, O>) Services.getPort(&quot;buffer_reader_forward&quot;);&#xA;&#x9;&#x9;return this.buffer_reader_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>> shift_forward = null;&#xA;&#xA;protected IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>> Shift_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.shift_forward == null)&#xA;&#x9;&#x9;&#x9;this.shift_forward = (IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>>) Services.getPort(&quot;shift_forward&quot;);&#xA;&#x9;&#x9;return this.shift_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIExchange3YImpl.cs" srcType="base" uri="impl.lu.exchange.Exchange3YImpl/bin/1.0.0.0/BaseIExchange3YImpl.dll" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.topology.Ring;&#xA;using common.interactionpattern.shift1D.BufferReader;&#xA;using common.direction.Backward;&#xA;using common.interactionpattern.shift1D.BufferWriter;&#xA;using common.direction.Forward;&#xA;using environment.MPIDirect;&#xA;using common.interactionpattern.Shift1D;&#xA;using lu.exchange.Exchange3_ReadBuffer;&#xA;using lu.exchange.Exchange3_WriteBuffer;&#xA;using common.axis.Axis;&#xA;using common.axis.YAxis;&#xA;using lu.exchange.Exchange3;&#xA;&#xA;namespace impl.lu.exchange.Exchange3YImpl { &#xA;&#xA;public abstract class BaseIExchange3YImpl&lt;O>: Computation, BaseIExchange3&lt;O>&#xA;where O:IY&#xA;{&#xA;&#xA;private ICell cell = null;&#xA;&#xA;public ICell Cell {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cell == null)&#xA;&#x9;&#x9;&#x9;this.cell = (ICell) Services.getPort(&quot;topology&quot;);&#xA;&#x9;&#x9;return this.cell;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_ReadBuffer&lt;IBackwardDirection, O> buffer_reader_backward = null;&#xA;&#xA;protected IExchange3_ReadBuffer&lt;IBackwardDirection, O> Buffer_reader_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_reader_backward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_reader_backward = (IExchange3_ReadBuffer&lt;IBackwardDirection, O>) Services.getPort(&quot;buffer_reader_backward&quot;);&#xA;&#x9;&#x9;return this.buffer_reader_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_WriteBuffer&lt;IForwardDirection, O> buffer_writer_forward = null;&#xA;&#xA;protected IExchange3_WriteBuffer&lt;IForwardDirection, O> Buffer_writer_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_writer_forward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_writer_forward = (IExchange3_WriteBuffer&lt;IForwardDirection, O>) Services.getPort(&quot;buffer_writer_forward&quot;);&#xA;&#x9;&#x9;return this.buffer_writer_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IMPIDirect mpi = null;&#xA;&#xA;public IMPIDirect Mpi {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.mpi == null)&#xA;&#x9;&#x9;&#x9;this.mpi = (IMPIDirect) Services.getPort(&quot;mpi&quot;);&#xA;&#x9;&#x9;return this.mpi;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>> shift_backward = null;&#xA;&#xA;protected IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>> Shift_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.shift_backward == null)&#xA;&#x9;&#x9;&#x9;this.shift_backward = (IShift1D&lt;IBackwardDirection, IExchange3_ReadBuffer&lt;IBackwardDirection, O>, IExchange3_WriteBuffer&lt;IBackwardDirection, O>>) Services.getPort(&quot;shift_backward&quot;);&#xA;&#x9;&#x9;return this.shift_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_WriteBuffer&lt;IBackwardDirection, O> buffer_writer_backward = null;&#xA;&#xA;protected IExchange3_WriteBuffer&lt;IBackwardDirection, O> Buffer_writer_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_writer_backward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_writer_backward = (IExchange3_WriteBuffer&lt;IBackwardDirection, O>) Services.getPort(&quot;buffer_writer_backward&quot;);&#xA;&#x9;&#x9;return this.buffer_writer_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private O axis = default(O);&#xA;&#xA;protected O Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (O) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IExchange3_ReadBuffer&lt;IForwardDirection, O> buffer_reader_forward = null;&#xA;&#xA;protected IExchange3_ReadBuffer&lt;IForwardDirection, O> Buffer_reader_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer_reader_forward == null)&#xA;&#x9;&#x9;&#x9;this.buffer_reader_forward = (IExchange3_ReadBuffer&lt;IForwardDirection, O>) Services.getPort(&quot;buffer_reader_forward&quot;);&#xA;&#x9;&#x9;return this.buffer_reader_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>> shift_forward = null;&#xA;&#xA;protected IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>> Shift_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.shift_forward == null)&#xA;&#x9;&#x9;&#x9;this.shift_forward = (IShift1D&lt;IForwardDirection, IExchange3_ReadBuffer&lt;IForwardDirection, O>, IExchange3_WriteBuffer&lt;IForwardDirection, O>>) Services.getPort(&quot;shift_forward&quot;);&#xA;&#x9;&#x9;return this.shift_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIExchange3YImpl.cs" srcType="base" uri="impl.lu.exchange.Exchange3YImpl/bin/1.0.0.0/BaseIExchange3YImpl.dll" versionId="1.0.0.0">
           <dependency>common.topology.Ring/bin/1.0.0.0/ICell.dll</dependency>
           <dependency>common.interactionpattern.shift1D.BufferReader/bin/1.0.0.0/IBufferReader.dll</dependency>
           <dependency>common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll</dependency>
@@ -83,7 +74,7 @@
           <dependency>common.axis.YAxis/bin/1.0.0.0/IY.dll</dependency>
           <dependency>lu.exchange.Exchange3/bin/1.0.0.0/BaseIExchange3.dll</dependency>
         </file>
-        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.Y;&#xA;using lu.exchange.Exchange3;&#xA;&#xA;namespace impl.lu.exchange.Exchange3YImpl { &#xA;&#x9;&#xA;&#x9;public class IExchange3YImpl&lt;O> : BaseIExchange3YImpl&lt;O>, IExchange3&lt;O>&#xA;&#x9;   where O:IY&#xA;&#x9;{&#xA;&#x9;&#x9;protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{ &#xA;&#x9;&#x9;&#x9;Shift_forward.setTag(from_n);&#xA;&#x9;&#x9;&#x9;Shift_forward.go();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Shift_backward.setTag(from_s);&#xA;&#x9;&#x9;&#x9;Shift_backward.go();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;} &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;private double[,,,] g;&#xA;&#x9;&#x9;&#xA; &#x9;    public void setParameters(double[,,,] g, int nx, int ny, int nz) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.g = g;&#xA;&#x9;&#x9;    Buffer_reader_backward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_reader_forward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_writer_backward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_writer_forward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;}&#x9;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="IExchange3YImpl.cs" srcType="user" uri="impl.lu.exchange.Exchange3YImpl/bin/1.0.0.0/IExchange3YImpl.dll" versionId="1.0.0.0">
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.axis.YAxis;&#xA;using lu.exchange.Exchange3;&#xA;&#xA;namespace impl.lu.exchange.Exchange3YImpl { &#xA;&#x9;&#xA;&#x9;public class IExchange3YImpl&lt;O> : BaseIExchange3YImpl&lt;O>, IExchange3&lt;O>&#xA;&#x9;   where O:IY&#xA;&#x9;{&#xA;&#x9;&#x9;protected static int from_s = 1, from_n = 2, from_e = 3, from_w = 4;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{ &#xA;&#x9;&#x9;&#x9;Shift_forward.setTag(from_n);&#xA;&#x9;&#x9;&#x9;Shift_forward.go();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Shift_backward.setTag(from_s);&#xA;&#x9;&#x9;&#x9;Shift_backward.go();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;} &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;private double[,,,] g;&#xA;&#x9;&#x9;&#xA; &#x9;    public void setParameters(double[,,,] g, int nx, int ny, int nz) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.g = g;&#xA;&#x9;&#x9;    Buffer_reader_backward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_reader_forward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_writer_backward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;&#x9;Buffer_writer_forward.setParameters(g, nx, ny, nz);&#xA;&#x9;&#x9;}&#x9;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="IExchange3YImpl.cs" srcType="user" uri="impl.lu.exchange.Exchange3YImpl/bin/1.0.0.0/IExchange3YImpl.dll" versionId="1.0.0.0">
           <dependency>common.axis.YAxis/bin/1.0.0.0/IY.dll</dependency>
           <dependency>%WORKSPACE/impl.lu.exchange.Exchange3YImpl/bin/1.0.0.0/BaseIExchange3YImpl.dll</dependency>
           <dependency>lu.exchange.Exchange3/bin/1.0.0.0/IExchange3.dll</dependency>
@@ -92,10 +83,6 @@
       <visualDescription h="104" w="131" x="143" y="51">
         <color b="0" g="255" r="255"/>
       </visualDescription>
-      <port name="buffer_reader_forward">
-        <visualDescription h="10" w="10" x="54" y="11"/>
-        <slice pRef="buffer_reader" sRef="shift_forward"/>
-      </port>
       <port name="axis">
         <visualDescription h="10" w="10" x="22" y="46"/>
         <slice pRef="axis" sRef="shift_forward"/>
@@ -106,56 +93,11 @@
         <slice pRef="mpi" sRef="shift_forward"/>
         <slice pRef="mpi" sRef="shift_backward"/>
       </port>
-      <port name="buffer_writer_forward">
-        <visualDescription h="10" w="10" x="33" y="6"/>
-        <slice pRef="buffer_writer" sRef="shift_forward"/>
-      </port>
-      <port name="buffer_writer_backward">
-        <visualDescription h="10" w="10" x="72" y="82"/>
-        <slice pRef="buffer_writer" sRef="shift_backward"/>
-      </port>
-      <port name="buffer_reader_backward">
-        <visualDescription h="10" w="10" x="14" y="78"/>
-        <slice pRef="buffer_reader" sRef="shift_backward"/>
-      </port>
       <parameter iname="IY" order="0" parid="axis" uname="y" varid="O"/>
     </interface>
-    <unit iRef="IExchange3YImpl" private="false" uRef="exchange3" visibleInterface="true">
+    <unit iRef="IExchange3YImpl" multiple="true" private="false" replica="0" uRef="exchange3" visibleInterface="true">
       <super cRef="base" uRef="exchange3"/>
-      <slices cRef="topology" replica="0" uRef="cell" sliceName="axis" transitive="true">
-        <visualDescription h="10" w="10" x="5" y="23"/>
-      </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="29" y="0"/>
-      </slices>
-      <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
-        <visualDescription h="10" w="10" x="61" y="22"/>
-      </slices>
-      <slices cRef="shift_forward" replica="0" uRef="shift" sliceName="shift_forward" transitive="false">
-        <visualDescription h="10" w="10" x="11" y="21"/>
-        <port>axis</port>
-        <port>mpi</port>
-      </slices>
-      <slices cRef="shift_backward" replica="0" uRef="shift" sliceName="shift_backward" transitive="false">
-        <visualDescription h="10" w="10" x="111" y="9"/>
-        <port>axis</port>
-        <port>mpi</port>
-      </slices>
-      <visualDescription h="40" w="131" x="80" y="200"/>
+      <visualDescription h="40" w="131" x="91" y="212"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <originRef>shift_backward</originRef>
-      <originRef>buffer_writer</originRef>
-      <originRef>direction</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="exchange3"/>
-      <visualDescription h="20" w="20" x="321" y="186"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>y_axis</originRef>
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="y_axis" uRef="y"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

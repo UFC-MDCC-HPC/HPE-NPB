@@ -11,7 +11,7 @@
         </visualDescription>
         <parameter formFieldId="axis" varName="O"/>
         <parameter formFieldId="direction" varName="DIR"/>
-        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer" location="common.Buffer/Buffer.hpe" name="Buffer" package="common" exposed="true">
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
           <visualDescription h="30" w="50" x="173" y="328">
             <color b="255" g="255" r="255"/>
           </visualDescription>
@@ -30,7 +30,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ffcae3e9a0ecbf9c4629fdb52bc2acc0e2cc392d40ed0441b527e752c9079cf609fb0785045e3d2c5ace2f492d755021fd6cf82d853e202471136832c6cf8fdffec701b57bfde7017dd2ef51f1a4c4adca40833d6c6165b9123411a3dc7be80a59839ab3316debcc5e4d0d6e17dcb8400cf7e4bc1eca328e130aa9f8182bfccb" localRef="axis" location="common.axis.YAxis/YAxis.hpe" name="YAxis" package="common.axis" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ffcae3e9a0ecbf9c4629fdb52bc2acc0e2cc392d40ed0441b527e752c9079cf609fb0785045e3d2c5ace2f492d755021fd6cf82d853e202471136832c6cf8fdffec701b57bfde7017dd2ef51f1a4c4adca40833d6c6165b9123411a3dc7be80a59839ab3316debcc5e4d0d6e17dcb8400cf7e4bc1eca328e130aa9f8182bfccb" localRef="axis" location="common.axis.YAxis/YAxis.hpe" multiple="false" name="YAxis" package="common.axis" exposed="false">
       <visualDescription h="30" w="50" x="61" y="321">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -38,7 +38,7 @@
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
-    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004376d6d9d7de3a1b4d1fdf8832b56bd5b62d403268644c42baa67426cc69adbb726d79ebf33cb4e50759bee5876dae4b375be77b5eba726be3f05f558ea5acc1f13eb2291544bb106ea1da4e63d9252ff2fce1d8428e6d5fbefd2291d534003bd1bc8801fa4fb6341951cfd06c4003178884b8f780965965df6f99b6b33e0782" localRef="direction" location="common.direction.Backward/Backward.hpe" name="Backward" package="common.direction" exposed="false">
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004376d6d9d7de3a1b4d1fdf8832b56bd5b62d403268644c42baa67426cc69adbb726d79ebf33cb4e50759bee5876dae4b375be77b5eba726be3f05f558ea5acc1f13eb2291544bb106ea1da4e63d9252ff2fce1d8428e6d5fbefd2291d534003bd1bc8801fa4fb6341951cfd06c4003178884b8f780965965df6f99b6b33e0782" localRef="direction" location="common.direction.Backward/Backward.hpe" multiple="false" name="Backward" package="common.direction" exposed="false">
       <visualDescription h="30" w="50" x="87" y="110">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -49,23 +49,12 @@
     <supplyParameter cRef="direction" varName="DIR"/>
     <supplyParameter cRef="axis" varName="O"/>
     <interface iRef="IExchange3_YBackwardReadBufferImpl" nArgs="2">
-      <slice isRef="buffer">
-        <originRef cRef="buffer" iRef="IBuffer"/>
-        <visualDescription h="10" w="10" x="141" y="20"/>
-      </slice>
-      <slice isRef="direction">
-        <originRef cRef="direction" iRef="IDirection"/>
-        <visualDescription h="10" w="10" x="14" y="26"/>
-      </slice>
       <slice isRef="axis">
         <originRef cRef="axis" iRef="IAxis"/>
         <visualDescription h="10" w="10" x="4" y="15"/>
       </slice>
-      <protocol xsi:type="component:ActionSkipType" label="hPE.frontend.kinds.activate.model.protocol.HSkipAction@169cac1" repeat="0">
-        <visualDescription h="50" w="50" x="75" y="75"/>
-      </protocol>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.Buffer;&#xA;using common.direction.Direction;&#xA;using common.axis.Axis;&#xA;using common.direction.Backward;&#xA;using common.axis.Y;&#xA;using lu.exchange.Exchange3_ReadBuffer;&#xA;&#xA;namespace impl.lu.exchange.Exchange3_YBackwardReadBufferImpl { &#xA;&#xA;public abstract class BaseIExchange3_YBackwardReadBufferImpl&lt;DIR, O>: Computation, BaseIExchange3_ReadBuffer&lt;DIR, O>&#xA;where DIR:IBackwardDirection&#xA;where O:IY&#xA;{&#xA;&#xA;private IBuffer buffer = null;&#xA;&#xA;public IBuffer Buffer {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer == null)&#xA;&#x9;&#x9;&#x9;this.buffer = (IBuffer) Services.getPort(&quot;buffer&quot;);&#xA;&#x9;&#x9;return this.buffer;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR direction = default(DIR);&#xA;&#xA;protected DIR Direction {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.direction == null)&#xA;&#x9;&#x9;&#x9;this.direction = (DIR) Services.getPort(&quot;direction&quot;);&#xA;&#x9;&#x9;return this.direction;&#xA;&#x9;}&#xA;}&#xA;&#xA;private O axis = default(O);&#xA;&#xA;protected O Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (O) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIExchange3_YBackwardReadBufferImpl.cs" srcType="base" uri="impl.lu.exchange.Exchange3_YBackwardReadBufferImpl/bin/1.0.0.0/BaseIExchange3_YBackwardReadBufferImpl.dll" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.Buffer;&#xA;using common.direction.Direction;&#xA;using common.axis.Axis;&#xA;using common.direction.Backward;&#xA;using common.axis.YAxis;&#xA;using lu.exchange.Exchange3_ReadBuffer;&#xA;&#xA;namespace impl.lu.exchange.Exchange3_YBackwardReadBufferImpl { &#xA;&#xA;public abstract class BaseIExchange3_YBackwardReadBufferImpl&lt;DIR, O>: Computation, BaseIExchange3_ReadBuffer&lt;DIR, O>&#xA;where DIR:IBackwardDirection&#xA;where O:IY&#xA;{&#xA;&#xA;private IBuffer buffer = null;&#xA;&#xA;public IBuffer Buffer {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer == null)&#xA;&#x9;&#x9;&#x9;this.buffer = (IBuffer) Services.getPort(&quot;buffer&quot;);&#xA;&#x9;&#x9;return this.buffer;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR direction = default(DIR);&#xA;&#xA;protected DIR Direction {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.direction == null)&#xA;&#x9;&#x9;&#x9;this.direction = (DIR) Services.getPort(&quot;direction&quot;);&#xA;&#x9;&#x9;return this.direction;&#xA;&#x9;}&#xA;}&#xA;&#xA;private O axis = default(O);&#xA;&#xA;protected O Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (O) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIExchange3_YBackwardReadBufferImpl.cs" srcType="base" uri="impl.lu.exchange.Exchange3_YBackwardReadBufferImpl/bin/1.0.0.0/BaseIExchange3_YBackwardReadBufferImpl.dll" versionId="1.0.0.0">
           <dependency>common.Buffer/bin/1.0.0.0/IBuffer.dll</dependency>
           <dependency>common.direction.Direction/bin/1.0.0.0/IDirection.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
@@ -73,7 +62,7 @@
           <dependency>common.axis.YAxis/bin/1.0.0.0/IY.dll</dependency>
           <dependency>lu.exchange.Exchange3_ReadBuffer/bin/1.0.0.0/BaseIExchange3_ReadBuffer.dll</dependency>
         </file>
-        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Backward;&#xA;using common.axis.Y;&#xA;using lu.exchange.Exchange3_ReadBuffer;&#xA;&#xA;namespace impl.lu.exchange.Exchange3_YBackwardReadBufferImpl { &#xA;&#xA;&#x9;public class IExchange3_YBackwardReadBufferImpl&lt;DIR, O> : BaseIExchange3_YBackwardReadBufferImpl&lt;DIR, O>, IExchange3_ReadBuffer&lt;DIR, O>&#xA;&#x9;&#x9;where DIR:IBackwardDirection&#xA;&#x9;&#x9;where O:IY&#xA;&#x9;{&#xA;&#x9;&#xA;&#x9;&#x9;public override int go() { &#xA;&#x9;&#x9;&#x9;&#xA;            int j, k0;&#xA;            int ipos1, ipos2;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;for(k0 = 1; k0&lt;=nz; k0++) &#xA;&#x9;&#x9;&#x9;{&#xA;                for(j = 1; j&lt;=ny; j++) &#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;                    ipos1 = (k0-1)*ny + j - 1;&#xA;                    ipos2 = ipos1 + ny*nz;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;                    g[k0-1, j+1, nx+3, 0]  = buf1[0*size2+ipos1];&#xA;                    g[k0-1, j+1, nx+3, 1]  = buf1[1*size2+ipos1];&#xA;                    g[k0-1, j+1, nx+3, 2]  = buf1[2*size2+ipos1];&#xA;                    g[k0-1, j+1, nx+3, 3]  = buf1[3*size2+ipos1];&#xA;                    g[k0-1, j+1, nx+3, 4]  = buf1[4*size2+ipos1];&#xA;&#xA;                    g[k0-1, j+1, nx+2, 0] = buf1[0*size2+ipos2];&#xA;                    g[k0-1, j+1, nx+2, 1] = buf1[1*size2+ipos2];&#xA;                    g[k0-1, j+1, nx+2, 2] = buf1[2*size2+ipos2];&#xA;                    g[k0-1, j+1, nx+2, 3] = buf1[3*size2+ipos2];&#xA;                    g[k0-1, j+1, nx+2, 4] = buf1[4*size2+ipos2];&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9; &#xA;                }&#xA;            }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    return 0;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#xA;&#x9;&#x9;private double[,,,] g;&#xA;&#x9;&#x9;private int  nx, ny, nz;&#xA;&#x9;&#x9;private int size2;&#xA;&#x9;&#x9;private double[] buf1;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void setParameters(double[,,,] g, int nx, int ny, int nz)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.g = g;&#xA;&#x9;&#x9;&#x9;this.nx = nx;&#xA;&#x9;&#x9;&#x9;this.ny = ny;&#xA;&#x9;&#x9;&#x9;this.nz = nz;&#xA;&#x9;&#x9;&#x9;&#xA;            int bsize = 10*ny*nz;&#xA;&#x9;&#x9;&#x9;&#xA;            size2 = bsize / 5;&#xA;            buf1 = Buffer.Array = new double[bsize];&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="IExchange3_YBackwardReadBufferImpl.cs" srcType="user" uri="impl.lu.exchange.Exchange3_YBackwardReadBufferImpl/bin/1.0.0.0/IExchange3_YBackwardReadBufferImpl.dll" versionId="1.0.0.0">
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Backward;&#xA;using common.axis.YAxis;&#xA;using lu.exchange.Exchange3_ReadBuffer;&#xA;&#xA;namespace impl.lu.exchange.Exchange3_YBackwardReadBufferImpl { &#xA;&#xA;&#x9;public class IExchange3_YBackwardReadBufferImpl&lt;DIR, O> : BaseIExchange3_YBackwardReadBufferImpl&lt;DIR, O>, IExchange3_ReadBuffer&lt;DIR, O>&#xA;&#x9;&#x9;where DIR:IBackwardDirection&#xA;&#x9;&#x9;where O:IY&#xA;&#x9;{&#xA;&#x9;&#xA;&#x9;&#x9;public override int go() { &#xA;&#x9;&#x9;&#x9;&#xA;            int j, k0;&#xA;            int ipos1, ipos2;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;for(k0 = 1; k0&lt;=nz; k0++) &#xA;&#x9;&#x9;&#x9;{&#xA;                for(j = 1; j&lt;=ny; j++) &#xA;&#x9;&#x9;&#x9;&#x9;{&#xA;                    ipos1 = (k0-1)*ny + j - 1;&#xA;                    ipos2 = ipos1 + ny*nz;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;                    g[k0-1, j+1, nx+3, 0]  = buf1[0*size2+ipos1];&#xA;                    g[k0-1, j+1, nx+3, 1]  = buf1[1*size2+ipos1];&#xA;                    g[k0-1, j+1, nx+3, 2]  = buf1[2*size2+ipos1];&#xA;                    g[k0-1, j+1, nx+3, 3]  = buf1[3*size2+ipos1];&#xA;                    g[k0-1, j+1, nx+3, 4]  = buf1[4*size2+ipos1];&#xA;&#xA;                    g[k0-1, j+1, nx+2, 0] = buf1[0*size2+ipos2];&#xA;                    g[k0-1, j+1, nx+2, 1] = buf1[1*size2+ipos2];&#xA;                    g[k0-1, j+1, nx+2, 2] = buf1[2*size2+ipos2];&#xA;                    g[k0-1, j+1, nx+2, 3] = buf1[3*size2+ipos2];&#xA;                    g[k0-1, j+1, nx+2, 4] = buf1[4*size2+ipos2];&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9; &#xA;                }&#xA;            }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    return 0;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#xA;&#x9;&#x9;private double[,,,] g;&#xA;&#x9;&#x9;private int  nx, ny, nz;&#xA;&#x9;&#x9;private int size2;&#xA;&#x9;&#x9;private double[] buf1;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void setParameters(double[,,,] g, int nx, int ny, int nz)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.g = g;&#xA;&#x9;&#x9;&#x9;this.nx = nx;&#xA;&#x9;&#x9;&#x9;this.ny = ny;&#xA;&#x9;&#x9;&#x9;this.nz = nz;&#xA;&#x9;&#x9;&#x9;&#xA;            int bsize = 10*ny*nz;&#xA;&#x9;&#x9;&#x9;&#xA;            size2 = bsize / 5;&#xA;            buf1 = Buffer.Array = new double[bsize];&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="IExchange3_YBackwardReadBufferImpl.cs" srcType="user" uri="impl.lu.exchange.Exchange3_YBackwardReadBufferImpl/bin/1.0.0.0/IExchange3_YBackwardReadBufferImpl.dll" versionId="1.0.0.0">
           <dependency>common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll</dependency>
           <dependency>common.axis.YAxis/bin/1.0.0.0/IY.dll</dependency>
           <dependency>%WORKSPACE/impl.lu.exchange.Exchange3_YBackwardReadBufferImpl/bin/1.0.0.0/BaseIExchange3_YBackwardReadBufferImpl.dll</dependency>
@@ -83,43 +72,12 @@
       <visualDescription h="40" w="198" x="42" y="99">
         <color b="175" g="121" r="66"/>
       </visualDescription>
-      <port name="buffer">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer" sRef="buffer"/>
-      </port>
       <parameter iname="IBackwardDirection" order="0" parid="direction" uname="backward" varid="DIR"/>
       <parameter iname="IY" order="1" parid="axis" uname="y" varid="O"/>
     </interface>
-    <unit iRef="IExchange3_YBackwardReadBufferImpl" private="false" uRef="buffer_reader" visibleInterface="true">
+    <unit iRef="IExchange3_YBackwardReadBufferImpl" multiple="true" private="false" replica="0" uRef="buffer_reader" visibleInterface="true">
       <super cRef="base" uRef="buffer_reader"/>
-      <slices cRef="buffer" replica="0" uRef="buffer" sliceName="buffer" transitive="false">
-        <visualDescription h="10" w="10" x="141" y="20"/>
-      </slices>
-      <slices cRef="direction" replica="0" uRef="direction" sliceName="direction" transitive="false">
-        <visualDescription h="10" w="10" x="14" y="26"/>
-      </slices>
-      <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
-        <visualDescription h="10" w="10" x="4" y="15"/>
-      </slices>
-      <visualDescription h="40" w="162" x="67" y="175"/>
+      <visualDescription h="40" w="162" x="242" y="166"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <originRef>axis</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="buffer_reader"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>axis</originRef>
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="axis" uRef="y"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>direction</originRef>
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableEntryType" cRef="direction" uRef="backward"/>
-      <visualDescription h="20" w="20" x="354" y="190"/>
-    </enumerator>
   </componentInfo>
 </component:component>

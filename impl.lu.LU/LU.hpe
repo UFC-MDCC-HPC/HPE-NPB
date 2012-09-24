@@ -21,7 +21,7 @@
     </visualAttributes>
   </header>
   <componentInfo>
-    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" name="Class" package="common.problem_size" exposed="false">
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" exposed="false">
       <visualDescription h="30" w="50" x="460" y="232">
         <color b="255" g="255" r="255"/>
       </visualDescription>
@@ -63,30 +63,6 @@
         <originRef cRef="instance_type" iRef="IInstance_LU"/>
         <visualDescription h="10" w="10" x="93" y="28"/>
       </slice>
-      <protocol xsi:type="component:ActionCombinatorParType" label="hPE.frontend.kinds.activate.model.protocol.HParAction@59eab052" repeat="0">
-        <visualDescription h="150" w="430" x="75" y="75"/>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@3ede059c" repeat="0" sliceRef="boundary_values">
-          <visualDescription h="50" w="50" x="10" y="50"/>
-        </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@62426502" repeat="0" sliceRef="initial_values">
-          <visualDescription h="50" w="50" x="70" y="50"/>
-        </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@74f598b3" repeat="0" sliceRef="erhs">
-          <visualDescription h="50" w="50" x="130" y="50"/>
-        </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@27fc4bc2" repeat="0" sliceRef="ssor">
-          <visualDescription h="50" w="50" x="190" y="50"/>
-        </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@24d1c210" repeat="0" sliceRef="error">
-          <visualDescription h="50" w="50" x="250" y="50"/>
-        </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@471bbb52" repeat="0" sliceRef="pintgr">
-          <visualDescription h="50" w="50" x="310" y="50"/>
-        </action>
-        <action xsi:type="component:ActionActivateType" label="hPE.frontend.kinds.activate.model.protocol.HDoAction@6da728f6" repeat="0" sliceRef="verify">
-          <visualDescription h="50" w="50" x="370" y="50"/>
-        </action>
-      </protocol>
       <sources sourceType="C# Executable" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using lu.datapartition.BlocksInfo;&#xA;using lu.problem_size.Instance_LU;&#xA;using common.problem_size.Class;&#xA;using lu.ERhs;&#xA;using environment.MPIDirect;&#xA;using lu.Error;&#xA;using lu.Pintgr;&#xA;using lu.Verify;&#xA;using lu.data.InitialValues;&#xA;using lu.data.BoundaryValues;&#xA;using lu.ssor.SSOR;&#xA;using lu.data.ProblemDefinition;&#xA;using common.topology.Ring;&#xA;using lu.LU;&#xA;using lu.problem_size.Instance;&#xA;using MPI;&#xA;&#xA;namespace impl.lu.LU { &#xA;&#xA;public abstract class BaseILUImpl&lt;C>: Application, BaseILU&lt;C>&#xA;where C:IClass{&#xA;   &#xA;&#x9;&#x9;#region data&#xA;&#x9;&#x9;&#x9;protected Intracommunicator worldcomm;&#xA;&#x9;&#x9;&#x9;protected PROBLEM_CLASS problem_class;&#xA;&#x9;&#x9;&#x9;protected int nx0,ny0,nz0;&#xA;&#x9;&#x9;&#x9;protected int isiz01, isiz02, isiz03;&#xA;&#x9;&#x9;&#x9;protected int itmax;&#xA;&#x9;&#x9;&#x9;override public void initialize()&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;    itmax         = Instance.itmax;&#xA;&#x9;&#x9;&#x9;    problem_class = Instance.CLASS;&#xA;&#x9;&#x9;&#x9;    isiz01        = Instance.isiz01;&#xA;&#x9;&#x9;&#x9;    isiz02        = Instance.isiz02;&#xA;&#x9;&#x9;&#x9;    isiz03        = Instance.isiz03;&#xA;&#x9;&#x9;&#x9;    &#xA;&#x9;&#x9;&#x9;    nx0   = Blocks.nx0;&#xA;&#x9;&#x9;&#x9;    ny0   = Blocks.ny0;&#xA;&#x9;&#x9;&#x9;    nz0   = Blocks.nz0;&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;worldcomm = this.WorldComm; //Mpi.worldComm();&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;#endregion&#xA;&#xA;&#x9;&#x9;private IBlocksInfo&lt;IInstance_LU&lt;C>, C> blocks = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IBlocksInfo&lt;IInstance_LU&lt;C>, C> Blocks {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.blocks == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.blocks = (IBlocksInfo&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;blocks_info&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.blocks;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;/*&#x9;&#x9;private IBlocks3D&lt;IInstance_LU&lt;C>, C> process = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IBlocks3D&lt;IInstance_LU&lt;C>, C> Process {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.process == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.process = (IBlocks3D&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;data_partition&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.process;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9; */&#xA;&#x9;&#x9;private IERhs&lt;IInstance_LU&lt;C>, C> erhs = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IERhs&lt;IInstance_LU&lt;C>, C> Erhs {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.erhs == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.erhs = (IERhs&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;erhs&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.erhs;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IMPIDirect mpi = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IMPIDirect Mpi {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.mpi == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.mpi = (IMPIDirect) Services.getPort(&quot;mpi&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.mpi;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IError&lt;IInstance_LU&lt;C>, C> error = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IError&lt;IInstance_LU&lt;C>, C> Error {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.error == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.error = (IError&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;error&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.error;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IPintgr&lt;IInstance_LU&lt;C>, C> pintgr = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IPintgr&lt;IInstance_LU&lt;C>, C> Pintgr {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.pintgr == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.pintgr = (IPintgr&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;pintgr&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.pintgr;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IVerify&lt;IInstance_LU&lt;C>, C> verify = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IVerify&lt;IInstance_LU&lt;C>, C> Verify {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.verify == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.verify = (IVerify&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;verify&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.verify;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IInitialValues&lt;IInstance_LU&lt;C>, C> setiv = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IInitialValues&lt;IInstance_LU&lt;C>, C> Setiv {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.setiv == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.setiv = (IInitialValues&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;setiv&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.setiv;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IBoundaryValues&lt;IInstance_LU&lt;C>, C> setbv = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IBoundaryValues&lt;IInstance_LU&lt;C>, C> Setbv {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.setbv == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.setbv = (IBoundaryValues&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;setbv&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.setbv;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private ISSOR&lt;IInstance_LU&lt;C>, C> ssor = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected ISSOR&lt;IInstance_LU&lt;C>, C> Ssor {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.ssor == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.ssor = (ISSOR&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;ssor&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.ssor;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IProblemDefinition&lt;IInstance_LU&lt;C>, C> problem = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IProblemDefinition&lt;IInstance_LU&lt;C>, C> Problem {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;IInstance_LU&lt;C>, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.problem;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IInstance_LU&lt;C> instance = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;protected IInstance_LU&lt;C> Instance {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.instance == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.instance = (IInstance_LU&lt;C>) Services.getPort(&quot;instance_type&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.instance;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private ICell y = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public ICell Y {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.y == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.y = (ICell) Services.getPort(&quot;y&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.y;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private ICell x = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public ICell X {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.x == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.x = (ICell) Services.getPort(&quot;x&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.x;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#xA;&#x9;&#x9;abstract public int go(); &#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="BaseILUImpl.cs" srcType="base" uri="impl.lu.LU/bin/1.0.0.0/BaseILUImpl.dll" versionId="1.0.0.0">
           <dependency>lu.datapartition.BlocksInfo/bin/1.0.0.0/IBlocksInfo.dll</dependency>
@@ -115,7 +91,7 @@
           <externalDependency>BMInOut</externalDependency>
         </file>
       </sources>
-      <visualDescription h="107" w="180" x="147" y="78">
+      <visualDescription h="107" w="180" x="131" y="99">
         <color b="0" g="255" r="128"/>
       </visualDescription>
       <port name="y">
@@ -134,16 +110,6 @@
         <slice pRef="x" sRef="ssor"/>
         <slice pRef="x" sRef="pintgr"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="71" y="1"/>
-        <slice pRef="problem" sRef="boundary_values"/>
-        <slice pRef="problem" sRef="initial_values"/>
-        <slice pRef="problem" sRef="erhs"/>
-        <slice pRef="problem" sRef="ssor"/>
-        <slice pRef="problem" sRef="error"/>
-        <slice pRef="problem" sRef="pintgr"/>
-        <slice pRef="problem" sRef="verify"/>
-      </port>
       <port name="blocks">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="blocks" sRef="boundary_values"/>
@@ -154,6 +120,16 @@
         <slice pRef="blocks" sRef="pintgr"/>
         <slice pRef="blocks" sRef="verify"/>
       </port>
+      <port name="problem">
+        <visualDescription h="10" w="10" x="71" y="1"/>
+        <slice pRef="problem" sRef="boundary_values"/>
+        <slice pRef="problem" sRef="initial_values"/>
+        <slice pRef="problem" sRef="erhs"/>
+        <slice pRef="problem" sRef="ssor"/>
+        <slice pRef="problem" sRef="error"/>
+        <slice pRef="problem" sRef="pintgr"/>
+        <slice pRef="problem" sRef="verify"/>
+      </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="159" y="5"/>
         <slice pRef="mpi" sRef="erhs"/>
@@ -161,61 +137,13 @@
         <slice pRef="mpi" sRef="error"/>
         <slice pRef="mpi" sRef="pintgr"/>
       </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="x" sRef="ssor"/>
-      </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="y" sRef="ssor"/>
-      </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="y" sRef="ssor"/>
-      </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="x" sRef="ssor"/>
-      </port>
       <externalReferences>MPI</externalReferences>
       <externalReferences>BMInOut</externalReferences>
       <parameter iname="IClass" order="0" parid="class" uname="class" varid="C"/>
     </interface>
-    <unit iRef="ILUImpl" private="false" uRef="lu" visibleInterface="true">
+    <unit iRef="ILUImpl" multiple="true" private="false" replica="0" uRef="lu" visibleInterface="true">
       <super cRef="base" uRef="lu"/>
-      <slices cRef="setbv" replica="0" uRef="boundary_values" sliceName="boundary_values" transitive="false">
-        <visualDescription h="10" w="10" x="4" y="26"/>
-      </slices>
-      <slices cRef="setiv" replica="0" uRef="initial_values" sliceName="initial_values" transitive="false">
-        <visualDescription h="10" w="10" x="4" y="39"/>
-      </slices>
-      <slices cRef="erhs" replica="0" uRef="erhs" sliceName="erhs" transitive="false">
-        <visualDescription h="10" w="10" x="34" y="46"/>
-      </slices>
-      <slices cRef="ssor" replica="0" uRef="ssor" sliceName="ssor" transitive="false">
-        <visualDescription h="10" w="10" x="80" y="46"/>
-      </slices>
-      <slices cRef="error" replica="0" uRef="error" sliceName="error" transitive="false">
-        <visualDescription h="10" w="10" x="93" y="46"/>
-      </slices>
-      <slices cRef="pintgr" replica="0" uRef="pintgr" sliceName="pintgr" transitive="false">
-        <visualDescription h="10" w="10" x="66" y="46"/>
-      </slices>
-      <slices cRef="verify" replica="0" uRef="verify" sliceName="verify" transitive="false">
-        <visualDescription h="10" w="10" x="19" y="46"/>
-      </slices>
-      <slices cRef="instance_type" replica="0" uRef="instance" sliceName="instance" transitive="false">
-        <visualDescription h="10" w="10" x="93" y="28"/>
-      </slices>
       <visualDescription h="58" w="106" x="220" y="259"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@1ab5deb1295025097082" varId="n">
-      <originRef>base</originRef>
-      <originRef>ssor</originRef>
-      <originRef>buts</originRef>
-      <originRef>direction</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="lu"/>
-      <visualDescription h="58" w="67" x="79" y="285"/>
-    </enumerator>
   </componentInfo>
 </component:component>

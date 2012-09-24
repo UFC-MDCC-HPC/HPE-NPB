@@ -138,8 +138,9 @@ namespace impl.lu.ssor.SSORImpl
 		
 		protected IBTSWork<IBackwardDirection, I, C> Buts_work {
 			get {
-				if (this.buts_work == null)
+				if (this.buts_work == null) {
 					this.buts_work = (IBTSWork<IBackwardDirection, I, C>) Services.getPort("work_buts");
+				}
 				return this.buts_work;
 			}
 		}
