@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000159d9ccb4ff0bb35a4fe190495e9c0d9a8406fa4adae5405850aed7cf83bbe6096bcb7deb5b07550a718fabec888b38f45c00ad4323db7b35e01dd236f9d1af6d8d0e529844de79031b63f05f2e810d0218c315e2c720d374b2bc2c0b15ec45863f2832e19f30c9bf6ee1519c76cd5e6f0ed485d2027397f93caec006396c587" isAbstract="true" kind="Qualifier" name="SPMethod" packagePath="sp.solve">
     <baseType>
       <extensionType>
@@ -22,10 +22,10 @@
   <componentInfo>
     <interface iRef="ISPMethod" nArgs="0">
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.Method;&#xA;&#xA;namespace sp.solve.SPMethod { &#xA;&#xA;public interface BaseISPMethod : BaseIMethod, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseISPMethod.cs" srcType="base" uri="sp.solve.SPMethod/bin/1.0.0.0/BaseISPMethod.dll" versionId="1.0.0.0">
+        <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;&#xA;namespace sp.solve.SPMethod { &#xA;&#xA;public interface BaseISPMethod : BaseISolvingMethod, IQualifierKind &#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseISPMethod.cs" srcType="base" uri="sp.solve.SPMethod/bin/1.0.0.0/BaseISPMethod.dll" versionId="1.0.0.0">
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/BaseISolvingMethod.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.Method;&#xA;&#xA;namespace sp.solve.SPMethod { &#xA;&#xA;public interface ISPMethod : BaseISPMethod, IMethod&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ISPMethod.cs" srcType="user" uri="sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;&#xA;namespace sp.solve.SPMethod { &#xA;&#xA;public interface ISPMethod : BaseISPMethod, ISolvingMethod&#xA;{&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ISPMethod.cs" srcType="user" uri="sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/sp.solve.SPMethod/bin/1.0.0.0/BaseISPMethod.dll</dependency>
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
         </file>
@@ -34,14 +34,9 @@
         <color b="128" g="0" r="255"/>
       </visualDescription>
     </interface>
-    <unit iRef="ISPMethod" private="false" uRef="method" visibleInterface="true">
+    <unit iRef="ISPMethod" multiple="true" private="false" replica="0" uRef="method" visibleInterface="true">
       <super cRef="base" uRef="method"/>
-      <visualDescription h="40" w="80" x="70" y="183"/>
+      <visualDescription h="40" w="80" x="72" y="203"/>
     </unit>
-    <enumerator cardinality="-1" fromSplit="false" ref="hPE.frontend.base.model.HReplicator@129a52a1295029089610" varId="n">
-      <originRef>base</originRef>
-      <links xsi:type="component:EnumerableUnitType" ref="method"/>
-      <visualDescription h="20" w="20" x="260" y="427"/>
-    </enumerator>
   </componentInfo>
 </component:component>
