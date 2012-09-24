@@ -29,6 +29,8 @@ public class IComputeRHSImpl<I,C> : BaseIComputeRHSImpl<I,C>, IComputeRHS<I,C>
 	        ksize = cell_size[c, 2] + 2;
 	        jsize = cell_size[c, 1] + 2;
 	        isize = cell_size[c, 0] + 2;
+				
+			//Console.WriteLine("ksize = " + ksize + "," + "jsize = " + jsize + "," + "isize = " + isize);
 	
 	        //---------------------------------------------------------------------
 	        //      compute the reciprocal of density, and the kinetic energy, 

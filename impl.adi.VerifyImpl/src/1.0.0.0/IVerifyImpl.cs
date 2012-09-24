@@ -43,7 +43,7 @@ public override int go() {
 		Error_norm.go();
 		
         // copy_faces();
-		if (Ranks.Length > 1)
+		if (Size > 1)
 			Copy_faces.go();
 			
 		Compute_rhs.go();	

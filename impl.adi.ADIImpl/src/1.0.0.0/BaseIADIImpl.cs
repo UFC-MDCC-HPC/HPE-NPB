@@ -23,7 +23,7 @@ using common.problem_size.Instance;
 
 namespace impl.adi.ADIImpl { 
 
-public abstract class BaseIADIImpl<MTH, CLASS, I>: Computation, BaseIADI<MTH, CLASS, I>
+public abstract class BaseIADIImpl<I, CLASS, MTH>: Computation, BaseIADI<I, CLASS, MTH>
 	where MTH:ISolvingMethod
 	where CLASS:IClass
 	where I:IInstance<CLASS>

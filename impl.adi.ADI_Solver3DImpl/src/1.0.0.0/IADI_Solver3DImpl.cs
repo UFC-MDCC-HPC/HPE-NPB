@@ -12,10 +12,11 @@ using common.solve.SolvingMethod;
 
 namespace impl.adi.ADI_Solver3DImpl { 
 
-	public class IADI_Solver3DImpl<MTH, CLASS, I> : BaseIADI_Solver3DImpl<MTH, CLASS, I>, IADI_Solver3D<MTH, CLASS, I>
-	where MTH:ISolvingMethod
-	where CLASS:IClass
+    
+	public class IADI_Solver3DImpl<I, CLASS, MTH> : BaseIADI_Solver3DImpl<I, CLASS, MTH>, IADI_Solver3D<I, CLASS, MTH>
 	where I:IInstance<CLASS>
+	where CLASS:IClass
+	where MTH:ISolvingMethod
 	{
         public int bid = -1;
 		public static int t_total = 1;

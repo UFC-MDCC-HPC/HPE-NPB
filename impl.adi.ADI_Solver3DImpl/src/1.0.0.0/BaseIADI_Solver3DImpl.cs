@@ -22,7 +22,8 @@ using adi.ADI;
 
 namespace impl.adi.ADI_Solver3DImpl { 
 
-public abstract class BaseIADI_Solver3DImpl<MTH, CLASS, I>: Application, BaseIADI_Solver3D<MTH, CLASS, I>
+
+public abstract class BaseIADI_Solver3DImpl<I, CLASS, MTH>: Application, BaseIADI_Solver3D<I, CLASS, MTH>
 	where MTH:ISolvingMethod
 	where CLASS:IClass
 	where I:IInstance<CLASS>
@@ -192,12 +193,12 @@ protected IVerify<I, CLASS> Verify {
 	}
 }
 
-private IADI<MTH, CLASS, I> adi = null;
+private IADI<I, CLASS, MTH> adi = null;
 
-protected IADI<MTH, CLASS, I> Adi {
+protected IADI<I, CLASS, MTH> Adi {
 	get {
 		if (this.adi == null)
-			this.adi = (IADI<MTH, CLASS, I>) Services.getPort("adi");
+			this.adi = (IADI<I, CLASS, MTH>) Services.getPort("adi");
 		return this.adi;
 	}
 }

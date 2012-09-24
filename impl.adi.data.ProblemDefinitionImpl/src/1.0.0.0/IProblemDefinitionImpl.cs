@@ -56,7 +56,7 @@ where C:IClass
 	{						
 		setProblemClass();
 		
-		int total_nodes = this.Ranks.Length;
+		int total_nodes = this.Size;
 		maxcells =  Convert.ToInt32(Math.Sqrt(total_nodes));
 		ncells = Convert.ToInt32(Math.Sqrt(total_nodes));
 			
