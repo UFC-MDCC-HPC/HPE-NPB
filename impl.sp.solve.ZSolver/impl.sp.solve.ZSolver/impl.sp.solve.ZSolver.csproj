@@ -128,5 +128,13 @@
       <Project>{786FD2E9-0926-473A-90F5-0B694DA96383}</Project>
       <Name>common.interactionpattern.shift</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\sp.solve.shift.ReadBuffer\sp.solve.shift.ReadBuffer\sp.solve.shift.ReadBuffer.csproj">
+      <Project>{F4AC1526-1D33-4658-BC80-9146AFA72717}</Project>
+      <Name>sp.solve.shift.ReadBuffer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\sp.solve.shift.WriteBuffer\sp.solve.shift.WriteBuffer\sp.solve.shift.WriteBuffer.csproj">
+      <Project>{37ED2005-62AA-4BF4-AD2E-8C7CF69E5A32}</Project>
+      <Name>sp.solve.shift.WriteBuffer</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
