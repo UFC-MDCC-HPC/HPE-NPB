@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000007316185b6644953b809018f6e8538ff49fa71e962ae2407ecc5b8928536b7a302c08f3d100a1921da3f248b379b6c750d4722407d54da462d3ce5e83b34ffaea9d83ef6fba846ce0032cbb50926e985be96d0215e07232eacc80f366bafa3e63650fafa9111bb0981ab34e4e92be5845ad089085c8aedc4832877e77ca1451be" isAbstract="false" kind="Computation" name="Exchange3_YForwardWriteBufferImpl" packagePath="impl.lu.exchange">
     <baseType>
       <extensionType>
@@ -15,11 +15,11 @@
           <visualDescription h="30" w="50" x="208" y="355">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="buffer_writer">
+        <unitBounds parallel="true" uRef="buffer_writer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -34,7 +34,7 @@
       <visualDescription h="30" w="50" x="84" y="198">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="y">
+      <unitBounds parallel="true" uRef="y">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -42,7 +42,7 @@
       <visualDescription h="30" w="50" x="79" y="315">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="forward">
+      <unitBounds parallel="true" uRef="forward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -74,6 +74,9 @@
       </visualDescription>
       <parameter iname="IForwardDirection" order="0" parid="direction" uname="forward" varid="DIR"/>
       <parameter iname="IY" order="1" parid="axis" uname="y" varid="O"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExchange3_YForwardWriteBufferImpl" multiple="true" private="false" replica="0" uRef="buffer_writer" visibleInterface="true">
       <super cRef="base" uRef="buffer_writer"/>

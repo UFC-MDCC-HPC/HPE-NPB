@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c151ed18675690d884dfeab994aa7708a50b1b2f3c7911516cfd4e34adb11623c20391e45661654bdbac9ddcd1c40c142b28cc9a6a460c5fbb378cefc2f46583e079df76de650943d794e430e632545a26230649255528b2fe55674f2d46be96d01a91b5e2c3f7143e26ce7cb3dbbc6f5d30ee6a292673683cb253d3f2c5d9a5" isAbstract="false" kind="Computation" name="Exchange3XImpl" packagePath="impl.lu.exchange">
     <baseType>
       <extensionType>
@@ -14,7 +14,7 @@
           <visualDescription h="62" w="106" x="553" y="194">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -22,11 +22,11 @@
           <visualDescription h="30" w="50" x="327" y="451">
             <color b="240" g="32" r="160"/>
           </visualDescription>
-          <unitBounds uRef="mpi">
+          <unitBounds parallel="true" uRef="mpi">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="exchange3">
+        <unitBounds parallel="true" uRef="exchange3">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -41,7 +41,7 @@
       <visualDescription h="30" w="50" x="159" y="119">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="x">
+      <unitBounds parallel="true" uRef="x">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -83,17 +83,26 @@
       <visualDescription h="104" w="131" x="238" y="44">
         <color b="0" g="255" r="255"/>
       </visualDescription>
-      <port name="axis">
-        <visualDescription h="10" w="10" x="22" y="46"/>
-        <slice pRef="axis" sRef="shift_forward"/>
-        <slice pRef="axis" sRef="shift_backward"/>
-      </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="3" y="3"/>
         <slice pRef="mpi" sRef="shift_forward"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="22" y="46"/>
+        <slice pRef="axis" sRef="shift_forward"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="shift_backward"/>
       </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="axis" sRef="shift_backward"/>
+      </port>
       <parameter iname="IX" order="0" parid="axis" uname="x" varid="O"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExchange3XImpl" multiple="true" private="false" replica="0" uRef="exchange3" visibleInterface="true">
       <super cRef="base" uRef="exchange3"/>

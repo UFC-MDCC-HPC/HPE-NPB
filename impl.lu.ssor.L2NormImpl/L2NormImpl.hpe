@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ffd9396b951177b007264d2fe255484353fbd1f46f77ea692c8af966ba7aa5b9ad8020d2f6d206dc813542b66dc6d36c86acec5d59ae3fc3d011d313f85ea11277880daaa1508ac8bfaf63f8df42a111eb00751437ba9f2590f0b882ed366e4d7744c6faf514dc69d01cd80aca2627ec6af339063eda2fdc1ada66f20dbfc897" isAbstract="false" kind="Computation" name="L2NormImpl" packagePath="impl.lu.ssor">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="8" y="15"/>
           </unitBounds>
         </port>
@@ -27,7 +27,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="82" y="18"/>
           </unitBounds>
         </port>
@@ -35,11 +35,11 @@
           <visualDescription h="30" w="50" x="337" y="443">
             <color b="240" g="32" r="160"/>
           </visualDescription>
-          <unitBounds uRef="mpi">
+          <unitBounds parallel="true" uRef="mpi">
             <visualDescription h="10" w="10" x="22" y="3"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="l2norm">
+        <unitBounds parallel="true" uRef="l2norm">
           <visualDescription h="10" w="10" x="30" y="4"/>
         </unitBounds>
       </component>
@@ -55,7 +55,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -63,24 +63,24 @@
       <visualDescription h="30" w="50" x="633" y="70">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IL2NormImpl" nArgs="2">
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="10" y="23"/>
-      </slice>
-      <slice isRef="blocks">
-        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
-        <visualDescription h="10" w="10" x="62" y="25"/>
-      </slice>
       <slice isRef="mpi">
         <originRef cRef="mpi" iRef="IMPIDirect"/>
         <visualDescription h="10" w="10" x="86" y="72"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="10" y="23"/>
+      </slice>
+      <slice isRef="blocks_info">
+        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
+        <visualDescription h="10" w="10" x="62" y="25"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using lu.data.ProblemDefinition;&#xA;using lu.problem_size.Instance_LU;&#xA;using common.problem_size.Class;&#xA;using lu.datapartition.BlocksInfo;&#xA;using environment.MPIDirect;&#xA;using lu.ssor.L2Norm;&#xA;using MPI;&#xA;&#xA;namespace impl.lu.ssor.L2NormImpl &#xA;{ &#xA;&#x9;public abstract class BaseIL2NormImpl&lt;I, C>: Computation, BaseIL2Norm&lt;I, C>&#xA;&#x9;&#x9;where I:IInstance_LU&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;{&#xA;&#x9;   &#xA;&#x9;&#x9;#region data&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;protected Intracommunicator worldcomm;//Mpi&#xA;&#x9;&#x9;&#x9;protected int nx0,ny0,nz0,ist,jst,iend,jend;//Blocks&#xA;&#x9;&#x9;&#x9;protected double[, , ,] v;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;override public void initialize()&#xA;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;    nx0  = Blocks.nx0;&#xA;&#x9;&#x9;&#x9;    ny0  = Blocks.ny0;&#xA;&#x9;&#x9;&#x9;    nz0  = Blocks.nz0;&#xA;&#x9;&#x9;&#x9;    &#xA;                ist  = Blocks.ist;&#xA;                jst  = Blocks.jst;                &#xA;                iend = Blocks.iend;&#xA;                jend = Blocks.jend;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;    v = Problem.Field_rsd;&#xA;                &#xA;&#x9;&#x9;&#x9;&#x9;worldcomm = this.WorldComm;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;#endregion&#xA;&#x9;&#xA;&#x9;&#x9;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.problem;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IBlocksInfo&lt;I,C> blocks = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public IBlocksInfo&lt;I,C> Blocks {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.blocks == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.blocks = (IBlocksInfo&lt;I,C>) Services.getPort(&quot;blocks_info&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.blocks;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;private IMPIDirect mpi = null;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public IMPIDirect Mpi {&#xA;&#x9;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;&#x9;if (this.mpi == null)&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;this.mpi = (IMPIDirect) Services.getPort(&quot;mpi&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;return this.mpi;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;}&#x9;&#xA;&#x9;&#x9;abstract public int go(); &#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="BaseIL2NormImpl.cs" srcType="base" uri="impl.lu.ssor.L2NormImpl/bin/1.0.0.0/BaseIL2NormImpl.dll" versionId="1.0.0.0">
@@ -103,21 +103,24 @@
       <visualDescription h="104" w="214" x="103" y="106">
         <color b="0" g="0" r="255"/>
       </visualDescription>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="12" y="62"/>
-        <slice pRef="problem" sRef="problem"/>
-      </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="107" y="8"/>
-        <slice pRef="blocks" sRef="blocks"/>
-      </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="40" y="65"/>
         <slice pRef="mpi" sRef="mpi"/>
       </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
+      </port>
       <externalReferences>MPI</externalReferences>
       <parameter iname="IInstance_LU" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IL2NormImpl" multiple="true" private="false" replica="0" uRef="l2norm" visibleInterface="true">
       <super cRef="base" uRef="l2norm"/>

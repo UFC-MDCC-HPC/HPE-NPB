@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000e960b37077b7e3ff040e653a4f6fc27f935c9f8b284eb4cc0bc630c85f117c875302703bded8535943a9d1e024a42bb39d50b4e17831b6b431ef2b98364f089db09a59e3ece57ec2d6926ab3bd1e2afd1dc9ffd4f1416375e70337c0213624c13d043622eb14cdcc5fe712adca47964e4608f4aaabf24032997e65fa1509f4b4" isAbstract="false" kind="Application" name="LU" packagePath="impl.lu">
     <baseType>
       <extensionType>
@@ -10,7 +10,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="lu">
+        <unitBounds parallel="true" uRef="lu">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -25,17 +25,17 @@
       <visualDescription h="30" w="50" x="460" y="232">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <interface iRef="ILUImpl" nArgs="1">
-      <slice isRef="boundary_values">
+      <slice isRef="setbv">
         <originRef cRef="setbv" iRef="IBoundaryValues"/>
         <visualDescription h="10" w="10" x="151" y="52"/>
       </slice>
-      <slice isRef="initial_values">
+      <slice isRef="setiv">
         <originRef cRef="setiv" iRef="IInitialValues"/>
         <visualDescription h="10" w="10" x="22" y="44"/>
       </slice>
@@ -59,7 +59,7 @@
         <originRef cRef="verify" iRef="IVerify"/>
         <visualDescription h="10" w="10" x="151" y="34"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance_LU"/>
         <visualDescription h="10" w="10" x="93" y="28"/>
       </slice>
@@ -94,52 +94,132 @@
       <visualDescription h="107" w="180" x="131" y="99">
         <color b="0" g="255" r="128"/>
       </visualDescription>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="setbv"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="setbv"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="setbv"/>
+      </port>
       <port name="y">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="y" sRef="boundary_values"/>
-        <slice pRef="y" sRef="initial_values"/>
-        <slice pRef="y" sRef="erhs"/>
-        <slice pRef="y" sRef="ssor"/>
-        <slice pRef="y" sRef="pintgr"/>
+        <slice pRef="y" sRef="setbv"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="setiv"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="setiv"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="setiv"/>
       </port>
       <port name="x">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="x" sRef="boundary_values"/>
-        <slice pRef="x" sRef="initial_values"/>
-        <slice pRef="x" sRef="erhs"/>
-        <slice pRef="x" sRef="ssor"/>
-        <slice pRef="x" sRef="pintgr"/>
+        <slice pRef="x" sRef="setiv"/>
       </port>
-      <port name="blocks">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="boundary_values"/>
-        <slice pRef="blocks" sRef="initial_values"/>
-        <slice pRef="blocks" sRef="erhs"/>
-        <slice pRef="blocks" sRef="ssor"/>
-        <slice pRef="blocks" sRef="error"/>
-        <slice pRef="blocks" sRef="pintgr"/>
-        <slice pRef="blocks" sRef="verify"/>
+        <slice pRef="blocks_info" sRef="erhs"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="71" y="1"/>
-        <slice pRef="problem" sRef="boundary_values"/>
-        <slice pRef="problem" sRef="initial_values"/>
-        <slice pRef="problem" sRef="erhs"/>
-        <slice pRef="problem" sRef="ssor"/>
-        <slice pRef="problem" sRef="error"/>
-        <slice pRef="problem" sRef="pintgr"/>
-        <slice pRef="problem" sRef="verify"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="erhs"/>
       </port>
       <port name="mpi">
-        <visualDescription h="10" w="10" x="159" y="5"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="erhs"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="erhs"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="erhs"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="erhs"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="ssor"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="ssor"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="ssor"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice sRef="ssor"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice sRef="ssor"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="ssor"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="error"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="error"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="error"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="pintgr"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="pintgr"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="pintgr"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="pintgr"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="pintgr"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="verify"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="verify"/>
       </port>
       <externalReferences>MPI</externalReferences>
       <externalReferences>BMInOut</externalReferences>
       <parameter iname="IClass" order="0" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ILUImpl" multiple="true" private="false" replica="0" uRef="lu" visibleInterface="true">
       <super cRef="base" uRef="lu"/>

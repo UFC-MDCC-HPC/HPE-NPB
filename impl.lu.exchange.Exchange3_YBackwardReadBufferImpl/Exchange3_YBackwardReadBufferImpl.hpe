@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000fd42bb37da5595fda570e667e9df3c20560cdb73f2fd5087715fda8c6d6dad85c5744d19a927e0cdaafc8a57e4290d64d52828e92180f2990c8947812af0bcea3253f6d6aa684871e10382dda5a9eca2cf8e1607004cb09b4d20e340fc64ecfd8048a7211b5a9c83629324b3fa4aa6e9a82d98b29672baafd416e248d7aa1895" isAbstract="false" kind="Computation" name="Exchange3_YBackwardReadBufferImpl" packagePath="impl.lu.exchange">
     <baseType>
       <extensionType>
@@ -15,11 +15,11 @@
           <visualDescription h="30" w="50" x="173" y="328">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="buffer_reader">
+        <unitBounds parallel="true" uRef="buffer_reader">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -34,7 +34,7 @@
       <visualDescription h="30" w="50" x="61" y="321">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="y">
+      <unitBounds parallel="true" uRef="y">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -42,7 +42,7 @@
       <visualDescription h="30" w="50" x="87" y="110">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="backward">
+      <unitBounds parallel="true" uRef="backward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -74,6 +74,9 @@
       </visualDescription>
       <parameter iname="IBackwardDirection" order="0" parid="direction" uname="backward" varid="DIR"/>
       <parameter iname="IY" order="1" parid="axis" uname="y" varid="O"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExchange3_YBackwardReadBufferImpl" multiple="true" private="false" replica="0" uRef="buffer_reader" visibleInterface="true">
       <super cRef="base" uRef="buffer_reader"/>

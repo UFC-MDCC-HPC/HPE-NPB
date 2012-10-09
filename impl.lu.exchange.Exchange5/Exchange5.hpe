@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000000ff7ba109539c578b9ec73c234db9b18bc8c89a3ce1ee7a8339807530db45c0ac07c7761b052791c1f625276d2962ee0abfe3deaa46cde360108c1b8b81c979960242574ee9f89c5d290227484f3d8dfbf4a1cf6317d03de62506022ccd2ca7e6897aeae0b025846bbb024305b6e0524ea06379686584636b24ce02f6a85ea8f" isAbstract="false" kind="Synchronizer" name="Exchange5" packagePath="impl.lu.exchange">
     <baseType>
       <extensionType>
@@ -18,7 +18,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -28,7 +28,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -36,7 +36,7 @@
           <visualDescription h="30" w="50" x="70" y="224">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -44,7 +44,7 @@
           <visualDescription h="30" w="50" x="273" y="145">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -52,11 +52,11 @@
           <visualDescription h="30" w="50" x="111" y="420">
             <color b="240" g="32" r="160"/>
           </visualDescription>
-          <unitBounds uRef="mpi">
+          <unitBounds parallel="true" uRef="mpi">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="exchange2D">
+        <unitBounds parallel="true" uRef="exchange2D">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -72,7 +72,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -80,7 +80,7 @@
       <visualDescription h="30" w="50" x="254" y="180">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -88,7 +88,7 @@
       <visualDescription h="30" w="50" x="7" y="126">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="exchange_pattern">
+      <unitBounds parallel="true" uRef="exchange_pattern">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -96,27 +96,27 @@
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IExchange5" nArgs="3">
-      <slice isRef="x">
-        <originRef cRef="x" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="33" y="26"/>
+      <slice isRef="mpi">
+        <originRef cRef="mpi" iRef="IMPIDirect"/>
+        <visualDescription h="10" w="10" x="103" y="3"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="79" y="27"/>
+      </slice>
+      <slice isRef="blocks_info">
+        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
+        <visualDescription h="10" w="10" x="56" y="21"/>
       </slice>
       <slice isRef="y">
         <originRef cRef="y" iRef="ICell"/>
         <visualDescription h="10" w="10" x="106" y="23"/>
       </slice>
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="79" y="27"/>
+      <slice isRef="x">
+        <originRef cRef="x" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="33" y="26"/>
       </slice>
-      <slice isRef="blocks">
-        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
-        <visualDescription h="10" w="10" x="56" y="21"/>
-      </slice>
-      <slice isRef="mpi">
-        <originRef cRef="mpi" iRef="IMPIDirect"/>
-        <visualDescription h="10" w="10" x="103" y="3"/>
-      </slice>
-      <slice isRef="exchange_pattern">
+      <slice isRef="pattern">
         <originRef cRef="pattern" iRef="IExchangePattern"/>
         <visualDescription h="10" w="10" x="9" y="21"/>
       </slice>
@@ -145,30 +145,33 @@
       <visualDescription h="170" w="195" x="359" y="68">
         <color b="255" g="30" r="200"/>
       </visualDescription>
-      <port name="x">
-        <visualDescription h="10" w="10" x="82" y="134"/>
-        <slice pRef="cell" sRef="x"/>
-      </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="126" y="111"/>
-        <slice pRef="cell" sRef="y"/>
-      </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="55" y="125"/>
-        <slice pRef="problem" sRef="problem"/>
-      </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="166" y="62"/>
-        <slice pRef="blocks" sRef="blocks"/>
-      </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="17" y="83"/>
         <slice pRef="mpi" sRef="mpi"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="y"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="x"/>
       </port>
       <externalReferences>MPI</externalReferences>
       <parameter iname="IInstance_LU" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IExchangePattern5" order="2" parid="exchange_pattern" uname="exchange_pattern" varid="E"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExchange5" multiple="true" private="false" replica="0" uRef="exchange2D" visibleInterface="true">
       <super cRef="base" uRef="exchange2D"/>

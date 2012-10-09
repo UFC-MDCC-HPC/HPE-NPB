@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000fbcef39b8f37d71141eb293802968a6b41be384f5cec6941286dd75f75fa7275aeb52a336441da794d721998e1fcea56c832737a07db7353e948004309e5e0227e4dd5608281e902ed9a05e9007787c511c382f46ce84927df9cae8b45a708a1ff6b326686c56fd98ed95d43262ff1351fbf3106df7febc0803b0d890bae7b8d" isAbstract="false" kind="Computation" name="ErrorImpl" packagePath="impl.lu">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="17"/>
           </unitBounds>
         </port>
@@ -27,7 +27,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="84" y="21"/>
           </unitBounds>
         </port>
@@ -35,11 +35,11 @@
           <visualDescription h="30" w="50" x="243" y="507">
             <color b="240" g="32" r="160"/>
           </visualDescription>
-          <unitBounds uRef="mpi">
+          <unitBounds parallel="true" uRef="mpi">
             <visualDescription h="10" w="10" x="37" y="10"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="error">
+        <unitBounds parallel="true" uRef="error">
           <visualDescription h="10" w="10" x="35" y="6"/>
         </unitBounds>
       </component>
@@ -55,7 +55,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -63,7 +63,7 @@
       <visualDescription h="30" w="50" x="461" y="212">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -104,17 +104,20 @@
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="mpi"/>
       </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="17" y="13"/>
-        <slice pRef="blocks" sRef="exact"/>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="exact"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="123" y="57"/>
-        <slice pRef="problem" sRef="exact"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="exact"/>
       </port>
       <externalReferences>MPI</externalReferences>
       <parameter iname="IInstance_LU" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IErrorImpl" multiple="true" private="false" replica="0" uRef="error" visibleInterface="true">
       <super cRef="base" uRef="error"/>

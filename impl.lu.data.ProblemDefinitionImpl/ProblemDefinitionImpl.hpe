@@ -11,7 +11,7 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="30" y="4"/>
         </unitBounds>
       </component>
@@ -27,7 +27,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -35,20 +35,48 @@
       <visualDescription h="30" w="50" x="385" y="454">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IProblemDefinitionImpl" nArgs="2">
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="2" y="27"/>
       </slice>
-      <slice isRef="field">
+      <slice isRef="a">
         <originRef cRef="a" iRef="IField"/>
         <visualDescription h="10" w="10" x="3" y="2"/>
+      </slice>
+      <slice isRef="b">
+        <originRef cRef="b" iRef="IField"/>
+        <visualDescription h="10" w="10" x="42" y="0"/>
+      </slice>
+      <slice isRef="c">
+        <originRef cRef="c" iRef="IField"/>
+        <visualDescription h="10" w="10" x="56" y="2"/>
+      </slice>
+      <slice isRef="d">
+        <originRef cRef="d" iRef="IField"/>
+        <visualDescription h="10" w="10" x="67" y="6"/>
+      </slice>
+      <slice isRef="u">
+        <originRef cRef="u" iRef="IField"/>
+        <visualDescription h="10" w="10" x="66" y="17"/>
+      </slice>
+      <slice isRef="rsd">
+        <originRef cRef="rsd" iRef="IField"/>
+        <visualDescription h="10" w="10" x="67" y="28"/>
+      </slice>
+      <slice isRef="frct">
+        <originRef cRef="frct" iRef="IField"/>
+        <visualDescription h="10" w="10" x="66" y="40"/>
+      </slice>
+      <slice isRef="flux">
+        <originRef cRef="flux" iRef="IField"/>
+        <visualDescription h="10" w="10" x="55" y="46"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using lu.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using lu.data.Field;&#xA;using lu.problem_size.Instance_LU;&#xA;using lu.data.ProblemDefinition;&#xA;&#xA;namespace impl.lu.data.ProblemDefinitionImpl { &#xA;&#xA;public abstract class BaseIProblemDefinitionImpl&lt;I, C>: DataStructure, BaseIProblemDefinition&lt;I, C>&#xA;where I:IInstance_LU&lt;C>&#xA;where C:IClass&#xA;{&#xA;&#xA;private I instance = default(I);&#xA;&#xA;protected I Instance {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.instance == null)&#xA;&#x9;&#x9;&#x9;this.instance = (I) Services.getPort(&quot;instance_type&quot;);&#xA;&#x9;&#x9;return this.instance;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField a = null;&#xA;&#xA;protected IField A {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.a == null)&#xA;&#x9;&#x9;&#x9;this.a = (IField) Services.getPort(&quot;a&quot;);&#xA;&#x9;&#x9;return this.a;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField b = null;&#xA;&#xA;protected IField B {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.b == null)&#xA;&#x9;&#x9;&#x9;this.b = (IField) Services.getPort(&quot;b&quot;);&#xA;&#x9;&#x9;return this.b;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField _c = null;&#xA;&#xA;protected IField _C {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this._c == null)&#xA;&#x9;&#x9;&#x9;this._c = (IField) Services.getPort(&quot;c&quot;);&#xA;&#x9;&#x9;return this._c;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField d = null;&#xA;&#xA;protected IField D {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.d == null)&#xA;&#x9;&#x9;&#x9;this.d = (IField) Services.getPort(&quot;d&quot;);&#xA;&#x9;&#x9;return this.d;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField u = null;&#xA;&#xA;protected IField U {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.u == null)&#xA;&#x9;&#x9;&#x9;this.u = (IField) Services.getPort(&quot;u&quot;);&#xA;&#x9;&#x9;return this.u;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField rsd = null;&#xA;&#xA;protected IField Rsd {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.rsd == null)&#xA;&#x9;&#x9;&#x9;this.rsd = (IField) Services.getPort(&quot;rsd&quot;);&#xA;&#x9;&#x9;return this.rsd;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField frct = null;&#xA;&#xA;protected IField Frct {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.frct == null)&#xA;&#x9;&#x9;&#x9;this.frct = (IField) Services.getPort(&quot;frct&quot;);&#xA;&#x9;&#x9;return this.frct;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField flux = null;&#xA;&#xA;protected IField Flux {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.flux == null)&#xA;&#x9;&#x9;&#x9;this.flux = (IField) Services.getPort(&quot;flux&quot;);&#xA;&#x9;&#x9;return this.flux;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIProblemDefinitionImpl.cs" srcType="base" uri="impl.lu.data.ProblemDefinitionImpl/bin/1.0.0.0/BaseIProblemDefinitionImpl.dll" versionId="1.0.0.0">

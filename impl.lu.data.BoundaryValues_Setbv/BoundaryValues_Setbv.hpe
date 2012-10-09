@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000027c8f5128e6b410ed8cec7622de7bb4f0bebef11c8f6acab9017ee3f1ac2425f5d92506e3280e9c69dc7b54b7184a886e3298e08b183b95a60a945f190c1ceedd12511c62ab3312a4372e991cc63cbeffec4a9dc8658e4b4370b005e9cadfa97cfa6ff424ed93504ec9c47debd38f257dfc29f41ed9a9a2b46b68c4f3a15798d" isAbstract="false" kind="Computation" name="BoundaryValues_Setbv" packagePath="impl.lu.data">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="17"/>
           </unitBounds>
         </port>
@@ -27,7 +27,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="84" y="21"/>
           </unitBounds>
         </port>
@@ -35,7 +35,7 @@
           <visualDescription h="30" w="50" x="63" y="260">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -43,11 +43,11 @@
           <visualDescription h="30" w="50" x="55" y="325">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="boundary_values">
+        <unitBounds parallel="true" uRef="boundary_values">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -63,7 +63,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -71,20 +71,20 @@
       <visualDescription h="30" w="50" x="347" y="158">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IBoundaryValues_Setbv" nArgs="2">
-      <slice isRef="x">
-        <originRef cRef="x" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="6" y="33"/>
-      </slice>
       <slice isRef="y">
         <originRef cRef="y" iRef="ICell"/>
         <visualDescription h="10" w="10" x="115" y="36"/>
+      </slice>
+      <slice isRef="x">
+        <originRef cRef="x" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="6" y="33"/>
       </slice>
       <slice isRef="exact">
         <originRef cRef="exact" iRef="IExact"/>
@@ -109,24 +109,27 @@
       <visualDescription h="49" w="166" x="193" y="103">
         <color b="128" g="0" r="255"/>
       </visualDescription>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="y"/>
+      </port>
       <port name="x">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="x"/>
+        <slice pRef="x" sRef="x"/>
       </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="134" y="2"/>
-        <slice pRef="cell" sRef="y"/>
-      </port>
-      <port name="blocks">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="exact"/>
+        <slice pRef="problem_data" sRef="exact"/>
       </port>
-      <port name="problem">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="exact"/>
+        <slice pRef="blocks_info" sRef="exact"/>
       </port>
       <parameter iname="IInstance_LU" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IBoundaryValues_Setbv" multiple="true" private="false" replica="0" uRef="boundary_values" visibleInterface="true">
       <super cRef="base" uRef="boundary_values"/>

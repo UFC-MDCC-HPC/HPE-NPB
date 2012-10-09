@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000198fdd30afa81897804663d51261d28848c5fe6d8aae50ec35aababb4f89cac14fc655e95192d18331e64e01d8e3eee90d5f6feaf55ca9aebc4f70689136f48f01f5f4ba5504217caaea6e52c3fb2ffcd6114655422c1920a4390dba4eef637c0251e9f407929f4f284ed13e0e2d0f5ebe3dce70a51cb15debc426d5c1c6e48c" isAbstract="false" kind="Computation" name="RhsImpl" packagePath="impl.lu.ssor">
     <baseType>
       <extensionType>
@@ -15,15 +15,7 @@
           <visualDescription h="49" w="133" x="473" y="250">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
-            <visualDescription h="10" w="10" x="5" y="2"/>
-          </unitBounds>
-        </port>
-        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="true">
-          <visualDescription h="30" w="50" x="371" y="295">
-            <color b="240" g="32" r="160"/>
-          </visualDescription>
-          <unitBounds uRef="mpi">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -31,7 +23,15 @@
           <visualDescription h="49" w="133" x="194" y="376">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="true">
+          <visualDescription h="30" w="50" x="371" y="295">
+            <color b="240" g="32" r="160"/>
+          </visualDescription>
+          <unitBounds parallel="true" uRef="mpi">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -41,7 +41,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -51,11 +51,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="rhs">
+        <unitBounds parallel="true" uRef="rhs">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -71,7 +71,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -79,18 +79,18 @@
       <visualDescription h="30" w="50" x="381" y="207">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IRhsImpl" nArgs="2">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="13" y="8"/>
       </slice>
-      <slice isRef="blocks">
+      <slice isRef="blocks_info">
         <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
         <visualDescription h="10" w="10" x="17" y="23"/>
       </slice>
@@ -122,29 +122,43 @@
       <visualDescription h="72" w="164" x="75" y="132">
         <color b="71" g="129" r="63"/>
       </visualDescription>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="108" y="34"/>
-        <slice pRef="blocks" sRef="blocks"/>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
       </port>
       <port name="mpi">
-        <visualDescription h="10" w="10" x="100" y="13"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="exchange31"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="exchange31"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="exchange31"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="exchange30"/>
       </port>
-      <port name="cell">
+      <port name="y">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="exchange31"/>
+        <slice pRef="topology" sRef="exchange30"/>
       </port>
-      <port name="cell">
+      <port name="topology">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="exchange30"/>
+        <slice pRef="topology" sRef="exchange30"/>
       </port>
       <parameter iname="IInstance_LU" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IRhsImpl" multiple="true" private="false" replica="0" uRef="rhs" visibleInterface="true">
       <super cRef="base" uRef="rhs"/>

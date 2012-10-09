@@ -11,7 +11,7 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
+        <unitBounds parallel="false" uRef="blocks">
           <visualDescription h="10" w="10" x="18" y="4"/>
         </unitBounds>
       </component>
@@ -27,7 +27,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -35,14 +35,14 @@
       <visualDescription h="30" w="50" x="64" y="347">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type_lu" varName="I"/>
     <interface iRef="IBlocksInfoImpl" nArgs="2">
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="56" y="22"/>
       </slice>

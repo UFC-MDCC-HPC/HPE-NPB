@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000041c9d57e68154bb35642b777d158b79f4657c902cd2cfa14e17050bd4dd066c1e3621e68f33597098ae12b302d2c1b0bc0599fc9a5773246967150f24c76a20dc5548aa7204eb0b3497a230b12f8a3b8242c0b1abb75058a2fb8c3f84664d5026824af45d6049a4e0502513e53dfa8938924fe1f8628082d3060a5d59904dba6" isAbstract="false" kind="Computation" name="BlockLowerTriangularSolutionWFWork" packagePath="impl.lu.ssor">
     <baseType>
       <extensionType>
@@ -16,7 +16,7 @@
           <visualDescription h="30" w="102" x="297" y="413">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -24,7 +24,7 @@
           <visualDescription h="30" w="115" x="351" y="130">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -32,7 +32,7 @@
           <visualDescription h="30" w="50" x="56" y="444">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -40,7 +40,7 @@
           <visualDescription h="30" w="50" x="174" y="490">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -50,7 +50,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -60,11 +60,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="65" y="16"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="bts_work">
+        <unitBounds parallel="true" uRef="bts_work">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -79,7 +79,7 @@
       <visualDescription h="30" w="50" x="122" y="64">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="forward">
+      <unitBounds parallel="true" uRef="forward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -88,7 +88,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -96,7 +96,7 @@
       <visualDescription h="30" w="50" x="62" y="163">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -104,13 +104,13 @@
     <supplyParameter cRef="forward" varName="DIR"/>
     <supplyParameter cRef="instance" varName="I"/>
     <interface iRef="IBTSLowerWork" nArgs="3">
-      <slice isRef="blocks">
-        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
-        <visualDescription h="10" w="10" x="16" y="18"/>
-      </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="53" y="28"/>
+      </slice>
+      <slice isRef="blocks_info">
+        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
+        <visualDescription h="10" w="10" x="16" y="18"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using lu.data.ProblemDefinition;&#xA;using lu.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using lu.datapartition.BlocksInfo;&#xA;using common.Buffer;&#xA;using common.direction.Direction;&#xA;using common.direction.Forward;&#xA;using lu.ssor.BlockTriangularSolutionWFWork;&#xA;using common.topology.Ring;&#xA;&#xA;namespace impl.lu.ssor.BlockLowerTriangularSolutionWFWork { &#xA;&#xA;public abstract class BaseIBTSLowerWork&lt;DIR, I, C>: Computation, BaseIBTSWork&lt;DIR, I, C>&#xA;where DIR:IForwardDirection&#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;{&#xA;&#xA;&#x9;#region data&#xA;&#x9;&#xA;&#x9;&#x9;protected int nx,ny,nz;&#xA;&#x9;&#x9;protected int north, south, east, west;&#xA;&#x9;&#x9;protected int ist,jst,iend,jend;&#xA;&#x9;&#x9;protected double [,,,] rsd,d;&#xA;&#xA;&#x9;&#x9;protected double[,,,] ldx;&#xA;&#x9;    protected double[,,,] ldy;&#xA;&#x9;    protected double[,,,] ldz;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;override public void initialize()&#xA;&#x9;&#x9;{            &#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;nx = Blocks.nx;&#xA;&#x9;&#x9;&#x9;ny = Blocks.ny;&#xA;&#x9;&#x9;&#x9;nz = Blocks.nz;&#xA;            ist  = Blocks.ist;&#xA;            jst  = Blocks.jst;                &#xA;            iend = Blocks.iend;&#xA;            jend = Blocks.jend;&#xA;            &#xA;            rsd  = Problem.Field_rsd;&#xA;            d = Problem.Field_d;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;ldx = Problem.Field_c;&#xA;&#x9;&#x9;&#x9;ldy = Problem.Field_b;&#xA;&#x9;&#x9;&#x9;ldz = Problem.Field_a;&#xA;&#x9;&#x9;&#x9;&#xA;            X_buffer.Array = new double[5*(iend-ist+1)];&#xA;            Y_buffer.Array = new double[5*(jend-jst+1)];&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;override public void post_initialize()&#xA;&#x9;&#x9;{&#xA;            north = Y.predecessor;//Blocks.north;&#xA;            south = Y.successor;//Blocks.south;&#xA;            east  = X.successor;//Blocks.east;&#xA;            west  = X.predecessor;//Blocks.west;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;#endregion&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBlocksInfo&lt;I,C> blocks = null;&#xA;&#xA;public IBlocksInfo&lt;I,C> Blocks {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.blocks == null)&#xA;&#x9;&#x9;&#x9;this.blocks = (IBlocksInfo&lt;I,C>) Services.getPort(&quot;blocks_info&quot;);&#xA;&#x9;&#x9;return this.blocks;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell y = null;&#xA;&#xA;public ICell Y {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.y == null)&#xA;&#x9;&#x9;&#x9;this.y = (ICell) Services.getPort(&quot;y&quot;);&#xA;&#x9;&#x9;return this.y;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell x = null;&#xA;&#xA;public ICell X {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.x == null)&#xA;&#x9;&#x9;&#x9;this.x = (ICell) Services.getPort(&quot;x&quot;);&#xA;&#x9;&#x9;return this.x;&#xA;&#x9;}&#xA;}&#xA;&#x9;&#x9;&#xA;private IBuffer x_buffer = null;&#xA;&#xA;public IBuffer X_buffer {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.x_buffer == null)&#xA;&#x9;&#x9;&#x9;this.x_buffer = (IBuffer) Services.getPort(&quot;x_buffer&quot;);&#xA;&#x9;&#x9;return this.x_buffer;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBuffer y_buffer = null;&#xA;&#xA;public IBuffer Y_buffer {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.y_buffer == null)&#xA;&#x9;&#x9;&#x9;this.y_buffer = (IBuffer) Services.getPort(&quot;y_buffer&quot;);&#xA;&#x9;&#x9;return this.y_buffer;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR direction = default(DIR);&#xA;&#xA;protected DIR Direction {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.direction == null)&#xA;&#x9;&#x9;&#x9;this.direction = (DIR) Services.getPort(&quot;direction&quot;);&#xA;&#x9;&#x9;return this.direction;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIBTSLowerWork.cs" srcType="base" uri="impl.lu.ssor.BlockLowerTriangularSolutionWFWork/bin/1.0.0.0/BaseIBTSLowerWork.dll" versionId="1.0.0.0">
@@ -134,17 +134,20 @@
       <visualDescription h="89" w="165" x="70" y="37">
         <color b="144" g="238" r="144"/>
       </visualDescription>
-      <port name="blocks">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="blocks"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="problem">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
       </port>
       <parameter iname="IForwardDirection" order="0" parid="direction" uname="forward" varid="DIR"/>
       <parameter iname="IInstance" order="1" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="2" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IBTSLowerWork" multiple="true" private="false" replica="0" uRef="bts_work" visibleInterface="true">
       <super cRef="base" uRef="bts_work"/>

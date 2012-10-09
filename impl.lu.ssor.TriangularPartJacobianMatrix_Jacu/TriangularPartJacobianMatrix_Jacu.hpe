@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000043ff067d3fb6f7403b78fedd6ad9b750886a5e0f86a91186d65766c3ecb956e9433f4492a168a293089a5412ef99ae965110d9bedb99db1ba7aca8b23a6ede725a3b4c9bb24b0f5ab2ae0b02b43f7def5d51d7d18e1f2fd230252f29b304ace826b2ee4a22c7ae97da3fa60ef1ae6ebd942293eae3c111e9c3d44f5c2ae9a990" isAbstract="false" kind="Computation" name="TriangularPartJacobianMatrix_Jacu" packagePath="impl.lu.ssor">
     <baseType>
       <extensionType>
@@ -18,7 +18,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="115" y="23"/>
           </unitBounds>
         </port>
@@ -28,11 +28,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="42" y="5"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="triangular_part_jacobian_matrix">
+        <unitBounds parallel="true" uRef="triangular_part_jacobian_matrix">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -48,7 +48,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -56,7 +56,7 @@
       <visualDescription h="30" w="50" x="426" y="166">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -64,7 +64,7 @@
       <visualDescription h="37" w="99" x="121" y="200">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="backward">
+      <unitBounds parallel="true" uRef="backward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -72,15 +72,15 @@
     <supplyParameter cRef="direction" varName="DIS"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="ITriangularPartJacobianMatrix_Jacu" nArgs="3">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="93" y="9"/>
       </slice>
-      <slice isRef="blocks">
+      <slice isRef="blocks_info">
         <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
         <visualDescription h="10" w="10" x="115" y="80"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="166" y="75"/>
       </slice>
@@ -110,17 +110,20 @@
       <visualDescription h="99" w="258" x="53" y="106">
         <color b="255" g="0" r="0"/>
       </visualDescription>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="14" y="9"/>
-        <slice pRef="problem" sRef="problem"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="18" y="69"/>
-        <slice pRef="blocks" sRef="blocks"/>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
       </port>
       <parameter iname="IInstance_LU" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IBackwardDirection" order="2" parid="direction" uname="backward" varid="DIS"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ITriangularPartJacobianMatrix_Jacu" multiple="true" private="false" replica="0" uRef="triangular_part_jacobian_matrix" visibleInterface="true">
       <super cRef="base" uRef="triangular_part_jacobian_matrix"/>

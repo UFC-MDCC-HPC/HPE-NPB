@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000695ebe0a777c501bb3a73e0749464d4b40a4e141b233102a48a0c5f41e5b8d0d1af34ce3f8b330986b77b68ff8982c3ee0636ed40453ae6f8d68253e07023f2d90eeeeb75431f90cd31d9c6d4339410411c678dd77d48fd1b75fe17bea0dc2f265e90c2783d91e3a4fd3f1b4fc6136120d1141d757b3cb1b296490595b974a82" isAbstract="false" kind="Computation" name="VerifyImpl" packagePath="impl.lu">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="7" y="14"/>
           </unitBounds>
         </port>
@@ -27,11 +27,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="51" y="4"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="verify">
+        <unitBounds parallel="true" uRef="verify">
           <visualDescription h="10" w="10" x="24" y="2"/>
         </unitBounds>
       </component>
@@ -47,7 +47,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -55,22 +55,22 @@
       <visualDescription h="30" w="50" x="608" y="345">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IVerifyImpl" nArgs="2">
-      <slice isRef="blocks">
-        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
-        <visualDescription h="10" w="10" x="64" y="13"/>
-      </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="37" y="28"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="blocks_info">
+        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
+        <visualDescription h="10" w="10" x="64" y="13"/>
+      </slice>
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="3" y="17"/>
       </slice>
@@ -93,16 +93,19 @@
       <visualDescription h="40" w="108" x="206" y="154">
         <color b="64" g="128" r="0"/>
       </visualDescription>
-      <port name="blocks">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="blocks"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="problem">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
       </port>
       <parameter iname="IInstance_LU" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IVerifyImpl" multiple="true" private="false" replica="0" uRef="verify" visibleInterface="true">
       <super cRef="base" uRef="verify"/>
