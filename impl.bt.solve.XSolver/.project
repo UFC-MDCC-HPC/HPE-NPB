@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>impl.bt.solve.XSolver</name>
+	<name>impl.bt.solve.connector.SolverImpl</name>
 	<comment></comment>
 	<projects>
 	</projects>
