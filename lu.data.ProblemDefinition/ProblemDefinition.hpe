@@ -11,7 +11,7 @@
       <visualDescription h="30" w="50" x="508" y="360">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -19,7 +19,7 @@
       <visualDescription h="30" w="50" x="505" y="402">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -27,7 +27,7 @@
       <visualDescription h="30" w="50" x="505" y="281">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -35,7 +35,7 @@
       <visualDescription h="30" w="50" x="504" y="203">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -43,7 +43,7 @@
       <visualDescription h="30" w="50" x="497" y="161">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -51,7 +51,7 @@
       <visualDescription h="30" w="50" x="493" y="113">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -59,7 +59,7 @@
       <visualDescription h="30" w="50" x="508" y="318">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -67,7 +67,7 @@
       <visualDescription h="30" w="50" x="506" y="246">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -76,7 +76,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="103" y="21"/>
       </unitBounds>
     </innerComponent>
@@ -84,20 +84,48 @@
       <visualDescription h="30" w="50" x="364" y="476">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <parameter componentRef="instance_type" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <interface iRef="IProblemDefinition" nArgs="2">
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="2" y="27"/>
       </slice>
-      <slice isRef="field">
+      <slice isRef="a">
         <originRef cRef="a" iRef="IField"/>
         <visualDescription h="10" w="10" x="3" y="2"/>
+      </slice>
+      <slice isRef="b">
+        <originRef cRef="b" iRef="IField"/>
+        <visualDescription h="10" w="10" x="42" y="0"/>
+      </slice>
+      <slice isRef="c">
+        <originRef cRef="c" iRef="IField"/>
+        <visualDescription h="10" w="10" x="56" y="2"/>
+      </slice>
+      <slice isRef="d">
+        <originRef cRef="d" iRef="IField"/>
+        <visualDescription h="10" w="10" x="67" y="6"/>
+      </slice>
+      <slice isRef="u">
+        <originRef cRef="u" iRef="IField"/>
+        <visualDescription h="10" w="10" x="66" y="17"/>
+      </slice>
+      <slice isRef="rsd">
+        <originRef cRef="rsd" iRef="IField"/>
+        <visualDescription h="10" w="10" x="67" y="28"/>
+      </slice>
+      <slice isRef="frct">
+        <originRef cRef="frct" iRef="IField"/>
+        <visualDescription h="10" w="10" x="66" y="40"/>
+      </slice>
+      <slice isRef="flux">
+        <originRef cRef="flux" iRef="IField"/>
+        <visualDescription h="10" w="10" x="55" y="46"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using lu.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;&#xA;namespace lu.data.ProblemDefinition { &#xA;&#xA;public interface BaseIProblemDefinition&lt;I, C> : IDataStructureKind &#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;{&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIProblemDefinition.cs" srcType="base" uri="lu.data.ProblemDefinition/bin/1.0.0.0/BaseIProblemDefinition.dll" versionId="1.0.0.0">
@@ -117,31 +145,31 @@
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
     </interface>
     <unit iRef="IProblemDefinition" multiple="true" private="false" replica="0" uRef="problem" visibleInterface="true">
-      <slices cRef="instance_type" replica="0" uRef="instance" sliceName="instance" transitive="false">
+      <slices cRef="instance_type" replica="0" uRef="instance" sliceName="instance_type" transitive="false">
         <visualDescription h="10" w="10" x="2" y="26"/>
       </slices>
-      <slices cRef="a" replica="0" uRef="field" sliceName="field" transitive="false">
+      <slices cRef="a" replica="0" uRef="field" sliceName="a" transitive="false">
         <visualDescription h="10" w="10" x="28" y="2"/>
       </slices>
-      <slices cRef="b" replica="0" uRef="field" sliceName="field" transitive="false">
+      <slices cRef="b" replica="0" uRef="field" sliceName="b" transitive="false">
         <visualDescription h="10" w="10" x="42" y="0"/>
       </slices>
-      <slices cRef="c" replica="0" uRef="field" sliceName="field" transitive="false">
+      <slices cRef="c" replica="0" uRef="field" sliceName="c" transitive="false">
         <visualDescription h="10" w="10" x="56" y="2"/>
       </slices>
-      <slices cRef="d" replica="0" uRef="field" sliceName="field" transitive="false">
+      <slices cRef="d" replica="0" uRef="field" sliceName="d" transitive="false">
         <visualDescription h="10" w="10" x="67" y="6"/>
       </slices>
-      <slices cRef="u" replica="0" uRef="field" sliceName="field" transitive="false">
+      <slices cRef="u" replica="0" uRef="field" sliceName="u" transitive="false">
         <visualDescription h="10" w="10" x="66" y="17"/>
       </slices>
-      <slices cRef="rsd" replica="0" uRef="field" sliceName="field" transitive="false">
+      <slices cRef="rsd" replica="0" uRef="field" sliceName="rsd" transitive="false">
         <visualDescription h="10" w="10" x="67" y="28"/>
       </slices>
-      <slices cRef="frct" replica="0" uRef="field" sliceName="field" transitive="false">
+      <slices cRef="frct" replica="0" uRef="field" sliceName="frct" transitive="false">
         <visualDescription h="10" w="10" x="66" y="40"/>
       </slices>
-      <slices cRef="flux" replica="0" uRef="field" sliceName="field" transitive="false">
+      <slices cRef="flux" replica="0" uRef="field" sliceName="flux" transitive="false">
         <visualDescription h="10" w="10" x="55" y="46"/>
       </slices>
       <visualDescription h="59" w="80" x="237" y="231"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000a5eda87eed0efdd176e024556dfbd1a9e44f272b9148f52c48861c4f717bfd01848e31e55111ed066ca5ada40ca4010430c6ae199235923503e194a553d655727c3bb7748a70205a67e82aaa03a738a9fa32eb49394271fd5a7681de8557aaf8bd9c9f460853ec13ef7d9c77ddeb7d0e4b0e95d01f10cfbfd2666c18bf075f9e" isAbstract="true" kind="Computation" name="ERhs" packagePath="lu">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -16,7 +16,7 @@
         <visualDescription h="62" w="106" x="553" y="194">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -24,11 +24,11 @@
         <visualDescription h="30" w="50" x="407" y="337">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="exchange3">
+      <unitBounds parallel="true" uRef="exchange3">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -37,7 +37,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -45,7 +45,7 @@
       <visualDescription h="30" w="50" x="538" y="171">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -58,7 +58,7 @@
         <visualDescription h="62" w="106" x="544" y="108">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -66,11 +66,11 @@
         <visualDescription h="30" w="50" x="407" y="337">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="exchange3">
+      <unitBounds parallel="true" uRef="exchange3">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -80,7 +80,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -90,7 +90,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="blocks">
+      <unitBounds parallel="false" uRef="blocks">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -98,7 +98,7 @@
       <visualDescription h="30" w="50" x="117" y="252">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="y">
+      <unitBounds parallel="true" uRef="y">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -106,7 +106,7 @@
       <visualDescription h="30" w="50" x="98" y="209">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="x">
+      <unitBounds parallel="true" uRef="x">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -114,21 +114,21 @@
     <supplyParameter cRef="y_axis" varName="OY"/>
     <parameter componentRef="instance_type" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
-    <innerRenaming cNewName="x" cOldName="topology" cRef="exchange31"/>
     <innerRenaming cNewName="y" cOldName="topology" cRef="exchange30"/>
+    <innerRenaming cNewName="x" cOldName="topology" cRef="exchange31"/>
     <fusion>
-      <cRefs>exchange31</cRefs>
       <cRefs>exchange30</cRefs>
+      <cRefs>exchange31</cRefs>
       <pRef>mpi</pRef>
     </fusion>
     <interface iRef="IERhs" nArgs="2">
-      <slice isRef="blocks">
-        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
-        <visualDescription h="10" w="10" x="27" y="4"/>
-      </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="0" y="26"/>
+      </slice>
+      <slice isRef="blocks_info">
+        <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
+        <visualDescription h="10" w="10" x="27" y="4"/>
       </slice>
       <slice isRef="exchange30">
         <originRef cRef="exchange30" iRef="IExchange3"/>
@@ -157,55 +157,69 @@
       <visualDescription h="113" w="197" x="47" y="92">
         <color b="121" g="98" r="70"/>
       </visualDescription>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="167" y="21"/>
-        <slice pRef="blocks" sRef="blocks"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="137" y="40"/>
-        <slice pRef="problem" sRef="problem"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="94" y="2"/>
-        <slice pRef="mpi" sRef="exchange30"/>
-        <slice pRef="mpi" sRef="exchange31"/>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
       </port>
       <port name="y">
-        <visualDescription h="10" w="10" x="14" y="63"/>
-        <slice pRef="cell" sRef="exchange30"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="exchange30"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="exchange30"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="exchange30"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="exchange31"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="exchange31"/>
       </port>
       <port name="x">
-        <visualDescription h="10" w="10" x="129" y="70"/>
-        <slice pRef="cell" sRef="exchange31"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="exchange31"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IERhs" multiple="true" private="false" replica="0" uRef="erhs" visibleInterface="true">
-      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="false">
-        <visualDescription h="10" w="10" x="27" y="4"/>
+      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
+        <visualDescription h="10" w="10" x="29" y="0"/>
       </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
         <visualDescription h="10" w="10" x="0" y="26"/>
+      </slices>
+      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks_info" transitive="false">
+        <visualDescription h="10" w="10" x="27" y="4"/>
       </slices>
       <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="true">
         <visualDescription h="10" w="10" x="5" y="23"/>
-      </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="29" y="0"/>
       </slices>
       <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
         <visualDescription h="10" w="10" x="5" y="23"/>
       </slices>
       <slices cRef="exchange30" replica="0" uRef="exchange3" sliceName="exchange30" transitive="false">
         <visualDescription h="10" w="10" x="24" y="24"/>
-        <port>y</port>
         <port>mpi</port>
+        <port>y</port>
       </slices>
       <slices cRef="exchange31" replica="0" uRef="exchange3" sliceName="exchange31" transitive="false">
         <visualDescription h="10" w="10" x="66" y="22"/>
-        <port>x</port>
         <port>mpi</port>
+        <port>x</port>
       </slices>
       <visualDescription h="40" w="80" x="42" y="339"/>
     </unit>

@@ -14,11 +14,11 @@
           <visualDescription h="30" w="50" x="208" y="355">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="buffer_writer">
+        <unitBounds parallel="true" uRef="buffer_writer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -33,7 +33,7 @@
       <visualDescription h="30" w="50" x="81" y="312">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="direction">
+      <unitBounds parallel="true" uRef="direction">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -41,7 +41,7 @@
       <visualDescription h="30" w="50" x="112" y="447">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="axis">
+      <unitBounds parallel="true" uRef="axis">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -70,6 +70,9 @@
       </visualDescription>
       <parameter iname="IDirection" order="0" parid="direction" uname="direction" varid="DIR"/>
       <parameter iname="IAxis" order="1" parid="axis" uname="axis" varid="O"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExchange3_WriteBuffer" multiple="true" private="false" replica="0" uRef="buffer_writer" visibleInterface="true">
       <super cRef="base" uRef="buffer_writer"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000008f74104b84f148a1f0be781d9f8611d20fdc4154d734b1a67e4a30d9e7ac50843aed2b5f6a6c40fc7ee7256909f6c6518cd3a4f574f3527d4f6b7b47fc85e527b50fdc147b780180468a22c25af331f781a755a46bd6ca72408e0c79042e0d67db7f6d69b1311a25f0b4602942e1598ee0e9b24d1350d7d05252d7257240c2b4" isAbstract="true" kind="Computation" name="Exchange3" packagePath="lu.exchange">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -11,7 +11,7 @@
       <visualDescription h="62" w="124" x="191" y="253">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="axis">
+      <unitBounds parallel="true" uRef="axis">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -26,7 +26,7 @@
         <visualDescription h="62" w="106" x="553" y="205">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -35,7 +35,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="direction" varName="DIR_FORWARD"/>
-        <unitBounds uRef="buffer_reader">
+        <unitBounds parallel="true" uRef="buffer_reader">
           <visualDescription h="10" w="10" x="140" y="7"/>
         </unitBounds>
       </port>
@@ -44,7 +44,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="direction" varName="DIR_FORWARD"/>
-        <unitBounds uRef="buffer_writer">
+        <unitBounds parallel="true" uRef="buffer_writer">
           <visualDescription h="10" w="10" x="15" y="9"/>
         </unitBounds>
       </port>
@@ -52,11 +52,11 @@
         <visualDescription h="30" w="50" x="271" y="366">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="shift">
+      <unitBounds parallel="true" uRef="shift">
         <visualDescription h="12" w="10" x="66" y="4"/>
       </unitBounds>
     </innerComponent>
@@ -71,7 +71,7 @@
         <visualDescription h="62" w="106" x="553" y="205">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -80,7 +80,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="direction" varName="DIR_BACKWARD"/>
-        <unitBounds uRef="buffer_reader">
+        <unitBounds parallel="true" uRef="buffer_reader">
           <visualDescription h="10" w="10" x="140" y="7"/>
         </unitBounds>
       </port>
@@ -89,7 +89,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="direction" varName="DIR_BACKWARD"/>
-        <unitBounds uRef="buffer_writer">
+        <unitBounds parallel="true" uRef="buffer_writer">
           <visualDescription h="10" w="10" x="15" y="9"/>
         </unitBounds>
       </port>
@@ -97,11 +97,11 @@
         <visualDescription h="30" w="50" x="271" y="366">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="shift">
+      <unitBounds parallel="true" uRef="shift">
         <visualDescription h="10" w="10" x="15" y="21"/>
       </unitBounds>
     </innerComponent>
@@ -109,7 +109,7 @@
       <visualDescription h="30" w="50" x="13" y="310">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="backward">
+      <unitBounds parallel="true" uRef="backward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -117,7 +117,7 @@
       <visualDescription h="30" w="50" x="37" y="387">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="forward">
+      <unitBounds parallel="true" uRef="forward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -131,11 +131,11 @@
         <visualDescription h="30" w="72" x="288" y="316">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="buffer_reader">
+      <unitBounds parallel="true" uRef="buffer_reader">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -149,11 +149,11 @@
         <visualDescription h="30" w="108" x="364" y="140">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="buffer_reader">
+      <unitBounds parallel="true" uRef="buffer_reader">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -167,11 +167,11 @@
         <visualDescription h="30" w="101" x="267" y="376">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="buffer_writer">
+      <unitBounds parallel="true" uRef="buffer_writer">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -185,40 +185,40 @@
         <visualDescription h="30" w="96" x="397" y="178">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="buffer_writer">
+      <unitBounds parallel="true" uRef="buffer_writer">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="buffer_writer_forward" varName="BW_FORWARD"/>
     <supplyParameter cRef="forward" varName="DIR_FORWARD"/>
     <supplyParameter cRef="buffer_reader_forward" varName="BR_FORWARD"/>
-    <supplyParameter cRef="buffer_writer_backward" varName="BW_BACKWARD"/>
     <supplyParameter cRef="backward" varName="DIR_BACKWARD"/>
+    <supplyParameter cRef="buffer_writer_backward" varName="BW_BACKWARD"/>
     <supplyParameter cRef="buffer_reader_backward" varName="BR_BACKWARD"/>
     <parameter componentRef="axis" formFieldId="axis" varName="O"/>
     <innerRenaming cNewName="buffer_writer_backward" cOldName="buffer_writer" cRef="shift_backward"/>
+    <innerRenaming cNewName="buffer_wb" cOldName="buffer" cRef="buffer_writer_backward"/>
+    <innerRenaming cNewName="buffer_rf" cOldName="buffer" cRef="buffer_reader_forward"/>
+    <innerRenaming cNewName="buffer_rb" cOldName="buffer" cRef="buffer_reader_backward"/>
     <innerRenaming cNewName="buffer_writer_forward" cOldName="buffer_writer" cRef="shift_forward"/>
     <innerRenaming cNewName="topology" cOldName="axis" cRef="shift_forward"/>
-    <innerRenaming cNewName="topology" cOldName="axis" cRef="shift_backward"/>
-    <innerRenaming cNewName="buffer_wb" cOldName="buffer" cRef="buffer_writer_backward"/>
     <innerRenaming cNewName="buffer_reader_forward" cOldName="buffer_reader" cRef="shift_forward"/>
-    <innerRenaming cNewName="buffer_rb" cOldName="buffer" cRef="buffer_reader_backward"/>
     <innerRenaming cNewName="buffer_wf" cOldName="buffer" cRef="buffer_writer_forward"/>
-    <innerRenaming cNewName="buffer_rf" cOldName="buffer" cRef="buffer_reader_forward"/>
     <innerRenaming cNewName="buffer_reader_backward" cOldName="buffer_reader" cRef="shift_backward"/>
+    <innerRenaming cNewName="topology" cOldName="axis" cRef="shift_backward"/>
     <fusion>
-      <cRefs>shift_backward</cRefs>
       <cRefs>shift_forward</cRefs>
-      <pRef>topology</pRef>
+      <cRefs>shift_backward</cRefs>
+      <pRef>mpi</pRef>
     </fusion>
     <fusion>
-      <cRefs>shift_backward</cRefs>
       <cRefs>shift_forward</cRefs>
-      <pRef>mpi</pRef>
+      <cRefs>shift_backward</cRefs>
+      <pRef>topology</pRef>
     </fusion>
     <interface iRef="IExchange3" nArgs="1">
       <slice isRef="axis">
@@ -256,52 +256,55 @@
         <color b="0" g="255" r="255"/>
       </visualDescription>
       <port name="mpi">
-        <visualDescription h="10" w="10" x="3" y="3"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="shift_forward"/>
         <slice pRef="mpi" sRef="shift_backward"/>
       </port>
-      <port name="cell">
-        <visualDescription h="10" w="10" x="108" y="49"/>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="axis" sRef="shift_forward"/>
         <slice pRef="axis" sRef="shift_backward"/>
       </port>
       <parameter iname="IAxis" order="0" parid="axis" uname="axis" varid="O"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExchange3" multiple="true" private="false" replica="0" uRef="exchange3" visibleInterface="true">
-      <slices cRef="topology" replica="0" uRef="cell" sliceName="cell" transitive="true">
-        <visualDescription h="10" w="10" x="5" y="23"/>
-      </slices>
-      <slices cRef="buffer_reader_forward" replica="0" uRef="buffer_reader" sliceName="buffer_reader" transitive="true">
-        <visualDescription h="10" w="10" x="7" y="5"/>
-      </slices>
-      <slices cRef="buffer_writer_forward" replica="0" uRef="buffer_writer" sliceName="buffer_writer" transitive="true">
-        <visualDescription h="10" w="10" x="31" y="27"/>
-      </slices>
       <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
         <visualDescription h="10" w="10" x="29" y="0"/>
       </slices>
-      <slices cRef="buffer_reader_backward" replica="0" uRef="buffer_reader" sliceName="buffer_reader" transitive="true">
+      <slices cRef="buffer_reader_backward" replica="0" uRef="buffer_reader" sliceName="buffer_reader_backward" transitive="true">
         <visualDescription h="10" w="10" x="7" y="5"/>
       </slices>
-      <slices cRef="buffer_writer_backward" replica="0" uRef="buffer_writer" sliceName="buffer_writer" transitive="true">
+      <slices cRef="buffer_writer_backward" replica="0" uRef="buffer_writer" sliceName="buffer_writer_backward" transitive="true">
         <visualDescription h="10" w="10" x="31" y="27"/>
+      </slices>
+      <slices cRef="buffer_writer_forward" replica="0" uRef="buffer_writer" sliceName="buffer_writer_forward" transitive="true">
+        <visualDescription h="10" w="10" x="31" y="27"/>
+      </slices>
+      <slices cRef="topology" replica="0" uRef="cell" sliceName="topology" transitive="true">
+        <visualDescription h="10" w="10" x="5" y="23"/>
+      </slices>
+      <slices cRef="buffer_reader_forward" replica="0" uRef="buffer_reader" sliceName="buffer_reader_forward" transitive="true">
+        <visualDescription h="10" w="10" x="7" y="5"/>
       </slices>
       <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
         <visualDescription h="10" w="10" x="61" y="22"/>
       </slices>
       <slices cRef="shift_forward" replica="0" uRef="shift" sliceName="shift_forward" transitive="false">
         <visualDescription h="10" w="10" x="11" y="21"/>
-        <port>cell</port>
-        <port>buffer_reader</port>
-        <port>buffer_writer</port>
         <port>mpi</port>
+        <port>buffer_writer_forward</port>
+        <port>buffer_reader_forward</port>
+        <port>topology</port>
       </slices>
       <slices cRef="shift_backward" replica="0" uRef="shift" sliceName="shift_backward" transitive="false">
         <visualDescription h="10" w="10" x="111" y="9"/>
-        <port>cell</port>
-        <port>buffer_reader</port>
-        <port>buffer_writer</port>
         <port>mpi</port>
+        <port>buffer_reader_backward</port>
+        <port>buffer_writer_backward</port>
+        <port>topology</port>
       </slices>
       <visualDescription h="40" w="131" x="66" y="183"/>
     </unit>

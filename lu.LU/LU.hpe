@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c5d1eed04ea8a1e908db465bacd4b468873996c9a0b0d0c600dd81c9bb108abf1e926538388532ed6894c5d59565d536711eeba7852d11381d586e8fbf8820a8682b60d65310ed1b98c7c15d7a9acd6e59527d0e73439de2f99bb301c123dac0962831129adb9a787ba4ae5f9783089ddfc69db8c157005ba1293978ad57c1ac" isAbstract="true" kind="Application" name="LU" packagePath="lu">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -11,7 +11,7 @@
       <visualDescription h="30" w="50" x="545" y="33">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -27,17 +27,17 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="17"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="false">
-        <visualDescription h="38" w="100" x="46" y="501">
+        <visualDescription h="38" w="100" x="40" y="402">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
+        <unitBounds parallel="false" uRef="blocks">
           <visualDescription h="10" w="10" x="84" y="21"/>
         </unitBounds>
       </port>
@@ -45,7 +45,7 @@
         <visualDescription h="30" w="50" x="681" y="359">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -53,11 +53,11 @@
         <visualDescription h="30" w="50" x="556" y="289">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="boundary_values">
+      <unitBounds parallel="true" uRef="boundary_values">
         <visualDescription h="10" w="10" x="63" y="21"/>
       </unitBounds>
     </innerComponent>
@@ -73,17 +73,17 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="17"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="false">
-        <visualDescription h="38" w="100" x="46" y="501">
+        <visualDescription h="38" w="100" x="40" y="402">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
+        <unitBounds parallel="false" uRef="blocks">
           <visualDescription h="10" w="10" x="84" y="21"/>
         </unitBounds>
       </port>
@@ -91,7 +91,7 @@
         <visualDescription h="30" w="50" x="681" y="359">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -99,11 +99,11 @@
         <visualDescription h="30" w="50" x="556" y="289">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="initial_values">
+      <unitBounds parallel="true" uRef="initial_values">
         <visualDescription h="10" w="10" x="64" y="13"/>
       </unitBounds>
     </innerComponent>
@@ -117,15 +117,7 @@
         <visualDescription h="30" w="50" x="556" y="289">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
-      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="false">
-        <visualDescription h="30" w="50" x="194" y="585">
-          <color b="240" g="32" r="160"/>
-        </visualDescription>
-        <unitBounds uRef="mpi">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -133,7 +125,15 @@
         <visualDescription h="30" w="50" x="681" y="359">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </port>
+      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="false">
+        <visualDescription h="30" w="50" x="194" y="585">
+          <color b="240" g="32" r="160"/>
+        </visualDescription>
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -143,21 +143,21 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="5" y="17"/>
+        <unitBounds parallel="true" uRef="problem">
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="false">
-        <visualDescription h="38" w="100" x="46" y="501">
+        <visualDescription h="38" w="100" x="40" y="402">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
-          <visualDescription h="10" w="10" x="84" y="21"/>
+        <unitBounds parallel="false" uRef="blocks">
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="erhs">
+      <unitBounds parallel="true" uRef="erhs">
         <visualDescription h="10" w="10" x="42" y="7"/>
       </unitBounds>
     </innerComponent>
@@ -167,51 +167,15 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="y" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
-        <visualDescription h="30" w="50" x="556" y="289">
-          <color b="255" g="255" r="255"/>
-        </visualDescription>
-        <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="false">
         <visualDescription h="30" w="50" x="194" y="585">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
-          <visualDescription h="10" w="10" x="5" y="2"/>
+        <unitBounds parallel="true" uRef="mpi">
+          <visualDescription h="10" w="10" x="62" y="12"/>
         </unitBounds>
       </port>
-      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
-        <visualDescription h="30" w="50" x="681" y="359">
-          <color b="255" g="255" r="255"/>
-        </visualDescription>
-        <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
-      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="false">
-        <visualDescription h="38" w="100" x="46" y="501">
-          <color b="255" g="255" r="255"/>
-        </visualDescription>
-        <parameter formFieldId="instance_type" varName="I"/>
-        <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
-          <visualDescription h="10" w="10" x="84" y="21"/>
-        </unitBounds>
-      </port>
-      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009f8aadd94be2122c6dbf97a8db4c368df4aa14e5eef40999c777e681c973106bec55b80c133f1e7301d0ff36e2ee37a1d7d095ffff4581f295b2e8fc055fc07304178d993e14731e9c3d1e72370eee41c30ae18e6d096d5d70ac13a2833e8945cd641f4a3cab17bc2397b395bc234fdfa244afa599eb514a94d884e663b3a3a5" localRef="problem_data" location="lu.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="lu.data" exposed="false">
-        <visualDescription h="36" w="150" x="578" y="473">
-          <color b="255" g="255" r="255"/>
-        </visualDescription>
-        <parameter formFieldId="instance_type" varName="I"/>
-        <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="5" y="17"/>
-        </unitBounds>
-      </port>
-      <unitBounds uRef="ssor">
+      <unitBounds parallel="true" uRef="ssor">
         <visualDescription h="10" w="10" x="17" y="5"/>
       </unitBounds>
     </innerComponent>
@@ -227,17 +191,17 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="17"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="false">
-        <visualDescription h="38" w="100" x="46" y="501">
+        <visualDescription h="38" w="100" x="40" y="402">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
+        <unitBounds parallel="false" uRef="blocks">
           <visualDescription h="10" w="10" x="84" y="21"/>
         </unitBounds>
       </port>
@@ -245,11 +209,11 @@
         <visualDescription h="30" w="50" x="194" y="585">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
-          <visualDescription h="10" w="10" x="5" y="2"/>
+        <unitBounds parallel="true" uRef="mpi">
+          <visualDescription h="10" w="10" x="37" y="10"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="error">
+      <unitBounds parallel="true" uRef="error">
         <visualDescription h="10" w="10" x="26" y="4"/>
       </unitBounds>
     </innerComponent>
@@ -265,25 +229,25 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="5" y="17"/>
+        <unitBounds parallel="true" uRef="problem">
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="false">
-        <visualDescription h="38" w="100" x="46" y="501">
+        <visualDescription h="38" w="100" x="40" y="402">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
-          <visualDescription h="10" w="10" x="84" y="21"/>
+        <unitBounds parallel="false" uRef="blocks">
+          <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
         <visualDescription h="30" w="50" x="681" y="359">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -291,7 +255,7 @@
         <visualDescription h="30" w="50" x="556" y="289">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -299,11 +263,11 @@
         <visualDescription h="30" w="50" x="194" y="585">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="pintgr">
+      <unitBounds parallel="true" uRef="pintgr">
         <visualDescription h="10" w="10" x="24" y="4"/>
       </unitBounds>
     </innerComponent>
@@ -314,13 +278,13 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f3194c0a7b197fb560dfcad8ee5b421b78f1f03d002a081027a334aa25ebf3ca7669300c0fd23f8f1547226d2833753b8583e09a6b1fcc393107abb8e8670fb2d48b48ea486fa7f94cb968f2760707e531b14426dedc94542dfdf89efcdf612aeabb738a4b713e0a7a9b3ee97b95d783693b746ddcce119ba7c5080176270d8a" localRef="blocks_info" location="lu.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="lu.datapartition" exposed="false">
-        <visualDescription h="38" w="100" x="46" y="501">
+        <visualDescription h="38" w="100" x="40" y="402">
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
-          <visualDescription h="10" w="10" x="84" y="21"/>
+        <unitBounds parallel="false" uRef="blocks">
+          <visualDescription h="10" w="10" x="7" y="14"/>
         </unitBounds>
       </port>
       <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009f8aadd94be2122c6dbf97a8db4c368df4aa14e5eef40999c777e681c973106bec55b80c133f1e7301d0ff36e2ee37a1d7d095ffff4581f295b2e8fc055fc07304178d993e14731e9c3d1e72370eee41c30ae18e6d096d5d70ac13a2833e8945cd641f4a3cab17bc2397b395bc234fdfa244afa599eb514a94d884e663b3a3a5" localRef="problem_data" location="lu.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="lu.data" exposed="false">
@@ -329,11 +293,11 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="5" y="17"/>
+        <unitBounds parallel="true" uRef="problem">
+          <visualDescription h="10" w="10" x="51" y="4"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="verify">
+      <unitBounds parallel="true" uRef="verify">
         <visualDescription h="10" w="10" x="52" y="5"/>
       </unitBounds>
     </innerComponent>
@@ -342,61 +306,57 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="6" y="14"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="instance_type" varName="I"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <fusion>
-      <cRefs>pintgr</cRefs>
-      <cRefs>ssor</cRefs>
-      <cRefs>erhs</cRefs>
-      <cRefs>setiv</cRefs>
-      <cRefs>setbv</cRefs>
-      <pRef>x</pRef>
-    </fusion>
-    <fusion>
-      <cRefs>pintgr</cRefs>
       <cRefs>error</cRefs>
+      <cRefs>pintgr</cRefs>
       <cRefs>ssor</cRefs>
       <cRefs>erhs</cRefs>
       <pRef>mpi</pRef>
     </fusion>
     <fusion>
       <cRefs>pintgr</cRefs>
-      <cRefs>ssor</cRefs>
-      <cRefs>erhs</cRefs>
-      <cRefs>setiv</cRefs>
-      <cRefs>setbv</cRefs>
-      <pRef>y</pRef>
-    </fusion>
-    <fusion>
       <cRefs>verify</cRefs>
-      <cRefs>pintgr</cRefs>
       <cRefs>error</cRefs>
-      <cRefs>ssor</cRefs>
       <cRefs>erhs</cRefs>
       <cRefs>setiv</cRefs>
       <cRefs>setbv</cRefs>
       <pRef>problem_data</pRef>
     </fusion>
     <fusion>
-      <cRefs>verify</cRefs>
       <cRefs>pintgr</cRefs>
+      <cRefs>verify</cRefs>
       <cRefs>error</cRefs>
-      <cRefs>ssor</cRefs>
       <cRefs>erhs</cRefs>
       <cRefs>setiv</cRefs>
       <cRefs>setbv</cRefs>
       <pRef>blocks_info</pRef>
     </fusion>
+    <fusion>
+      <cRefs>erhs</cRefs>
+      <cRefs>pintgr</cRefs>
+      <cRefs>setiv</cRefs>
+      <cRefs>setbv</cRefs>
+      <pRef>y</pRef>
+    </fusion>
+    <fusion>
+      <cRefs>erhs</cRefs>
+      <cRefs>pintgr</cRefs>
+      <cRefs>setiv</cRefs>
+      <cRefs>setbv</cRefs>
+      <pRef>x</pRef>
+    </fusion>
     <interface iRef="ILU" nArgs="1">
-      <slice isRef="boundary_values">
+      <slice isRef="setbv">
         <originRef cRef="setbv" iRef="IBoundaryValues"/>
         <visualDescription h="10" w="10" x="151" y="52"/>
       </slice>
-      <slice isRef="initial_values">
+      <slice isRef="setiv">
         <originRef cRef="setiv" iRef="IInitialValues"/>
         <visualDescription h="10" w="10" x="22" y="44"/>
       </slice>
@@ -420,7 +380,7 @@
         <originRef cRef="verify" iRef="IVerify"/>
         <visualDescription h="10" w="10" x="151" y="34"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance_LU"/>
         <visualDescription h="10" w="10" x="125" y="34"/>
       </slice>
@@ -442,117 +402,161 @@
       <visualDescription h="107" w="180" x="73" y="79">
         <color b="0" g="255" r="128"/>
       </visualDescription>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="3" y="86"/>
-        <slice pRef="blocks" sRef="boundary_values"/>
-        <slice pRef="blocks" sRef="initial_values"/>
-        <slice pRef="blocks" sRef="erhs"/>
-        <slice pRef="blocks" sRef="ssor"/>
-        <slice pRef="blocks" sRef="error"/>
-        <slice pRef="blocks" sRef="pintgr"/>
-        <slice pRef="blocks" sRef="verify"/>
-      </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="102" y="68"/>
-        <slice pRef="problem" sRef="boundary_values"/>
-        <slice pRef="problem" sRef="initial_values"/>
-        <slice pRef="problem" sRef="erhs"/>
-        <slice pRef="problem" sRef="ssor"/>
-        <slice pRef="problem" sRef="error"/>
-        <slice pRef="problem" sRef="pintgr"/>
-        <slice pRef="problem" sRef="verify"/>
-      </port>
       <port name="x">
-        <visualDescription h="10" w="10" x="8" y="49"/>
-        <slice pRef="x" sRef="boundary_values"/>
-        <slice pRef="x" sRef="initial_values"/>
-        <slice pRef="x" sRef="erhs"/>
-        <slice pRef="x" sRef="ssor"/>
-        <slice pRef="x" sRef="pintgr"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="setbv"/>
+        <slice pRef="x" sRef="setiv"/>
+        <slice pRef="topology" sRef="erhs"/>
       </port>
       <port name="y">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="y" sRef="boundary_values"/>
-        <slice pRef="y" sRef="initial_values"/>
-        <slice pRef="y" sRef="erhs"/>
-        <slice pRef="y" sRef="ssor"/>
-        <slice pRef="y" sRef="pintgr"/>
+        <slice pRef="y" sRef="setbv"/>
+        <slice pRef="y" sRef="setiv"/>
+        <slice pRef="topology" sRef="erhs"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="setbv"/>
+        <slice pRef="blocks_info" sRef="setiv"/>
+        <slice pRef="blocks_info" sRef="erhs"/>
+        <slice pRef="blocks_info" sRef="error"/>
+        <slice pRef="blocks_info" sRef="verify"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="setbv"/>
+        <slice pRef="problem_data" sRef="setiv"/>
+        <slice pRef="problem_data" sRef="erhs"/>
+        <slice pRef="problem_data" sRef="error"/>
+        <slice pRef="problem_data" sRef="verify"/>
       </port>
       <port name="mpi">
-        <visualDescription h="10" w="10" x="152" y="0"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="erhs"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="erhs"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="ssor"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice sRef="ssor"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice sRef="ssor"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice sRef="ssor"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice sRef="ssor"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="ssor"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="error"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="pintgr"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="pintgr"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="pintgr"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="pintgr"/>
       </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="pintgr"/>
+      </port>
       <parameter iname="IClass" order="0" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ILU" multiple="true" private="false" replica="0" uRef="lu" visibleInterface="true">
-      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
-        <visualDescription h="10" w="10" x="6" y="33"/>
+      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
+        <visualDescription h="10" w="10" x="29" y="0"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="true">
+        <visualDescription h="10" w="10" x="62" y="12"/>
+      </slices>
+      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks_info" transitive="true">
+        <visualDescription h="10" w="10" x="9" y="7"/>
       </slices>
       <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="true">
         <visualDescription h="10" w="10" x="115" y="36"/>
       </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="true">
-        <visualDescription h="10" w="10" x="62" y="12"/>
+      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
+        <visualDescription h="10" w="10" x="6" y="33"/>
       </slices>
-      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="true">
-        <visualDescription h="10" w="10" x="9" y="7"/>
-      </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="29" y="0"/>
-      </slices>
-      <slices cRef="setbv" replica="0" uRef="boundary_values" sliceName="boundary_values" transitive="false">
+      <slices cRef="setbv" replica="0" uRef="boundary_values" sliceName="setbv" transitive="false">
         <visualDescription h="10" w="10" x="4" y="26"/>
-        <port>x</port>
+        <port>problem_data</port>
+        <port>blocks_info</port>
         <port>y</port>
-        <port>problem</port>
-        <port>blocks</port>
+        <port>x</port>
       </slices>
-      <slices cRef="setiv" replica="0" uRef="initial_values" sliceName="initial_values" transitive="false">
+      <slices cRef="setiv" replica="0" uRef="initial_values" sliceName="setiv" transitive="false">
         <visualDescription h="10" w="10" x="4" y="39"/>
-        <port>x</port>
+        <port>problem_data</port>
+        <port>blocks_info</port>
         <port>y</port>
-        <port>problem</port>
-        <port>blocks</port>
+        <port>x</port>
       </slices>
       <slices cRef="erhs" replica="0" uRef="erhs" sliceName="erhs" transitive="false">
         <visualDescription h="10" w="10" x="34" y="46"/>
-        <port>blocks</port>
-        <port>problem</port>
-        <port>y</port>
         <port>mpi</port>
+        <port>problem_data</port>
+        <port>blocks_info</port>
+        <port>y</port>
         <port>x</port>
       </slices>
       <slices cRef="ssor" replica="0" uRef="ssor" sliceName="ssor" transitive="false">
         <visualDescription h="10" w="10" x="80" y="46"/>
-        <port>problem</port>
-        <port>blocks</port>
-        <port>x</port>
         <port>mpi</port>
+        <port>problem_data</port>
+        <port>blocks_info</port>
         <port>y</port>
+        <port>x</port>
       </slices>
       <slices cRef="error" replica="0" uRef="error" sliceName="error" transitive="false">
         <visualDescription h="10" w="10" x="93" y="46"/>
         <port>mpi</port>
-        <port>problem</port>
-        <port>blocks</port>
+        <port>problem_data</port>
+        <port>blocks_info</port>
       </slices>
       <slices cRef="pintgr" replica="0" uRef="pintgr" sliceName="pintgr" transitive="false">
         <visualDescription h="10" w="10" x="66" y="46"/>
-        <port>x</port>
-        <port>y</port>
-        <port>problem</port>
-        <port>blocks</port>
         <port>mpi</port>
+        <port>problem_data</port>
+        <port>blocks_info</port>
+        <port>y</port>
+        <port>x</port>
       </slices>
       <slices cRef="verify" replica="0" uRef="verify" sliceName="verify" transitive="false">
         <visualDescription h="10" w="10" x="19" y="46"/>
-        <port>blocks</port>
-        <port>problem</port>
+        <port>problem_data</port>
+        <port>blocks_info</port>
       </slices>
-      <slices cRef="instance_type" replica="0" uRef="instance" sliceName="instance" transitive="false">
+      <slices cRef="instance_type" replica="0" uRef="instance" sliceName="instance_type" transitive="false">
         <visualDescription h="10" w="10" x="93" y="28"/>
       </slices>
       <visualDescription h="58" w="106" x="407" y="123"/>

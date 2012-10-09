@@ -13,7 +13,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="115" y="23"/>
       </unitBounds>
     </innerComponent>
@@ -23,7 +23,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="blocks">
+      <unitBounds parallel="false" uRef="blocks">
         <visualDescription h="10" w="10" x="42" y="5"/>
       </unitBounds>
     </innerComponent>
@@ -32,7 +32,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -40,7 +40,7 @@
       <visualDescription h="30" w="50" x="528" y="381">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -48,7 +48,7 @@
       <visualDescription h="48" w="101" x="527" y="465">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="direction">
+      <unitBounds parallel="true" uRef="direction">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -56,15 +56,15 @@
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="direction" formFieldId="direction" varName="DIS"/>
     <interface iRef="ITriangularPartJacobianMatrix" nArgs="3">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="93" y="9"/>
       </slice>
-      <slice isRef="blocks">
+      <slice isRef="blocks_info">
         <originRef cRef="blocks_info" iRef="IBlocksInfo"/>
         <visualDescription h="10" w="10" x="115" y="80"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="166" y="75"/>
       </slice>
@@ -92,26 +92,29 @@
       <visualDescription h="99" w="258" x="243" y="141">
         <color b="255" g="0" r="0"/>
       </visualDescription>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="14" y="9"/>
-        <slice pRef="problem" sRef="problem"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="18" y="69"/>
-        <slice pRef="blocks" sRef="blocks"/>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IDirection" order="2" parid="direction" uname="direction" varid="DIS"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ITriangularPartJacobianMatrix" multiple="true" private="false" replica="0" uRef="triangular_part_jacobian_matrix" visibleInterface="true">
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
         <visualDescription h="10" w="10" x="18" y="35"/>
       </slices>
-      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="false">
+      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks_info" transitive="false">
         <visualDescription h="10" w="10" x="47" y="33"/>
       </slices>
-      <slices cRef="instance_type" replica="0" uRef="instance" sliceName="instance" transitive="false">
+      <slices cRef="instance_type" replica="0" uRef="instance" sliceName="instance_type" transitive="false">
         <visualDescription h="10" w="10" x="210" y="25"/>
       </slices>
       <slices cRef="direction" replica="0" uRef="direction" sliceName="direction" transitive="false">

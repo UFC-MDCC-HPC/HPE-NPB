@@ -19,7 +19,7 @@
       </visualDescription>
     </interface>
     <unit iRef="IExchangePattern" multiple="true" private="false" replica="0" uRef="exchange_pattern" visibleInterface="true">
-      <visualDescription h="40" w="80" x="91" y="256"/>
+      <visualDescription h="40" w="80" x="78" y="242"/>
     </unit>
   </componentInfo>
 </component:component>

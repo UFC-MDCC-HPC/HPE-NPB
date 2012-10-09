@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000089f3412831007f146fee0270d9bb8c6e9b2533016dfa737ff5e681e89e5e9b819430e28fdfc749b428345f95a9083582f05c92a88cf02e4f3f893ce3bbc0d720915d0a1d65eabd3d022eb341da2e34092e81df35b1bc3e934a8348757e2c65b77dcb4c9b15799723a33fe180662b62e744d8e87cbb8b01072b6b8e6c5647cdaf" isAbstract="true" kind="Computation" name="InitialValues" packagePath="lu.data">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -19,7 +19,7 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="17"/>
         </unitBounds>
       </port>
@@ -29,11 +29,11 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
+        <unitBounds parallel="false" uRef="blocks">
           <visualDescription h="10" w="10" x="84" y="21"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="exact">
+      <unitBounds parallel="true" uRef="exact">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -42,7 +42,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -50,7 +50,7 @@
       <visualDescription h="30" w="50" x="459" y="248">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -58,7 +58,7 @@
       <visualDescription h="30" w="50" x="109" y="147">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cell">
+      <unitBounds parallel="true" uRef="cell">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -66,20 +66,20 @@
       <visualDescription h="30" w="50" x="83" y="248">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cell">
+      <unitBounds parallel="true" uRef="cell">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <parameter componentRef="instance_type" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <interface iRef="IInitialValues" nArgs="2">
-      <slice isRef="x">
-        <originRef cRef="x" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="13" y="30"/>
-      </slice>
       <slice isRef="y">
         <originRef cRef="y" iRef="ICell"/>
         <visualDescription h="10" w="10" x="136" y="22"/>
+      </slice>
+      <slice isRef="x">
+        <originRef cRef="x" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="13" y="30"/>
       </slice>
       <slice isRef="exact">
         <originRef cRef="exact" iRef="IExact"/>
@@ -103,42 +103,45 @@
       <visualDescription h="53" w="166" x="205" y="151">
         <color b="128" g="255" r="255"/>
       </visualDescription>
-      <port name="x">
-        <visualDescription h="10" w="10" x="21" y="1"/>
-        <slice pRef="cell" sRef="x"/>
-      </port>
       <port name="y">
-        <visualDescription h="10" w="10" x="102" y="2"/>
-        <slice pRef="cell" sRef="y"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="y"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="10" y="23"/>
-        <slice pRef="problem" sRef="exact"/>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="x"/>
       </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="29" y="38"/>
-        <slice pRef="blocks" sRef="exact"/>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="exact"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="exact"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IInitialValues" multiple="true" private="false" replica="0" uRef="initial_values" visibleInterface="true">
-      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="false">
-        <visualDescription h="10" w="10" x="13" y="30"/>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="true">
+        <visualDescription h="10" w="10" x="62" y="12"/>
+      </slices>
+      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks_info" transitive="true">
+        <visualDescription h="10" w="10" x="9" y="7"/>
       </slices>
       <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="false">
         <visualDescription h="10" w="10" x="136" y="22"/>
       </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="true">
-        <visualDescription h="10" w="10" x="62" y="12"/>
-      </slices>
-      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="true">
-        <visualDescription h="10" w="10" x="9" y="7"/>
+      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="false">
+        <visualDescription h="10" w="10" x="13" y="30"/>
       </slices>
       <slices cRef="exact" replica="0" uRef="exact" sliceName="exact" transitive="false">
         <visualDescription h="10" w="10" x="89" y="39"/>
-        <port>problem</port>
-        <port>blocks</port>
+        <port>problem_data</port>
+        <port>blocks_info</port>
       </slices>
       <visualDescription h="53" w="166" x="274" y="287"/>
     </unit>
