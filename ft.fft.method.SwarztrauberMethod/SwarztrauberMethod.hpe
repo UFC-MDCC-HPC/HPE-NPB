@@ -9,7 +9,7 @@
         <visualDescription h="43" w="83" x="243" y="229">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="method">
+        <unitBounds parallel="true" uRef="method">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -36,7 +36,7 @@
     </interface>
     <unit iRef="ISwarztrauberMethod" multiple="true" private="false" replica="0" uRef="method" visibleInterface="true">
       <super cRef="base" uRef="method"/>
-      <visualDescription h="40" w="80" x="55" y="223"/>
+      <visualDescription h="40" w="80" x="60" y="241"/>
     </unit>
   </componentInfo>
 </component:component>

@@ -19,11 +19,11 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
+        <unitBounds parallel="false" uRef="blocks">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="41" y="3"/>
       </unitBounds>
     </innerComponent>
@@ -32,7 +32,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -40,7 +40,7 @@
       <visualDescription h="30" w="50" x="509" y="193">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -48,7 +48,7 @@
       <visualDescription h="30" w="120" x="157" y="277">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -56,7 +56,7 @@
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="method" formFieldId="method" varName="M"/>
     <interface iRef="IFFT_1D" nArgs="3">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="80" y="26"/>
       </slice>
@@ -86,24 +86,27 @@
       <visualDescription h="40" w="181" x="189" y="170">
         <color b="0" g="255" r="128"/>
       </visualDescription>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="problem"/>
+        <slice pRef="blocks_info" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="ISolvingMethod" order="2" parid="method" uname="method" varid="M"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IFFT_1D" multiple="true" private="false" replica="0" uRef="swarztrauber" visibleInterface="true">
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
         <visualDescription h="10" w="10" x="80" y="26"/>
-        <port>blocks</port>
+        <port>blocks_info</port>
       </slices>
-      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="true">
+      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks_info" transitive="true">
         <visualDescription h="10" w="10" x="23" y="27"/>
       </slices>
       <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">

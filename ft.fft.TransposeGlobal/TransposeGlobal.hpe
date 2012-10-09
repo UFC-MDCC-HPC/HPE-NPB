@@ -19,11 +19,11 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="blocks">
+        <unitBounds parallel="false" uRef="blocks">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="45" y="3"/>
       </unitBounds>
     </innerComponent>
@@ -32,7 +32,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -40,7 +40,7 @@
       <visualDescription h="32" w="76" x="510" y="200">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -48,7 +48,7 @@
       <visualDescription h="36" w="94" x="370" y="382">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="axis">
+      <unitBounds parallel="true" uRef="axis">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -56,7 +56,7 @@
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="axis" formFieldId="axis" varName="DIR"/>
     <interface iRef="ITransposeGlobal" nArgs="3">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="56" y="28"/>
       </slice>
@@ -84,30 +84,33 @@
       <visualDescription h="40" w="123" x="214" y="205">
         <color b="64" g="128" r="128"/>
       </visualDescription>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="problem"/>
+        <slice pRef="blocks_info" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IAxis" order="2" parid="axis" uname="axis" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ITransposeGlobal" multiple="true" private="false" replica="0" uRef="transpose_global" visibleInterface="true">
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
         <visualDescription h="10" w="10" x="56" y="28"/>
-        <port>blocks</port>
+        <port>blocks_info</port>
       </slices>
-      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks" transitive="true">
+      <slices cRef="blocks_info" replica="0" uRef="blocks" sliceName="blocks_info" transitive="true">
         <visualDescription h="10" w="10" x="23" y="27"/>
       </slices>
       <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
         <visualDescription h="10" w="10" x="82" y="25"/>
       </slices>
-      <visualDescription h="40" w="123" x="1" y="245"/>
+      <visualDescription h="40" w="123" x="22" y="222"/>
     </unit>
   </componentInfo>
 </component:component>
