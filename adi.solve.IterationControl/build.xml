@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="IterationControl">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="IterationControl-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.solve.IterationControl/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.solve.IterationControl/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.solve.IterationControl/IterationControl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.solve.IterationControl/bin/1.0.0.0/BaseIIterationControl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.solve.IterationControl/src/1.0.0.0/BaseIIterationControl.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.solve.IterationControl/IterationControl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.solve.IterationControl/bin/1.0.0.0/IIterationControl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/adi.solve.IterationControl/src/1.0.0.0/IIterationControl.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="/adi.solve.IterationControl/bin/1.0.0.0/BaseIIterationControl.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="IterationControl-1.0.0.0" name="all"/>
+</project>
