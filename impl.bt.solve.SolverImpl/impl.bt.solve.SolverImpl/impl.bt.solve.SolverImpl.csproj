@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9905B037-EB37-42B8-9EAB-57EC2C5C1FED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>impl.bt.solve.SolverImpl</RootNamespace>
+    <AssemblyName>ISolverImpl</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\SolverImpl.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\1.0.0.0</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="DGAC">
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\DGAC\DGAC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\src\1.0.0.0\BaseISolverImpl.cs">
+      <Link>BaseISolverImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\src\1.0.0.0\ISolverImpl.cs">
+      <Link>ISolverImpl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\adi.data.ProblemDefinition\adi.data.ProblemDefinition\adi.data.ProblemDefinition.csproj">
+      <Project>{CAEB389F-AE7E-4052-9FB7-8E29F4928E82}</Project>
+      <Name>adi.data.ProblemDefinition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.axis.Axis\common.axis.Axis\common.axis.Axis.csproj">
+      <Project>{51EC4A8A-6014-4197-9264-0DF08BC0BDDD}</Project>
+      <Name>common.axis.Axis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.problem_size.Class\common.problem_size.Class\common.problem_size.Class.csproj">
+      <Project>{A57D6AA6-B371-4188-BD22-97494B834BCB}</Project>
+      <Name>common.problem_size.Class</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.Buffer\common.Buffer\common.Buffer.csproj">
+      <Project>{EEAC9F12-55E9-4AEE-8996-5A72FA4FE6CD}</Project>
+      <Name>common.Buffer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.interactionpattern.Shift\common.interactionpattern.Shift\common.interactionpattern.shift.csproj">
+      <Project>{786FD2E9-0926-473A-90F5-0B694DA96383}</Project>
+      <Name>common.interactionpattern.shift</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.topology.Ring\common.topology.Ring\common.topology.Ring.csproj">
+      <Project>{F77E3063-55D1-4BFE-B504-611A612ACACA}</Project>
+      <Name>common.topology.Ring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.datapartition.MultiPartitionCells\common.datapartition.MultiPartitionCells\common.datapartition.MultiPartitionCells.csproj">
+      <Project>{AD922723-458D-488B-B525-0A16FAF9774C}</Project>
+      <Name>common.datapartition.MultiPartitionCells</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.problem_size.Instance_BT\bt.problem_size.Instance_BT\bt.problem_size.Instance_BT.csproj">
+      <Project>{B6D543EF-3CB3-4A8C-988A-602EE0F65DF9}</Project>
+      <Name>bt.problem_size.Instance_BT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.solve.BackSubstitute\bt.solve.BackSubstitute\bt.solve.BackSubstitute.csproj">
+      <Project>{D8977F13-73E3-492A-A482-8D54A63BB8A1}</Project>
+      <Name>bt.solve.BackSubstitute</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.solve.BTMethod\bt.solve.BTMethod\bt.solve.BTMethod.csproj">
+      <Project>{A02235BC-CA4A-4F3C-84B4-78305D2DED49}</Project>
+      <Name>bt.solve.BTMethod</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.solve.PackBackSubInfo\bt.solve.PackBackSubInfo\bt.solve.PackBackSubInfo.csproj">
+      <Project>{45700E0B-F219-4247-B5A5-7AFDE5767F6D}</Project>
+      <Name>bt.solve.PackBackSubInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.solve.PackSolveInfo\bt.solve.PackSolveInfo\bt.solve.PackSolveInfo.csproj">
+      <Project>{B8DDD9B3-1FB2-4B20-A444-B97FC33B5928}</Project>
+      <Name>bt.solve.PackSolveInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.solve.UnpackBackSubInfo\bt.solve.UnpackBackSubInfo\bt.solve.UnpackBackSubInfo.csproj">
+      <Project>{26DD6AB2-4D34-4B7D-A58B-0001C6CC7680}</Project>
+      <Name>bt.solve.UnpackBackSubInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.solve.UnpackSolveInfo\bt.solve.UnpackSolveInfo\bt.solve.UnpackSolveInfo.csproj">
+      <Project>{916DD860-39DC-4A0D-A5BC-BFEF47EBD173}</Project>
+      <Name>bt.solve.UnpackSolveInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.solve.SolverCell\bt.solve.SolverCell\bt.solve.SolverCell.csproj">
+      <Project>{7B6DC294-680C-4FD8-9407-BBBFD92C2752}</Project>
+      <Name>bt.solve.SolverCell</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\bt.solve.Solver\bt.solve.Solver\bt.solve.Solver.csproj">
+      <Project>{F3FC3BC0-FCDC-4781-A9A5-5A610F7DE817}</Project>
+      <Name>bt.solve.Solver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.direction.Backward\common.direction.Backward\common.direction.Backward.csproj">
+      <Project>{3219509A-C959-40D6-9857-E6EFD99FDA89}</Project>
+      <Name>common.direction.Backward</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.direction.Forward\common.direction.Forward\common.direction.Forward.csproj">
+      <Project>{A57012D3-5567-4FA8-B958-D476419A6505}</Project>
+      <Name>common.direction.Forward</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\environment.MPIDirect\environment.MPIDirect\environment.MPIDirect.csproj">
+      <Project>{1F563648-2878-4A44-B98C-BBED70407F5D}</Project>
+      <Name>environment.MPIDirect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.solve.IterationControl\adi.solve.IterationControl\adi.solve.IterationControl.csproj">
+      <Project>{D033E840-9582-4DFC-BD9D-550B2E98B2BC}</Project>
+      <Name>adi.solve.IterationControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
