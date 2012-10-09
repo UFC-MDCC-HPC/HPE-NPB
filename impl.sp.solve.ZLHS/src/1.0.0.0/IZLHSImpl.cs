@@ -22,14 +22,28 @@ namespace impl.sp.solve.ZLHS {
 		{ 
 		} 
 		
-		private int c;
-
-		public void enterStage(int stage)			
+		private int stage = -1;
+		
+		public void begin()
 		{
-            c = slice[stage, 2];
+			stage = 0;
+		}
+		
+		public bool finished()
+		{
+			return stage >= ncells;
+		}
+		
+		public void advance()			
+		{
+			stage++;
 		}
 							
-		public override int go() { 
+		public override int go() 
+		{ 
+		    int c;
+			
+            c = slice[stage, 2];
 			
             double ru1;
             int i, j, k;

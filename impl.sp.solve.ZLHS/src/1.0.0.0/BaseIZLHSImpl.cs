@@ -28,6 +28,7 @@ protected double[,,,,] lhs, rho_i, speed, ws;
 protected double c3c4, dttz2, c2dttz1, dttz1, con43, dz5, dz1, comz5, comz4, comz1, comz6, dz4, c1c5, dzmax;
 protected double[] cv, rhos;
 protected int MAX_CELL_DIM;
+protected int ncells;
 		
 override public void initialize()
 {	
@@ -45,6 +46,7 @@ override public void initialize()
 	rho_i = Problem.Field_rho;
 	speed = Problem.Field_speed;
 	ws = Problem.Field_ws;
+	ncells = Problem.NCells;
 			
 	c3c4 = Constants.c3c4;
 	dttz2 = Constants.dttz2;
