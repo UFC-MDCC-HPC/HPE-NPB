@@ -9,7 +9,7 @@ namespace bt.solve.UnpackBackSubInfo {
 	where I:IInstance<C>
 	where C:IClass
 	where DIR:IAxis
-	where MTH:ISolvingMethod {
-		   void setParameters(double[,,,] backsub_info, double[] buffer, int c);
+	where MTH:ISolvingMethod 
+	{
 	} // end main interface 
 } // end namespace 

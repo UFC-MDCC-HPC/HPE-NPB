@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000085d41542940741460bcbb9c79aa04f1a26d61f6ab4f70cd68afb7cc856189bb278afa64f13159ea4de45f056c1e857cf17da63e85a3c38743e53f3f57e2e0c5d105cac8eba4d9c6bf8bb913b6060788005d6acbd793f9007b727493ca2ff0ebf11b41c5fa16009b0395aabdb5e103619402465840321e9767a5b3585862337b3" isAbstract="true" kind="Computation" name="SolverCell" packagePath="bt.solve">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -11,7 +11,7 @@
       <visualDescription h="36" w="75" x="286" y="450">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -20,7 +20,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -28,7 +28,7 @@
       <visualDescription h="37" w="86" x="103" y="418">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="axis">
+      <unitBounds parallel="true" uRef="axis">
         <visualDescription h="10" w="10" x="42" y="4"/>
       </unitBounds>
     </innerComponent>
@@ -36,7 +36,7 @@
       <visualDescription h="30" w="67" x="50" y="254">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="52" y="12"/>
       </unitBounds>
     </innerComponent>
@@ -44,7 +44,7 @@
       <visualDescription h="35" w="88" x="94" y="173">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="lhsabinit">
+      <unitBounds parallel="true" uRef="lhsabinit">
         <visualDescription h="10" w="10" x="71" y="17"/>
       </unitBounds>
     </innerComponent>
@@ -55,7 +55,7 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
-      <unitBounds uRef="binvcrhs">
+      <unitBounds parallel="true" uRef="binvcrhs">
         <visualDescription h="10" w="10" x="9" y="23"/>
       </unitBounds>
     </innerComponent>
@@ -66,7 +66,7 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
-      <unitBounds uRef="binvrhs">
+      <unitBounds parallel="true" uRef="binvrhs">
         <visualDescription h="10" w="10" x="6" y="15"/>
       </unitBounds>
     </innerComponent>
@@ -77,7 +77,7 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
-      <unitBounds uRef="matmul_sub">
+      <unitBounds parallel="true" uRef="matmul_sub">
         <visualDescription h="10" w="10" x="5" y="14"/>
       </unitBounds>
     </innerComponent>
@@ -88,7 +88,7 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
       <parameter formFieldId="method" varName="MTH"/>
-      <unitBounds uRef="matvec_sub">
+      <unitBounds parallel="true" uRef="matvec_sub">
         <visualDescription h="10" w="10" x="6" y="10"/>
       </unitBounds>
     </innerComponent>
@@ -98,7 +98,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -106,20 +106,54 @@
       <visualDescription h="57" w="72" x="54" y="122">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cells">
+      <unitBounds parallel="false" uRef="cells">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000053a9c5b99d0b2ca97a55d48da1213fb671bb0c0c1d5a641fffdcd4fc2f4965fa3815709ac847bdbadf8c36d00dd09a09e789c7a76ae6fb649e77a84f24685a5af2c7719eb9a31f44faa927f3a7882fc3ed842640b60142241f93abf109901ee7500e4300bd5fb50ed3c2ae9a06a2251b9966a52be85773c5620e0a9fbc964f94" localRef="iteration_direction" location="common.direction.Forward/Forward.hpe" multiple="false" name="Forward" package="common.direction" exposed="false">
+      <visualDescription h="60" w="100" x="315" y="499">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="true" uRef="forward">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000005b86e947f0c8ff58a018885f506e053867ca3d393fe1cd5e1ec93a51a743248bfe402f5db64de0f83584c891c751c5372e47815b771be3794141e0b3015a36de18d2d19e785500ed9eb00c8e374ef02a660d9fd575b434d9f216339ff6dd62602fa43a397fa0e12d50219bc7c0626be2392c1384f5b5211eecfe655385887eaa" localRef="iteration_control" location="adi.solve.IterationControl/IterationControl.hpe" multiple="false" name="IterationControl" package="adi.solve" exposed="true">
+      <visualDescription h="60" w="100" x="282" y="423">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="direction" varName="D"/>
+      <unitBounds parallel="true" uRef="iteration_control">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsc" location="common.data.Field/Field.hpe" multiple="false" name="Field" package="common.data" exposed="true">
+      <visualDescription h="60" w="100" x="71" y="326">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="false" uRef="field">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="iteration_direction" varName="D"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="instance_type" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="axis" formFieldId="axis" varName="DIR"/>
     <parameter componentRef="method" formFieldId="method" varName="MTH"/>
     <interface iRef="ISolverCell" nArgs="4">
-      <slice isRef="cells">
+      <slice isRef="lhsc">
+        <originRef cRef="lhsc" iRef="IField"/>
+        <visualDescription h="10" w="10" x="27" y="28"/>
+      </slice>
+      <slice isRef="iteration_control">
+        <originRef cRef="iteration_control" iRef="IIterationControl"/>
+        <visualDescription h="10" w="10" x="42" y="14"/>
+      </slice>
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="25" y="1"/>
       </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="44" y="0"/>
       </slice>
@@ -143,11 +177,11 @@
         <originRef cRef="binvrhs" iRef="IBinvRhs"/>
         <visualDescription h="10" w="10" x="65" y="30"/>
       </slice>
-      <slice isRef="matmul_sub">
+      <slice isRef="matmulsub">
         <originRef cRef="matmulsub" iRef="IMatMulSub"/>
         <visualDescription h="10" w="10" x="53" y="28"/>
       </slice>
-      <slice isRef="matvec_sub">
+      <slice isRef="matvecsub">
         <originRef cRef="matvecsub" iRef="IMatVecSub"/>
         <visualDescription h="10" w="10" x="22" y="25"/>
       </slice>
@@ -162,7 +196,7 @@
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using common.solve.SolvingMethod;&#xA;&#xA;namespace bt.solve.SolverCell { &#xA;&#x9;public interface ISolverCell&lt;I, C, DIR, MTH> : BaseISolverCell&lt;I, C, DIR, MTH>&#xA;&#x9;where I:IInstance&lt;C>&#xA;&#x9;where C:IClass&#xA;&#x9;where DIR:IAxis&#xA;&#x9;where MTH:ISolvingMethod {&#xA;&#x9;   void setParameters(double[,,,,,] lhsc, int first, int last, int c);&#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="ISolverCell.cs" srcType="user" uri="bt.solve.SolverCell/bin/1.0.0.0/ISolverCell.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using common.solve.SolvingMethod;&#xA;&#xA;namespace bt.solve.SolverCell { &#xA;&#x9;public interface ISolverCell&lt;I, C, DIR, MTH> : BaseISolverCell&lt;I, C, DIR, MTH>&#xA;&#x9;where I:IInstance&lt;C>&#xA;&#x9;where C:IClass&#xA;&#x9;where DIR:IAxis&#xA;&#x9;where MTH:ISolvingMethod &#xA;&#x9;{&#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="ISolverCell.cs" srcType="user" uri="bt.solve.SolverCell/bin/1.0.0.0/ISolverCell.dll" versionId="1.0.0.0">
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
@@ -173,24 +207,41 @@
       <visualDescription h="51" w="103" x="258" y="116">
         <color b="255" g="128" r="255"/>
       </visualDescription>
-      <port name="cells">
+      <port name="lhsc">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="lhsc" sRef="lhsc"/>
       </port>
-      <port name="problem">
+      <port name="iteration_control">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="iteration_control" sRef="iteration_control"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IAxis" order="2" parid="axis" uname="axis" varid="DIR"/>
       <parameter iname="ISolvingMethod" order="3" parid="method" uname="method" varid="MTH"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ISolverCell" multiple="true" private="false" replica="0" uRef="solve_cell" visibleInterface="true">
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+      <slices cRef="iteration_control" replica="0" uRef="iteration_control" sliceName="iteration_control" transitive="false">
+        <visualDescription h="10" w="10" x="42" y="14"/>
+      </slices>
+      <slices cRef="lhsc" replica="0" uRef="field" sliceName="lhsc" transitive="false">
+        <visualDescription h="10" w="10" x="27" y="28"/>
+      </slices>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="false">
         <visualDescription h="10" w="10" x="25" y="1"/>
       </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
         <visualDescription h="10" w="10" x="44" y="0"/>
       </slices>
       <slices cRef="lhsabinit" replica="0" uRef="lhsabinit" sliceName="lhsabinit" transitive="false">
@@ -208,10 +259,10 @@
       <slices cRef="binvrhs" replica="0" uRef="binvrhs" sliceName="binvrhs" transitive="false">
         <visualDescription h="10" w="10" x="75" y="30"/>
       </slices>
-      <slices cRef="matmulsub" replica="0" uRef="matmul_sub" sliceName="matmul_sub" transitive="false">
+      <slices cRef="matmulsub" replica="0" uRef="matmul_sub" sliceName="matmulsub" transitive="false">
         <visualDescription h="10" w="10" x="62" y="39"/>
       </slices>
-      <slices cRef="matvecsub" replica="0" uRef="matvec_sub" sliceName="matvec_sub" transitive="false">
+      <slices cRef="matvecsub" replica="0" uRef="matvec_sub" sliceName="matvecsub" transitive="false">
         <visualDescription h="10" w="10" x="42" y="40"/>
       </slices>
       <visualDescription h="55" w="87" x="263" y="247"/>

@@ -13,7 +13,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="34" y="45"/>
       </unitBounds>
     </innerComponent>
@@ -21,7 +21,7 @@
       <visualDescription h="63" w="108" x="382" y="171">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cells">
+      <unitBounds parallel="false" uRef="cells">
         <visualDescription h="10" w="10" x="6" y="26"/>
       </unitBounds>
     </innerComponent>
@@ -29,7 +29,7 @@
       <visualDescription h="30" w="50" x="170" y="412">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -38,7 +38,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -46,7 +46,7 @@
       <visualDescription h="74" w="85" x="135" y="455">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="axis">
+      <unitBounds parallel="true" uRef="axis">
         <visualDescription h="10" w="10" x="40" y="6"/>
       </unitBounds>
     </innerComponent>
@@ -54,22 +54,68 @@
       <visualDescription h="59" w="84" x="240" y="462">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="36" y="3"/>
       </unitBounds>
     </innerComponent>
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000005b86e947f0c8ff58a018885f506e053867ca3d393fe1cd5e1ec93a51a743248bfe402f5db64de0f83584c891c751c5372e47815b771be3794141e0b3015a36de18d2d19e785500ed9eb00c8e374ef02a660d9fd575b434d9f216339ff6dd62602fa43a397fa0e12d50219bc7c0626be2392c1384f5b5211eecfe655385887eaa" localRef="iteration_control" location="adi.solve.IterationControl/IterationControl.hpe" multiple="false" name="IterationControl" package="adi.solve" exposed="true">
+      <visualDescription h="60" w="176" x="251" y="77">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="direction" varName="D"/>
+      <unitBounds parallel="true" uRef="iteration_control">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004376d6d9d7de3a1b4d1fdf8832b56bd5b62d403268644c42baa67426cc69adbb726d79ebf33cb4e50759bee5876dae4b375be77b5eba726be3f05f558ea5acc1f13eb2291544bb106ea1da4e63d9252ff2fce1d8428e6d5fbefd2291d534003bd1bc8801fa4fb6341951cfd06c4003178884b8f780965965df6f99b6b33e0782" localRef="iteration_direction" location="common.direction.Backward/Backward.hpe" multiple="false" name="Backward" package="common.direction" exposed="false">
+      <visualDescription h="60" w="100" x="340" y="395">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="true" uRef="backward">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsc" location="common.data.Field/Field.hpe" multiple="false" name="Field" package="common.data" exposed="true">
+      <visualDescription h="60" w="100" x="50" y="370">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="false" uRef="field">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="backsub_info" location="common.data.Field/Field.hpe" multiple="false" name="Field" package="common.data" exposed="true">
+      <visualDescription h="60" w="145" x="327" y="415">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="false" uRef="field">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="iteration_direction" varName="D"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="instance_type" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="axis" formFieldId="axis" varName="DIR"/>
     <parameter componentRef="method" formFieldId="method" varName="MTH"/>
     <interface iRef="IBackSubstitute" nArgs="4">
-      <slice isRef="problem">
+      <slice isRef="lhsc">
+        <originRef cRef="lhsc" iRef="IField"/>
+        <visualDescription h="10" w="10" x="21" y="43"/>
+      </slice>
+      <slice isRef="iteration_control">
+        <originRef cRef="iteration_control" iRef="IIterationControl"/>
+        <visualDescription h="10" w="10" x="30" y="8"/>
+      </slice>
+      <slice isRef="cells_info">
+        <originRef cRef="cells_info" iRef="ICells"/>
+        <visualDescription h="10" w="10" x="17" y="37"/>
+      </slice>
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="57" y="37"/>
       </slice>
-      <slice isRef="cells">
-        <originRef cRef="cells_info" iRef="ICells"/>
-        <visualDescription h="10" w="10" x="17" y="37"/>
+      <slice isRef="backsub_info">
+        <originRef cRef="backsub_info" iRef="IField"/>
+        <visualDescription h="10" w="10" x="80" y="35"/>
       </slice>
       <slice isRef="axis">
         <originRef cRef="axis" iRef="IAxis"/>
@@ -90,7 +136,7 @@
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;&#xA;namespace bt.solve.BackSubstitute { &#xA;&#xA;public interface IBackSubstitute&lt;I, C, DIR, MTH> : BaseIBackSubstitute&lt;I, C, DIR, MTH>&#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;where DIR:IAxis&#xA;where MTH:ISolvingMethod&#xA;{&#xA;   void setParameters(double[,,,,,] lhsc, double[,,,] backsub_info, int first, int last, int c);&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IBackSubstitute.cs" srcType="user" uri="bt.solve.BackSubstitute/bin/1.0.0.0/IBackSubstitute.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.solve.SolvingMethod;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;&#xA;namespace bt.solve.BackSubstitute { &#xA;&#xA;public interface IBackSubstitute&lt;I, C, DIR, MTH> : BaseIBackSubstitute&lt;I, C, DIR, MTH>&#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;where DIR:IAxis&#xA;where MTH:ISolvingMethod&#xA;{&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IBackSubstitute.cs" srcType="user" uri="bt.solve.BackSubstitute/bin/1.0.0.0/IBackSubstitute.dll" versionId="1.0.0.0">
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
@@ -101,25 +147,49 @@
       <visualDescription h="56" w="101" x="118" y="165">
         <color b="128" g="128" r="0"/>
       </visualDescription>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="81" y="24"/>
-        <slice pRef="problem" sRef="problem"/>
+      <port name="lhsc">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="lhsc" sRef="lhsc"/>
       </port>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="61" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+      <port name="iteration_control">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="iteration_control" sRef="iteration_control"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
+      </port>
+      <port name="backsub_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="backsub_info" sRef="backsub_info"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IAxis" order="2" parid="axis" uname="axis" varid="DIR"/>
       <parameter iname="ISolvingMethod" order="3" parid="method" uname="method" varid="MTH"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IBackSubstitute" multiple="true" private="false" replica="0" uRef="back_substitute" visibleInterface="true">
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+      <slices cRef="iteration_control" replica="0" uRef="iteration_control" sliceName="iteration_control" transitive="false">
+        <visualDescription h="10" w="10" x="30" y="8"/>
+      </slices>
+      <slices cRef="lhsc" replica="0" uRef="field" sliceName="lhsc" transitive="false">
+        <visualDescription h="10" w="10" x="21" y="43"/>
+      </slices>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="false">
+        <visualDescription h="10" w="10" x="60" y="7"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
         <visualDescription h="10" w="10" x="87" y="7"/>
       </slices>
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
-        <visualDescription h="10" w="10" x="60" y="7"/>
+      <slices cRef="backsub_info" replica="0" uRef="field" sliceName="backsub_info" transitive="false">
+        <visualDescription h="10" w="10" x="80" y="35"/>
       </slices>
       <slices cRef="axis" replica="0" uRef="axis" sliceName="axis" transitive="false">
         <visualDescription h="10" w="10" x="4" y="43"/>

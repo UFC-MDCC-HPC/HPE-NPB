@@ -12,8 +12,6 @@ where C:IClass
 where DIR:IAxis
 where MTH:ISolvingMethod
 {
-   void setParameters(double[,,,,,] lhsc, double[,,,] backsub_info, int first, int last, int c);
-
 } // end main interface 
 
 } // end namespace 

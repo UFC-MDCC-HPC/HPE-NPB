@@ -9,7 +9,7 @@ namespace bt.solve.SolverCell {
 	where I:IInstance<C>
 	where C:IClass
 	where DIR:IAxis
-	where MTH:ISolvingMethod {
-	   void setParameters(double[,,,,,] lhsc, int first, int last, int c);
+	where MTH:ISolvingMethod 
+	{
 	}
 }

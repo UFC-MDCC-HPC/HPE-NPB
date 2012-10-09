@@ -11,7 +11,7 @@
       <visualDescription h="30" w="50" x="434" y="366">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -20,7 +20,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -28,7 +28,7 @@
       <visualDescription h="34" w="64" x="203" y="361">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="50" y="13"/>
       </unitBounds>
     </innerComponent>
@@ -61,6 +61,9 @@
         <color b="255" g="128" r="255"/>
       </visualDescription>
       <parameter iname="ISolvingMethod" order="0" parid="method" uname="method" varid="MTH"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IBinvcRhs" multiple="true" private="false" replica="0" uRef="binvcrhs" visibleInterface="true">
       <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">

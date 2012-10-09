@@ -7,6 +7,7 @@ using common.problem_size.Instance;
 using common.problem_size.Class;
 using common.axis.Axis;
 using common.solve.SolvingMethod;
+using common.Buffer;
 
 namespace bt.solve.PackSolveInfo { 
 
@@ -16,7 +17,8 @@ where C:IClass
 where DIR:IAxis
 where MTH:ISolvingMethod
 {
-
+		
+	IBuffer Buffer {get;}
 	ICells Cells {get;}
 	IProblemDefinition<I, C> Problem {get;}
 

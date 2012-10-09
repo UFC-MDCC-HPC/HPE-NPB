@@ -72,5 +72,9 @@
       <Project>{63E68F25-2D70-4A6A-BB2E-922472355F8F}</Project>
       <Name>common.solve.SolvingMethod</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\common.Buffer\common.Buffer\common.Buffer.csproj">
+      <Project>{EEAC9F12-55E9-4AEE-8996-5A72FA4FE6CD}</Project>
+      <Name>common.Buffer</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
