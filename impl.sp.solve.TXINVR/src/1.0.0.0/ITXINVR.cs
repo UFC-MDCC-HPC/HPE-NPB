@@ -19,10 +19,16 @@ public class ITXINVR<I,C,DIR,MTH> : BaseITXINVR<I,C,DIR,MTH>, IBlockDiagonalMatV
 		where DIR:IXYZ
 		where MTH:ISPMethod
 {
-					
-public void enterStage(int stage)			
+
+		
+		
+public bool finished()
 {
+	return false;
 }
+		
+public void begin() {}
+public void advance() {}
 		
 public override int go() 
 { 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ddc6a8247211751d7820c59f40f60abfe1f88087018c274a2b2cbd294086e87e93a5db2c7ee68d047aa7e454cf4f04991a77fe331d9525ba05b6f1f6df82498bde125fece3b95a4a96b2d25550af5674fca413becf2d121be69ee2bb77a87a8f1fa04b8665694e0292507d5c9f3dc8f43c434e087e0651482064ae3d4576768e" isAbstract="false" kind="Computation" name="TXINVR" packagePath="impl.sp.solve">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           <visualDescription h="53" w="112" x="302" y="427">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cells">
+          <unitBounds parallel="false" uRef="cells">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -27,11 +27,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="47" y="9"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="matvecproduct">
+        <unitBounds parallel="true" uRef="matvecproduct">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -46,7 +46,7 @@
       <visualDescription h="30" w="50" x="261" y="120">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="xyz">
+      <unitBounds parallel="true" uRef="xyz">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -54,7 +54,7 @@
       <visualDescription h="30" w="50" x="336" y="375">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -63,7 +63,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -71,7 +71,7 @@
       <visualDescription h="30" w="50" x="224" y="441">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -80,11 +80,11 @@
     <supplyParameter cRef="instance" varName="I"/>
     <supplyParameter cRef="method" varName="MTH"/>
     <interface iRef="ITXINVR" nArgs="4">
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="78" y="26"/>
       </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="92" y="3"/>
       </slice>
@@ -103,7 +103,7 @@
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
           <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/BaseIBlockDiagonalMatVecProduct.dll</dependency>
         </file>
-        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using adi.data.ProblemDefinition;&#xA;using common.axis.Axis;&#xA;using common.axis.XYZAxes;&#xA;using sp.solve.SPMethod;&#xA;&#xA;&#xA;namespace impl.sp.solve.TXINVR { &#xA;&#xA;public class ITXINVR&lt;I,C,DIR,MTH> : BaseITXINVR&lt;I,C,DIR,MTH>, IBlockDiagonalMatVecProduct&lt;I,C,DIR,MTH>&#xA;&#x9;&#x9;where I:IInstance&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;where DIR:IXYZ&#xA;&#x9;&#x9;where MTH:ISPMethod&#xA;{&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;public void enterStage(int stage)&#x9;&#x9;&#x9;&#xA;{&#xA;}&#xA;&#x9;&#x9;&#xA;public override int go() &#xA;{ &#xA;    int c, i, j, k, isize, jsize, ksize;&#xA;    double t1, t2, t3, ac, ru1, xvel, yvel, zvel,&#xA;           r1, r2, r3, r4, r5, ac2inv;&#xA;    &#xA;    for (c = 0; c &lt; ncells; c++)&#xA;    {&#xA;        ksize = cell_size[c, 2] + 2;&#xA;        jsize = cell_size[c, 1] + 2;&#xA;        isize = cell_size[c, 0] + 2;&#xA;&#xA;        for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;        {&#xA;            for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;            {&#xA;                for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;                {&#xA;                    ru1 = rho_i[c, k, j, i, 0];&#xA;                    xvel = us[c, k, j, i, 0];&#xA;                    yvel = vs[c, k, j, i, 0];&#xA;                    zvel = ws[c, k, j, i, 0];&#xA;                    ac = speed[c, k, j, i, 0];&#xA;                    ac2inv = ainv[c, k, j, i, 0] * ainv[c, k, j, i, 0];&#xA;&#xA;                    r1 = rhs[c, k, j, i, 0];&#xA;                    r2 = rhs[c, k, j, i, 1];&#xA;                    r3 = rhs[c, k, j, i, 2];&#xA;                    r4 = rhs[c, k, j, i, 3];&#xA;                    r5 = rhs[c, k, j, i, 4];&#xA;                        &#xA;                    t1 = c2 * ac2inv * (qs[c, k, j, i, 0] * r1 - xvel * r2 -&#xA;                        yvel * r3 - zvel * r4 + r5);&#xA;                    t2 = bt * ru1 * (xvel * r1 - r2);&#xA;                    t3 = (bt * ru1 * ac) * t1;&#xA;&#xA;                    rhs[c, k, j, i, 0] = r1 - t1;&#xA;                    rhs[c, k, j, i, 1] = -ru1 * (zvel * r1 - r4);&#xA;                    rhs[c, k, j, i, 2] = ru1 * (yvel * r1 - r3);&#xA;                    rhs[c, k, j, i, 3] = -t2 + t3;&#xA;                    rhs[c, k, j, i, 4] = t2 + t3;&#xA;                    &#xA;                   //     for (int m=0;m&lt;5;m++)&#x9;&#x9;                &#xA;&#x9;&#x9;           //         Console.WriteLine(&quot;txinvr - rhs&quot; + &quot;[&quot; + c + &quot;,&quot; + k + &quot;,&quot; + j + &quot;,&quot; + i + &quot;,&quot; + m + &quot;] = &quot; + rhs[c, k, j, i, m]);&#xA;                }&#xA;            }&#xA;        }&#xA;    }&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;return 0;&#xA;} // end activate method &#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="ITXINVR.cs" srcType="user" uri="impl.sp.solve.TXINVR/bin/1.0.0.0/ITXINVR.dll" versionId="1.0.0.0">
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using adi.data.ProblemDefinition;&#xA;using common.axis.Axis;&#xA;using common.axis.XYZAxes;&#xA;using sp.solve.SPMethod;&#xA;&#xA;&#xA;namespace impl.sp.solve.TXINVR { &#xA;&#xA;public class ITXINVR&lt;I,C,DIR,MTH> : BaseITXINVR&lt;I,C,DIR,MTH>, IBlockDiagonalMatVecProduct&lt;I,C,DIR,MTH>&#xA;&#x9;&#x9;where I:IInstance&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;where DIR:IXYZ&#xA;&#x9;&#x9;where MTH:ISPMethod&#xA;{&#xA;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;public bool finished()&#xA;{&#xA;&#x9;return false;&#xA;}&#xA;&#x9;&#x9;&#xA;public void begin() {}&#xA;public void advance() {}&#xA;&#x9;&#x9;&#xA;public override int go() &#xA;{ &#xA;    int c, i, j, k, isize, jsize, ksize;&#xA;    double t1, t2, t3, ac, ru1, xvel, yvel, zvel,&#xA;           r1, r2, r3, r4, r5, ac2inv;&#xA;    &#xA;    for (c = 0; c &lt; ncells; c++)&#xA;    {&#xA;        ksize = cell_size[c, 2] + 2;&#xA;        jsize = cell_size[c, 1] + 2;&#xA;        isize = cell_size[c, 0] + 2;&#xA;&#xA;        for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;        {&#xA;            for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;            {&#xA;                for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;                {&#xA;                    ru1 = rho_i[c, k, j, i, 0];&#xA;                    xvel = us[c, k, j, i, 0];&#xA;                    yvel = vs[c, k, j, i, 0];&#xA;                    zvel = ws[c, k, j, i, 0];&#xA;                    ac = speed[c, k, j, i, 0];&#xA;                    ac2inv = ainv[c, k, j, i, 0] * ainv[c, k, j, i, 0];&#xA;&#xA;                    r1 = rhs[c, k, j, i, 0];&#xA;                    r2 = rhs[c, k, j, i, 1];&#xA;                    r3 = rhs[c, k, j, i, 2];&#xA;                    r4 = rhs[c, k, j, i, 3];&#xA;                    r5 = rhs[c, k, j, i, 4];&#xA;                        &#xA;                    t1 = c2 * ac2inv * (qs[c, k, j, i, 0] * r1 - xvel * r2 -&#xA;                        yvel * r3 - zvel * r4 + r5);&#xA;                    t2 = bt * ru1 * (xvel * r1 - r2);&#xA;                    t3 = (bt * ru1 * ac) * t1;&#xA;&#xA;                    rhs[c, k, j, i, 0] = r1 - t1;&#xA;                    rhs[c, k, j, i, 1] = -ru1 * (zvel * r1 - r4);&#xA;                    rhs[c, k, j, i, 2] = ru1 * (yvel * r1 - r3);&#xA;                    rhs[c, k, j, i, 3] = -t2 + t3;&#xA;                    rhs[c, k, j, i, 4] = t2 + t3;&#xA;                    &#xA;                   //     for (int m=0;m&lt;5;m++)&#x9;&#x9;                &#xA;&#x9;&#x9;           //         Console.WriteLine(&quot;txinvr - rhs&quot; + &quot;[&quot; + c + &quot;,&quot; + k + &quot;,&quot; + j + &quot;,&quot; + i + &quot;,&quot; + m + &quot;] = &quot; + rhs[c, k, j, i, m]);&#xA;                }&#xA;            }&#xA;        }&#xA;    }&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;return 0;&#xA;} // end activate method &#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="ITXINVR.cs" srcType="user" uri="impl.sp.solve.TXINVR/bin/1.0.0.0/ITXINVR.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/impl.sp.solve.TXINVR/bin/1.0.0.0/BaseITXINVR.dll</dependency>
           <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/IBlockDiagonalMatVecProduct.dll</dependency>
         </file>
@@ -111,18 +111,27 @@
       <visualDescription h="55" w="228" x="34" y="121">
         <color b="64" g="255" r="0"/>
       </visualDescription>
-      <port name="cells">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance_SP" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IXYZ" order="2" parid="axis" uname="xyz" varid="DIR"/>
       <parameter iname="ISPMethod" order="3" parid="method" uname="method" varid="MTH"/>
+      <action id="advance">
+        <protocol/>
+      </action>
+      <action id="begin">
+        <protocol/>
+      </action>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ITXINVR" multiple="true" private="false" replica="0" uRef="matvecproduct" visibleInterface="true">
       <super cRef="base" uRef="matvecproduct"/>
