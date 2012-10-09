@@ -17,6 +17,9 @@
       <visualDescription h="40" w="114" x="234" y="188">
         <color b="255" g="0" r="128"/>
       </visualDescription>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExactSolution" multiple="true" private="false" replica="0" uRef="exact_solution" visibleInterface="true">
       <visualDescription h="40" w="115" x="135" y="337"/>

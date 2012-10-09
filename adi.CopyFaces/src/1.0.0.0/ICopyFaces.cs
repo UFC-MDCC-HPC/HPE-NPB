@@ -8,6 +8,7 @@ public interface ICopyFaces<I,C> : BaseICopyFaces<I,C>
 		where I:IInstance<C>
 		where C:IClass
 {
+		bool is_multiple();
 } // end main interface 
 
 } // end namespace 

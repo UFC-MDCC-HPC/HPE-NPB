@@ -1,37 +1,392 @@
-package adi;
-
-import common.axis.*;
-
-computation ADI(x,y,z,problem_data,cells_info) 
-    [class = C: Class,
-     instance_type = I:Instance[class = C],     
-     method = MTH: SolvingMethod]
-begin
-	computation x_solve : Solver(x,problem_data,cells_info)[axis=XAxis, instance_type=I, class=C, method=MTH];
-	computation y_solve : Solver(y,problem_data,cells_info)[axis=YAxis, instance_type=I, class=C, method=MTH];
-	computation z_solve : Solver(z,problem_data,cells_info)[axis=ZAxis, instance_type=I, class=C, method=MTH];
-	computation add: Add(problem_data,cells_info)[instance_type = I, class = C];
-	computation compute_rhs: ComputeRHS(problem_data,cells_info)[instance_type = I, class = C];
-	comunicator copy_faces: CopyFaces(x,y,z,problem_data,cells_info)[instance_type = I, class = C];
-
-    parallel unit adi
-    begin    
-       slice x_solve from x_solve.solve;
-       slice y_solve from y_solve.solve;
-       slice z_solve from z_solve.solve;
-       slice add from add.add
-       slice compute_rhs from compute_rhs.compute_rhs
-       slice copy_faces from copy_faces.copy_faces;
-       action x_solve;
-       action y_solve;
-       action add;
-       action compute_rhs; 
-       action copy_faces;       
-       protocol: seq {do copy_faces;                             
-                      do compute_rhs; 
-                      do x_solve; 
-                      do y_solve; 
-                      do z_solve; 
-                      do add}
-    end
-end
+<?xml version="1.0" encoding="ASCII"?>
+<component:hashComponent xmlns:component="http://www.example.org/HashComponent">
+  <package>adi</package>
+  <using>common.topology</using>
+  <using>environment</using>
+  <using>common.datapartition</using>
+  <using>adi.data</using>
+  <using>common.problem_size</using>
+  <using>adi</using>
+  <using>common.axis</using>
+  <using>common.solve</using>
+  <kind>Computation</kind>
+  <name>ADI</name>
+  <parameter>
+    <identifier>instance_type</identifier>
+    <variable>I</variable>
+    <constraint>
+      <componentConstraint>common.problem_size.Instance</componentConstraint>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+    </constraint>
+  </parameter>
+  <parameter>
+    <identifier>class</identifier>
+    <variable>C</variable>
+    <constraint>
+      <componentConstraint>common.problem_size.Class</componentConstraint>
+    </constraint>
+  </parameter>
+  <parameter>
+    <identifier>method</identifier>
+    <variable>MTH</variable>
+    <constraint>
+      <componentConstraint>common.solve.SolvingMethod</componentConstraint>
+    </constraint>
+  </parameter>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>z</identifier>
+    <type>
+      <componentName>common.topology.Ring</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>y</identifier>
+    <type>
+      <componentName>common.topology.Ring</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>x</identifier>
+    <type>
+      <componentName>common.topology.Ring</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>mpi</identifier>
+    <type>
+      <componentName>environment.MPIDirect</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>cells_info</identifier>
+    <type>
+      <componentName>common.datapartition.MultiPartitionCells</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Data</kind>
+    <identifier>problem_data</identifier>
+    <type>
+      <componentName>adi.data.ProblemDefinition</componentName>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Computation</kind>
+    <identifier>z_solve</identifier>
+    <type>
+      <componentName>adi.Solver</componentName>
+      <publicInnerComponent>cells_info</publicInnerComponent>
+      <publicInnerComponent>problem_data</publicInnerComponent>
+      <publicInnerComponent>z</publicInnerComponent>
+      <parameter>
+        <identifier>axis</identifier>
+        <constraint>
+          <componentConstraint>common.axis.ZAxis</componentConstraint>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>method</identifier>
+        <variable>MTH</variable>
+        <constraint>
+          <componentConstraint>common.solve.SolvingMethod</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>private</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Computation</kind>
+    <identifier>y_solve</identifier>
+    <type>
+      <componentName>adi.Solver</componentName>
+      <publicInnerComponent>cells_info</publicInnerComponent>
+      <publicInnerComponent>problem_data</publicInnerComponent>
+      <publicInnerComponent>y</publicInnerComponent>
+      <parameter>
+        <identifier>axis</identifier>
+        <constraint>
+          <componentConstraint>common.axis.YAxis</componentConstraint>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>method</identifier>
+        <variable>MTH</variable>
+        <constraint>
+          <componentConstraint>common.solve.SolvingMethod</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>private</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Computation</kind>
+    <identifier>x_solve</identifier>
+    <type>
+      <componentName>adi.Solver</componentName>
+      <publicInnerComponent>cells_info</publicInnerComponent>
+      <publicInnerComponent>problem_data</publicInnerComponent>
+      <publicInnerComponent>x</publicInnerComponent>
+      <parameter>
+        <identifier>axis</identifier>
+        <constraint>
+          <componentConstraint>common.axis.XAxis</componentConstraint>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>method</identifier>
+        <variable>MTH</variable>
+        <constraint>
+          <componentConstraint>common.solve.SolvingMethod</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>private</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Synchronizer</kind>
+    <identifier>copy_faces</identifier>
+    <type>
+      <componentName>adi.CopyFaces</componentName>
+      <publicInnerComponent>problem_data</publicInnerComponent>
+      <publicInnerComponent>cells_info</publicInnerComponent>
+      <publicInnerComponent>x</publicInnerComponent>
+      <publicInnerComponent>y</publicInnerComponent>
+      <publicInnerComponent>z</publicInnerComponent>
+      <publicInnerComponent>mpi</publicInnerComponent>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>private</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Computation</kind>
+    <identifier>compute_rhs</identifier>
+    <type>
+      <componentName>adi.ComputeRHS</componentName>
+      <publicInnerComponent>cells_info</publicInnerComponent>
+      <publicInnerComponent>problem_data</publicInnerComponent>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>private</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Computation</kind>
+    <identifier>add</identifier>
+    <type>
+      <componentName>adi.Add</componentName>
+      <publicInnerComponent>problem_data</publicInnerComponent>
+      <publicInnerComponent>cells_info</publicInnerComponent>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>private</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <unit index="0" name="adi" parallel="true">
+    <slice index="0" inner="z_solve" unit="solve"/>
+    <slice index="0" inner="y_solve" unit="solve"/>
+    <slice index="0" inner="x_solve" unit="solve"/>
+    <slice index="0" inner="copy_faces" unit="copy_faces"/>
+    <slice index="0" inner="compute_rhs" unit="compute_rhs"/>
+    <slice index="0" inner="add" unit="add"/>
+    <action>
+      <identifier>main</identifier>
+      <protocol>
+        <seq id="main" repeat="false">
+          <action>
+            <perform repeat="false" action_id="go" slice_id="copy_faces">
+              <guard>
+                <condition cond_id="is_multiple" slice_id="copy_faces"/>
+              </guard>
+            </perform>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="compute_rhs"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="x_solve"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="y_solve"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="z_solve"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="add"/>
+          </action>
+        </seq>
+      </protocol>
+    </action>
+  </unit>
+</component:hashComponent>

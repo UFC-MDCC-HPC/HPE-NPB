@@ -11,7 +11,7 @@
       <visualDescription h="30" w="50" x="178" y="260">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="axis">
+      <unitBounds parallel="true" uRef="axis">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -19,7 +19,7 @@
       <visualDescription h="30" w="50" x="22" y="275">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -28,7 +28,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -36,7 +36,7 @@
       <visualDescription h="50" w="101" x="193" y="80">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -44,7 +44,7 @@
       <visualDescription h="30" w="100" x="94" y="435">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cells">
+      <unitBounds parallel="false" uRef="cells">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -54,7 +54,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -62,7 +62,7 @@
       <visualDescription h="49" w="86" x="28" y="346">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cell">
+      <unitBounds parallel="true" uRef="cell">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -71,11 +71,11 @@
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="method" formFieldId="method" varName="MTH"/>
     <interface iRef="ISolver" nArgs="4">
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="13" y="3"/>
       </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="29" y="5"/>
       </slice>
@@ -117,32 +117,35 @@
       <visualDescription h="76" w="80" x="45" y="55">
         <color b="0" g="0" r="255"/>
       </visualDescription>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="55" y="45"/>
-        <slice pRef="cells" sRef="cells"/>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="31" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <port name="topology">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="topology"/>
+        <slice pRef="topology" sRef="topology"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="ISolvingMethod" order="2" parid="method" uname="method" varid="MTH"/>
       <parameter iname="IAxis" order="3" parid="axis" uname="axis" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ISolver" multiple="true" private="false" replica="0" uRef="solve" visibleInterface="true">
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="false">
         <visualDescription h="10" w="10" x="13" y="3"/>
-      </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
-        <visualDescription h="10" w="10" x="29" y="5"/>
       </slices>
       <slices cRef="topology" replica="0" uRef="cell" sliceName="topology" transitive="false">
         <visualDescription h="10" w="10" x="1" y="6"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
+        <visualDescription h="10" w="10" x="29" y="5"/>
       </slices>
       <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">
         <visualDescription h="10" w="10" x="51" y="11"/>

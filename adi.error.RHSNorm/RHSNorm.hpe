@@ -13,7 +13,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -21,7 +21,7 @@
       <visualDescription h="30" w="50" x="437" y="648">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -30,7 +30,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -38,7 +38,7 @@
       <visualDescription h="42" w="101" x="219" y="441">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cells">
+      <unitBounds parallel="false" uRef="cells">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -46,24 +46,24 @@
       <visualDescription h="30" w="50" x="373" y="241">
         <color b="240" g="32" r="160"/>
       </visualDescription>
-      <unitBounds uRef="mpi">
+      <unitBounds parallel="true" uRef="mpi">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <interface iRef="IRHSNorm" nArgs="2">
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="32" y="26"/>
-      </slice>
-      <slice isRef="cells">
-        <originRef cRef="cells_info" iRef="ICells"/>
-        <visualDescription h="10" w="10" x="50" y="27"/>
-      </slice>
       <slice isRef="mpi">
         <originRef cRef="mpi" iRef="IMPIDirect"/>
         <visualDescription h="10" w="10" x="68" y="27"/>
+      </slice>
+      <slice isRef="cells_info">
+        <originRef cRef="cells_info" iRef="ICells"/>
+        <visualDescription h="10" w="10" x="50" y="27"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="32" y="26"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* AUTOMATICALLY GENERATE CODE */&#xA;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using environment.MPIDirect;&#xA;&#xA;namespace adi.error.RHSNorm { &#xA;&#xA;public interface BaseIRHSNorm&lt;I,C> : IComputationKind &#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;{&#xA;&#x9;&#x9;&#xA;&#x9;ICells Cells {get;}&#xA;&#x9;IProblemDefinition&lt;I,C> Problem {get;}&#xA;&#x9;IMPIDirect Mpi {get;}&#xA;&#xA;&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="BaseIRHSNorm.cs" srcType="base" uri="adi.error.RHSNorm/bin/1.0.0.0/BaseIRHSNorm.dll" versionId="1.0.0.0">
@@ -79,30 +79,33 @@
       <visualDescription h="40" w="80" x="185" y="63">
         <color b="255" g="255" r="0"/>
       </visualDescription>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
-      </port>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="35" y="4"/>
-        <slice pRef="cells" sRef="cells"/>
-      </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="64" y="2"/>
         <slice pRef="mpi" sRef="mpi"/>
       </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
+      </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IRHSNorm" multiple="true" private="false" replica="0" uRef="rhs_norm" visibleInterface="true">
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
-        <visualDescription h="10" w="10" x="32" y="26"/>
-      </slices>
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
-        <visualDescription h="10" w="10" x="50" y="27"/>
-      </slices>
       <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="false">
         <visualDescription h="10" w="10" x="68" y="27"/>
+      </slices>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="false">
+        <visualDescription h="10" w="10" x="50" y="27"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
+        <visualDescription h="10" w="10" x="32" y="26"/>
       </slices>
       <visualDescription h="40" w="80" x="106" y="144"/>
     </unit>

@@ -181,15 +181,15 @@
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <interface iRef="ICopyFaces" nArgs="2">
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="104" y="16"/>
       </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="36" y="34"/>
       </slice>
-      <slice isRef="interact">
+      <slice isRef="all_exchange">
         <originRef cRef="all_exchange" iRef="IAllExchange"/>
         <visualDescription h="10" w="10" x="62" y="35"/>
       </slice>
@@ -201,225 +201,164 @@
           <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
           <dependency>environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;&#xA;namespace adi.CopyFaces { &#xA;&#xA;public interface ICopyFaces&lt;I,C> : BaseICopyFaces&lt;I,C>&#xA;&#x9;&#x9;where I:IInstance&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;{&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ICopyFaces.cs" srcType="user" uri="adi.CopyFaces/bin/1.0.0.0/ICopyFaces.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;&#xA;namespace adi.CopyFaces { &#xA;&#xA;public interface ICopyFaces&lt;I,C> : BaseICopyFaces&lt;I,C>&#xA;&#x9;&#x9;where I:IInstance&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;{&#xA;&#x9;&#x9;bool is_multiple();&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="ICopyFaces.cs" srcType="user" uri="adi.CopyFaces/bin/1.0.0.0/ICopyFaces.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/adi.CopyFaces/bin/1.0.0.0/BaseICopyFaces.dll</dependency>
         </file>
       </sources>
-      <visualDescription h="122" w="198" x="59" y="67">
+      <visualDescription h="122" w="198" x="139" y="64">
         <color b="128" g="0" r="128"/>
       </visualDescription>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells_info" sRef="cells"/>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="56" y="98"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem_data" sRef="problem"/>
-      </port>
-      <port name="input_buffer_z_bottom">
-        <visualDescription h="10" w="10" x="55" y="104"/>
-        <slice pRef="input_buffer_z_bottom" sRef="interact"/>
-      </port>
-      <port name="cell">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="interact"/>
-      </port>
-      <port name="output_buffer_z_bottom">
-        <visualDescription h="10" w="10" x="102" y="5"/>
-        <slice pRef="output_buffer_z_bottom" sRef="interact"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="21" y="77"/>
-        <slice pRef="mpi" sRef="interact"/>
-      </port>
-      <port name="z">
-        <visualDescription h="10" w="10" x="9" y="15"/>
-        <slice pRef="z" sRef="interact"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="mpi" sRef="interact"/>
-      </port>
-      <port name="input_buffer_z_top">
-        <visualDescription h="10" w="10" x="67" y="9"/>
-        <slice pRef="input_buffer_z_top" sRef="interact"/>
-      </port>
-      <port name="output_buffer_z_top">
-        <visualDescription h="10" w="10" x="100" y="95"/>
-        <slice pRef="output_buffer_z_top" sRef="interact"/>
-      </port>
-      <port name="input_buffer_y_south">
-        <visualDescription h="10" w="10" x="50" y="0"/>
-        <slice pRef="input_buffer_y_south" sRef="interact"/>
-      </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="137" y="13"/>
-        <slice pRef="y" sRef="interact"/>
-      </port>
-      <port name="output_buffer_y_south">
-        <visualDescription h="10" w="10" x="178" y="63"/>
-        <slice pRef="output_buffer_y_south" sRef="interact"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="mpi" sRef="interact"/>
-      </port>
-      <port name="cell">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="interact"/>
-      </port>
-      <port name="output_buffer_y_north">
-        <visualDescription h="10" w="10" x="130" y="102"/>
-        <slice pRef="output_buffer_y_north" sRef="interact"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="164" y="55"/>
-        <slice pRef="mpi" sRef="interact"/>
-      </port>
-      <port name="input_buffer_y_north">
-        <visualDescription h="10" w="10" x="67" y="86"/>
-        <slice pRef="input_buffer_y_north" sRef="interact"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="152" y="14"/>
-        <slice pRef="mpi" sRef="interact"/>
-      </port>
-      <port name="output_buffer_x_east">
-        <visualDescription h="10" w="10" x="162" y="82"/>
-        <slice pRef="output_buffer_x_east" sRef="interact"/>
-      </port>
-      <port name="cell">
-        <visualDescription h="10" w="10" x="10" y="57"/>
-        <slice pRef="cell" sRef="interact"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="44" y="16"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <port name="input_buffer_x_east">
-        <visualDescription h="10" w="10" x="39" y="10"/>
-        <slice pRef="input_buffer_x_east" sRef="interact"/>
-      </port>
-      <port name="input_buffer_x_west">
-        <visualDescription h="10" w="10" x="37" y="89"/>
-        <slice pRef="input_buffer_x_west" sRef="interact"/>
-      </port>
-      <port name="output_buffer_x_west">
-        <visualDescription h="10" w="10" x="0" y="33"/>
-        <slice pRef="output_buffer_x_west" sRef="interact"/>
-      </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="174" y="23"/>
-        <slice pRef="x" sRef="interact"/>
+        <visualDescription h="10" w="10" x="133" y="86"/>
+        <slice pRef="input_buffer_x_east" sRef="all_exchange"/>
       </port>
       <port name="mpi">
-        <visualDescription h="10" w="10" x="153" y="36"/>
-        <slice pRef="mpi" sRef="interact"/>
+        <visualDescription h="10" w="10" x="144" y="102"/>
+        <slice pRef="mpi" sRef="all_exchange"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="20" y="93"/>
+        <slice pRef="x" sRef="all_exchange"/>
+      </port>
+      <port name="output_buffer_x_east">
+        <visualDescription h="10" w="10" x="136" y="57"/>
+        <slice pRef="output_buffer_x_east" sRef="all_exchange"/>
+      </port>
+      <port name="input_buffer_y_north">
+        <visualDescription h="10" w="10" x="98" y="86"/>
+        <slice pRef="input_buffer_y_north" sRef="all_exchange"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="62" y="9"/>
+        <slice pRef="y" sRef="all_exchange"/>
+      </port>
+      <port name="output_buffer_y_north">
+        <visualDescription h="10" w="10" x="14" y="60"/>
+        <slice pRef="output_buffer_y_north" sRef="all_exchange"/>
+      </port>
+      <port name="input_buffer_y_south">
+        <visualDescription h="10" w="10" x="132" y="3"/>
+        <slice pRef="input_buffer_y_south" sRef="all_exchange"/>
+      </port>
+      <port name="output_buffer_y_south">
+        <visualDescription h="10" w="10" x="164" y="86"/>
+        <slice pRef="output_buffer_y_south" sRef="all_exchange"/>
+      </port>
+      <port name="z">
+        <visualDescription h="10" w="10" x="77" y="95"/>
+        <slice pRef="z" sRef="all_exchange"/>
+      </port>
+      <port name="output_buffer_z_top">
+        <visualDescription h="10" w="10" x="59" y="82"/>
+        <slice pRef="output_buffer_z_top" sRef="all_exchange"/>
+      </port>
+      <port name="input_buffer_z_top">
+        <visualDescription h="10" w="10" x="149" y="20"/>
+        <slice pRef="input_buffer_z_top" sRef="all_exchange"/>
+      </port>
+      <port name="output_buffer_z_bottom">
+        <visualDescription h="10" w="10" x="153" y="49"/>
+        <slice pRef="output_buffer_z_bottom" sRef="all_exchange"/>
+      </port>
+      <port name="input_buffer_z_bottom">
+        <visualDescription h="10" w="10" x="10" y="33"/>
+        <slice pRef="input_buffer_z_bottom" sRef="all_exchange"/>
+      </port>
+      <port name="output_buffer_x_west">
+        <visualDescription h="10" w="10" x="42" y="83"/>
+        <slice pRef="output_buffer_x_west" sRef="all_exchange"/>
+      </port>
+      <port name="input_buffer_x_west">
+        <visualDescription h="10" w="10" x="130" y="30"/>
+        <slice pRef="input_buffer_x_west" sRef="all_exchange"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ICopyFaces" multiple="true" private="false" replica="0" uRef="copy_faces" visibleInterface="true">
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+      <slices cRef="input_buffer_z_bottom" replica="0" uRef="buffer" sliceName="input_buffer_z_bottom" transitive="true">
+        <visualDescription h="10" w="10" x="64" y="10"/>
+      </slices>
+      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
+        <visualDescription h="10" w="10" x="11" y="22"/>
+      </slices>
+      <slices cRef="output_buffer_z_bottom" replica="0" uRef="buffer" sliceName="output_buffer_z_bottom" transitive="true">
+        <visualDescription h="10" w="10" x="63" y="24"/>
+      </slices>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="false">
         <visualDescription h="10" w="10" x="0" y="11"/>
       </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+      <slices cRef="output_buffer_x_west" replica="0" uRef="buffer" sliceName="output_buffer_x_west" transitive="true">
+        <visualDescription h="10" w="10" x="63" y="24"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
         <visualDescription h="10" w="10" x="24" y="26"/>
       </slices>
-      <slices cRef="input_buffer_y_south" replica="0" uRef="buffer" sliceName="input_buffer_y_south" transitive="true">
+      <slices cRef="input_buffer_x_east" replica="0" uRef="buffer" sliceName="input_buffer_x_east" transitive="true">
+        <visualDescription h="10" w="10" x="64" y="10"/>
+      </slices>
+      <slices cRef="input_buffer_z_top" replica="0" uRef="buffer" sliceName="input_buffer_z_top" transitive="true">
         <visualDescription h="10" w="10" x="64" y="10"/>
       </slices>
       <slices cRef="output_buffer_y_south" replica="0" uRef="buffer" sliceName="output_buffer_y_south" transitive="true">
         <visualDescription h="10" w="10" x="63" y="24"/>
       </slices>
-      <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="true">
-        <visualDescription h="10" w="10" x="35" y="27"/>
-      </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="11" y="22"/>
-      </slices>
-      <slices cRef="input_buffer_y_north" replica="0" uRef="buffer" sliceName="input_buffer_y_north" transitive="true">
-        <visualDescription h="10" w="10" x="64" y="10"/>
-      </slices>
-      <slices cRef="output_buffer_y_north" replica="0" uRef="buffer" sliceName="output_buffer_y_north" transitive="true">
-        <visualDescription h="10" w="10" x="63" y="24"/>
-      </slices>
-      <slices cRef="y" replica="0" uRef="cell" sliceName="cell" transitive="true">
-        <visualDescription h="10" w="10" x="35" y="27"/>
-      </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="11" y="22"/>
-      </slices>
-      <slices cRef="input_buffer_x_west" replica="0" uRef="buffer" sliceName="input_buffer_x_west" transitive="true">
-        <visualDescription h="10" w="10" x="64" y="10"/>
-      </slices>
-      <slices cRef="output_buffer_x_west" replica="0" uRef="buffer" sliceName="output_buffer_x_west" transitive="true">
-        <visualDescription h="10" w="10" x="63" y="24"/>
-      </slices>
-      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
-        <visualDescription h="10" w="10" x="35" y="27"/>
-      </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="11" y="22"/>
-      </slices>
-      <slices cRef="input_buffer_x_east" replica="0" uRef="buffer" sliceName="input_buffer_x_east" transitive="true">
-        <visualDescription h="10" w="10" x="64" y="10"/>
-      </slices>
-      <slices cRef="output_buffer_x_east" replica="0" uRef="buffer" sliceName="output_buffer_x_east" transitive="true">
-        <visualDescription h="10" w="10" x="63" y="24"/>
-      </slices>
-      <slices cRef="x" replica="0" uRef="cell" sliceName="cell" transitive="true">
-        <visualDescription h="10" w="10" x="35" y="27"/>
-      </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="11" y="22"/>
-      </slices>
-      <slices cRef="input_buffer_z_top" replica="0" uRef="buffer" sliceName="input_buffer_z_top" transitive="true">
+      <slices cRef="input_buffer_y_south" replica="0" uRef="buffer" sliceName="input_buffer_y_south" transitive="true">
         <visualDescription h="10" w="10" x="64" y="10"/>
       </slices>
       <slices cRef="output_buffer_z_top" replica="0" uRef="buffer" sliceName="output_buffer_z_top" transitive="true">
         <visualDescription h="10" w="10" x="63" y="24"/>
       </slices>
+      <slices cRef="input_buffer_y_north" replica="0" uRef="buffer" sliceName="input_buffer_y_north" transitive="true">
+        <visualDescription h="10" w="10" x="64" y="10"/>
+      </slices>
+      <slices cRef="output_buffer_x_east" replica="0" uRef="buffer" sliceName="output_buffer_x_east" transitive="true">
+        <visualDescription h="10" w="10" x="63" y="24"/>
+      </slices>
+      <slices cRef="output_buffer_y_north" replica="0" uRef="buffer" sliceName="output_buffer_y_north" transitive="true">
+        <visualDescription h="10" w="10" x="63" y="24"/>
+      </slices>
       <slices cRef="z" replica="0" uRef="cell" sliceName="z" transitive="true">
         <visualDescription h="10" w="10" x="35" y="27"/>
       </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="11" y="22"/>
-      </slices>
-      <slices cRef="input_buffer_z_bottom" replica="0" uRef="buffer" sliceName="input_buffer_z_bottom" transitive="true">
+      <slices cRef="input_buffer_x_west" replica="0" uRef="buffer" sliceName="input_buffer_x_west" transitive="true">
         <visualDescription h="10" w="10" x="64" y="10"/>
       </slices>
-      <slices cRef="output_buffer_z_bottom" replica="0" uRef="buffer" sliceName="output_buffer_z_bottom" transitive="true">
-        <visualDescription h="10" w="10" x="63" y="24"/>
-      </slices>
-      <slices cRef="z" replica="0" uRef="cell" sliceName="cell" transitive="true">
+      <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="true">
         <visualDescription h="10" w="10" x="35" y="27"/>
       </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="11" y="22"/>
+      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
+        <visualDescription h="10" w="10" x="35" y="27"/>
       </slices>
-      <slices cRef="all_exchange" replica="0" uRef="interact" sliceName="interact" transitive="false">
+      <slices cRef="all_exchange" replica="0" uRef="interact" sliceName="all_exchange" transitive="false">
         <visualDescription h="10" w="10" x="50" y="27"/>
-        <port>input_buffer_y_south</port>
-        <port>output_buffer_y_south</port>
-        <port>y</port>
-        <port>mpi</port>
-        <port>input_buffer_y_north</port>
-        <port>output_buffer_y_north</port>
-        <port>cell</port>
-        <port>mpi</port>
-        <port>input_buffer_x_west</port>
-        <port>output_buffer_x_west</port>
-        <port>x</port>
-        <port>mpi</port>
-        <port>input_buffer_x_east</port>
-        <port>output_buffer_x_east</port>
-        <port>cell</port>
-        <port>mpi</port>
-        <port>input_buffer_z_top</port>
-        <port>output_buffer_z_top</port>
-        <port>z</port>
-        <port>mpi</port>
         <port>input_buffer_z_bottom</port>
-        <port>output_buffer_z_bottom</port>
-        <port>cell</port>
         <port>mpi</port>
+        <port>output_buffer_z_bottom</port>
+        <port>output_buffer_x_west</port>
+        <port>input_buffer_x_east</port>
+        <port>input_buffer_z_top</port>
+        <port>output_buffer_y_south</port>
+        <port>input_buffer_y_south</port>
+        <port>output_buffer_z_top</port>
+        <port>input_buffer_y_north</port>
+        <port>output_buffer_x_east</port>
+        <port>output_buffer_y_north</port>
+        <port>z</port>
+        <port>y</port>
+        <port>input_buffer_x_west</port>
+        <port>x</port>
       </slices>
       <visualDescription h="40" w="80" x="75" y="233"/>
     </unit>

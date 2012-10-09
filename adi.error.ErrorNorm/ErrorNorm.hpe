@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000099021d2f712406ffa021ea9f4f0d75d2cba517e7bac440d02dd6b2c9b906ebc109050dd574b7b79f9082fa2116739a6ffd8da821372ccf28ec2d551ba8814610c2825b807dadf65db043a10660caae3b15ea88fb7620461bd2896e0b49b91c840d56d56077174337c5161328ec742f8333e04d49d4a0b3ee2e533f9f3549c78c" isAbstract="true" kind="Computation" name="ErrorNorm" packagePath="adi.error">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -11,7 +11,7 @@
       <visualDescription h="54" w="93" x="200" y="343">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cells">
+      <unitBounds parallel="false" uRef="cells">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -21,7 +21,7 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -30,7 +30,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -38,7 +38,7 @@
       <visualDescription h="30" w="50" x="682" y="546">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -46,7 +46,7 @@
       <visualDescription h="30" w="50" x="441" y="322">
         <color b="240" g="32" r="160"/>
       </visualDescription>
-      <unitBounds uRef="mpi">
+      <unitBounds parallel="true" uRef="mpi">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -54,24 +54,24 @@
       <visualDescription h="30" w="169" x="328" y="447">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="exact_solution">
+      <unitBounds parallel="true" uRef="exact_solution">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <interface iRef="IErrorNorm" nArgs="2">
-      <slice isRef="cells">
-        <originRef cRef="cells_info" iRef="ICells"/>
-        <visualDescription h="10" w="10" x="62" y="28"/>
-      </slice>
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="28" y="25"/>
-      </slice>
       <slice isRef="mpi">
         <originRef cRef="mpi" iRef="IMPIDirect"/>
         <visualDescription h="10" w="10" x="47" y="27"/>
+      </slice>
+      <slice isRef="cells_info">
+        <originRef cRef="cells_info" iRef="ICells"/>
+        <visualDescription h="10" w="10" x="62" y="28"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="28" y="25"/>
       </slice>
       <slice isRef="exact_solution">
         <originRef cRef="exact_solution" iRef="IExactSolution"/>
@@ -92,30 +92,33 @@
       <visualDescription h="40" w="80" x="215" y="71">
         <color b="0" g="128" r="255"/>
       </visualDescription>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
-      </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
-      </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="mpi"/>
       </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
+      </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IErrorNorm" multiple="true" private="false" replica="0" uRef="error_norm" visibleInterface="true">
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
-        <visualDescription h="10" w="10" x="62" y="28"/>
-      </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
-        <visualDescription h="10" w="10" x="28" y="25"/>
-      </slices>
       <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="false">
         <visualDescription h="10" w="10" x="47" y="27"/>
+      </slices>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="false">
+        <visualDescription h="10" w="10" x="62" y="28"/>
+      </slices>
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
+        <visualDescription h="10" w="10" x="28" y="25"/>
       </slices>
       <slices cRef="exact_solution" replica="0" uRef="exact_solution" sliceName="exact_solution" transitive="false">
         <visualDescription h="10" w="10" x="13" y="27"/>

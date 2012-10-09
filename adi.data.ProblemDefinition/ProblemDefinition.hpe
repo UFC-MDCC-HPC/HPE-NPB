@@ -11,7 +11,7 @@
       <visualDescription h="29" w="81" x="437" y="261">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="11" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -19,7 +19,7 @@
       <visualDescription h="29" w="77" x="440" y="298">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="11" y="10"/>
       </unitBounds>
     </innerComponent>
@@ -27,7 +27,7 @@
       <visualDescription h="29" w="77" x="442" y="333">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="11" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -35,7 +35,7 @@
       <visualDescription h="29" w="77" x="443" y="368">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="11" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -43,7 +43,7 @@
       <visualDescription h="29" w="77" x="443" y="430">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="10" y="10"/>
       </unitBounds>
     </innerComponent>
@@ -51,7 +51,7 @@
       <visualDescription h="29" w="77" x="448" y="399">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="11" y="10"/>
       </unitBounds>
     </innerComponent>
@@ -59,7 +59,7 @@
       <visualDescription h="29" w="73" x="445" y="466">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="9" y="10"/>
       </unitBounds>
     </innerComponent>
@@ -67,7 +67,7 @@
       <visualDescription h="30" w="77" x="443" y="118">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="6" y="9"/>
       </unitBounds>
     </innerComponent>
@@ -75,7 +75,7 @@
       <visualDescription h="30" w="72" x="444" y="164">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -83,7 +83,7 @@
       <visualDescription h="30" w="73" x="446" y="196">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="12" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -91,7 +91,7 @@
       <visualDescription h="30" w="70" x="449" y="229">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="9" y="9"/>
       </unitBounds>
     </innerComponent>
@@ -99,7 +99,7 @@
       <visualDescription h="30" w="73" x="451" y="510">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="7" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -108,7 +108,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -116,7 +116,7 @@
       <visualDescription h="30" w="50" x="781" y="517">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -124,7 +124,7 @@
       <visualDescription h="30" w="50" x="307" y="517">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -132,7 +132,7 @@
       <visualDescription h="30" w="50" x="256" y="552">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -140,7 +140,7 @@
       <visualDescription h="30" w="50" x="196" y="513">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="field">
+      <unitBounds parallel="false" uRef="field">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>

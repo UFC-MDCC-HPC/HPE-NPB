@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cf07384ccb0fb649bcfe9c5eb7bd5fb8e15874406e357fe6bf7a1ff79d8db32a632da9a91a0d32adf6616bed54970128dbdc598cf844bf333180e9bb781c2bf8e26ce5946183f0551faa0ba2a41ff5b7d91ceb38dc04ca2d25324ed3dcf6b850fcfdf619cd5183040308869fd331e8515fd6c000302f164fa204ca14c1a78c95" isAbstract="true" kind="Application" name="ADI_Solver3D" packagePath="adi">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -14,11 +14,35 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="CLASS"/>
       <parameter formFieldId="method" varName="MTH"/>
-      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="false">
-        <visualDescription h="53" w="81" x="433" y="456">
+      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
+        <visualDescription h="35" w="37" x="219" y="231">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cells">
+        <unitBounds parallel="true" uRef="cell">
+          <visualDescription h="10" w="10" x="63" y="6"/>
+        </unitBounds>
+      </port>
+      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="y" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
+        <visualDescription h="35" w="38" x="347" y="206">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <unitBounds parallel="true" uRef="cell">
+          <visualDescription h="10" w="10" x="63" y="6"/>
+        </unitBounds>
+      </port>
+      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="z" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
+        <visualDescription h="35" w="38" x="290" y="204">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <unitBounds parallel="true" uRef="cell">
+          <visualDescription h="10" w="10" x="63" y="6"/>
+        </unitBounds>
+      </port>
+      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="false">
+        <visualDescription h="38" w="53" x="147" y="303">
+          <color b="240" g="32" r="160"/>
+        </visualDescription>
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -28,43 +52,19 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="CLASS"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="z" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
-        <visualDescription h="35" w="38" x="290" y="204">
+      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="false">
+        <visualDescription h="53" w="81" x="432" y="442">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="false" uRef="cells">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="y" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
-        <visualDescription h="35" w="38" x="347" y="206">
-          <color b="255" g="255" r="255"/>
-        </visualDescription>
-        <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
-      <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
-        <visualDescription h="35" w="37" x="219" y="231">
-          <color b="255" g="255" r="255"/>
-        </visualDescription>
-        <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
-      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="false">
-        <visualDescription h="38" w="53" x="147" y="303">
-          <color b="240" g="32" r="160"/>
-        </visualDescription>
-        <unitBounds uRef="mpi">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
-      <unitBounds uRef="adi">
+      <unitBounds parallel="true" uRef="adi">
         <visualDescription h="10" w="10" x="79" y="15"/>
       </unitBounds>
     </innerComponent>
@@ -74,57 +74,57 @@
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="CLASS"/>
-      <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="adi.data" exposed="false">
-        <visualDescription h="30" w="98" x="12" y="206">
-          <color b="255" g="255" r="255"/>
-        </visualDescription>
-        <parameter formFieldId="instance_type" varName="I"/>
-        <parameter formFieldId="class" varName="CLASS"/>
-        <unitBounds uRef="problem">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
-      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="false">
-        <visualDescription h="53" w="81" x="433" y="456">
-          <color b="255" g="255" r="255"/>
-        </visualDescription>
-        <unitBounds uRef="cells">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
-      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="false">
-        <visualDescription h="38" w="53" x="147" y="303">
-          <color b="240" g="32" r="160"/>
-        </visualDescription>
-        <unitBounds uRef="mpi">
-          <visualDescription h="10" w="10" x="5" y="2"/>
-        </unitBounds>
-      </port>
       <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
         <visualDescription h="35" w="37" x="219" y="231">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="5" y="2"/>
+        <unitBounds parallel="true" uRef="cell">
+          <visualDescription h="10" w="10" x="63" y="6"/>
         </unitBounds>
       </port>
       <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="y" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
         <visualDescription h="35" w="38" x="347" y="206">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
-          <visualDescription h="10" w="10" x="5" y="2"/>
+        <unitBounds parallel="true" uRef="cell">
+          <visualDescription h="10" w="10" x="63" y="6"/>
         </unitBounds>
       </port>
       <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="z" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="false">
         <visualDescription h="35" w="38" x="290" y="204">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
+          <visualDescription h="10" w="10" x="63" y="6"/>
+        </unitBounds>
+      </port>
+      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="false">
+        <visualDescription h="38" w="53" x="147" y="303">
+          <color b="240" g="32" r="160"/>
+        </visualDescription>
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="verify">
+      <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="false">
+        <visualDescription h="53" w="81" x="432" y="442">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <unitBounds parallel="false" uRef="cells">
+          <visualDescription h="10" w="10" x="49" y="8"/>
+        </unitBounds>
+      </port>
+      <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="adi.data" exposed="false">
+        <visualDescription h="30" w="98" x="12" y="206">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="instance_type" varName="I"/>
+        <parameter formFieldId="class" varName="CLASS"/>
+        <unitBounds parallel="true" uRef="problem">
+          <visualDescription h="10" w="10" x="8" y="21"/>
+        </unitBounds>
+      </port>
+      <unitBounds parallel="true" uRef="verify">
         <visualDescription h="10" w="10" x="86" y="24"/>
       </unitBounds>
     </innerComponent>
@@ -132,7 +132,7 @@
       <visualDescription h="30" w="50" x="549" y="667">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -141,7 +141,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="CLASS"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="18" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -157,19 +157,19 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="CLASS"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="false">
-        <visualDescription h="53" w="81" x="433" y="456">
+        <visualDescription h="53" w="81" x="432" y="442">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cells">
+        <unitBounds parallel="false" uRef="cells">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="initialize">
+      <unitBounds parallel="true" uRef="initialize">
         <visualDescription h="10" w="10" x="75" y="10"/>
       </unitBounds>
     </innerComponent>
@@ -180,10 +180,10 @@
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="CLASS"/>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="false">
-        <visualDescription h="53" w="81" x="433" y="456">
+        <visualDescription h="53" w="81" x="432" y="442">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cells">
+        <unitBounds parallel="false" uRef="cells">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -193,11 +193,11 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="CLASS"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="lhsinit">
+      <unitBounds parallel="true" uRef="lhsinit">
         <visualDescription h="10" w="10" x="86" y="12"/>
       </unitBounds>
     </innerComponent>
@@ -213,19 +213,19 @@
         </visualDescription>
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="CLASS"/>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="false">
-        <visualDescription h="53" w="81" x="433" y="456">
+        <visualDescription h="53" w="81" x="432" y="442">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cells">
+        <unitBounds parallel="false" uRef="cells">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="exact_rhs">
+      <unitBounds parallel="true" uRef="exact_rhs">
         <visualDescription h="10" w="10" x="94" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -239,7 +239,7 @@
         <visualDescription h="35" w="37" x="219" y="231">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -247,7 +247,7 @@
         <visualDescription h="35" w="38" x="347" y="206">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -255,19 +255,19 @@
         <visualDescription h="35" w="38" x="290" y="204">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
       <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="false">
-        <visualDescription h="53" w="81" x="433" y="456">
+        <visualDescription h="53" w="81" x="432" y="442">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cells">
-          <visualDescription h="10" w="10" x="5" y="2"/>
+        <unitBounds parallel="false" uRef="cells">
+          <visualDescription h="10" w="10" x="32" y="5"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="multipartition">
+      <unitBounds parallel="true" uRef="multipartition">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -279,11 +279,11 @@
         <visualDescription h="38" w="53" x="147" y="303">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
-          <visualDescription h="10" w="10" x="5" y="2"/>
+        <unitBounds parallel="true" uRef="mpi">
+          <visualDescription h="10" w="10" x="62" y="12"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="timer">
+      <unitBounds parallel="true" uRef="timer">
         <visualDescription h="10" w="10" x="13" y="11"/>
       </unitBounds>
     </innerComponent>
@@ -291,7 +291,7 @@
       <visualDescription h="30" w="50" x="55" y="272">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -299,22 +299,19 @@
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="method" formFieldId="method" varName="MTH"/>
     <fusion>
-      <cRefs>data_partition</cRefs>
-      <cRefs>verify</cRefs>
-      <cRefs>adi</cRefs>
-      <pRef>y</pRef>
-    </fusion>
-    <fusion>
-      <cRefs>data_partition</cRefs>
-      <cRefs>verify</cRefs>
-      <cRefs>adi</cRefs>
-      <pRef>x</pRef>
-    </fusion>
-    <fusion>
       <cRefs>timer</cRefs>
       <cRefs>verify</cRefs>
       <cRefs>adi</cRefs>
       <pRef>mpi</pRef>
+    </fusion>
+    <fusion>
+      <cRefs>data_partition</cRefs>
+      <cRefs>exact_rhs</cRefs>
+      <cRefs>lhsinit</cRefs>
+      <cRefs>initialize</cRefs>
+      <cRefs>verify</cRefs>
+      <cRefs>adi</cRefs>
+      <pRef>cells_info</pRef>
     </fusion>
     <fusion>
       <cRefs>exact_rhs</cRefs>
@@ -332,12 +329,15 @@
     </fusion>
     <fusion>
       <cRefs>data_partition</cRefs>
-      <cRefs>exact_rhs</cRefs>
-      <cRefs>lhsinit</cRefs>
-      <cRefs>initialize</cRefs>
       <cRefs>verify</cRefs>
       <cRefs>adi</cRefs>
-      <pRef>cells_info</pRef>
+      <pRef>y</pRef>
+    </fusion>
+    <fusion>
+      <cRefs>data_partition</cRefs>
+      <cRefs>verify</cRefs>
+      <cRefs>adi</cRefs>
+      <pRef>x</pRef>
     </fusion>
     <interface iRef="IADI_Solver3D" nArgs="3">
       <slice isRef="adi">
@@ -364,7 +364,7 @@
         <originRef cRef="exact_rhs" iRef="IExactRHS"/>
         <visualDescription h="10" w="10" x="62" y="1"/>
       </slice>
-      <slice isRef="multipartition">
+      <slice isRef="data_partition">
         <originRef cRef="data_partition" iRef="IMultiPartition"/>
         <visualDescription h="10" w="10" x="96" y="46"/>
       </slice>
@@ -389,56 +389,86 @@
       <visualDescription h="138" w="139" x="477" y="58">
         <color b="255" g="255" r="128"/>
       </visualDescription>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="62" y="122"/>
-        <slice pRef="mpi" sRef="adi"/>
-        <slice pRef="mpi" sRef="verify"/>
-        <slice pRef="mpi" sRef="timer"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="adi"/>
+        <slice pRef="problem_data" sRef="initialize"/>
+        <slice pRef="problem_data" sRef="lhsinit"/>
+        <slice pRef="problem_data" sRef="exact_rhs"/>
       </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="23" y="80"/>
-        <slice pRef="x" sRef="adi"/>
-        <slice pRef="x" sRef="verify"/>
-        <slice pRef="x" sRef="multipartition"/>
-      </port>
-      <port name="z">
-        <visualDescription h="10" w="10" x="83" y="105"/>
-        <slice pRef="z" sRef="adi"/>
-        <slice pRef="z" sRef="verify"/>
-        <slice pRef="z" sRef="multipartition"/>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="adi"/>
+        <slice pRef="cells_info" sRef="initialize"/>
+        <slice pRef="cells_info" sRef="lhsinit"/>
+        <slice pRef="cells_info" sRef="exact_rhs"/>
+        <slice pRef="cells_info" sRef="data_partition"/>
       </port>
       <port name="y">
-        <visualDescription h="10" w="10" x="117" y="92"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="y" sRef="adi"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="adi"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="adi"/>
+      </port>
+      <port name="z">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="z" sRef="adi"/>
+        <slice pRef="z" sRef="data_partition"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="verify"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="verify"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="verify"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="verify"/>
+        <slice pRef="x" sRef="data_partition"/>
+      </port>
+      <port name="z">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="z" sRef="verify"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="y" sRef="verify"/>
-        <slice pRef="y" sRef="multipartition"/>
       </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="2" y="66"/>
-        <slice pRef="problem" sRef="adi"/>
-        <slice pRef="problem" sRef="verify"/>
-        <slice pRef="problem" sRef="initialize"/>
-        <slice pRef="problem" sRef="lhsinit"/>
-        <slice pRef="problem" sRef="exact_rhs"/>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="data_partition"/>
       </port>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="116" y="14"/>
-        <slice pRef="cells" sRef="adi"/>
-        <slice pRef="cells" sRef="verify"/>
-        <slice pRef="cells" sRef="initialize"/>
-        <slice pRef="cells" sRef="lhsinit"/>
-        <slice pRef="cells" sRef="exact_rhs"/>
-        <slice pRef="cells" sRef="multipartition"/>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="timer"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="CLASS"/>
       <parameter iname="ISolvingMethod" order="2" parid="method" uname="method" varid="MTH"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IADI_Solver3D" multiple="true" private="false" replica="0" uRef="adi_solver3D" visibleInterface="true">
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="true">
+      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
+        <visualDescription h="10" w="10" x="11" y="22"/>
+      </slices>
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="true">
         <visualDescription h="10" w="10" x="13" y="3"/>
       </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="true">
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="true">
         <visualDescription h="10" w="10" x="29" y="5"/>
       </slices>
       <slices cRef="z" replica="0" uRef="cell" sliceName="z" transitive="true">
@@ -450,51 +480,48 @@
       <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
         <visualDescription h="10" w="10" x="1" y="6"/>
       </slices>
-      <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="true">
-        <visualDescription h="10" w="10" x="11" y="22"/>
-      </slices>
       <slices cRef="adi" replica="0" uRef="adi" sliceName="adi" transitive="false">
         <visualDescription h="10" w="10" x="31" y="31"/>
-        <port>cells</port>
-        <port>problem</port>
+        <port>mpi</port>
+        <port>cells_info</port>
+        <port>problem_data</port>
         <port>z</port>
         <port>y</port>
         <port>x</port>
-        <port>mpi</port>
       </slices>
       <slices cRef="verify" replica="0" uRef="verify" sliceName="verify" transitive="false">
         <visualDescription h="10" w="10" x="8" y="25"/>
-        <port>problem</port>
-        <port>cells</port>
         <port>mpi</port>
+        <port>cells_info</port>
+        <port>problem_data</port>
+        <port>z</port>
         <port>y</port>
         <port>x</port>
-        <port>z</port>
       </slices>
       <slices cRef="instance" replica="0" uRef="instance" sliceName="instance" transitive="false">
         <visualDescription h="10" w="10" x="0" y="9"/>
       </slices>
       <slices cRef="initialize" replica="0" uRef="initialize" sliceName="initialize" transitive="false">
         <visualDescription h="10" w="10" x="23" y="3"/>
-        <port>problem</port>
-        <port>cells</port>
+        <port>cells_info</port>
+        <port>problem_data</port>
       </slices>
       <slices cRef="lhsinit" replica="0" uRef="lhsinit" sliceName="lhsinit" transitive="false">
         <visualDescription h="10" w="10" x="38" y="5"/>
-        <port>problem</port>
-        <port>cells</port>
+        <port>cells_info</port>
+        <port>problem_data</port>
       </slices>
       <slices cRef="exact_rhs" replica="0" uRef="exact_rhs" sliceName="exact_rhs" transitive="false">
         <visualDescription h="10" w="10" x="62" y="1"/>
-        <port>problem</port>
-        <port>cells</port>
+        <port>cells_info</port>
+        <port>problem_data</port>
       </slices>
-      <slices cRef="data_partition" replica="0" uRef="multipartition" sliceName="multipartition" transitive="false">
+      <slices cRef="data_partition" replica="0" uRef="multipartition" sliceName="data_partition" transitive="false">
         <visualDescription h="10" w="10" x="59" y="23"/>
-        <port>cells</port>
-        <port>x</port>
-        <port>y</port>
+        <port>cells_info</port>
         <port>z</port>
+        <port>y</port>
+        <port>x</port>
       </slices>
       <slices cRef="timer" replica="0" uRef="timer" sliceName="timer" transitive="false">
         <visualDescription h="10" w="10" x="45" y="29"/>
