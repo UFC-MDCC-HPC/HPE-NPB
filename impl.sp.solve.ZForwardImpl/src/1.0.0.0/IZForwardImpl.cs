@@ -19,11 +19,38 @@ namespace impl.sp.solve.ZForwardImpl {
 		public IZForwardImpl() 
 		{
 		}		
+				
+		private int stage = -1;
 		
-		private int c, kstart, kend, isize, jsize;
-		
-		public void enterStage(int stage)			
+		public void begin()
 		{
+			stage = 0;
+		}
+		
+		public bool first_stage()
+		{
+			return (stage == 0);
+		}
+		
+		public bool last_stage()
+		{
+			return (stage == ncells - 1);
+		}
+
+		public bool finished()
+		{
+			return stage >= ncells;
+		}
+		
+		public void advance()			
+		{
+			stage++;
+		}
+
+		public override int go() 
+		{ 
+		    int c, kstart, kend, isize, jsize;
+			
             c = slice[stage, 2];
 
             kstart = 2;
@@ -31,10 +58,7 @@ namespace impl.sp.solve.ZForwardImpl {
 
             isize = cell_size[c, 0] + 2;
             jsize = cell_size[c, 1] + 2;
-		}
-
-		public override int go() 
-		{ 
+			
 			int i, j, k, n, k1, k2, m;
 			double fac1, fac2;
 			

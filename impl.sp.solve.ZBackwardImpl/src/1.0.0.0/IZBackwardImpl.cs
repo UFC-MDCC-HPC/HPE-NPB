@@ -24,6 +24,15 @@ namespace impl.sp.solve.ZBackwardImpl {
 		{
 			int i, j, k, n, k1, m;
 			
+			int c, kend, isize, jsize;
+			
+            c = slice[stage, 2];
+
+            kend = 2 + cell_size[c, 2] - 1;
+
+            isize = cell_size[c, 0] + 2;
+            jsize = cell_size[c, 1] + 2;
+			
             #region backward init
             //---------------------------------------------------------------------
             //            now we know this is the first grid block on the back sweep,
@@ -60,10 +69,39 @@ namespace impl.sp.solve.ZBackwardImpl {
             #endregion backward_init
 		}		
 		
-		private int c, kstart, kend, isize, jsize;
 		
-		public void enterStage(int stage)			
+		private int stage = -1;
+		
+		public void begin()
 		{
+			stage = ncells-1;
+		}
+		
+		
+		public bool first_stage()
+		{
+			return (stage == ncells - 1);
+		}
+		
+		public bool last_stage()
+		{
+			return (stage == 0);
+		}
+
+		public bool finished()
+		{
+			return stage < 0;
+		}
+		
+		public void advance()			
+		{
+			stage--;
+		}
+
+		public override int go() 
+		{ 
+			int c, kstart, kend, isize, jsize;
+			
             c = slice[stage, 2];
 
             kstart = 2;
@@ -71,9 +109,6 @@ namespace impl.sp.solve.ZBackwardImpl {
 
             isize = cell_size[c, 0] + 2;
             jsize = cell_size[c, 1] + 2;
-		}
-
-		public override int go() { 
 			
 			int i, j, k, n, k1, k2, m;
 			//double fac1, fac2;
