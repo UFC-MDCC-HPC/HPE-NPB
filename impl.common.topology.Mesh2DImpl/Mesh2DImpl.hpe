@@ -13,7 +13,7 @@
           <visualDescription h="30" w="50" x="197" y="289">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -21,11 +21,11 @@
           <visualDescription h="30" w="50" x="278" y="236">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -37,13 +37,13 @@
   </header>
   <componentInfo>
     <interface iRef="ICell2DImpl" nArgs="0">
-      <slice isRef="cell">
-        <originRef cRef="x" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="60" y="19"/>
-      </slice>
       <slice isRef="y">
         <originRef cRef="y" iRef="ICell"/>
         <visualDescription h="10" w="10" x="66" y="3"/>
+      </slice>
+      <slice isRef="x">
+        <originRef cRef="x" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="60" y="19"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.topology.Ring;&#xA;using common.topology.Mesh2D;&#xA;&#xA;namespace impl.common.topology.Mesh2DImpl { &#xA;&#xA;public abstract class BaseICell2DImpl: br.ufc.pargo.hpe.kinds.Environment, BaseICell2D&#xA;{&#xA;&#xA;private ICell x = null;&#xA;&#xA;public ICell X {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.x == null)&#xA;&#x9;&#x9;&#x9;this.x = (ICell) Services.getPort(&quot;x&quot;);&#xA;&#x9;&#x9;return this.x;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell y = null;&#xA;&#xA;public ICell Y {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.y == null)&#xA;&#x9;&#x9;&#x9;this.y = (ICell) Services.getPort(&quot;y&quot;);&#xA;&#x9;&#x9;return this.y;&#xA;&#x9;}&#xA;}&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseICell2DImpl.cs" srcType="base" uri="impl.common.topology.Mesh2DImpl/bin/1.0.0.0/BaseICell2DImpl.dll" versionId="1.0.0.0">
@@ -58,13 +58,13 @@
       <visualDescription h="40" w="80" x="126" y="65">
         <color b="42" g="42" r="165"/>
       </visualDescription>
-      <port name="cell">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="cell"/>
-      </port>
       <port name="y">
-        <visualDescription h="10" w="10" x="17" y="20"/>
-        <slice pRef="cell" sRef="y"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="y"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="x"/>
       </port>
     </interface>
     <unit iRef="ICell2DImpl" multiple="true" private="false" replica="0" uRef="cell" visibleInterface="true">

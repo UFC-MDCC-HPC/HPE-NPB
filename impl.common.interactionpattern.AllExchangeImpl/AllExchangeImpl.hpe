@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000000300f4a94e3e14107003934049ea230b11b3d5af040fc655b8de3566c7a59ed8c9f6e9f949676c357b623e4ae2c30971e16af098e73821a31eb8ea953c1f0b5070347b2511f42f8e30e04c35a616dc6f3fbc03d622342c5077793a205b6f67b39ba3166143fec92dc528ce382476994d7003ee5a4b2799fe819000266af51b90" isAbstract="false" kind="Synchronizer" name="AllExchangeImpl" packagePath="impl.common.interactionpattern">
     <baseType>
       <extensionType>
@@ -13,7 +13,7 @@
           <visualDescription h="43" w="134" x="589" y="169">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="19" y="18"/>
           </unitBounds>
         </port>
@@ -21,7 +21,7 @@
           <visualDescription h="44" w="129" x="575" y="226">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="18" y="21"/>
           </unitBounds>
         </port>
@@ -29,23 +29,15 @@
           <visualDescription h="49" w="133" x="250" y="260">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="63" y="6"/>
-          </unitBounds>
-        </port>
-        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="true">
-          <visualDescription h="30" w="50" x="370" y="162">
-            <color b="240" g="32" r="160"/>
-          </visualDescription>
-          <unitBounds uRef="mpi">
-            <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
         <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="input_buffer_x_west" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
           <visualDescription h="43" w="134" x="0" y="177">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="19" y="18"/>
           </unitBounds>
         </port>
@@ -53,7 +45,7 @@
           <visualDescription h="44" w="129" x="7" y="311">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="18" y="21"/>
           </unitBounds>
         </port>
@@ -61,7 +53,7 @@
           <visualDescription h="43" w="134" x="69" y="85">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="19" y="18"/>
           </unitBounds>
         </port>
@@ -69,7 +61,7 @@
           <visualDescription h="44" w="129" x="293" y="27">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="18" y="21"/>
           </unitBounds>
         </port>
@@ -77,7 +69,7 @@
           <visualDescription h="49" w="133" x="384" y="294">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="63" y="6"/>
           </unitBounds>
         </port>
@@ -85,7 +77,7 @@
           <visualDescription h="43" w="134" x="252" y="538">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="19" y="18"/>
           </unitBounds>
         </port>
@@ -93,7 +85,7 @@
           <visualDescription h="44" w="151" x="334" y="480">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="18" y="21"/>
           </unitBounds>
         </port>
@@ -101,7 +93,7 @@
           <visualDescription h="43" w="134" x="573" y="88">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="19" y="18"/>
           </unitBounds>
         </port>
@@ -109,7 +101,7 @@
           <visualDescription h="44" w="129" x="478" y="7">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="18" y="21"/>
           </unitBounds>
         </port>
@@ -117,15 +109,23 @@
           <visualDescription h="49" w="133" x="113" y="278">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="63" y="6"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="true">
+          <visualDescription h="30" w="50" x="370" y="162">
+            <color b="240" g="32" r="160"/>
+          </visualDescription>
+          <unitBounds parallel="true" uRef="mpi">
+            <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
         <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="input_buffer_z_bottom" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
           <visualDescription h="43" w="134" x="0" y="559">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="19" y="18"/>
           </unitBounds>
         </port>
@@ -133,11 +133,11 @@
           <visualDescription h="44" w="163" x="71" y="495">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="18" y="21"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="interact">
+        <unitBounds parallel="true" uRef="interact">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -157,11 +157,11 @@
         <originRef cRef="shift_y_north" iRef="IShift"/>
         <visualDescription h="10" w="10" x="53" y="109"/>
       </slice>
-      <slice isRef="shift_x_left">
+      <slice isRef="shift_x_west">
         <originRef cRef="shift_x_west" iRef="IShift"/>
         <visualDescription h="10" w="10" x="41" y="188"/>
       </slice>
-      <slice isRef="shift_x_right">
+      <slice isRef="shift_x_east">
         <originRef cRef="shift_x_east" iRef="IShift"/>
         <visualDescription h="10" w="10" x="186" y="195"/>
       </slice>
@@ -193,56 +193,77 @@
       <visualDescription h="124" w="106" x="483" y="314">
         <color b="128" g="0" r="128"/>
       </visualDescription>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="shift_y_south"/>
+      </port>
       <port name="output_buffer_y_south">
         <visualDescription h="10" w="10" x="55" y="25"/>
         <slice pRef="output_buffer" sRef="shift_y_south"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="110" y="122"/>
+        <slice pRef="mpi" sRef="shift_y_south"/>
       </port>
       <port name="input_buffer_y_south">
         <visualDescription h="10" w="10" x="84" y="7"/>
         <slice pRef="input_buffer" sRef="shift_y_south"/>
       </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="110" y="122"/>
-        <slice pRef="mpi" sRef="shift_y_south"/>
-        <slice pRef="mpi" sRef="shift_y_north"/>
-        <slice pRef="mpi" sRef="shift_x_left"/>
-        <slice pRef="mpi" sRef="shift_x_right"/>
-        <slice pRef="mpi" sRef="shift_z_top"/>
-        <slice pRef="mpi" sRef="shift_z_bottom"/>
-      </port>
       <port name="y">
-        <visualDescription h="10" w="10" x="70" y="64"/>
-        <slice pRef="cell" sRef="shift_y_south"/>
-        <slice pRef="cell" sRef="shift_y_north"/>
-      </port>
-      <port name="output_buffer_y_north">
-        <visualDescription h="10" w="10" x="18" y="96"/>
-        <slice pRef="output_buffer" sRef="shift_y_north"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="shift_y_north"/>
       </port>
       <port name="input_buffer_y_north">
         <visualDescription h="10" w="10" x="38" y="40"/>
         <slice pRef="input_buffer" sRef="shift_y_north"/>
       </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="shift_y_north"/>
+      </port>
+      <port name="output_buffer_y_north">
+        <visualDescription h="10" w="10" x="18" y="96"/>
+        <slice pRef="output_buffer" sRef="shift_y_north"/>
+      </port>
+      <port name="output_buffer_x_west">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="output_buffer" sRef="shift_x_west"/>
+      </port>
       <port name="x">
-        <visualDescription h="10" w="10" x="95" y="199"/>
-        <slice pRef="cell" sRef="shift_x_left"/>
-        <slice pRef="cell" sRef="shift_x_right"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="shift_x_west"/>
       </port>
-      <port name="input_buffer_x_left">
-        <visualDescription h="10" w="10" x="6" y="228"/>
-        <slice pRef="input_buffer" sRef="shift_x_left"/>
+      <port name="input_buffer_x_west">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="input_buffer" sRef="shift_x_west"/>
       </port>
-      <port name="output_buffer_x_left">
-        <visualDescription h="10" w="10" x="21" y="131"/>
-        <slice pRef="output_buffer" sRef="shift_x_left"/>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="shift_x_west"/>
       </port>
-      <port name="input_buffer_x_right">
-        <visualDescription h="10" w="10" x="254" y="225"/>
-        <slice pRef="input_buffer" sRef="shift_x_right"/>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="shift_x_east"/>
       </port>
-      <port name="output_buffer_x_right">
-        <visualDescription h="10" w="10" x="174" y="230"/>
-        <slice pRef="output_buffer" sRef="shift_x_right"/>
+      <port name="input_buffer_x_east">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="input_buffer" sRef="shift_x_east"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="shift_x_east"/>
+      </port>
+      <port name="output_buffer_x_east">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="output_buffer" sRef="shift_x_east"/>
+      </port>
+      <port name="z">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="shift_z_top"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="shift_z_top"/>
       </port>
       <port name="output_buffer_z_top">
         <visualDescription h="10" w="10" x="116" y="10"/>
@@ -252,20 +273,26 @@
         <visualDescription h="10" w="10" x="194" y="3"/>
         <slice pRef="input_buffer" sRef="shift_z_top"/>
       </port>
-      <port name="z">
-        <visualDescription h="10" w="10" x="225" y="61"/>
-        <slice pRef="cell" sRef="shift_z_top"/>
-        <slice pRef="cell" sRef="shift_z_bottom"/>
+      <port name="output_buffer_z_bottom">
+        <visualDescription h="10" w="10" x="312" y="212"/>
+        <slice pRef="output_buffer" sRef="shift_z_bottom"/>
       </port>
       <port name="input_buffer_z_bottom">
         <visualDescription h="10" w="10" x="273" y="15"/>
         <slice pRef="input_buffer" sRef="shift_z_bottom"/>
       </port>
-      <port name="output_buffer_z_bottom">
-        <visualDescription h="10" w="10" x="312" y="212"/>
-        <slice pRef="output_buffer" sRef="shift_z_bottom"/>
+      <port name="z">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="shift_z_bottom"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="shift_z_bottom"/>
       </port>
       <externalReferences>MPI</externalReferences>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IAllExchangeImpl" multiple="true" private="false" replica="0" uRef="interact" visibleInterface="true">
       <super cRef="base" uRef="interact"/>

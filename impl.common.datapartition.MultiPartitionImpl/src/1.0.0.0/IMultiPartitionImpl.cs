@@ -34,8 +34,8 @@ override public void initialize() // make_set()
 	end = Cells.cell_end;	
 			
 	int ncells;
-	int no_nodes = this.Size;	Console.WriteLine ("no_nodes = " + no_nodes);
-	int node = this.Rank;			Console.WriteLine ("node = " + node);
+	int no_nodes = this.Size;	
+	int node = this.Rank;		
 	int problem_size = Instance.problem_size;
 			
 	grid_points = new int[3];

@@ -34,7 +34,7 @@ public class IShiftBackwardImpl<DIR> : BaseIShiftBackwardImpl<DIR>, IShift<DIR>
 	{
 		if (handle_right != null)
 				requestList.Remove(handle_right);
-	//	int rank = comm.Rank;
+		//int rank = comm.Rank;
 		//Console.WriteLine(rank + ": shift-to-left : initiate_recv : " + Cell.successor);
 		handle_right = comm.ImmediateReceive<double>(Cell.successor, DEFAULT_TAG, Input_buffer.Array);			
 		requestList.Add(handle_right);
@@ -48,13 +48,11 @@ public class IShiftBackwardImpl<DIR> : BaseIShiftBackwardImpl<DIR>, IShift<DIR>
 			
 	public override int go() 
 	{ 	   
-	//   int rank = comm.Rank;
-	//   Console.Error.WriteLine(rank + ": shift to left begin - from " + Cell.successor + ", to " + Cell.predecessor + ", count=" + requestList.Count);
-	 //   Console.Error.Flush();
+	   int rank = comm.Rank;
+	   //Console.WriteLine(rank + ": shift to left begin - from " + Cell.successor + ", to " + Cell.predecessor + ", count=" + requestList.Count);
 	   requestList.WaitAll();
 	   //clearRequests();
-	//   Console.Error.WriteLine(rank + ": shift to left end");
-	//    Console.Error.Flush();
+	   //Console.WriteLine(rank + ": shift to left end");
 			
 	   return 0;		
 	} // end activate method 

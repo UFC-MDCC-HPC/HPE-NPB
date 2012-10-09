@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c9c571f60257e5219ac8d27f79db5459a9993f6dda635a869b14a3abc8e20d799316ad32ef43ef31fd75714d7a83b76d926eb3aa749abe60547bb4d9291747df39246a246a43808be327a9de6efeee521c658679f6ad918ca55121464aabb53e6c4ba6696577e6a447c4a2ecce8c36a6511491c03f3049b4b1c24d0d4271a4b6" isAbstract="false" kind="Synchronizer" name="Shift1DForwardImpl" packagePath="impl.common.interactionpattern">
     <baseType>
       <extensionType>
@@ -16,37 +16,53 @@
           <visualDescription h="62" w="106" x="295" y="519">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
         <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000067c36061f14996cb08e488ee07ed09e62996bf944597966cab4cce26b562a49fdf0445e7f4e81ae08c7502789c788a1c0b2e9647e93c105be4ef8ae33cbc3d6fa692206f6e4dbe3c8f859a264b95068263868d16aec9a334774a52caa37f23ae86cb48b9f4236edf419b6f72ee177c15c0f6eb6cb84bd1e984874e0c2044d298" localRef="buffer_reader" location="common.interactionpattern.shift1D.BufferReader/BufferReader.hpe" multiple="false" name="BufferReader" package="common.interactionpattern.shift1D" exposed="true">
-          <visualDescription h="30" w="176" x="60" y="95">
+          <visualDescription h="30" w="144" x="236" y="404">
             <color b="255" g="255" r="255"/>
           </visualDescription>
           <parameter formFieldId="direction" varName="DIR"/>
-          <unitBounds uRef="buffer_reader">
+          <unitBounds parallel="true" uRef="buffer_reader">
             <visualDescription h="10" w="10" x="140" y="7"/>
           </unitBounds>
         </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer_reader" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
+          <visualDescription h="30" w="144" x="236" y="404">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="false" uRef="buffer">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
         <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000013b510f78a15b963f5a233a48e8dca81439a16ff4b79a19da05b26912ff9635c4da6fe5f19411a49973708c197e84b43b91563658afd16e6e104d7214806d70e234440e52c121dc6122462a9652aee61535e3d5c7033a91cd205b59e7799a63725bd3e7e3edd839316cd53d532cda13e0191bed6546dcb17d817578f9558e48f" localRef="buffer_writer" location="common.interactionpattern.shift1D.BufferWriter/BufferWriter.hpe" multiple="false" name="BufferWriter" package="common.interactionpattern.shift1D" exposed="true">
-          <visualDescription h="30" w="167" x="94" y="432">
+          <visualDescription h="30" w="164" x="208" y="355">
             <color b="255" g="255" r="255"/>
           </visualDescription>
           <parameter formFieldId="direction" varName="DIR"/>
-          <unitBounds uRef="buffer_writer">
+          <unitBounds parallel="true" uRef="buffer_writer">
             <visualDescription h="10" w="10" x="15" y="9"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer_writer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
+          <visualDescription h="30" w="164" x="208" y="355">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="false" uRef="buffer">
+            <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
         <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="true">
           <visualDescription h="30" w="50" x="52" y="360">
             <color b="240" g="32" r="160"/>
           </visualDescription>
-          <unitBounds uRef="mpi">
+          <unitBounds parallel="true" uRef="mpi">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="shift">
+        <unitBounds parallel="true" uRef="shift">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -61,7 +77,7 @@
       <visualDescription h="30" w="50" x="74" y="254">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="forward">
+      <unitBounds parallel="true" uRef="forward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -74,11 +90,11 @@
         <visualDescription h="30" w="164" x="208" y="355">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="buffer_writer">
+      <unitBounds parallel="true" uRef="buffer_writer">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -91,11 +107,11 @@
         <visualDescription h="30" w="144" x="236" y="404">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="buffer_reader">
+      <unitBounds parallel="true" uRef="buffer_reader">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -105,21 +121,21 @@
     <innerRenaming cNewName="buffer_reader" cOldName="buffer" cRef="reader"/>
     <innerRenaming cNewName="buffer_writer" cOldName="buffer" cRef="writer"/>
     <interface iRef="IShift1DForwardImpl" nArgs="3">
-      <slice isRef="cell">
+      <slice isRef="axis">
         <originRef cRef="axis" iRef="ICell"/>
         <visualDescription h="10" w="10" x="5" y="23"/>
       </slice>
-      <slice isRef="buffer_reader">
-        <originRef cRef="buffer_reader" iRef="IBufferReader"/>
-        <visualDescription h="10" w="10" x="7" y="5"/>
+      <slice isRef="mpi">
+        <originRef cRef="mpi" iRef="IMPIDirect"/>
+        <visualDescription h="10" w="10" x="29" y="0"/>
       </slice>
       <slice isRef="buffer_writer">
         <originRef cRef="buffer_writer" iRef="IBufferWriter"/>
         <visualDescription h="10" w="10" x="31" y="27"/>
       </slice>
-      <slice isRef="mpi">
-        <originRef cRef="mpi" iRef="IMPIDirect"/>
-        <visualDescription h="10" w="10" x="29" y="0"/>
+      <slice isRef="buffer_reader">
+        <originRef cRef="buffer_reader" iRef="IBufferReader"/>
+        <visualDescription h="10" w="10" x="7" y="5"/>
       </slice>
       <slice isRef="direction">
         <originRef cRef="direction" iRef="IDirection"/>
@@ -148,34 +164,21 @@
       <visualDescription h="40" w="188" x="256" y="122">
         <color b="151" g="236" r="151"/>
       </visualDescription>
-      <port name="cell">
+      <port name="axis">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="cell"/>
-      </port>
-      <port name="buffer_reader">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer_reader" sRef="buffer_reader"/>
-      </port>
-      <port name="buffer">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer" sRef="buffer_reader"/>
-      </port>
-      <port name="buffer_writer">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer_writer" sRef="buffer_writer"/>
-      </port>
-      <port name="buffer">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer" sRef="buffer_writer"/>
+        <slice pRef="axis" sRef="axis"/>
       </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="mpi"/>
       </port>
       <externalReferences>MPI</externalReferences>
-      <parameter iname="IBufferReader" order="0" parid="buffer_reader_type" uname="buffer_reader" varid="BR"/>
+      <parameter iname="IBufferWriter" order="0" parid="buffer_writer_type" uname="buffer_writer" varid="BW"/>
       <parameter iname="IForwardDirection" order="1" parid="direction" uname="forward" varid="DIR"/>
-      <parameter iname="IBufferWriter" order="2" parid="buffer_writer_type" uname="buffer_writer" varid="BW"/>
+      <parameter iname="IBufferReader" order="2" parid="buffer_reader_type" uname="buffer_reader" varid="BR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IShift1DForwardImpl" multiple="true" private="false" replica="0" uRef="shift" visibleInterface="true">
       <super cRef="base" uRef="shift"/>

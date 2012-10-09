@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b65f504a9dd3c958ff5a75af79877d11703a5957ebfd317dc2d982b6858be26e9fc40b54d22fd92d2f18e01e29ceb6e1967abd4adfab8769d1373aa21ccba6773b70ddaf4c48fadd64a10cacf453f71fee1eb58febe34154d0d2553e1d60abf649d0a0188cfd096ca65c0c99ade00205a4bf85a89c16910b6090a380a16ab97" isAbstract="false" kind="Synchronizer" name="ShiftForwardImpl" packagePath="impl.common.interactionpattern">
     <baseType>
       <extensionType>
@@ -14,7 +14,7 @@
           <visualDescription h="43" w="134" x="382" y="139">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="19" y="18"/>
           </unitBounds>
         </port>
@@ -22,7 +22,7 @@
           <visualDescription h="44" w="129" x="386" y="194">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="buffer">
+          <unitBounds parallel="false" uRef="buffer">
             <visualDescription h="10" w="10" x="18" y="21"/>
           </unitBounds>
         </port>
@@ -30,7 +30,7 @@
           <visualDescription h="49" w="133" x="122" y="416">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="63" y="6"/>
           </unitBounds>
         </port>
@@ -38,11 +38,11 @@
           <visualDescription h="30" w="50" x="51" y="345">
             <color b="240" g="32" r="160"/>
           </visualDescription>
-          <unitBounds uRef="mpi">
+          <unitBounds parallel="true" uRef="mpi">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="shift">
+        <unitBounds parallel="true" uRef="shift">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -57,7 +57,7 @@
       <visualDescription h="30" w="50" x="356" y="402">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="forward">
+      <unitBounds parallel="true" uRef="forward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -67,17 +67,17 @@
         <originRef cRef="input_buffer" iRef="IBuffer"/>
         <visualDescription h="10" w="10" x="64" y="10"/>
       </slice>
+      <slice isRef="mpi">
+        <originRef cRef="mpi" iRef="IMPIDirect"/>
+        <visualDescription h="10" w="10" x="11" y="22"/>
+      </slice>
       <slice isRef="output_buffer">
         <originRef cRef="output_buffer" iRef="IBuffer"/>
         <visualDescription h="10" w="10" x="63" y="24"/>
       </slice>
-      <slice isRef="cell">
+      <slice isRef="topology">
         <originRef cRef="topology" iRef="ICell"/>
         <visualDescription h="10" w="10" x="6" y="28"/>
-      </slice>
-      <slice isRef="mpi">
-        <originRef cRef="mpi" iRef="IMPIDirect"/>
-        <visualDescription h="10" w="10" x="11" y="22"/>
       </slice>
       <slice isRef="direction">
         <originRef cRef="direction" iRef="IDirection"/>
@@ -92,7 +92,7 @@
           <dependency>common.interactionpattern.Shift/bin/1.0.0.0/BaseIShift.dll</dependency>
           <externalDependency>MPI</externalDependency>
         </file>
-        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.interactionpattern.Shift;&#xA;using MPI;&#xA;using common.direction.Forward;&#xA;&#xA;namespace impl.common.interactionpattern.ShiftForwardImpl { &#xA;&#xA;public class IShiftForwardImpl&lt;DIR> : BaseIShiftForwardImpl&lt;DIR>, IShift&lt;DIR>&#xA;&#x9;&#x9;where DIR:IForwardDirection&#xA;{&#xA;&#x9;&#xA;&#x9;private RequestList requestList = new RequestList();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;private static int DEFAULT_TAG = 0;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public void initiate_send()&#xA;&#x9;{&#xA;&#x9;&#x9;if (handle_right != null)&#xA;&#x9;&#x9;&#x9;requestList.Remove(handle_right);&#xA;&#x9;&#x9;//int rank = comm.Rank;&#xA;&#x9;&#x9;//Console.WriteLine(rank + &quot;: shift-to-right : initiate_send : &quot; + Cell.successor);&#xA;&#x9;&#x9;handle_right = comm.ImmediateSend&lt;double>(Output_buffer.Array, Cell.successor, DEFAULT_TAG);      &#xA;&#x9;&#x9;requestList.Add(handle_right);&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;public void initiate_recv() &#xA;&#x9;{&#xA;&#x9;&#x9;if (handle_left != null)&#xA;&#x9;&#x9;&#x9;requestList.Remove(handle_left);&#xA;&#x9;&#x9;//int rank = comm.Rank;&#xA;&#x9;&#x9;//Console.WriteLine(rank + &quot;: shift-to-right : initiate_recv : &quot; + Cell.predecessor);&#xA;&#x9;&#x9;handle_left = comm.ImmediateReceive&lt;double>(Cell.predecessor, DEFAULT_TAG, Input_buffer.Array);&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;requestList.Add(handle_left);&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;private Request handle_left;&#xA;&#x9;private Request handle_right;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public Request HandleLeft { get { return handle_left; } }&#xA;&#x9;public Request HandleRight { get { return handle_right; } }&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public override int go() &#xA;&#x9;{ &#x9;&#x9;&#x9;&#xA;&#x9; //   int rank = comm.Rank;&#xA;&#x9; //   Console.Error.WriteLine(rank + &quot;: shift to right begin - from &quot; + Cell.predecessor + &quot;, to &quot; + Cell.successor + &quot;, count=&quot; + requestList.Count);&#xA;&#x9; //   Console.Error.Flush();&#xA;&#x9;    requestList.WaitAll();&#xA;&#x9;&#x9;//clearRequests();&#xA;&#x9; //   Console.Error.WriteLine(rank + &quot;: shift to right end&quot;);&#xA;&#x9; //   Console.Error.Flush();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;return 0;&#x9;&#x9;&#x9;&#xA;&#x9;} // end activate method &#xA;&#xA;&#x9;private void clearRequests() &#xA;&#x9;{&#xA;&#x9;   if (handle_left != null) requestList.Remove(handle_left);&#xA;&#x9;   if (handle_right != null) requestList.Remove(handle_right);&#xA;&#x9;   handle_left = null;&#xA;&#x9;   handle_right = null;&#xA;&#x9;}&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="IShiftForwardImpl.cs" srcType="user" uri="impl.common.interactionpattern.ShiftForwardImpl/bin/1.0.0.0/IShiftForwardImpl.dll" versionId="1.0.0.0">
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.interactionpattern.Shift;&#xA;using MPI;&#xA;using common.direction.Forward;&#xA;&#xA;namespace impl.common.interactionpattern.ShiftForwardImpl { &#xA;&#xA;public class IShiftForwardImpl&lt;DIR> : BaseIShiftForwardImpl&lt;DIR>, IShift&lt;DIR>&#xA;&#x9;&#x9;where DIR:IForwardDirection&#xA;{&#xA;&#x9;&#xA;&#x9;private RequestList requestList = new RequestList();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;private static int DEFAULT_TAG = 0;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public void initiate_send()&#xA;&#x9;{&#xA;&#x9;&#x9;if (handle_right != null)&#xA;&#x9;&#x9;&#x9;requestList.Remove(handle_right);&#xA;&#x9;&#x9;//int rank = comm.Rank;&#xA;&#x9;&#x9;//Console.WriteLine(rank + &quot;: shift-to-right : initiate_send : &quot; + Cell.successor);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;handle_right = comm.ImmediateSend&lt;double>(Output_buffer.Array, Cell.successor, DEFAULT_TAG);      &#xA;&#x9;&#x9;requestList.Add(handle_right);&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;public void initiate_recv() &#xA;&#x9;{&#xA;&#x9;&#x9;if (handle_left != null)&#xA;&#x9;&#x9;&#x9;requestList.Remove(handle_left);&#xA;&#x9;&#x9;//int rank = comm.Rank;&#xA;&#x9;&#x9;//Console.WriteLine(rank + &quot;: shift-to-right : initiate_recv : &quot; + Cell.predecessor);&#xA;&#x9;&#x9;handle_left = comm.ImmediateReceive&lt;double>(Cell.predecessor, DEFAULT_TAG, Input_buffer.Array);&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;requestList.Add(handle_left);&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;private Request handle_left;&#xA;&#x9;private Request handle_right;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public Request HandleLeft { get { return handle_left; } }&#xA;&#x9;public Request HandleRight { get { return handle_right; } }&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public override int go() &#xA;&#x9;{ &#x9;&#x9;&#x9;&#xA;&#x9;    int rank = comm.Rank;&#xA;&#x9;    //Console.WriteLine(rank + &quot;: shift to right begin - from &quot; + Cell.predecessor + &quot;, to &quot; + Cell.successor + &quot;, count=&quot; + requestList.Count);&#xA;&#x9;    requestList.WaitAll();&#xA;&#x9;&#x9;//clearRequests();&#xA;&#x9;   //Console.WriteLine(rank + &quot;: shift to right end&quot;);&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;return 0;&#x9;&#x9;&#x9;&#xA;&#x9;} // end activate method &#xA;&#xA;&#x9;private void clearRequests() &#xA;&#x9;{&#xA;&#x9;   if (handle_left != null) requestList.Remove(handle_left);&#xA;&#x9;   if (handle_right != null) requestList.Remove(handle_right);&#xA;&#x9;   handle_left = null;&#xA;&#x9;   handle_right = null;&#xA;&#x9;}&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="IShiftForwardImpl.cs" srcType="user" uri="impl.common.interactionpattern.ShiftForwardImpl/bin/1.0.0.0/IShiftForwardImpl.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/impl.common.interactionpattern.ShiftForwardImpl/bin/1.0.0.0/BaseIShiftForwardImpl.dll</dependency>
           <dependency>common.interactionpattern.Shift/bin/1.0.0.0/IShift.dll</dependency>
           <externalDependency>MPI</externalDependency>
@@ -103,22 +103,25 @@
       </visualDescription>
       <port name="input_buffer">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer" sRef="input_buffer"/>
-      </port>
-      <port name="output_buffer">
-        <visualDescription h="10" w="10" x="20" y="19"/>
-        <slice pRef="buffer" sRef="output_buffer"/>
-      </port>
-      <port name="cell">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="cell"/>
+        <slice pRef="input_buffer" sRef="input_buffer"/>
       </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="mpi"/>
       </port>
+      <port name="output_buffer">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="output_buffer" sRef="output_buffer"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="topology"/>
+      </port>
       <externalReferences>MPI</externalReferences>
       <parameter iname="IForwardDirection" order="0" parid="direction" uname="forward" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IShiftForwardImpl" multiple="true" private="false" replica="0" uRef="shift" visibleInterface="true">
       <super cRef="base" uRef="shift"/>

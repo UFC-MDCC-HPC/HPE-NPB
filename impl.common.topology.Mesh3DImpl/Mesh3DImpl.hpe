@@ -13,7 +13,7 @@
           <visualDescription h="30" w="50" x="97" y="426">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -21,7 +21,7 @@
           <visualDescription h="30" w="50" x="240" y="498">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -29,11 +29,11 @@
           <visualDescription h="30" w="50" x="377" y="484">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -45,17 +45,17 @@
   </header>
   <componentInfo>
     <interface iRef="ICell3DImpl" nArgs="0">
-      <slice isRef="x">
-        <originRef cRef="x" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="6" y="25"/>
+      <slice isRef="z">
+        <originRef cRef="z" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="60" y="13"/>
       </slice>
       <slice isRef="y">
         <originRef cRef="y" iRef="ICell"/>
         <visualDescription h="10" w="10" x="31" y="26"/>
       </slice>
-      <slice isRef="z">
-        <originRef cRef="z" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="60" y="13"/>
+      <slice isRef="x">
+        <originRef cRef="x" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="6" y="25"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.topology.Ring;&#xA;using common.topology.Mesh3D;&#xA;&#xA;namespace impl.common.topology.Mesh3DImpl { &#xA;&#xA;public abstract class BaseICell3DImpl: br.ufc.pargo.hpe.kinds.Environment, BaseICell3D&#xA;{&#xA;&#xA;private ICell x = null;&#xA;&#xA;public ICell X {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.x == null)&#xA;&#x9;&#x9;&#x9;this.x = (ICell) Services.getPort(&quot;x&quot;);&#xA;&#x9;&#x9;return this.x;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell y = null;&#xA;&#xA;public ICell Y {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.y == null)&#xA;&#x9;&#x9;&#x9;this.y = (ICell) Services.getPort(&quot;y&quot;);&#xA;&#x9;&#x9;return this.y;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell z = null;&#xA;&#xA;public ICell Z {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.z == null)&#xA;&#x9;&#x9;&#x9;this.z = (ICell) Services.getPort(&quot;z&quot;);&#xA;&#x9;&#x9;return this.z;&#xA;&#x9;}&#xA;}&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseICell3DImpl.cs" srcType="base" uri="impl.common.topology.Mesh3DImpl/bin/1.0.0.0/BaseICell3DImpl.dll" versionId="1.0.0.0">
@@ -70,17 +70,17 @@
       <visualDescription h="40" w="80" x="203" y="81">
         <color b="255" g="0" r="128"/>
       </visualDescription>
-      <port name="x">
+      <port name="z">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="x"/>
+        <slice pRef="z" sRef="z"/>
       </port>
       <port name="y">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="y"/>
+        <slice pRef="y" sRef="y"/>
       </port>
-      <port name="z">
+      <port name="x">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cell" sRef="z"/>
+        <slice pRef="x" sRef="x"/>
       </port>
     </interface>
     <unit iRef="ICell3DImpl" multiple="true" private="false" replica="0" uRef="cell" visibleInterface="true">

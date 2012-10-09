@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000e5a6bcdfba5a1239a0a5c7475c01425377e66db13c037b17b24727a1e3220950f0f4f25bfee35e227376513c685505568b9923fa69244aad9be13ab58c6c00d5f03909b462186d4cdbad0cf34ad3860b07b4df7d5a9f70131949f74d4dd16e6812b22cb6cd0bed5207bea4a8207b7301f258f5b5e79edaaa768cfebcca6c3bd6" isAbstract="false" kind="Computation" name="WavefrontForwardImpl" packagePath="impl.common.interactionpattern">
     <baseType>
       <extensionType>
@@ -20,7 +20,7 @@
             <visualDescription h="30" w="50" x="56" y="444">
               <color b="255" g="255" r="255"/>
             </visualDescription>
-            <unitBounds uRef="cell">
+            <unitBounds parallel="true" uRef="cell">
               <visualDescription h="10" w="10" x="5" y="2"/>
             </unitBounds>
           </port>
@@ -28,19 +28,35 @@
             <visualDescription h="30" w="50" x="174" y="490">
               <color b="255" g="255" r="255"/>
             </visualDescription>
-            <unitBounds uRef="cell">
+            <unitBounds parallel="true" uRef="cell">
               <visualDescription h="10" w="10" x="5" y="2"/>
             </unitBounds>
           </port>
-          <unitBounds uRef="wavefront_work">
+          <unitBounds parallel="true" uRef="wavefront_work">
             <visualDescription h="10" w="10" x="22" y="27"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="y_buffer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
+          <visualDescription h="30" w="102" x="297" y="413">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="false" uRef="buffer">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="x_buffer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
+          <visualDescription h="30" w="115" x="351" y="130">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="false" uRef="buffer">
+            <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
         <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="x" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="true">
           <visualDescription h="30" w="50" x="56" y="444">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -48,7 +64,7 @@
           <visualDescription h="30" w="50" x="174" y="490">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cell">
+          <unitBounds parallel="true" uRef="cell">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -56,11 +72,11 @@
           <visualDescription h="30" w="50" x="94" y="329">
             <color b="240" g="32" r="160"/>
           </visualDescription>
-          <unitBounds uRef="mpi">
+          <unitBounds parallel="true" uRef="mpi">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="wavefront">
+        <unitBounds parallel="true" uRef="wavefront">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -75,7 +91,7 @@
       <visualDescription h="43" w="75" x="136" y="390">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="forward">
+      <unitBounds parallel="true" uRef="forward">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -88,7 +104,7 @@
         <visualDescription h="30" w="102" x="297" y="413">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -96,7 +112,7 @@
         <visualDescription h="30" w="115" x="351" y="130">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -104,7 +120,7 @@
         <visualDescription h="30" w="50" x="56" y="444">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -112,34 +128,24 @@
         <visualDescription h="30" w="50" x="174" y="490">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="wavefront_work">
+      <unitBounds parallel="true" uRef="wavefront_work">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="work" varName="W"/>
     <supplyParameter cRef="forward" varName="DIR"/>
-    <fusion>
-      <cRefs>work</cRefs>
-      <cRefs>base</cRefs>
-      <pRef>x</pRef>
-    </fusion>
-    <fusion>
-      <cRefs>work</cRefs>
-      <cRefs>base</cRefs>
-      <pRef>y</pRef>
-    </fusion>
     <interface iRef="IWavefrontForwardImpl" nArgs="2">
+      <slice isRef="work">
+        <originRef cRef="work" iRef="IWavefrontWork"/>
+        <visualDescription h="10" w="10" x="18" y="25"/>
+      </slice>
       <slice isRef="mpi">
         <originRef cRef="mpi" iRef="IMPIDirect"/>
         <visualDescription h="10" w="10" x="1" y="8"/>
-      </slice>
-      <slice isRef="wavefront_work">
-        <originRef cRef="work" iRef="IWavefrontWork"/>
-        <visualDescription h="10" w="10" x="18" y="25"/>
       </slice>
       <slice isRef="direction">
         <originRef cRef="direction" iRef="IDirection"/>
@@ -167,33 +173,24 @@
       <visualDescription h="58" w="142" x="154" y="38">
         <color b="0" g="255" r="0"/>
       </visualDescription>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice sRef="work"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice sRef="work"/>
+      </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="mpi" sRef="mpi"/>
       </port>
-      <port name="wavefront_work">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="work" sRef="wavefront_work"/>
-      </port>
-      <port name="y_buffer">
-        <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="y_buffer" sRef="wavefront_work"/>
-      </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="157" y="17"/>
-        <slice pRef="y" sRef="wavefront_work"/>
-      </port>
-      <port name="x_buffer">
-        <visualDescription h="10" w="10" x="101" y="3"/>
-        <slice pRef="x_buffer" sRef="wavefront_work"/>
-      </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="43" y="3"/>
-        <slice pRef="x" sRef="wavefront_work"/>
-      </port>
       <externalReferences>MPI</externalReferences>
       <parameter iname="IWavefrontWork" order="0" parid="work_type" uname="wavefront_work" varid="W"/>
       <parameter iname="IForwardDirection" order="1" parid="direction" uname="forward" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IWavefrontForwardImpl" multiple="true" private="false" replica="0" uRef="wavefront" visibleInterface="true">
       <super cRef="base" uRef="wavefront"/>

@@ -9,7 +9,7 @@
         <visualDescription h="30" w="50" x="189" y="78">
           <color b="240" g="32" r="160"/>
         </visualDescription>
-        <unitBounds uRef="mpi">
+        <unitBounds parallel="true" uRef="mpi">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
