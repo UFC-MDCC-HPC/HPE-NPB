@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000006dc91ad318e941abbdb20b2d8a5fb2826353c093ee35140da0c147b5c5a977ce26797c3798c4b2fe65d2f0231ae9eb97148e1b49fcc4579ac87a9291f0a4f387f09fc3b5f930e6aaac47dde439b8463cf92ee00bb65a119df3820b27c849ecb94b964794ea8bf1665afc9d54ff33e886a24e76d5adc2362c8794b9b71dbd108f" isAbstract="false" kind="Computation" name="IterationControlForwardImpl" packagePath="impl.adi.solve">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="00240000048000009400000006020000002400005253413100040000110000005b86e947f0c8ff58a018885f506e053867ca3d393fe1cd5e1ec93a51a743248bfe402f5db64de0f83584c891c751c5372e47815b771be3794141e0b3015a36de18d2d19e785500ed9eb00c8e374ef02a660d9fd575b434d9f216339ff6dd62602fa43a397fa0e12d50219bc7c0626be2392c1384f5b5211eecfe655385887eaa" localRef="base" location="adi.solve.IterationControl/IterationControl.hpe" name="IterationControl" package="adi.solve" version="1.0.0.0">
+        <visualDescription h="60" w="100" x="228" y="302">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="direction" varName="D"/>
+        <unitBounds parallel="true" uRef="iteration_control">
+          <visualDescription h="20" w="20" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000053a9c5b99d0b2ca97a55d48da1213fb671bb0c0c1d5a641fffdcd4fc2f4965fa3815709ac847bdbadf8c36d00dd09a09e789c7a76ae6fb649e77a84f24685a5af2c7719eb9a31f44faa927f3a7882fc3ed842640b60142241f93abf109901ee7500e4300bd5fb50ed3c2ae9a06a2251b9966a52be85773c5620e0a9fbc964f94" localRef="iteration_direction" location="common.direction.Forward/Forward.hpe" multiple="false" name="Forward" package="common.direction" exposed="false">
+      <visualDescription h="60" w="100" x="197" y="355">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="true" uRef="forward">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="iteration_direction" varName="D"/>
+    <interface iRef="IIterationControlForwardImpl" nArgs="1">
+      <slice isRef="direction">
+        <originRef cRef="direction" iRef="IDirection"/>
+        <visualDescription h="10" w="10" x="22" y="21"/>
+      </slice>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Direction;&#xA;using common.direction.Forward;&#xA;using adi.solve.IterationControl;&#xA;&#xA;namespace impl.adi.solve.IterationControlForwardImpl { &#xA;&#xA;public abstract class BaseIIterationControlForwardImpl&lt;D>: Computation, BaseIIterationControl&lt;D>&#xA;where D:IForwardDirection&#xA;{&#xA;&#xA;private D direction = default(D);&#xA;&#xA;protected D Direction {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.direction == null)&#xA;&#x9;&#x9;&#x9;this.direction = (D) Services.getPort(&quot;direction&quot;);&#xA;&#x9;&#x9;return this.direction;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIIterationControlForwardImpl.cs" srcType="base" uri="impl.adi.solve.IterationControlForwardImpl/bin/1.0.0.0/BaseIIterationControlForwardImpl.dll" versionId="1.0.0.0">
+          <dependency>common.direction.Direction/bin/1.0.0.0/IDirection.dll</dependency>
+          <dependency>common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll</dependency>
+          <dependency>adi.solve.IterationControl/bin/1.0.0.0/BaseIIterationControl.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Forward;&#xA;using adi.solve.IterationControl;&#xA;&#xA;namespace impl.adi.solve.IterationControlForwardImpl { &#xA;&#xA;public class IIterationControlForwardImpl&lt;D> : BaseIIterationControlForwardImpl&lt;D>, IIterationControl&lt;D>&#xA;where D:IForwardDirection&#xA;{&#xA;&#x9;private int stage = -2;&#xA;&#x9;private int number_of_stages = -1;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;public void setNumberOfStages(int number_of_stages)&#xA;&#x9;{&#xA;&#x9;&#x9;this.number_of_stages = number_of_stages;&#xA;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;public int getCurrentStage()&#xA;&#x9;{&#xA;&#x9;    return this.stage;&#xA;&#x9;}&#xA;&#xA;&#x9;public bool has_started()&#xA;&#x9;{&#xA;&#x9;&#x9;return stage > -2;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;public bool is_first_stage()&#xA;&#x9;{&#xA;&#x9;&#x9;return stage == 0;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;public bool is_last_stage()&#xA;&#x9;{&#xA;&#x9;&#x9;return stage == this.number_of_stages - 1;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;public bool has_finished()&#xA;&#x9;{&#xA;&#x9;&#x9;return stage == this.number_of_stages;&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;public void start()&#xA;&#x9;{&#xA;&#x9;&#x9;stage = 0;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public void advance()&#xA;&#x9;{&#xA;&#x9;&#x9;if (this.stage &lt; this.number_of_stages)&#xA;&#x9;&#x9;&#x9;&#x9;stage++;&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;public void end()&#xA;&#x9;{&#xA;&#x9;&#x9;stage = -2;&#xA;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;public override int go() { &#xA;&#x9;&#xA;&#x9;&#x9; return 0;&#xA;&#x9;}&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="IIterationControlForwardImpl.cs" srcType="user" uri="impl.adi.solve.IterationControlForwardImpl/bin/1.0.0.0/IIterationControlForwardImpl.dll" versionId="1.0.0.0">
+          <dependency>common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll</dependency>
+          <dependency>%WORKSPACE/impl.adi.solve.IterationControlForwardImpl/bin/1.0.0.0/BaseIIterationControlForwardImpl.dll</dependency>
+          <dependency>adi.solve.IterationControl/bin/1.0.0.0/IIterationControl.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="43" w="278" x="154" y="132">
+        <color b="240" g="32" r="160"/>
+      </visualDescription>
+      <parameter iname="IForwardDirection" order="0" parid="direction" uname="forward" varid="D"/>
+      <action id="advance">
+        <protocol/>
+      </action>
+      <action id="begin">
+        <protocol/>
+      </action>
+      <action id="main">
+        <protocol/>
+      </action>
+    </interface>
+    <unit iRef="IIterationControlForwardImpl" multiple="true" private="false" replica="0" uRef="iteration_control" visibleInterface="true">
+      <super cRef="base" uRef="iteration_control"/>
+      <visualDescription h="43" w="157" x="154" y="218"/>
+    </unit>
+  </componentInfo>
+</component:component>

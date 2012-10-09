@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{13698655-F466-4E8A-A56C-3682CA307634}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>impl.adi.solve.IterationControlForwardImpl</RootNamespace>
+    <AssemblyName>impl.adi.solve.IterationControlForwardImpl</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="DGAC">
+      <HintPath>..\..\..\..\..\..\..\..\usr\lib\mono\DGAC\DGAC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\src\1.0.0.0\BaseIIterationControlForwardImpl.cs">
+      <Link>BaseIIterationControlForwardImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\src\1.0.0.0\IIterationControlForwardImpl.cs">
+      <Link>IIterationControlForwardImpl.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\common.direction.Direction\common.direction.Direction\common.direction.Direction.csproj">
+      <Project>{A6AAE482-FC56-4FC4-8994-D3B6ADBDBBB8}</Project>
+      <Name>common.direction.Direction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.solve.IterationControl\adi.solve.IterationControl\adi.solve.IterationControl.csproj">
+      <Project>{D033E840-9582-4DFC-BD9D-550B2E98B2BC}</Project>
+      <Name>adi.solve.IterationControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.direction.Forward\common.direction.Forward\common.direction.Forward.csproj">
+      <Project>{A57012D3-5567-4FA8-B958-D476419A6505}</Project>
+      <Name>common.direction.Forward</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="IterationControlForwardImpl">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="IterationControlForwardImpl-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.adi.solve.IterationControlForwardImpl/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.adi.solve.IterationControlForwardImpl/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.adi.solve.IterationControlForwardImpl/IterationControlForwardImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.adi.solve.IterationControlForwardImpl/bin/1.0.0.0/BaseIIterationControlForwardImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.adi.solve.IterationControlForwardImpl/src/1.0.0.0/BaseIIterationControlForwardImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="adi.solve.IterationControl/bin/1.0.0.0/BaseIIterationControl.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.adi.solve.IterationControlForwardImpl/IterationControlForwardImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.adi.solve.IterationControlForwardImpl/bin/1.0.0.0/IIterationControlForwardImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.adi.solve.IterationControlForwardImpl/src/1.0.0.0/IIterationControlForwardImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="/impl.adi.solve.IterationControlForwardImpl/bin/1.0.0.0/BaseIIterationControlForwardImpl.dll"/>
+        <include name="adi.solve.IterationControl/bin/1.0.0.0/IIterationControl.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="IterationControlForwardImpl-1.0.0.0" name="all"/>
+</project>

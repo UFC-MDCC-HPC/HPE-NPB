@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c5f7c48059093415660a59bb4a4fe49923bd12b1018fe15edd24d94ffdb1d9fbbb6a8d5ae2d12235ba0e659c477bafdba126e6724fb9da584f71f5d65343409248123b0df5452b4048be340789ffa849d4c00ee33c7bce3738b4b6d1a4f8b0df99242079fac26b0e3f084091695b6da6ca9a2dad215f2489f64a67fb8b0cfd99" isAbstract="false" kind="Computation" name="IterationControlBackwardImpl" packagePath="impl.adi.solve">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="00240000048000009400000006020000002400005253413100040000110000005b86e947f0c8ff58a018885f506e053867ca3d393fe1cd5e1ec93a51a743248bfe402f5db64de0f83584c891c751c5372e47815b771be3794141e0b3015a36de18d2d19e785500ed9eb00c8e374ef02a660d9fd575b434d9f216339ff6dd62602fa43a397fa0e12d50219bc7c0626be2392c1384f5b5211eecfe655385887eaa" localRef="base" location="adi.solve.IterationControl/IterationControl.hpe" name="IterationControl" package="adi.solve" version="1.0.0.0">
+        <visualDescription h="60" w="100" x="144" y="248">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="direction" varName="D"/>
+        <unitBounds parallel="true" uRef="iteration_control">
+          <visualDescription h="20" w="20" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="00240000048000009400000006020000002400005253413100040000110000004376d6d9d7de3a1b4d1fdf8832b56bd5b62d403268644c42baa67426cc69adbb726d79ebf33cb4e50759bee5876dae4b375be77b5eba726be3f05f558ea5acc1f13eb2291544bb106ea1da4e63d9252ff2fce1d8428e6d5fbefd2291d534003bd1bc8801fa4fb6341951cfd06c4003178884b8f780965965df6f99b6b33e0782" localRef="iteration_direction" location="common.direction.Backward/Backward.hpe" multiple="false" name="Backward" package="common.direction" exposed="false">
+      <visualDescription h="60" w="100" x="177" y="359">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="true" uRef="backward">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="iteration_direction" varName="D"/>
+    <interface iRef="IIterationControlBackwardImpl" nArgs="1">
+      <slice isRef="direction">
+        <originRef cRef="direction" iRef="IDirection"/>
+        <visualDescription h="10" w="10" x="22" y="21"/>
+      </slice>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Direction;&#xA;using common.direction.Backward;&#xA;using adi.solve.IterationControl;&#xA;&#xA;namespace impl.adi.solve.IterationControlBackwardImpl { &#xA;&#xA;public abstract class BaseIIterationControlBackwardImpl&lt;D>: Computation, BaseIIterationControl&lt;D>&#xA;where D:IBackwardDirection&#xA;{&#xA;&#xA;private D direction = default(D);&#xA;&#xA;protected D Direction {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.direction == null)&#xA;&#x9;&#x9;&#x9;this.direction = (D) Services.getPort(&quot;direction&quot;);&#xA;&#x9;&#x9;return this.direction;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIIterationControlBackwardImpl.cs" srcType="base" uri="impl.adi.solve.IterationControlBackwardImpl/bin/1.0.0.0/BaseIIterationControlBackwardImpl.dll" versionId="1.0.0.0">
+          <dependency>common.direction.Direction/bin/1.0.0.0/IDirection.dll</dependency>
+          <dependency>common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll</dependency>
+          <dependency>adi.solve.IterationControl/bin/1.0.0.0/BaseIIterationControl.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.direction.Backward;&#xA;using adi.solve.IterationControl;&#xA;&#xA;namespace impl.adi.solve.IterationControlBackwardImpl { &#xA;&#xA;public class IIterationControlBackwardImpl&lt;D> : BaseIIterationControlBackwardImpl&lt;D>, IIterationControl&lt;D>&#xA;where D:IBackwardDirection&#xA;{&#x9;&#x9;&#xA;&#x9;private int stage = -2;&#xA;&#x9;private int number_of_stages = -1;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;public void setNumberOfStages(int number_of_stages)&#xA;&#x9;{&#xA;&#x9;&#x9;this.number_of_stages = number_of_stages;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public bool has_started()&#xA;&#x9;{&#xA;&#x9;&#x9;return stage > -2;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;public bool is_first_stage()&#xA;&#x9;{&#xA;&#x9;&#x9;return stage == 0;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;public int getCurrentStage()&#xA;&#x9;{&#xA;&#x9;    return this.stage;&#xA;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;public bool is_last_stage()&#xA;&#x9;{&#xA;&#x9;&#x9;return stage == this.number_of_stages - 1;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;public bool has_finished()&#xA;&#x9;{&#xA;&#x9;&#x9;return stage == -1;&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;public void start()&#xA;&#x9;{&#xA;&#x9;&#x9;stage = number_of_stages - 1;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public void advance()&#xA;&#x9;{&#xA;&#x9;&#x9;if (stage >= 0) stage--;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;public void end()&#xA;&#x9;{&#xA;&#x9;&#x9;stage = -2;&#xA;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;public override int go() { &#xA;&#x9;&#xA;&#x9;&#x9; return 0;&#xA;&#x9;}&#xA;&#x9;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="IIterationControlBackwardImpl.cs" srcType="user" uri="impl.adi.solve.IterationControlBackwardImpl/bin/1.0.0.0/IIterationControlBackwardImpl.dll" versionId="1.0.0.0">
+          <dependency>common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll</dependency>
+          <dependency>%WORKSPACE/impl.adi.solve.IterationControlBackwardImpl/bin/1.0.0.0/BaseIIterationControlBackwardImpl.dll</dependency>
+          <dependency>adi.solve.IterationControl/bin/1.0.0.0/IIterationControl.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="43" w="283" x="125" y="109">
+        <color b="240" g="32" r="160"/>
+      </visualDescription>
+      <parameter iname="IBackwardDirection" order="0" parid="direction" uname="backward" varid="D"/>
+      <action id="advance">
+        <protocol/>
+      </action>
+      <action id="begin">
+        <protocol/>
+      </action>
+      <action id="main">
+        <protocol/>
+      </action>
+    </interface>
+    <unit iRef="IIterationControlBackwardImpl" multiple="true" private="false" replica="0" uRef="iteration_control" visibleInterface="true">
+      <super cRef="base" uRef="iteration_control"/>
+      <visualDescription h="43" w="157" x="269" y="183"/>
+    </unit>
+  </componentInfo>
+</component:component>
