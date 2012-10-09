@@ -11,7 +11,7 @@
       <visualDescription h="30" w="50" x="213" y="439">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="axis">
+      <unitBounds parallel="true" uRef="axis">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -19,7 +19,7 @@
       <visualDescription h="30" w="50" x="195" y="457">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -27,17 +27,17 @@
       <visualDescription h="56" w="114" x="289" y="405">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cells">
+      <unitBounds parallel="false" uRef="cells">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <innerComponent hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="adi.data" exposed="true">
-      <visualDescription h="45" w="106" x="57" y="434">
+      <visualDescription h="45" w="106" x="82" y="452">
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="instance_type" varName="I"/>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="problem">
+      <unitBounds parallel="true" uRef="problem">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -46,7 +46,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -54,7 +54,7 @@
       <visualDescription h="30" w="50" x="735" y="565">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -63,11 +63,11 @@
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <interface iRef="IForward" nArgs="4">
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="59" y="26"/>
       </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="11" y="23"/>
       </slice>
@@ -90,7 +90,7 @@
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
           <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
         </file>
-        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;&#xA;namespace sp.solve.Forward { &#xA;&#xA;public interface IForward&lt;I, C, MTH, DIR> : BaseIForward&lt;I, C, MTH, DIR>&#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;{&#xA;&#x9;void enterStage(int stage);&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IForward.cs" srcType="user" uri="sp.solve.Forward/bin/1.0.0.0/IForward.dll" versionId="1.0.0.0">
+        <file contents="using br.ufc.pargo.hpe.kinds;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using common.solve.SolvingMethod;&#xA;using common.axis.Axis;&#xA;&#xA;namespace sp.solve.Forward { &#xA;&#xA;public interface IForward&lt;I, C, MTH, DIR> : BaseIForward&lt;I, C, MTH, DIR>&#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;where MTH:ISolvingMethod&#xA;where DIR:IAxis&#xA;{&#xA;&#x9;void begin();        // action&#xA;&#x9;void advance();      // action&#xA;&#x9;bool finished();     // condition&#xA;&#x9;bool first_stage();  // condition&#xA;&#x9;bool last_stage();   // condition&#xA;&#xA;} // end main interface &#xA;&#xA;} // end namespace &#xA;" fileType="library" name="IForward.cs" srcType="user" uri="sp.solve.Forward/bin/1.0.0.0/IForward.dll" versionId="1.0.0.0">
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
           <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
@@ -101,24 +101,33 @@
       <visualDescription h="40" w="80" x="199" y="140">
         <color b="255" g="0" r="0"/>
       </visualDescription>
-      <port name="cells">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="ISolvingMethod" order="2" parid="method" uname="method" varid="MTH"/>
       <parameter iname="IAxis" order="3" parid="axis" uname="axis" varid="DIR"/>
+      <action id="advance">
+        <protocol/>
+      </action>
+      <action id="begin">
+        <protocol/>
+      </action>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IForward" multiple="true" private="false" replica="0" uRef="forward" visibleInterface="true">
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="false">
         <visualDescription h="10" w="10" x="59" y="26"/>
       </slices>
-      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem" transitive="false">
+      <slices cRef="problem_data" replica="0" uRef="problem" sliceName="problem_data" transitive="false">
         <visualDescription h="10" w="10" x="11" y="23"/>
       </slices>
       <slices cRef="method" replica="0" uRef="method" sliceName="method" transitive="false">

@@ -1,26 +1,242 @@
-package sp.ADI;
-
-computation SP_ADI(x,y,z,problem_data,cells_info)
-    [class = C: Class,
-     instance_type = I:Instance[class = C],     
-     method = MTH: SolvingMethod] 
-        from adi.ADI(x,y,z,problem_data,cells_info)[class=C, instance_type=I, method=MTH]
-begin
-	computation txinvr:sp.solve.BlockDiagonalMatVecProduct(cells_info, problem_data)
-	                             [axis=common.axis.XYZAxes, instance_type=I, class=C, method=MTH];
- 
-	parallel unit adi
-	begin
-	    slice txinvr from txinvr.matvecproduct;
-	    action txinvr; 
-	    protocol: seq {do copy_faces;                             
-                       do compute_rhs; 
-                       do txinvr; 
-                       do x_solve; 
-                       do y_solve; 
-                       do z_solve;
-                       do add}
-	end
-
-
-end
+<?xml version="1.0" encoding="ASCII"?>
+<component:hashComponent xmlns:component="http://www.example.org/HashComponent">
+  <package>sp.adi</package>
+  <using>adi</using>
+  <using>common.problem_size</using>
+  <using>common.solve</using>
+  <using>common.topology</using>
+  <using>environment</using>
+  <using>common.datapartition</using>
+  <using>adi.data</using>
+  <using>sp.solve</using>
+  <using>common.axis</using>
+  <using>sp.problem_size</using>
+  <kind>Computation</kind>
+  <name>SP_ADI</name>
+  <parameter>
+    <identifier>instance_type</identifier>
+    <variable>I</variable>
+    <constraint>
+      <componentConstraint>sp.problem_size.Instance_SP</componentConstraint>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+    </constraint>
+  </parameter>
+  <parameter>
+    <identifier>class</identifier>
+    <variable>C</variable>
+    <constraint>
+      <componentConstraint>common.problem_size.Class</componentConstraint>
+    </constraint>
+  </parameter>
+  <parameter>
+    <identifier>method</identifier>
+    <variable>MTH</variable>
+    <constraint>
+      <componentConstraint>sp.solve.SPMethod</componentConstraint>
+    </constraint>
+  </parameter>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>z</identifier>
+    <type>
+      <componentName>common.topology.Ring</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>y</identifier>
+    <type>
+      <componentName>common.topology.Ring</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>x</identifier>
+    <type>
+      <componentName>common.topology.Ring</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>mpi</identifier>
+    <type>
+      <componentName>environment.MPIDirect</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Environment</kind>
+    <identifier>cells_info</identifier>
+    <type>
+      <componentName>common.datapartition.MultiPartitionCells</componentName>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Data</kind>
+    <identifier>problem_data</identifier>
+    <type>
+      <componentName>adi.data.ProblemDefinition</componentName>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>public</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <innerComponent>
+    <kind>Computation</kind>
+    <identifier>txinvr</identifier>
+    <type>
+      <componentName>sp.solve.BlockDiagonalMatVecProduct</componentName>
+      <publicInnerComponent>cells_info</publicInnerComponent>
+      <publicInnerComponent>problem_data</publicInnerComponent>
+      <parameter>
+        <identifier>axis</identifier>
+        <constraint>
+          <componentConstraint>common.axis.XYZAxes</componentConstraint>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>instance_type</identifier>
+        <variable>I</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Instance</componentConstraint>
+          <parameter>
+            <identifier>class</identifier>
+            <variable>C</variable>
+            <constraint>
+              <componentConstraint>common.problem_size.Class</componentConstraint>
+            </constraint>
+          </parameter>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>class</identifier>
+        <variable>C</variable>
+        <constraint>
+          <componentConstraint>common.problem_size.Class</componentConstraint>
+        </constraint>
+      </parameter>
+      <parameter>
+        <identifier>method</identifier>
+        <variable>MTH</variable>
+        <constraint>
+          <componentConstraint>common.solve.SolvingMethod</componentConstraint>
+        </constraint>
+      </parameter>
+    </type>
+    <access>private</access>
+    <exportActions>true</exportActions>
+  </innerComponent>
+  <superComponent>
+    <componentName>adi.ADI</componentName>
+    <publicInnerComponent>z</publicInnerComponent>
+    <publicInnerComponent>y</publicInnerComponent>
+    <publicInnerComponent>x</publicInnerComponent>
+    <publicInnerComponent>mpi</publicInnerComponent>
+    <publicInnerComponent>cells_info</publicInnerComponent>
+    <publicInnerComponent>problem_data</publicInnerComponent>
+    <parameter>
+      <identifier>instance_type</identifier>
+      <variable>I</variable>
+      <constraint>
+        <componentConstraint>common.problem_size.Instance</componentConstraint>
+        <parameter>
+          <identifier>class</identifier>
+          <variable>C</variable>
+          <constraint>
+            <componentConstraint>common.problem_size.Class</componentConstraint>
+          </constraint>
+        </parameter>
+      </constraint>
+    </parameter>
+    <parameter>
+      <identifier>class</identifier>
+      <variable>C</variable>
+      <constraint>
+        <componentConstraint>common.problem_size.Class</componentConstraint>
+      </constraint>
+    </parameter>
+    <parameter>
+      <identifier>method</identifier>
+      <variable>MTH</variable>
+      <constraint>
+        <componentConstraint>common.solve.SolvingMethod</componentConstraint>
+      </constraint>
+    </parameter>
+  </superComponent>
+  <unit index="0" name="adi" parallel="true">
+    <slice index="0" inner="z_solve" unit="solve"/>
+    <slice index="0" inner="y_solve" unit="solve"/>
+    <slice index="0" inner="x_solve" unit="solve"/>
+    <slice index="0" inner="copy_faces" unit="copy_faces"/>
+    <slice index="0" inner="compute_rhs" unit="compute_rhs"/>
+    <slice index="0" inner="add" unit="add"/>
+    <slice index="0" inner="txinvr" unit="matvecproduct"/>
+    <action>
+      <identifier>main</identifier>
+      <protocol>
+        <seq id="main" repeat="false">
+          <action>
+            <perform repeat="false" action_id="go" slice_id="copy_faces">
+              <guard>
+                <condition cond_id="is_multiple" slice_id="copy_faces"/>
+              </guard>
+            </perform>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="compute_rhs"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="x_solve"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="y_solve"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="z_solve"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="add"/>
+          </action>
+          <action>
+            <perform repeat="false" action_id="go" slice_id="txinvr"/>
+          </action>
+        </seq>
+      </protocol>
+    </action>
+  </unit>
+</component:hashComponent>

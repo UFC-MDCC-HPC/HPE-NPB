@@ -12,8 +12,13 @@ where C:IClass
 where DIR:IAxis
 where MTH:ISolvingMethod
 {
-	void init();
-	void enterStage(int stage);
+	void init();         // action
+	void begin();        // action
+	void advance();      // action
+	bool finished();     // condition
+	bool first_stage();  // condition
+	bool last_stage();   // condition
+		
 } // end main interface 
 
 } // end namespace 

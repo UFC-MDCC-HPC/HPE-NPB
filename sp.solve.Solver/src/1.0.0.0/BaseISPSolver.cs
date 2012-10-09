@@ -21,9 +21,9 @@ where MTH:ISolvingMethod
 where DIR:IAxis
 {
 
-	ICells Cells {get;}
-	ICell Cell {get;}
-	IProblemDefinition<I, C> Problem {get;}
+	ICells Cells_info {get;}
+	ICell Topology {get;}
+	IProblemDefinition<I, C> Problem_data {get;}
 	IMPIDirect Mpi {get;}
 
 
