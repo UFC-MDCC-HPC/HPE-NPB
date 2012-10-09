@@ -24,6 +24,15 @@ namespace impl.sp.solve.XBackwardImpl {
 		{
 			int i, j, k, n, i1, m;
 			
+			int c, iend, jsize, ksize;			
+			
+            c = slice[stage, 0];
+
+            iend = 2 + cell_size[c, 0] - 1;
+
+            jsize = cell_size[c, 1] + 2;
+            ksize = cell_size[c, 2] + 2;
+			
             #region backward_init
             //---------------------------------------------------------------------
             //            now we know this is the first grid block on the back sweep,
@@ -59,10 +68,39 @@ namespace impl.sp.solve.XBackwardImpl {
             #endregion
  		}
 		
-		private int c, istart, iend, jsize, ksize;
+		private int stage = -1;
 		
-		public void enterStage(int stage)			
+		public void begin()
 		{
+			stage = ncells - 1;
+		}
+		
+		
+		public bool first_stage()
+		{
+			return (stage == ncells - 1);
+		}
+		
+		public bool last_stage()
+		{
+			return (stage == 0);
+		}
+
+		public bool finished()
+		{
+			return stage < 0;
+		}
+
+		public void advance()			
+		{
+			stage--;
+		}
+				
+		public override int go() 
+		{ 		
+            int i, j, k, n, i1, i2, m;
+			int c, istart, iend, jsize, ksize;			
+			
             c = slice[stage, 0];
 
             istart = 2;
@@ -70,11 +108,6 @@ namespace impl.sp.solve.XBackwardImpl {
 
             jsize = cell_size[c, 1] + 2;
             ksize = cell_size[c, 2] + 2;
-		}
-				
-		public override int go() 
-		{ 		
-            int i, j, k, n, i1, i2, m;
 			
             #region backward
             //---------------------------------------------------------------------
