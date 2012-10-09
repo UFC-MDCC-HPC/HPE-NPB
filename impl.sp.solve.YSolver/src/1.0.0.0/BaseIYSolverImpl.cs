@@ -22,6 +22,8 @@ using environment.MPIDirect;
 using common.problem_size.Instance;
 using sp.solve.Backward;
 using sp.solve.Solver;
+using sp.solve.shift.ReadBuffer;
+using sp.solve.shift.WriteBuffer;
 
 namespace impl.sp.solve.YSolver { 
 
@@ -199,6 +201,45 @@ protected IBackward<I, C, DIR, MTH> Backward {
 	}
 }
 
+private IWriteBuffer<I, C, IBackwardDirection, DIR> write_buffer_backward = null;
+
+protected IWriteBuffer<I, C, IBackwardDirection, DIR> Write_buffer_backward {
+	get {
+		if (this.write_buffer_backward == null)
+			this.write_buffer_backward = (IWriteBuffer<I, C, IBackwardDirection, DIR>) Services.getPort("write_buffer_backward");
+		return this.write_buffer_backward;
+	}
+}
+
+private IReadBuffer<I, C, IBackwardDirection, DIR> read_buffer_backward = null;
+
+protected IReadBuffer<I, C, IBackwardDirection, DIR> Read_buffer_backward {
+	get {
+		if (this.read_buffer_backward == null)
+			this.read_buffer_backward = (IReadBuffer<I, C, IBackwardDirection, DIR>) Services.getPort("read_buffer_backward");
+		return this.read_buffer_backward;
+	}
+}
+
+private IWriteBuffer<I, C, IForwardDirection, DIR> write_buffer_forward = null;
+
+protected IWriteBuffer<I, C, IForwardDirection, DIR> Write_buffer_forward {
+	get {
+		if (this.write_buffer_forward == null)
+			this.write_buffer_forward = (IWriteBuffer<I, C, IForwardDirection, DIR>) Services.getPort("write_buffer_forward");
+		return this.write_buffer_forward;
+	}
+}
+
+private IReadBuffer<I, C, IForwardDirection, DIR> read_buffer_forward = null;
+
+protected IReadBuffer<I, C, IForwardDirection, DIR> Read_buffer_forward {
+	get {
+		if (this.read_buffer_forward == null)
+			this.read_buffer_forward = (IReadBuffer<I, C, IForwardDirection, DIR>) Services.getPort("read_buffer_forward");
+		return this.read_buffer_forward;
+	}
+}
 
 abstract public int go(); 
 

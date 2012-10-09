@@ -28,6 +28,7 @@ protected int[,] start, end, cell_size, slice;
 protected double[,,,,] lhs, rho_i, speed, vs;
 protected double c3c4, dtty2, c2dtty1, dtty1, con43, dy5, dy1,
                comz5, comz4, comz1, comz6, dy3, c1c5, dymax;
+protected int ncells;
 		
 protected double[] cv, rhoq;
 
@@ -50,6 +51,7 @@ override public void initialize()
 	rho_i = Problem.Field_rho;
 	speed = Problem.Field_speed;
 	vs = Problem.Field_vs;
+	ncells = Problem.NCells;
 			
 	c3c4 = Constants.c3c4;
 	dtty2 = Constants.dtty2;

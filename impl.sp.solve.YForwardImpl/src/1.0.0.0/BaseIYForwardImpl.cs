@@ -26,6 +26,7 @@ where DIR:IY
 		
 protected int[,] start, end, slice, cell_size;
 protected double[,,,,] lhs, rhs;
+protected int ncells;
 		
 override public void initialize()
 {	
@@ -36,6 +37,7 @@ override public void initialize()
 	
 	lhs = Problem.Field_lhs;
 	rhs = Problem.Field_rhs;
+	ncells = Problem.NCells;
 }
 		
 #endregion

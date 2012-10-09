@@ -24,9 +24,21 @@ namespace impl.sp.solve.YLHS {
 
 		private int c;
 				
-		public void enterStage(int stage)			
+		private int stage = -1;
+		
+		public void begin()
 		{
-            c = slice[stage, 1];
+			stage = 0;
+		}
+		
+		public bool finished()
+		{
+			return stage >= ncells;
+		}
+		
+		public void advance()			
+		{
+			stage++;
 		}
 		
 		public override int go() 
@@ -34,6 +46,8 @@ namespace impl.sp.solve.YLHS {
             double ru1;
             int i, j, k;
 
+            c = slice[stage, 1];
+			
             int ksize = cell_size[c, 2] + 2;
             int jsize = cell_size[c, 1] + 2;
             int isize = cell_size[c, 0] + 2;

@@ -15,381 +15,96 @@ namespace impl.sp.solve.YSolver {
 		where C:IClass
 		where MTH:ISPMethod
 		where DIR:IY
-	{
-		
-		protected double[,][] in_buffer_solver, out_buffer_solver;
-		
-		void create_buffers() 		
-		{
-			int c, stage, isize, ksize, buffer_size;
-			
-			in_buffer_solver = new double[2,ncells][];			
-			out_buffer_solver = new double[2,ncells][];
-			
-			for (stage = 0; stage < ncells; stage++)
-            {
-                c = slice[stage, 1];
-				
-                isize = cell_size[c, 0] + 2;
-                ksize = cell_size[c, 2] + 2;
-								
-                buffer_size = (isize - start[c, 0] - end[c, 0]) * (ksize - start[c, 2] - end[c, 2]);
-
-                in_buffer_solver[0,stage] = new double[22*buffer_size];
-                out_buffer_solver[0,stage] = new double[22 * buffer_size];
-				
-                in_buffer_solver[1,stage] = new double[10 * buffer_size];
-                out_buffer_solver[1,stage] = new double[10 * buffer_size];
-								
-			}
-			
-		}
-		
-			
-		private bool buffers_ok = false;
-		
+	{		
 		public override int go() 
 		{		
-			
-			if (!buffers_ok)
-			{
-				this.create_buffers();
-				buffers_ok = true;
-			}
-			
-            int i, j, k, stage, n, isize, jend, ksize, j1, c, m, p, jstart; /* requests(2), statuses(MPI_STATUS_SIZE, 2);*/
-            double r1, r2, d, e, sm1, sm2;
-            double[] s = new double[5];
-            double[] in_buffer_y;
-            double[] out_buffer_y;
-
-            //---------------------------------------------------------------------
-            //---------------------------------------------------------------------
-
-            // if (timeron) timer.start(t_ysolve);
-
-            //---------------------------------------------------------------------
-            // now do a sweep on a layer-by-layer basis, i.e. sweeping through cells
-            // on this node in the direction of increasing i for the forward sweep,
-            // and after that reversing the direction for the backsubstitution  
-            //---------------------------------------------------------------------
-
             //---------------------------------------------------------------------
             //                          FORWARD ELIMINATION  
             //---------------------------------------------------------------------
-            for (stage = 0; stage < ncells; stage++)
-            {
-				Lhs.enterStage(stage);
-				Forward.enterStage(stage);
-				
-                c = slice[stage, 1];
-
-                jstart = 2;
-                jend = 2 + cell_size[c, 1] - 1;
-
-                isize = cell_size[c, 0] + 2;
-                ksize = cell_size[c, 2] + 2;
-
-               // buffer_size = (isize - start[c, 0] - end[c, 0]) * (ksize - start[c, 2] - end[c, 2]);
-
-                Input_buffer_forward.Array = in_buffer_y = in_buffer_solver[0,stage]; // new double[22*buffer_size];
-                Output_buffer_forward.Array = out_buffer_y = out_buffer_solver[0,stage]; //new double[22*buffer_size];
-
-                if (stage != 0)
-                {
-					Shift_forward.initiate_recv();
-
-					Lhs.go();
-
-					Shift_forward.go();
-
-                    #region read buffer
-                    //---------------------------------------------------------------------
-                    //            unpack the buffer                                 
-                    //---------------------------------------------------------------------
-                    j = jstart;
-                    j1 = jstart + 1;
-                    n = -1;
-                    //---------------------------------------------------------------------
-                    //            create a running pointer
-                    //---------------------------------------------------------------------
-                    p = 0;
-                    for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                    {
-                        for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                        {
-                      //      Console.WriteLine("in_buffer_y_f["+ p + "] = " + in_buffer_y[p]);
-                      //      Console.WriteLine("in_buffer_y_f["+ (p+1) + "] = " + in_buffer_y[p+1]);
-                            lhs[c, k, j, i, n + 2] = lhs[c, k, j, i, n + 2] -
-                                    in_buffer_y[p] * lhs[c, k, j, i, n + 1];
-                            lhs[c, k, j, i, n + 3] = lhs[c, k, j, i, n + 3] -
-                                    in_buffer_y[p + 1] * lhs[c, k, j, i, n + 1];
-                            for (m = 0; m <= 2; m++)
-                            {
-                      //          Console.WriteLine("in_buffer_y_f["+ (p+2+m) + "] = " + in_buffer_y[p+2+m]);
-                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
-                                      in_buffer_y[p + 2 + m] * lhs[c, k, j, i, n + 1];
-                            }
-                      //      Console.WriteLine("in_buffer_y_f["+ (p+5) + "] = " + in_buffer_y[p+5]);
-                      //      Console.WriteLine("in_buffer_y_f["+ (p+6) + "] = " + in_buffer_y[p+6]);
-                            d = in_buffer_y[p + 5]; ;
-                            e = in_buffer_y[p + 6];
-                            for (m = 0; m <= 2; m++)
-                            {
-                       //        Console.WriteLine("in_buffer_y_f["+ (p+7+m) + "] = " + in_buffer_y[p+7+m]);
-                                s[m] = in_buffer_y[p + 7 + m];
-                            }
-                            r1 = lhs[c, k, j, i, n + 2];
-                            lhs[c, k, j, i, n + 3] = lhs[c, k, j, i, n + 3] - d * r1;
-                            lhs[c, k, j, i, n + 4] = lhs[c, k, j, i, n + 4] - e * r1;
-                            for (m = 0; m <= 2; m++)
-                            {
-                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - s[m] * r1;
-                            }
-                            r2 = lhs[c, k, j1, i, n+1];
-                            lhs[c, k, j1, i, n + 2] = lhs[c, k, j1, i, n + 2] - d * r2;
-                            lhs[c, k, j1, i, n + 3] = lhs[c, k, j1, i, n + 3] - e * r2;
-                            for (m = 0; m <= 2; m++)
-                            {
-                                rhs[c, k, j1, i, m] = rhs[c, k, j1, i, m] - s[m] * r2;
-                            }
-                            p = p + 10;
-                        }
-                    }
-
-                    for (m = 3; m <= 4; m++)
-                    {
-                        n = (m - 2) * 5 - 1;
-                        for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                        {
-                            for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                            {
-                                lhs[c, k, j, i, n + 2] = lhs[c, k, j, i, n + 2] -
-                                         in_buffer_y[p] * lhs[c, k, j, i, n + 1];
-                                lhs[c, k, j, i, n + 3] = lhs[c, k, j, i, n + 3] -
-                                         in_buffer_y[p + 1] * lhs[c, k, j, i, n + 1];
-                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
-                                         in_buffer_y[p + 2] * lhs[c, k, j, i, n + 1];
-                                d = in_buffer_y[p + 3];
-                                e = in_buffer_y[p + 4];
-                                s[m] = in_buffer_y[p + 5];
-                                r1 = lhs[c, k, j, i, n + 2];
-                                lhs[c, k, j, i, n + 3] = lhs[c, k, j, i, n + 3] - d * r1;
-                                lhs[c, k, j, i, n + 4] = lhs[c, k, j, i, n + 4] - e * r1;
-                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] - s[m] * r1;
-                                r2 = lhs[c, k, j1, i, n + 1];
-                                lhs[c, k, j1, i, n + 2] = lhs[c, k, j1, i, n + 2] - d * r2;
-                                lhs[c, k, j1, i, n + 3] = lhs[c, k, j1, i, n + 3] - e * r2;
-                                rhs[c, k, j1, i, m] = rhs[c, k, j1, i, m] - s[m] * r2;
-                                p = p + 6;
-                            }
-                        }
-                    }
-                    #endregion
-                }
-                else
-                {
-					Lhs.go();
-                }
-
-				Forward.go();
-
-                //---------------------------------------------------------------------
-                //         send information to the next processor, except when this
-                //         is the last grid block;
-                //---------------------------------------------------------------------
-
-                if (stage != ncells - 1)
-                {
-                    #region write buffer
-                    //---------------------------------------------------------------------
-                    //            create a running pointer for the send buffer  
-                    //---------------------------------------------------------------------
-                    p = 0;
-                    n = -1;
-                    for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                    {
-                        for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                        {
-                            for (j = jend - 1; j <= jend; j++)
-                            {
-                                out_buffer_y[p    ] = lhs[c, k, j, i, n + 4];
-                                out_buffer_y[p + 1] = lhs[c, k, j, i, n + 5];
-                           //     Console.WriteLine("out_buffer_y["+ p + "] = " + out_buffer_y[p]);
-                            //    Console.WriteLine("out_buffer_y["+ (p+1) + "] = " + out_buffer_y[p+1]);
-                                for (m = 0; m <= 2; m++)
-                                {
-                                    out_buffer_y[p + 2 + m] = rhs[c, k, j, i, m];
-                             //       Console.WriteLine("out_buffer_y["+ (p+2+m) + "] = " + out_buffer_y[p+2+m]);
-                                }
-                                p = p + 5;
-                            }
-                        }
-                    }
-
-                    for (m = 3; m <= 4; m++)
-                    {
-                        n = (m - 2) * 5 - 1;
-                        for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                        {
-                            for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                            {
-                                for (j = jend - 1; j <= jend; j++)
-                                {
-                                    out_buffer_y[p] = lhs[c, k, j, i, n + 4];
-                                    out_buffer_y[p + 1] = lhs[c, k, j, i, n + 5];
-                                    out_buffer_y[p + 2] = rhs[c, k, j, i, m];
-                               //     Console.WriteLine("out_buffer_y["+ (p) + "] = " + out_buffer_y[p]);
-                                //    Console.WriteLine("out_buffer_y["+ (p+1) + "] = " + out_buffer_y[p+1]);
-                               //     Console.WriteLine("out_buffer_y["+ (p+2) + "] = " + out_buffer_y[p+2]);
-                                    p = p + 3;
-                                }
-                            }
-                        }
-                    }
-
-                    #endregion
-					
-					Shift_forward.initiate_send();
-                }
-            }
-
-            //---------------------------------------------------------------------
-            //      now go in the reverse direction                      
-            //---------------------------------------------------------------------
-
-            //---------------------------------------------------------------------
-            //                         BACKSUBSTITUTION 
-            //---------------------------------------------------------------------
-            for (stage = ncells - 1; stage >= 0; stage--)
-            {
-				Backward.enterStage(stage);
-				
-                c = slice[stage, 1];
-
-                jstart = 2;
-                jend = 2 + cell_size[c, 1] - 1;
-
-                isize = cell_size[c, 0] + 2;
-                ksize = cell_size[c, 2] + 2;
-
-                //buffer_size = (isize - start[c, 0] - end[c, 0]) * (ksize - start[c, 2] - end[c, 2]);
-
-                Input_buffer_backward.Array = in_buffer_y = in_buffer_solver[1,stage]; // new double[10 * buffer_size];
-                Output_buffer_backward.Array = out_buffer_y = out_buffer_solver[1,stage]; // new double[10 * buffer_size];
-				
-                if (stage != ncells - 1)
-                {
-					Shift_backward.initiate_recv();
-					
-				    Matvecproduct.enterStage(stage + 1);
-					Matvecproduct.go();
-
-					Shift_backward.go();
-
-                    #region read_buffer
-                    //---------------------------------------------------------------------
-                    //            unpack the buffer for the first three factors         
-                    //---------------------------------------------------------------------
-                    n = -1;
-                    p = 0;
-                    j = jend;
-                    j1 = j - 1;
-                    for (m = 0; m <= 2; m++)
-                    {
-                        for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                        {
-                            for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                            {
-		                  //      Console.WriteLine("in_buffer_y["+ p + "] = " + in_buffer_y[p]);
-		                  //      Console.WriteLine("in_buffer_y["+ (p+1) + "] = " + in_buffer_y[p+1]);
-                                sm1 = in_buffer_y[p];
-                                sm2 = in_buffer_y[p + 1];
-                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
-                                       lhs[c, k, j, i, n + 4] * sm1 -
-                                       lhs[c, k, j, i, n + 5] * sm2;
-                                rhs[c, k, j1, i, m] = rhs[c, k, j1, i, m] -
-                                       lhs[c, k, j1, i, n + 4] * rhs[c, k, j, i, m] -
-                                       lhs[c, k, j1, i, n + 5] * sm1;
-                                p = p + 2;
-                            }
-                        }
-                    }
-
-                    //---------------------------------------------------------------------
-                    //            now unpack the buffer for the remaining two factors
-                    //---------------------------------------------------------------------
-                    for (m = 3; m <= 4; m++)
-                    {
-                        n = (m - 2) * 5 - 1;
-                        for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                        {
-                            for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                            {
-		                   //     Console.WriteLine("in_buffer_y["+ p + "] = " + in_buffer_y[p]);
-		                   //     Console.WriteLine("in_buffer_y["+ (p+1) + "] = " + in_buffer_y[p+1]);
-                                sm1 = in_buffer_y[p];
-                                sm2 = in_buffer_y[p + 1];
-                                rhs[c, k, j, i, m] = rhs[c, k, j, i, m] -
-                                       lhs[c, k, j, i, n + 4] * sm1 -
-                                       lhs[c, k, j, i, n + 5] * sm2;
-                                rhs[c, k, j1, i, m] = rhs[c, k, j1, i, m] -
-                                       lhs[c, k, j1, i, n + 4] * rhs[c, k, j, i, m] -
-                                       lhs[c, k, j1, i, n + 5] * sm1;
-                                p = p + 2;
-                            }
-                        }
-                    }
-                    #endregion
-                }
-                else
-                {
-					Backward.init();
-                }
-
-				Backward.go();
-
-                //---------------------------------------------------------------------
-                //         send on information to the previous processor, if needed
-                //---------------------------------------------------------------------
-                if (stage != 0)
-                {
-                    #region write buffer
-
-                    j = jstart;
-                    j1 = jstart + 1;
-                    p = 0;
-                    for (m = 0; m <= 4; m++)
-                    {
-                        for (k = start[c, 2]; k < ksize - end[c, 2]; k++)
-                        {
-                            for (i = start[c, 0]; i < isize - end[c, 0]; i++)
-                            {
-                                out_buffer_y[p] = rhs[c, k, j, i, m];
-                                out_buffer_y[p + 1] = rhs[c, k, j1, i, m];
-                                p = p + 2;
-                            }
-                        }
-                    }
-
-                    #endregion
-					
-					Shift_backward.initiate_send();
-                }
-
-                //---------------------------------------------------------------------
-                //         If this was the last stage, do the block-diagonal inversion          
-                //---------------------------------------------------------------------
-                if (stage == 0)
-                {
-                   Matvecproduct.enterStage(stage);
-				   Matvecproduct.go();
-                }
-
-            }
 			
-			return 0;		
-		} // end activate method 
+			Forward.begin();
+			Lhs.begin ();
+			Read_buffer_forward.begin();
+			Write_buffer_forward.begin();
+			
+			Lhs.go(); 
+			Lhs.advance ();
+			
+			Forward.go(); 
+			Forward.advance();
+				
+			int k=0;
+			while (!Forward.finished())
+		    {
+				Console.WriteLine("{0}: BEGIN LOOP FORWARD-Y {1}", this.Rank, k);
+				Write_buffer_forward.go();
+				
+				Read_buffer_forward.advance ();
+				
+				Shift_forward.initiate_send();
+				Shift_forward.initiate_recv();					
+				
+				Lhs.go();					
+				Lhs.advance ();		
+				
+				Shift_forward.go();		            
+				
+				Write_buffer_forward.advance();
+				
+				Read_buffer_forward.go ();
+				
+				Forward.go();
+				Forward.advance();
+				Console.WriteLine("{0}: END LOOP FORWARD-Y {1}", this.Rank, k++);
+				
+		    } // cells loop
+		    
+		
+		    //---------------------------------------------------------------------
+		    //                         BACKWARD SUBSTITUTION 
+		    //---------------------------------------------------------------------
+		
+			Backward.begin();
+			Matvecproduct.begin();
+			Read_buffer_backward.begin();
+			Write_buffer_backward.begin();
+			
+			Backward.init();
+			Backward.go();
+			Backward.advance();
+			
+			k=0;
+			while (!Backward.finished())
+		    {				
+				Console.WriteLine("{0}: BEGIN LOOP BACKWARD-Y {1}", this.Rank, k);
+				Write_buffer_backward.go();					
+				
+				Read_buffer_backward.advance();
+				
+				Shift_backward.initiate_send();
+				Shift_backward.initiate_recv();
+	
+				Matvecproduct.go();
+			    Matvecproduct.advance();
+	
+				Shift_backward.go();
+				
+				Write_buffer_backward.advance();
+	
+				Read_buffer_backward.go();
+				
+				Backward.go();
+		        Backward.advance ();								
+				Console.WriteLine("{0}: END LOOP BACKWARD-Y {1}", this.Rank, k++);
+		    }
+	        //---------------------------------------------------------------------
+	        //         If this was the last stage, do the block-diagonal inversion          
+	        //---------------------------------------------------------------------
+            //Matvecproduct.advance();
+		    Matvecproduct.go();
+					
+			return 0;
+		}  
 		
 	}
 

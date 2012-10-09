@@ -16,10 +16,40 @@ namespace impl.sp.solve.YForwardImpl {
 		where MTH:ISPMethod
 		where DIR:IY
 	{	
-		private int c, jstart, jend, isize, ksize;
 		
-		public void enterStage(int stage)			
+		private int stage = -1;
+		
+		public void begin()
 		{
+			stage = 0;
+		}
+		
+		public bool finished()
+		{
+			return stage >= ncells;
+		}
+		
+		public bool first_stage()
+		{
+			return (stage == 0);
+		}
+		
+		public bool last_stage()
+		{
+			return (stage == ncells - 1);
+		}
+		
+		public void advance()			
+		{
+			stage++;
+		}
+
+		public override int go() 
+		{
+			int c, jstart, jend, isize, ksize;
+            int i, j, k, n, j1, j2, m; /* requests(2), statuses(MPI_STATUS_SIZE, 2);*/              
+			double fac1, fac2;
+			
             c = slice[stage, 1];
 
             jstart = 2;
@@ -27,12 +57,6 @@ namespace impl.sp.solve.YForwardImpl {
 
             isize = cell_size[c, 0] + 2;
             ksize = cell_size[c, 2] + 2;
-		}
-
-		public override int go() 
-		{
-            int i, j, k, n, j1, j2, m; /* requests(2), statuses(MPI_STATUS_SIZE, 2);*/              
-			double fac1, fac2;
 			
 			#region forward
             //---------------------------------------------------------------------

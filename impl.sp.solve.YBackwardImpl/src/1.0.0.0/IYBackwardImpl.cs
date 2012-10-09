@@ -22,6 +22,15 @@ namespace impl.sp.solve.YBackwardImpl {
 		
 		public void init()
 		{
+		    int c, jend, isize, ksize;
+			
+            c = slice[stage, 1];
+
+            jend = 2 + cell_size[c, 1] - 1;
+
+            isize = cell_size[c, 0] + 2;
+            ksize = cell_size[c, 2] + 2;
+			
 			int i, j, k, n, j1, m;
 			
         	#region backward_init
@@ -61,10 +70,38 @@ namespace impl.sp.solve.YBackwardImpl {
 		}
 
 		
-		private int c, jstart, jend, isize, ksize;
 		
-		public void enterStage(int stage)			
+		private int stage = -1;
+		
+		public void begin()
 		{
+			stage = ncells-1;
+		}
+		
+		public bool first_stage()
+		{
+			return (stage == ncells - 1);
+		}
+		
+		public bool last_stage()
+		{
+			return (stage == 0);
+		}
+		
+		public bool finished()
+		{
+			return stage < 0;
+		}
+		
+		public void advance()			
+		{
+			stage--;
+		}
+				
+		public override int go() 
+		{	
+		    int c, jstart, jend, isize, ksize;
+			
             c = slice[stage, 1];
 
             jstart = 2;
@@ -72,10 +109,6 @@ namespace impl.sp.solve.YBackwardImpl {
 
             isize = cell_size[c, 0] + 2;
             ksize = cell_size[c, 2] + 2;
-		
-		}
-				
-		public override int go() { 
 			
             int i, j, k, n, j1, j2, m; /* requests(2), statuses(MPI_STATUS_SIZE, 2);*/              
 
