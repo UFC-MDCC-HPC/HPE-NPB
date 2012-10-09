@@ -16,10 +16,41 @@ namespace impl.sp.solve.XForwardImpl {
 		where MTH:ISPMethod
 		where DIR:IX
 	{
-		private int c, istart, iend, jsize, ksize;
 		
-		public void enterStage(int stage)			
+		private int stage = -1;
+		
+		public void begin()
 		{
+			stage = 0;			
+		}
+		
+		public bool first_stage()
+		{
+			return (stage == 0);
+		}
+		
+		public bool last_stage()
+		{
+			return (stage >= ncells - 1);
+		}
+		
+		
+		public bool finished()
+		{
+			return stage >= ncells;
+		}
+		
+		public void advance()			
+		{
+			stage++;
+		}
+		
+		public override int go() 
+		{ 
+		    int c, istart, iend, jsize, ksize;
+			int i, j, k, n,  i1, i2, m;
+			double fac1, fac2;
+						
             c = slice[stage, 0];
 
             istart = 2;
@@ -27,13 +58,7 @@ namespace impl.sp.solve.XForwardImpl {
 
             jsize = cell_size[c, 1] + 2;
             ksize = cell_size[c, 2] + 2;
-		}
-		
-		public override int go() 
-		{ 
-			int i, j, k, n,  i1, i2, m;
-			double fac1, fac2;
-						
+			
 			// **************************
 			
             n = -1;
