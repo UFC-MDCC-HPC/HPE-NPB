@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000000bd95d0326e5a905b78adb8963b782506a272bfe73e92fbe0c9efc10fddcd5606b65fefa2742922464f01a44067eccc3e65bd501a2267a1306a9c7767ebea2b5a9b3ab8e7041f50ae2fbddffea5072b64d3a4c78762d95cc875ff2e1c3d3faa61f503415a6c1aa5462861f230202ff9a0998674bdd747bc662088d86e0bd9aa0" isAbstract="false" kind="Computation" name="InitializeImpl" packagePath="impl.adi.data">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -25,11 +25,11 @@
           <visualDescription h="30" w="130" x="376" y="460">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cells">
+          <unitBounds parallel="false" uRef="cells">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="initialize">
+        <unitBounds parallel="true" uRef="initialize">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -44,7 +44,7 @@
       <visualDescription h="30" w="50" x="182" y="315">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -53,20 +53,20 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance" varName="I"/>
     <interface iRef="IInitializeImpl" nArgs="2">
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="66" y="6"/>
-      </slice>
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="29" y="23"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="66" y="6"/>
       </slice>
       <slice isRef="exact_solution">
         <originRef cRef="exact_solution" iRef="IExactSolution"/>
@@ -91,16 +91,19 @@
       <visualDescription h="40" w="80" x="73" y="77">
         <color b="0" g="255" r="0"/>
       </visualDescription>
-      <port name="problem">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="cells">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IInitializeImpl" multiple="true" private="false" replica="0" uRef="initialize" visibleInterface="true">
       <super cRef="base" uRef="initialize"/>

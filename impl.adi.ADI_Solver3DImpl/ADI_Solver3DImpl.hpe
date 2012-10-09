@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000ddeedcaba108d1ed5e25cabaf2bd29f9ccced4266b31e92a275abc158dba1dbdf7da446e2ab536fc6614be14bff8fb9183a4189b985fe4d27b5827017638da1116ce4f24f8a5746b4db9cfb95905093897bf3fdcf3414b497fd7a29025c44f2fc979f9c837232c7f1cb152b236d0f97ff543046b43f4bf10d66edbf4e6d2ffb2" isAbstract="false" kind="Application" name="ADI_Solver3DImpl" packagePath="impl.adi">
     <baseType>
       <extensionType>
@@ -12,7 +12,7 @@
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="CLASS"/>
         <parameter formFieldId="method" varName="MTH"/>
-        <unitBounds uRef="adi_solver3D">
+        <unitBounds parallel="true" uRef="adi_solver3D">
           <visualDescription h="10" w="10" x="61" y="50"/>
         </unitBounds>
       </component>
@@ -27,7 +27,7 @@
       <visualDescription h="30" w="50" x="88" y="245">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -36,7 +36,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="CLASS"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -44,7 +44,7 @@
       <visualDescription h="30" w="102" x="136" y="287">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -76,7 +76,7 @@
         <originRef cRef="exact_rhs" iRef="IExactRHS"/>
         <visualDescription h="10" w="10" x="62" y="1"/>
       </slice>
-      <slice isRef="multipartition">
+      <slice isRef="data_partition">
         <originRef cRef="data_partition" iRef="IMultiPartition"/>
         <visualDescription h="10" w="10" x="96" y="46"/>
       </slice>
@@ -108,52 +108,106 @@
       <visualDescription h="66" w="165" x="453" y="127">
         <color b="255" g="255" r="128"/>
       </visualDescription>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="adi"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="adi"/>
+      </port>
       <port name="y">
         <visualDescription h="10" w="10" x="117" y="92"/>
         <slice pRef="y" sRef="adi"/>
-        <slice pRef="y" sRef="verify"/>
-        <slice pRef="y" sRef="multipartition"/>
-      </port>
-      <port name="cells">
-        <visualDescription h="10" w="10" x="116" y="14"/>
-        <slice pRef="cells" sRef="adi"/>
-        <slice pRef="cells" sRef="verify"/>
-        <slice pRef="cells" sRef="initialize"/>
-        <slice pRef="cells" sRef="lhsinit"/>
-        <slice pRef="cells" sRef="exact_rhs"/>
-        <slice pRef="cells" sRef="multipartition"/>
-      </port>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="2" y="66"/>
-        <slice pRef="problem" sRef="adi"/>
-        <slice pRef="problem" sRef="verify"/>
-        <slice pRef="problem" sRef="initialize"/>
-        <slice pRef="problem" sRef="lhsinit"/>
-        <slice pRef="problem" sRef="exact_rhs"/>
-      </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="23" y="80"/>
-        <slice pRef="x" sRef="adi"/>
-        <slice pRef="x" sRef="verify"/>
-        <slice pRef="x" sRef="multipartition"/>
-      </port>
-      <port name="mpi">
-        <visualDescription h="10" w="10" x="62" y="122"/>
-        <slice pRef="mpi" sRef="adi"/>
-        <slice pRef="mpi" sRef="verify"/>
-        <slice pRef="mpi" sRef="timer"/>
       </port>
       <port name="z">
         <visualDescription h="10" w="10" x="83" y="105"/>
         <slice pRef="z" sRef="adi"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="adi"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="23" y="80"/>
+        <slice pRef="x" sRef="adi"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="verify"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="verify"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="verify"/>
+      </port>
+      <port name="z">
+        <visualDescription h="10" w="10" x="0" y="0"/>
         <slice pRef="z" sRef="verify"/>
-        <slice pRef="z" sRef="multipartition"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="verify"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="verify"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="initialize"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="initialize"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="lhsinit"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="lhsinit"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="exact_rhs"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="exact_rhs"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="data_partition"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="data_partition"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="data_partition"/>
+      </port>
+      <port name="z">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="z" sRef="data_partition"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="timer"/>
       </port>
       <externalReferences>MPI</externalReferences>
       <externalReferences>BMInOut</externalReferences>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="CLASS"/>
       <parameter iname="ISolvingMethod" order="2" parid="method" uname="method" varid="MTH"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IADI_Solver3DImpl" multiple="true" private="false" replica="0" uRef="adi_solver3D" visibleInterface="true">
       <super cRef="base" uRef="adi_solver3D"/>

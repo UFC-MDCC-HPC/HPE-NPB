@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000000b451a2bcd50ab8fc6269d3b37d6080ea9857b499ff3e1fcff4e4e7cef260032f4dfe8fec4a8bc513bbf481c13bc8e1ecb32c06d6e6ada7fc216f54cbcaee3f6ab216b657367eefef844062653c70cf4e723d7fad24be7944255e0c2ad290c92a9d7ab7fe3c9bf2ba3038f405a86e6a90cb9b8e969943153f0d632549a07d983" isAbstract="false" kind="Computation" name="AddImpl" packagePath="impl.adi">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -25,11 +25,11 @@
           <visualDescription h="51" w="106" x="299" y="417">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cells">
+          <unitBounds parallel="false" uRef="cells">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="add">
+        <unitBounds parallel="true" uRef="add">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -44,7 +44,7 @@
       <visualDescription h="30" w="50" x="731" y="470">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -53,20 +53,20 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance" varName="I"/>
     <interface iRef="IAddImpl" nArgs="2">
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="65" y="25"/>
-      </slice>
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="16" y="29"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="65" y="25"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using adi.Add;&#xA;using common.problem_size.Class;&#xA;using common.problem_size.Instance;&#xA;&#xA;&#xA;namespace impl.adi.AddImpl { &#xA;&#xA;&#x9;public abstract class BaseIAddImpl&lt;I,C>: Computation, BaseIAdd&lt;I,C>&#xA;&#x9;&#x9;&#x9;where I:IInstance&lt;C>&#xA;&#x9;&#x9;&#x9;where C:IClass&#xA;&#x9;{&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;#region data&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;protected int ncells;&#xA;&#x9;protected double[,,,,] u;&#xA;&#x9;protected double[,,,,] rhs;&#xA;&#x9;protected int[,] start;&#xA;&#x9;protected int[,] end;&#xA;&#x9;protected int[,] cell_size;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;override public void initialize() &#xA;&#x9;{&#xA;&#x9;&#x9;start = Cells.cell_start;&#xA;&#x9;&#x9;end = Cells.cell_end;&#xA;&#x9;&#x9;cell_size = Cells.cell_size;   &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;    ncells = Problem.NCells;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;u = Problem.Field_u;&#xA;&#x9;&#x9;rhs = Problem.Field_rhs;&#xA;&#x9;}&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;#endregion&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;private ICells cells = null;&#xA;&#x9;&#xA;&#x9;public ICells Cells {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.cells == null) &#xA;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;    this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;return this.cells;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;private IProblemDefinition&lt;I,C> problem = null;&#xA;&#x9;&#xA;&#x9;public IProblemDefinition&lt;I,C> Problem {&#xA;&#x9;&#x9;get {&#xA;&#x9;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;   this.problem = (IProblemDefinition&lt;I,C>) Services.getPort(&quot;problem_data&quot;);&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;return this.problem;&#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;&#x9;&#xA;&#x9;&#xA;&#x9;abstract public int go(); &#xA;&#x9;&#xA;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIAddImpl.cs" srcType="base" uri="impl.adi.AddImpl/bin/1.0.0.0/BaseIAddImpl.dll" versionId="1.0.0.0">
@@ -82,16 +82,19 @@
       <visualDescription h="40" w="80" x="136" y="80">
         <color b="0" g="255" r="0"/>
       </visualDescription>
-      <port name="problem">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="cells">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IAddImpl" multiple="true" private="false" replica="0" uRef="add" visibleInterface="true">
       <super cRef="base" uRef="add"/>

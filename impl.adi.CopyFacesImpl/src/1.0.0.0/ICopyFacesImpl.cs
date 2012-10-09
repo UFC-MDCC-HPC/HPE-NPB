@@ -23,6 +23,11 @@ public class ICopyFacesImpl<I,C> : BaseICopyFacesImpl<I,C>, ICopyFaces<I,C>
 	protected int top_size;
 	protected int bottom_size;		
 	
+	public bool is_multiple()
+	{
+	   return this.Size > 1;
+	}
+		
 	private void compute_buffer_size(int dim) 
 	{
         int c, face_size;

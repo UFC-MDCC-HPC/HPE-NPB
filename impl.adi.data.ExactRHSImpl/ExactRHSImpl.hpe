@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000b1b9d7d0e93216b3dc90d7377a1e13d237a398590c6c701c86e0279e55abeeb2567f0fae7bb91238921092ae661df6e58823482a07b7058e33cfe5ed5ce2bd0fb4457985f7ff15324acb359251d1e44c164877583bc9c178da4f28f34657e75d16174b924dea6c50a72519129bdf429a25e5e51f9e138429bf49cbbad1135884" isAbstract="false" kind="Computation" name="ExactRHSImpl" packagePath="impl.adi.data">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -25,11 +25,11 @@
           <visualDescription h="30" w="132" x="331" y="460">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cells">
+          <unitBounds parallel="false" uRef="cells">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="exact_rhs">
+        <unitBounds parallel="true" uRef="exact_rhs">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -45,7 +45,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -53,20 +53,20 @@
       <visualDescription h="30" w="50" x="214" y="396">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance" varName="I"/>
     <interface iRef="IExactRHSImpl" nArgs="2">
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="60" y="25"/>
-      </slice>
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="45" y="27"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="60" y="25"/>
       </slice>
       <slice isRef="exact_solution">
         <originRef cRef="exact_solution" iRef="IExactSolution"/>
@@ -91,16 +91,19 @@
       <visualDescription h="40" w="102" x="75" y="113">
         <color b="255" g="255" r="0"/>
       </visualDescription>
-      <port name="problem">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="cells">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExactRHSImpl" multiple="true" private="false" replica="0" uRef="exact_rhs" visibleInterface="true">
       <super cRef="base" uRef="exact_rhs"/>

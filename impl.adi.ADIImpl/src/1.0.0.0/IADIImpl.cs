@@ -14,10 +14,10 @@ namespace impl.adi.ADIImpl
 		where CLASS:IClass
 		where I:IInstance<CLASS>
 	{	
+	   
 		public override int go() 
 		{
-			int no_nodes = Size;
-			if (no_nodes > 1) 
+			if (Copy_faces.is_multiple()) 
 			{
 			   Copy_faces.go();
 			}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cf5b034cf37ee13973b752bb956c858dd47375e846f32bc2608202d2432fc0e051a0f1b500690141b5b5fa28e60a448bc64ad930a0815466316f9f67201bf3abdc7953a6136ca644b79413ddb38150904afe51633b51e7c63dd4a6cc639073a70887857d8431f64b190d6851feedbf05efd53e83d30ffcfb99e3799861768084" isAbstract="false" kind="Computation" name="ExactSolutionImpl" packagePath="impl.adi.data">
     <baseType>
       <extensionType>
@@ -9,7 +9,7 @@
         <visualDescription h="30" w="50" x="113" y="140">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="exact_solution">
+        <unitBounds parallel="true" uRef="exact_solution">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -33,6 +33,9 @@
       <visualDescription h="40" w="114" x="246" y="191">
         <color b="255" g="0" r="128"/>
       </visualDescription>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IExactSolutionImpl" multiple="true" private="false" replica="0" uRef="exact_solution" visibleInterface="true">
       <super cRef="base" uRef="exact_solution"/>

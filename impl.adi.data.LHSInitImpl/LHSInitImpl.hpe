@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c19d94c2d459f92388dfd080678374e63515638a9f741ce69a92482bca9c7d90578b9ee73945b2256ec96f1763f5e9245cbcefff810424bad3f402869e2231f70b9ae6ce28c34d50ed8913c0b59c6b842622d7ee3b3ba7648446e3d3c59b77a8099e897b9f5e33d803f9d5bd4f26f2a4e432c8dd7c0521e819b3351dd59c1b9b" isAbstract="false" kind="Computation" name="LHSInitImpl" packagePath="impl.adi.data">
     <baseType>
       <extensionType>
@@ -15,7 +15,7 @@
           <visualDescription h="30" w="112" x="399" y="388">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cells">
+          <unitBounds parallel="false" uRef="cells">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -25,11 +25,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="lhsinit">
+        <unitBounds parallel="true" uRef="lhsinit">
           <visualDescription h="10" w="10" x="39" y="12"/>
         </unitBounds>
       </component>
@@ -44,7 +44,7 @@
       <visualDescription h="30" w="50" x="230" y="426">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -53,20 +53,20 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance" varName="I"/>
     <interface iRef="ILHSInitImpl" nArgs="2">
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="69" y="8"/>
-      </slice>
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="51" y="22"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="69" y="8"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using adi.data.LHSInit;&#xA;&#xA;namespace impl.adi.data.LHSInitImpl { &#xA;&#xA;public abstract class BaseILHSInitImpl&lt;I, C>: Computation, BaseILHSInit&lt;I, C>&#xA;where I:IInstance&lt;C>&#xA;where C:IClass&#xA;{&#xA;&#x9;&#x9;&#xA;#region data&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;protected int[,] cell_size, cell_low, cell_high, start, end, slice, cell_coord;&#x9;&#x9;&#xA;protected int ncells, IMAX, JMAX, KMAX, maxcells;&#x9;&#x9;&#xA;protected double[,,,,] lhs;&#xA;&#xA;override public void initialize()&#xA;{&#x9;&#xA;&#x9;cell_size = Cells.cell_size;&#xA;&#x9;cell_low = Cells.cell_low;&#xA;&#x9;cell_high = Cells.cell_high;&#xA;&#x9;cell_coord = Cells.cell_coord;&#xA;&#x9;start = Cells.cell_start;&#xA;&#x9;end = Cells.cell_end;&#xA;&#x9;slice = Cells.cell_slice;&#xA;&#x9;&#xA;&#x9;ncells = Problem.NCells;&#xA;&#x9;lhs = Problem.Field_lhs;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;IMAX = Problem.IMAX;&#xA;&#x9;JMAX = Problem.JMAX;&#xA;&#x9;KMAX = Problem.KMAX;&#xA;&#x9;maxcells = Problem.maxcells;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseILHSInitImpl.cs" srcType="base" uri="impl.adi.data.LHSInitImpl/bin/1.0.0.0/BaseILHSInitImpl.dll" versionId="1.0.0.0">
@@ -86,16 +86,19 @@
       <visualDescription h="40" w="80" x="228" y="143">
         <color b="0" g="255" r="128"/>
       </visualDescription>
-      <port name="problem">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="cells">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ILHSInitImpl" multiple="true" private="false" replica="0" uRef="lhsinit" visibleInterface="true">
       <super cRef="base" uRef="lhsinit"/>
