@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000bd473b89c9ae29913307135c510aae581a867bbdb7715dad870dcf81460fbf643eec3047fa0199d6201dd586a3df53e9a86143a157249e8a6861795b5e698e836b67addc3b70d3a7fbb06df60777d313b0440fc5cc0830ef6c0a68c33af8e162ec1885ff52f6f3a7ca0f5530fa6cad028eafe0dc3c10280266188f736961d58b" isAbstract="false" kind="Computation" name="FftInitImpl" packagePath="impl.ft.data">
     <baseType>
       <extensionType>
@@ -23,11 +23,11 @@
             </visualDescription>
             <parameter formFieldId="instance_type" varName="I"/>
             <parameter formFieldId="class" varName="C"/>
-            <unitBounds uRef="blocks">
+            <unitBounds parallel="false" uRef="blocks">
               <visualDescription h="10" w="10" x="5" y="2"/>
             </unitBounds>
           </port>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="43" y="4"/>
           </unitBounds>
         </port>
@@ -37,11 +37,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="fftinit">
+        <unitBounds parallel="true" uRef="fftinit">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -57,7 +57,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -65,14 +65,14 @@
       <visualDescription h="30" w="50" x="547" y="202">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IFftInitImpl" nArgs="2">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="36" y="25"/>
       </slice>
@@ -94,16 +94,19 @@
       <visualDescription h="40" w="80" x="198" y="228">
         <color b="128" g="255" r="255"/>
       </visualDescription>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="problem"/>
+        <slice pRef="blocks_info" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance_FT" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IFftInitImpl" multiple="true" private="false" replica="0" uRef="fftinit" visibleInterface="true">
       <super cRef="base" uRef="fftinit"/>

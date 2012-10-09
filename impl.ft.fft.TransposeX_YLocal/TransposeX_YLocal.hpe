@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000007d63cb6ab687a00e9e0f26b30e3a5500e3ccff57c6c013b8e928c961a6a117fe43fdb71ea450cc70e13bd94d142641f95d01e437cf12cb4dd763c71f68924169b80b85b4816d626c9b39263cd592c6bb2ad9f499905a8dfcb9f4c5fc431f2f1d0f1eaa4030aa9761b5bc12e5862539213b1e696ff61500214b45b03393bec9a" isAbstract="false" kind="Computation" name="TransposeX_YLocal" packagePath="impl.ft.fft">
     <baseType>
       <extensionType>
@@ -24,11 +24,11 @@
             </visualDescription>
             <parameter formFieldId="instance_type" varName="I"/>
             <parameter formFieldId="class" varName="C"/>
-            <unitBounds uRef="blocks">
+            <unitBounds parallel="false" uRef="blocks">
               <visualDescription h="10" w="10" x="5" y="2"/>
             </unitBounds>
           </port>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="94" y="17"/>
           </unitBounds>
         </port>
@@ -38,11 +38,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="transpose_local">
+        <unitBounds parallel="true" uRef="transpose_local">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -58,7 +58,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -66,7 +66,7 @@
       <visualDescription h="30" w="50" x="466" y="92">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -74,7 +74,7 @@
       <visualDescription h="51" w="111" x="215" y="236">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="xy">
+      <unitBounds parallel="true" uRef="xy">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -82,7 +82,7 @@
     <supplyParameter cRef="axis" varName="DIR"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="ITransposeX_YLocal" nArgs="3">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="70" y="29"/>
       </slice>
@@ -90,7 +90,7 @@
         <originRef cRef="axis" iRef="IAxis"/>
         <visualDescription h="10" w="10" x="64" y="24"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="8" y="15"/>
       </slice>
@@ -116,17 +116,20 @@
       <visualDescription h="40" w="144" x="188" y="102">
         <color b="6" g="121" r="72"/>
       </visualDescription>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="problem"/>
+        <slice pRef="blocks_info" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance_FT" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IX_Y_Axis" order="2" parid="axis" uname="xy" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ITransposeX_YLocal" multiple="true" private="false" replica="0" uRef="transpose_local" visibleInterface="true">
       <super cRef="base" uRef="transpose_local"/>

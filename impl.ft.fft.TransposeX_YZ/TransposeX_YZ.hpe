@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000002d6b7e1c522211323697a56ee3c97ed5c7ea6e9300921f77097fcb725d834d6678b59ca3ad27d9f0fa25a2ef0d7286ebacda1f58510324c6a4356d7c6944d52d870a191df1fa69123984ae4d70135915945add509ed2006c2db0fcdc222527fe8389116c3e7b7e41e1e7b332ece038b789795bd092f61430e9d26f2319c2e7b9" isAbstract="false" kind="Computation" name="TransposeX_YZ" packagePath="impl.ft.fft">
     <baseType>
       <extensionType>
@@ -12,6 +12,16 @@
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="axis" varName="DIR"/>
         <parameter formFieldId="class" varName="C"/>
+        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000095e97e58b9ed73eb389d5d67e242ab61d50128486f43ba0afe8ff6bd8d08840f848c22ffad8acff4ef3bd7a6d1af46fd7413f1bf81704ab9152bd0c5c5f6ee8c128f38a1196abb5039132524dd4a4294fda2d6a19c7f1019c9e09736f96280d2298e765b3e51d1f8e779c60cbb6ccff11284a8fd11385bfdb9a8c9d44ada4f92" localRef="blocks_info" location="ft.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="ft.datapartition" exposed="true">
+          <visualDescription h="35" w="74" x="672" y="422">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="instance_type" varName="I"/>
+          <parameter formFieldId="class" varName="C"/>
+          <unitBounds parallel="false" uRef="blocks">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
         <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c1356ca9b2057b2cdaf7bab412ca75fdb39021bca4f4290f39b086b8aa2f45538e23e1af3360a5e85aa8ee62ffd7b1d4b10715fa0b45745b78c496d18d59a1ccb3f0c4a6bb86a302fa6a6ddeba6177db23a3c2f83b018ebec4ecc0035817670de32d367791764d224e4a7387fdcc3f9eea7a6f591775c9b9e13b978d62d79de8" localRef="problem_data" location="ft.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="ft.data" exposed="true">
           <visualDescription h="30" w="93" x="168" y="515">
             <color b="255" g="255" r="255"/>
@@ -19,30 +29,20 @@
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
           <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000095e97e58b9ed73eb389d5d67e242ab61d50128486f43ba0afe8ff6bd8d08840f848c22ffad8acff4ef3bd7a6d1af46fd7413f1bf81704ab9152bd0c5c5f6ee8c128f38a1196abb5039132524dd4a4294fda2d6a19c7f1019c9e09736f96280d2298e765b3e51d1f8e779c60cbb6ccff11284a8fd11385bfdb9a8c9d44ada4f92" localRef="blocks_info" location="ft.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="ft.datapartition" exposed="true">
-            <visualDescription h="35" w="74" x="536" y="480">
+            <visualDescription h="35" w="74" x="709" y="356">
               <color b="255" g="255" r="255"/>
             </visualDescription>
             <parameter formFieldId="instance_type" varName="I"/>
             <parameter formFieldId="class" varName="C"/>
-            <unitBounds uRef="blocks">
+            <unitBounds parallel="false" uRef="blocks">
               <visualDescription h="10" w="10" x="5" y="2"/>
             </unitBounds>
           </port>
-          <unitBounds uRef="problem">
-            <visualDescription h="10" w="10" x="94" y="17"/>
+          <unitBounds parallel="true" uRef="problem">
+            <visualDescription h="10" w="10" x="56" y="3"/>
           </unitBounds>
         </port>
-        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000095e97e58b9ed73eb389d5d67e242ab61d50128486f43ba0afe8ff6bd8d08840f848c22ffad8acff4ef3bd7a6d1af46fd7413f1bf81704ab9152bd0c5c5f6ee8c128f38a1196abb5039132524dd4a4294fda2d6a19c7f1019c9e09736f96280d2298e765b3e51d1f8e779c60cbb6ccff11284a8fd11385bfdb9a8c9d44ada4f92" localRef="blocks_info" location="ft.datapartition.BlocksInfo/BlocksInfo.hpe" multiple="true" name="BlocksInfo" package="ft.datapartition" exposed="true">
-          <visualDescription h="35" w="74" x="536" y="480">
-            <color b="255" g="255" r="255"/>
-          </visualDescription>
-          <parameter formFieldId="instance_type" varName="I"/>
-          <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
-            <visualDescription h="10" w="10" x="5" y="2"/>
-          </unitBounds>
-        </port>
-        <unitBounds uRef="transpose">
+        <unitBounds parallel="true" uRef="transpose">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -58,7 +58,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -66,7 +66,7 @@
       <visualDescription h="30" w="50" x="464" y="95">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -74,7 +74,7 @@
       <visualDescription h="38" w="109" x="158" y="230">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="x_yz">
+      <unitBounds parallel="true" uRef="x_yz">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -117,21 +117,36 @@
       <visualDescription h="62" w="155" x="191" y="213">
         <color b="255" g="128" r="128"/>
       </visualDescription>
-      <port name="problem">
-        <visualDescription h="10" w="10" x="19" y="3"/>
-        <slice pRef="problem" sRef="transpose_local"/>
-        <slice pRef="problem" sRef="transpose_global"/>
-        <slice pRef="problem" sRef="transpose_finish"/>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="transpose_local"/>
       </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="21" y="44"/>
-        <slice pRef="blocks" sRef="transpose_local"/>
-        <slice pRef="blocks" sRef="transpose_global"/>
-        <slice pRef="blocks" sRef="transpose_finish"/>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="transpose_local"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="transpose_global"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="transpose_global"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="transpose_finish"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="transpose_finish"/>
       </port>
       <parameter iname="IInstance_FT" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IX_YZ_Axis" order="2" parid="axis" uname="x_yz" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ITransposeX_YZ" multiple="true" private="false" replica="0" uRef="transpose" visibleInterface="true">
       <super cRef="base" uRef="transpose"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000dfcec5def4242765892bf8524f257ed51aef3e9d1b9e6536be80bf5cf6c1937a650a3b3c7c9731b52ee34efe791dcd236d6b4cdde333b35af6e7e45a59fa16f5a134a1a05122a3c4eab5529a650e16a02ce4278b3075c18c00db8936c7e0c5ac3bb17f5ce2a073160104f066730889f321664e6d2d81a9f8be7994ebbe58779d" isAbstract="false" kind="Computation" name="TransposeXY_ZGlobal" packagePath="impl.ft.fft">
     <baseType>
       <extensionType>
@@ -24,11 +24,11 @@
             </visualDescription>
             <parameter formFieldId="instance_type" varName="I"/>
             <parameter formFieldId="class" varName="C"/>
-            <unitBounds uRef="blocks">
+            <unitBounds parallel="false" uRef="blocks">
               <visualDescription h="10" w="10" x="5" y="2"/>
             </unitBounds>
           </port>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="45" y="3"/>
           </unitBounds>
         </port>
@@ -38,11 +38,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="transpose_global">
+        <unitBounds parallel="true" uRef="transpose_global">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -58,7 +58,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -66,7 +66,7 @@
       <visualDescription h="30" w="50" x="368" y="149">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -74,7 +74,7 @@
       <visualDescription h="40" w="105" x="225" y="175">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="xy_z">
+      <unitBounds parallel="true" uRef="xy_z">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -82,7 +82,7 @@
     <supplyParameter cRef="axis" varName="DIR"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="ITransposeXY_ZGlobal" nArgs="3">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="56" y="28"/>
       </slice>
@@ -113,18 +113,21 @@
       <visualDescription h="40" w="123" x="241" y="130">
         <color b="64" g="128" r="128"/>
       </visualDescription>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="problem"/>
+        <slice pRef="blocks_info" sRef="problem_data"/>
       </port>
       <externalReferences>MPI</externalReferences>
       <parameter iname="IInstance_FT" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IXY_Z_Axes" order="2" parid="axis" uname="xy_z" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ITransposeXY_ZGlobal" multiple="true" private="false" replica="0" uRef="transpose_global" visibleInterface="true">
       <super cRef="base" uRef="transpose_global"/>

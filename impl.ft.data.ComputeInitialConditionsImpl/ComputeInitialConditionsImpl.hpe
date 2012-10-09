@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000051542a70d6a5ae15c21db8d22bc8a1231dcc17d0be3d16e71ebc6ed16d14504ea5235bf14f8ac0054b7878d404dee92bd2fb90bbe6ac54d37b2c73a2d7aa255be54e3cfd91ca29a77afe2c12e58a524ff250a316f85d0090dbe2d87e9a55bf345cafa1167dee748e483c51a8bddb0f5d7d9cf0d09653a8675dd0283223af659b" isAbstract="false" kind="Computation" name="ComputeInitialConditionsImpl" packagePath="impl.ft.data">
     <baseType>
       <extensionType>
@@ -23,11 +23,11 @@
             </visualDescription>
             <parameter formFieldId="instance_type" varName="I"/>
             <parameter formFieldId="class" varName="C"/>
-            <unitBounds uRef="blocks">
+            <unitBounds parallel="false" uRef="blocks">
               <visualDescription h="10" w="10" x="5" y="2"/>
             </unitBounds>
           </port>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="46" y="5"/>
           </unitBounds>
         </port>
@@ -37,11 +37,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="compute_initial_conditions">
+        <unitBounds parallel="true" uRef="compute_initial_conditions">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -57,7 +57,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -65,18 +65,18 @@
       <visualDescription h="30" w="50" x="540" y="126">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IComputeInitialConditionsImpl" nArgs="2">
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="65" y="26"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="121" y="25"/>
       </slice>
@@ -99,16 +99,19 @@
       <visualDescription h="40" w="166" x="174" y="202">
         <color b="128" g="255" r="0"/>
       </visualDescription>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
-      <port name="blocks">
-        <visualDescription h="10" w="10" x="7" y="38"/>
-        <slice pRef="blocks" sRef="problem"/>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance_FT" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IComputeInitialConditionsImpl" multiple="true" private="false" replica="0" uRef="compute_initial_conditions" visibleInterface="true">
       <super cRef="base" uRef="compute_initial_conditions"/>

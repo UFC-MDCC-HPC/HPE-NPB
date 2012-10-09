@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000d33aabe06df8a7056d3251cf7c50127a8f6e8cd06eb366a48dd4be7b3ef3d0b0cc4efa42f19c5afe41159d5b9b45d827e502a11f0289730c9d78165cc61adfb94cbbaafd18f7483a16a6679123ebc0147bc5d6cfb3a5b8648bd6d343933bc30a2df3238f54039af249de414881f75e298d39ae68be6b22f83b8346fea95159f4" isAbstract="false" kind="Application" name="FTImpl" packagePath="impl.ft">
     <baseType>
       <extensionType>
@@ -10,7 +10,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="ft">
+        <unitBounds parallel="true" uRef="ft">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -25,7 +25,7 @@
       <visualDescription h="30" w="50" x="400" y="175">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -47,7 +47,7 @@
         <originRef cRef="evolve" iRef="IEvolve"/>
         <visualDescription h="10" w="10" x="65" y="26"/>
       </slice>
-      <slice isRef="fftinit">
+      <slice isRef="fft_init">
         <originRef cRef="fft_init" iRef="IFftInit"/>
         <visualDescription h="10" w="10" x="51" y="26"/>
       </slice>
@@ -55,7 +55,7 @@
         <originRef cRef="compute_initial_conditions" iRef="IComputeInitialConditions"/>
         <visualDescription h="10" w="10" x="38" y="25"/>
       </slice>
-      <slice isRef="compute_index_map">
+      <slice isRef="compute_indexmap">
         <originRef cRef="compute_indexmap" iRef="IComputeIndexMap"/>
         <visualDescription h="10" w="10" x="26" y="25"/>
       </slice>
@@ -63,7 +63,7 @@
         <originRef cRef="timer" iRef="ITimer"/>
         <visualDescription h="10" w="10" x="13" y="24"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance_FT"/>
         <visualDescription h="10" w="10" x="3" y="23"/>
       </slice>
@@ -97,25 +97,61 @@
       <visualDescription h="40" w="80" x="90" y="154">
         <color b="255" g="255" r="0"/>
       </visualDescription>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="checksum"/>
-        <slice pRef="problem" sRef="verify"/>
-        <slice pRef="problem" sRef="fft"/>
-        <slice pRef="problem" sRef="evolve"/>
-        <slice pRef="problem" sRef="fftinit"/>
-        <slice pRef="problem" sRef="compute_initial_conditions"/>
-        <slice pRef="problem" sRef="compute_index_map"/>
+        <slice pRef="problem_data" sRef="checksum"/>
       </port>
-      <port name="blocks">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="checksum"/>
-        <slice pRef="blocks" sRef="verify"/>
-        <slice pRef="blocks" sRef="fft"/>
-        <slice pRef="blocks" sRef="evolve"/>
-        <slice pRef="blocks" sRef="fftinit"/>
-        <slice pRef="blocks" sRef="compute_initial_conditions"/>
-        <slice pRef="blocks" sRef="compute_index_map"/>
+        <slice pRef="blocks_info" sRef="checksum"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="verify"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="verify"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="fft"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="fft"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="evolve"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="evolve"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="fft_init"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="fft_init"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="compute_initial_conditions"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="compute_initial_conditions"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="compute_indexmap"/>
+      </port>
+      <port name="blocks_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="blocks_info" sRef="compute_indexmap"/>
       </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="0" y="0"/>
@@ -124,6 +160,9 @@
       <externalReferences>MPI</externalReferences>
       <externalReferences>BMInOut</externalReferences>
       <parameter iname="IClass" order="0" parid="class" uname="class" varid="C"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IFTImpl" multiple="true" private="false" replica="0" uRef="ft" visibleInterface="true">
       <super cRef="base" uRef="ft"/>

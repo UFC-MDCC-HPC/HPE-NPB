@@ -17,11 +17,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="blocks">
+          <unitBounds parallel="false" uRef="blocks">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="problem">
+        <unitBounds parallel="true" uRef="problem">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -37,7 +37,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -45,24 +45,32 @@
       <visualDescription h="30" w="50" x="463" y="198">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IProblemDefinitionImpl" nArgs="2">
-      <slice isRef="blocks">
+      <slice isRef="blocks_info">
         <originRef cRef="blocks_info" iRef="IBlocks"/>
         <visualDescription h="10" w="10" x="23" y="27"/>
       </slice>
-      <slice isRef="instance">
+      <slice isRef="instance_type">
         <originRef cRef="instance_type" iRef="IInstance"/>
         <visualDescription h="10" w="10" x="3" y="17"/>
       </slice>
-      <slice isRef="field">
+      <slice isRef="u0">
         <originRef cRef="u0" iRef="IField"/>
         <visualDescription h="10" w="10" x="66" y="2"/>
+      </slice>
+      <slice isRef="u1">
+        <originRef cRef="u1" iRef="IField"/>
+        <visualDescription h="10" w="10" x="65" y="13"/>
+      </slice>
+      <slice isRef="u2">
+        <originRef cRef="u2" iRef="IField"/>
+        <visualDescription h="10" w="10" x="66" y="24"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
         <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using ft.problem_size.Instance;&#xA;using ft.data.Field;&#xA;using common.problem_size.Class;&#xA;using ft.problem_size.Instance_FT;&#xA;using ft.data.ProblemDefinition;&#xA;using ft.datapartition.BlocksInfo;&#xA;&#xA;namespace impl.ft.data.ProblemDefinitionImpl { &#xA;&#xA;public abstract class BaseIProblemDefinitionImpl&lt;I, C>: DataStructure, BaseIProblemDefinition&lt;I, C>&#xA;&#x9;where I:IInstance_FT&lt;C>&#xA;&#x9;where C:IClass&#xA;{&#xA;&#xA;private I instance = default(I);&#xA;&#xA;protected I Instance {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.instance == null)&#xA;&#x9;&#x9;&#x9;this.instance = (I) Services.getPort(&quot;instance_type&quot;);&#xA;&#x9;&#x9;return this.instance;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBlocks&lt;I,C> blocks = null;&#xA;&#xA;public IBlocks&lt;I,C> Blocks {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.blocks == null)&#xA;&#x9;&#x9;&#x9;this.blocks = (IBlocks&lt;I,C>) Services.getPort(&quot;blocks_info&quot;);&#xA;&#x9;&#x9;return this.blocks;&#xA;&#x9;}&#xA;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;private IField u0 = null;&#xA;&#xA;protected IField U0 {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.u0 == null)&#xA;&#x9;&#x9;&#x9;this.u0 = (IField) Services.getPort(&quot;u0&quot;);&#xA;&#x9;&#x9;return this.u0;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField u1 = null;&#xA;&#xA;protected IField U1 {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.u1 == null)&#xA;&#x9;&#x9;&#x9;this.u1 = (IField) Services.getPort(&quot;u1&quot;);&#xA;&#x9;&#x9;return this.u1;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IField u2 = null;&#xA;&#xA;protected IField U2 {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.u2 == null)&#xA;&#x9;&#x9;&#x9;this.u2 = (IField) Services.getPort(&quot;u2&quot;);&#xA;&#x9;&#x9;return this.u2;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIProblemDefinitionImpl.cs" srcType="base" uri="impl.ft.data.ProblemDefinitionImpl/bin/1.0.0.0/BaseIProblemDefinitionImpl.dll" versionId="1.0.0.0">
@@ -84,9 +92,9 @@
       <visualDescription h="40" w="158" x="93" y="143">
         <color b="0" g="255" r="0"/>
       </visualDescription>
-      <port name="blocks">
+      <port name="blocks_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="blocks" sRef="blocks"/>
+        <slice pRef="blocks_info" sRef="blocks_info"/>
       </port>
       <externalReferences>MPI</externalReferences>
       <parameter iname="IInstance_FT" order="0" parid="instance_type" uname="instance" varid="I"/>
