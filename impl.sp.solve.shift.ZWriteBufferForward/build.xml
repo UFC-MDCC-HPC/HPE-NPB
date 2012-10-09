@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="ZWriteBufferForward">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="ZWriteBufferForward-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.shift.ZWriteBufferForward/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.shift.ZWriteBufferForward/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.shift.ZWriteBufferForward/ZWriteBufferForward.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.shift.ZWriteBufferForward/bin/1.0.0.0/BaseIZWriteBufferForwardImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.shift.ZWriteBufferForward/src/1.0.0.0/BaseIZWriteBufferForwardImpl.cs"/>
+      </sources>
+      <references>
+        <include name="common.direction.Direction/bin/1.0.0.0/IDirection.dll"/>
+        <include name="adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll"/>
+        <include name="sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="common.Buffer/bin/1.0.0.0/IBuffer.dll"/>
+        <include name="common.axis.Axis/bin/1.0.0.0/IAxis.dll"/>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="common.axis.ZAxis/bin/1.0.0.0/IZ.dll"/>
+        <include name="sp.solve.shift.WriteBuffer/bin/1.0.0.0/BaseIWriteBuffer.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.shift.ZWriteBufferForward/ZWriteBufferForward.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.shift.ZWriteBufferForward/bin/1.0.0.0/IZWriteBufferForwardImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.shift.ZWriteBufferForward/src/1.0.0.0/IZWriteBufferForwardImpl.cs"/>
+      </sources>
+      <references>
+        <include name="sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="common.axis.ZAxis/bin/1.0.0.0/IZ.dll"/>
+        <include name="/impl.sp.solve.shift.ZWriteBufferForward/bin/1.0.0.0/BaseIZWriteBufferForwardImpl.dll"/>
+        <include name="sp.solve.shift.WriteBuffer/bin/1.0.0.0/IWriteBuffer.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="ZWriteBufferForward-1.0.0.0" name="all"/>
+</project>

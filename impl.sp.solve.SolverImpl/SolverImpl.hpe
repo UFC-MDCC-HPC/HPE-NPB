@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ASCII"?>
+<component:component xmlns:component="http://www.example.org/HashComponent">
+  <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000dd11672a879b849a98da62a328709770bfe6a73dfe1c4a0c5fa1a85460b7d00594db126789d8e91077d9a9f17c514d56c58b91ce4a87807182f744b516fe8cae67f20bb8ca8468cf99c82cb211fcf608c70bb98c9b70e1a2b7cb106b0a1b1600a5f707b9c7c89d07e7fd546b82479d8c2d738dd80638ca6071edfd57e61af0d4" isAbstract="false" kind="Computation" name="SolverImpl" packagePath="impl.sp.solve">
+    <baseType>
+      <extensionType>
+        <implements>true</implements>
+      </extensionType>
+      <component hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000d100a3df2b7030065ac24da7b28462410d491763f907b665d0d405b0cd915abd36eaa691f51b30747fe019972c5a32eb4febadaf5c2a809adecba55fecf011db383306aaf6a9dd906e58b7d6f8d4f2e35aeb05de71cad81271ea4ed71bd238541efbfbd0c996fbf326341eae8009d6893b0529a8ff84d8c72b6231c295656995" localRef="base" location="sp.solve.Solver/Solver.hpe" name="Solver" package="sp.solve" version="1.0.0.0">
+        <visualDescription h="54" w="98" x="183" y="290">
+          <color b="255" g="255" r="255"/>
+        </visualDescription>
+        <parameter formFieldId="axis" varName="DIR"/>
+        <parameter formFieldId="instance_type" varName="I"/>
+        <parameter formFieldId="class" varName="C"/>
+        <parameter formFieldId="method" varName="MTH"/>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="true">
+          <visualDescription h="53" w="112" x="432" y="412">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="false" uRef="cells">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="002400000480000094000000060200000024000052534131000400001100000009b97ce4f3981d78e251ff90894751a2f19e3d7fcafeadee8da1cb93890a7d9ed59b4773f575afc0782c61b877ac17cea1ab4429bfd162c1bdff0b6c7fe9d07f8e9ccdcd219b58671c77cf6cfbada633e18309cb4c2e518fedeaa6aecf435a12dc4a18c8384c15d61dfab5a2056f58c2bcf936823b8d84a8c5cc5e25827a1598" localRef="problem_data" location="adi.data.ProblemDefinition/ProblemDefinition.hpe" multiple="false" name="ProblemDefinition" package="adi.data" exposed="true">
+          <visualDescription h="45" w="106" x="434" y="287">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="instance_type" varName="I"/>
+          <parameter formFieldId="class" varName="C"/>
+          <unitBounds parallel="true" uRef="problem">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000009b5fdf9e2fd2e1d4c40d5d105e19369c7729126e13c1d35d7124531d9c4fa1a01ecb25564a9fc1e7175d98659a5280d86a339f77d53abc6eff4debf0c86ea2c480a3ffedb149923bba754c2bb0fb6117e2416acad5d23bebfe734b82b120e8ca3451465ce29e2c470da1b915836a5db31d0e17997a541c0f79ea1aed03990587" localRef="topology" location="common.topology.Ring/Ring.hpe" multiple="false" name="Ring" package="common.topology" exposed="true">
+          <visualDescription h="35" w="92" x="440" y="105">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="true" uRef="cell">
+            <visualDescription h="10" w="10" x="63" y="6"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000059fdc60f0095a1142aef66ff82b5e8659158d29c9ae6eedd576a96e33ae1faaddaf78b57c8cab897deeb79b165ed011c3cd25deeeed69da38fc30a1143e39fa67ab658c278a82203de07eafa3dafe7704a84c1fffc42035b92d09563efdfe7b59862d01f598f626efa5cd4eef962fb18970112f8a530495c2a482922a19258b" localRef="mpi" location="environment.MPIDirect/MPIDirect.hpe" multiple="false" name="MPIDirect" package="environment" exposed="true">
+          <visualDescription h="30" w="50" x="282" y="158">
+            <color b="240" g="32" r="160"/>
+          </visualDescription>
+          <unitBounds parallel="true" uRef="mpi">
+            <visualDescription h="10" w="10" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <unitBounds parallel="true" uRef="solve">
+          <visualDescription h="10" w="10" x="5" y="2"/>
+        </unitBounds>
+      </component>
+    </baseType>
+    <versions field1="1" field2="0" field3="0" field4="0"/>
+    <visualAttributes>
+      <color b="255" g="255" r="255"/>
+    </visualAttributes>
+  </header>
+  <componentInfo>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000454b3cd77d4e1bd37b45801a6d225edceaa85080940d8ff93d8308c4a585601d0e0b00c70d55eb34cfa4de904d0234a5454ee4f10a3d46be2ec77520da0d55fa8d959e0f2ecbf8fd25f8d4e676e2b92a40e6ce7e492f5feb6c31345f8c7c887f7e2ecb139b95c71dcf3ca9aa44f0bdd07cf60319eb2676344bda9667fca51abe" localRef="xdir" location="common.axis.Axis/Axis.hpe" multiple="false" name="Axis" package="common.axis" exposed="false">
+      <visualDescription h="30" w="50" x="109" y="171">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="true" uRef="axis">
+        <visualDescription h="20" w="20" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000159d9ccb4ff0bb35a4fe190495e9c0d9a8406fa4adae5405850aed7cf83bbe6096bcb7deb5b07550a718fabec888b38f45c00ad4323db7b35e01dd236f9d1af6d8d0e529844de79031b63f05f2e810d0218c315e2c720d374b2bc2c0b15ec45863f2832e19f30c9bf6ee1519c76cd5e6f0ed485d2027397f93caec006396c587" localRef="method" location="sp.solve.SPMethod/SPMethod.hpe" multiple="false" name="SPMethod" package="sp.solve" exposed="false">
+      <visualDescription h="30" w="50" x="53" y="244">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="true" uRef="method">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000237f437b205f7bfa00c2d0b40167897c37f84c96a62c077e2832a5360fa8c1c7438dfa969d99bb36a48a7baefcbd50d84ae2e3e71a349dce24c2b0bc473997871be48fdb29d0d48b0928ca968440c6b6663c6740810dab7b664db0e0cfbfe5b21f223402d0d9bd601294898724b6a1da46e78261ef1ee37ac63ca9b2dbdc0d90" localRef="class" location="common.problem_size.Class/Class.hpe" multiple="false" name="Class" package="common.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="102" y="170">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <unitBounds parallel="false" uRef="class">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000796ff7bbb33560060ee9951c4f8242d987089c0c50af1d3a6ab2f92466788c33bfa42e66a347c4206d81a948be78598f82f386b898f40714662cb0134d02313a7e06d04944957cb9149a5069ebfcc65b58711afd15bfbe6f3144cf719a1d8c90833890d5ed1eac7e3b8a657a774a065ca04588c7743c47a41fe59e21cd7767a4" localRef="instance" location="sp.problem_size.Instance_SP/Instance_SP.hpe" multiple="false" name="Instance_SP" package="sp.problem_size" exposed="false">
+      <visualDescription h="30" w="50" x="111" y="389">
+        <color b="255" g="255" r="255"/>
+      </visualDescription>
+      <parameter formFieldId="class" varName="C"/>
+      <unitBounds parallel="false" uRef="instance">
+        <visualDescription h="10" w="10" x="5" y="2"/>
+      </unitBounds>
+    </innerComponent>
+    <supplyParameter cRef="class" varName="C"/>
+    <supplyParameter cRef="xdir" varName="DIR"/>
+    <supplyParameter cRef="instance" varName="I"/>
+    <supplyParameter cRef="method" varName="MTH"/>
+    <interface iRef="ISolverImpl" nArgs="4">
+      <slice isRef="forward">
+        <originRef cRef="forward" iRef="IForward"/>
+        <visualDescription h="10" w="10" x="29" y="41"/>
+      </slice>
+      <slice isRef="shift_backward">
+        <originRef cRef="shift_backward" iRef="IShift"/>
+        <visualDescription h="10" w="10" x="39" y="5"/>
+      </slice>
+      <slice isRef="shift_forward">
+        <originRef cRef="shift_forward" iRef="IShift"/>
+        <visualDescription h="10" w="10" x="67" y="65"/>
+      </slice>
+      <slice isRef="backward">
+        <originRef cRef="backward" iRef="IBackward"/>
+        <visualDescription h="10" w="10" x="66" y="1"/>
+      </slice>
+      <slice isRef="lhs">
+        <originRef cRef="lhs" iRef="ILHS"/>
+        <visualDescription h="10" w="10" x="38" y="27"/>
+      </slice>
+      <slice isRef="matvecproduct">
+        <originRef cRef="matvecproduct" iRef="IBlockDiagonalMatVecProduct"/>
+        <visualDescription h="10" w="10" x="65" y="16"/>
+      </slice>
+      <slice isRef="write_buffer_backward">
+        <originRef cRef="write_buffer_backward" iRef="IWriteBuffer"/>
+        <visualDescription h="10" w="10" x="10" y="63"/>
+      </slice>
+      <slice isRef="read_buffer_backward">
+        <originRef cRef="read_buffer_backward" iRef="IReadBuffer"/>
+        <visualDescription h="10" w="10" x="4" y="15"/>
+      </slice>
+      <slice isRef="read_buffer_forward">
+        <originRef cRef="read_buffer_forward" iRef="IReadBuffer"/>
+        <visualDescription h="10" w="10" x="62" y="84"/>
+      </slice>
+      <slice isRef="write_buffer_forward">
+        <originRef cRef="write_buffer_forward" iRef="IWriteBuffer"/>
+        <visualDescription h="10" w="10" x="27" y="52"/>
+      </slice>
+      <sources sourceType="C# Language" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using common.topology.Ring;&#xA;using adi.data.ProblemDefinition;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.Buffer;&#xA;using sp.solve.Forward;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.Axis;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.interactionpattern.Shift;&#xA;using common.direction.Forward;&#xA;using common.direction.Backward;&#xA;using sp.solve.LHS;&#xA;using environment.MPIDirect;&#xA;using common.problem_size.Instance;&#xA;using sp.solve.Backward;&#xA;using sp.solve.Solver;&#xA;using sp.solve.shift.ReadBuffer;&#xA;using sp.solve.shift.WriteBuffer;&#xA;&#xA;namespace impl.sp.solve.SolverImpl { &#xA;&#xA;public abstract class BaseISolverImpl&lt;I, C, MTH, DIR>: Computation, BaseISPSolver&lt;I, C, MTH, DIR>&#xA;where I:IInstance_SP&lt;C>&#xA;where C:IClass&#xA;where MTH:ISPMethod&#xA;where DIR:IAxis&#xA;{&#xA;&#x9;&#x9;&#xA;#region data&#xA;&#x9;&#x9;&#xA;protected int[,] start, end, slice, cell_size;&#xA;protected double[,,,,] lhs, rhs;&#xA;protected int ncells;&#xA;&#x9;&#x9;&#xA;override public void initialize()&#xA;{&#xA;&#x9;start = Cells_info.cell_start;&#xA;&#x9;end = Cells_info.cell_end;&#xA;&#x9;slice = Cells_info.cell_slice;&#xA;&#x9;cell_size = Cells_info.cell_size;&#xA;&#x9;&#xA;&#x9;ncells = Problem_data.NCells;&#xA;&#x9;lhs = Problem_data.Field_lhs;&#xA;&#x9;rhs = Problem_data.Field_rhs;&#xA;}&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells_info = null;&#xA;&#xA;public ICells Cells_info {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells_info == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells_info = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells_info;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICell topology = null;&#xA;&#xA;public ICell Topology {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.topology == null)&#xA;&#x9;&#x9;&#x9;this.topology = (ICell) Services.getPort(&quot;topology&quot;);&#xA;&#x9;&#x9;return this.topology;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem_data = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem_data {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem_data == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem_data = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem_data;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBuffer output_buffer_forward = null;&#xA;&#xA;protected IBuffer Output_buffer_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.output_buffer_forward == null)&#xA;&#x9;&#x9;&#x9;this.output_buffer_forward = (IBuffer) Services.getPort(&quot;output_buffer_forward&quot;);&#xA;&#x9;&#x9;return this.output_buffer_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBuffer input_buffer_forward = null;&#xA;&#xA;protected IBuffer Input_buffer_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.input_buffer_forward == null)&#xA;&#x9;&#x9;&#x9;this.input_buffer_forward = (IBuffer) Services.getPort(&quot;input_buffer_forward&quot;);&#xA;&#x9;&#x9;return this.input_buffer_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBuffer output_buffer_backward = null;&#xA;&#xA;protected IBuffer Output_buffer_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.output_buffer_backward == null)&#xA;&#x9;&#x9;&#x9;this.output_buffer_backward = (IBuffer) Services.getPort(&quot;output_buffer_backward&quot;);&#xA;&#x9;&#x9;return this.output_buffer_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBuffer input_buffer_backward = null;&#xA;&#xA;protected IBuffer Input_buffer_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.input_buffer_backward == null)&#xA;&#x9;&#x9;&#x9;this.input_buffer_backward = (IBuffer) Services.getPort(&quot;input_buffer_backward&quot;);&#xA;&#x9;&#x9;return this.input_buffer_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IForward&lt;I, C, MTH, DIR> forward = null;&#xA;&#xA;protected IForward&lt;I, C, MTH, DIR> Forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.forward == null)&#xA;&#x9;&#x9;&#x9;this.forward = (IForward&lt;I, C, MTH, DIR>) Services.getPort(&quot;forward&quot;);&#xA;&#x9;&#x9;return this.forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBlockDiagonalMatVecProduct&lt;I, C, DIR, MTH> matvecproduct = null;&#xA;&#xA;protected IBlockDiagonalMatVecProduct&lt;I, C, DIR, MTH> Matvecproduct {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.matvecproduct == null)&#xA;&#x9;&#x9;&#x9;this.matvecproduct = (IBlockDiagonalMatVecProduct&lt;I, C, DIR, MTH>) Services.getPort(&quot;matvecproduct&quot;);&#xA;&#x9;&#x9;return this.matvecproduct;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IShift&lt;IForwardDirection> shift_forward = null;&#xA;&#xA;protected IShift&lt;IForwardDirection> Shift_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.shift_forward == null)&#xA;&#x9;&#x9;&#x9;this.shift_forward = (IShift&lt;IForwardDirection>) Services.getPort(&quot;shift_forward&quot;);&#xA;&#x9;&#x9;return this.shift_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IShift&lt;IBackwardDirection> shift_backward = null;&#xA;&#xA;protected IShift&lt;IBackwardDirection> Shift_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.shift_backward == null)&#xA;&#x9;&#x9;&#x9;this.shift_backward = (IShift&lt;IBackwardDirection>) Services.getPort(&quot;shift_backward&quot;);&#xA;&#x9;&#x9;return this.shift_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ILHS&lt;I, C, DIR, MTH> lhs_ = null;&#xA;&#xA;protected ILHS&lt;I, C, DIR, MTH> Lhs {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.lhs_ == null)&#xA;&#x9;&#x9;&#x9;this.lhs_ = (ILHS&lt;I, C, DIR, MTH>) Services.getPort(&quot;lhs&quot;);&#xA;&#x9;&#x9;return this.lhs_;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IMPIDirect mpi = null;&#xA;&#xA;public IMPIDirect Mpi {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.mpi == null)&#xA;&#x9;&#x9;&#x9;this.mpi = (IMPIDirect) Services.getPort(&quot;mpi&quot;);&#xA;&#x9;&#x9;return this.mpi;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;private IBackward&lt;I, C, DIR, MTH> backward = null;&#xA;&#xA;protected IBackward&lt;I, C, DIR, MTH> Backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.backward == null)&#xA;&#x9;&#x9;&#x9;this.backward = (IBackward&lt;I, C, DIR, MTH>) Services.getPort(&quot;backward&quot;);&#xA;&#x9;&#x9;return this.backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IWriteBuffer&lt;I, C, IBackwardDirection, DIR> write_buffer_backward = null;&#xA;&#xA;protected IWriteBuffer&lt;I, C, IBackwardDirection, DIR> Write_buffer_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.write_buffer_backward == null)&#xA;&#x9;&#x9;&#x9;this.write_buffer_backward = (IWriteBuffer&lt;I, C, IBackwardDirection, DIR>) Services.getPort(&quot;write_buffer_backward&quot;);&#xA;&#x9;&#x9;return this.write_buffer_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IReadBuffer&lt;I, C, IBackwardDirection, DIR> read_buffer_backward = null;&#xA;&#xA;protected IReadBuffer&lt;I, C, IBackwardDirection, DIR> Read_buffer_backward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.read_buffer_backward == null)&#xA;&#x9;&#x9;&#x9;this.read_buffer_backward = (IReadBuffer&lt;I, C, IBackwardDirection, DIR>) Services.getPort(&quot;read_buffer_backward&quot;);&#xA;&#x9;&#x9;return this.read_buffer_backward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IWriteBuffer&lt;I, C, IForwardDirection, DIR> write_buffer_forward = null;&#xA;&#xA;protected IWriteBuffer&lt;I, C, IForwardDirection, DIR> Write_buffer_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.write_buffer_forward == null)&#xA;&#x9;&#x9;&#x9;this.write_buffer_forward = (IWriteBuffer&lt;I, C, IForwardDirection, DIR>) Services.getPort(&quot;write_buffer_forward&quot;);&#xA;&#x9;&#x9;return this.write_buffer_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IReadBuffer&lt;I, C, IForwardDirection, DIR> read_buffer_forward = null;&#xA;&#xA;protected IReadBuffer&lt;I, C, IForwardDirection, DIR> Read_buffer_forward {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.read_buffer_forward == null)&#xA;&#x9;&#x9;&#x9;this.read_buffer_forward = (IReadBuffer&lt;I, C, IForwardDirection, DIR>) Services.getPort(&quot;read_buffer_forward&quot;);&#xA;&#x9;&#x9;return this.read_buffer_forward;&#xA;&#x9;}&#xA;}&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseISolverImpl.cs" srcType="base" uri="impl.sp.solve.SolverImpl/bin/1.0.0.0/BaseISolverImpl.dll" versionId="1.0.0.0">
+          <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
+          <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>common.Buffer/bin/1.0.0.0/IBuffer.dll</dependency>
+          <dependency>common.interactionpattern.Shift/bin/1.0.0.0/IShift.dll</dependency>
+          <dependency>common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll</dependency>
+          <dependency>sp.solve.shift.WriteBuffer/bin/1.0.0.0/IWriteBuffer.dll</dependency>
+          <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
+          <dependency>sp.solve.Forward/bin/1.0.0.0/IForward.dll</dependency>
+          <dependency>sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll</dependency>
+          <dependency>sp.solve.LHS/bin/1.0.0.0/ILHS.dll</dependency>
+          <dependency>environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll</dependency>
+          <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
+          <dependency>sp.solve.Backward/bin/1.0.0.0/IBackward.dll</dependency>
+          <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll</dependency>
+          <dependency>common.topology.Ring/bin/1.0.0.0/ICell.dll</dependency>
+          <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/IBlockDiagonalMatVecProduct.dll</dependency>
+          <dependency>common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll</dependency>
+          <dependency>sp.solve.shift.ReadBuffer/bin/1.0.0.0/IReadBuffer.dll</dependency>
+          <dependency>common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll</dependency>
+          <dependency>sp.solve.Solver/bin/1.0.0.0/BaseISPSolver.dll</dependency>
+        </file>
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.Axis;&#xA;using sp.solve.Solver;&#xA;&#xA;namespace impl.sp.solve.SolverImpl { &#xA;&#x9;&#xA;&#x9;public class ISolverImpl&lt;I, C, MTH, DIR> : BaseISolverImpl&lt;I, C, MTH, DIR>, ISPSolver&lt;I, C, MTH, DIR>&#xA;&#x9;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;where MTH:ISPMethod&#xA;&#x9;&#x9;where DIR:IAxis&#xA;&#x9;{&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{&#x9;&#x9; &#xA;//&#x9;&#x9;    Console.WriteLine(&quot;{0}: sucessor = {1}, predecessor = {2}&quot;,this.Rank, Topology.successor, Topology.predecessor);&#xA;&#x9;&#x9;&#x9;&#xA;            //---------------------------------------------------------------------&#xA;            //                          FORWARD ELIMINATION  &#xA;            //---------------------------------------------------------------------&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Forward.begin();&#xA;&#x9;&#x9;&#x9;Lhs.begin ();&#xA;&#x9;&#x9;&#x9;Read_buffer_forward.begin();&#xA;&#x9;&#x9;&#x9;Write_buffer_forward.begin();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;//Console.WriteLine(&quot;{0}: FIRST LHS !!!!&quot;, this.Rank);&#xA;&#x9;&#x9;&#x9;Lhs.go();       // lhs.stage = 0&#xA;&#x9;&#x9;&#x9;Lhs.advance (); // lhs.stage = 1&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Forward.go();       // lhs.stage=0&#xA;&#x9;&#x9;&#x9;Forward.advance();  // lhs.stage = 1&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;int k=0;&#xA;&#x9;&#x9;&#x9;while (!Forward.finished())&#xA;&#x9;&#x9;    {&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;//Console.WriteLine(&quot;{0}: BEGIN LOOP FORWARD {1}&quot;, this.Rank, k);&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Write_buffer_forward.go();         // write_buffer_foward.stage = 0&#xA;&#x9;&#x9;&#x9;&#x9;Write_buffer_forward.advance();    // write_buffer_forward.stage = 1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Read_buffer_forward.advance ();   // read_buffer_forward.stage = 1&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Shift_forward.initiate_send();    &#xA;&#x9;&#x9;&#x9;&#x9;Shift_forward.initiate_recv();&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Lhs.go();&#x9;&#x9;&#x9;&#x9;&#x9;      // lhs.stage = 1&#xA;&#x9;&#x9;&#x9;&#x9;Lhs.advance ();&#x9;&#x9;              // lhs.stage = 2&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Shift_forward.go();&#x9;&#x9;            &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Read_buffer_forward.go ();&#x9;&#x9;  // read_buffer_forward.stage = 1&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Forward.go();                     // forward.stage = 1&#xA;&#x9;&#x9;&#x9;&#x9;Forward.advance();                // forward.stage = 2&#xA;&#x9;&#x9;&#x9;&#x9;//Console.WriteLine(&quot;{0}: END LOOP FORWARD {1}&quot;, this.Rank, k++);&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;    } // cells loop&#xA;&#x9;&#x9;    &#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    //---------------------------------------------------------------------&#xA;&#x9;&#x9;    //                         BACKWARD SUBSTITUTION &#xA;&#x9;&#x9;    //---------------------------------------------------------------------&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Backward.begin();&#xA;&#x9;&#x9;&#x9;Matvecproduct.begin();&#xA;&#x9;&#x9;&#x9;Read_buffer_backward.begin();&#xA;&#x9;&#x9;&#x9;Write_buffer_backward.begin();&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;Backward.init();        // backward.stage = 1&#xA;&#x9;&#x9;&#x9;Backward.go();          // backward.stage = 1&#xA;&#x9;&#x9;&#x9;Backward.advance();     // backward.stage = 0&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;k=0;&#xA;&#x9;&#x9;&#x9;while (!Backward.finished())&#xA;&#x9;&#x9;    {&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;//Console.WriteLine(&quot;{0}: BEGIN LOOP BACKWARD {1}&quot;, this.Rank, k);&#xA;&#x9;&#x9;&#x9;&#x9;Write_buffer_backward.go();&#x9;&#x9;  // write_buffer_backward.stage = 1&#xA;&#x9;&#x9;&#x9;&#x9;Write_buffer_backward.advance();  // write_buffer_backward.stage = 0&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Read_buffer_backward.advance();   // read_buffer_backward = 0&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Shift_backward.initiate_send();   &#xA;&#x9;&#x9;&#x9;&#x9;Shift_backward.initiate_recv();&#xA;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Matvecproduct.go();               // matvecproduct.stage = 1&#xA;&#x9;&#x9;&#x9;    Matvecproduct.advance();          // matvecproduct.stage = 0&#xA;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Shift_backward.go();&#xA;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Read_buffer_backward.go();        // read_buffer_backward = 0&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;Backward.go();                    // backward.stage = 0&#xA;&#x9;&#x9;        Backward.advance ();              // backward.stage = -1&#xA;&#x9;&#x9;&#x9;&#x9;//Console.WriteLine(&quot;{0}: END LOOP BACKWARD {1}&quot;, this.Rank, k++);&#xA;&#x9;&#x9;    }&#x9;&#xA;&#x9;        //---------------------------------------------------------------------&#xA;&#x9;        //         If this was the last stage, do the block-diagonal inversion          &#xA;&#x9;        //---------------------------------------------------------------------&#xA;        //    Matvecproduct.advance();&#xA;&#x9;&#x9;    Matvecproduct.go(); // matvecproduct.stage = 0&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;}  &#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="ISolverImpl.cs" srcType="user" uri="impl.sp.solve.SolverImpl/bin/1.0.0.0/ISolverImpl.dll" versionId="1.0.0.0">
+          <dependency>sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll</dependency>
+          <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
+          <dependency>sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll</dependency>
+          <dependency>common.axis.Axis/bin/1.0.0.0/IAxis.dll</dependency>
+          <dependency>%WORKSPACE/impl.sp.solve.SolverImpl/bin/1.0.0.0/BaseISolverImpl.dll</dependency>
+          <dependency>sp.solve.Solver/bin/1.0.0.0/ISPSolver.dll</dependency>
+        </file>
+      </sources>
+      <visualDescription h="90" w="147" x="48" y="50">
+        <color b="0" g="0" r="255"/>
+      </visualDescription>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="forward"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="13" y="10"/>
+        <slice pRef="problem_data" sRef="forward"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="shift_backward"/>
+      </port>
+      <port name="input_buffer_backward">
+        <visualDescription h="10" w="10" x="116" y="81"/>
+        <slice pRef="input_buffer" sRef="shift_backward"/>
+      </port>
+      <port name="output_buffer_backward">
+        <visualDescription h="10" w="10" x="116" y="81"/>
+        <slice pRef="output_buffer" sRef="shift_backward"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="shift_backward"/>
+      </port>
+      <port name="output_buffer_forward">
+        <visualDescription h="10" w="10" x="116" y="81"/>
+        <slice pRef="output_buffer" sRef="shift_forward"/>
+      </port>
+      <port name="input_buffer_forward">
+        <visualDescription h="10" w="10" x="116" y="81"/>
+        <slice pRef="input_buffer" sRef="shift_forward"/>
+      </port>
+      <port name="topology">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="topology" sRef="shift_forward"/>
+      </port>
+      <port name="mpi">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="mpi" sRef="shift_forward"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="backward"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="13" y="10"/>
+        <slice pRef="problem_data" sRef="backward"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="lhs"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="13" y="10"/>
+        <slice pRef="problem_data" sRef="lhs"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="matvecproduct"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="13" y="10"/>
+        <slice pRef="problem_data" sRef="matvecproduct"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="write_buffer_backward"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="13" y="10"/>
+        <slice pRef="problem_data_2" sRef="write_buffer_backward"/>
+      </port>
+      <port name="output_buffer_backward">
+        <visualDescription h="10" w="10" x="116" y="81"/>
+        <slice pRef="buffer" sRef="write_buffer_backward"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="read_buffer_backward"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="13" y="10"/>
+        <slice pRef="problem_data_2" sRef="read_buffer_backward"/>
+      </port>
+      <port name="input_buffer_backward">
+        <visualDescription h="10" w="10" x="116" y="81"/>
+        <slice pRef="buffer" sRef="read_buffer_backward"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="read_buffer_forward"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="13" y="10"/>
+        <slice pRef="problem_data_2" sRef="read_buffer_forward"/>
+      </port>
+      <port name="input_buffer_forward">
+        <visualDescription h="10" w="10" x="116" y="81"/>
+        <slice pRef="buffer" sRef="read_buffer_forward"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="13" y="10"/>
+        <slice pRef="problem_data_2" sRef="write_buffer_forward"/>
+      </port>
+      <port name="output_buffer_forward">
+        <visualDescription h="10" w="10" x="116" y="81"/>
+        <slice pRef="buffer" sRef="write_buffer_forward"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="write_buffer_forward"/>
+      </port>
+      <parameter iname="IInstance_SP" order="0" parid="instance_type" uname="instance" varid="I"/>
+      <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
+      <parameter iname="ISPMethod" order="2" parid="method" uname="method" varid="MTH"/>
+      <parameter iname="IAxis" order="3" parid="axis" uname="axis" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
+    </interface>
+    <unit iRef="ISolverImpl" multiple="true" private="false" replica="0" uRef="solve" visibleInterface="true">
+      <super cRef="base" uRef="solve"/>
+      <visualDescription h="40" w="80" x="25" y="252"/>
+    </unit>
+  </componentInfo>
+</component:component>

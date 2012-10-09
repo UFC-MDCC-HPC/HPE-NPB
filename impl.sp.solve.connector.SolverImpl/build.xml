@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" basedir="/home/heron/hpe/heron/cache" default="all" name="SolverImpl">
+  <property name="nant.settings.currentframework" value="mono-2.0"/>
+  <property name="build" value="bin"/>
+  <property name="src" value="src"/>
+  <target name="SolverImpl-1.0.0.0">
+    <ifnot targetexists="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.SolverImpl/bin/1.0.0.0">
+      <mkdir dir="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.SolverImpl/bin/1.0.0.0"/>
+    </ifnot>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.SolverImpl/SolverImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.SolverImpl/bin/1.0.0.0/BaseISolverImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.SolverImpl/src/1.0.0.0/BaseISolverImpl.cs"/>
+      </sources>
+      <references>
+        <include name="adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll"/>
+        <include name="sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="common.Buffer/bin/1.0.0.0/IBuffer.dll"/>
+        <include name="common.interactionpattern.Shift/bin/1.0.0.0/IShift.dll"/>
+        <include name="common.direction.Backward/bin/1.0.0.0/IBackwardDirection.dll"/>
+        <include name="sp.solve.shift.WriteBuffer/bin/1.0.0.0/IWriteBuffer.dll"/>
+        <include name="common.axis.Axis/bin/1.0.0.0/IAxis.dll"/>
+        <include name="sp.solve.Forward/bin/1.0.0.0/IForward.dll"/>
+        <include name="sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll"/>
+        <include name="sp.solve.LHS/bin/1.0.0.0/ILHS.dll"/>
+        <include name="environment.MPIDirect/bin/1.0.0.0/IMPIDirect.dll"/>
+        <include name="common.problem_size.Instance/bin/1.0.0.0/IInstance.dll"/>
+        <include name="sp.solve.Backward/bin/1.0.0.0/IBackward.dll"/>
+        <include name="common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll"/>
+        <include name="common.topology.Ring/bin/1.0.0.0/ICell.dll"/>
+        <include name="sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/IBlockDiagonalMatVecProduct.dll"/>
+        <include name="common.direction.Forward/bin/1.0.0.0/IForwardDirection.dll"/>
+        <include name="sp.solve.shift.ReadBuffer/bin/1.0.0.0/IReadBuffer.dll"/>
+        <include name="common.solve.SolvingMethod/bin/1.0.0.0/ISolvingMethod.dll"/>
+        <include name="sp.solve.Solver/bin/1.0.0.0/BaseISPSolver.dll"/>
+        <include/>
+      </references>
+    </csc>
+    <csc debug="true" keyfile="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.SolverImpl/SolverImpl.snk" optimize="true" output="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.SolverImpl/bin/1.0.0.0/ISolverImpl.dll" target="library" unsafe="false">
+      <sources>
+        <include name="/home/heron/Dropbox/Alunos/Cenez/hpe/impl.sp.solve.SolverImpl/src/1.0.0.0/ISolverImpl.cs"/>
+      </sources>
+      <references>
+        <include name="sp.problem_size.Instance_SP/bin/1.0.0.0/IInstance_SP.dll"/>
+        <include name="common.problem_size.Class/bin/1.0.0.0/IClass.dll"/>
+        <include name="sp.solve.SPMethod/bin/1.0.0.0/ISPMethod.dll"/>
+        <include name="common.axis.Axis/bin/1.0.0.0/IAxis.dll"/>
+        <include name="/impl.sp.solve.SolverImpl/bin/1.0.0.0/BaseISolverImpl.dll"/>
+        <include name="sp.solve.Solver/bin/1.0.0.0/ISPSolver.dll"/>
+        <include/>
+      </references>
+    </csc>
+  </target>
+  <target depends="SolverImpl-1.0.0.0" name="all"/>
+</project>
