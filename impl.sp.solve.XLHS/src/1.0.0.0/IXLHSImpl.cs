@@ -24,9 +24,21 @@ namespace impl.sp.solve.XLHS {
 			
 		private int c;
 
-		public void enterStage(int stage)			
+		private int stage = -1;
+		
+		public void begin()
 		{
-            c = slice[stage, 0];
+			stage = 0;
+		}
+		
+		public bool finished()
+		{
+			return stage >= ncells;
+		}
+		
+		public void advance()			
+		{
+			stage++;            	
 		}
 			
 						
@@ -34,11 +46,16 @@ namespace impl.sp.solve.XLHS {
 		{ 
             double ru1;
             int i, j, k;
-
+			
+			c = slice[stage, 0];
+			
             int ksize = cell_size[c, 2] + 2;
             int jsize = cell_size[c, 1] + 2;
             int isize = cell_size[c, 0] + 2;
-
+			
+			if (this.Rank==1)
+			Console.WriteLine("c={0}, start[c,0]={1}, start[c,1]={2}, start[c,2]={3}", c, start[c,0], start[c,1], start[c,2]);
+			
             //---------------------------------------------------------------------
             //      treat only cell c             
             //---------------------------------------------------------------------
@@ -64,6 +81,27 @@ namespace impl.sp.solve.XLHS {
                         lhs[c, k, j, i, 2] = 1.0d + c2dttx1 * rhon[i];
                         lhs[c, k, j, i, 3] = dttx2 * cv[i + 1] - dttx1 * rhon[i + 1];
                         lhs[c, k, j, i, 4] = 0.0d;
+						
+					//	if (this.Rank == 1) 
+					//		Console.WriteLine("LHS - {0}, {1}, {2}, {3}, {4}, {5}",  lhs[c, k, j, i, 0], lhs[c, k, j, i, 1], lhs[c, k, j, i, 2], lhs[c, k, j, i, 3], lhs[c, k, j, i, 0], lhs[c, k, j, i, 4]);
+				/*		if (this.Rank == 1) 
+							Console.WriteLine("dttx2={0}, " +
+								"cv[{8}-1]={1}, " +
+								"dttx1={2}, " +
+								"rhon[{8}-1]={3}, " +
+								"c2dttx1={4}, " +
+								"rhon[{8}]={5}, " +
+								"cv[{8}+1]={6}, " +
+								"rhon[{8}+1]={7}",  
+							                  dttx2, 
+							                  cv[i-1], 
+							                  dttx1, 
+							                  rhon[i-1], 
+							                  c2dttx1, 
+							                  rhon[i], 
+							                  cv[i+1], 
+							                  rhon[i+1],
+							                  i);*/
                     }
                 }
             }
