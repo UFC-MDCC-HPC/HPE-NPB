@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000f7a13d06506eaffd16acb16c835b6741b678f020b81de90c57517cebe553126aa34983212715aa363a0e2a1746900b003d9cbdd65412444f41cc0532b13c8299a19ee616883ec6d8bcf58db4fab13176533521af9e50c10858fc644426796bcecc3a92a2be24c8aa4083cc1fc2e70f792f1dbbc1aa854bb8ce7ddb3069458aa8" isAbstract="false" kind="Computation" name="YUnpackSolveInfo" packagePath="impl.bt.solve">
     <baseType>
       <extensionType>
@@ -19,7 +19,7 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -27,11 +27,36 @@
           <visualDescription h="56" w="90" x="34" y="424">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cells">
+          <unitBounds parallel="false" uRef="cells">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="unpack_solve_info">
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000003d814b4345cf5faa20de75a01f91d78801c9aa8825d72a72adf61dc3f77f69a0d55eaceeec93bd9f288f7929dcceaf5a0bf739dbda828f06cacf8cc8d7396a243bfad7d225e794677392c2f895cd42470e6dbf22f2bf1ce97b9dae1ce70dc67096f97eec9cf234ee0a67fe88da930be655bc5fc0b8df79434c5cca0f2ba23c94" localRef="buffer" location="common.Buffer/Buffer.hpe" multiple="true" name="Buffer" package="common" exposed="true">
+          <visualDescription h="60" w="100" x="149" y="361">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="false" uRef="buffer">
+            <visualDescription h="20" w="20" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="00240000048000009400000006020000002400005253413100040000110000005b86e947f0c8ff58a018885f506e053867ca3d393fe1cd5e1ec93a51a743248bfe402f5db64de0f83584c891c751c5372e47815b771be3794141e0b3015a36de18d2d19e785500ed9eb00c8e374ef02a660d9fd575b434d9f216339ff6dd62602fa43a397fa0e12d50219bc7c0626be2392c1384f5b5211eecfe655385887eaa" localRef="iteration_control" location="adi.solve.IterationControl/IterationControl.hpe" multiple="false" name="IterationControl" package="adi.solve" exposed="true">
+          <visualDescription h="78" w="162" x="345" y="115">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <parameter formFieldId="direction" varName="X###1349629796500"/>
+          <unitBounds parallel="true" uRef="iteration_control">
+            <visualDescription h="20" w="20" x="71" y="51"/>
+          </unitBounds>
+        </port>
+        <port hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000c90ba34c6d313b818aac11c636e470def5f587fff1cf51da772f229fa1a9a60a2d5a56c7f27473991211353d5bc4c0cdec5acc9a2cb24392dc07e20dad02de68c4525f09d59756dcec506d34934b5a1206f3e86894dd3215f99456e36e93f8eee349bf44a29a3e56f37f4c5ffaeee5b79060a8c9e6d31144c2739d08fb07b8b8" localRef="lhsc" location="common.data.Field/Field.hpe" multiple="false" name="Field" package="common.data" exposed="true">
+          <visualDescription h="60" w="100" x="21" y="271">
+            <color b="255" g="255" r="255"/>
+          </visualDescription>
+          <unitBounds parallel="false" uRef="field">
+            <visualDescription h="20" w="20" x="5" y="2"/>
+          </unitBounds>
+        </port>
+        <unitBounds parallel="true" uRef="unpack_solve_info">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -47,7 +72,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -55,7 +80,7 @@
       <visualDescription h="30" w="50" x="317" y="240">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -63,7 +88,7 @@
       <visualDescription h="30" w="50" x="470" y="166">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -71,22 +96,34 @@
       <visualDescription h="46" w="104" x="488" y="224">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="y">
+      <unitBounds parallel="true" uRef="y">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
     <supplyParameter cRef="axis" varName="DIR"/>
-    <supplyParameter cRef="method" varName="MTH"/>
     <supplyParameter cRef="instance_type" varName="I"/>
+    <supplyParameter cRef="method" varName="MTH"/>
     <interface iRef="IYUnpackSolveInfo" nArgs="4">
-      <slice isRef="problem">
-        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
-        <visualDescription h="10" w="10" x="23" y="21"/>
+      <slice isRef="buffer">
+        <originRef cRef="buffer" iRef="IBuffer"/>
+        <visualDescription h="10" w="10" x="61" y="19"/>
       </slice>
-      <slice isRef="cells">
+      <slice isRef="iteration_control">
+        <originRef cRef="iteration_control" iRef="IIterationControl"/>
+        <visualDescription h="10" w="10" x="85" y="4"/>
+      </slice>
+      <slice isRef="lhsc">
+        <originRef cRef="lhsc" iRef="IField"/>
+        <visualDescription h="10" w="10" x="2" y="25"/>
+      </slice>
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="109" y="22"/>
+      </slice>
+      <slice isRef="problem_data">
+        <originRef cRef="problem_data" iRef="IProblemDefinition"/>
+        <visualDescription h="10" w="10" x="23" y="21"/>
       </slice>
       <slice isRef="axis">
         <originRef cRef="axis" iRef="IAxis"/>
@@ -97,7 +134,7 @@
         <visualDescription h="10" w="10" x="131" y="27"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using bt.problem_size.Instance_BT;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using common.axis.YAxis;&#xA;using bt.solve.BTMethod;&#xA;using bt.solve.UnpackSolveInfo;&#xA;&#xA;namespace impl.bt.solve.YUnpackSolveInfo { &#xA;&#xA;public abstract class BaseIYUnpackSolveInfo&lt;I, C, DIR, MTH>: Computation, BaseIUnpackSolveInfo&lt;I, C, DIR, MTH>&#xA;where I:IInstance_BT&lt;C>&#xA;where C:IClass&#xA;where DIR:IY&#xA;where MTH:IBTMethod&#xA;{&#xA;#region data&#xA;&#x9;protected double[,,,,] rhs;&#xA;&#x9;protected int KMAX;&#xA;&#x9;protected int IMAX;&#xA;&#x9;&#xA;&#x9;override public void initialize(){&#xA;&#x9;&#x9;rhs = Problem.Field_rhs;&#xA;&#x9;&#x9;KMAX = Problem.KMAX;&#xA;&#x9;&#x9;IMAX = Problem.IMAX;&#xA;&#x9;}&#xA;#endregion&#xA;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null)&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR axis = default(DIR);&#xA;&#xA;protected DIR Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (DIR) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIYUnpackSolveInfo.cs" srcType="base" uri="impl.bt.solve.YUnpackSolveInfo/bin/1.0.0.0/BaseIYUnpackSolveInfo.dll" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using bt.problem_size.Instance_BT;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using common.axis.YAxis;&#xA;using bt.solve.BTMethod;&#xA;using bt.solve.UnpackSolveInfo;&#xA;using common.Buffer;&#xA;using adi.solve.IterationControl;&#xA;using common.direction.Forward;&#xA;using common.data.Field;&#xA;&#xA;namespace impl.bt.solve.YUnpackSolveInfo { &#xA;&#xA;public abstract class BaseIYUnpackSolveInfo&lt;I, C, DIR, MTH>: Computation, BaseIUnpackSolveInfo&lt;I, C, DIR, MTH>&#xA;where I:IInstance_BT&lt;C>&#xA;where C:IClass&#xA;where DIR:IY&#xA;where MTH:IBTMethod&#xA;{&#xA;#region data&#xA;&#x9;protected double[,,,,] rhs;&#xA;&#x9;protected int[,] slice;&#xA;&#x9;protected int KMAX;&#xA;&#x9;protected int IMAX;&#xA;&#x9;protected double[,,,,,] lhsc;&#xA;&#x9;protected double[] out_buffer_y;&#xA;&#x9;&#xA;&#x9;override public void initialize()&#xA;&#x9;{&#xA;&#x9;&#x9;rhs = Problem.Field_rhs;&#xA;&#x9;&#x9;KMAX = Problem.KMAX;&#xA;&#x9;&#x9;IMAX = Problem.IMAX;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;slice = Cells.cell_slice;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;int MAX_CELL_DIM = Problem.MAX_CELL_DIM;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;int buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);&#xA;&#x9;&#x9;Buffer.Array = new double[buffer_size]; &#xA;&#x9;&#x9;this.out_buffer_y = Buffer.Array;&#xA;&#x9;}&#xA;#endregion&#xA;&#xA;private IField lhsc_ = null;&#xA;&#xA;protected IField Lhsc {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (lhsc_ == null) &#xA;&#x9;&#x9;&#x9;lhsc_ = (IField) Services.getPort(&quot;lhsc&quot;);&#xA;&#x9;&#x9;return lhsc_;&#xA;&#x9;}&#xA;}&#xA;&#x9;&#x9;&#xA;private IIterationControl&lt;IForwardDirection> iteration_control = null;&#xA;&#xA;public IIterationControl&lt;IForwardDirection> Iteration_control {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.iteration_control == null)&#xA;&#x9;&#x9;&#x9;this.iteration_control = (IIterationControl&lt;IForwardDirection>) Services.getPort(&quot;iteration_control&quot;);&#xA;&#x9;&#x9;return this.iteration_control;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IBuffer buffer = null;&#xA;&#xA;public IBuffer Buffer {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.buffer == null)&#xA;&#x9;&#x9;&#x9;this.buffer = (IBuffer) Services.getPort(&quot;buffer&quot;);&#xA;&#x9;&#x9;return this.buffer;&#xA;&#x9;}&#xA;}&#xA;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null)&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I, C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I, C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I, C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR axis = default(DIR);&#xA;&#xA;protected DIR Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (DIR) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseIYUnpackSolveInfo.cs" srcType="base" uri="impl.bt.solve.YUnpackSolveInfo/bin/1.0.0.0/BaseIYUnpackSolveInfo.dll" versionId="1.0.0.0">
           <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll</dependency>
           <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
           <dependency>bt.problem_size.Instance_BT/bin/1.0.0.0/IInstance_BT.dll</dependency>
@@ -108,7 +145,7 @@
           <dependency>bt.solve.BTMethod/bin/1.0.0.0/IBTMethod.dll</dependency>
           <dependency>bt.solve.UnpackSolveInfo/bin/1.0.0.0/BaseIUnpackSolveInfo.dll</dependency>
         </file>
-        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using bt.problem_size.Instance_BT;&#xA;using common.problem_size.Class;&#xA;using common.axis.YAxis;&#xA;using bt.solve.BTMethod;&#xA;using bt.solve.UnpackSolveInfo;&#xA;&#xA;namespace impl.bt.solve.YUnpackSolveInfo &#xA;{ &#xA;&#x9;public class IYUnpackSolveInfo&lt;I, C, DIR, MTH> : BaseIYUnpackSolveInfo&lt;I, C, DIR, MTH>, IUnpackSolveInfo&lt;I, C, DIR, MTH>&#xA;&#x9;&#x9;where I:IInstance_BT&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;where DIR:IY&#xA;&#x9;&#x9;where MTH:IBTMethod &#xA;&#x9;{&#xA;&#x9;&#x9;private double[,,,,,] lhsc;&#xA;&#x9;&#x9;private double[] out_buffer_y;&#xA;&#x9;&#x9;private int c;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void setParameters(double[,,,,,] lhsc, double[] out_buffer_y, int c) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.lhsc = lhsc;&#xA;&#x9;&#x9;&#x9;this.out_buffer_y = out_buffer_y;&#xA;&#x9;&#x9;&#x9;this.c = c;&#xA;&#x9;&#x9;}&#xA;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{&#xA;            int ptr = 0, jstart = 2;&#xA;            for(int k = 0; k &lt;= KMAX - 1; k++) &#xA;            {&#xA;                for(int i = 0; i &lt;= IMAX - 1; i++) &#xA;                {&#xA;                    for(int m = 1; m &lt;= 5; m++) &#xA;                    {&#xA;                        for(int n = 0; n &lt; 5; n++) &#xA;                        {&#xA;                            lhsc[c, k+2, jstart-1, i+2, n, m-1] = out_buffer_y[ptr + n];&#xA;                        }&#xA;                        ptr = ptr + 5;&#xA;                    }&#xA;                    for(int n = 0; n &lt; 5; n++) &#xA;                    {&#xA;                        rhs[c, k+2, jstart-1, i+2, n] = out_buffer_y[ptr + n];&#xA;                    }&#xA;                    ptr = ptr + 5;&#xA;                }&#xA;            }&#xA;            &#xA;            return 0;   &#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="IYUnpackSolveInfo.cs" srcType="user" uri="impl.bt.solve.YUnpackSolveInfo/bin/1.0.0.0/IYUnpackSolveInfo.dll" versionId="1.0.0.0">
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using bt.problem_size.Instance_BT;&#xA;using common.problem_size.Class;&#xA;using common.axis.YAxis;&#xA;using bt.solve.BTMethod;&#xA;using bt.solve.UnpackSolveInfo;&#xA;&#xA;namespace impl.bt.solve.YUnpackSolveInfo &#xA;{ &#xA;&#x9;public class IYUnpackSolveInfo&lt;I, C, DIR, MTH> : BaseIYUnpackSolveInfo&lt;I, C, DIR, MTH>, IUnpackSolveInfo&lt;I, C, DIR, MTH>&#xA;&#x9;&#x9;where I:IInstance_BT&lt;C>&#xA;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;where DIR:IY&#xA;&#x9;&#x9;where MTH:IBTMethod &#xA;&#x9;{&#xA;&#x9;&#x9;private int c;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go()   &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;lhsc = Lhsc.Field6;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;int stage = this.Iteration_control.getCurrentStage();&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;c = slice[stage,1];&#xA;&#x9;&#x9;&#x9;&#xA;            int ptr = 0, jstart = 2;&#xA;            for(int k = 0; k &lt;= KMAX - 1; k++) &#xA;            {&#xA;                for(int i = 0; i &lt;= IMAX - 1; i++) &#xA;                {&#xA;                    for(int m = 1; m &lt;= 5; m++) &#xA;                    {&#xA;                        for(int n = 0; n &lt; 5; n++) &#xA;                        {&#xA;                            lhsc[c, k+2, jstart-1, i+2, n, m-1] = out_buffer_y[ptr + n];&#xA;                        }&#xA;                        ptr = ptr + 5;&#xA;                    }&#xA;                    for(int n = 0; n &lt; 5; n++) &#xA;                    {&#xA;                        rhs[c, k+2, jstart-1, i+2, n] = out_buffer_y[ptr + n];&#xA;                    }&#xA;                    ptr = ptr + 5;&#xA;                }&#xA;            }&#xA;            &#xA;            return 0;   &#xA;&#x9;&#x9;}&#xA;&#x9;}&#xA;}&#xA;" fileType="library" name="IYUnpackSolveInfo.cs" srcType="user" uri="impl.bt.solve.YUnpackSolveInfo/bin/1.0.0.0/IYUnpackSolveInfo.dll" versionId="1.0.0.0">
           <dependency>bt.problem_size.Instance_BT/bin/1.0.0.0/IInstance_BT.dll</dependency>
           <dependency>common.problem_size.Class/bin/1.0.0.0/IClass.dll</dependency>
           <dependency>common.axis.YAxis/bin/1.0.0.0/IY.dll</dependency>
@@ -120,18 +157,33 @@
       <visualDescription h="40" w="149" x="154" y="101">
         <color b="255" g="128" r="128"/>
       </visualDescription>
-      <port name="problem">
+      <port name="buffer">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="buffer" sRef="buffer"/>
       </port>
-      <port name="cells">
+      <port name="iteration_control">
+        <visualDescription h="10" w="10" x="40" y="23"/>
+        <slice pRef="iteration_control" sRef="iteration_control"/>
+      </port>
+      <port name="lhsc">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="lhsc" sRef="lhsc"/>
+      </port>
+      <port name="cells_info">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
+      </port>
+      <port name="problem_data">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance_BT" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IY" order="2" parid="axis" uname="y" varid="DIR"/>
       <parameter iname="IBTMethod" order="3" parid="method" uname="method" varid="MTH"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IYUnpackSolveInfo" multiple="true" private="false" replica="0" uRef="unpack_solve_info" visibleInterface="true">
       <super cRef="base" uRef="unpack_solve_info"/>

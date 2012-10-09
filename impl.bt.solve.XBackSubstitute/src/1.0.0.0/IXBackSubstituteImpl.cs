@@ -17,23 +17,20 @@ where C:IClass
 where DIR:IX
 where MTH:IBTMethod
 {
-	private double[,,,,,] lhsc;
-	private double[,,,] backsub_info;
-	private int first, last, c;
+	private int last, c;
 	
-	public void setParameters(double[,,,,,] lhsc, double[,,,] backsub_info, int first, int last, int c)
-	{
-	   this.lhsc = lhsc;
-	   this.backsub_info = backsub_info;
-	   this.first = first;
-	   this.last = last;
-	   this.c = c;
-	}
-		
 	public override int go()   
 	{ 
+		lhsc = Lhsc.Field6;
+		backsub_info = Backsub_info.Field;
+			
 		int i, j, k;
-		int m, n, isize, jsize, ksize, istart;
+		int m, n, isize, jsize, ksize, istart, stage;
+			
+		stage = this.Iteration_control.getCurrentStage();
+		last = this.Iteration_control.is_last_stage() ? 1 : 0;
+			
+		c = slice[stage,0];		
 		
 		istart = 2;
 		isize = cell_size[c, 0] + 1;
@@ -53,7 +50,7 @@ where MTH:IBTMethod
 		            {
 		                for(n = 0; n < 5; n++) 
 		                {//rhs[m,isize,j,k,c] = rhs[m,isize,j,k,c] - lhsc[m,n,isize,j,k,c]*backsub_info[n,j,k,c]
-		                    rhs[c, k, j, isize, m] = rhs[c, k, j, isize, m] - lhsc[c, k, j, isize, n, m] * backsub_info[c, k, j, n];
+		                    rhs[c, k, j, isize, m] = rhs[c, k, j, isize, m] - lhsc[c, k, j, isize, n, m] * backsub_info[c, k, j, n, 0];
 		                }
 		            }
 		        }

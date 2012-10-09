@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000471aeb7eff626930c12c80bf94fb4eaa7efa2756c13ff6e7dd7be9fe03a1f8b69370af6a0372746fca61bfc87362dcc9f550fc67cdaf15d39dc5c3837a98a23006da59437520106054e275eff1b05a5404ae11790352bc753be33da588f9a2cfc15b35a2669ec1ed99a386158a9a7fe2986dd43b6d182dfde0859527865f5e88" isAbstract="false" kind="Computation" name="BinvRhsImpl" packagePath="impl.bt.solve">
     <baseType>
       <extensionType>
@@ -12,7 +12,7 @@
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <parameter formFieldId="method" varName="MTH"/>
-        <unitBounds uRef="binvrhs">
+        <unitBounds parallel="true" uRef="binvrhs">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -28,7 +28,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -36,7 +36,7 @@
       <visualDescription h="30" w="50" x="491" y="232">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -44,13 +44,13 @@
       <visualDescription h="30" w="50" x="242" y="121">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
-    <supplyParameter cRef="method" varName="MTH"/>
     <supplyParameter cRef="instance_type" varName="I"/>
+    <supplyParameter cRef="method" varName="MTH"/>
     <interface iRef="IBinvRhsImpl" nArgs="1">
       <slice isRef="method">
         <originRef cRef="method" iRef="ISolvingMethod"/>
@@ -78,6 +78,9 @@
         <color b="255" g="128" r="255"/>
       </visualDescription>
       <parameter iname="IBTMethod" order="0" parid="method" uname="method" varid="MTH"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IBinvRhsImpl" multiple="true" private="false" replica="0" uRef="binvrhs" visibleInterface="true">
       <super cRef="base" uRef="binvrhs"/>

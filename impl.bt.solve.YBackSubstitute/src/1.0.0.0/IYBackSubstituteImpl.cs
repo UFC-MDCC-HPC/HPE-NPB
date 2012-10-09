@@ -16,21 +16,18 @@ public class IYBackSubstituteImpl<I, C, DIR, MTH> : BaseIYBackSubstituteImpl<I, 
 	where DIR:IY
 	where MTH:IBTMethod
 {
-	private double[,,,,,] lhsc;
-	private double[,,,] backsub_info;
-	private int first, last, c;
+	private int last, c;
 	
-	public void setParameters(double[,,,,,] lhsc, double[,,,] backsub_info, int first, int last, int c)
-	{
-	   this.lhsc = lhsc;
-	   this.backsub_info = backsub_info;
-	   this.first = first;
-	   this.last = last;
-	   this.c = c;
-	}
-		
 	public override int go()  
 	{ 
+		lhsc = Lhsc.Field6;
+		backsub_info = Backsub_info.Field;		
+			
+		int stage = this.Iteration_control.getCurrentStage();
+		last = this.Iteration_control.is_last_stage() ? 1 : 0;
+			
+		c = slice[stage,1];		
+			
 		int i, k;
 		int m, n, j, jsize, isize, ksize, jstart;
 		
@@ -52,7 +49,7 @@ public class IYBackSubstituteImpl<I, C, DIR, MTH> : BaseIYBackSubstituteImpl<I, 
 		            {
 		                for(n = 0; n < 5; n++) 
 		                { //rhs[m,i,jsize,k,c]=rhs[m,i,jsize,k,c]-lhsc[m,n,i,jsize,k,c]*backsub_info[n,i,k,c];
-		                    rhs[c, k, jsize, i, m] = rhs[c, k, jsize, i, m] - lhsc[c, k, jsize, i, n, m] * backsub_info[c, k, i, n];
+		                    rhs[c, k, jsize, i, m] = rhs[c, k, jsize, i, m] - lhsc[c, k, jsize, i, n, m] * backsub_info[c, k, i, n, 0];
 		                }
 		            }
 		        }

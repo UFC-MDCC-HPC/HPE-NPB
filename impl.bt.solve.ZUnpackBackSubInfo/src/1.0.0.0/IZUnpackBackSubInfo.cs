@@ -15,19 +15,16 @@ namespace impl.bt.solve.ZUnpackBackSubInfo {
 	where DIR:IZ
 	where MTH:IBTMethod {
 	   
-		private double[,,,] backsub_info;
-		private double[] out_buffer_z;
 		private int c;
-
-		public void setParameters(double[,,,] backsub_info, double[] out_buffer_z, int c) 
-		{
-			this.backsub_info = backsub_info;
-			this.out_buffer_z = out_buffer_z;
-			this.c = c;
-		}
 		
-		public override int go() 
+		public override int go()   
 		{
+			backsub_info = Backsub_info.Field;
+			
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,2];
+			
             int ptr = 0;
             for(int j = 0; j <= JMAX - 1; j++) 
             {
@@ -35,7 +32,7 @@ namespace impl.bt.solve.ZUnpackBackSubInfo {
                 {
                     for(int n = 0; n < 5; n++) 
                     {
-                        backsub_info[c, j+2, i+2, n] = out_buffer_z[ptr + n];
+                        backsub_info[c, j+2, i+2, n, 0] = out_buffer_z[ptr + n];
                     }
                     ptr = ptr + 5;
                 }

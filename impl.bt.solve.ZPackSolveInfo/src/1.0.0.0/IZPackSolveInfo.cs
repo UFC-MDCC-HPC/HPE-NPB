@@ -16,18 +16,16 @@ namespace impl.bt.solve.ZPackSolveInfo
 		where DIR:IZ
 		where MTH:IBTMethod 
     {
-		private double[,,,,,] lhsc;
-		private double[] in_buffer_z;
 		private int c;
 		
-		public void setParameters(double[,,,,,] lhsc, double[] in_buffer_z, int c) {
-			this.lhsc = lhsc;
-			this.in_buffer_z = in_buffer_z;
-			this.c = c;
-		}
-		
-        public override int go() 
-        { 
+		public override int go()   
+		{
+			lhsc = Lhsc.Field6;
+			
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,2];
+			
             int ksize, ptr = 0;
             ksize = cell_size[c, 2] + 1;
             for(int j = 0; j <= JMAX - 1; j++) 

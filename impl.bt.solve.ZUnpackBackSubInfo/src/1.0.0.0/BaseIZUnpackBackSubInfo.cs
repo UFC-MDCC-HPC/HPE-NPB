@@ -12,6 +12,10 @@ using common.axis.Axis;
 using common.axis.ZAxis;
 using bt.solve.BTMethod;
 using bt.solve.UnpackBackSubInfo;
+using common.Buffer;
+using adi.solve.IterationControl;
+using common.direction.Backward;
+using common.data.Field;
 
 namespace impl.bt.solve.ZUnpackBackSubInfo { 
 
@@ -24,12 +28,53 @@ where MTH:IBTMethod
 #region data
 	protected int JMAX;
 	protected int IMAX;
+	protected int[,] slice;
+	protected double[,,,,] backsub_info;
+	protected double[] out_buffer_z;
 
-	override public void initialize(){
+	override public void initialize()
+	{
 		JMAX = Problem.JMAX;
 		IMAX = Problem.IMAX;
+			
+		slice = Cells.cell_slice;	
+			
+		int MAX_CELL_DIM = Problem.MAX_CELL_DIM;
+		int buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
+		Buffer.Array = new double[buffer_size];
+		out_buffer_z = Buffer.Array;
 	}
 #endregion
+
+private IField backsub_info_ = null;
+
+protected IField Backsub_info {
+	get {
+		if (backsub_info_ == null) 
+			backsub_info_ = (IField) Services.getPort("backsub_info");
+		return backsub_info_;
+	}
+}
+
+private IIterationControl<IBackwardDirection> iteration_control = null;
+
+public IIterationControl<IBackwardDirection> Iteration_control {
+	get {
+		if (this.iteration_control == null)
+			this.iteration_control = (IIterationControl<IBackwardDirection>) Services.getPort("iteration_control");
+		return this.iteration_control;
+	}
+}
+
+private IBuffer buffer = null;
+
+public IBuffer Buffer {
+	get {
+		if (this.buffer == null)
+			this.buffer = (IBuffer) Services.getPort("buffer");
+		return this.buffer;
+	}
+}
 
 private ICells cells = null;
 

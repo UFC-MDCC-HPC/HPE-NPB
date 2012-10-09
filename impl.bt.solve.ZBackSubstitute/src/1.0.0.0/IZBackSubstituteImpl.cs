@@ -16,21 +16,19 @@ namespace impl.bt.solve.ZBackSubstitute
 		where DIR:IZ
 		where MTH:IBTMethod
 	{
-		private double[,,,,,] lhsc;
-		private double[,,,] backsub_info;
-		private int first, last, c;
+		private int last, c;
 		
-		public void setParameters(double[,,,,,] lhsc, double[,,,] backsub_info, int first, int last, int c)
-		{
-		   this.lhsc = lhsc;
-		   this.backsub_info = backsub_info;
-		   this.first = first;
-		   this.last = last;
-		   this.c = c;
-		}
 		
 	    public override int go() 
 		{ 
+			backsub_info = Backsub_info.Field;
+			lhsc = Lhsc.Field6;
+
+			int stage = this.Iteration_control.getCurrentStage();
+			last = this.Iteration_control.is_last_stage() ? 1 : 0;
+				
+			c = slice[stage,2];		
+			
 			int i, k;
 			int m, n, j, jsize, isize, ksize, kstart;
 			
@@ -51,7 +49,7 @@ namespace impl.bt.solve.ZBackSubstitute
 			            {
 			                for(n = 0; n < 5; n++) 
 			                { //rhs[m,i,j,ksize,c] = rhs[m,i,j,ksize,c] - lhsc[m,n,i,j,ksize,c]*backsub_info[n,i,j,c]
-			                    rhs[c, ksize, j, i, m] = rhs[c, ksize, j, i, m] - lhsc[c, ksize, j, i, n, m] * backsub_info[c, j, i, n];
+			                    rhs[c, ksize, j, i, m] = rhs[c, ksize, j, i, m] - lhsc[c, ksize, j, i, n, m] * backsub_info[c, j, i, n, 0];
 			                }
 			            }
 			        }

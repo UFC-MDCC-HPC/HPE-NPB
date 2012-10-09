@@ -16,21 +16,20 @@ namespace impl.bt.solve.XSolverCell
 	where DIR:IX
 	where MTH:IBTMethod 
 	{
-		private double[,,,,,] lhsc;
 		private int first;
 		private int last;
 		private int c;
 		
-		public void setParameters(double[,,,,,] lhsc, int first, int last, int c)
-		{
-			this.lhsc = lhsc;
-			this.first = first;
-			this.last = last;
-			this.c = c;
-		}
-		
 		public override int go()   
 		{ 
+			lhsc = Lhsc.Field6;
+			
+			int stage = this.Iteration_control.getCurrentStage();
+			first = this.Iteration_control.is_first_stage() ? 1 : 0;
+			last = this.Iteration_control.is_last_stage() ? 1 : 0;
+				
+			c = slice[stage,0];		
+			
             int i, j, k, isize, ksize, jsize, istart;
             double tmp1, tmp2, tmp3;
             istart = 2;

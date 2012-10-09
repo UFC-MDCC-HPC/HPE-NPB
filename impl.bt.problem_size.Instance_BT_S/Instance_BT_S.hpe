@@ -10,7 +10,7 @@
           <color b="255" g="255" r="255"/>
         </visualDescription>
         <parameter formFieldId="class" varName="C"/>
-        <unitBounds uRef="instance">
+        <unitBounds parallel="false" uRef="instance">
           <visualDescription h="10" w="10" x="30" y="6"/>
         </unitBounds>
       </component>
@@ -25,7 +25,7 @@
       <visualDescription h="46" w="60" x="73" y="284">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="17" y="4"/>
       </unitBounds>
     </innerComponent>

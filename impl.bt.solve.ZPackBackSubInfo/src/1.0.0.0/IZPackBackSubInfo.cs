@@ -16,17 +16,14 @@ namespace impl.bt.solve.ZPackBackSubInfo
 		where DIR:IZ
 		where MTH:IBTMethod 
 	{
-		private double[] in_buffer_z;
 		private int c;
 		
-		public void setParameters(double[] in_buffer_z, int c) 
+		public override int go()   
 		{
-		   this.in_buffer_z = in_buffer_z;
-		   this.c = c;
-		}
-		
-		public override int go() 
-		{
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,2];		
+			
             int ptr = 0, kstart = 2;
             for(int j = 0; j <= JMAX - 1; j++) 
             {

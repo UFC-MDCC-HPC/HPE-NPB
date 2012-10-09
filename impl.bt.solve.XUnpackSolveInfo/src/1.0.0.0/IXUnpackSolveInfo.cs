@@ -16,19 +16,16 @@ namespace impl.bt.solve.XUnpackSolveInfo
 		where DIR:IX
 		where MTH:IBTMethod 
 	{
-		private double[,,,,,] lhsc;
-		private double[] out_buffer_x; 
 		private int c;
 		
-		public void setParameters(double[,,,,,] lhsc, double[] out_buffer_x, int c) 
+		public override int go()   
 		{
-			this.lhsc = lhsc;
-			this.out_buffer_x = out_buffer_x; 
-			this.c = c;
-		}
-			   
-		public override int go()  
-		{ 
+			lhsc = Lhsc.Field6;
+						
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,0];
+			
             int ptr = 0, istart = 2;
             for(int k = 0; k <= KMAX - 1; k++) 
             {

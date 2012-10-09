@@ -23,6 +23,8 @@ using common.topology.Ring;
 using bt.solve.PackSolveInfo;
 using bt.solve.UnpackBackSubInfo;
 using bt.solve.Solver;
+using adi.solve.IterationControl;
+
 
 namespace impl.bt.solve.YSolver { 
 	public abstract class BaseIYSolverImpl<I, C, MTH, DIR>: Computation, BaseIBTSolver<I, C, MTH, DIR>
@@ -33,8 +35,6 @@ namespace impl.bt.solve.YSolver {
 		#region data
 			protected int KMAX, JMAX, IMAX, ncells, MAX_CELL_DIM, maxcells;
 			protected int[,] slice, cell_coord;
-			protected double[, , , , ,] lhsc;
-		    protected double[, , ,] backsub_info;
 			
 			override public void initialize(){
 				KMAX = Problem.KMAX;
@@ -45,11 +45,29 @@ namespace impl.bt.solve.YSolver {
 				MAX_CELL_DIM = Problem.MAX_CELL_DIM;				
 	            slice = Cells.cell_slice;
 	            cell_coord = Cells.cell_coord;
-                lhsc = new double[maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5];
-                backsub_info = new double[maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5];
 			}
 		#endregion	
 			
+		private IIterationControl<IForwardDirection> iteration_control_forward = null;
+		
+		public IIterationControl<IForwardDirection> Iteration_control_forward {
+			get {
+				if (this.iteration_control_forward == null)
+					this.iteration_control_forward = (IIterationControl<IForwardDirection>) Services.getPort("iteration_control_forward");
+				return this.iteration_control_forward;
+			}
+		}
+		
+		private IIterationControl<IBackwardDirection> iteration_control_backward = null;
+		
+		public IIterationControl<IBackwardDirection> Iteration_control_backward {
+			get {
+				if (this.iteration_control_backward == null)
+					this.iteration_control_backward = (IIterationControl<IBackwardDirection>) Services.getPort("iteration_control_backward");
+				return this.iteration_control_backward;
+			}
+		}
+
 		private IProblemDefinition<I, C> problem = null;
 		
 		public IProblemDefinition<I, C> Problem {

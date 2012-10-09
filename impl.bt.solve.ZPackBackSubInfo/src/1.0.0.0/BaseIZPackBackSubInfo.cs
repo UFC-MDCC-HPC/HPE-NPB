@@ -12,6 +12,9 @@ using common.axis.Axis;
 using common.axis.ZAxis;
 using bt.solve.BTMethod;
 using bt.solve.PackBackSubInfo;
+using common.Buffer;
+using adi.solve.IterationControl;
+using common.direction.Backward;
 
 namespace impl.bt.solve.ZPackBackSubInfo { 
 
@@ -25,13 +28,43 @@ where MTH:IBTMethod
 	protected double[,,,,] rhs;
 	protected int JMAX;
 	protected int IMAX;
+	protected int[,] slice;
+	protected double[] in_buffer_z;
 	
-	override public void initialize(){
+	override public void initialize()
+	{
 		rhs = Problem.Field_rhs;
 		JMAX = Problem.JMAX;
 		IMAX = Problem.IMAX;
+			
+		slice = Cells.cell_slice;	
+			
+		int MAX_CELL_DIM = Problem.MAX_CELL_DIM;
+		int buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * 5;
+		Buffer.Array = new double[buffer_size];
+		in_buffer_z = Buffer.Array;
 	}
 #endregion
+
+private IIterationControl<IBackwardDirection> iteration_control = null;
+
+public IIterationControl<IBackwardDirection> Iteration_control {
+	get {
+		if (this.iteration_control == null)
+			this.iteration_control = (IIterationControl<IBackwardDirection>) Services.getPort("iteration_control");
+		return this.iteration_control;
+	}
+}
+
+private IBuffer buffer = null;
+
+public IBuffer Buffer {
+	get {
+		if (this.buffer == null)
+			this.buffer = (IBuffer) Services.getPort("buffer");
+		return this.buffer;
+	}
+}
 
 private ICells cells = null;
 

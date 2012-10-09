@@ -16,19 +16,28 @@ namespace impl.bt.solve.XPackSolveInfo
 		where DIR:IX
 		where MTH:IBTMethod 
 	{
-		private double[,,,,,] lhsc;
-		private double[] in_buffer_x; 
 		private int c;
-		
-		public void setParameters(double[,,,,,] lhsc, double[] in_buffer_x, int c) 
-		{
-			this.lhsc = lhsc;
-			this.in_buffer_x = in_buffer_x; 
-			this.c = c;
-		}		
+				
+		private bool buffers_created = false;
 
-		public override int go()  
-		{ 
+		private void create_buffers()
+		{
+		}
+		
+		public override int go()   
+		{
+			if (!buffers_created)
+			{
+				this.create_buffers();
+				buffers_created = true;
+			}
+			
+			lhsc = Lhsc.Field6;	
+						
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,0];
+			
 			int isize, ptr=0;
 			isize = cell_size[c, 0] + 1;
 			for(int k = 0; k <= KMAX - 1; k++) 

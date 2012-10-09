@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000e77ff9c0632d0219457de653198787fa250b1283aa009c49dd6d6a6154fe2228d9729b93b707588384ade7adcc2aa0933b3839468a92d42293f77e59d807194ec0435520a9bffde658e1f761d504418e2775f46144a3071b9aae9a0ef7641916ecedfcffc0a917d9f8728b4882ba93c2359c2d7eed116202cdb5d18751c8b9de" isAbstract="false" kind="Computation" name="MatVecSubImpl" packagePath="impl.bt.solve">
     <baseType>
       <extensionType>
@@ -12,7 +12,7 @@
         <parameter formFieldId="instance_type" varName="I"/>
         <parameter formFieldId="class" varName="C"/>
         <parameter formFieldId="method" varName="MTH"/>
-        <unitBounds uRef="matvec_sub">
+        <unitBounds parallel="true" uRef="matvec_sub">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -28,7 +28,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -36,7 +36,7 @@
       <visualDescription h="30" w="50" x="449" y="187">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -44,13 +44,13 @@
       <visualDescription h="30" w="50" x="156" y="133">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <supplyParameter cRef="class" varName="C"/>
-    <supplyParameter cRef="instance_type" varName="I"/>
     <supplyParameter cRef="method" varName="MTH"/>
+    <supplyParameter cRef="instance_type" varName="I"/>
     <interface iRef="IMatVecSubImpl" nArgs="1">
       <slice isRef="method">
         <originRef cRef="method" iRef="ISolvingMethod"/>
@@ -78,6 +78,9 @@
         <color b="255" g="128" r="255"/>
       </visualDescription>
       <parameter iname="IBTMethod" order="0" parid="method" uname="method" varid="MTH"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IMatVecSubImpl" multiple="true" private="false" replica="0" uRef="matvec_sub" visibleInterface="true">
       <super cRef="base" uRef="matvec_sub"/>

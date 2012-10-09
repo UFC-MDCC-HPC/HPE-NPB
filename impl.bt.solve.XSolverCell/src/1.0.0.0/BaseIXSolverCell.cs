@@ -17,6 +17,9 @@ using bt.solve.BinvcRhs;
 using bt.solve.MatVecSub;
 using common.axis.XAxis;
 using bt.solve.SolverCell;
+using adi.solve.IterationControl;
+using common.direction.Forward;
+using common.data.Field;
 
 namespace impl.bt.solve.XSolverCell { 
 	public abstract class BaseIXSolverCell<I, C, DIR, MTH>: Computation, BaseISolverCell<I, C, DIR, MTH>
@@ -26,8 +29,8 @@ namespace impl.bt.solve.XSolverCell {
 	where MTH:IBTMethod {
 		#region data
 		
-			protected int MAX_CELL_DIM, IMAX;
-			protected int[,] start, end, cell_size;
+			protected int MAX_CELL_DIM, IMAX, JMAX, KMAX, maxcells;
+			protected int[,] start, end, cell_size, slice;
 			protected double[,,,,] rho_i, u, qs, rhs; 
 			
 			protected double tx1, tx2, tx3, ty1, ty2, ty3, tz1, tz2, tz3,
@@ -35,14 +38,17 @@ namespace impl.bt.solve.XSolverCell {
 			                  c3c4, con43, c1345, dt,
 			                  dx1, dx2, dx3, dx4, dx5, dy1, dy2, dy3, dy4, dy5, dz1, dz2, dz3, dz4, dz5;
             protected double[,,] fjac, njac, lhsa, lhsb;
+		
+			protected double[,,,,,] lhsc;
 
 		override public void initialize()
 		{
 	            start = Cells.cell_start;
 				end = Cells.cell_end;
 				cell_size = Cells.cell_size;
+				slice = Cells.cell_slice;
+			
 				MAX_CELL_DIM = Problem.MAX_CELL_DIM;
-				IMAX = Problem.IMAX;				
 	            rho_i = Problem.Field_rho;
 				qs = Problem.Field_qs;	            
 				u = Problem.Field_u;
@@ -91,8 +97,38 @@ namespace impl.bt.solve.XSolverCell {
                 njac = new double[MAX_CELL_DIM+5, 5, 5];
                 lhsa = new double[MAX_CELL_DIM+3, 5, 5];
                 lhsb = new double[MAX_CELL_DIM+3, 5, 5];			
+			
+				Iteration_control.setNumberOfStages(Cells.ncells);		
+			
+				KMAX = Problem.KMAX;
+				JMAX = Problem.JMAX;
+				IMAX = Problem.IMAX;
+				maxcells = Problem.maxcells;
+			
+				Lhsc.initialize_field("lhsc", maxcells, KMAX+2, JMAX+2, IMAX+2, 5, 5);
+			
 			}
 		#endregion
+		
+		private IField lhsc_ = null;
+		
+		protected IField Lhsc {
+			get {
+				if (lhsc_ == null) 
+					lhsc_ = (IField) Services.getPort("lhsc");
+				return lhsc_;
+			}
+		}
+		
+		private IIterationControl<IForwardDirection> iteration_control = null;
+		
+		public IIterationControl<IForwardDirection> Iteration_control {
+			get {
+				if (this.iteration_control == null)
+					this.iteration_control = (IIterationControl<IForwardDirection>) Services.getPort("iteration_control");
+				return this.iteration_control;
+			}
+		}
 		
 		private ICells cells = null;
 		

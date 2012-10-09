@@ -12,6 +12,10 @@ using common.axis.Axis;
 using common.axis.YAxis;
 using bt.solve.BTMethod;
 using bt.solve.PackSolveInfo;
+using common.Buffer;
+using adi.solve.IterationControl;
+using common.direction.Forward;
+using common.data.Field;
 
 namespace impl.bt.solve.YPackSolveInfo { 
 
@@ -25,15 +29,55 @@ where MTH:IBTMethod
 	protected double[,,,,] rhs;
 	protected int KMAX;
 	protected int IMAX;
-	protected int[,] cell_size;
+	protected int[,] cell_size, slice;
+	protected double[,,,,,] lhsc;
+	protected double[] in_buffer_y;
 	
-	override public void initialize(){
+	override public void initialize()
+	{
 		rhs = Problem.Field_rhs;
 		cell_size = Cells.cell_size;
+		slice = Cells.cell_slice;	
+			
 		KMAX = Problem.KMAX;
 		IMAX = Problem.IMAX;
+			
+		int MAX_CELL_DIM = Problem.MAX_CELL_DIM;				
+		int buffer_size = MAX_CELL_DIM * MAX_CELL_DIM * (5 * 5 + 5);
+		Buffer.Array = new double[buffer_size]; 
+		this.in_buffer_y = Buffer.Array;
 	}
 #endregion
+		
+private IField lhsc_ = null;
+
+protected IField Lhsc {
+	get {
+		if (lhsc_ == null) 
+			lhsc_ = (IField) Services.getPort("lhsc");
+		return lhsc_;
+	}
+}
+		
+private IIterationControl<IForwardDirection> iteration_control = null;
+
+public IIterationControl<IForwardDirection> Iteration_control {
+	get {
+		if (this.iteration_control == null)
+			this.iteration_control = (IIterationControl<IForwardDirection>) Services.getPort("iteration_control");
+		return this.iteration_control;
+	}
+}
+
+private IBuffer buffer = null;
+
+public IBuffer Buffer {
+	get {
+		if (this.buffer == null)
+			this.buffer = (IBuffer) Services.getPort("buffer");
+		return this.buffer;
+	}
+}
 
 private ICells cells = null;
 

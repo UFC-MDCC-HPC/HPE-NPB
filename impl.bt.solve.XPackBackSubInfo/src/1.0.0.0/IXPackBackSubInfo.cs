@@ -16,17 +16,27 @@ namespace impl.bt.solve.XPackBackSubInfo
 		where DIR:IX
 		where MTH:IBTMethod 
 	{	    
-	    private double[] in_buffer_x;
 		private int c;
 		
-		public void setParameters(double[] buffer, int c) 
+		
+		private bool buffers_created = false;
+		
+		private void create_buffers()
 		{
-		   this.in_buffer_x = buffer;
-		   this.c = c;
 		}
-
+		
 		public override int go()   
 		{
+			if (!buffers_created)
+			{
+				this.create_buffers();
+				buffers_created = true;
+			}
+			
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,0];		
+			
 			int ptr = 0, istart = 2;
 			for(int k = 0; k <= KMAX - 1; k++) 
 			{

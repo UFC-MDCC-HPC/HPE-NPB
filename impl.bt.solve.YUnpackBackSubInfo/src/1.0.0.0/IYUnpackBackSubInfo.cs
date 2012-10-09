@@ -16,19 +16,16 @@ namespace impl.bt.solve.YUnpackBackSubInfo
 		where DIR:IY
 		where MTH:IBTMethod 
 	{
-		private double[,,,] backsub_info;
-		private double[] out_buffer_y;
 		private int c;
-		
-		public void setParameters(double[,,,] backsub_info, double[] out_buffer_y, int c) 
+			
+		public override int go()   
 		{
-			this.backsub_info = backsub_info;
-			this.out_buffer_y = out_buffer_y;
-			this.c = c;
-		}
-		
-        public override int go() 		
-        { 
+			backsub_info = Backsub_info.Field;
+			
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,1];
+			
             int ptr = 0;
             for(int k = 0; k <= KMAX - 1; k++) 
             {
@@ -36,7 +33,7 @@ namespace impl.bt.solve.YUnpackBackSubInfo
                 {
                     for(int n = 0; n < 5; n++) 
                     {
-                        backsub_info[c, k+2, i+2, n] = out_buffer_y[ptr + n];
+                        backsub_info[c, k+2, i+2, n, 0] = out_buffer_y[ptr + n];
                     }
                     ptr = ptr + 5;
                 }

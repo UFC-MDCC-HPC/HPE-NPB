@@ -14,19 +14,17 @@ namespace impl.bt.solve.ZUnpackSolveInfo {
 	where C:IClass
 	where DIR:IZ
 	where MTH:IBTMethod {
-		private double[,,,,,] lhsc;
-		private double[] out_buffer_z;
-		private int c;
-
-		public void setParameters(double[,,,,,] lhsc, double[] out_buffer_z, int c) 
-		{
-			this.lhsc = lhsc;
-			this.out_buffer_z = out_buffer_z;
-			this.c = c;
-		}		
 		
-		public override int go() 
+		private int c;
+		
+		public override int go()   
 		{
+			lhsc = Lhsc.Field6;
+			
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,2];
+			
             int ptr = 0, kstart = 2;
             for(int j = 0; j <= JMAX - 1; j++) 
             {

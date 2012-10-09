@@ -16,16 +16,14 @@ namespace impl.bt.solve.YPackBackSubInfo
 		where DIR:IY
 		where MTH:IBTMethod 
 	{
-		private double[] in_buffer_y;
 		private int c;		
 		
-		public void setParameters(double[] in_buffer_y, int c) {
-		   this.in_buffer_y = in_buffer_y;
-		   this.c = c;
-		}
-		
-		public override int go()  
-		{ 
+		public override int go()   
+		{
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,1];		
+			
             int ptr = 0, jstart = 2;
             for(int k = 0; k <= KMAX - 1; k++) 
             {

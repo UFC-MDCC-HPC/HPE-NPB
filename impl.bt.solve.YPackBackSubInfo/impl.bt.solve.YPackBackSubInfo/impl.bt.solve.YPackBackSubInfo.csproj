@@ -78,6 +78,18 @@
       <Project>{51EC4A8A-6014-4197-9264-0DF08BC0BDDD}</Project>
       <Name>common.axis.Axis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\common.Buffer\common.Buffer\common.Buffer.csproj">
+      <Project>{EEAC9F12-55E9-4AEE-8996-5A72FA4FE6CD}</Project>
+      <Name>common.Buffer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\adi.solve.IterationControl\adi.solve.IterationControl\adi.solve.IterationControl.csproj">
+      <Project>{D033E840-9582-4DFC-BD9D-550B2E98B2BC}</Project>
+      <Name>adi.solve.IterationControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common.direction.Backward\common.direction.Backward\common.direction.Backward.csproj">
+      <Project>{3219509A-C959-40D6-9857-E6EFD99FDA89}</Project>
+      <Name>common.direction.Backward</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

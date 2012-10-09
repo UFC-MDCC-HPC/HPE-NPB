@@ -12,6 +12,9 @@ using common.axis.Axis;
 using common.axis.ZAxis;
 using bt.solve.BTMethod;
 using bt.solve.BackSubstitute;
+using adi.solve.IterationControl;
+using common.direction.Backward;
+using common.data.Field;
 
 namespace impl.bt.solve.ZBackSubstitute { 
 
@@ -23,18 +26,59 @@ where MTH:IBTMethod
 {
 #region data
 		
-protected int[,] start, end, cell_size;
+protected int[,] start, end, cell_size, slice;
 protected double[,,,,] rhs;
-
+		
+protected double[,,,,,] lhsc;
+protected double[,,,,] backsub_info;
+		
 override public void initialize()		
 {
 	start = Cells.cell_start;
 	end = Cells.cell_end;
 	cell_size = Cells.cell_size;
+	slice = Cells.cell_slice;		
+			
 	rhs = Problem.Field_rhs;
+			
+	Iteration_control.setNumberOfStages(Cells.ncells);		
+						
+	int MAX_CELL_DIM = Problem.MAX_CELL_DIM;
+	int maxcells = Problem.maxcells;			
+	Backsub_info.initialize_field("backsub_info", maxcells, MAX_CELL_DIM+3, MAX_CELL_DIM+3, 5);			
 }
 		
 #endregion 
+
+private IField backsub_info_ = null;
+
+protected IField Backsub_info {
+	get {
+		if (backsub_info_ == null) 
+			backsub_info_ = (IField) Services.getPort("backsub_info");
+		return backsub_info_;
+	}
+}
+
+private IField lhsc_ = null;
+
+protected IField Lhsc {
+	get {
+		if (lhsc_ == null) 
+			lhsc_ = (IField) Services.getPort("lhsc");
+		return lhsc_;
+	}
+}
+		
+private IIterationControl<IBackwardDirection> iteration_control = null;
+
+public IIterationControl<IBackwardDirection> Iteration_control {
+	get {
+		if (this.iteration_control == null)
+			this.iteration_control = (IIterationControl<IBackwardDirection>) Services.getPort("iteration_control");
+		return this.iteration_control;
+	}
+}
 
 private ICells cells = null;
 

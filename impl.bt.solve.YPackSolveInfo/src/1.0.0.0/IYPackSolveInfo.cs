@@ -16,19 +16,16 @@ namespace impl.bt.solve.YPackSolveInfo
 		where DIR:IY
 		where MTH:IBTMethod 
 	{
-		private double[,,,,,] lhsc;
-		private double[] in_buffer_y;
 		private int c;
 		
-		public void setParameters(double[,,,,,] lhsc, double[] in_buffer_y, int c) 
+		public override int go()   
 		{
-			this.lhsc = lhsc;
-			this.in_buffer_y = in_buffer_y;
-			this.c = c;
-		}	   
-
-		public override int go() 
-		{
+			lhsc = Lhsc.Field6;
+			
+			int stage = this.Iteration_control.getCurrentStage();
+				
+			c = slice[stage,1];
+			
             int jsize, ptr=0;
             jsize = cell_size[c, 1] + 1;
             

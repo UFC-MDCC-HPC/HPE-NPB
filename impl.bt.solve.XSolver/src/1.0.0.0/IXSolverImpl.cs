@@ -44,86 +44,57 @@ namespace impl.bt.solve.XSolver
 				buffers_ok = true;
 			}
 
-			int c, stage, first, last;
+			Input_buffer.Array = out_buffer_solver[0] ;
 			
-			double[] out_buffer_x;// = new double[buffer_size];
+			Iteration_control_forward.start();
 			
-			Input_buffer.Array = out_buffer_x = out_buffer_solver[0] ; // new double[buffer_size];
-			
-			for(stage = 0; stage < ncells; stage++) 
+	        Solve_cell.go();
+						
+			while (!Iteration_control_forward.is_last_stage())
 			{
-			    c = slice[stage, 0];
-			    if(stage == ncells-1) 
-			    {
-			        last = 1;
-			    }
-			    else 
-			    {
-			        last = 0;
-			    }
-			    
-			    if(stage == 0) 
-			    {
-			        first = 1;
-			        Solve_cell.setParameters(lhsc, first, last, c);
-			        Solve_cell.go();
-			    }
-			    else 
-			    {
-			        first = 0;
-			        Shift_lr.initiate_recv();
-			        Shift_lr.go();
-			        Unpack_solve_info.setParameters(lhsc, out_buffer_x, c);
-			        Unpack_solve_info.go();
-			        Solve_cell.setParameters(lhsc, first, last, c);
-			        Solve_cell.go();
-			    }
-			    
-			    if(last == 0) 
-			    {
-			        double[] in_buffer_x = Output_buffer.Array = in_buffer_solver[0]; // new double[buffer_size];
-			        Pack_solve_info.setParameters(lhsc, in_buffer_x, c);
-			        Pack_solve_info.go();
-			        Shift_lr.initiate_send();
-			    }
+		        Output_buffer.Array = in_buffer_solver[0]; // new double[buffer_size];
+				
+		        Pack_solve_info.go();
+				
+		        Shift_lr.initiate_send();
+				
+				Iteration_control_forward.advance();
+				
+		        Shift_lr.initiate_recv();
+		        Shift_lr.go();
+				
+		        Unpack_solve_info.go();
+				
+		        Solve_cell.go();
 			}
 			
-			Input_buffer.Array = out_buffer_x = null;
-			Input_buffer.Array = out_buffer_x = out_buffer_solver[1]; // new double[buffer_size];
+			Iteration_control_forward.end();
 			
-			for(stage = ncells-1; stage >= 0; stage--) 
+			Input_buffer.Array = out_buffer_solver[1]; // new double[buffer_size];
+			
+			Iteration_control_backward.start();
+			
+			Back_substitute.go();			
+			
+			while (!Iteration_control_backward.is_first_stage())
 			{
-			    c = slice[stage, 0];
-			    first = 0;
-			    last = 0;
-			    
-			    if(stage == 0)
-			        first = 1;
+		        Output_buffer.Array = in_buffer_solver[1]; // new double[buffer_size];
+				
+		        Pack_back_sub_info.go();
+				
+		        Shift_rl.initiate_send();
+				
+				Iteration_control_backward.advance();
 			        
-			    if(stage == (ncells-1)) 
-			    {
-			        last = 1;
-			        Back_substitute.setParameters(lhsc, backsub_info, first, last, c);
-			        Back_substitute.go();
-			    }
-			    else 
-			    {
-				    Shift_rl.initiate_recv();
-			        Shift_rl.go();		        
-			        Unpack_back_sub_info.setParameters(backsub_info, out_buffer_x, c);
-			        Unpack_back_sub_info.go();
-			        Back_substitute.setParameters(lhsc, backsub_info, first, last, c);
-			        Back_substitute.go();
-			    }
-			    
-			    if(first == 0) 
-			    {
-			        double[] in_buffer_x = Output_buffer.Array = in_buffer_solver[1]; // new double[buffer_size];
-			        Pack_back_sub_info.setParameters(in_buffer_x, c);
-			        Pack_back_sub_info.go();
-			        Shift_rl.initiate_send();
-			    }
+			    Shift_rl.initiate_recv();
+		        Shift_rl.go();		        
+				
+		        Unpack_back_sub_info.go();
+				
+		        Back_substitute.go();			    
 			}
+			
+			Iteration_control_backward.end ();
 			
 			return 0;
 		}
