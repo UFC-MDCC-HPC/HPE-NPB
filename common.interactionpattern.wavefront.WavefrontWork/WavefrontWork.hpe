@@ -11,7 +11,7 @@
       <visualDescription h="47" w="119" x="297" y="413">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="buffer">
+      <unitBounds parallel="false" uRef="buffer">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -19,7 +19,7 @@
       <visualDescription h="48" w="132" x="351" y="130">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="buffer">
+      <unitBounds parallel="false" uRef="buffer">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -27,7 +27,7 @@
       <visualDescription h="69" w="93" x="66" y="345">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="direction">
+      <unitBounds parallel="true" uRef="direction">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -35,7 +35,7 @@
       <visualDescription h="30" w="50" x="56" y="444">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cell">
+      <unitBounds parallel="true" uRef="cell">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -43,27 +43,27 @@
       <visualDescription h="30" w="50" x="174" y="490">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cell">
+      <unitBounds parallel="true" uRef="cell">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <parameter componentRef="direction" formFieldId="direction" varName="DIR"/>
     <interface iRef="IWavefrontWork" nArgs="1">
-      <slice isRef="x_buffer">
-        <originRef cRef="x_buffer" iRef="IBuffer"/>
-        <visualDescription h="10" w="10" x="113" y="3"/>
-      </slice>
       <slice isRef="y_buffer">
         <originRef cRef="y_buffer" iRef="IBuffer"/>
         <visualDescription h="10" w="10" x="111" y="29"/>
       </slice>
-      <slice isRef="x">
-        <originRef cRef="x" iRef="ICell"/>
-        <visualDescription h="10" w="10" x="44" y="21"/>
+      <slice isRef="x_buffer">
+        <originRef cRef="x_buffer" iRef="IBuffer"/>
+        <visualDescription h="10" w="10" x="113" y="3"/>
       </slice>
       <slice isRef="y">
         <originRef cRef="y" iRef="ICell"/>
         <visualDescription h="10" w="10" x="63" y="23"/>
+      </slice>
+      <slice isRef="x">
+        <originRef cRef="x" iRef="ICell"/>
+        <visualDescription h="10" w="10" x="44" y="21"/>
       </slice>
       <slice isRef="direction">
         <originRef cRef="direction" iRef="IDirection"/>
@@ -82,36 +82,39 @@
       <visualDescription h="89" w="165" x="55" y="119">
         <color b="144" g="238" r="144"/>
       </visualDescription>
+      <port name="y_buffer">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y_buffer" sRef="y_buffer"/>
+      </port>
       <port name="x_buffer">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="buffer" sRef="x_buffer"/>
-      </port>
-      <port name="y_buffer">
-        <visualDescription h="10" w="10" x="7" y="22"/>
-        <slice pRef="buffer" sRef="y_buffer"/>
-      </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="13" y="6"/>
-        <slice pRef="cell" sRef="x"/>
+        <slice pRef="x_buffer" sRef="x_buffer"/>
       </port>
       <port name="y">
-        <visualDescription h="10" w="10" x="92" y="15"/>
-        <slice pRef="cell" sRef="y"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="y"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="x"/>
       </port>
       <parameter iname="IDirection" order="0" parid="direction" uname="direction" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IWavefrontWork" multiple="true" private="false" replica="0" uRef="wavefront_work" visibleInterface="true">
-      <slices cRef="x_buffer" replica="0" uRef="buffer" sliceName="x_buffer" transitive="false">
-        <visualDescription h="10" w="10" x="113" y="3"/>
-      </slices>
       <slices cRef="y_buffer" replica="0" uRef="buffer" sliceName="y_buffer" transitive="false">
         <visualDescription h="10" w="10" x="111" y="29"/>
       </slices>
-      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="false">
-        <visualDescription h="10" w="10" x="44" y="21"/>
+      <slices cRef="x_buffer" replica="0" uRef="buffer" sliceName="x_buffer" transitive="false">
+        <visualDescription h="10" w="10" x="113" y="3"/>
       </slices>
       <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="false">
         <visualDescription h="10" w="10" x="63" y="23"/>
+      </slices>
+      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="false">
+        <visualDescription h="10" w="10" x="44" y="21"/>
       </slices>
       <slices cRef="direction" replica="0" uRef="direction" sliceName="direction" transitive="false">
         <visualDescription h="10" w="10" x="18" y="26"/>

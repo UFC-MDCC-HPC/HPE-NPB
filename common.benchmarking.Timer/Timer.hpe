@@ -11,7 +11,7 @@
       <visualDescription h="81" w="132" x="153" y="318">
         <color b="240" g="32" r="160"/>
       </visualDescription>
-      <unitBounds uRef="mpi">
+      <unitBounds parallel="true" uRef="mpi">
         <visualDescription h="10" w="10" x="62" y="12"/>
       </unitBounds>
     </innerComponent>

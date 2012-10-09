@@ -9,7 +9,7 @@
         <visualDescription h="56" w="95" x="215" y="289">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="x">
+        <unitBounds parallel="true" uRef="x">
           <visualDescription h="10" w="10" x="42" y="8"/>
         </unitBounds>
       </component>

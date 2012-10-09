@@ -11,7 +11,7 @@
       <visualDescription h="53" w="80" x="208" y="355">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="buffer">
+      <unitBounds parallel="false" uRef="buffer">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -19,7 +19,7 @@
       <visualDescription h="30" w="97" x="124" y="446">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="direction">
+      <unitBounds parallel="true" uRef="direction">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -50,6 +50,9 @@
         <slice pRef="buffer" sRef="buffer"/>
       </port>
       <parameter iname="IDirection" order="0" parid="direction" uname="direction" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IBufferWriter" multiple="true" private="false" replica="0" uRef="buffer_writer" visibleInterface="true">
       <slices cRef="buffer" replica="0" uRef="buffer" sliceName="buffer" transitive="false">

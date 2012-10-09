@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000efc9a150fc1acb62a49c735d74c9a66b35b3965ac69bbcff869d64b4e89741c7f820d475a18c2cd98d4a4e655cb502327dcc7261aa72f3941d5abd6c6b7ab8ffce380596563140dd06fec6e4ce9e3294c00469a3089cdbb032e51eaac94a69f400444e343204e22638bd66f9de4ddd610a40376dce5b13931b71ada77c2dcace" isAbstract="true" kind="Computation" name="Wavefront" packagePath="common.interactionpattern">
     <versions field1="1" field2="0" field3="0" field4="0"/>
     <visualAttributes>
@@ -16,7 +16,7 @@
         <visualDescription h="30" w="102" x="384" y="408">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -24,7 +24,7 @@
         <visualDescription h="30" w="115" x="385" y="163">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="buffer">
+        <unitBounds parallel="false" uRef="buffer">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -32,7 +32,7 @@
         <visualDescription h="30" w="50" x="56" y="444">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -40,11 +40,11 @@
         <visualDescription h="30" w="50" x="174" y="490">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="wavefront_work">
+      <unitBounds parallel="true" uRef="wavefront_work">
         <visualDescription h="10" w="10" x="22" y="27"/>
       </unitBounds>
     </innerComponent>
@@ -52,7 +52,7 @@
       <visualDescription h="58" w="111" x="365" y="289">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="direction">
+      <unitBounds parallel="true" uRef="direction">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -60,20 +60,20 @@
       <visualDescription h="30" w="50" x="52" y="275">
         <color b="240" g="32" r="160"/>
       </visualDescription>
-      <unitBounds uRef="mpi">
+      <unitBounds parallel="true" uRef="mpi">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <parameter componentRef="work" formFieldId="work_type" varName="W"/>
     <parameter componentRef="direction" formFieldId="direction" varName="DIR"/>
     <interface iRef="IWavefront" nArgs="2">
+      <slice isRef="work">
+        <originRef cRef="work" iRef="IWavefrontWork"/>
+        <visualDescription h="10" w="10" x="18" y="25"/>
+      </slice>
       <slice isRef="mpi">
         <originRef cRef="mpi" iRef="IMPIDirect"/>
         <visualDescription h="10" w="10" x="1" y="8"/>
-      </slice>
-      <slice isRef="wavefront_work">
-        <originRef cRef="work" iRef="IWavefrontWork"/>
-        <visualDescription h="10" w="10" x="18" y="25"/>
       </slice>
       <slice isRef="direction">
         <originRef cRef="direction" iRef="IDirection"/>
@@ -100,56 +100,59 @@
       <visualDescription h="100" w="201" x="124" y="43">
         <color b="0" g="255" r="0"/>
       </visualDescription>
+      <port name="work">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="work" sRef="work"/>
+      </port>
+      <port name="x">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="work"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="work"/>
+      </port>
+      <port name="x_buffer">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x_buffer" sRef="work"/>
+      </port>
+      <port name="y_buffer">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y_buffer" sRef="work"/>
+      </port>
       <port name="mpi">
         <visualDescription h="10" w="10" x="83" y="76"/>
         <slice pRef="mpi" sRef="mpi"/>
       </port>
-      <port name="wavefront_work">
-        <visualDescription h="10" w="10" x="162" y="52"/>
-        <slice pRef="wavefront_work" sRef="wavefront_work"/>
-      </port>
-      <port name="x">
-        <visualDescription h="10" w="10" x="43" y="3"/>
-        <slice pRef="x" sRef="wavefront_work"/>
-      </port>
-      <port name="y_buffer">
-        <visualDescription h="10" w="10" x="35" y="78"/>
-        <slice pRef="y_buffer" sRef="wavefront_work"/>
-      </port>
-      <port name="x_buffer">
-        <visualDescription h="10" w="10" x="101" y="3"/>
-        <slice pRef="x_buffer" sRef="wavefront_work"/>
-      </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="157" y="17"/>
-        <slice pRef="y" sRef="wavefront_work"/>
-      </port>
       <externalReferences>MPI</externalReferences>
       <parameter iname="IWavefrontWork" order="0" parid="work_type" uname="wavefront_work" varid="W"/>
       <parameter iname="IDirection" order="1" parid="direction" uname="direction" varid="DIR"/>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="IWavefront" multiple="true" private="false" replica="0" uRef="wavefront" visibleInterface="true">
+      <slices cRef="work" replica="0" uRef="wavefront_work" sliceName="work" transitive="false">
+        <visualDescription h="10" w="10" x="18" y="25"/>
+        <port>y_buffer</port>
+        <port>x_buffer</port>
+        <port>y</port>
+        <port>x</port>
+      </slices>
       <slices cRef="mpi" replica="0" uRef="mpi" sliceName="mpi" transitive="false">
         <visualDescription h="10" w="10" x="1" y="8"/>
-      </slices>
-      <slices cRef="work" replica="0" uRef="wavefront_work" sliceName="wavefront_work" transitive="false">
-        <visualDescription h="10" w="10" x="18" y="25"/>
-        <port>x_buffer</port>
-        <port>y_buffer</port>
-        <port>x</port>
-        <port>y</port>
-      </slices>
-      <slices cRef="x_buffer" replica="0" uRef="buffer" sliceName="x_buffer" transitive="true">
-        <visualDescription h="10" w="10" x="113" y="3"/>
       </slices>
       <slices cRef="y_buffer" replica="0" uRef="buffer" sliceName="y_buffer" transitive="true">
         <visualDescription h="10" w="10" x="111" y="29"/>
       </slices>
-      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
-        <visualDescription h="10" w="10" x="44" y="21"/>
+      <slices cRef="x_buffer" replica="0" uRef="buffer" sliceName="x_buffer" transitive="true">
+        <visualDescription h="10" w="10" x="113" y="3"/>
       </slices>
       <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="true">
         <visualDescription h="10" w="10" x="63" y="23"/>
+      </slices>
+      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
+        <visualDescription h="10" w="10" x="44" y="21"/>
       </slices>
       <slices cRef="direction" replica="0" uRef="direction" sliceName="direction" transitive="false">
         <visualDescription h="10" w="10" x="65" y="11"/>

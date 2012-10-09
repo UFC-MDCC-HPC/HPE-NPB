@@ -15,7 +15,7 @@
         <visualDescription h="30" w="50" x="97" y="426">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -23,7 +23,7 @@
         <visualDescription h="30" w="50" x="240" y="498">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
@@ -31,19 +31,19 @@
         <visualDescription h="30" w="50" x="377" y="484">
           <color b="255" g="255" r="255"/>
         </visualDescription>
-        <unitBounds uRef="cell">
+        <unitBounds parallel="true" uRef="cell">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </port>
-      <unitBounds uRef="cell">
+      <unitBounds parallel="true" uRef="cell">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <innerComponent hash_component_UID="0024000004800000940000000602000000240000525341310004000011000000cfe94b8926d4a7de4f70d204303375a68658c9c988f5e0ec7f1f3dce28b75501399411f8002d0637e06b03a2849ef779a22e26ae137759213f595fd13ccb5101bb6f07e7560df0d8b1beadc8dacecefd49c7844d298e78991b98dd4650ec7bf0b26716727a7bc437f39a5ccede87c7db6829de68c511abb9d0b4e3644bcf66ad" localRef="cells_info" location="common.datapartition.MultiPartitionCells/MultiPartitionCells.hpe" multiple="true" name="MultiPartitionCells" package="common.datapartition" exposed="true">
-      <visualDescription h="53" w="81" x="52" y="331">
+      <visualDescription h="53" w="81" x="47" y="350">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="cells">
+      <unitBounds parallel="false" uRef="cells">
         <visualDescription h="10" w="10" x="32" y="5"/>
       </unitBounds>
     </innerComponent>
@@ -52,7 +52,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="46" y="41"/>
       </unitBounds>
     </innerComponent>
@@ -60,18 +60,18 @@
       <visualDescription h="30" w="50" x="687" y="703">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
     <parameter componentRef="instance" formFieldId="instance_type" varName="I"/>
     <parameter componentRef="class" formFieldId="class" varName="C"/>
     <interface iRef="IMultiPartition" nArgs="2">
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="9" y="30"/>
       </slice>
-      <slice isRef="cell">
+      <slice isRef="topology">
         <originRef cRef="topology" iRef="ICell3D"/>
         <visualDescription h="10" w="10" x="48" y="47"/>
       </slice>
@@ -95,43 +95,43 @@
       <visualDescription h="63" w="115" x="274" y="109">
         <color b="0" g="128" r="255"/>
       </visualDescription>
-      <port name="cells">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
-      </port>
-      <port name="y">
-        <visualDescription h="10" w="10" x="32" y="0"/>
-        <slice pRef="y" sRef="cell"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
       <port name="x">
-        <visualDescription h="10" w="10" x="79" y="2"/>
-        <slice pRef="x" sRef="cell"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="x" sRef="topology"/>
+      </port>
+      <port name="y">
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="y" sRef="topology"/>
       </port>
       <port name="z">
-        <visualDescription h="10" w="10" x="88" y="37"/>
-        <slice pRef="z" sRef="cell"/>
+        <visualDescription h="10" w="10" x="0" y="0"/>
+        <slice pRef="z" sRef="topology"/>
       </port>
       <parameter iname="IInstance" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
     </interface>
     <unit iRef="IMultiPartition" multiple="true" private="false" replica="0" uRef="multipartition" visibleInterface="true">
-      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells" transitive="false">
+      <slices cRef="cells_info" replica="0" uRef="cells" sliceName="cells_info" transitive="false">
         <visualDescription h="10" w="10" x="9" y="30"/>
-      </slices>
-      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
-        <visualDescription h="10" w="10" x="6" y="25"/>
-      </slices>
-      <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="true">
-        <visualDescription h="10" w="10" x="31" y="26"/>
       </slices>
       <slices cRef="z" replica="0" uRef="cell" sliceName="z" transitive="true">
         <visualDescription h="10" w="10" x="60" y="13"/>
       </slices>
-      <slices cRef="topology" replica="0" uRef="cell" sliceName="cell" transitive="false">
+      <slices cRef="y" replica="0" uRef="cell" sliceName="y" transitive="true">
+        <visualDescription h="10" w="10" x="31" y="26"/>
+      </slices>
+      <slices cRef="x" replica="0" uRef="cell" sliceName="x" transitive="true">
+        <visualDescription h="10" w="10" x="6" y="25"/>
+      </slices>
+      <slices cRef="topology" replica="0" uRef="cell" sliceName="topology" transitive="false">
         <visualDescription h="10" w="10" x="39" y="32"/>
-        <port>x</port>
-        <port>y</port>
         <port>z</port>
+        <port>y</port>
+        <port>x</port>
       </slices>
       <slices cRef="instance" replica="0" uRef="instance" sliceName="instance" transitive="false">
         <visualDescription h="10" w="10" x="65" y="29"/>
