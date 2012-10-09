@@ -18,15 +18,31 @@ namespace impl.sp.solve.TZETAR {
 			where DIR:IZ
 			where MTH:ISPMethod
 	{		
-		private int c;
+		private int stage = -1;
 		
-		public void enterStage(int stage)			
+		public void begin()
 		{
-		    c = slice[stage, 2];		
+			stage = ncells-1;
 		}
 				
 		
-		public override int go() { 
+		public bool finished()
+		{
+			return stage < 0;
+		}
+		
+		public void advance()			
+		{
+			stage--;
+		}
+				
+		
+		public override int go() 
+		{ 
+		    int c;
+			
+		    c = slice[stage, 2];		
+			
 		    int i, j, k;
 		    int ksize, jsize, isize;
 		    double t1, t2, t3, ac, xvel, yvel, zvel,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="002400000480000094000000060200000024000052534131000400001100000051df9e33dd05d03a61afe4e3765837fc1f33a4e7d7b3a9b6bb2e42801b6acf57f45195f9b165cbaacd3735b7a66f419fbf65169088edf170760b42755c222bf9152126cb0c417119f71c7e93dd4e3078140c24088d8a0dcc7110fb5f183cc07e278c019cb43bc44eff3c47bcccd2409343328cf59a1e27e52b8991a0de81fc8d" isAbstract="false" kind="Computation" name="TZETAR" packagePath="impl.sp.solve">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           <visualDescription h="53" w="112" x="302" y="427">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cells">
+          <unitBounds parallel="false" uRef="cells">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -27,11 +27,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="47" y="9"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="matvecproduct">
+        <unitBounds parallel="true" uRef="matvecproduct">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -46,7 +46,7 @@
       <visualDescription h="30" w="50" x="135" y="211">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -54,7 +54,7 @@
       <visualDescription h="30" w="50" x="285" y="307">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="z">
+      <unitBounds parallel="true" uRef="z">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -63,7 +63,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -71,7 +71,7 @@
       <visualDescription h="30" w="50" x="202" y="495">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -80,11 +80,11 @@
     <supplyParameter cRef="instance" varName="I"/>
     <supplyParameter cRef="method" varName="MTH"/>
     <interface iRef="ITZETAR" nArgs="4">
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="78" y="26"/>
       </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="92" y="3"/>
       </slice>
@@ -103,7 +103,7 @@
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
           <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/BaseIBlockDiagonalMatVecProduct.dll</dependency>
         </file>
-        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using adi.data.ProblemDefinition;&#xA;using common.axis.Axis;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.ZAxis;&#xA;&#xA;namespace impl.sp.solve.TZETAR { &#xA;&#xA;&#x9;public class ITZETAR&lt;I,C,DIR,MTH> : BaseITZETAR&lt;I,C,DIR,MTH>, IBlockDiagonalMatVecProduct&lt;I,C,DIR,MTH>&#xA;&#x9;&#x9;&#x9;where I:IInstance&lt;C>&#xA;&#x9;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;&#x9;where DIR:IZ&#xA;&#x9;&#x9;&#x9;where MTH:ISPMethod&#xA;&#x9;{&#x9;&#x9;&#xA;&#x9;&#x9;private int c;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void enterStage(int stage)&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;    c = slice[stage, 2];&#x9;&#x9;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() { &#xA;&#x9;&#x9;    int i, j, k;&#xA;&#x9;&#x9;    int ksize, jsize, isize;&#xA;&#x9;&#x9;    double t1, t2, t3, ac, xvel, yvel, zvel,&#xA;&#x9;&#x9;           r1, r2, r3, r4, r5, btuz, acinv, ac2u, uzik1;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    ksize = cell_size[c, 2] + 2;&#xA;&#x9;&#x9;    jsize = cell_size[c, 1] + 2;&#xA;&#x9;&#x9;    isize = cell_size[c, 0] + 2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;&#x9;&#x9;        {&#xA;&#x9;&#x9;            for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;&#x9;&#x9;            {&#xA;&#x9;&#x9;                xvel = us[c, k, j, i, 0];&#xA;&#x9;&#x9;                yvel = vs[c, k, j, i, 0];&#xA;&#x9;&#x9;                zvel = ws[c, k, j, i, 0];&#xA;&#x9;&#x9;                ac = speed[c, k, j, i, 0];&#xA;&#x9;&#x9;                acinv = ainv[c, k, j, i, 0];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                ac2u = ac * ac;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                r1 = rhs[c, k, j, i, 0];&#xA;&#x9;&#x9;                r2 = rhs[c, k, j, i, 1];&#xA;&#x9;&#x9;                r3 = rhs[c, k, j, i, 2];&#xA;&#x9;&#x9;                r4 = rhs[c, k, j, i, 3];&#xA;&#x9;&#x9;                r5 = rhs[c, k, j, i, 4];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                uzik1 = u[c, k, j, i, 0];&#xA;&#x9;&#x9;                btuz = bt * uzik1;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                t1 = btuz * acinv * (r4 + r5);&#xA;&#x9;&#x9;                t2 = r3 + t1;&#xA;&#x9;&#x9;                t3 = btuz * (r4 - r5);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 0] = t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 1] = -uzik1 * r2 + xvel * t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 2] = uzik1 * r1 + yvel * t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 3] = zvel * t2 + t3;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 4] = uzik1 * (-xvel * r2 + yvel * r1) +&#xA;&#x9;&#x9;                      qs[c, k, j, i, 0] * t2 + c2iv * ac2u * t1 + zvel * t3;&#xA;&#x9;&#x9;                      &#xA;                 //      for (int m=0;m&lt;5;m++)&#x9;&#x9;                &#xA;&#x9;&#x9;         //           Console.WriteLine(&quot;tzetar - rhs&quot; + &quot;[&quot; + c + &quot;,&quot; + k + &quot;,&quot; + j + &quot;,&quot; + i + &quot;,&quot; + m + &quot;] = &quot; + rhs[c, k, j, i, m]);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;            }&#xA;&#x9;&#x9;        }&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="ITZETAR.cs" srcType="user" uri="impl.sp.solve.TZETAR/bin/1.0.0.0/ITZETAR.dll" versionId="1.0.0.0">
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.problem_size.Instance;&#xA;using common.problem_size.Class;&#xA;using adi.data.ProblemDefinition;&#xA;using common.axis.Axis;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.ZAxis;&#xA;&#xA;namespace impl.sp.solve.TZETAR { &#xA;&#xA;&#x9;public class ITZETAR&lt;I,C,DIR,MTH> : BaseITZETAR&lt;I,C,DIR,MTH>, IBlockDiagonalMatVecProduct&lt;I,C,DIR,MTH>&#xA;&#x9;&#x9;&#x9;where I:IInstance&lt;C>&#xA;&#x9;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;&#x9;where DIR:IZ&#xA;&#x9;&#x9;&#x9;where MTH:ISPMethod&#xA;&#x9;{&#x9;&#x9;&#xA;&#x9;&#x9;private int stage = -1;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void begin()&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;stage = ncells-1;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public bool finished()&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;return stage &lt; 0;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void advance()&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;stage--;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{ &#xA;&#x9;&#x9;    int c;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;    c = slice[stage, 2];&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;    int i, j, k;&#xA;&#x9;&#x9;    int ksize, jsize, isize;&#xA;&#x9;&#x9;    double t1, t2, t3, ac, xvel, yvel, zvel,&#xA;&#x9;&#x9;           r1, r2, r3, r4, r5, btuz, acinv, ac2u, uzik1;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    ksize = cell_size[c, 2] + 2;&#xA;&#x9;&#x9;    jsize = cell_size[c, 1] + 2;&#xA;&#x9;&#x9;    isize = cell_size[c, 0] + 2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;&#x9;&#x9;        {&#xA;&#x9;&#x9;            for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;&#x9;&#x9;            {&#xA;&#x9;&#x9;                xvel = us[c, k, j, i, 0];&#xA;&#x9;&#x9;                yvel = vs[c, k, j, i, 0];&#xA;&#x9;&#x9;                zvel = ws[c, k, j, i, 0];&#xA;&#x9;&#x9;                ac = speed[c, k, j, i, 0];&#xA;&#x9;&#x9;                acinv = ainv[c, k, j, i, 0];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                ac2u = ac * ac;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                r1 = rhs[c, k, j, i, 0];&#xA;&#x9;&#x9;                r2 = rhs[c, k, j, i, 1];&#xA;&#x9;&#x9;                r3 = rhs[c, k, j, i, 2];&#xA;&#x9;&#x9;                r4 = rhs[c, k, j, i, 3];&#xA;&#x9;&#x9;                r5 = rhs[c, k, j, i, 4];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                uzik1 = u[c, k, j, i, 0];&#xA;&#x9;&#x9;                btuz = bt * uzik1;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                t1 = btuz * acinv * (r4 + r5);&#xA;&#x9;&#x9;                t2 = r3 + t1;&#xA;&#x9;&#x9;                t3 = btuz * (r4 - r5);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 0] = t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 1] = -uzik1 * r2 + xvel * t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 2] = uzik1 * r1 + yvel * t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 3] = zvel * t2 + t3;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 4] = uzik1 * (-xvel * r2 + yvel * r1) +&#xA;&#x9;&#x9;                      qs[c, k, j, i, 0] * t2 + c2iv * ac2u * t1 + zvel * t3;&#xA;&#x9;&#x9;                      &#xA;                 //      for (int m=0;m&lt;5;m++)&#x9;&#x9;                &#xA;&#x9;&#x9;         //           Console.WriteLine(&quot;tzetar - rhs&quot; + &quot;[&quot; + c + &quot;,&quot; + k + &quot;,&quot; + j + &quot;,&quot; + i + &quot;,&quot; + m + &quot;] = &quot; + rhs[c, k, j, i, m]);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;            }&#xA;&#x9;&#x9;        }&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;return 0;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="ITZETAR.cs" srcType="user" uri="impl.sp.solve.TZETAR/bin/1.0.0.0/ITZETAR.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/impl.sp.solve.TZETAR/bin/1.0.0.0/BaseITZETAR.dll</dependency>
           <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/IBlockDiagonalMatVecProduct.dll</dependency>
         </file>
@@ -111,18 +111,27 @@
       <visualDescription h="55" w="228" x="23" y="80">
         <color b="64" g="255" r="0"/>
       </visualDescription>
-      <port name="cells">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance_SP" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IZ" order="2" parid="axis" uname="z" varid="DIR"/>
       <parameter iname="ISPMethod" order="3" parid="method" uname="method" varid="MTH"/>
+      <action id="advance">
+        <protocol/>
+      </action>
+      <action id="begin">
+        <protocol/>
+      </action>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ITZETAR" multiple="true" private="false" replica="0" uRef="matvecproduct" visibleInterface="true">
       <super cRef="base" uRef="matvecproduct"/>
