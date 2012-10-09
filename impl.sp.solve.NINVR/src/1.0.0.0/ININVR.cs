@@ -17,15 +17,30 @@ namespace impl.sp.solve.NINVR {
 			where DIR:IX
 			where MTH:ISPMethod
 	{
-		private int c;
-				
-		public void enterStage(int stage)			
+		private int stage = -1;
+		
+		public void begin()
 		{
-		    c = slice[stage, 0];		
+			stage = ncells - 1;
+		}
+		
+		public bool finished()
+		{
+			return stage < 0;
+		}
+		
+		public void advance()			
+		{
+			stage--;
 		}
 				
-		public override int go() { 
+		public override int go() 
+		{ 
 					
+			int c;
+			
+		    c = slice[stage, 0];		
+			
 		    int i, j, k;
 		    double r1, r2, r3, r4, r5, t1, t2;
 		

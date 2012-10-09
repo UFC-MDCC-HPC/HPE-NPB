@@ -27,6 +27,7 @@ public abstract class BaseIPNVR<I,C,DIR,MTH>: Computation, BaseIBlockDiagonalMat
 protected int[,] start, end, cell_size, slice;
 protected double[,,,,] rhs;
 protected double bt;
+protected int ncells;		
 		
 override public void initialize()
 {
@@ -37,6 +38,7 @@ override public void initialize()
 	
 	bt = Constants.bt;					
 	rhs = Problem.Field_rhs;					
+	ncells = Problem.NCells;
 }
 		
 #endregion

@@ -28,6 +28,8 @@ public abstract class BaseININVR<I,C,DIR,MTH>: Computation, BaseIBlockDiagonalMa
 protected int[,] start, end, cell_size, slice;
 protected double[,,,,] rhs;
 protected double bt;
+protected int ncells;		
+
 
 override public void initialize()
 {
@@ -38,6 +40,7 @@ override public void initialize()
 	
 	bt = Constants.bt;					
 	rhs = Problem.Field_rhs;
+	ncells = Problem.NCells;
 }
 		
 #endregion

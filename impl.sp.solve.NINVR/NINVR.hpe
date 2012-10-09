@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<component:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:component="http://www.example.org/HashComponent">
+<component:component xmlns:component="http://www.example.org/HashComponent">
   <header hash_component_UID="00240000048000009400000006020000002400005253413100040000110000007d90a5160982ec6fe1e136fdc541867a8e8a5b3f68311bba5265af3f61bdf79d01bd8b757a17afcd5360050a7a15856ddaf49d4af66fb1388554402c951c264ef6fae3d033a929ece38aeeceb104d1e1546068fd18b59d712d6d1c1de1ab9695cef49197d705a6888cf5347a56e3106311d5a51b64797b2377d714f387f1ea87" isAbstract="false" kind="Computation" name="NINVR" packagePath="impl.sp.solve">
     <baseType>
       <extensionType>
@@ -17,7 +17,7 @@
           <visualDescription h="53" w="112" x="302" y="427">
             <color b="255" g="255" r="255"/>
           </visualDescription>
-          <unitBounds uRef="cells">
+          <unitBounds parallel="false" uRef="cells">
             <visualDescription h="10" w="10" x="5" y="2"/>
           </unitBounds>
         </port>
@@ -27,11 +27,11 @@
           </visualDescription>
           <parameter formFieldId="instance_type" varName="I"/>
           <parameter formFieldId="class" varName="C"/>
-          <unitBounds uRef="problem">
+          <unitBounds parallel="true" uRef="problem">
             <visualDescription h="10" w="10" x="47" y="9"/>
           </unitBounds>
         </port>
-        <unitBounds uRef="matvecproduct">
+        <unitBounds parallel="true" uRef="matvecproduct">
           <visualDescription h="10" w="10" x="5" y="2"/>
         </unitBounds>
       </component>
@@ -46,7 +46,7 @@
       <visualDescription h="30" w="50" x="199" y="403">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="method">
+      <unitBounds parallel="true" uRef="method">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -54,7 +54,7 @@
       <visualDescription h="39" w="96" x="417" y="187">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="x">
+      <unitBounds parallel="true" uRef="x">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -62,7 +62,7 @@
       <visualDescription h="30" w="50" x="319" y="145">
         <color b="255" g="255" r="255"/>
       </visualDescription>
-      <unitBounds uRef="class">
+      <unitBounds parallel="false" uRef="class">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -71,7 +71,7 @@
         <color b="255" g="255" r="255"/>
       </visualDescription>
       <parameter formFieldId="class" varName="C"/>
-      <unitBounds uRef="instance">
+      <unitBounds parallel="false" uRef="instance">
         <visualDescription h="10" w="10" x="5" y="2"/>
       </unitBounds>
     </innerComponent>
@@ -80,11 +80,11 @@
     <supplyParameter cRef="instance" varName="I"/>
     <supplyParameter cRef="method" varName="MTH"/>
     <interface iRef="ININVR" nArgs="4">
-      <slice isRef="cells">
+      <slice isRef="cells_info">
         <originRef cRef="cells_info" iRef="ICells"/>
         <visualDescription h="10" w="10" x="78" y="26"/>
       </slice>
-      <slice isRef="problem">
+      <slice isRef="problem_data">
         <originRef cRef="problem_data" iRef="IProblemDefinition"/>
         <visualDescription h="10" w="10" x="92" y="3"/>
       </slice>
@@ -97,13 +97,13 @@
         <visualDescription h="10" w="10" x="30" y="5"/>
       </slice>
       <sources sourceType="C# Language" versionId="1.0.0.0">
-        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.problem_size.Class;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.axis.Axis;&#xA;using common.axis.XAxis;&#xA;using sp.solve.SPMethod;&#xA;&#xA;namespace impl.sp.solve.NINVR { &#xA;&#xA;public abstract class BaseININVR&lt;I,C,DIR,MTH>: Computation, BaseIBlockDiagonalMatVecProduct&lt;I,C, DIR,MTH>&#xA;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;where C:IClass&#xA;&#x9;where DIR:IX&#xA;&#x9;where MTH:ISPMethod&#xA;{&#xA;&#x9;&#x9;&#xA;#region&#x9;data&#x9;&#xA;&#x9;&#x9;&#xA;protected int[,] start, end, cell_size, slice;&#xA;protected double[,,,,] rhs;&#xA;protected double bt;&#xA;&#xA;override public void initialize()&#xA;{&#xA;&#x9;start = Cells.cell_start;&#xA;&#x9;end = Cells.cell_end;&#xA;&#x9;cell_size = Cells.cell_size;&#xA;&#x9;slice = Cells.cell_slice;&#xA;&#x9;&#xA;&#x9;bt = Constants.bt;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;rhs = Problem.Field_rhs;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I,C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I,C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I,C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR axis = default(DIR);&#xA;&#xA;protected DIR Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (DIR) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseININVR.cs" srcType="base" uri="impl.sp.solve.NINVR/bin/1.0.0.0/BaseININVR.dll" versionId="1.0.0.0">
+        <file contents="/* Automatically Generated Code */&#xA;&#xA;using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using common.datapartition.MultiPartitionCells;&#xA;using adi.data.ProblemDefinition;&#xA;using common.problem_size.Instance;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using common.problem_size.Class;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.axis.Axis;&#xA;using common.axis.XAxis;&#xA;using sp.solve.SPMethod;&#xA;&#xA;namespace impl.sp.solve.NINVR { &#xA;&#xA;public abstract class BaseININVR&lt;I,C,DIR,MTH>: Computation, BaseIBlockDiagonalMatVecProduct&lt;I,C, DIR,MTH>&#xA;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;where C:IClass&#xA;&#x9;where DIR:IX&#xA;&#x9;where MTH:ISPMethod&#xA;{&#xA;&#x9;&#x9;&#xA;#region&#x9;data&#x9;&#xA;&#x9;&#x9;&#xA;protected int[,] start, end, cell_size, slice;&#xA;protected double[,,,,] rhs;&#xA;protected double bt;&#xA;protected int ncells;&#x9;&#x9;&#xA;&#xA;&#xA;override public void initialize()&#xA;{&#xA;&#x9;start = Cells.cell_start;&#xA;&#x9;end = Cells.cell_end;&#xA;&#x9;cell_size = Cells.cell_size;&#xA;&#x9;slice = Cells.cell_slice;&#xA;&#x9;&#xA;&#x9;bt = Constants.bt;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;rhs = Problem.Field_rhs;&#xA;&#x9;ncells = Problem.NCells;&#xA;}&#xA;&#x9;&#x9;&#xA;#endregion&#xA;&#x9;&#x9;&#xA;private ICells cells = null;&#xA;&#xA;public ICells Cells {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.cells == null) &#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.cells = (ICells) Services.getPort(&quot;cells_info&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.cells;&#xA;&#x9;}&#xA;}&#xA;&#xA;private IProblemDefinition&lt;I,C> problem = null;&#xA;&#xA;public IProblemDefinition&lt;I,C> Problem {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.problem == null)&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;this.problem = (IProblemDefinition&lt;I,C>) Services.getPort(&quot;problem_data&quot;);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;return this.problem;&#xA;&#x9;}&#xA;}&#xA;&#xA;private DIR axis = default(DIR);&#xA;&#xA;protected DIR Axis {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.axis == null)&#xA;&#x9;&#x9;&#x9;this.axis = (DIR) Services.getPort(&quot;axis&quot;);&#xA;&#x9;&#x9;return this.axis;&#xA;&#x9;}&#xA;}&#xA;&#xA;private MTH method = default(MTH);&#xA;&#xA;protected MTH Method {&#xA;&#x9;get {&#xA;&#x9;&#x9;if (this.method == null)&#xA;&#x9;&#x9;&#x9;this.method = (MTH) Services.getPort(&quot;method&quot;);&#xA;&#x9;&#x9;return this.method;&#xA;&#x9;}&#xA;}&#xA;&#xA;abstract public int go(); &#xA;&#xA;&#xA;}&#xA;&#xA;}&#xA;" fileType="library" name="BaseININVR.cs" srcType="base" uri="impl.sp.solve.NINVR/bin/1.0.0.0/BaseININVR.dll" versionId="1.0.0.0">
           <dependency>common.datapartition.MultiPartitionCells/bin/1.0.0.0/ICells.dll</dependency>
           <dependency>adi.data.ProblemDefinition/bin/1.0.0.0/IProblemDefinition.dll</dependency>
           <dependency>common.problem_size.Instance/bin/1.0.0.0/IInstance.dll</dependency>
           <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/BaseIBlockDiagonalMatVecProduct.dll</dependency>
         </file>
-        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.XAxis;&#xA;&#xA;namespace impl.sp.solve.NINVR { &#xA;&#xA;&#x9;public class ININVR&lt;I,C,DIR,MTH> : BaseININVR&lt;I,C,DIR,MTH>, IBlockDiagonalMatVecProduct&lt;I,C,DIR,MTH>&#xA;&#x9;&#x9;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;&#x9;where DIR:IX&#xA;&#x9;&#x9;&#x9;where MTH:ISPMethod&#xA;&#x9;{&#xA;&#x9;&#x9;private int c;&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public void enterStage(int stage)&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;    c = slice[stage, 0];&#x9;&#x9;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() { &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;    int i, j, k;&#xA;&#x9;&#x9;    double r1, r2, r3, r4, r5, t1, t2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    int ksize = cell_size[c, 2] + 2;&#xA;&#x9;&#x9;    int jsize = cell_size[c, 1] + 2;&#xA;&#x9;&#x9;    int isize = cell_size[c, 0] + 2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;&#x9;&#x9;        {&#xA;&#x9;&#x9;            for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;&#x9;&#x9;            {&#x9;&#x9;&#xA;&#x9;&#x9;                r1 = rhs[c, k, j, i, 0];&#xA;&#x9;&#x9;                r2 = rhs[c, k, j, i, 1];&#xA;&#x9;&#x9;                r3 = rhs[c, k, j, i, 2];&#xA;&#x9;&#x9;                r4 = rhs[c, k, j, i, 3];&#xA;&#x9;&#x9;                r5 = rhs[c, k, j, i, 4];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                t1 = bt * r3;&#xA;&#x9;&#x9;                t2 = 0.5d * (r4 + r5);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 0] = -r2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 1] = r1;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 2] = bt * (r4 - r5);&#xA;&#x9;&#x9;                rhs[c, k, j, i, 3] = -t1 + t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 4] = t1 + t2;&#xA;&#x9;&#x9;                &#xA;                 //       for (int m=0;m&lt;5;m++)&#x9;&#x9;                &#xA;&#x9;&#x9;         //           Console.WriteLine(&quot;ninvr - rhs&quot; + &quot;[&quot; + c + &quot;,&quot; + k + &quot;,&quot; + j + &quot;,&quot; + i + &quot;,&quot; + m + &quot;] = &quot; + rhs[c, k, j, i, m]);&#xA;&#x9;&#x9;            }&#xA;&#x9;&#x9;        }&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    return 0;&#x9;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="ININVR.cs" srcType="user" uri="impl.sp.solve.NINVR/bin/1.0.0.0/ININVR.dll" versionId="1.0.0.0">
+        <file contents="using System;&#xA;using br.ufc.pargo.hpe.backend.DGAC;&#xA;using br.ufc.pargo.hpe.basic;&#xA;using br.ufc.pargo.hpe.kinds;&#xA;using sp.solve.BlockDiagonalMatVecProduct;&#xA;using sp.problem_size.Instance_SP;&#xA;using common.problem_size.Class;&#xA;using common.axis.Axis;&#xA;using sp.solve.SPMethod;&#xA;using common.axis.XAxis;&#xA;&#xA;namespace impl.sp.solve.NINVR { &#xA;&#xA;&#x9;public class ININVR&lt;I,C,DIR,MTH> : BaseININVR&lt;I,C,DIR,MTH>, IBlockDiagonalMatVecProduct&lt;I,C,DIR,MTH>&#xA;&#x9;&#x9;&#x9;where I:IInstance_SP&lt;C>&#xA;&#x9;&#x9;&#x9;where C:IClass&#xA;&#x9;&#x9;&#x9;where DIR:IX&#xA;&#x9;&#x9;&#x9;where MTH:ISPMethod&#xA;&#x9;{&#xA;&#x9;&#x9;private int stage = -1;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void begin()&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;stage = ncells - 1;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public bool finished()&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;return stage &lt; 0;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;public void advance()&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;{&#xA;&#x9;&#x9;&#x9;stage--;&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;public override int go() &#xA;&#x9;&#x9;{ &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;int c;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;    c = slice[stage, 0];&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;    int i, j, k;&#xA;&#x9;&#x9;    double r1, r2, r3, r4, r5, t1, t2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    int ksize = cell_size[c, 2] + 2;&#xA;&#x9;&#x9;    int jsize = cell_size[c, 1] + 2;&#xA;&#x9;&#x9;    int isize = cell_size[c, 0] + 2;&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    for (k = start[c, 2]; k &lt; ksize - end[c, 2]; k++)&#xA;&#x9;&#x9;    {&#xA;&#x9;&#x9;        for (j = start[c, 1]; j &lt; jsize - end[c, 1]; j++)&#xA;&#x9;&#x9;        {&#xA;&#x9;&#x9;            for (i = start[c, 0]; i &lt; isize - end[c, 0]; i++)&#xA;&#x9;&#x9;            {&#x9;&#x9;&#xA;&#x9;&#x9;                r1 = rhs[c, k, j, i, 0];&#xA;&#x9;&#x9;                r2 = rhs[c, k, j, i, 1];&#xA;&#x9;&#x9;                r3 = rhs[c, k, j, i, 2];&#xA;&#x9;&#x9;                r4 = rhs[c, k, j, i, 3];&#xA;&#x9;&#x9;                r5 = rhs[c, k, j, i, 4];&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                t1 = bt * r3;&#xA;&#x9;&#x9;                t2 = 0.5d * (r4 + r5);&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 0] = -r2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 1] = r1;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 2] = bt * (r4 - r5);&#xA;&#x9;&#x9;                rhs[c, k, j, i, 3] = -t1 + t2;&#xA;&#x9;&#x9;                rhs[c, k, j, i, 4] = t1 + t2;&#xA;&#x9;&#x9;                &#xA;                 //       for (int m=0;m&lt;5;m++)&#x9;&#x9;                &#xA;&#x9;&#x9;         //           Console.WriteLine(&quot;ninvr - rhs&quot; + &quot;[&quot; + c + &quot;,&quot; + k + &quot;,&quot; + j + &quot;,&quot; + i + &quot;,&quot; + m + &quot;] = &quot; + rhs[c, k, j, i, m]);&#xA;&#x9;&#x9;            }&#xA;&#x9;&#x9;        }&#xA;&#x9;&#x9;    }&#xA;&#x9;&#x9;&#xA;&#x9;&#x9;    return 0;&#x9;&#xA;&#x9;&#x9;} // end activate method &#xA;&#x9;&#x9;&#xA;&#x9;}&#xA;&#xA;}&#xA;" fileType="library" name="ININVR.cs" srcType="user" uri="impl.sp.solve.NINVR/bin/1.0.0.0/ININVR.dll" versionId="1.0.0.0">
           <dependency>%WORKSPACE/impl.sp.solve.NINVR/bin/1.0.0.0/BaseININVR.dll</dependency>
           <dependency>sp.solve.BlockDiagonalMatVecProduct/bin/1.0.0.0/IBlockDiagonalMatVecProduct.dll</dependency>
         </file>
@@ -111,18 +111,27 @@
       <visualDescription h="55" w="228" x="62" y="107">
         <color b="64" g="255" r="0"/>
       </visualDescription>
-      <port name="cells">
+      <port name="cells_info">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="cells" sRef="cells"/>
+        <slice pRef="cells_info" sRef="cells_info"/>
       </port>
-      <port name="problem">
+      <port name="problem_data">
         <visualDescription h="10" w="10" x="0" y="0"/>
-        <slice pRef="problem" sRef="problem"/>
+        <slice pRef="problem_data" sRef="problem_data"/>
       </port>
       <parameter iname="IInstance_SP" order="0" parid="instance_type" uname="instance" varid="I"/>
       <parameter iname="IClass" order="1" parid="class" uname="class" varid="C"/>
       <parameter iname="IX" order="2" parid="axis" uname="x" varid="DIR"/>
       <parameter iname="ISPMethod" order="3" parid="method" uname="method" varid="MTH"/>
+      <action id="advance">
+        <protocol/>
+      </action>
+      <action id="begin">
+        <protocol/>
+      </action>
+      <action id="main">
+        <protocol/>
+      </action>
     </interface>
     <unit iRef="ININVR" multiple="true" private="false" replica="0" uRef="matvecproduct" visibleInterface="true">
       <super cRef="base" uRef="matvecproduct"/>

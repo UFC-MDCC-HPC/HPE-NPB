@@ -18,16 +18,31 @@ namespace impl.sp.solve.PINVR {
 			where DIR:IY
 			where MTH:ISPMethod
 	{
-		private int c;
+		private int stage = -1;
 		
-		public void enterStage(int stage)			
+		public void begin()
 		{
-		    c = slice[stage, 1];
+			stage = ncells-1;
+		}
+		
+		
+		public bool finished()
+		{
+			return stage < 0;
+		}
+		
+		public void advance()			
+		{
+			stage--;
 		}	                       
 				
 		
-		public override int go() { 
+		public override int go() 
+		{ 
+			int c;
 					
+		    c = slice[stage, 1];
+			
 		    int i, j, k;
 		    double r1, r2, r3, r4, r5, t1, t2;
 		
