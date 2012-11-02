@@ -239,7 +239,7 @@ protected IReadBuffer<I, C, IForwardDirection, DIR> Read_buffer_forward {
 	}
 }
 
-abstract public int go(); 
+ 
 
 
 }

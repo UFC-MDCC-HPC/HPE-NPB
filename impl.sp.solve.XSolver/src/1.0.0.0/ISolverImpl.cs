@@ -16,7 +16,7 @@ namespace impl.sp.solve.SolverImpl {
 		where MTH:ISPMethod
 		where DIR:IAxis
 	{		
-		public override int go() 
+		public override void main() 
 		{		 
 //		    Console.WriteLine("{0}: sucessor = {1}, predecessor = {2}",this.Rank, Topology.successor, Topology.predecessor);
 			
@@ -105,7 +105,7 @@ namespace impl.sp.solve.SolverImpl {
         //    Matvecproduct.advance();
 		    Matvecproduct.go(); // matvecproduct.stage = 0
 					
-			return 0;
+			
 		}  
 	}
 }
