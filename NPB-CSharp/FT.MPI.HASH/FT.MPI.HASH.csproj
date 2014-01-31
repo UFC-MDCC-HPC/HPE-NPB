@@ -35,9 +35,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="MPI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=29b4a045737654fe">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\usr\lib\mono\MPI\MPI.dll</HintPath>
+    <Reference Include="MPI">
+      <HintPath>..\..\..\..\..\..\..\opt\local\lib\MPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

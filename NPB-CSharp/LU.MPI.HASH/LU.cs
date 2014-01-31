@@ -850,10 +850,10 @@ namespace NPB {
             //---------------------------------------------------------------------
             //   compute the right hand side based on exact solution
             //---------------------------------------------------------------------
-            MPI.Request ShiftToSouth;
-            MPI.Request ShiftToNorth;
-            MPI.Request ShiftToEast;
-            MPI.Request ShiftToWest;
+			MPI.Request ShiftToSouth = null;
+			MPI.Request ShiftToNorth = null;
+			MPI.Request ShiftToEast = null;
+			MPI.Request ShiftToWest = null;
             int i, j, k0;
             int ipos1, ipos2;
 	        

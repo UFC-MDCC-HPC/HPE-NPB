@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -rf *.mdb
+rm -rf *.exe
+rm -rf *.dll
+rm -rf *~*
