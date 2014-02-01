@@ -56,13 +56,9 @@
       <Project>{1A1FAA2A-D1A2-4DFE-955A-3D88FD063315}</Project>
       <Name>BMInOut</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Random\Random.csproj">
-      <Project>{5D439402-4268-4D59-90E2-0B7A99BE5816}</Project>
-      <Name>Random</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Timer\Timer.csproj">
-      <Project>{344CE051-6255-4BBA-BFB3-5CF80032FF77}</Project>
-      <Name>Timer</Name>
+    <ProjectReference Include="..\Common.MPI\Common.MPI.csproj">
+      <Project>{EE117C49-BD6C-4535-964C-04CD5009B4AB}</Project>
+      <Name>Common.MPI</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

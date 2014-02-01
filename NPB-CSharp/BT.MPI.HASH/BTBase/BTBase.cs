@@ -42,7 +42,7 @@
 */
 using System;
 //using System.Threading;
-//using NPB;
+using NPB;
 using MPI;
 
 namespace NPB3_0_JAV.BTThreads{
