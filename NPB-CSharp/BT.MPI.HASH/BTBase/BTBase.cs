@@ -40,8 +40,8 @@
 !     Mathew Schultz	   					          !
 !-------------------------------------------------------------------------!
 */
+
 using System;
-//using System.Threading;
 using NPB;
 using MPI;
 
